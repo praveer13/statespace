@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth Claims Ledger</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;family=Noto+Sans+Math&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F1F3EF}
+a{color:#0E6655}a:hover{color:#0A4A3E}
+.lbl{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4A534D}
+.mono{font-family:"IBM Plex Mono","Noto Sans Math",monospace}
+.stamp{display:inline-flex;align-items:center;gap:6px;font-family:Archivo,sans-serif;font-stretch:120%;font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border:2px solid;border-radius:2px;line-height:1;white-space:nowrap}
+table{border-collapse:collapse;width:100%;min-width:880px}
+th{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4A534D;text-align:left;padding:10px 14px;border-bottom:1.5px solid #1C211E}
+td{padding:12px 14px;border-bottom:1px solid #DDE2DA;font-size:15px;vertical-align:top;line-height:1.4}
+.p{background:#1D3F8F;border-color:#1D3F8F;color:#FFFFFF}
+.c{background:#E3E9F6;border-color:#1D3F8F;color:#1D3F8F}
+.t{background:#FAFBF8;border-color:#7A5A00;color:#7A5A00}
+.a{background:#FAFBF8;border-color:#5F675F;border-style:dashed;color:#3A423D}
+.r{background:#C2410C;border-color:#C2410C;color:#FFFFFF}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:100%;min-height:1400px;background:#F1F3EF;color:#1C211E;font-family:'Source Serif 4',Georgia,serif">
+
+<header style="border-bottom:1.5px solid #1C211E;background:#FAFBF8">
+<div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
+<a href="Elevation.dc.html" style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.08em;color:#1C211E;text-decoration:none">PLINTH</a>
+<span class="lbl">Ledger · every claim you have made about Plinth</span>
+<a href="#" style="margin-left:auto;font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:14px;color:#FAFBF8;background:#1C211E;text-decoration:none;padding:12px 16px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center">Export assurance report</a>
+</div>
+</header>
+
+<main style="max-width:1180px;margin:0 auto;padding:32px 24px 64px;display:flex;flex-direction:column;gap:26px">
+
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<h1 style="margin:0;font-family:Archivo,sans-serif;font-stretch:108%;font-weight:800;font-size:34px;line-height:1.1">31 claims. 12 proved. Read the other 19 carefully.</h1>
+<p style="margin:0;font-size:18px;line-height:1.55;color:#3A423D">The ledger is your progress record and, at Course 10, your published report. It counts honest stamps, not green ones; a claim downgraded for a good reason is worth more than one never examined.</p>
+</div>
+
+<section aria-label="Erosion event" style="border:2.5px solid #C2410C;background:#FFF7F2;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><span class="stamp r">Erosion</span><span style="font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:17px">Course 6 cracked a claim from Course 2</span></div>
+<p style="margin:0;font-size:16px;line-height:1.55">Differential testing against Postgres found <span class="mono" style="font-size:14px">balance bigint</span> overflowing at 2⁶³−1, where Lean's <span class="mono" style="font-size:14px">ℤ</span> keeps counting. C2.3 still holds of the model. Its correspondence to the running system does not. Specimen S6.4 has been mounted.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;font-size:15px"><a href="#">Re-state C2.3 with a bound</a><a href="#">Add a CHECK constraint and re-test</a><a href="#">Open S6.4</a></div>
+</section>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Filter by stamp">
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:700;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#1C211E;color:#FAFBF8;cursor:pointer">All 31</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:600;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer">Proved 12</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:600;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer">Checked 7</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:600;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer">Tested 5</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:600;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer">Assumed 4</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:600;font-size:13px;min-height:40px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer">Refuted 3</button>
+</div>
+
+<div style="overflow-x:auto;background:#FAFBF8;border:1px solid #C9CFC6">
+<table>
+<thead><tr><th scope="col">Claim</th><th scope="col">Proposition</th><th scope="col">Stamp</th><th scope="col">Method</th><th scope="col">Rests on</th></tr></thead>
+<tbody>
+<tr><td class="mono" style="font-size:13px">C1.1</td><td>Guarded transfer cannot overdraw</td><td><span class="stamp p">Proved</span></td><td>Z3 unsat, ℤ</td><td>unbounded ints</td></tr>
+<tr><td class="mono" style="font-size:13px">C2.3</td><td>Allowed transfers conserve total</td><td><span class="stamp p">Proved</span> <span class="stamp r" style="margin-top:6px">Erosion</span></td><td>Lean, induction</td><td style="color:#9A3209">ℤ ≠ bigint (S6.4)</td></tr>
+<tr><td class="mono" style="font-size:13px">C3.2</td><td>Well-typed Mini-Plinth programs don't get stuck</td><td><span class="stamp p">Proved</span></td><td>Lean, progress + preservation</td><td>fragment v0.3</td></tr>
+<tr><td class="mono" style="font-size:13px">C4.1</td><td>VC generator is sound for assign + if</td><td><span class="stamp p">Proved</span></td><td>Lean, by WP rules</td><td>Z3 trusted</td></tr>
+<tr><td class="mono" style="font-size:13px">C5.1</td><td>A hold never resolves twice</td><td><span class="stamp c">Checked ≤ 3 holds</span></td><td>TLC, 48,112 states</td><td>2 workers, no crash</td></tr>
+<tr><td class="mono" style="font-size:13px">C5.2</td><td>Every hold eventually resolves</td><td><span class="stamp a">Assumed</span></td><td>TLC, WF on Timeout</td><td>weak fairness of the clock</td></tr>
+<tr><td class="mono" style="font-size:13px">C6.1</td><td>Postgres transfer refines abstract transfer</td><td><span class="stamp t">Tested n = 20k</span></td><td>differential, SERIALIZABLE</td><td>retry loop terminates</td></tr>
+<tr><td class="mono" style="font-size:13px">C6.2</td><td>Concurrent transfers serialise at READ COMMITTED</td><td><span class="stamp r">Refuted</span></td><td>2 connections, 9 ms window</td><td>S6.2 lost update</td></tr>
+<tr><td class="mono" style="font-size:13px">C7.3</td><td>Tenant B's private fields don't affect A's view</td><td><span class="stamp c">Checked scope 4</span></td><td>Alloy, paired states</td><td>observer = API output</td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth lesson 1.2 with Call It</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=Noto+Sans+Math&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F1F3EF}
+a{color:#0E6655}a:hover{color:#0A4A3E}
+.lbl{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4A534D}
+.mono{font-family:"IBM Plex Mono","Noto Sans Math",monospace}
+.stamp{display:inline-flex;align-items:center;gap:6px;font-family:Archivo,sans-serif;font-stretch:120%;font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border:2px solid;border-radius:2px;line-height:1}
+.opt{font-family:Archivo,sans-serif;font-stretch:115%;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;min-height:44px;padding:0 18px;border:2px solid #1C211E;cursor:pointer}
+.conf{font-family:"IBM Plex Mono",monospace;font-size:14px;min-height:44px;padding:0 14px;border:1.5px solid #1C211E;cursor:pointer}
+.kw{color:#1D3F8F;font-weight:600}
+.cm{color:#5F675F}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:100%;min-height:1900px;background:#F1F3EF;color:#1C211E;font-family:'Source Serif 4',Georgia,serif">
+
+<header style="border-bottom:1.5px solid #1C211E;background:#FAFBF8">
+<div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
+<a href="Elevation.dc.html" style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.08em;color:#1C211E;text-decoration:none">PLINTH</a>
+<span class="lbl">Course 01 · Counterexample</span>
+<span class="mono" style="font-size:13px;color:#4A534D;margin-left:auto">lesson 2 of 5 · ~45 min</span>
+</div>
+</header>
+
+<main style="max-width:1180px;margin:0 auto;padding:40px 24px 80px;display:flex;flex-wrap:wrap;gap:40px">
+
+<nav aria-label="Lesson outline" style="flex:1 1 220px;display:flex;flex-direction:column;gap:22px;font-size:15px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<span class="lbl">Outline</span>
+<a href="#" style="color:#4A534D;text-decoration:none">Prequestion</a>
+<a href="#" style="color:#1C211E;font-weight:600;text-decoration:none;border-left:3px solid #1C211E;padding-left:10px">Negate, then search</a>
+<a href="#" style="color:#4A534D;text-decoration:none">Reading a model</a>
+<a href="#" style="color:#4A534D;text-decoration:none">The guard</a>
+<a href="#" style="color:#4A534D;text-decoration:none">Exit ticket</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #C9CFC6;padding-top:16px">
+<span class="lbl">This lesson establishes</span>
+<span style="display:flex;flex-direction:column;gap:6px"><span class="mono" style="font-size:13px">C1.1</span><span>Guarded transfer cannot overdraw</span></span>
+<span style="display:flex;flex-direction:column;gap:6px"><span class="mono" style="font-size:13px">S1.2</span><span>Specimen: the overdraft</span></span>
+</div>
+</nav>
+
+<article style="flex:999 1 620px;min-width:0;display:flex;flex-direction:column;gap:26px">
+<header style="display:flex;flex-direction:column;gap:10px">
+<span class="lbl">1.2</span>
+<h1 style="margin:0;font-family:Archivo,sans-serif;font-stretch:108%;font-weight:800;font-size:40px;line-height:1.08">Negate, then search</h1>
+</header>
+
+<p style="margin:0;font-size:19px;line-height:1.6;max-width:680px">You want to know whether a transfer can ever leave the source balance negative. A solver doesn't prove "for all"; it searches for "there exists". So you hand it the <i>bad</i> outcome and ask for a witness. If one exists, you have a counterexample. If none exists, the property holds — for exactly the constraints you wrote down.</p>
+
+<div style="border-left:0;background:#FAFBF8;border:1px solid #C9CFC6;padding:16px 18px;display:flex;flex-direction:column;gap:6px;max-width:680px">
+<span class="lbl" style="color:#1C211E">Margin note</span>
+<span style="font-size:16px;line-height:1.5">Validity of P is the same question as unsatisfiability of ¬P. Every check in this course, from Z3 to TLC, is that move in different clothes.</span>
+</div>
+
+<section aria-label="Instrument: Z3" style="border:1.5px solid #1C211E;background:#FAFBF8">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid #1C211E">
+<span style="font-family:Archivo,sans-serif;font-stretch:115%;font-weight:700;font-size:13px;letter-spacing:.1em">INSTRUMENT · Z3 4.15 (wasm, in this tab)</span>
+<span class="mono" style="font-size:12px;color:#4A534D">transfer_overdraft.py</span>
+</div>
+<pre class="mono" style="margin:0;padding:18px;font-size:14px;line-height:1.75;overflow-x:auto;background:#FFFFFF;border-bottom:1px solid #C9CFC6"><span class="kw">from</span> z3 <span class="kw">import</span> *
+a, b, amount = Ints(<span>'a b amount'</span>)
+s = Solver()
+s.add(a &gt;= 0, b &gt;= 0, amount &gt; 0)   <span class="cm"># the world we assume</span>
+s.add(a - amount &lt; 0)                 <span class="cm"># the bad outcome, asserted</span>
+s.check()</pre>
+
+<div style="padding:18px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-family:Archivo,sans-serif;font-stretch:115%;font-weight:800;font-size:16px;letter-spacing:.08em">CALL IT</span>
+<span style="font-size:15px;color:#3A423D">Commit before you run. Your call is recorded either way.</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px" role="group" aria-label="Predicted verdict">
+<button type="button" class="opt" style="{{satStyle}}" onClick="{{pickSat}}">sat</button>
+<button type="button" class="opt" style="{{unsatStyle}}" onClick="{{pickUnsat}}">unsat</button>
+<button type="button" class="opt" style="{{unkStyle}}" onClick="{{pickUnk}}">unknown</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px" role="group" aria-label="Confidence">
+<span class="lbl" style="margin-right:4px">Confidence</span>
+<button type="button" class="conf" style="{{c55}}" onClick="{{pick55}}">55%</button>
+<button type="button" class="conf" style="{{c75}}" onClick="{{pick75}}">75%</button>
+<button type="button" class="conf" style="{{c95}}" onClick="{{pick95}}">95%</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<button type="button" onClick="{{run}}" style="{{runStyle}}">Run Z3</button>
+<button type="button" onClick="{{reset}}" style="font-family:Archivo,sans-serif;font-weight:600;font-size:14px;min-height:44px;padding:0 14px;background:transparent;border:0;color:#0E6655;text-decoration:underline;cursor:pointer">Reset</button>
+<span style="font-size:14px;color:#4A534D">{{runHint}}</span>
+</div>
+</div>
+
+<sc-if value="{{ran}}" hint-placeholder-val="{{ false }}">
+<div style="border-top:2.5px solid #C2410C;background:#FFF7F2;padding:18px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<span class="stamp" style="background:#C2410C;border-color:#C2410C;color:#FFFFFF">sat · witness found</span>
+<span style="font-size:15px">{{verdictLine}}</span>
+</div>
+<pre class="mono" style="margin:0;font-size:15px;line-height:1.7">[a = 0, b = 0, amount = 1]
+a − amount = <b style="color:#C2410C">−1</b></pre>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<button type="button" style="font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:14px;min-height:44px;padding:0 18px;background:#C2410C;color:#FFFFFF;border:0;cursor:pointer">Mount as specimen S1.2</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:14px;min-height:44px;padding:0 18px;background:#FAFBF8;color:#1C211E;border:1.5px solid #1C211E;cursor:pointer">Ask for a different witness</button>
+</div>
+</div>
+</sc-if>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px;max-width:680px">
+<h2 style="margin:0;font-family:Archivo,sans-serif;font-stretch:108%;font-weight:700;font-size:24px">What the answer does not say</h2>
+<p style="margin:0;font-size:18px;line-height:1.6">Z3 answered about <span class="mono" style="font-size:15px">Int</span>, which is unbounded. Your production column is a 64-bit integer. The claim you are about to earn will carry that difference as a dashed field until Course 6 makes you check it.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:15px"><span class="stamp" style="background:#FAFBF8;border-color:#5F675F;border-style:dashed;color:#3A423D">Assumed</span> balances are mathematical integers</div>
+</section>
+</article>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+constructor(p) { super(p); this.state = { call: null, conf: null, ran: false }; }
+renderVals() {
+const s = this.state;
+const on = 'background:#1C211E;color:#FAFBF8;';
+const off = 'background:#FAFBF8;color:#1C211E;';
+const opt = (k) => s.call === k ? on : off;
+const cf = (k) => s.conf === k ? on : off;
+const ready = s.call && s.conf;
+const right = s.call === 'sat';
+let verdictLine = '';
+if (s.ran) {
+verdictLine = right
+? 'You called sat at ' + s.conf + '%. Correct — recorded to Judgment.'
+: 'You called ' + s.call + ' at ' + s.conf + '%. Missed — recorded to Judgment. Nothing forbids amount > a.';
+}
+return {
+satStyle: opt('sat'), unsatStyle: opt('unsat'), unkStyle: opt('unknown'),
+c55: cf(55), c75: cf(75), c95: cf(95),
+pickSat: () => !s.ran && this.setState({ call: 'sat' }),
+pickUnsat: () => !s.ran && this.setState({ call: 'unsat' }),
+pickUnk: () => !s.ran && this.setState({ call: 'unknown' }),
+pick55: () => !s.ran && this.setState({ conf: 55 }),
+pick75: () => !s.ran && this.setState({ conf: 75 }),
+pick95: () => !s.ran && this.setState({ conf: 95 }),
+run: () => ready && this.setState({ ran: true }),
+reset: () => this.setState({ call: null, conf: null, ran: false }),
+ran: s.ran,
+verdictLine: verdictLine,
+runHint: ready ? (s.ran ? 'Run complete.' : 'Ready.') : 'Pick a verdict and a confidence to unlock Run.',
+runStyle: 'font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:14px;min-height:44px;padding:0 22px;border:0;cursor:pointer;' + (ready ? 'background:#1D3F8F;color:#FFFFFF;' : 'background:#DDE2DA;color:#4A534D;')
+};
+}
+}
+</script>
+</body>
+</html>

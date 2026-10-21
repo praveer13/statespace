@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth Audit Desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;family=Noto+Sans+Math&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F1F3EF}
+a{color:#0E6655}a:hover{color:#0A4A3E}
+.lbl{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4A534D}
+.mono{font-family:"IBM Plex Mono","Noto Sans Math",monospace}
+.stamp{display:inline-flex;align-items:center;gap:6px;font-family:Archivo,sans-serif;font-stretch:120%;font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border:2px solid;border-radius:2px;line-height:1}
+.ln{display:block;padding:0 14px;white-space:pre}
+.add{background:#EAF4EC}
+.gapopt{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:15px;line-height:1.35;cursor:pointer}
+.gapopt input{width:18px;height:18px;margin:2px 0 0;accent-color:#1C211E}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:100%;min-height:1400px;background:#F1F3EF;color:#1C211E;font-family:'Source Serif 4',Georgia,serif">
+
+<header style="border-bottom:1.5px solid #1C211E;background:#FAFBF8">
+<div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
+<a href="Elevation.dc.html" style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.08em;color:#1C211E;text-decoration:none">PLINTH</a>
+<span class="lbl">Audit Desk · case A2.1 of 32</span>
+<span class="mono" style="font-size:13px;color:#4A534D;margin-left:auto">record: 71% precision · 64% recall</span>
+</div>
+</header>
+
+<main style="max-width:1180px;margin:0 auto;padding:32px 24px 64px;display:flex;flex-wrap:wrap;gap:32px">
+
+<section aria-label="Agent submission" style="flex:999 1 600px;min-width:0;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span class="lbl">Submitted by the agent</span>
+<h1 style="margin:0;font-family:Archivo,sans-serif;font-stretch:108%;font-weight:800;font-size:30px;line-height:1.15">feat(ledger): partial refunds, with safety proof</h1>
+</div>
+<div style="background:#FAFBF8;border:1px solid #C9CFC6;padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.55">
+<span>Adds <span class="mono" style="font-size:14px">refund</span> for captured payments. I proved the new operation can never produce a negative balance, so this is safe to merge. Build is green; no <span class="mono" style="font-size:14px">sorry</span>.</span>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><span class="stamp" style="background:#1D3F8F;border-color:#1D3F8F;color:#FFFFFF">Proved</span><span class="mono" style="font-size:13px;color:#4A534D">lake build ✓ · 0 sorry · axioms: propext, Quot.sound</span></div>
+</div>
+
+<div style="border:1.5px solid #1C211E;background:#FFFFFF">
+<div style="padding:10px 14px;border-bottom:1px solid #1C211E;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span class="mono" style="font-size:13px;font-weight:600">Ledger/Refund.lean</span><span class="mono" style="font-size:12px;color:#4A534D">+18 −0</span></div>
+<code class="mono" style="display:block;font-size:13.5px;line-height:1.75;padding:10px 0;overflow-x:auto">
+<span class="ln add">+ def refund (s : State) (p : PaymentId) (amt : ℤ) : State :=</span>
+<span class="ln add">+   let pay := s.payments p</span>
+<span class="ln add">+   { s with balance := s.balance.update pay.customer (· + amt)</span>
+<span class="ln add">+                                .update pay.merchant (· - amt) }</span>
+<span class="ln add">+</span>
+<span class="ln add">+ theorem refund_nonneg (s : State) (p : PaymentId) (amt : ℤ)</span>
+<span class="ln add">+     (hInv : NonNeg s) (hPos : 0 ≤ amt) :</span>
+<span class="ln add">+     0 ≤ (refund s p amt).balance (s.payments p).customer := by</span>
+<span class="ln add">+   simp [refund]; have := hInv (s.payments p).customer; omega</span>
+</code>
+</div>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#3A423D">Read the theorem statement before the proof. The kernel accepted the proof; your job is to decide what it is a proof <i>of</i>.</p>
+</section>
+
+<section aria-label="Your findings" style="flex:1 1 340px;display:flex;flex-direction:column;gap:18px">
+<form style="background:#FAFBF8;border:1.5px solid #1C211E;display:flex;flex-direction:column">
+<div class="lbl" style="padding:12px 16px;border-bottom:1px solid #1C211E;color:#1C211E">File a finding</div>
+<fieldset style="border:0;margin:0;padding:12px 16px;display:flex;flex-direction:column">
+<legend class="lbl" style="padding:0;margin-bottom:6px">Gap class</legend>
+<label class="gapopt"><input type="radio" name="gap" checked>Statement too weak — proves less than claimed</label>
+<label class="gapopt"><input type="radio" name="gap">Vacuous premise</label>
+<label class="gapopt"><input type="radio" name="gap">Unsound encoding</label>
+<label class="gapopt"><input type="radio" name="gap">Bounded presented as unbounded</label>
+<label class="gapopt"><input type="radio" name="gap">Unstated environment assumption</label>
+<label class="gapopt"><input type="radio" name="gap">Model–implementation drift</label>
+<a href="#" style="font-size:14px;padding:6px 0">All 12 gap classes</a>
+</fieldset>
+<div style="padding:0 16px 14px;display:flex;flex-direction:column;gap:6px">
+<label class="lbl" for="ev">Evidence</label>
+<textarea id="ev" rows="4" style="font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.5;border:1px solid #C9CFC6;background:#FFFFFF;padding:10px;resize:vertical">Only the customer's balance is constrained. The merchant is debited amt with no guard: merchant = 0, amt = 50 gives −50.</textarea>
+</div>
+<div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:6px">
+<span class="lbl">Re-stamp the claim as</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;min-height:44px;padding:0 12px;border:2px solid #C2410C;background:#C2410C;color:#FFFFFF;cursor:pointer">REFUTED</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;min-height:44px;padding:0 12px;border:2px dashed #5F675F;background:#FAFBF8;color:#3A423D;cursor:pointer">ASSUMED</button>
+<button type="button" style="font-family:Archivo,sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;min-height:44px;padding:0 12px;border:2px solid #1D3F8F;background:#FAFBF8;color:#1D3F8F;cursor:pointer">ACCEPT</button>
+</div>
+</div>
+<button type="submit" style="margin:0 16px 16px;font-family:Archivo,sans-serif;font-stretch:110%;font-weight:700;font-size:14px;min-height:44px;background:#1C211E;color:#FAFBF8;border:0;cursor:pointer">Submit finding</button>
+</form>
+
+<div style="background:#FAFBF8;border:1px solid #C9CFC6;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5">
+<span class="lbl">Scoring</span>
+<span>A missed gap costs recall. A false alarm on a sound claim costs precision. Both matter: an auditor who rejects everything is as useless as one who accepts everything.</span>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

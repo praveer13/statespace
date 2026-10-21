@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plinth Trace Theater</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;family=Noto+Sans+Math&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F1F3EF}
+a{color:#0E6655}a:hover{color:#0A4A3E}
+.lbl{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4A534D}
+.mono{font-family:"IBM Plex Mono","Noto Sans Math",monospace}
+.stamp{display:inline-flex;align-items:center;gap:6px;font-family:Archivo,sans-serif;font-stretch:120%;font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border:2px solid;border-radius:2px;line-height:1}
+.ev{box-sizing:border-box;font-family:"IBM Plex Mono",monospace;font-size:13px;padding:8px 10px;border:1.5px solid #1C211E;background:#FAFBF8;line-height:1.35}
+.gap{border:1px dashed #C9CFC6;min-height:44px}
+.ctl{font-family:Archivo,sans-serif;font-stretch:112%;font-weight:700;font-size:13px;letter-spacing:.04em;min-height:44px;padding:0 14px;border:1.5px solid #1C211E;background:#FAFBF8;color:#1C211E;cursor:pointer}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:100%;min-height:1300px;background:#F1F3EF;color:#1C211E;font-family:'Source Serif 4',Georgia,serif">
+
+<header style="border-bottom:1.5px solid #1C211E;background:#FAFBF8">
+<div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px">
+<a href="Elevation.dc.html" style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.08em;color:#1C211E;text-decoration:none">PLINTH</a>
+<span class="lbl">Theater · Course 05 · scene 1</span>
+<span class="mono" style="font-size:13px;color:#4A534D;margin-left:auto">model: ReadThenWrite.tla</span>
+</div>
+</header>
+
+<main style="max-width:1180px;margin:0 auto;padding:36px 24px 64px;display:flex;flex-direction:column;gap:28px">
+
+<div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+<h1 style="margin:0;font-family:Archivo,sans-serif;font-stretch:108%;font-weight:800;font-size:36px;line-height:1.1">You are the scheduler.</h1>
+<p style="margin:0;font-size:18px;line-height:1.55;color:#3A423D">Two workers each try to spend 80 from an account holding 100. Pick who moves next. Find an interleaving that spends more than exists, then hand the same model to TLC and compare its shortest trace with yours.</p>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 16px;background:#FAFBF8;border:1px solid #C9CFC6" role="toolbar" aria-label="Scheduler controls">
+<span class="lbl" style="margin-right:6px">Next move</span>
+<button type="button" class="ctl" style="background:#1C211E;color:#FAFBF8">Step W1</button>
+<button type="button" class="ctl">Step W2</button>
+<span style="width:1px;height:28px;background:#C9CFC6"></span>
+<span class="lbl" style="margin-right:6px">Environment</span>
+<button type="button" class="ctl" style="border-color:#C2410C;color:#C2410C">Crash W1</button>
+<button type="button" class="ctl">Duplicate reply</button>
+<button type="button" class="ctl">Delay message</button>
+<span style="width:1px;height:28px;background:#C9CFC6"></span>
+<button type="button" class="ctl">Undo</button>
+</div>
+
+<section aria-label="Interleaving timeline" style="overflow-x:auto;border:1.5px solid #1C211E;background:#FFFFFF">
+<div style="min-width:900px;display:grid;grid-template-columns:110px repeat(6,minmax(0,1fr));gap:8px;padding:16px">
+<span></span>
+<span class="lbl">t1</span><span class="lbl">t2</span><span class="lbl">t3</span><span class="lbl">t4</span><span class="lbl">t5</span><span class="lbl" style="color:#C2410C">t6</span>
+
+<span style="font-family:Archivo,sans-serif;font-stretch:115%;font-weight:700;font-size:14px;align-self:center">WORKER 1</span>
+<div class="ev">read bal → 100</div>
+<div class="gap"></div>
+<div class="ev">check 100 ≥ 80 ✓</div>
+<div class="gap"></div>
+<div class="ev">write bal ← 20</div>
+<div class="gap"></div>
+
+<span style="font-family:Archivo,sans-serif;font-stretch:115%;font-weight:700;font-size:14px;align-self:center">WORKER 2</span>
+<div class="gap"></div>
+<div class="ev">read bal → 100</div>
+<div class="gap"></div>
+<div class="ev">check 100 ≥ 80 ✓</div>
+<div class="gap"></div>
+<div class="ev" style="border-color:#C2410C;border-width:2.5px">write bal ← 20</div>
+
+<span style="font-family:Archivo,sans-serif;font-stretch:115%;font-weight:700;font-size:14px;align-self:center">SHARED</span>
+<div class="ev" style="border-style:dashed">bal 100 · spent 0</div>
+<div class="ev" style="border-style:dashed">bal 100 · spent 0</div>
+<div class="ev" style="border-style:dashed">bal 100 · spent 0</div>
+<div class="ev" style="border-style:dashed">bal 100 · spent 0</div>
+<div class="ev" style="border-style:dashed">bal 20 · spent 80</div>
+<div class="ev" style="background:#FFF7F2;border-color:#C2410C;border-width:2.5px;color:#9A3209"><b>bal 20 · spent 160</b></div>
+</div>
+</section>
+
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+<section aria-label="Invariant monitor" style="flex:1 1 340px;background:#FAFBF8;border:1px solid #C9CFC6;display:flex;flex-direction:column">
+<div class="lbl" style="padding:12px 16px;border-bottom:1px solid #C9CFC6;color:#1C211E">Monitors</div>
+<div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px;font-size:15px">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span class="mono" style="font-size:13px">NoOverspend ≜ spent ≤ 100</span><span class="stamp" style="background:#C2410C;border-color:#C2410C;color:#FFFFFF">Violated at t6</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span class="mono" style="font-size:13px">TypeOK</span><span class="stamp" style="background:#E3E9F6;border-color:#1D3F8F;color:#1D3F8F">Holds on this trace</span></div>
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span class="mono" style="font-size:13px">◇ AllDone</span><span class="stamp" style="background:#FAFBF8;border-color:#5F675F;border-style:dashed;color:#3A423D">Needs fairness</span></div>
+<span style="font-size:14px;line-height:1.5;color:#3A423D">A liveness property can't be refuted by a finite prefix. The theater will ask you for a lasso — a loop the scheduler can repeat forever.</span>
+</div>
+</section>
+
+<section aria-label="Comparison with TLC" style="flex:1 1 340px;background:#FAFBF8;border:1.5px solid #1C211E;display:flex;flex-direction:column">
+<div class="lbl" style="padding:12px 16px;border-bottom:1px solid #1C211E;color:#1C211E">Your trace vs the model checker</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#C9CFC6">
+<div style="background:#FAFBF8;padding:14px;display:flex;flex-direction:column;gap:4px"><span class="mono" style="font-size:26px;font-weight:600">6</span><span class="lbl">your steps</span></div>
+<div style="background:#FAFBF8;padding:14px;display:flex;flex-direction:column;gap:4px"><span class="mono" style="font-size:26px;font-weight:600">4</span><span class="lbl">TLC shortest</span></div>
+<div style="background:#FAFBF8;padding:14px;display:flex;flex-direction:column;gap:4px"><span class="mono" style="font-size:26px;font-weight:600">212</span><span class="lbl">distinct states</span></div>
+</div>
+<div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.5">
+<span>TLC needs only four: both reads, then both writes. The checks at t3–t4 aren't separate steps in the model — and that granularity is itself a modelling decision you'll defend in the viva.</span>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><span class="stamp" style="background:#E3E9F6;border-color:#1D3F8F;color:#1D3F8F">Checked</span><span class="mono" style="font-size:13px">2 workers · amounts ∈ {80} · bal ∈ 0..100</span></div>
+<a href="#">Mount the 4-step trace as specimen S5.1</a>
+</div>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
