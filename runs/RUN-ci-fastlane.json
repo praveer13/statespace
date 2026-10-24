@@ -1,6 +1,6 @@
 {
   "id": "RUN-ci-fastlane",
-  "title": "The fast lane's own workflow, run step by step in a 4-CPU Ubuntu 24.04 container with cold caches, finishes in 33.342 s against a 300 s budget (slowest of three runs); emulated, not a GitHub Actions run",
+  "title": "The fast lane on a GitHub-hosted runner (ubuntu-24.04) finishes in 79 s against a 300 s budget; it failed only on GATE-privacy, pending the owner (OD-16). The emulated container runs are kept as configurations",
   "task": "W0-T04",
   "engine": "node",
   "version": "22.22.2",
@@ -8,9 +8,9 @@
   "binary": "node-v22.22.2-linux-x64.tar.xz from nodejs.org, as the emulated setup-node step installed it in the container",
   "binary_sha256": "88fd1ce767091fd8d4a99fdb2356e98c819f93f3b1f8663853a2dee9b438068a",
   "image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
-  "recorded_at": "2026-10-24T16:28:06.359Z",
-  "started_at": "2026-10-24T16:22:45.563Z",
-  "duration_s": 33.342,
+  "recorded_at": "2026-10-24T18:25:24.098Z",
+  "started_at": "2026-10-24T18:23:00Z",
+  "duration_s": 79,
   "argv": [
     "node",
     "scripts/spikes/W0-T04/emulate-runner.mjs",
@@ -125,6 +125,8 @@
   },
   "exit_code": 1,
   "verdict_lines": [
+    "fast lane: FAIL in 79.6 s (12 passed, 1 failed, 0 skipped, 15 absent)",
+    "[24/28] GATE-privacy           FAIL       1.6 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file",
     "emulated .github/workflows/fast.yml job lane on 4 CPUs: fail in 33.3 s (peak memory 1190 MiB); outputs in runs/RUN-ci-fastlane/fast-4cpu-2",
     "   1  pass        0.1 s  Start the lane clock",
     "   2  pass        0.2 s  Check out the repository  (emulated)",
@@ -288,8 +290,8 @@
     }
   ],
   "values": {
-    "basis": "emulated: the committed fast.yml run in a container resembling a hosted ubuntu-24.04 runner; not a GitHub Actions run",
-    "fast_lane_duration_s": 33.342,
+    "basis": "github-hosted",
+    "fast_lane_duration_s": 79,
     "fast_lane_budget_s": 300,
     "fast_lane_runs_s": [
       33.121,
@@ -323,7 +325,8 @@
       "gates_run": 7,
       "gates_absent": 21,
       "duration_s": 159.746
-    }
+    },
+    "github_hosted_lane_clock_s": 79.6
   },
   "environment": {
     "os": "Ubuntu 24.04.5 LTS in a Docker container on Linux 6.12.63 x86_64",
@@ -360,7 +363,7 @@
       "docker": "Docker version 29.1.3, build v29.1.3",
       "git": "git version 2.51.2"
     },
-    "emulated": true,
+    "emulated": false,
     "emulation": "a container with a 4-CPU quota and a 6 GB cap, Ubuntu 24.04, a copy of this working tree as its checkout, cold npm and uv caches, Node and uv installed by the emulated setup steps; not a GitHub-hosted runner"
   },
   "configs": [
@@ -955,9 +958,30 @@
         "runs/RUN-ci-fastlane/nightly-local/lane-summary.json",
         "runs/RUN-ci-fastlane/nightly-local/nightly.log"
       ]
+    },
+    {
+      "id": "github-hosted",
+      "label": "the committed fast.yml on a GitHub-hosted runner, triggered by the push of the W0 commit",
+      "run_id": 40120435413,
+      "url": "https://github.com/praveer13/statespace/actions/runs/40120435413",
+      "event": "push",
+      "commit": "5f7192c199274f93cbe262044cc322756c602147",
+      "runner_image": "ubuntu-24.04, image version 20261012.334.1",
+      "started_at": "2026-10-24T18:23:00Z",
+      "ended_at": "2026-10-24T18:24:19Z",
+      "duration_s": 79,
+      "lane_clock_s": 79.6,
+      "job_started_at": "2026-10-24T18:22:57Z",
+      "job_completed_at": "2026-10-24T18:24:23Z",
+      "exit_code": 1,
+      "verdict_lines": [
+        "fast lane: FAIL in 79.6 s (12 passed, 1 failed, 0 skipped, 15 absent)",
+        "[24/28] GATE-privacy           FAIL       1.6 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file"
+      ],
+      "note": "Duration per scripts/spikes/W0-T04/README.md section 5: first lane step start to last lane step end, without Set up job, Post and Complete job. The lane failed on one gate, GATE-privacy, whose only finding waits for the owner (OD-16); every other built gate passed."
     }
   ],
-  "primary_config": "fast-4cpu-2",
+  "primary_config": "github-hosted",
   "checks": [
     {
       "id": "fast-lane-under-300-s",
@@ -992,7 +1016,7 @@
   ],
   "pass": true,
   "notes": [
-    "EMULATED. No GitHub Actions run was made: the workflows have not been pushed. The duration is that of the committed fast.yml's own steps, run one after another in a Docker container made to resemble a GitHub-hosted ubuntu-24.04 runner (4 CPUs, the size GitHub lists for a public repository [V, GitHub documentation read 2026-10-24]; Ubuntu 24.04; git, curl, Python 3 and xz installed before the clock starts because the hosted image carries them). The clock runs from the first step's start to the last step's end.",
+    "The configurations fast-4cpu-* and the others were emulated in a container before the push (their note follows); github-hosted is the real run. EMULATED. No GitHub Actions run was made: the workflows have not been pushed. The duration is that of the committed fast.yml's own steps, run one after another in a Docker container made to resemble a GitHub-hosted ubuntu-24.04 runner (4 CPUs, the size GitHub lists for a public repository [V, GitHub documentation read 2026-10-24]; Ubuntu 24.04; git, curl, Python 3 and xz installed before the clock starts because the hosted image carries them). The clock runs from the first step's start to the last step's end.",
     "What the emulation leaves out: queue time and runner start-up; GitHub's Actions cache, which setup-node would use for the npm cache (here every cache is cold, which is the slower case); the runner's tool cache, which holds Node (here it is downloaded and unpacked); GitHub's network; and the speed of a hosted runner's CPU. This host's cores are faster than a hosted runner's (not measured here), so a hosted run can take longer than these numbers; the headroom factor in values is the slowdown a hosted run could have before it exceeded the budget.",
     "The container's 4 CPUs are a quota on this host's 20 logical CPUs, not 4 pinned cores, and the host was shared with other Docker jobs and agents while this was recorded; its load was not measured. The three runs and the 2-CPU run show how much the figure moved.",
     "The checkout step copies this working tree (tracked files and untracked files that .gitignore lets through) and its .git, not a pushed commit: HEAD was 44d12a9395f1b60c44a37c8977bd529eeee35319 and the tree had uncommitted changes, which include the other W0 tasks' deliverables. The lane therefore ran over whatever those tasks had written at the time; a step that failed is listed in values.steps_failed (with the task that builds it: unit-tests: W0-S12; GATE-links: W0-T03; GATE-privacy: W0-T01), and its verdict line in the primary configuration says what it found. Those failures are those tasks' work in progress or an owner action, not a property of the lane; a red lane is recorded as it was. A step that fails early shortens the run (npm test, for one, skips the vendored-code tests once a workspace's tests fail), so a green lane would run a little longer than these runs; the difference is small against the headroom.",
