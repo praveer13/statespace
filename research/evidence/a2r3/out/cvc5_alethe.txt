@@ -1,0 +1,10 @@
+cvc5 b'1.4.2-modified' -> unsat
+Alethe proof: 19 lines; first lines:
+(
+(assume a0 (>= a 0))
+(assume a1 (>= b 0))
+(assume a2 (> amount 0))
+(assume a3 (! (<= amount a) :named @p_1))
+(assume a4 (! (< (! (- a amount) :named @p_2) 0) :named @p_3))
+(step t0 (cl (not (! (= @p_1 (! (>= (! (+ a (* -1 amount)) :named @p_4) 0) :named @p_5)) :named @p_10)) (not @p_1) @p_5) :rule equiv_pos2)
+(step t1 (cl @p_10) :rule hole :args ("untranslated rewrite"))

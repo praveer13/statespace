@@ -1,3 +1,5 @@
+> **Historical v1 working title; superseded by statespace (OD-1). Kept for history only.**
+
 # PLINTH — Design System
 
 Companion to `PLAN.md`. The visual reference is the design canvas (six

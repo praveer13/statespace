@@ -1,0 +1,23 @@
+## workers=3
+67 states generated, 45 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 7.
+## workers=4
+361 states generated, 191 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 9.
+## workers=5
+1911 states generated, 813 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 11.
+## dump dot (w2)
+Finished computing initial states: 1 distinct state generated at 2026-10-21 15:52:24.
+Error: Invariant NoOverspend is violated.
+Error: The behavior up to this point is:
+-rw-r--r-- 1 root root 2889 Oct 21 15:52 graph.dot
+strict digraph DiskGraph {
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+1429124020268567116 [label="/\\ seen = (w1 :> 0 @@ w2 :> 0)\n/\\ spent = 0\n/\\ bal = 100\n/\\ pc = (w1 :> \"read\" @@ w2 :> \"read\")",style = filled]
+1429124020268567116 -> -5799628113862639768 [label="Read",color="black",fontcolor="black"];
+-5799628113862639768 [label="/\\ seen = (w1 :> 100 @@ w2 :> 0)\n/\\ spent = 0\n/\\ bal = 100\n/\\ pc = (w1 :> \"write\" @@ w2 :> \"read\")"];
+1429124020268567116 -> -6883479137640903095 [label="Read",color="black",fontcolor="black"];
+-6883479137640903095 [label="/\\ seen = (

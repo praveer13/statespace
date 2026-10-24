@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch(); const p = await b.newPage();
+p.on('console', (m) => console.log('console:', m.type(), m.text().slice(0, 300)));
+p.on('pageerror', (e) => console.log('pageerror:', String(e).slice(0, 300)));
+p.on('requestfailed', (r) => console.log('requestfailed:', r.url(), r.failure() && r.failure().errorText));
+p.on('response', (r) => { if (r.status() >= 400) console.log('http', r.status(), r.url()); });
+p.on('worker', (w) => console.log('worker created:', w.url().slice(0, 80)));
+await p.goto('http://localhost:8080/app/index.html');
+await new Promise((r) => setTimeout(r, 20000));
+console.log('result:', JSON.stringify(await p.evaluate(() => window.__result || null)).slice(0, 500));
+await b.close();

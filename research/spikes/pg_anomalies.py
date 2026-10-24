@@ -1,5 +1,5 @@
-import psycopg, threading, time
-DSN = "postgresql://postgres:pw@localhost:55432/postgres"
+import os, psycopg, threading, time
+DSN = os.environ.get("PG_DSN", "postgresql://postgres@localhost:55432/postgres")  # set PG_DSN, or PGPASSWORD, for your local server
 def reset():
     with psycopg.connect(DSN, autocommit=True) as c:
         c.execute("drop table if exists acct; create table acct(id int primary key, bal bigint, team int)")

@@ -1,0 +1,29 @@
+# R6 verification log (light mode), checked 2026-10-21
+
+Checks used curl, the GitHub API, the Crossref, arXiv and PyPI APIs, and live doc pages. For the UQ slides I downloaded the PDF myself; its SHA-256 matches the author's copy, so I used the author's text extraction of it.
+
+| # | Claim | Verdict | Correction / note | Source |
+|---|---|---|---|---|
+| 1 | SF LF 7.1 (2026-08-24 10:03, "Coq 9.0.0 or later"); SecF 1.2 ("Rocq 9.0.0 or later") | confirmed | SecF timestamp is 2026-08-24 10:14 | https://softwarefoundations.cis.upenn.edu/lf-current/index.html ; /secf-current/index.html |
+| 2 | jsCoq's last release is 0.17.1 (2023-10-02) | corrected (minor) | On GitHub, v0.17.1 is a **pre-release**. The last non-pre-release is v0.16.0 (2022-09-22). npm `latest` is 0.17.1, published 2023-10-04. The hosted SF "Version 5.8 (… Coq 8.12)" is in the author's download; I could not re-fetch it live (unverified live) | GitHub API repos/jscoq/jscoq/releases; registry.npmjs.org/jscoq |
+| 3 | HGLV 2026: toolchain v4.24.0; requires Mathlib @ "stable"; pushed 2026-01-30 | confirmed | Both files are under `lean/`, not the repo root | github.com/lean-forward/logical_verification_2026 (lean/lean-toolchain, lean/lakefile.lean) |
+| 4 | Nipkow VMCAI 2012: 88% of homework points, "video game effect … together with the 40% incentive", 15–20 students, about a quarter of the semester on the prover, "Teach Proofs, Not Proof Scripts" | confirmed | n/a | https://www21.in.tum.de/~nipkow/pubs/vmcai12.pdf (text extracted from the PDF) |
+| 5 | `vcgen` is in reference 4.35.0, absent in 4.34.0, "experimental and subject to change"; an inductive command type works "once its weakest precondition is defined"; `mvcgen` is "superseded by vcgen … existing code should migrate" | confirmed | The 4.34.0 vcgen page returns 404 | https://lean-lang.org/doc/reference/4.35.0/The--vcgen--tactic/ ; /The--mvcgen--tactic/ |
+| 6 | comparator: Apache-2.0; config has `permitted_axioms`; guarantees "the same statement as provided in Challenge"; sandbox is landrun (Linux ≥ 5.13) | confirmed | "5.13 or later with Landlock enabled" is in landrun's README, not comparator's. Comparator's README also uses systemd-run, which supports the Linux-only conclusion | github.com/leanprover/comparator README; github.com/Zouuup/landrun README |
+| 7 | No official Lean WASM release asset since v4.15.0 (2025-01-04) | confirmed | n/a | GitHub API leanprover/lean4 releases (asset names matched against wasm\|emscripten) |
+| 8 | cauli/lean4-wasm-in-browser: Apache-2.0, pushed 2026-09-10, 48 MB + 101 MB desktop / 3.4 MB + 70 MB slim, COOP/COEP | confirmed | n/a | github.com/cauli/lean4-wasm-in-browser README |
+| 9 | NNG4 pinned to v4.23.0 | confirmed | n/a | NNG4 lean-toolchain |
+| 10 | Forge paper, OOPSLA 2024, DOI 10.1145/3649833 | confirmed | Title "Forge: A Tool and Language for Teaching Formal Methods", PACMPL, issued 2024-04-29. The wheat statistics were not re-checked | Crossref |
+| 11 | UQ autograder (Smith & Whitlock, FMTea 2026 Best Paper): marking time 20.08→9.87 (−50%) and 21.92→5.05 (−77%); re-marks 22→11% and 44→29%; ~380 students; 73 (2018) → 217 (2025); three spec criteria | confirmed | Caveat to add: this is a 2024 vs 2025 year-over-year comparison, not a controlled one. The re-mark metric is "Number of re-mark requests resulting in changes to marks" | https://fmtea.github.io/TS1P1.pdf ; https://fmtea.github.io/ (Best Paper Award listed); Crossref 10.1007/978-3-032-26743-6_3 |
+| 12 | Proof Blocks RCT n = 332, "far less time on task"; distractor follow-up not significant | confirmed | Both populations are students learning proof by induction (novices) | arXiv 2211.09609, 2311.00792 abstracts |
+| 13 | VERINA: o3 reaches 72.6% code, 52.3% spec soundness and completeness, "a mere 4.9% proof success rate (based on one trial per task)" | confirmed | n/a | arXiv 2505.23135 abstract |
+| 14 | Automata Tutor (TOCHI 2015): 377 students; counterexamples or hints "judged as helpful, increases student perseverance, and can improve problem completion time" | confirmed | n/a | Crossref abstract for 10.1145/2723163 |
+| 15 | LTL Tutor (CAV 2025): about 254 users, 2261 questions, 23.44% wrong, Implicit G 28.68% | confirmed | n/a | Author's OA PDF text; DOI 10.1007/978-3-031-98685-7_9 (Crossref title matches) |
+| 16 | Learn TLA+: last content entry 2023-08-02; roadmap lists Exercises, Refinement, Keeping a spec and a codebase in sync, Hyperproperties | confirmed | n/a | https://learntla.com/whatsnew.html |
+| 17 | Pact docs 4.10.0: "steal money", "creates money out of thin air!", checker "has not yet been formally verified"; kadena-io/pact and pact-5 are archived | confirmed | n/a | pact-language.readthedocs.io pact-properties.html; GitHub API `archived: true` for both |
+| 18 | CheerpJ: free for FOSS and public-facing educational use with credit; runtime from cjrtnc.leaningtech.com; self-hosting needs a commercial licence | confirmed | n/a | https://cheerpj.com/docs/licensing |
+| 19 | TLA+ By Example: TLC via CheerpJ, "runtime … downloaded from a CDN", scope sentence | confirmed (not independent) | Text is in the author's download (`tbe_platform.md`). The live site is client-rendered, so a curl grep found nothing | https://learning.tlapl.us/ |
+| 20 | z3-solver wasm wheels: 6.05 MB (5.1.0.0) and 6.53 MB (5.3.1.0, 2026-10-15, latest) | confirmed | Files are `pyemscripten_2026_0_wasm32` wheels, 6,046,959 and 6,525,334 bytes | PyPI JSON |
+| 21 | Quint v0.33.0 (2026-09-28, Apache-2.0); Spectacle MIT, pushed 2026-09-30; Dafny v4.11.0 (2025-08-25) | confirmed | n/a | GitHub API |
+
+Not checked (out of budget): the Forge wheat statistics (760 and 1,168 runs; ~90%); the Waterproof arXiv 2606.26809 quotes; the VeGo paper; the Michigan `.t.dfy` details; the CMU 15-414 schedule; Alloy4Fun slide quotes; and the [sibling] claims (A5 comparator rejections, Spectacle 11 states).

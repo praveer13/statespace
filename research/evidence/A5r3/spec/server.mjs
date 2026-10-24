@@ -1,0 +1,3 @@
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+const root = process.argv[2]; const types = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.wasm':'application/wasm', '.json':'application/json', '.zip':'application/zip', '.whl':'application/octet-stream' };
+http.createServer((req, res) => { const p = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname)); fs.readFile(p, (err, data) => { if (err) { res.writeHead(404); res.end(); return; } res.writeHead(200, { 'content-type': types[path.extname(p)] || 'application/octet-stream' }); res.end(data); }); }).listen(8080);

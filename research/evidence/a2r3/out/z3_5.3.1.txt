@@ -1,0 +1,23 @@
+z3 version: 5.3.1
+[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]
+[1.3 guard added] unsat (0.00s) 
+[S1.2 minimal amount via Optimize] sat [amount = 1, b = 0, a = 0]
+[conservation without any guard, Int] proved
+[1.5 BitVec64 signed: guarded SOURCE overdraft] unsat (0.01s) 
+[1.5 BitVec64 signed: guarded DESTINATION wrap] sat (0.00s) [A = 9223372036854775806,
+ B = 9223372036850581504,
+ X = 4194304]
+[1.5 BitVec64 conservation mod 2^64] proved
+[1.5 BitVec64 unsigned guard, signed check] sat (0.01s) [A = 13835060254305419776, X = 4611686018427387904]
+[1.1 NIA x^3+y^3=z^3 (x,y,z>0)] unknown (5.00s) reason_unknown=timeout
+[1.1 NIA x*x == 2 (Int)] unsat (0.00s) 
+[1.1 NIA x*y == 7, x>1, y>1] unsat (0.00s) 
+[1.1 NIA 2**x == 3 (Int power)] unsat (0.00s) 
+[1.1 NIA x*x*x - 3*y*y == 1 ... (cubic)] unknown (5.00s) reason_unknown=timeout
+[A2.1 stated theorem (customer >= 0), modify-update] unsat (0.00s) 
+[A2.1 stated theorem (customer >= 0), value-update] sat (0.00s) [c = 3, Bal = Store(K(Int, 2), 3, 0), m = 3, r = 1]
+[A2.1 the gap: merchant >= 0 after refund] sat (0.00s) [c = 3,
+ Bal = Store(Store(K(Int, 2), 4, 40650), 3, 0),
+ m = 4,
+ r = 40651]
+[S2.1 self-transfer changes balance (buggy update)] sat (0.00s) [n = 1, t = 0, f = 0]

@@ -1,3 +1,5 @@
+> **Historical v1 working title; superseded by statespace (OD-1). Kept for history only.**
+
 # PLINTH — Course Design
 
 **Learn formal methods by building a tiny checked application language.**

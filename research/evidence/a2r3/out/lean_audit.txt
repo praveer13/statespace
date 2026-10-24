@@ -1,0 +1,54 @@
+===== AuditA
+/work/AuditA.lean:18:39: error: Application type mismatch: The argument
+  pay.customer
+has type
+  AccountId
+but is expected to have type
+  (a : ?m.2) → ?m.4 a
+in the application
+  Function.update pay.customer
+/work/AuditA.lean:19:31: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.update` could not be determined
+
+/work/AuditA.lean:18:22: error: Application type mismatch: The argument
+  s.balance
+has type
+  AccountId → ℤ
+but is expected to have type
+  (ℤ → ℤ) → Prop
+in the application
+  @Function.update (ℤ → ℤ) s.balance
+/work/AuditA.lean:24:8: warning: declaration uses `sorry`
+/work/AuditA.lean:21:8: warning: declaration uses `sorry`
+/work/AuditA.lean:22:23: warning: Variable name `hPos` is not explicitly referenced.
+
+
+===== AuditB
+/work/AuditB.lean:17:31: error(lean.unknownIdentifier): Unknown constant `AccountId.update`
+
+Note: Inferred this name from the expected resulting type of `.update`:
+  AccountId
+/work/AuditB.lean:17:31: error(lean.unknownIdentifier): Unknown constant `Nat.update`
+
+Note: Inferred this name from the expected resulting type of `.update`:
+  AccountId
+/work/AuditB.lean:22:8: warning: declaration uses `sorry`
+/work/AuditB.lean:19:8: warning: declaration uses `sorry`
+/work/AuditB.lean:20:23: warning: Variable name `hPos` is not explicitly referenced.
+
+
+===== AuditC
+/work/AuditC.lean:22:55: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≤ -1
+  b ≥ 0
+  a ≥ 0
+where
+ a := amt
+ b := s.balance (s.payments p).customer
+ c := Function.update (Function.update s.balance (s.payments p).customer fun x => x + amt) (s.payments p).merchant
+  (fun x => x - amt) (s.payments p).customer
+===== AuditD
+'refund_nonneg' depends on axioms: [propext, Quot.sound]
+'refund_breaks_inv' depends on axioms: [propext]
+===== AuditE
+'refund_nonneg_false' depends on axioms: [propext]
