@@ -1,0 +1,1392 @@
+{
+  "id": "RUN-scaffold",
+  "title": "The scaffold's pinned stack: the site, the Bench's Python and Rust sides, and the cvc5 Bench binary",
+  "engine": "scaffold",
+  "version": "react 19.3.1, react-router 7.18.4, vite 7.3.7, typescript 5.9.3, playwright 1.63.0, axe-core 4.14.0",
+  "binary": null,
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T13:25:29.736Z",
+  "started_at": "2026-10-24T13:23:47.315Z",
+  "argv": [
+    "node",
+    "scripts/spikes/W0-S12/record-scaffold.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "package.json",
+      "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+      "bytes": 1109
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "640f540a7770f99693575e0641a026652f49df8b7ac1f59b937fec3916afb57e",
+      "bytes": 67344
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-python/requirements.in",
+      "sha256": "281f4fe5b5deb728449e2e3c762b88249931daebc04f65a098c757ac3f37d80f",
+      "bytes": 23
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-rust/Cargo.toml",
+      "sha256": "87b59b8874341a7803b172fdea101b1d1c5bae9c03b225451e358b5fbe20976f",
+      "bytes": 359
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-rust/src/main.rs",
+      "sha256": "536e506bb90914c243a12b397b9a998f85ae2cbd9ba02dfd03a9e155ca5ca0f4",
+      "bytes": 13
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-rust/kit-roundtrip/Cargo.toml",
+      "sha256": "0858ed549d617f15f1308f542085162ceb5e0ef9a496d91bc16817279fbe05f7",
+      "bytes": 155
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-rust/kit-roundtrip/src/lib.rs",
+      "sha256": "20eb634ca08be4216bb5cb3aceac7f499420a120c631f5c2e884e89537f2abb2",
+      "bytes": 1402
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "downloads from npm, PyPI, crates.io, apt, rustup and GitHub releases; the browser and cvc5 containers run with the network off",
+    "timeout_s": 1800
+  },
+  "exit_code": 0,
+  "duration_s": 65.568,
+  "outputs": [
+    {
+      "path": "runs/RUN-scaffold/site-stack/pins.json",
+      "sha256": "ee636265407c82ed45daf8017376195b3281c710533f5f6d4b4237217cdb4e70",
+      "bytes": 3915,
+      "kind": "npm pins from package-lock.json",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-scaffold/build/dist-manifest.json",
+      "sha256": "1d117c62a22773d2cbd92fab1b0ceec3be90e763fd6c9f585ee4911004f7ff6e",
+      "bytes": 1962,
+      "kind": "build output manifest",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-scaffold/browser-smoke/site.summary.json",
+      "sha256": "aaf611ee0b82661a035996355e979dae4c24ff009d34805f9fd9e04ff17d84f4",
+      "bytes": 2897,
+      "kind": "playwright result summary",
+      "compare": "informational: durations vary"
+    },
+    {
+      "path": "runs/RUN-scaffold/browser-smoke/instruments.summary.json",
+      "sha256": "535d5174388e2f662ac54eb3cc89bc6c6633e85fa40bed3002a3638d9404ed5a",
+      "bytes": 3482,
+      "kind": "playwright result summary",
+      "compare": "informational: durations vary"
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-python/requirements.lock.txt",
+      "sha256": "187e14b6166896b1691cea43fe6638b1ec5acf0a66438950f31d6c51d84e77aa",
+      "bytes": 6276,
+      "kind": "pip lock with hashes",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-scaffold/bench-rust/Cargo.lock",
+      "sha256": "03a461cf6e7d161d368bd807747689ed2e4b31231eb17d149d3e2104007f16e6",
+      "bytes": 79631,
+      "kind": "cargo lock (crates.io checksums)",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-scaffold/kit-roundtrip/smoke_lab.wasm",
+      "sha256": "83890e50bc975d7366689e87126341e31bd0b2ed53c669c75b6f819435538d79",
+      "bytes": 60018,
+      "kind": "wasm module",
+      "compare": "bytes"
+    }
+  ],
+  "verdict_lines": [
+    "npm-lock: ok",
+    "typecheck: ok",
+    "purity-lint: ok",
+    "unit-tests-packages: ok",
+    "unit-tests-vendor-drift: ok",
+    "build: ok",
+    "vendor-verify: ok",
+    "browser-versions: ok",
+    "browser-smoke-site: ok",
+    "browser-smoke-instruments: ok",
+    "bench-python-lock: ok",
+    "bench-python-run: ok",
+    "bench-postgres: ok",
+    "bench-rust-host: ok",
+    "bench-rust-host-without-libclang: ok (expected failure, exit 101)",
+    "bench-rust-container: ok",
+    "kit-wasm-build: ok",
+    "kit-wasm-roundtrip: ok",
+    "bench-cvc5-version: ok",
+    "bench-cvc5-smoke: ok",
+    "bench-cvc5-arm64-asset: not executed"
+  ],
+  "values": {
+    "node": "v22.22.2",
+    "npm": "10.9.7",
+    "react": "19.3.1",
+    "react_dom": "19.3.1",
+    "react_router": "7.18.4",
+    "vite": "7.3.7",
+    "vitejs_plugin_react": "5.2.0",
+    "typescript": "5.9.3",
+    "playwright_test": "1.63.0",
+    "playwright_core": "1.63.0",
+    "axe_core": "4.14.0",
+    "axe_core_playwright": "4.14.0",
+    "lockfile_packages": 143,
+    "unit_tests": {
+      "total": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0
+    },
+    "vendor_drift_tests": {
+      "total": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    },
+    "build": {
+      "files": 12,
+      "total_bytes": 542446,
+      "exit_code": 0
+    },
+    "playwright_image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+    "playwright_image_digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "container_node": "v24.20.0",
+    "chromium": "153.0.8010.12",
+    "firefox": "155.0",
+    "webkit": "26.6",
+    "browser_smoke_site": {
+      "passed": 15,
+      "failed": 0,
+      "byProject": {
+        "chromium": {
+          "passed": 5,
+          "failed": 0
+        },
+        "firefox": {
+          "passed": 5,
+          "failed": 0
+        },
+        "webkit": {
+          "passed": 5,
+          "failed": 0
+        }
+      }
+    },
+    "browser_smoke_instruments": {
+      "passed": 18,
+      "failed": 0,
+      "byProject": {
+        "chromium": {
+          "passed": 6,
+          "failed": 0
+        },
+        "firefox": {
+          "passed": 6,
+          "failed": 0
+        },
+        "webkit": {
+          "passed": 6,
+          "failed": 0
+        }
+      }
+    },
+    "uv": "0.10.2",
+    "psycopg": "3.3.6",
+    "psycopg_binary": "3.3.6",
+    "python": "3.13.12",
+    "libpq": 180006,
+    "postgres_image": "postgres:18",
+    "postgres_digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+    "postgres_binary_version": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+    "postgres_version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)",
+    "postgres_server_version": "18.6 (Debian 18.6-1.pgdg13+2)",
+    "rustc": "1.96.0 (ac68faa20 2026-05-25)",
+    "rust_host": "x86_64-unknown-linux-gnu",
+    "rust_llvm": "22.1.2",
+    "cargo": "1.96.0 (30a34c682 2026-05-25)",
+    "rust_targets": [
+      "wasm32-unknown-unknown",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "rust_wasm_target": "wasm32-unknown-unknown",
+    "tokio_postgres": "0.7.18",
+    "testcontainers": "0.28.0",
+    "pg_query": "6.2.1",
+    "proptest": "1.12.0",
+    "cargo_lock_dependencies": 322,
+    "bench_apt": {
+      "build-essential": "12.10ubuntu1",
+      "gcc": "4:13.2.0-7ubuntu1",
+      "libclang-18-dev": "1:18.1.3-1ubuntu1",
+      "libclang-common-18-dev": "1:18.1.3-1ubuntu1",
+      "libclang-dev": "1:18.0-59~exp2",
+      "libclang1-18": "1:18.1.3-1ubuntu1"
+    },
+    "rustup_in_container": "rustup 1.29.2 (d8c92c676 2026-10-21)",
+    "rustup_init_sha256": "5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4",
+    "crates_check": {
+      "exit": 0,
+      "seconds": 18.502,
+      "crates_checked": 155,
+      "crates_compiled": 90
+    },
+    "kit_roundtrip": {
+      "ok": 13,
+      "fail": 0,
+      "wasm_bytes": 60018,
+      "wasm_sha256": "83890e50bc975d7366689e87126341e31bd0b2ed53c669c75b6f819435538d79"
+    },
+    "cvc5_version_line": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+    "cvc5": "1.4.2",
+    "cvc5_git": "282d5e0",
+    "cvc5_build": "compiled as a unrestricted build with GCC version 11.4.0 on Oct  8 2026 01:24:07",
+    "cvc5_asset": "cvc5-Linux-x86_64-static.zip",
+    "cvc5_asset_sha256": "7eb18f8c814c36a46c5a7d003983e9cfbc4b0a9828d6dd596239291bd4cc61d8",
+    "cvc5_binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+    "cvc5_arm64_asset": "cvc5-Linux-arm64-static.zip",
+    "cvc5_arm64_asset_sha256": "765ebee59d9e5efccb60a445fa66fbddfb07a8de9fe7a5b6d128e5c2aafec974",
+    "cvc5_cpu_architecture": "x86_64",
+    "cvc5_smoke": "unsat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": null,
+    "host_tools": {
+      "node": "v22.22.2",
+      "uv": "uv 0.10.2"
+    },
+    "emulated": false,
+    "python": "3.13.12",
+    "rust": "1.96.0 (ac68faa20 2026-05-25)"
+  },
+  "notes": [
+    "RUN-scaffold pins several tools at once, so the top-level engine names the record and the top-level version is the site stack; each configuration carries its own engine, version, binary_sha256 (where a binary ran), argv, inputs, budget, exit code and verdict lines. Named values (values.*) are what copy cites with {{run:RUN-scaffold#values.<name>}}.",
+    "Where a configuration ran: npm, node, uv and cargo ran on the host (Linux x86_64, Node 22). The browser configurations ran in the Playwright image of the same version as @playwright/test, which carries Node 24, so the site and instruments suites ran on Node 24 there; the unit tests and the build ran on Node 22 on the host. The Rust crate check, the wasm build and cvc5 ran in ubuntu:24.04; PostgreSQL ran in postgres:18, reached on a loopback port.",
+    "Not executed here: the arm64 build of cvc5 (hashed only; no arm64 emulation on this host) and everything on macOS, Windows or Apple silicon. Soufflé ships no arm64 package at all (RUN-souffle-version).",
+    "The PostgreSQL entry pins the service image by digest: postgres:18 is a moving tag, and the digest is what the devcontainer compose file must use. It reports PostgreSQL 18.6, the pin of labs/TOOLS.md.",
+    "The Rust crates are the candidates labs/TOOLS.md read from the crates.io API on 2026-10-23, pinned with `=` and resolved into the committed Cargo.lock. On Ubuntu 24.04 `cargo check --locked` passes with build-essential and libclang-dev installed (plus curl and ca-certificates, which only rustup needs): pg_query compiles libpg_query with the C compiler and generates its bindings with libclang. bench-rust-host-without-libclang records the same check stopping at pg_query on a host with no libclang, so the Bench image must carry libclang-dev (W0-T05). The recorded run installs nothing else: no clang binary, no protoc, no pkg-config.",
+    "The cvc5 Bench binary is the non-GPL static build, so its version string reads 1.4.2 and carries no -modified suffix, unlike the pip wheel of RUN-cvc5-alethe. The two are different builds of the same release: a receipt records the string verbatim.",
+    "kit-wasm-roundtrip is the one check that the vendored ABI pair (the host code and the kit crate) still agrees: a module built by the pinned toolchain against the vendored kit, driven by the vendored host code, unedited.",
+    "The browser smoke tests are the scaffold's own: a meta CSP present and nothing blocked, no request to another origin, no console error, axe with no violation at 360, 320 and 1280 px, no sideways scroll. GATE-bundle and GATE-a11y proper are built on the shell (W1).",
+    "Re-record this run after any change to package.json, a workspace manifest or package-lock.json: the npm-lock configuration lists their SHA-256 values as inputs, and GATE-runs compares them.",
+    "duration_s on the record is the sum of the configurations; informational outputs (summaries with durations) are compared on verdict_lines when the run is re-recorded."
+  ],
+  "configs": [
+    {
+      "id": "npm-lock",
+      "purpose": "package-lock.json is in sync with every workspace manifest, and the pinned stack is what it resolves",
+      "engine": "npm",
+      "version": "npm 10.9.7 on node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "ci",
+        "--dry-run",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "640f540a7770f99693575e0641a026652f49df8b7ac1f59b937fec3916afb57e",
+          "bytes": 67344
+        },
+        {
+          "path": "apps/instruments/package.json",
+          "sha256": "0b597aad037222ae92d56e82ed728986ba31eb72056f8490774476f00dea686c",
+          "bytes": 546
+        },
+        {
+          "path": "apps/site/package.json",
+          "sha256": "ee427cd6b2b62559f96907899ccab16ecd6bec46ad081494e2ac0f903e73967b",
+          "bytes": 511
+        },
+        {
+          "path": "packages/ids/package.json",
+          "sha256": "4cf7ce42e5278587daf220c391b4eff64606eb37c92629efb189dcee04eda5de",
+          "bytes": 562
+        },
+        {
+          "path": "packages/learner/package.json",
+          "sha256": "1974f3a60e6cf8bddfa31e8bd53346dde33d66f5b6dc6071df7b1322e2a7da2b",
+          "bytes": 468
+        },
+        {
+          "path": "packages/purity-lint/package.json",
+          "sha256": "88f7d6b71d291c90067d3a5fb8c1453ed8936982b3814d7fc994806d6cb02862",
+          "bytes": 321
+        },
+        {
+          "path": "packages/rng/package.json",
+          "sha256": "6fc026ca933c9abd340d4c75b1187bd0c1b65aa26ddadbceb6c46512dc7a242a",
+          "bytes": 375
+        },
+        {
+          "path": "packages/schema/package.json",
+          "sha256": "24e8d165589a94324a2636b0b15fab9af050f72b08411dcc8980a2686859b72f",
+          "bytes": 493
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "add @esbuild/android-arm 0.28.2",
+        "add @esbuild/aix-ppc64 0.28.2",
+        "added 49 packages in 218ms",
+        "react 19.3.1",
+        "react-dom 19.3.1",
+        "react-router 7.18.4",
+        "vite 7.3.7",
+        "typescript 5.9.3",
+        "@playwright/test 1.63.0",
+        "axe-core 4.14.0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/site-stack/pins.json",
+          "sha256": "ee636265407c82ed45daf8017376195b3281c710533f5f6d4b4237217cdb4e70",
+          "bytes": 3915,
+          "kind": "npm pins from package-lock.json",
+          "compare": "bytes"
+        }
+      ],
+      "started_at": "2026-10-24T13:23:47.315Z",
+      "duration_s": 0.271,
+      "exit_code": 0
+    },
+    {
+      "id": "typecheck",
+      "purpose": "tsc over this task's workspaces: package sources with no DOM or Node types, the vendored files compiled through their wrappers, tests, both apps and the tool configs",
+      "engine": "npm",
+      "version": "npm 10.9.7 on node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "run",
+        "typecheck",
+        "-w",
+        "@statespace/site",
+        "-w",
+        "@statespace/instruments",
+        "-w",
+        "@statespace/rng",
+        "-w",
+        "@statespace/learner"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "run typecheck -w @statespace/site -w @statespace/instruments -w @statespace/rng -w @statespace/learner: exit 0, no diagnostics"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:23:47.589Z",
+      "duration_s": 3.433,
+      "exit_code": 0
+    },
+    {
+      "id": "purity-lint",
+      "purpose": "packages/* are pure and vendored code is imported only through a wrapper home (ARCHITECTURE.md section 17.2)",
+      "engine": "npm",
+      "version": "npm 10.9.7 on node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "run",
+        "lint:purity"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "purity-lint: ok (19 package files pure; 7 app files import vendor/ only through a wrapper home)"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:23:51.022Z",
+      "duration_s": 0.5,
+      "exit_code": 0
+    },
+    {
+      "id": "unit-tests-packages",
+      "purpose": "Node test runner over this task's packages: the FSRS reference vectors (2000 replays to 1e-8), the RNG against an independent BigInt oracle and the FNV-1a test vectors, and the purity lint against planted fixtures",
+      "engine": "node:test",
+      "version": "node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "test",
+        "-w",
+        "@statespace/rng",
+        "-w",
+        "@statespace/learner",
+        "-w",
+        "@statespace/purity-lint"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        },
+        {
+          "path": "packages/learner/test/schedule.test.ts",
+          "sha256": "1e5e207b2f613a142060914f6bb22a32470b0fe6a0840d77eb468fd9291d90fc",
+          "bytes": 5442
+        },
+        {
+          "path": "packages/rng/test/rng.test.ts",
+          "sha256": "667095d561f17817d6c866547e2b0e018d4aef1b8f4dfaedce2613d842e96de7",
+          "bytes": 2540
+        },
+        {
+          "path": "packages/purity-lint/test/purity.test.mjs",
+          "sha256": "93db27b01617518529d03da660d72812de4d7334865e5e31a0613769c30cd167",
+          "bytes": 3158
+        },
+        {
+          "path": "vendor/kernelspace/tests/fixtures/fsrs/reference-vectors.json",
+          "sha256": "67761a28cf8ab22609dabc92743bc31ea1e0f148663e8d9413d26f8d13c9efd3",
+          "bytes": 554446
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "# tests 6",
+        "# pass 6",
+        "# fail 0",
+        "# skipped 0",
+        "# tests 12",
+        "# pass 12",
+        "# fail 0",
+        "# skipped 0",
+        "# tests 3",
+        "# pass 3",
+        "# fail 0",
+        "# skipped 0",
+        "total: tests 21, pass 21, fail 0, skipped 0"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:23:51.522Z",
+      "duration_s": 1.252,
+      "exit_code": 0
+    },
+    {
+      "id": "unit-tests-vendor-drift",
+      "purpose": "the vendor-drift tool against a throwaway upstream repository: vendoring with a redaction and a mode, no drift on a redacted file, a tampered file, an unlisted file, a file named AGENTS.md, a changed mode, a new commit, a deleted file, a redaction that stopped matching, usage errors",
+      "engine": "node:test",
+      "version": "node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "run",
+        "test:vendor"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        },
+        {
+          "path": "scripts/vendor-drift.mjs",
+          "sha256": "a3731d4d3ec23c32558ef53c82faffa948caa8967bc76ae1e43a8e6c43aefc8f",
+          "bytes": 21636
+        },
+        {
+          "path": "scripts/spikes/W0-S12/vendor-drift.test.mjs",
+          "sha256": "1b4092ad9848096b56309c8021c8f21ee603e2c7eb9156795405bcc8fe22da50",
+          "bytes": 8501
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "# tests 8",
+        "# pass 8",
+        "# fail 0",
+        "# skipped 0",
+        "total: tests 8, pass 8, fail 0, skipped 0"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:23:52.775Z",
+      "duration_s": 5.402,
+      "exit_code": 0
+    },
+    {
+      "id": "build",
+      "purpose": "vite build of both apps behind tsc, with the meta CSP written into every page",
+      "engine": "npm",
+      "version": "npm 10.9.7 on node v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "inputs": [
+        {
+          "path": "package.json",
+          "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+          "bytes": 1109
+        }
+      ],
+      "budget": {
+        "network": "npm registry for installs only",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "dist/assets/host-BqRlkqgy.js                      0.15 kB │ gzip:  0.15 kB",
+        "dist/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:  0.40 kB",
+        "dist/assets/instrument-BbW4VJxX.js              222.05 kB │ gzip: 69.07 kB",
+        "✓ built in 578ms",
+        "vite v7.3.7 building client environment for production...",
+        "transforming...",
+        "✓ 41 modules transformed.",
+        "rendering chunks...",
+        "computing gzip size...",
+        "dist/.vite/manifest.json          0.19 kB │ gzip:   0.14 kB",
+        "dist/index.html                   0.83 kB │ gzip:   0.44 kB",
+        "dist/assets/index-DSCAf_Cr.css    0.46 kB │ gzip:   0.30 kB",
+        "dist/assets/index-Bm7V7eY6.js   315.67 kB │ gzip: 100.56 kB",
+        "✓ built in 866ms"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/build/dist-manifest.json",
+          "sha256": "1d117c62a22773d2cbd92fab1b0ceec3be90e763fd6c9f585ee4911004f7ff6e",
+          "bytes": 1962,
+          "kind": "build output manifest",
+          "compare": "bytes"
+        }
+      ],
+      "started_at": "2026-10-24T13:23:58.177Z",
+      "duration_s": 4.509,
+      "exit_code": 0
+    },
+    {
+      "id": "vendor-verify",
+      "purpose": "every vendored file matches its SHA-256 in VENDOR.md, none is unlisted, none is named AGENTS.md or CLAUDE.md, and the import table is current",
+      "engine": "vendor-drift",
+      "version": "scripts/vendor-drift.mjs",
+      "binary_sha256": "a3731d4d3ec23c32558ef53c82faffa948caa8967bc76ae1e43a8e6c43aefc8f",
+      "argv": [
+        "npm",
+        "run",
+        "vendor:verify"
+      ],
+      "inputs": [
+        {
+          "path": "vendor/kernelspace/VENDOR.md",
+          "sha256": "2fa31161470174e05a939bc1a5a8a97ef89d83feb045f1d409cd9067f734625b",
+          "bytes": 18895
+        }
+      ],
+      "budget": {
+        "timeout_s": 60
+      },
+      "verdict_lines": [
+        "vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:24:02.687Z",
+      "duration_s": 0.407,
+      "exit_code": 0
+    },
+    {
+      "id": "browser-versions",
+      "purpose": "the three engines of the pinned Playwright image",
+      "engine": "playwright-core",
+      "version": "1.63.0",
+      "binary_sha256": null,
+      "argv": [
+        "node",
+        "-e",
+        "<launch chromium, firefox and webkit and print browser.version()>"
+      ],
+      "inputs": [],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "chromium 153.0.8010.12",
+        "firefox 155.0",
+        "webkit 26.6"
+      ],
+      "outputs": [],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "--network=none",
+          "--shm-size=1g",
+          "--init",
+          "--user <uid>:<gid>",
+          "-e HOME=/tmp/home",
+          "-e CI=1",
+          "--tmpfs /tmp:exec,mode=1777",
+          "-v <repo>:/work",
+          "-v <out>:/out"
+        ],
+        "node": "v24.20.0"
+      },
+      "started_at": "2026-10-24T13:24:03.366Z",
+      "duration_s": 1.328,
+      "exit_code": 0
+    },
+    {
+      "id": "browser-smoke-site",
+      "purpose": "the built site app loads under its meta CSP, requests nothing from another origin, raises no console error and passes axe (WCAG 2.0 to 2.2 A and AA) with no sideways scroll at 360, 320 and 1280 px, in three engines",
+      "engine": "playwright",
+      "version": "1.63.0",
+      "binary_sha256": null,
+      "argv": [
+        "npx",
+        "playwright",
+        "test",
+        "-c",
+        "e2e/playwright.config.ts"
+      ],
+      "cwd": "/work/apps/site",
+      "inputs": [
+        {
+          "path": "apps/site/e2e/smoke.spec.ts",
+          "sha256": "8e0fbfc0a1fe9cf3a2eb41a73f4fada91875f8970c9fc1b6070ef6ee318bf0b8",
+          "bytes": 3492
+        },
+        {
+          "path": "apps/site/e2e/playwright.config.ts",
+          "sha256": "6d00c1720313461be2302cf2567104833402b111f7bdc5235b4e66296008bf0f",
+          "bytes": 1259
+        },
+        {
+          "path": "runs/RUN-scaffold/build/dist-manifest.json",
+          "sha256": "1d117c62a22773d2cbd92fab1b0ceec3be90e763fd6c9f585ee4911004f7ff6e",
+          "bytes": 1962,
+          "kind": "manifest of the build the tests served"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "workers": "default",
+        "timeout_s": 600
+      },
+      "verdict_lines": [
+        "site: 15 passed, 0 failed",
+        "  chromium: 5 passed, 0 failed",
+        "  firefox: 5 passed, 0 failed",
+        "  webkit: 5 passed, 0 failed"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/browser-smoke/site.summary.json",
+          "sha256": "aaf611ee0b82661a035996355e979dae4c24ff009d34805f9fd9e04ff17d84f4",
+          "bytes": 2897,
+          "kind": "playwright result summary",
+          "compare": "informational: durations vary"
+        }
+      ],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "--network=none",
+          "--shm-size=1g",
+          "--init",
+          "--user <uid>:<gid>",
+          "-e HOME=/tmp/home",
+          "-e CI=1",
+          "--tmpfs /tmp:exec,mode=1777",
+          "-v <repo>:/work",
+          "-v <out>:/out"
+        ],
+        "node": "v24.20.0"
+      },
+      "started_at": "2026-10-24T13:24:04.734Z",
+      "duration_s": 5.733,
+      "exit_code": 0
+    },
+    {
+      "id": "browser-smoke-instruments",
+      "purpose": "the built instruments app loads under its meta CSP, requests nothing from another origin, raises no console error and passes axe (WCAG 2.0 to 2.2 A and AA) with no sideways scroll at 360, 320 and 1280 px, in three engines",
+      "engine": "playwright",
+      "version": "1.63.0",
+      "binary_sha256": null,
+      "argv": [
+        "npx",
+        "playwright",
+        "test",
+        "-c",
+        "e2e/playwright.config.ts"
+      ],
+      "cwd": "/work/apps/instruments",
+      "inputs": [
+        {
+          "path": "apps/instruments/e2e/smoke.spec.ts",
+          "sha256": "b93e6742038bfb7081b3ae0d91705e39dc0235d32653e0143c49969376bcbf4c",
+          "bytes": 3278
+        },
+        {
+          "path": "apps/instruments/e2e/playwright.config.ts",
+          "sha256": "dbb78fad3e6e96caf6c2cee8cceb08ba702babf08a8e7560b5336b2a6c80b283",
+          "bytes": 1275
+        },
+        {
+          "path": "runs/RUN-scaffold/build/dist-manifest.json",
+          "sha256": "1d117c62a22773d2cbd92fab1b0ceec3be90e763fd6c9f585ee4911004f7ff6e",
+          "bytes": 1962,
+          "kind": "manifest of the build the tests served"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "workers": "default",
+        "timeout_s": 600
+      },
+      "verdict_lines": [
+        "instruments: 18 passed, 0 failed",
+        "  chromium: 6 passed, 0 failed",
+        "  firefox: 6 passed, 0 failed",
+        "  webkit: 6 passed, 0 failed"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/browser-smoke/instruments.summary.json",
+          "sha256": "535d5174388e2f662ac54eb3cc89bc6c6633e85fa40bed3002a3638d9404ed5a",
+          "bytes": 3482,
+          "kind": "playwright result summary",
+          "compare": "informational: durations vary"
+        }
+      ],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "--network=none",
+          "--shm-size=1g",
+          "--init",
+          "--user <uid>:<gid>",
+          "-e HOME=/tmp/home",
+          "-e CI=1",
+          "--tmpfs /tmp:exec,mode=1777",
+          "-v <repo>:/work",
+          "-v <out>:/out"
+        ],
+        "node": "v24.20.0"
+      },
+      "started_at": "2026-10-24T13:24:10.513Z",
+      "duration_s": 5.529,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-python-lock",
+      "purpose": "psycopg 3 with its binary package, resolved for every platform with hashes: the pin of the Bench's PostgreSQL driver (`statespace isorun`, spine section 9.6)",
+      "engine": "uv",
+      "version": "uv 0.10.2",
+      "binary_sha256": "e10271e5051b432e76fc17b34ae2ae985ecd74ec9b6fe2b57a034a4544475ddf",
+      "argv": [
+        "uv",
+        "pip",
+        "compile",
+        "requirements.in",
+        "--universal",
+        "--generate-hashes",
+        "--python-version",
+        "3.13",
+        "-o",
+        "requirements.lock.txt"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-python/requirements.in",
+          "sha256": "281f4fe5b5deb728449e2e3c762b88249931daebc04f65a098c757ac3f37d80f",
+          "bytes": 23
+        }
+      ],
+      "budget": {
+        "network": "PyPI",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "psycopg 3.3.6",
+        "psycopg-binary 3.3.6",
+        "lock: 70 hashes"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-python/requirements.lock.txt",
+          "sha256": "187e14b6166896b1691cea43fe6638b1ec5acf0a66438950f31d6c51d84e77aa",
+          "bytes": 6276,
+          "kind": "pip lock with hashes",
+          "compare": "bytes"
+        }
+      ],
+      "started_at": "2026-10-24T13:24:16.094Z",
+      "duration_s": 0.04,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-python-run",
+      "purpose": "the pinned driver imports on the Bench's Python, with its bundled libpq",
+      "engine": "uv",
+      "version": "uv 0.10.2",
+      "binary_sha256": "e10271e5051b432e76fc17b34ae2ae985ecd74ec9b6fe2b57a034a4544475ddf",
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "psycopg[binary]==3.3.6",
+        "python",
+        "-I",
+        "-c",
+        "<print the versions>"
+      ],
+      "inputs": [],
+      "budget": {
+        "network": "PyPI",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "python 3.13.12",
+        "psycopg 3.3.6",
+        "impl binary",
+        "libpq 180006"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:24:16.190Z",
+      "duration_s": 0.172,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-postgres",
+      "purpose": "the PostgreSQL 18 service image, by digest, answers the pinned driver with the version the isolation catalog was recorded on",
+      "engine": "postgres",
+      "version": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+      "binary_sha256": null,
+      "argv": [
+        "python",
+        "-I",
+        "-c",
+        "<connect with psycopg to the container on a loopback port: select version(); show server_version; show default_transaction_isolation>"
+      ],
+      "inputs": [],
+      "budget": {
+        "container_memory": "1g",
+        "network": "loopback port only",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+        "18.6 (Debian 18.6-1.pgdg13+2)",
+        "read committed"
+      ],
+      "outputs": [],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "postgres:18",
+        "digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+        "architecture": "amd64",
+        "run_flags": [
+          "-d",
+          "--rm",
+          "--memory=1g",
+          "-e POSTGRES_HOST_AUTH_METHOD=trust",
+          "-p 127.0.0.1:<port>:5432"
+        ]
+      },
+      "started_at": "2026-10-24T13:24:18.000Z",
+      "duration_s": 0.164,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-rust-host",
+      "purpose": "the toolchain with the wasm target, and the four crates pinned with `=` and resolved into one lock",
+      "engine": "cargo",
+      "version": "cargo 1.96.0 (30a34c682 2026-05-25)",
+      "binary_sha256": "ca330c90042909abe7d009d717480c2c6e717b1419c282692c7579f635a8705e",
+      "argv": [
+        "cargo",
+        "generate-lockfile"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.toml",
+          "sha256": "87b59b8874341a7803b172fdea101b1d1c5bae9c03b225451e358b5fbe20976f",
+          "bytes": 359
+        }
+      ],
+      "budget": {
+        "network": "crates.io index",
+        "timeout_s": 120
+      },
+      "verdict_lines": [
+        "rustc 1.96.0 (ac68faa20 2026-05-25)",
+        "cargo 1.96.0 (30a34c682 2026-05-25)",
+        "host x86_64-unknown-linux-gnu",
+        "targets wasm32-unknown-unknown, x86_64-unknown-linux-gnu",
+        "tokio-postgres 0.7.18",
+        "testcontainers 0.28.0",
+        "pg_query 6.2.1",
+        "proptest 1.12.0",
+        "322 dependencies in Cargo.lock, besides the root crate"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.lock",
+          "sha256": "03a461cf6e7d161d368bd807747689ed2e4b31231eb17d149d3e2104007f16e6",
+          "bytes": 79631,
+          "kind": "cargo lock (crates.io checksums)",
+          "compare": "bytes"
+        }
+      ],
+      "rustc_sha256": "15c555d96a357960d6f81b5fcf616ddb220885ba8bbdcd2c037c1ae3ccaf66b2",
+      "started_at": "2026-10-24T13:24:18.448Z",
+      "duration_s": 1.008,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-rust-host-without-libclang",
+      "purpose": "the same `cargo check --locked` on a host with no libclang stops in the build script of pg_query (bindgen): the evidence that the Bench image must carry libclang. Host-dependent: on a machine that has libclang this configuration passes",
+      "engine": "cargo",
+      "version": "cargo 1.96.0 (30a34c682 2026-05-25)",
+      "binary_sha256": "ca330c90042909abe7d009d717480c2c6e717b1419c282692c7579f635a8705e",
+      "argv": [
+        "cargo",
+        "check",
+        "--locked"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.toml",
+          "sha256": "87b59b8874341a7803b172fdea101b1d1c5bae9c03b225451e358b5fbe20976f"
+        },
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.lock",
+          "sha256": "03a461cf6e7d161d368bd807747689ed2e4b31231eb17d149d3e2104007f16e6"
+        }
+      ],
+      "budget": {
+        "network": "crates.io",
+        "timeout_s": 600
+      },
+      "expected_exit_code": 101,
+      "verdict_lines": [
+        "error: failed to run custom build command for `pg_query v6.2.1`",
+        "Unable to find libclang: \"couldn't find any valid shared libraries matching: ['libclang.so', 'libclang-*.so', 'libclang.so.*', 'libclang-*.so.*'], set the `LIBCLANG_PATH` environment variable to a path where one of these files can be found (invalid: [])\""
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:24:19.497Z",
+      "duration_s": 16.536,
+      "exit_code": 101
+    },
+    {
+      "id": "bench-rust-container",
+      "purpose": "on Ubuntu 24.04 the pinned toolchain compiles the four pinned crates from the lock (`cargo check --locked`) with only build-essential and libclang-dev installed: pg_query builds libpg_query with a C compiler and generates its bindings with libclang, which the Bench image must carry",
+      "engine": "cargo",
+      "version": "cargo 1.96.0 (30a34c682 2026-05-25)",
+      "binary_sha256": null,
+      "argv": [
+        "cargo",
+        "check",
+        "--locked"
+      ],
+      "cwd": "/build-pins",
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.toml",
+          "sha256": "87b59b8874341a7803b172fdea101b1d1c5bae9c03b225451e358b5fbe20976f"
+        },
+        {
+          "path": "runs/RUN-scaffold/bench-rust/Cargo.lock",
+          "sha256": "03a461cf6e7d161d368bd807747689ed2e4b31231eb17d149d3e2104007f16e6"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "bridge",
+        "timeout_s": 900
+      },
+      "verdict_lines": [
+        "rustc 1.96.0 (ac68faa20 2026-05-25)",
+        "build-essential 12.10ubuntu1",
+        "gcc 4:13.2.0-7ubuntu1",
+        "libclang-18-dev 1:18.1.3-1ubuntu1",
+        "libclang-common-18-dev 1:18.1.3-1ubuntu1",
+        "libclang-dev 1:18.0-59~exp2",
+        "libclang-rt-18-dev",
+        "libclang1-18 1:18.1.3-1ubuntu1",
+        "rustup-init sha256 5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4",
+        "rustup 1.29.2 (d8c92c676 2026-10-21)",
+        "    Checking bollard v0.21.1",
+        "    Checking testcontainers v0.28.0",
+        "    Checking bench-pins v0.0.0 (/build-pins)",
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 18.43s",
+        "crates checked 155, compiled 90"
+      ],
+      "outputs": [],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "ubuntu:24.04",
+        "digest": "sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "-v <rust>:/work:ro",
+          "-v /target",
+          "-v /target-lab",
+          "-v <script>:/ctr.sh:ro"
+        ],
+        "network": "bridge: apt, static.rust-lang.org and crates.io"
+      },
+      "started_at": "2026-10-24T13:24:36.069Z",
+      "duration_s": 18.502,
+      "exit_code": 0
+    },
+    {
+      "id": "kit-wasm-build",
+      "purpose": "the vendored kit (labs/kit) and a two-seed, three-check lab crate build to wasm32-unknown-unknown with the pinned toolchain",
+      "engine": "cargo",
+      "version": "cargo 1.96.0 (30a34c682 2026-05-25)",
+      "binary_sha256": null,
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "--target",
+        "wasm32-unknown-unknown"
+      ],
+      "cwd": "/build-lab/smoke-lab",
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/bench-rust/kit-roundtrip/Cargo.toml",
+          "sha256": "0858ed549d617f15f1308f542085162ceb5e0ef9a496d91bc16817279fbe05f7"
+        },
+        {
+          "path": "runs/RUN-scaffold/bench-rust/kit-roundtrip/src/lib.rs",
+          "sha256": "20eb634ca08be4216bb5cb3aceac7f499420a120c631f5c2e884e89537f2abb2"
+        },
+        {
+          "path": "vendor/kernelspace/labs/kit/src/lib.rs",
+          "sha256": "faf92453c85299f0eb62e1e04c4a002d92f4da821e6dbeb4318b15ecfe0cbe69",
+          "kind": "vendored kit crate"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "verdict_lines": [
+        "   Compiling kslab v0.1.0 (/build-lab/kit)",
+        "   Compiling smoke-lab v0.0.0 (/build-lab/smoke-lab)",
+        "    Finished `release` profile [optimized] target(s) in 0.35s"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-scaffold/kit-roundtrip/smoke_lab.wasm",
+          "sha256": "83890e50bc975d7366689e87126341e31bd0b2ed53c669c75b6f819435538d79",
+          "bytes": 60018,
+          "kind": "wasm module",
+          "compare": "bytes"
+        }
+      ],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "ubuntu:24.04",
+        "digest": "sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "-v <rust>:/work:ro",
+          "-v /target",
+          "-v /target-lab",
+          "-v <script>:/ctr.sh:ro"
+        ],
+        "network": "bridge: apt, static.rust-lang.org and crates.io"
+      },
+      "started_at": "2026-10-24T13:24:36.069Z",
+      "duration_s": 0.365,
+      "exit_code": 0
+    },
+    {
+      "id": "kit-wasm-roundtrip",
+      "purpose": "the vendored host code (abi.ts and wasm-lab.ts, unedited) drives that module: zero imports, the ABI exports, ks_abi_version 2, list and only replies, seeds, a trap with its panic text, and the whole-module v1 trap",
+      "engine": "node",
+      "version": "v22.22.2",
+      "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S12/kit-roundtrip.ts",
+        "<smoke_lab.wasm>"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-scaffold/kit-roundtrip/smoke_lab.wasm",
+          "sha256": "83890e50bc975d7366689e87126341e31bd0b2ed53c669c75b6f819435538d79",
+          "bytes": 60018
+        },
+        {
+          "path": "vendor/kernelspace/src/lib/forge/abi.ts",
+          "sha256": "3f695f16d757fc0fd8510c5494e23576bd0621e89b25a45278756de87973d4e6",
+          "bytes": 6162
+        },
+        {
+          "path": "vendor/kernelspace/src/lib/wasm-lab.ts",
+          "sha256": "64044b2fc7c3e9a775a0e44fe8d9ca456415291312ef7f30cb9a4d3815b31c53",
+          "bytes": 11158
+        }
+      ],
+      "budget": {
+        "timeout_s": 60
+      },
+      "verdict_lines": [
+        "ok the module has zero imports: 0 imports",
+        "ok the module exports the kit ABI: __data_end __heap_base ks_abi_version ks_alloc ks_free ks_panic_msg ks_run ks_trace_drain memory",
+        "ok ks_abi_version() is 2, a version the host speaks",
+        "ok list parses and names the lab and its checks: smoke-lab: sum, seeded, todo",
+        "ok the lab id has no reference suffix",
+        "ok an unseeded check passes in a fresh instance: ok",
+        "ok a seeded check sees the seed the host drew: seed 12345, reported seed 12345",
+        "ok the same seed gives the same reply twice",
+        "ok with no seed line a seeded check runs on its default seed: seed 7",
+        "ok an unfinished check traps the module: RuntimeError: unreachable",
+        "ok the same instance still reports the panic text: panicked at src/lib.rs:19:5: not yet implemented: construct your allocator",
+        "ok the host words the trap as \"not implemented yet\": not implemented yet: construct your allocator (src/lib.rs:19:5)",
+        "ok a whole-module v1 run of a module with an unfinished check throws LabTrapError: LabTrapError"
+      ],
+      "outputs": [],
+      "started_at": "2026-10-24T13:25:26.606Z",
+      "duration_s": 0.058,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-cvc5-version",
+      "purpose": "the Bench binary of cvc5 (the non-GPL static Linux x86_64 build), by its own version string; the executed run RUN-cvc5-alethe used the pip wheel, whose version string reads 1.4.2-modified",
+      "engine": "cvc5",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "argv": [
+        "/opt/cvc5/bin/cvc5",
+        "--version"
+      ],
+      "inputs": [
+        {
+          "url": "https://github.com/cvc5/cvc5/releases/download/cvc5-1.4.2/cvc5-Linux-x86_64-static.zip",
+          "sha256": "7eb18f8c814c36a46c5a7d003983e9cfbc4b0a9828d6dd596239291bd4cc61d8",
+          "bytes": 43693999,
+          "kind": "release asset",
+          "committed": false
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 60
+      },
+      "verdict_lines": [
+        "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+        "compiled as a unrestricted build with GCC version 11.4.0 on Oct  8 2026 01:24:07",
+        "Copyright (c) 2009-2026 by the authors and their institutional",
+        "affiliations listed at https://cvc5.github.io/people.html",
+        "cvc5 is open-source and is covered by the BSD license (modified).",
+        "THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.",
+        "USE AT YOUR OWN RISK.",
+        "This version of cvc5 is linked against the following non-(L)GPL'ed",
+        "third party libraries.",
+        "  CaDiCaL - Simplified Satisfiability Solver",
+        "  See https://github.com/arminbiere/cadical for copyright information.",
+        "  Editline Library",
+        "  See https://thrysoee.dk/editline",
+        "  for copyright information.",
+        "  SymFPU - The Symbolic Floating Point Unit",
+        "  See https://github.com/martin-cs/symfpu/tree/main for copyright information.",
+        "This version of cvc5 is linked against the following third party",
+        "libraries covered by the LGPLv3 license.",
+        "See licenses/lgpl-3.0.txt for more information.",
+        "  GMP - Gnu Multi Precision Arithmetic Library",
+        "  See http://gmplib.org for copyright information.",
+        "  LibPoly polynomial library",
+        "  See https://github.com/SRI-CSL/libpoly for copyright and",
+        "  licensing information.",
+        "cvc5 is statically linked against these libraries. To recompile",
+        "this version of cvc5 with different versions of these libraries",
+        "follow the instructions on https://github.com/cvc5/cvc5/blob/main/INSTALL.md",
+        "See the file COPYING (distributed with the source code, and with",
+        "all binaries) for the full cvc5 copyright, licensing, and (lack of)",
+        "warranty information."
+      ],
+      "outputs": [],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "ubuntu:24.04",
+        "digest": "sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "--network=none",
+          "-v <cvc5>:/opt/cvc5:ro",
+          "-v <q>:/q:ro"
+        ]
+      },
+      "started_at": "2026-10-24T13:25:29.308Z",
+      "duration_s": 0.204,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-cvc5-smoke",
+      "purpose": "the guard query without a model, as a refutation: x greater than 0 and less than 0",
+      "engine": "cvc5",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "argv": [
+        "/opt/cvc5/bin/cvc5",
+        "--lang",
+        "smt2",
+        "/q/guard.smt2"
+      ],
+      "inputs": [
+        {
+          "url": "https://github.com/cvc5/cvc5/releases/download/cvc5-1.4.2/cvc5-Linux-x86_64-static.zip",
+          "sha256": "7eb18f8c814c36a46c5a7d003983e9cfbc4b0a9828d6dd596239291bd4cc61d8",
+          "bytes": 43693999,
+          "kind": "release asset",
+          "committed": false
+        },
+        {
+          "path": "runs/RUN-scaffold/bench-cvc5/guard.smt2",
+          "sha256": "431edcb1fb96d9aeda5c8b4a59845d3793e1b1957bdc221d6847ca9a769c8db0",
+          "bytes": 87
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 60
+      },
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [],
+      "where": "container",
+      "container": {
+        "runtime": "docker",
+        "server_version": "29.1.3",
+        "image": "ubuntu:24.04",
+        "digest": "sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+        "architecture": "amd64",
+        "run_flags": [
+          "--rm",
+          "--memory=6g",
+          "--network=none",
+          "-v <cvc5>:/opt/cvc5:ro",
+          "-v <q>:/q:ro"
+        ]
+      },
+      "started_at": "2026-10-24T13:25:29.512Z",
+      "duration_s": 0.155,
+      "exit_code": 0
+    },
+    {
+      "id": "bench-cvc5-arm64-asset",
+      "purpose": "the arm64 build of the same release, hashed and not executed: this host is x86_64 and no arm64 emulation is installed",
+      "engine": "cvc5",
+      "version": "cvc5 1.4.2 (release asset; the version string was not read)",
+      "binary_sha256": null,
+      "argv": [],
+      "inputs": [
+        {
+          "url": "https://github.com/cvc5/cvc5/releases/download/cvc5-1.4.2/cvc5-Linux-arm64-static.zip",
+          "sha256": "765ebee59d9e5efccb60a445fa66fbddfb07a8de9fe7a5b6d128e5c2aafec974",
+          "bytes": 42446234,
+          "kind": "release asset",
+          "committed": false
+        }
+      ],
+      "budget": {},
+      "started_at": "2026-10-24T13:25:29.735Z",
+      "duration_s": 0,
+      "exit_code": null,
+      "verdict_lines": [
+        "cvc5-Linux-arm64-static.zip 765ebee59d9e5efccb60a445fa66fbddfb07a8de9fe7a5b6d128e5c2aafec974 (42446234 bytes), matches the digest the release lists"
+      ],
+      "outputs": [],
+      "emulated": "not executed"
+    }
+  ]
+}

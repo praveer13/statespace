@@ -1,0 +1,66 @@
+{
+  "schema": "statespace/goal-strip-spike@0",
+  "id": "Ledger.run_conserves",
+  "theorem": "run_conserves",
+  "source": {
+    "file": "Ledger.lean",
+    "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb"
+  },
+  "request": "$/lean/plainGoal",
+  "tactics": [
+    "induction ns generalizing s with",
+    "rfl",
+    "simp [run, ih, transfer_conserves]"
+  ],
+  "states": [
+    {
+      "when": "before",
+      "index": 0,
+      "line": 32,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "ns : List Int",
+          "⊢ total (run s ns) = total s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 1,
+      "line": 33,
+      "character": 11,
+      "goals": [
+        [
+          "case nil",
+          "s : Ledger",
+          "⊢ total (run s []) = total s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 2,
+      "line": 34,
+      "character": 20,
+      "goals": [
+        [
+          "case cons",
+          "n : Int",
+          "ns : List Int",
+          "ih : ∀ (s : Ledger), total (run s ns) = total s",
+          "s : Ledger",
+          "⊢ total (run s (n :: ns)) = total s"
+        ]
+      ]
+    },
+    {
+      "when": "end",
+      "index": 3,
+      "line": 34,
+      "character": 54,
+      "goals": []
+    }
+  ]
+}

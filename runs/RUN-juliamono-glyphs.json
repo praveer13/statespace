@@ -1,0 +1,125 @@
+{
+  "id": "RUN-juliamono-glyphs",
+  "title": "JuliaMono v0.63.2: glyph coverage against the course's own content",
+  "engine": "juliamono",
+  "version": "v0.63.2; ttfautohint (v1.8.4)",
+  "binary": "JuliaMono-Regular.ttf from the v0.63.2 release",
+  "binary_sha256": "40a07da0d1601215eb6b89312eb44128a3e2f36675d3e1f518264bd391fc7023",
+  "image": null,
+  "recorded_at": "2026-10-24T13:15:55.676Z",
+  "started_at": "2026-10-24T13:15:55.414Z",
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--with",
+    "fonttools==4.67.0",
+    "python",
+    "-I",
+    "scripts/spikes/W0-S12/glyph-coverage.py",
+    "<corpus.json>",
+    "<JuliaMono-Regular.ttf>",
+    "<JuliaMono-SemiBold.ttf>"
+  ],
+  "inputs": [
+    {
+      "url": "https://github.com/cormullion/juliamono/releases/download/v0.63.2/JuliaMono-ttf.tar.gz",
+      "sha256": "be6517295198ec5c92bdbaad42f4f6f8d83f921d80512b79f54fe036add95c0c",
+      "bytes": 21847069,
+      "kind": "release asset",
+      "committed": false
+    },
+    {
+      "name": "JuliaMono-Regular.ttf",
+      "sha256": "40a07da0d1601215eb6b89312eb44128a3e2f36675d3e1f518264bd391fc7023",
+      "kind": "font, regular"
+    },
+    {
+      "name": "JuliaMono-SemiBold.ttf",
+      "sha256": "6c455a2488c1a69585d8a8f9d07e6ee394fc060b705dc607e7a4120bb2e3e630",
+      "kind": "font, semibold"
+    },
+    {
+      "path": "runs/RUN-juliamono-glyphs/corpus.txt",
+      "sha256": "0e31fcf4a08fcd6882a2aaa01107cc99001f94012e335592b0d7a56c4e00e008",
+      "bytes": 2432,
+      "kind": "corpus manifest: 28 files of the tree at 44d12a9395f1b60c44a37c8977bd529eeee35319"
+    }
+  ],
+  "budget": {
+    "network": "download only",
+    "timeout_s": 120
+  },
+  "exit_code": 0,
+  "duration_s": 0.259,
+  "verdict_lines": [
+    "JuliaMono v0.63.2: regular 11191 code points in 12337 glyphs, semibold 11191 in 12337; fixed pitch true",
+    "speech map (DESIGN.md 10.6): 23 symbols, 0 missing in regular, 0 in semibold",
+    "symbols named by the design review (A7-15): 27, 0 missing in regular, 0 in semibold",
+    "course code spans and blocks: 70 distinct non-ASCII code points (4167 occurrences), 0 missing in regular, 0 in semibold",
+    "course prose: 88 distinct non-ASCII code points (11793 occurrences); 54 are logic or math notation (1770 occurrences), 0 of those missing in regular",
+    "advance widths of the covered symbols (units of 2000 per em): 1200 x84"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-juliamono-glyphs/codepoints.tsv",
+      "sha256": "4782f43349ee78707befd05fc4d66a3037d22e438a25993e71b11c9121374b6b",
+      "bytes": 9005,
+      "kind": "code point table",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-juliamono-glyphs/summary.json",
+      "sha256": "8e412a9add1c7ebb8175c69fcaff0912e4f78cc7220423d83620c4bf274bead5",
+      "bytes": 3863,
+      "kind": "coverage summary",
+      "compare": "bytes"
+    }
+  ],
+  "values": {
+    "version": "v0.63.2",
+    "release": "v0.63.2",
+    "license": "SIL Open Font License 1.1",
+    "license_sha256": "bae3beff9e15f1a680c2764c4bbdb25b995b9bf539aeaf8467482a495c75ad0c",
+    "regular_codepoints": 11191,
+    "regular_glyphs": 12337,
+    "semibold_codepoints": 11191,
+    "speech_map_symbols": 23,
+    "speech_map_missing": [],
+    "review_named_symbols": 27,
+    "review_named_missing": [],
+    "course_commit": "44d12a9395f1b60c44a37c8977bd529eeee35319",
+    "corpus_files": 28,
+    "code_codepoints": 70,
+    "code_missing_regular": [],
+    "code_missing_semibold": [],
+    "prose_codepoints": 88,
+    "prose_notation_symbols": 54,
+    "prose_notation_missing_regular": [],
+    "advance_widths": {
+      "1200": 84
+    },
+    "fonttools": "4.67.0",
+    "python": "3.13.12"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": null,
+    "host_tools": {
+      "node": "v22.22.2",
+      "uv": "uv 0.10.2"
+    },
+    "emulated": false,
+    "python": "3.13.12",
+    "fonttools": "4.67.0"
+  },
+  "notes": [
+    "The face is the subject of this run: version_string is the font's own name-table string, binary_sha256 is the hash of JuliaMono-Regular.ttf, and the SemiBold file is hashed in inputs. fontTools reads the cmap tables and the advance widths; nothing renders.",
+    "The corpus is the committed tree at the commit named in values.course_commit, not the working tree. No lesson, specimen, audit case, claim or goal strip exists yet, so the course's own content today is its authoring documents; GATE-glyphs (W1) runs the same check on the shipped content, and W6-T03 re-records this run against it.",
+    "code role means a fenced block or an inline code span, which the design sets in JuliaMono. prose role is everything else, set in Archivo or Source Serif 4, which lack the logic symbols (A7-15). DESIGN.md section 3.3 asks that no logic symbol be set there, so prose_notation_symbols measures how much notation sits outside code spans in today's authoring documents. Those documents are not shipped copy; the count is information for GATE-glyphs' rule on the serif (spine issues, item 7), not a failure.",
+    "The design review (A7-15) sampled 49 Lean and TLA+ symbols and found none missing from JuliaMono v0.63.2. Only 27 of those 49 are named on disk, so this run checks those 27 and does not claim to reproduce the 49.",
+    "The corpus holds the course's own text only: README.md, docs/*.md, docs/spine/*.md, curriculum/*.md, labs/*.md and tracker/README.md. docs/history, design/canvas and research are history and evidence. corpus.txt lists each file with its SHA-256."
+  ]
+}

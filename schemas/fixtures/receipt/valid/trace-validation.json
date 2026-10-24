@@ -1,0 +1,94 @@
+{
+  "schema": "statespace/receipt@1",
+  "lab": "LAB-8",
+  "stage": "LAB-8.3",
+  "lane": "reported",
+  "createdAt": "2026-10-24T17:00:00Z",
+  "cli": {
+    "name": "statespace",
+    "version": "0.0.0"
+  },
+  "environment": {
+    "devcontainer": null,
+    "os": {
+      "name": "Linux",
+      "version": "6.12.63",
+      "arch": "x86_64"
+    },
+    "sandbox": "off"
+  },
+  "tools": [
+    {
+      "name": "tlc",
+      "version": "2026.10.20.183001",
+      "sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "pinned": true
+    }
+  ],
+  "statements": [
+    {
+      "path": "claims/Outbox.tla",
+      "kind": "tla",
+      "sha256": "a74138e4098f8ae4bf8690e83b4afa90d81f047a5885e2d2847961ced1ffd496"
+    }
+  ],
+  "runs": [
+    {
+      "step": "trace-validate",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "argv": [
+        "statespace",
+        "trace",
+        "validate",
+        "claims/Outbox.tla",
+        "traces/"
+      ],
+      "inputSha256": "14c5e74c4b96ccef41cd94db73a9ec3348038ac094feca4fd897cecffa07cdae",
+      "budget": {
+        "workers": 1,
+        "seed": 3
+      },
+      "exitCode": 1,
+      "verdictLines": [
+        "trace traces/seed-2.ndjson: not conforming at line 7"
+      ],
+      "verdict": "rejected"
+    }
+  ],
+  "traces": {
+    "n": 3,
+    "seedListSha256": "14c5e74c4b96ccef41cd94db73a9ec3348038ac094feca4fd897cecffa07cdae",
+    "verdicts": [
+      {
+        "trace": "traces/seed-1.ndjson",
+        "seed": 1,
+        "verdict": "accepted",
+        "firstNonConformingLine": null
+      },
+      {
+        "trace": "traces/seed-2.ndjson",
+        "seed": 2,
+        "verdict": "rejected",
+        "firstNonConformingLine": 7
+      },
+      {
+        "trace": "traces/seed-3.ndjson",
+        "seed": 3,
+        "verdict": "partial",
+        "firstNonConformingLine": 4
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "LAB-8.c3",
+      "pass": false
+    }
+  ],
+  "provenance": {
+    "assisted": "code",
+    "agent": true,
+    "guard": "off"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "RUN-z3-bv64",
+  "title": "Under signed 64-bit bit-vectors the guard protects the sender and the recipient wraps",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "signed BitVec 64: guarded sender `unsat`; recipient wrap `sat` (B = 9223372036850581504, X = 4194304); conservation modulo 2⁶⁴ proved; unsigned guard with a signed check `sat`",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3-solver 5.3.1.0 from PyPI, installed by uv",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/z3_claims.py",
+      "sha256": "a558596e31782a8d3f0dc3a2062cb7cb713d71a93417d453b0818b6434cc592d",
+      "bytes": 3651,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "z3 version: 5.3.1",
+    "[1.5 BitVec64 signed: guarded SOURCE overdraft] unsat (0.01s) ",
+    "[1.5 BitVec64 signed: guarded DESTINATION wrap] sat (0.00s) [A = 9223372036854775806,",
+    " B = 9223372036850581504,",
+    " X = 4194304]",
+    "[1.5 BitVec64 conservation mod 2^64] proved",
+    "[1.5 BitVec64 unsigned guard, signed check] sat (0.01s) [A = 13835060254305419776, X = 4611686018427387904]"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/z3_5.3.1.txt",
+      "sha256": "21b93295b35ad28621cf6f28f87ded8bb64a20b4182cb7696b6e00d7d01aa4be",
+      "bytes": 1257,
+      "kind": "log"
+    },
+    {
+      "path": "research/spikes/RESULTS.md",
+      "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+      "bytes": 5758,
+      "kind": "results record"
+    }
+  ],
+  "values": {
+    "sender": "unsat",
+    "recipient": "sat",
+    "recipient_witness": {
+      "A": "9223372036854775806",
+      "B": "9223372036850581504",
+      "X": "4194304"
+    },
+    "conservation_mod_2_64": "proved",
+    "unsigned_guard_signed_check": "sat"
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "results-2026-10-20",
+      "origin": "imported",
+      "purpose": "the earlier execution RESULTS.md records, which names the amount M; its script and log are not on disk",
+      "started_at": "2026-10-20",
+      "argv": null,
+      "verdict_lines": [
+        "- 64-bit bit-vector re-encoding (signed comparisons): the guarded *sender* cannot go negative (`unsat`), but the *recipient* can wrap: `sat` with B = 9223372036850581504, M = 4194304 → B + M exceeds 2^63−1 and wraps negative. → Specimen: \"the guard protects the sender, not the recipient\" (Int encoding hid it)."
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "uv did not log the wheel it installed; PyPI publishes z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl with SHA-256 3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386 (research/evidence/A5v2/z3pypi.json), the wheel uv selects on x86_64 Linux"
+    },
+    {
+      "field": "image",
+      "reason": "no container is recorded: the script's usage line runs it under uv on the host"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated; RESULTS.md, dated 2026-10-20, records the starter from an earlier execution"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from RESULTS.md; a2r3/out/z3_5.3.1.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "Witness values are strings: they exceed the integers JSON readers keep exact."
+  ]
+}

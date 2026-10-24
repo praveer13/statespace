@@ -1,0 +1,532 @@
+{
+  "id": "RUN-tlc-atomic",
+  "title": "The atomic variant re-run with argv: with -deadlock no error, at 4 distinct states for two workers and 8 for three at Amount 40",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "records": "the atomic variant: no error, 4 distinct states; three workers at Amount 40: 8 distinct",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+  "recorded_at": "2026-10-24T14:14:31.134Z",
+  "started_at": "2026-10-24T14:14:29.454Z",
+  "duration_s": 1.674,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "w0s11-run-tlc-atomic-w2-deadlock-off",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-v",
+    "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+    "-w",
+    "/w",
+    "eclipse-temurin:21-jre",
+    "java",
+    "-jar",
+    "/t/tla2tools.jar",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "DoubleSpendAtomic.cfg",
+    "DoubleSpendAtomic.tla"
+  ],
+  "inputs": [
+    {
+      "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+      "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+      "bytes": 713,
+      "role": "spec"
+    },
+    {
+      "path": "research/spikes/tla/DoubleSpendAtomic.cfg",
+      "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+      "bytes": 97,
+      "role": "config"
+    },
+    {
+      "path": "research/spikes/tla/A3.cfg",
+      "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+      "bytes": 101,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 6 and seed -7698726901304107702 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Model checking completed. No error has been found.",
+    "5 states generated, 4 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 3.",
+    "Finished in 00s at (2026-10-24 14:14:30)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-atomic/w2-default.log",
+      "sha256": "bacb66324cd512f98131d461f8f03a867c724ba17311af3eae27625f312aae38",
+      "bytes": 2615,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-atomic/w2-deadlock-off.log",
+      "sha256": "93b012763c2da6cb06078555ec15ed1fb70a5862ef4b3b921e77462af5309b68",
+      "bytes": 2432,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-atomic/w3-a40-default.log",
+      "sha256": "e98bac745a4967ece3a512594db38f05bef6e5786c90311217129ed73edef836",
+      "bytes": 2825,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-atomic/w3-a40-deadlock-off.log",
+      "sha256": "838d1ad536a04f1c10989c5a457461ac7fc635d7da4d393eee40dae4db2bd1b7",
+      "bytes": 2427,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "w2-default": {
+      "result": "deadlock",
+      "distinct_states": 4,
+      "states_generated": 5,
+      "depth": 3
+    },
+    "w2-deadlock-off": {
+      "result": "no error",
+      "distinct_states": 4,
+      "states_generated": 5,
+      "depth": 3
+    },
+    "w3-a40-default": {
+      "result": "deadlock",
+      "distinct_states": 8,
+      "states_generated": 13,
+      "depth": 4
+    },
+    "w3-a40-deadlock-off": {
+      "result": "no error",
+      "distinct_states": 8,
+      "states_generated": 13,
+      "depth": 4
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS"
+    }
+  },
+  "primary_config": "w2-deadlock-off",
+  "configs": [
+    {
+      "id": "w2-default",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:29.454Z",
+      "duration_s": 0.425,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-atomic-w2-default",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendAtomic.cfg",
+        "DoubleSpendAtomic.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+          "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+          "bytes": 713,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.cfg",
+          "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+          "bytes": 97,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 11,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 6 and seed 282321275861176338 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "5 states generated, 4 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-24 14:14:29)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-atomic/w2-default.log"
+      ],
+      "values": {
+        "result": "deadlock",
+        "distinct_states": 4,
+        "states_generated": 5,
+        "depth": 3
+      }
+    },
+    {
+      "id": "w2-deadlock-off",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:29.881Z",
+      "duration_s": 0.392,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-atomic-w2-deadlock-off",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendAtomic.cfg",
+        "DoubleSpendAtomic.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+          "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+          "bytes": 713,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.cfg",
+          "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+          "bytes": 97,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 6 and seed -7698726901304107702 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Model checking completed. No error has been found.",
+        "5 states generated, 4 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-24 14:14:30)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-atomic/w2-deadlock-off.log"
+      ],
+      "values": {
+        "result": "no error",
+        "distinct_states": 4,
+        "states_generated": 5,
+        "depth": 3
+      }
+    },
+    {
+      "id": "w3-a40-default",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:30.274Z",
+      "duration_s": 0.428,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-atomic-w3-a40-default",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "A3.cfg",
+        "DoubleSpendAtomic.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+          "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+          "bytes": 713,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/A3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 11,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 7 and seed -6863409570712325301 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "13 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "Finished in 00s at (2026-10-24 14:14:30)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-atomic/w3-a40-default.log"
+      ],
+      "values": {
+        "result": "deadlock",
+        "distinct_states": 8,
+        "states_generated": 13,
+        "depth": 4
+      }
+    },
+    {
+      "id": "w3-a40-deadlock-off",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:30.702Z",
+      "duration_s": 0.429,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-atomic-w3-a40-deadlock-off",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "A3.cfg",
+        "DoubleSpendAtomic.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+          "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+          "bytes": 713,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/A3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 30 and seed -1691809966655403297 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Model checking completed. No error has been found.",
+        "13 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "Finished in 00s at (2026-10-24 14:14:31)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-atomic/w3-a40-deadlock-off.log"
+      ],
+      "values": {
+        "result": "no error",
+        "distinct_states": 8,
+        "states_generated": 13,
+        "depth": 4
+      }
+    },
+    {
+      "id": "original",
+      "origin": "imported",
+      "purpose": "the execution the spine registered (the atomic variant: no error, 4 distinct states; three workers at Amount 40: 8 distinct), imported from research/ as it was before this re-run",
+      "engine": "tlc",
+      "version": "1.8.0 nightly of 2026-10-20",
+      "binary_sha256": null,
+      "image": "eclipse-temurin:21-jre",
+      "started_at": "2026-10-20",
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.tla",
+          "sha256": "694c6d49d8f2af4a805dd906f5e3918246fbf376e06702629e037a2d4e9d41f1",
+          "bytes": 713,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/DoubleSpendAtomic.cfg",
+          "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+          "bytes": 97,
+          "role": "config"
+        },
+        {
+          "path": "research/spikes/tla/A3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "exit_code": null,
+      "verdict_lines": [
+        "- `DoubleSpendAtomic.tla` (guard + write in one action): **no error**; 5 generated, **4 distinct**, depth 3. With 3 workers, Amount=40: no error, 8 distinct, depth 4."
+      ],
+      "outputs": [
+        {
+          "path": "research/spikes/RESULTS.md",
+          "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+          "bytes": 5758,
+          "kind": "results record"
+        }
+      ],
+      "values": {
+        "two_workers": {
+          "result": "no error",
+          "distinct_states": 4,
+          "states_generated": 5,
+          "depth": 3
+        },
+        "three_workers_amount_40": {
+          "result": "no error",
+          "distinct_states": 8,
+          "depth": 4
+        }
+      },
+      "unrecorded": [
+        {
+          "field": "binary_sha256",
+          "reason": "RESULTS.md does not hash the jar"
+        },
+        {
+          "field": "duration_s",
+          "reason": "the log does not time the run"
+        },
+        {
+          "field": "argv",
+          "reason": "RESULTS.md records the counts, not the command line"
+        },
+        {
+          "field": "exit_code",
+          "reason": "RESULTS.md does not record it"
+        },
+        {
+          "field": "environment.os",
+          "reason": "the log does not describe the host"
+        },
+        {
+          "field": "environment.cpu_count",
+          "reason": "the log does not describe the host"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Re-run by W0-S11 with argv recorded, because the earlier record holds no command line (spine section 9.5). The configuration \"original\" and those that start with \"original-\" hold the earlier execution as it was imported from research/.",
+    "The jar is the pinned 1.8.0 pre-release (SHA-256 5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2); <sandbox>/tla2tools-1.8.0.jar in argv stands for it, and <sandbox>/work for a scratch copy of the spec and configuration listed in inputs.",
+    "TLC writes its state queue under -metadir /tmp/tlc-states inside the container, so the scratch copy holds only the inputs.",
+    "Each configuration ran twice in spirit: with default flags, where TLC checks for deadlock, and with -deadlock. RESULTS.md's \"no error\" matches the -deadlock runs (spine section 9.5 suspected the deadlock check was off)."
+  ]
+}

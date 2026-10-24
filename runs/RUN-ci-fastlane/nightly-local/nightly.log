@@ -1,0 +1,21 @@
+nightly lane: 38 step(s), root <repo>
+[ 1/38] vendor-verify          PASS       0.4 s  vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)
+[ 2/38] lint-purity            PASS       0.4 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)
+[ 3/38] typecheck              PASS       5.3 s  no output
+[ 4/38] unit-tests             FAIL       7.1 s  145 tests, 143 passed, 1 failed, 1 skipped
+[ 5/38] build                  PASS       3.5 s  ✓ built in 639ms
+[ 6/38] lane-tests             PASS       4.7 s  68 tests, 67 passed, 0 failed, 1 skipped
+[ 7/38] GATE-numbers           PASS       0.5 s  GATE-numbers: PASS (2634 tokens in 40 files, 73 known; 0.5 s)
+[ 8/38] GATE-facts             PASS       0.4 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)
+[18/38] GATE-links             FAIL       0.2 s  GATE-links: FAIL (1 finding(s))
+[20/38] GATE-budget            PASS       0.1 s  GATE-budget: green (4 warnings), 4 notes
+[24/38] GATE-privacy           FAIL       4.2 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file
+[25/38] GATE-schema            PASS       6.0 s  GATE-schema: PASS (22 checks; 6.0 s)
+[28/38] GATE-runs              PASS       0.2 s  GATE-runs: PASS (67 records, 1695 resolved references; 0.1 s)
+[35/38] numbers-self-check     PASS       7.0 s  GATE-numbers self-check: PASS (14 of 14 held)
+[36/38] runs-self-check        PASS       2.6 s  GATE-runs self-check: PASS (15 of 15 held)
+[37/38] schema-self-check      FAIL     117.2 s  GATE-schema self-check: FAIL (46 of 48 held)
+[38/38] privacy-self-test      PASS       0.0 s  verify-privacy self-test: ok, 33/33
+absent, not built yet (21): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage, GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42), GATE-replay (W2-T03), GATE-conformance (W1-T42), GATE-specimens (W1-T42), GATE-labs (W1-T43), GATE-audit (W1-T40), GATE-a11y (W1-T41)
+wrote <repo>/status/nightly.json: red, 2 gate(s) failed
+nightly lane: FAIL in 159.7 s (13 passed, 4 failed, 0 skipped, 21 absent)

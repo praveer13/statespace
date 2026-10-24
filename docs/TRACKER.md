@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** all 263 tasks are `todo` as of 2026-10-24; implementation starts at W0. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 2), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-24, 20 of the 263 tasks are in `review` (the W0 tasks the wave workflow verified; see [the W0 wave report](waves/W0-report.md)) and the other 243 are `todo`. The owner's review queue is 13.75 hours, above the 10-hour gate (OD-7), so no task with owner review starts until the queue falls under it. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 2), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -126,41 +126,41 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Spikes
 
-- [ ] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
-- [ ] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
-- [ ] W0-S03 · Z3 `Fixedpoint` for Stage 7 · S · sonnet · —
-- [ ] W0-S04 · Spectacle on Stage 5/8 specs and state pairs · M · opus · —
-- [ ] W0-S05 · TLC lasso JSON · S · sonnet · —
-- [ ] W0-S06 · Sandbox lanes and `--paranoid` timing · M · sonnet · —
-- [ ] W0-S07 · `vcgen` on a custom `Cmd` · S · opus · —
-- [ ] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
-- [ ] W0-S09 · PostgreSQL 18.6 isolation catalog rows [X RUN-pg-anomalies] · M · sonnet · —
-- [ ] W0-S10 · Goal Replay via `$/lean/plainGoal` · S · sonnet · —
+- [=] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
+- [=] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
+- [=] W0-S03 · Z3 `Fixedpoint` for Stage 7 · S · sonnet · —
+- [=] W0-S04 · Spectacle on Stage 5/8 specs and state pairs · M · opus · —
+- [=] W0-S05 · TLC lasso JSON · S · sonnet · —
+- [=] W0-S06 · Sandbox lanes and `--paranoid` timing [X RUN-bwrap-lanes] · M · sonnet · —
+- [=] W0-S07 · `vcgen` on a custom `Cmd` · S · opus · —
+- [=] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
+- [=] W0-S09 · PostgreSQL 18.6 isolation catalog rows [X RUN-pg-anomalies] · M · sonnet · —
+- [=] W0-S10 · Goal Replay via `$/lean/plainGoal` · S · sonnet · —
 - [ ] W0-S13 · Trace validation by TLC's trace-module method (proposed) · S · opus · —
 
 ### Governance
 
-- [ ] W0-T01 · Publication hygiene · S · opus · —
-- [ ] W0-T03 · ID registry generated from this spine · M · sonnet · —
-- [ ] W0-T07 · Keep/kill rules fixed in advance (n = 1) · S · opus · W0-T02
+- [=] W0-T01 · Publication hygiene · S · opus · —
+- [=] W0-T03 · ID registry generated from this spine · M · sonnet · —
+- [=] W0-T07 · Keep/kill rules fixed in advance (n = 1) · S · opus · W0-T02
 - [ ] W0-T09 · Owner review of OD-1 to OD-15 (added) · S · sonnet · —
 - [ ] W0-T10 · Spine revision 3 from the companion specs' issues (added) · M · opus · W0-T03
 
 ### Platform
 
-- [ ] W0-S12 · Vendoring and a React 19 / Vite 7 scaffold {{run:RUN-scaffold}} · M · sonnet · —
-- [ ] W0-T04 · CI lanes: fast, nightly, release stub · S · sonnet · W0-S12, W0-S11
-- [ ] W0-T05 · Devcontainer, `statespace doctor`, Codespaces prebuild · M · sonnet · W0-S06, W0-S11
+- [=] W0-S12 · Vendoring and a React 19 / Vite 7 scaffold {{run:RUN-scaffold}} · M · sonnet · —
+- [=] W0-T04 · CI lanes: fast, nightly, release stub · S · sonnet · W0-S12, W0-S11
+- [=] W0-T05 · Devcontainer, `statespace doctor`, Codespaces prebuild · M · sonnet · W0-S06, W0-S11
 
 ### Gates
 
-- [ ] W0-T06 · GATE-budget over the stage plans · S · sonnet · W0-T03
-- [ ] W0-T08 · GATE-facts and the facts registry (added) · S · opus · W0-S11
+- [=] W0-T06 · GATE-budget over the stage plans · S · sonnet · W0-T03
+- [=] W0-T08 · GATE-facts and the facts registry (added) · S · opus · W0-S11
 
 ### Evidence and claims
 
-- [ ] W0-S11 · Receipt schema, `runs/`, lints · M · opus · W0-T02
-- [ ] W0-T02 · One JSON Schema with TypeScript and Python codegen · S · sonnet · —
+- [=] W0-S11 · Receipt schema, `runs/`, lints · M · opus · W0-T02
+- [=] W0-T02 · One JSON Schema with TypeScript and Python codegen · S · sonnet · —
 
 ### Wave exit
 

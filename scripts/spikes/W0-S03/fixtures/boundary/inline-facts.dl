@@ -1,0 +1,9 @@
+// RUN-z3-fixedpoint's toy exactly as curriculum/S07-secrecy.md S7.L1 prints it: the facts sit in the program.
+.decl member(u: number, d: number)
+.decl shared(u: number, d: number)
+.decl revoked(u: number, d: number)
+.decl canread(u: number, d: number)
+.output canread
+canread(u, d) :- member(u, d).
+canread(u, d) :- shared(u, d), !revoked(u, d).
+member(1, 3).   shared(1, 4).   revoked(1, 4).

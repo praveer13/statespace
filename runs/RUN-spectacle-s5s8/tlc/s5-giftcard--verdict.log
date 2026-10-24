@@ -1,0 +1,44 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 88 and seed 8090919273128956829 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1192] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s5/GiftCard.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module GiftCard
+Linting of module GiftCard
+Starting... (2026-10-24 13:50:54)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:50:55.
+Error: Invariant Conserve is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ seen = <<0, 0>>
+/\ bal = (c1 :> 5 @@ c2 :> 5 @@ c3 :> 5)
+/\ pc = <<"check", "check">>
+
+State 2: <Check(1) line 22, col 13 to line 25, col 28 of module GiftCard>
+/\ seen = <<5, 0>>
+/\ bal = (c1 :> 5 @@ c2 :> 5 @@ c3 :> 5)
+/\ pc = <<"debit", "check">>
+
+State 3: <Check(2) line 22, col 13 to line 25, col 28 of module GiftCard>
+/\ seen = <<5, 5>>
+/\ bal = (c1 :> 5 @@ c2 :> 5 @@ c3 :> 5)
+/\ pc = <<"debit", "debit">>
+
+State 4: <Debit(1) line 27, col 13 to line 30, col 29 of module GiftCard>
+/\ seen = <<5, 5>>
+/\ bal = (c1 :> 0 @@ c2 :> 10 @@ c3 :> 5)
+/\ pc = <<"done", "debit">>
+
+State 5: <Debit(2) line 27, col 13 to line 30, col 29 of module GiftCard>
+/\ seen = <<5, 5>>
+/\ bal = (c1 :> 0 @@ c2 :> 15 @@ c3 :> 5)
+/\ pc = <<"done", "done">>
+
+12 states generated, 11 distinct states found, 3 states left on queue.
+The depth of the complete state graph search is 5.
+Finished in 00s at (2026-10-24 13:50:55)

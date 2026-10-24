@@ -1,0 +1,58 @@
+{
+  "startedAt": "2026-10-24T13:14:06.603Z",
+  "finishedAt": "2026-10-24T13:18:29.154Z",
+  "playwrightCore": "1.63.0",
+  "containerNode": "v24.20.0",
+  "versions": {
+    "chromium": "153.0.8010.12",
+    "firefox": "155.0",
+    "webkit": "26.6"
+  },
+  "launch": {
+    "chromiumFeatureFlags": {
+      "before": [
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+        "--enable-features=CDPScreenshotNewSurface"
+      ],
+      "after": [
+        "--enable-features=CDPScreenshotNewSurface",
+        "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion"
+      ]
+    },
+    "options": {
+      "chromium": {
+        "headless": true,
+        "ignoreDefaultArgs": [
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion"
+        ],
+        "args": [
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion"
+        ]
+      },
+      "firefox": {
+        "headless": true
+      },
+      "webkit": {
+        "headless": true
+      }
+    }
+  },
+  "build": {
+    "buildId": "f55311ae303f",
+    "origins": {
+      "main": "https://course-domain.test",
+      "inst": "https://instruments.course-domain.test",
+      "xsite": "https://instruments.other-host.test",
+      "attacker": "https://attacker.test"
+    }
+  },
+  "z3Request": {
+    "engine": "z3",
+    "version": "5.3.1",
+    "input": "roadmap-starter",
+    "budget": {
+      "rlimit": 5000000,
+      "wallMs": 120000
+    }
+  }
+}

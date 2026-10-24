@@ -1,0 +1,247 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    1|  300
+    2|   30
+    2|  100
+    2|  200
+(6 rows)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    1|  300
+    2|   30
+    2|  100
+    2|  200
+(6 rows)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    1|  300
+    2|   30
+    2|  100
+    2|  200
+(6 rows)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    1|  300
+    2|   30
+    2|  100
+    2|  200
+(6 rows)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    2|   30
+    2|  100
+    2|  200
+(5 rows)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 1; SELECT total FROM seen;
+total
+-----
+   30
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(value) AS total FROM mytab WHERE class = 2; SELECT total FROM seen;
+total
+-----
+  300
+(1 row)
+
+step s1w: INSERT INTO mytab SELECT 2, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    2|   30
+(1 row)
+
+step s2w: INSERT INTO mytab SELECT 1, total FROM seen RETURNING class, value;
+class|value
+-----+-----
+    1|  300
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT class, value FROM mytab ORDER BY class, value;
+class|value
+-----+-----
+    1|   10
+    1|   20
+    1|  300
+    2|  100
+    2|  200
+(5 rows)
+

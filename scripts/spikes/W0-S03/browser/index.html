@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W0-S03 Fixedpoint harness</title>
+</head>
+<body>
+<p>W0-S03: Z3 Fixedpoint in a Pyodide module worker. Driven by browser-run.mjs; nothing to see here.</p>
+<script type="module">
+  // one job per page: a crash inside Z3 can take the whole tab down, so each probe gets its own
+  const worker = new Worker('/browser/worker.mjs', { type: 'module' })
+  worker.onmessage = (e) => {
+    if (e.data.log) console.log(e.data.log)
+    if (e.data.result !== undefined || e.data.error) window.__result = e.data
+  }
+  worker.onerror = (e) => { window.__result = { error: 'worker error: ' + (e.message || 'unknown') } }
+  worker.postMessage(JSON.parse(new URLSearchParams(location.search).get('job')))
+</script>
+</body>
+</html>

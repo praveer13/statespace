@@ -1,0 +1,119 @@
+{
+  "id": "RUN-lean-mathlib",
+  "title": "A Mathlib Finmap project's packages take 7.3 GB",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "a Mathlib `Finmap` project's packages: 7.3 GB",
+  "engine": "mathlib",
+  "version": "v4.35.0",
+  "version_string": "mathlib4 rev v4.35.0, commit 56a005855ea17e0b0958f73ec801ae140b0a1679 (lake-manifest.json)",
+  "binary": "the Mathlib packages from lake update, with the cache from lake exe cache get",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/run.sh",
+      "sha256": "b0d286d285cd800255eaa29c1e7fb74ff61b567fcc71e06476ea9baa8492f39b",
+      "bytes": 474,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/proj/lakefile.toml",
+      "sha256": "1b1889cd64f9e274d4ba6f5899435225c2e7c99711ac8d28ee868944c864b7bc",
+      "bytes": 165,
+      "role": "config"
+    },
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/proj/lake-manifest.json",
+      "sha256": "6ba289879396d48e1d52821d948947a581309badd77b0d839d3bd38d4f336b1e",
+      "bytes": 3116,
+      "role": "manifest"
+    },
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/proj/Mm.lean",
+      "sha256": "caa43e0d0348c2e249cb742fb6aba28684e412105fe165a6b73f0bf4506273cb",
+      "bytes": 41,
+      "role": "source"
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "update rc=0 secs=49",
+    "cache rc=0 secs=3",
+    "7.3G\t.lake/packages",
+    "6.9G\t.lake/packages/mathlib",
+    "453M\t/root/.cache/mathlib",
+    "build rc=0 secs=2",
+    "Build completed successfully (744 jobs).",
+    "docker exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/measure.out",
+      "sha256": "4cc380c8b469e75309a3dde22af0bb839f6cda6eafb2f8d007da5e65409b4f84",
+      "bytes": 706,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/proj/build.log",
+      "sha256": "72c0074a581fe9881c5d8f71540252fc6555b6b4b5acb91a48d8d3ba243399b6",
+      "bytes": 329,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5v2/mathlib-measure/proj/cache.log",
+      "sha256": "5d8ed8e576d6bbe678a48e0d0fa65fda9ffcb00ce9e332845ce6ed31da64dbc7",
+      "bytes": 138,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "packages": "7.3G",
+    "mathlib": "6.9G",
+    "cache": "453M",
+    "jobs": 744
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash lake or the toolchain"
+    },
+    {
+      "field": "image",
+      "reason": "the log says docker exit=0 but not the image"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log times each step (49, 3 and 2 s), not the whole run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log is the output of run.sh inside a container; the docker command line is not recorded"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5v2/mathlib-measure/measure.out (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "The version is Mathlib's: the lakefile requires rev v4.35.0 and the manifest pins its commit. The log does not print Lean's or lake's version; update.log says the toolchain was already up to date."
+  ]
+}

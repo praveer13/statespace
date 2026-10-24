@@ -1,0 +1,121 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1u s2b_rc s2sel s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2sel: SELECT id, prio FROM q ORDER BY prio FOR UPDATE; <waiting ...>
+step s1c: COMMIT;
+step s2sel: <... completed>
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+
+starting permutation: s1b_rr s1u s2b_rr s2sel s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2sel: SELECT id, prio FROM q ORDER BY prio FOR UPDATE; <waiting ...>
+step s1c: COMMIT;
+step s2sel: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+
+starting permutation: s1b_ser s1u s2b_ser s2sel s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2sel: SELECT id, prio FROM q ORDER BY prio FOR UPDATE; <waiting ...>
+step s1c: COMMIT;
+step s2sel: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+
+starting permutation: s1b_rc s1u s2b_rc s2sub s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2sub: SELECT id, prio FROM (SELECT id, prio FROM q FOR UPDATE) AS ss ORDER BY prio; <waiting ...>
+step s1c: COMMIT;
+step s2sub: <... completed>
+id|prio
+--+----
+ 2|  20
+ 3|  30
+ 1|  40
+(3 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+
+starting permutation: s1b_rr s1u s2b_rr s2sub s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2sub: SELECT id, prio FROM (SELECT id, prio FROM q FOR UPDATE) AS ss ORDER BY prio; <waiting ...>
+step s1c: COMMIT;
+step s2sub: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+
+
+starting permutation: s1b_ser s1u s2b_ser s2sub s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1u: UPDATE q SET prio = 40 WHERE id = 1;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2sub: SELECT id, prio FROM (SELECT id, prio FROM q FOR UPDATE) AS ss ORDER BY prio; <waiting ...>
+step s1c: COMMIT;
+step s2sub: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, prio FROM q ORDER BY id;
+id|prio
+--+----
+ 1|  40
+ 2|  20
+ 3|  30
+(3 rows)
+

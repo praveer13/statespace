@@ -1,0 +1,43 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 78 and seed 1883972767584303507 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1779] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/NoOutbox.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module NoOutbox
+Linting of module NoOutbox
+Starting... (2026-10-24 13:50:59)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:50:59.
+Error: Invariant NoEffectWithoutRecord is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ crashes = 0
+/\ up = TRUE
+/\ committed = {}
+/\ intent = {}
+/\ charges = (c1 :> 0)
+
+State 2: <Start(c1) line 18, col 13 to line 23, col 60 of module NoOutbox>
+/\ crashes = 0
+/\ up = TRUE
+/\ committed = {}
+/\ intent = {c1}
+/\ charges = (c1 :> 0)
+
+State 3: <SendStep(c1) line 33, col 16 to line 39, col 54 of module NoOutbox>
+/\ crashes = 0
+/\ up = TRUE
+/\ committed = {}
+/\ intent = {c1}
+/\ charges = (c1 :> 1)
+
+State 4: <Crash line 41, col 10 to line 46, col 44 of module NoOutbox>
+/\ crashes = 1
+/\ up = FALSE
+/\ committed = {}
+/\ intent = {}
+/\ charges = (c1 :> 1)
+
+8 states generated, 7 distinct states found, 2 states left on queue.
+The depth of the complete state graph search is 4.
+Finished in 00s at (2026-10-24 13:50:59)

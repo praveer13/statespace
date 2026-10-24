@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:claim@1",
+  "title": "statespace claim card, version 1",
+  "description": "A claim card in the learner's lab repository (claims/*.yaml): six fields (proposition, assumptions, model, method, correspondence, and the counterexample when weakened) plus the requirement row, as sketched in ARCHITECTURE.md section 8.2 and spine section 5.2. No field holds a stamp: stamps are derived from receipts and never typed, so a card that carries one is rejected as an unknown field. An agent's proposed claim carries agent: true and lives in proposals/, where it is shown as quoted UNREVIEWED text and never stamped. This schema checks the shape; GATE-claims and claim@1 validation in the CLI also check that the method matches the receipt, that the statement hash matches the pinned file and that the if_weakened witness refutes this card's own proposition.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "proposition", "assumptions", "model", "method", "correspondence", "if_weakened", "requirement"],
+  "properties": {
+    "schema": { "const": "statespace/claim@1" },
+    "id": {
+      "description": "The learner's local identifier for this card.",
+      "$ref": "urn:statespace:defs@1#/$defs/localId"
+    },
+    "template": {
+      "description": "The claim template the card instantiates. Absent for a claim no template covers; claim@1 validation accepts those (spine section 5.2).",
+      "$ref": "urn:statespace:defs@1#/$defs/claimTemplateId"
+    },
+    "proposition": {
+      "description": "Field 1: what the claim says, in the learner's words.",
+      "$ref": "urn:statespace:defs@1#/$defs/prose"
+    },
+    "statement": {
+      "description": "The pinned statement the claim is about, identified by path; its hash comes from the receipt. Absent for a claim with no statement file, such as an assumed or composite claim.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {
+          "description": "The statement file: a Lean challenge, a TLA+ spec or an SMT-LIB file.",
+          "$ref": "urn:statespace:defs@1#/$defs/repoPath"
+        },
+        "theorem": {
+          "description": "The Lean theorem name, for a Lean statement.",
+          "type": "string",
+          "minLength": 1
+        },
+        "property": {
+          "description": "The TLA+ property or invariant name, for a TLA+ statement.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "assumptions": {
+      "description": "Field 2: what the claim assumes. The list may be empty; an assumption that names a seam is planted for erosion.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": {
+          "text": { "$ref": "urn:statespace:defs@1#/$defs/prose" },
+          "seam": { "$ref": "urn:statespace:defs@1#/$defs/seamId" }
+        }
+      }
+    },
+    "model": {
+      "description": "Field 3: the model the proposition is about.",
+      "$ref": "urn:statespace:defs@1#/$defs/prose"
+    },
+    "method": {
+      "description": "Field 4: how the claim was established. receipt names the receipt whose verdicts carry the stamp; tool and version are prefilled from it. A claim with no receipt describes its method in text.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "receipt": { "$ref": "urn:statespace:defs@1#/$defs/repoPath" },
+        "text": { "$ref": "urn:statespace:defs@1#/$defs/prose" },
+        "tool": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "correspondence": {
+      "description": "Field 5: how the model corresponds to the system, or what is not covered.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "$ref": "urn:statespace:defs@1#/$defs/prose" }
+      }
+    },
+    "if_weakened": {
+      "description": "Field 6: the counterexample when an assumption is weakened. It must refute this card's own proposition, which GATE-claims checks. specimen names the specimen record that holds the witness.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "specimen": { "$ref": "urn:statespace:defs@1#/$defs/repoPath" },
+        "text": { "$ref": "urn:statespace:defs@1#/$defs/prose" }
+      }
+    },
+    "requirement": {
+      "description": "The requirement row: the requirement the claim is meant to serve. Its fit is never [P].",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "$ref": "urn:statespace:defs@1#/$defs/prose" }
+      }
+    },
+    "rests_on": {
+      "description": "The cards this claim depends on, by local identifier.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "urn:statespace:defs@1#/$defs/localId" }
+    },
+    "supersedes": {
+      "description": "The card this one replaces, or null. The older card stays in the erosion log.",
+      "anyOf": [
+        { "type": "null" },
+        { "$ref": "urn:statespace:defs@1#/$defs/localId" }
+      ]
+    },
+    "agent": {
+      "description": "True when an agent proposed the card (proposals/). Such a card is never stamped.",
+      "type": "boolean"
+    }
+  }
+}

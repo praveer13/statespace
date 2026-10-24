@@ -1,0 +1,23 @@
+Ledger.run_conserves   theorem run_conserves   source Ledger.lean (sha256 4ac24c5d0ae6afa5)
+$/lean/plainGoal; positions are 0-based line and character
+
+[0] before `induction ns generalizing s with`   (line 32, character 2)
+    s : Ledger
+    ns : List Int
+    ⊢ total (run s ns) = total s
+
+[1] before `rfl`   (line 33, character 11)
+    case nil
+    s : Ledger
+    ⊢ total (run s []) = total s
+
+[2] before `simp [run, ih, transfer_conserves]`   (line 34, character 20)
+    case cons
+    n : Int
+    ns : List Int
+    ih : ∀ (s : Ledger), total (run s ns) = total s
+    s : Ledger
+    ⊢ total (run s (n :: ns)) = total s
+
+[3] end of proof   (line 34, character 54)
+    no goals

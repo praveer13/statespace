@@ -1,0 +1,19 @@
+{
+  "schema": "statespace/goal-replay-spec-spike@0",
+  "note": "For each theorem, the tactics at which to read the goal state, in order. The spec says where to look and never what Lean will answer: every goal in a strip comes from Lean. A tactic is its text as written in the source; the generator finds it after the previous one.",
+  "sources": {
+    "Ledger.lean": {
+      "transfer_conserves": ["unfold transfer total", "split", "simp", "omega"],
+      "transfer_nonneg": ["unfold transfer", "split", "simp_all", "omega"],
+      "run_conserves": ["induction ns generalizing s with", "rfl", "simp [run, ih, transfer_conserves]"]
+    },
+    "Shapes.lean": {
+      "net_append": ["induction xs with", "simp [net]", "simp [net, ih]", "omega"],
+      "guard_leaves_funds": ["obtain ⟨h0, h1⟩ := h", "omega"],
+      "and_swap_example": ["constructor", "·", "exact hq", "exact hp"],
+      "add_comm_example": ["rw [Int.add_comm]"],
+      "std_empty_size": ["simp"],
+      "and_intro_example": ["exact ⟨hp,"]
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "statespace/goal-strip-spike@0",
+  "id": "Ledger.transfer_nonneg",
+  "theorem": "transfer_nonneg",
+  "source": {
+    "file": "Ledger.lean",
+    "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb"
+  },
+  "request": "$/lean/plainGoal",
+  "tactics": [
+    "unfold transfer",
+    "split",
+    "simp_all",
+    "omega"
+  ],
+  "states": [
+    {
+      "when": "before",
+      "index": 0,
+      "line": 19,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ Ledger.a s",
+          "hb : 0 ≤ Ledger.b s",
+          "⊢ 0 ≤ Ledger.a (transfer s n) ∧ 0 ≤ Ledger.b (transfer s n)"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 1,
+      "line": 20,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ Ledger.a s",
+          "hb : 0 ≤ Ledger.b s",
+          "⊢ 0 ≤ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) ∧",
+          "    0 ≤ Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s)"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 2,
+      "line": 20,
+      "character": 12,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ Ledger.a s",
+          "hb : 0 ≤ Ledger.b s",
+          "h✝ : 0 ≤ n ∧ n ≤ Ledger.a s",
+          "⊢ 0 ≤ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } ∧ 0 ≤ Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n }"
+        ],
+        [
+          "case isFalse",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ Ledger.a s",
+          "hb : 0 ≤ Ledger.b s",
+          "h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)",
+          "⊢ 0 ≤ Ledger.a s ∧ 0 ≤ Ledger.b s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 3,
+      "line": 20,
+      "character": 25,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ Ledger.a s",
+          "hb : 0 ≤ Ledger.b s",
+          "h✝ : 0 ≤ n ∧ n ≤ Ledger.a s",
+          "⊢ 0 ≤ Ledger.b s + n"
+        ]
+      ]
+    },
+    {
+      "when": "end",
+      "index": 4,
+      "line": 20,
+      "character": 30,
+      "goals": []
+    }
+  ]
+}

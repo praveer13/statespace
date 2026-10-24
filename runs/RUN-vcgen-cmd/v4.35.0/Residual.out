@@ -1,0 +1,35 @@
+W0S07/Residual.lean:26:65: error: unsolved goals
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "amount" ∧ 0 ≤ s✝.bal (s✝¹.acct "from")
+a✝ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.lit 0)) s✝¹ s✝
+⊢ 0 ≤
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+          (Expr.eval s✝¹ s✝ (Expr.var "amount"))).bal
+      (s✝¹.acct "from")
+W0S07/Residual.lean:33:71: error: unsolved goals
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "amount" ∧ NonNeg s✝
+a✝ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.lit 0)) s✝¹ s✝
+⊢ NonNeg
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+      (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+W0S07/Residual.lean:40:48: error: unsolved goals
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "n" ∧ 0 < s✝¹.num "m" ∧ NonNeg s✝
+a✝ :
+  holds
+    ((BExpr.ge (Expr.balance (AExpr.var "x")) (Expr.var "n")).and
+      (BExpr.ge (Expr.balance (AExpr.var "y")) (Expr.var "m")))
+    s✝¹ s✝
+⊢ NonNeg
+    (post (post s✝ (AExpr.eval s✝¹ (AExpr.var "x")) (AExpr.eval s✝¹ (AExpr.var "z")) (Expr.eval s✝¹ s✝ (Expr.var "n")))
+      (AExpr.eval s✝¹ (AExpr.var "y")) (AExpr.eval s✝¹ (AExpr.var "z"))
+      (Expr.eval s✝¹
+        (post s✝ (AExpr.eval s✝¹ (AExpr.var "x")) (AExpr.eval s✝¹ (AExpr.var "z")) (Expr.eval s✝¹ s✝ (Expr.var "n")))
+        (Expr.var "m")))

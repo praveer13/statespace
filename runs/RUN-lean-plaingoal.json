@@ -1,0 +1,106 @@
+{
+  "id": "RUN-lean-plaingoal",
+  "title": "Goal states extracted at build time from real Lean 4.35.0 elaboration through the language server request $/lean/plainGoal",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "lean",
+  "version": "4.35.0",
+  "binary": "lean --server of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-24T14:16:03.314Z",
+  "started_at": "2026-10-24T14:16:02.752Z",
+  "duration_s": 0.393,
+  "argv": [
+    "node",
+    "<sandbox>/lean-plaingoal.mjs",
+    "<sandbox>/ledger"
+  ],
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/scripts/lean-plaingoal.mjs",
+      "sha256": "47d68598c8f5f791c8a608bd07906dc7f8a5213b9cbf39fc3cd65c3284c569d5",
+      "bytes": 2415,
+      "role": "script, as committed"
+    },
+    {
+      "name": "lean-plaingoal.mjs, as run",
+      "sha256": "ef0eac2400f6140b971b974ebd81131c7fa0664ef1be35fa3c9145d525338ae5",
+      "bytes": 2430,
+      "role": "script with --memory=6g added"
+    },
+    {
+      "path": "research/evidence/A5r3/lean/Ledger.lean",
+      "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+      "bytes": 2091,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "--- transfer_conserves: before `unfold` (t=298 ms)",
+    "s : Ledger",
+    "n : Int",
+    "⊢ total (transfer s n) = total s",
+    "--- transfer_conserves: before `split` (t=354 ms)",
+    "s : Ledger",
+    "n : Int",
+    "⊢ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a +",
+    "      (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b =",
+    "    s.a + s.b",
+    "--- run_conserves: before `induction` (t=364 ms)",
+    "s : Ledger",
+    "ns : List Int",
+    "⊢ total (run s ns) = total s",
+    "--- run_conserves: nil case, before `rfl` (t=365 ms)",
+    "case nil",
+    "s : Ledger",
+    "⊢ total (run s []) = total s",
+    "--- run_conserves: cons case, before `simp` (t=367 ms)",
+    "case cons",
+    "n : Int",
+    "ns : List Int",
+    "ih : ∀ (s : Ledger), total (run s ns) = total s",
+    "s : Ledger",
+    "⊢ total (run s (n :: ns)) = total s"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-plaingoal/goals.log",
+      "sha256": "0fe2aad580c124985cf22008690a00da886618442825a5fcf7cdb6c00e03fd40",
+      "bytes": 741,
+      "kind": "goal strips"
+    }
+  ],
+  "values": {
+    "probes": 5,
+    "probe_labels": [
+      "transfer_conserves: before `unfold`",
+      "transfer_conserves: before `split`",
+      "run_conserves: before `induction`",
+      "run_conserves: nil case, before `rfl`",
+      "run_conserves: cons case, before `simp`"
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "network": "none"
+    }
+  },
+  "notes": [
+    "Re-run by W0-S11 from research/evidence/A5r3/scripts/lean-plaingoal.mjs (spine section 9.5). The one change: the script's docker run gains --memory=6g, the cap every container on this host runs with; the input \"as run\" is that copy.",
+    "The script opens Ledger.lean in lean --server and asks for the goal at five positions: before each tactic of transfer_conserves and run_conserves, and inside the induction cases. The t= times are wall-clock times since the server started and vary from run to run.",
+    "<sandbox>/ledger in argv stands for a scratch copy of the source listed in inputs; the script mounts it at /w."
+  ]
+}

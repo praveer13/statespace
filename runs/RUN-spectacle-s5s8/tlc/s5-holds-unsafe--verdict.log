@@ -1,0 +1,102 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 75 and seed 6892770545988983921 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1128] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s5/HoldsUnsafe.tla
+Parsing file scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module HoldsEnv
+Semantic processing of module HoldsUnsafe
+Linting of module HoldsEnv
+Linting of module HoldsUnsafe
+Starting... (2026-10-24 13:50:54)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:50:54.
+Error: Invariant NeverTwice is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 0
+/\ hst = "available"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 2: <Place line 19, col 10 to line 21, col 66 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 0
+/\ hst = "held"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 3: <Dispatch line 23, col 13 to line 29, col 56 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 4: <ExpireRead line 45, col 15 to line 48, col 69 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 5: <Next line 67, col 31 to line 67, col 68 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 6: <HandleRead("ok") line 31, col 18 to line 36, col 72 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "ok"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 7: <HandleWrite line 38, col 16 to line 43, col 60 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "captured"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 1
+/\ sent = TRUE
+
+State 8: <ExpireWrite line 50, col 16 to line 54, col 60 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "none"
+/\ tries = 1
+/\ hst = "released"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 2
+/\ sent = TRUE
+
+149 states generated, 66 distinct states found, 17 states left on queue.
+The depth of the complete state graph search is 8.
+Finished in 00s at (2026-10-24 13:50:54)

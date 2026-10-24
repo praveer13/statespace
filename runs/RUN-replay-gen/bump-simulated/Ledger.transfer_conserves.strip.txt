@@ -1,0 +1,39 @@
+Ledger.transfer_conserves   theorem transfer_conserves   source Ledger.lean (sha256 4ac24c5d0ae6afa5)
+$/lean/plainGoal; positions are 0-based line and character
+
+[0] before `unfold transfer total`   (line 14, character 2)
+    s : Ledger
+    n : Int
+    ⊢ total (transfer s n) = total s
+
+[1] before `split`   (line 15, character 2)
+    s : Ledger
+    n : Int
+    ⊢ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) +
+          Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) =
+        Ledger.a s + Ledger.b s
+
+[2] before `simp`   (line 15, character 12)
+    goal 1 of 2
+      case isTrue
+      s : Ledger
+      n : Int
+      h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+      ⊢ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } + Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n } =
+          Ledger.a s + Ledger.b s
+    goal 2 of 2
+      case isFalse
+      s : Ledger
+      n : Int
+      h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)
+      ⊢ Ledger.a s + Ledger.b s = Ledger.a s + Ledger.b s
+
+[3] before `omega`   (line 15, character 21)
+    case isTrue
+    s : Ledger
+    n : Int
+    h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    ⊢ Ledger.a s - n + (Ledger.b s + n) = Ledger.a s + Ledger.b s
+
+[4] end of proof   (line 15, character 26)
+    no goals

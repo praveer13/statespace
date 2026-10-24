@@ -1,0 +1,102 @@
+files that differ: 7 of 19
+manifest leanOptions: [] -> ["pp.fieldNotation=false"]
+manifest maxGoalLineLength: 81 -> 119
+strip Ledger.transfer_conserves: 3 of 5 states changed
+  state 1 (before `split`)
+      s : Ledger
+      n : Int
+    - ⊢ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a +
+    -       (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b =
+    -     s.a + s.b
+    + ⊢ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) +
+    +       Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) =
+    +     Ledger.a s + Ledger.b s
+  state 2 (before `simp`)
+    [goal 1 of 2]
+      case isTrue
+      s : Ledger
+      n : Int
+    - h✝ : 0 ≤ n ∧ n ≤ s.a
+    - ⊢ { a := s.a - n, b := s.b + n }.a + { a := s.a - n, b := s.b + n }.b = s.a + s.b
+    + h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    + ⊢ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } + Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n } =
+    +     Ledger.a s + Ledger.b s
+    [goal 2 of 2]
+      case isFalse
+      s : Ledger
+      n : Int
+    - h✝ : ¬(0 ≤ n ∧ n ≤ s.a)
+    - ⊢ s.a + s.b = s.a + s.b
+    + h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)
+    + ⊢ Ledger.a s + Ledger.b s = Ledger.a s + Ledger.b s
+  state 3 (before `omega`)
+      case isTrue
+      s : Ledger
+      n : Int
+    - h✝ : 0 ≤ n ∧ n ≤ s.a
+    - ⊢ s.a - n + (s.b + n) = s.a + s.b
+    + h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    + ⊢ Ledger.a s - n + (Ledger.b s + n) = Ledger.a s + Ledger.b s
+strip Ledger.transfer_nonneg: 4 of 5 states changed
+  state 0 (before `unfold transfer`)
+      s : Ledger
+      n : Int
+    - ha : 0 ≤ s.a
+    - hb : 0 ≤ s.b
+    - ⊢ 0 ≤ (transfer s n).a ∧ 0 ≤ (transfer s n).b
+    + ha : 0 ≤ Ledger.a s
+    + hb : 0 ≤ Ledger.b s
+    + ⊢ 0 ≤ Ledger.a (transfer s n) ∧ 0 ≤ Ledger.b (transfer s n)
+  state 1 (before `split`)
+      s : Ledger
+      n : Int
+    - ha : 0 ≤ s.a
+    - hb : 0 ≤ s.b
+    - ⊢ 0 ≤ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a ∧
+    -     0 ≤ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b
+    + ha : 0 ≤ Ledger.a s
+    + hb : 0 ≤ Ledger.b s
+    + ⊢ 0 ≤ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) ∧
+    +     0 ≤ Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s)
+  state 2 (before `simp_all`)
+    [goal 1 of 2]
+      case isTrue
+      s : Ledger
+      n : Int
+    - ha : 0 ≤ s.a
+    - hb : 0 ≤ s.b
+    - h✝ : 0 ≤ n ∧ n ≤ s.a
+    - ⊢ 0 ≤ { a := s.a - n, b := s.b + n }.a ∧ 0 ≤ { a := s.a - n, b := s.b + n }.b
+    + ha : 0 ≤ Ledger.a s
+    + hb : 0 ≤ Ledger.b s
+    + h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    + ⊢ 0 ≤ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } ∧ 0 ≤ Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n }
+    [goal 2 of 2]
+      case isFalse
+      s : Ledger
+      n : Int
+    - ha : 0 ≤ s.a
+    - hb : 0 ≤ s.b
+    - h✝ : ¬(0 ≤ n ∧ n ≤ s.a)
+    - ⊢ 0 ≤ s.a ∧ 0 ≤ s.b
+    + ha : 0 ≤ Ledger.a s
+    + hb : 0 ≤ Ledger.b s
+    + h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)
+    + ⊢ 0 ≤ Ledger.a s ∧ 0 ≤ Ledger.b s
+  state 3 (before `omega`)
+      case isTrue
+      s : Ledger
+      n : Int
+    - ha : 0 ≤ s.a
+    - hb : 0 ≤ s.b
+    - h✝ : 0 ≤ n ∧ n ≤ s.a
+    - ⊢ 0 ≤ s.b + n
+    + ha : 0 ≤ Ledger.a s
+    + hb : 0 ≤ Ledger.b s
+    + h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    + ⊢ 0 ≤ Ledger.b s + n
+strip Shapes.std_empty_size: 1 of 2 states changed
+  state 0 (before `simp`)
+    - ⊢ Std.HashMap.emptyWithCapacity.size = 0
+    + ⊢ Std.HashMap.size Std.HashMap.emptyWithCapacity = 0
+DIFF: 9 strips compared, 3 differ; 8 of 33 states changed; 30 goal lines added, 29 removed

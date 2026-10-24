@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:selftest@1",
+  "x-typeName": "Selftest",
+  "title": "machinery self-test",
+  "description": "Uses every keyword of the supported subset and every construct the generators handle: primitives, enums, constants, nullable unions, hoisted objects, arrays of objects, records, open objects, a discriminated union, a recursive definition, tuples, a reference into the shared definitions, keys that are not Python identifiers, and conditional constraints. It is not published: it exists so that GATE-schema can test the generators, the TypeScript validator and Python's jsonschema against each other on a schema that is richer than any record schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "name", "count"],
+  "properties": {
+    "schema": { "const": "statespace/selftest@1" },
+    "name": {
+      "description": "Two to eight lowercase letters.",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "^[a-z]+(?![\\s\\S])"
+    },
+    "count": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "ratio": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+    "flag": { "type": "boolean" },
+    "nothing": { "type": "null" },
+    "maybeText": { "type": ["string", "null"], "minLength": 1 },
+    "mode": { "enum": ["fast", "slow", 3, null] },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true
+    },
+    "matrix": {
+      "type": "array",
+      "items": { "type": "array", "items": { "type": "integer" } }
+    },
+    "inner": {
+      "description": "A closed object.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a"],
+      "properties": {
+        "a": { "type": "integer" },
+        "b": { "type": "string" }
+      }
+    },
+    "list": {
+      "description": "An array of open objects.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": { "id": { "type": "string" } }
+      }
+    },
+    "byName": {
+      "description": "A record of integers.",
+      "type": "object",
+      "additionalProperties": { "type": "integer" },
+      "minProperties": 1,
+      "maxProperties": 3
+    },
+    "anything": {},
+    "free": { "type": "object" },
+    "choice": {
+      "description": "A discriminated union.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "x"],
+          "properties": { "kind": { "const": "a" }, "x": { "type": "integer" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "y"],
+          "properties": { "kind": { "const": "b" }, "y": { "type": "string" } }
+        }
+      ]
+    },
+    "either": {
+      "anyOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/leaf" }
+      ]
+    },
+    "digest": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+    "stamp": { "$ref": "urn:statespace:defs@1#/$defs/statementSha256" },
+    "tree": { "$ref": "#/$defs/tree" },
+    "notNull": { "not": { "type": "null" } },
+    "pair": {
+      "description": "A closed tuple: an integer, then a string.",
+      "type": "array",
+      "prefixItems": [{ "type": "integer" }, { "type": "string" }],
+      "minItems": 2,
+      "items": false
+    },
+    "tail": {
+      "description": "A tuple with a rest: a string, then any number of integers.",
+      "type": "array",
+      "prefixItems": [{ "type": "string" }],
+      "minItems": 1,
+      "items": { "type": "integer" }
+    },
+    "edge": {
+      "description": "A tuple whose leading items are an object and a reference.",
+      "type": "array",
+      "prefixItems": [
+        { "type": "object", "required": ["n"], "properties": { "n": { "type": "integer" } } },
+        { "$ref": "#/$defs/leaf" }
+      ],
+      "minItems": 2,
+      "items": false
+    },
+    "class": { "type": "string" },
+    "from": { "type": "string" },
+    "x-y": { "type": "string" }
+  },
+  "if": {
+    "required": ["flag"],
+    "properties": { "flag": { "const": true } }
+  },
+  "then": { "required": ["ratio"] },
+  "else": { "not": { "required": ["ratio"] } },
+  "allOf": [
+    {
+      "if": { "required": ["mode"], "properties": { "mode": { "const": "slow" } } },
+      "then": { "required": ["tags"] }
+    }
+  ],
+  "$defs": {
+    "leaf": { "enum": ["x", "y"] },
+    "tree": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value"],
+      "properties": {
+        "value": { "type": "integer" },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/tree" } }
+      }
+    }
+  }
+}

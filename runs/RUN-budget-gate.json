@@ -1,0 +1,1169 @@
+{
+  "id": "RUN-budget-gate",
+  "title": "GATE-budget over the real stage plans, with its tests, a sweep of plan changes and one planted defect per check (W0-T06)",
+  "primary_config": "gate",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "argv": [
+    "node",
+    "scripts/verify-budget.mjs"
+  ],
+  "env": {},
+  "inputs": [
+    {
+      "path": "scripts/verify-budget.mjs",
+      "sha256": "41179cd1a517ca2f4e3bdc149b6e2a1a9768bd514a53b64af6b0c07af68b25f8"
+    },
+    {
+      "path": "scripts/spikes/W0-T06/record-run.mjs",
+      "sha256": "e4ba54579c31e6a133de763054dfbf45d4ac94e47630ebb867e47b629fe605b8"
+    },
+    {
+      "path": "scripts/spikes/W0-T06/verify-budget.test.mjs",
+      "sha256": "be7179f9cad3db6c234b3cb4092337829e4398bff6feba5b87494e80fda0e2cb"
+    },
+    {
+      "path": "scripts/spikes/W0-T06/mutation-sweep.mjs",
+      "sha256": "90297d95699b5adfa60ea6f207a6ce67c732078264cef1e3faf9966a52a07ba9"
+    },
+    {
+      "path": "scripts/spikes/W0-T06/crosscheck.py",
+      "sha256": "1a949c0857531cb8aacf75003f12d20318d8d04d51c0b8d8d8de2666f9b1ec0b"
+    },
+    {
+      "path": "content/stages/budget.yaml",
+      "sha256": "7c7a2a9118e94e91c8b60a93e50bedf33a358441d2775d4ba662d2b69efe3442"
+    },
+    {
+      "path": "docs/spine/SPINE.md",
+      "sha256": "4a6c6016672a2bd61e4adb8c1c15159b5ee99852d103c12f6ea83a7eedd2d198"
+    },
+    {
+      "path": "curriculum/S02-proof.md",
+      "sha256": "4dabe5971bc7234e9a764f76512f826ca6784d76e49464ccebd5e7816d801f30"
+    },
+    {
+      "path": "curriculum/S10-assembly.md",
+      "sha256": "481dbad4a4bd246e51664abb1ab00c97650303cb42f1e85989bb63831a4dd454"
+    },
+    {
+      "path": "research/synthesis/BRIEF.md",
+      "sha256": "61653a174c4b733a69ef2dc107612fc2a65db7b929bc84427eccaa81879c6a0b"
+    },
+    {
+      "path": "packages/ids/src/yaml-subset.ts",
+      "sha256": "fdb7f082c747822347f9909f81dad1440d156a340f54d1137c39c0b70c0c99bf"
+    },
+    {
+      "path": "packages/ids/src/markdown.ts",
+      "sha256": "6d1d6e6e3f8811f72eb359cce79cda47f772314ff63fb2aaa4b09cbde1deb173"
+    },
+    {
+      "path": "packages/ids/src/spine.ts",
+      "sha256": "f8fe6471d3a12b6b933d2d0e3cc32f41c05521882ccabfe9a423686f7ca59146"
+    },
+    {
+      "path": "packages/ids/src/grammar.ts",
+      "sha256": "1f75280806a528cd14dc390450212f661675adbfc64f9d729893166f50f32438"
+    }
+  ],
+  "budget": {
+    "timeout_s": 300,
+    "timeout_scope": "each configuration",
+    "network": "none"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x64",
+    "cpu_count": 20,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i5-13600KF",
+    "ram_gib": 31,
+    "node": "v22.22.2",
+    "container": null,
+    "image_digest": null
+  },
+  "started_at": "2026-10-24T14:42:02.587Z",
+  "duration_s": 18.223,
+  "exit_code": 0,
+  "verdict_lines": [
+    "gate: GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml",
+    "gate: OK    table     every cell of the section 3.11 table equals content/stages/budget.yaml; 42 quoted sentences of the budget file still stand",
+    "gate: OK    rows      138 figures recomputed: lessons, build and write from the lesson and lab tables (each at its printed precision), stage totals within a printed tenth, the ten rows summed per column, the five column totals against the total, and the weeks",
+    "gate: OK    tools     at most one new tool per stage, and the spine's stage paragraphs agree: 5 stages introduce one",
+    "gate: OK    paths     2 published paths: each takes every unit of every stage once, and their lessons are the paths that spine section 3.0 prints",
+    "gate: OK    stages    10 of 10 stages pass: S1 pass, S2 pass, S3 pass, S4 pass, S5 pass, S6 pass, S7 pass, S8 pass, S9 pass, S10 pass",
+    "gate: PATH  default (roadmap order): 10 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)",
+    "gate:   OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h",
+    "gate:   OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)",
+    "gate:   OK    keep      10 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S5 at 6 h/week, 74.5 of 75 min/week",
+    "gate:   OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 5.70 h); the cadence holds only with the planned records, see the warning below",
+    "gate:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]",
+    "gate:   NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 12.04 h between CL-1.3 (LAB-1.5) and SP-2.2 (S2.L5)",
+    "gate: PATH  builder (builder's path): 13 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)",
+    "gate:   OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h",
+    "gate:   OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)",
+    "gate:   OK    keep      13 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S7 at 6 h/week, 74.5 of 75 min/week",
+    "gate:   OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 4.95 h); the cadence holds only with the planned records, see the warning below",
+    "gate:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]",
+    "gate:   NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 10.79 h between CL-8.2 (LAB-8.5) and SP-2.2 (S2.L5)",
+    "gate: OK    cutlist   20 listed bridges, all cut-eligible under criteria (1) to (4); the rule gives 21 eligible bridges, the 20 listed and the spare S7.L1; 30 bridges stay; every receiving lesson stays in its stage and is not cut; no cut takes a high estimate below its lower-bound line; 2 KCs would fold ahead of a hard prerequisite on a path",
+    "gate: WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path  [docs/spine/SPINE.md:1753]",
+    "gate: WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path  [docs/spine/SPINE.md:1767]",
+    "gate: NOTE  cutlist   lower bound: the rule is on the high estimate (spine 3.0 and 11.2), which no cut moves below its line. Read on the low estimate, S6 already has a low estimate below that line, and cutting the list would take the low estimate of S8, S7 below it",
+    "gate: OK    additions 10 adopted additions name what they displace (stretch stages, drawers or headroom); 1 waiting for a named displacement",
+    "gate: NOTE  additions S2: LAB-2.9 would add 0.75–2.25 h to S2, which has 0.10 h of room under its roadmap bound: it needs a named displacement before it enters the rows",
+    "gate: GATE-budget: green (4 warnings), 4 notes",
+    "gate-verbose: GATE-budget: green (4 warnings), 4 notes",
+    "gate-json: ok true; 10 stages, 2 paths (default, builder); 4 warnings, 0 failures",
+    "gate-strict: exit 1 (a warning fails under --strict): 4 warnings, 2 of them cadence warnings (default, builder)",
+    "gate-strict: GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml",
+    "gate-strict:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is ...",
+    "gate-strict:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is ...",
+    "gate-strict: WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at  ...",
+    "gate-strict: WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on t ...",
+    "gate-strict: GATE-budget: green (4 warnings), 4 notes",
+    "tests: tests 53, pass 53, fail 0, skipped 0",
+    "mutation-sweep: lab stage +1 min: seen 57 of 82",
+    "mutation-sweep: lab stage +5 min: seen 82 of 82",
+    "mutation-sweep: lab stage +15 min: seen 82 of 82",
+    "mutation-sweep: stretch stages +100 min: 8 planted, 0 changed the verdict",
+    "mutation-sweep: lesson tier flips: seen 76 of 76",
+    "crosscheck: PASS: default: 110 events, 90.7667-167.5167 h of sequenced work, longest gap 9.42 h between CL-9.2 and SP-9.1; without the 2 planned records the longest gap is 11.8333 h between CL-10.1 and CL-10.2 (6.0833 h at the low estimate), so the cadence holds only with them",
+    "crosscheck: PASS: builder: 110 events, 90.7667-167.5167 h of sequenced work, longest gap 9.42 h between CL-9.2 and SP-9.1; without the 2 planned records the longest gap is 11.8333 h between CL-10.1 and CL-10.2 (6.0833 h at the low estimate), so the cadence holds only with them",
+    "links-check: PASS: 0 of 1 GATE-links finding(s) name this task's files",
+    "links-check: other finding: owner tracker/tasks.yaml",
+    "privacy-check: 0 of 1 GATE-privacy finding(s) name this task's files: PASS",
+    "privacy-check: other finding: vendor-license vendor/kernelspace/",
+    "baseline: PASS: exit 0, the same report as the real files",
+    "planted-footing: PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"rounding issue, PLAN.md spine issue 2\"",
+    "planted-footing: FAIL  rows  Total, low: its five column totals add to 107.7 h, but the table prints 106.7 h for the total (the table's rounding issue, PLAN.md spine issue 2)  [docs/spine/SPINE.md section 3.11]",
+    "planted-lab-minutes: PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"S3 build, low\"",
+    "planted-lab-minutes: FAIL  rows  S3 build, low: the table prints 5.0 h, the lesson and lab tables give 5.8 h (5.78 h exactly)  [docs/spine/SPINE.md section 3.11]",
+    "planted-over-bound: PASS: the gate exits 1 (expected 1) and reports 2 \"upper\" line(s) naming \"S2: the high estimate\"",
+    "planted-over-bound:   FAIL  upper  S2: the high estimate 29.90 h exceeds the roadmap's upper bound 28.50 h (3–6 wk)  [content/stages/budget.yaml]",
+    "planted-over-bound:   FAIL  upper  S2: the high estimate 29.90 h exceeds the roadmap's upper bound 28.50 h (3–6 wk)  [content/stages/budget.yaml]",
+    "planted-lower-bound: PASS: the gate exits 0 (expected 0) and reports 2 \"lower\" line(s) naming \"S8: the high estimate\"",
+    "planted-lower-bound:   WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+    "planted-lower-bound:   WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+    "planted-lower-bound-strict: PASS: the gate exits 1 (expected 1) and reports 2 \"lower\" line(s) naming \"S8: the high estimate\"",
+    "planted-lower-bound-strict:   WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+    "planted-lower-bound-strict:   WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+    "planted-lower-justified: PASS: the gate exits 0 (expected 0) and no lower warning is left; the notes say what cleared them",
+    "planted-lower-justified:   NOTE  lower     S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h); section 12 item 48 justifies it",
+    "planted-lower-justified:   NOTE  lower     S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h); section 12 item 48 justifies it",
+    "planted-keep: PASS: the gate exits 1 (expected 1) and reports 34 \"keep\" line(s) naming \"the implied Keep load\"",
+    "planted-keep:   FAIL  keep  S1 (11 new KCs): the implied Keep load is up to 111.1 min/week at 6 h/week, above the planned 75 (reviews 102.7, fixed items 8.5)  [content/stages/budget.yaml]",
+    "planted-keep:   FAIL  keep  S1 (11 new KCs): the implied Keep load is up to 111.1 min/week at 10 h/week, above the planned 105 (reviews 102.7, fixed items 8.5)  [content/stages/budget.yaml]",
+    "planted-cadence-gap: PASS: the gate exits 1 (expected 1) and reports 1 \"cadence\" line(s) naming \"CL-1.3 (LAB-1.5) to CL-2.1 (LAB-2.2)\"",
+    "planted-cadence-gap:   FAIL  cadence  CL-1.3 (LAB-1.5) to CL-2.1 (LAB-2.2): 10.57 h of stage work = 2.2 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]",
+    "planted-no-records: PASS: the gate exits 1 (expected 1) and reports 2 \"cadence\" line(s) naming \"CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8)\"",
+    "planted-no-records:   FAIL  cadence  CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8): 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]",
+    "planted-no-records:   FAIL  cadence  CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8): 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]",
+    "planted-two-tools: PASS: the gate exits 1 (expected 1) and reports 1 \"tools\" line(s) naming \"S1 introduces 2 new tools\"",
+    "planted-two-tools: FAIL  tools  S1 introduces 2 new tools (Z3Py, Lean 4); the plan allows one per stage  [content/stages/budget.yaml]",
+    "planted-cut-seam: PASS: the gate exits 1 (expected 1) and reports 1 \"cutlist\" line(s) naming \"plants SEAM-6\"",
+    "planted-cut-seam: FAIL  cutlist  cut list row 1: S3.L1 is not cut-eligible: (2) it plants SEAM-6  [docs/spine/SPINE.md:1751]",
+    "planted-no-displacement: PASS: the gate exits 1 (expected 1) and reports 1 \"additions\" line(s) naming \"S2.L0 names no displacement\"",
+    "planted-no-displacement: FAIL  additions  S2: the addition S2.L0 names no displacement: say what it displaces, or \"headroom\" when S2 still fits its roadmap bound  [content/stages/budget.yaml additions S2.L0]",
+    "planted-builder-path: PASS: the gate exits 1 (expected 1) and reports 1 \"paths\" line(s) naming \"differ from spine section 3.0\"",
+    "planted-builder-path: FAIL  paths  the lessons of the builder path differ from spine section 3.0 at lesson 23: the spine has S2.L0, content/stages/budget.yaml has S3.L1  [docs/spine/SPINE.md:186]",
+    "planted-quote: PASS: the gate exits 1 (expected 1) and reports 1 \"table\" line(s) naming \"no longer says\"",
+    "planted-quote: FAIL  table  budget.parameters.review_load quotes \"about 2 minutes per review\", which docs/spine/SPINE.md no longer says  [content/stages/budget.yaml]",
+    "planted-arc: PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"projects the arc\"",
+    "planted-arc: FAIL  rows  the spine projects the arc to 43–81 weeks at 6 h/week and 25–46 at 10 h/week, the totals row at 1.6x with 2 reserve weeks in 12 gives 43–80 and 25–46  [docs/spine/SPINE.md section 3.11]",
+    "planted-order-accepted: PASS: the gate exits 0 (expected 0) and no cutlist warning is left; the notes say what cleared them",
+    "planted-order-accepted: NOTE  cutlist   cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path; section 12 item 48 accepts it",
+    "planted-order-accepted: NOTE  cutlist   cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path; section 12 item 49 accepts it",
+    "planted-records-alone: PASS: the gate exits 1 (expected 1) and reports 2 \"cadence\" line(s) naming \"the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers\", with 0 other warning(s) or failure(s)",
+    "planted-records-alone:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+    "planted-records-alone:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+    "planted-records-alone-green: PASS: the gate exits 0 (expected 0) and reports 2 \"cadence\" line(s) naming \"the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers\", with 0 other warning(s) or failure(s)",
+    "planted-records-alone-green:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+    "planted-records-alone-green:   WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+    "planted-ruling-quote: PASS: the gate exits 1 (expected 1) and reports 1 \"table\" line(s) naming \"no longer says\"",
+    "planted-ruling-quote: FAIL  table  budget.planned_records_ruling quotes \"GATE-budget plans the cadence from templates before any learner writes, so it ca...\", which docs/spine/SPINE.md no longer says  [content/stages/budget.yaml]"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-budget-gate/gate.txt",
+      "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+      "bytes": 5882
+    },
+    {
+      "path": "runs/RUN-budget-gate/gate-verbose.txt",
+      "sha256": "9bd89a8af7abd582c9a8664a03ac6fe285942d799ba2964f7676841992d79958",
+      "bytes": 10913
+    },
+    {
+      "path": "runs/RUN-budget-gate/gate-json.txt",
+      "sha256": "d2429333e978977905b1831a3ab4349a12c2e85dd1035f1f3f8d0e83579b51d9",
+      "bytes": 33278
+    },
+    {
+      "path": "runs/RUN-budget-gate/gate-strict.txt",
+      "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+      "bytes": 5882
+    },
+    {
+      "path": "runs/RUN-budget-gate/tests.txt",
+      "sha256": "10a18cc7978ebcb377c7b26dc8b4cd333c3d0512bc790863d744870903a7588b",
+      "bytes": 4874
+    },
+    {
+      "path": "runs/RUN-budget-gate/mutation-sweep.txt",
+      "sha256": "dedecfb2d55740f60c5193b902afd1ec6005adc7c7b1d89e91cdc8a18efb347a",
+      "bytes": 930
+    },
+    {
+      "path": "runs/RUN-budget-gate/crosscheck.txt",
+      "sha256": "b40754fba0cd7027172dde47eded394a5d5a7f0c82d8e8c09bb06720fcef5c4d",
+      "bytes": 532
+    },
+    {
+      "path": "runs/RUN-budget-gate/links-check.txt",
+      "sha256": "cab3bbac7d3ad177570b25ab9b6310210bd4a0200e5a7fd5e92a27559f75df75",
+      "bytes": 159
+    },
+    {
+      "path": "runs/RUN-budget-gate/privacy-check.txt",
+      "sha256": "49144ee500c596c9bb577d1e58ee594f9f918d2dbeef024f1b8370588aec336b",
+      "bytes": 36
+    },
+    {
+      "path": "runs/RUN-budget-gate/baseline.txt",
+      "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+      "bytes": 5882
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-footing.txt",
+      "sha256": "489a25d86b9e812498226970e580cf37e494f2d154be67c747b956c251ee739f",
+      "bytes": 5956
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-lab-minutes.txt",
+      "sha256": "a7373d6def3daf81b9d84e1b39695c317bf2af6052988cbd37dc40d4161ebe92",
+      "bytes": 4589
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-over-bound.txt",
+      "sha256": "5511aee02956c946f01680a413377fc4f6b86e8a2c549a6827897103d71c18fc",
+      "bytes": 6243
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-lower-bound.txt",
+      "sha256": "fc6424455680cbc58f3136ae7b395cc199fba1cf2bea432fb66d10cd4ff2b115",
+      "bytes": 6259
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-lower-bound-strict.txt",
+      "sha256": "fc6424455680cbc58f3136ae7b395cc199fba1cf2bea432fb66d10cd4ff2b115",
+      "bytes": 6259
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-lower-justified.txt",
+      "sha256": "bc07c5b56aaeebad3ded6efecbd10d470548dde814d09f904a39d04089c13a42",
+      "bytes": 6153
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-keep.txt",
+      "sha256": "28d60fe268cd7874cf3735962ef7cc9d808b205607ee2ca7bfc0d3c8e4b3fe87",
+      "bytes": 12483
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-cadence-gap.txt",
+      "sha256": "a26e3a649fc7764908129557e937136eb62c92cd5798c0e25fc69dbff75ba6ff",
+      "bytes": 5088
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-no-records.txt",
+      "sha256": "db49b354aa3ab4733d58bda925bd68fc0366a46bdf5cfc10f637a5605858e4c1",
+      "bytes": 4306
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-two-tools.txt",
+      "sha256": "16c6736ea9e2094f3555ad85aac2e71d7b25997cc56bc59599553f62c0134f75",
+      "bytes": 5989
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-cut-seam.txt",
+      "sha256": "d8a05ea3e32a3f6eb156b9f8e7f0d5cc6056a8f410e9c7df1db85048e2bdb0df",
+      "bytes": 6734
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-no-displacement.txt",
+      "sha256": "a3dd122a261c8bbcf03e51accaf811e1922f49c32d227dcb6e0db615e710ccac",
+      "bytes": 5923
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-builder-path.txt",
+      "sha256": "5d4d0f8201f01ca033e55ef71f3003d06a1ddbaf7362a1f292807d800d8e3e30",
+      "bytes": 5119
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-quote.txt",
+      "sha256": "14b2da624736414d69f3b5b528c9a5a1980a1eb7b682062b35bf2f6ab3fd8bbc",
+      "bytes": 5895
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-arc.txt",
+      "sha256": "4718c145382d341de41c2b0920e4ba1195ca0fae92b0dbbbc94b72731134cd41",
+      "bytes": 5835
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-order-accepted.txt",
+      "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+      "bytes": 5890
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-records-alone.txt",
+      "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+      "bytes": 5890
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-records-alone-green.txt",
+      "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+      "bytes": 5890
+    },
+    {
+      "path": "runs/RUN-budget-gate/planted-ruling-quote.txt",
+      "sha256": "313897f3e05e93d02e0d916c28f8ffcfcf7ca493f124015853bc195669980bba",
+      "bytes": 5818
+    }
+  ],
+  "configs": [
+    {
+      "id": "gate",
+      "purpose": "GATE-budget over the real spine and budget file, as the fast lane runs it",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs"
+      ],
+      "started_at": "2026-10-24T14:42:02.587Z",
+      "duration_s": 0.101,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml",
+        "OK    table     every cell of the section 3.11 table equals content/stages/budget.yaml; 42 quoted sentences of the budget file still stand",
+        "OK    rows      138 figures recomputed: lessons, build and write from the lesson and lab tables (each at its printed precision), stage totals within a printed tenth, the ten rows summed per column, the five column totals against the total, and the weeks",
+        "OK    tools     at most one new tool per stage, and the spine's stage paragraphs agree: 5 stages introduce one",
+        "OK    paths     2 published paths: each takes every unit of every stage once, and their lessons are the paths that spine section 3.0 prints",
+        "OK    stages    10 of 10 stages pass: S1 pass, S2 pass, S3 pass, S4 pass, S5 pass, S6 pass, S7 pass, S8 pass, S9 pass, S10 pass",
+        "PATH  default (roadmap order): 10 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)",
+        "  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h",
+        "  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)",
+        "  OK    keep      10 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S5 at 6 h/week, 74.5 of 75 min/week",
+        "  OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 5.70 h); the cadence holds only with the planned records, see the warning below",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]",
+        "  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 12.04 h between CL-1.3 (LAB-1.5) and SP-2.2 (S2.L5)",
+        "PATH  builder (builder's path): 13 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)",
+        "  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h",
+        "  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)",
+        "  OK    keep      13 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S7 at 6 h/week, 74.5 of 75 min/week",
+        "  OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 4.95 h); the cadence holds only with the planned records, see the warning below",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]",
+        "  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 10.79 h between CL-8.2 (LAB-8.5) and SP-2.2 (S2.L5)",
+        "OK    cutlist   20 listed bridges, all cut-eligible under criteria (1) to (4); the rule gives 21 eligible bridges, the 20 listed and the spare S7.L1; 30 bridges stay; every receiving lesson stays in its stage and is not cut; no cut takes a high estimate below its lower-bound line; 2 KCs would fold ahead of a hard prerequisite on a path",
+        "WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path  [docs/spine/SPINE.md:1753]",
+        "WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path  [docs/spine/SPINE.md:1767]",
+        "NOTE  cutlist   lower bound: the rule is on the high estimate (spine 3.0 and 11.2), which no cut moves below its line. Read on the low estimate, S6 already has a low estimate below that line, and cutting the list would take the low estimate of S8, S7 below it",
+        "OK    additions 10 adopted additions name what they displace (stretch stages, drawers or headroom); 1 waiting for a named displacement",
+        "NOTE  additions S2: LAB-2.9 would add 0.75–2.25 h to S2, which has 0.10 h of room under its roadmap bound: it needs a named displacement before it enters the rows",
+        "GATE-budget: green (4 warnings), 4 notes"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/gate.txt",
+          "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+          "bytes": 5882
+        }
+      ]
+    },
+    {
+      "id": "gate-verbose",
+      "purpose": "the same with --verbose: the stage table, each path's Keep-load table by block and its five longest gaps",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--verbose"
+      ],
+      "started_at": "2026-10-24T14:42:02.688Z",
+      "duration_s": 0.103,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-budget: green (4 warnings), 4 notes"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/gate-verbose.txt",
+          "sha256": "9bd89a8af7abd582c9a8664a03ac6fe285942d799ba2964f7676841992d79958",
+          "bytes": 10913
+        }
+      ]
+    },
+    {
+      "id": "gate-json",
+      "purpose": "the same with --json",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--json"
+      ],
+      "started_at": "2026-10-24T14:42:02.791Z",
+      "duration_s": 0.105,
+      "exit_code": 0,
+      "verdict_lines": [
+        "ok true; 10 stages, 2 paths (default, builder); 4 warnings, 0 failures"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/gate-json.txt",
+          "sha256": "d2429333e978977905b1831a3ab4349a12c2e85dd1035f1f3f8d0e83579b51d9",
+          "bytes": 33278
+        }
+      ]
+    },
+    {
+      "id": "gate-strict",
+      "purpose": "the same with --strict, where a warning fails: the cut-list warnings and the cadence warning of each path each fail the strict lane",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--strict"
+      ],
+      "started_at": "2026-10-24T14:42:02.896Z",
+      "duration_s": 0.102,
+      "exit_code": 1,
+      "verdict_lines": [
+        "exit 1 (a warning fails under --strict): 4 warnings, 2 of them cadence warnings (default, builder)",
+        "GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is ...",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is ...",
+        "WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at  ...",
+        "WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on t ...",
+        "GATE-budget: green (4 warnings), 4 notes"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/gate-strict.txt",
+          "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+          "bytes": 5882
+        }
+      ]
+    },
+    {
+      "id": "tests",
+      "purpose": "the unit and planted-defect tests of GATE-budget",
+      "argv": [
+        "node",
+        "--test",
+        "scripts/spikes/W0-T06/verify-budget.test.mjs"
+      ],
+      "started_at": "2026-10-24T14:42:02.999Z",
+      "duration_s": 2.369,
+      "exit_code": 0,
+      "verdict_lines": [
+        "tests 53, pass 53, fail 0, skipped 0"
+      ],
+      "counts": {
+        "tests": 53,
+        "pass": 53,
+        "fail": 0,
+        "skipped": 0
+      },
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/tests.txt",
+          "sha256": "10a18cc7978ebcb377c7b26dc8b4cd333c3d0512bc790863d744870903a7588b",
+          "bytes": 4874
+        }
+      ]
+    },
+    {
+      "id": "mutation-sweep",
+      "purpose": "one change at a time in a copy of the spine: lab minutes raised by 1, 5 and 15, stretch stages raised by 100, lesson tiers flipped",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T06/mutation-sweep.mjs"
+      ],
+      "started_at": "2026-10-24T14:42:05.369Z",
+      "duration_s": 6.72,
+      "exit_code": 0,
+      "verdict_lines": [
+        "lab stage +1 min: seen 57 of 82",
+        "lab stage +5 min: seen 82 of 82",
+        "lab stage +15 min: seen 82 of 82",
+        "stretch stages +100 min: 8 planted, 0 changed the verdict",
+        "lesson tier flips: seen 76 of 76"
+      ],
+      "counts": {
+        "baselineFailures": 0,
+        "labStages": {
+          "+1 min": {
+            "planted": 82,
+            "seen": 57,
+            "escaped": [
+              "LAB-1.1",
+              "LAB-1.2",
+              "LAB-1.3",
+              "LAB-1.4",
+              "LAB-1.5",
+              "LAB-2.1",
+              "LAB-2.2",
+              "LAB-2.3",
+              "LAB-2.4",
+              "LAB-2.5",
+              "LAB-2.6",
+              "LAB-2.7",
+              "LAB-5.1",
+              "LAB-5.2",
+              "LAB-5.3",
+              "LAB-5.4",
+              "LAB-5.5",
+              "LAB-6.1",
+              "LAB-6.2",
+              "LAB-6.3",
+              "LAB-6.4",
+              "LAB-6.5",
+              "LAB-6.6",
+              "LAB-6.7",
+              "LAB-6.8"
+            ]
+          },
+          "+5 min": {
+            "planted": 82,
+            "seen": 82,
+            "escaped": []
+          },
+          "+15 min": {
+            "planted": 82,
+            "seen": 82,
+            "escaped": []
+          }
+        },
+        "stretch": {
+          "planted": 8,
+          "+100 min that changed the verdict": []
+        },
+        "tiers": {
+          "planted": 76,
+          "seen": 76,
+          "escaped": []
+        }
+      },
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/mutation-sweep.txt",
+          "sha256": "dedecfb2d55740f60c5193b902afd1ec6005adc7c7b1d89e91cdc8a18efb347a",
+          "bytes": 930
+        }
+      ]
+    },
+    {
+      "id": "crosscheck",
+      "purpose": "an independent re-computation of the two paths (its own parser for the spine's tables, PyYAML for the budget file): events, hours and the five longest gaps against the gate's --json",
+      "argv": [
+        "uv",
+        "run",
+        "--quiet",
+        "--with",
+        "pyyaml",
+        "python",
+        "-I",
+        "scripts/spikes/W0-T06/crosscheck.py"
+      ],
+      "started_at": "2026-10-24T14:42:12.089Z",
+      "duration_s": 0.185,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: default: 110 events, 90.7667-167.5167 h of sequenced work, longest gap 9.42 h between CL-9.2 and SP-9.1; without the 2 planned records the longest gap is 11.8333 h between CL-10.1 and CL-10.2 (6.0833 h at the low estimate), so the cadence holds only with them",
+        "PASS: builder: 110 events, 90.7667-167.5167 h of sequenced work, longest gap 9.42 h between CL-9.2 and SP-9.1; without the 2 planned records the longest gap is 11.8333 h between CL-10.1 and CL-10.2 (6.0833 h at the low estimate), so the cadence holds only with them"
+      ],
+      "tool_versions": {
+        "pyyaml": "6.0.3"
+      },
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/crosscheck.txt",
+          "sha256": "b40754fba0cd7027172dde47eded394a5d5a7f0c82d8e8c09bb06720fcef5c4d",
+          "bytes": 532
+        }
+      ]
+    },
+    {
+      "id": "links-check",
+      "purpose": "GATE-links over the tree with content/stages/budget.yaml present: no finding may name the budget file (the IDs it writes resolve; LAB-2.9 is a pending proposal there)",
+      "argv": [
+        "node",
+        "scripts/verify-links.mjs",
+        "--json"
+      ],
+      "started_at": "2026-10-24T14:42:12.326Z",
+      "duration_s": 0.188,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: 0 of 1 GATE-links finding(s) name this task's files",
+        "other finding: owner tracker/tasks.yaml"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/links-check.txt",
+          "sha256": "cab3bbac7d3ad177570b25ab9b6310210bd4a0200e5a7fd5e92a27559f75df75",
+          "bytes": 159
+        }
+      ]
+    },
+    {
+      "id": "privacy-check",
+      "purpose": "GATE-privacy over the tree: no finding may name a file of this task",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json"
+      ],
+      "started_at": "2026-10-24T14:42:12.514Z",
+      "duration_s": 5.747,
+      "exit_code": 1,
+      "verdict_lines": [
+        "0 of 1 GATE-privacy finding(s) name this task's files: PASS",
+        "other finding: vendor-license vendor/kernelspace/"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/privacy-check.txt",
+          "sha256": "49144ee500c596c9bb577d1e58ee594f9f918d2dbeef024f1b8370588aec336b",
+          "bytes": 36
+        }
+      ]
+    },
+    {
+      "id": "baseline",
+      "purpose": "the gate on a scratch copy of the spine, the budget file and the files it cites (nothing planted): the same report as on the real files",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:18.266Z",
+      "duration_s": 0.206,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: exit 0, the same report as the real files"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/baseline.txt",
+          "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+          "bytes": 5882
+        }
+      ]
+    },
+    {
+      "id": "planted-footing",
+      "purpose": "the shape of PLAN.md spine issue 2: the Write column's low total reads 16.0 while its ten rows add to 14.95, so the column totals add to 107.7 and not to the printed 106.7 (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:18.477Z",
+      "duration_s": 0.183,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"rounding issue, PLAN.md spine issue 2\"",
+        "FAIL  rows  Total, low: its five column totals add to 107.7 h, but the table prints 106.7 h for the total (the table's rounding issue, PLAN.md spine issue 2)  [docs/spine/SPINE.md section 3.11]"
+      ],
+      "planted_check": "rows",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-footing.txt",
+          "sha256": "489a25d86b9e812498226970e580cf37e494f2d154be67c747b956c251ee739f",
+          "bytes": 5956
+        }
+      ]
+    },
+    {
+      "id": "planted-lab-minutes",
+      "purpose": "LAB-3.2 planned at 90 minutes instead of 45 with S3's row unchanged: the lab table and the printed Build cell disagree (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:18.666Z",
+      "duration_s": 0.189,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"S3 build, low\"",
+        "FAIL  rows  S3 build, low: the table prints 5.0 h, the lesson and lab tables give 5.8 h (5.78 h exactly)  [docs/spine/SPINE.md section 3.11]"
+      ],
+      "planted_check": "rows",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-lab-minutes.txt",
+          "sha256": "a7373d6def3daf81b9d84e1b39695c317bf2af6052988cbd37dc40d4161ebe92",
+          "bytes": 4589
+        }
+      ]
+    },
+    {
+      "id": "planted-over-bound",
+      "purpose": "LAB-2.4 planned at 55 minutes instead of 25: S2's high estimate passes the roadmap's upper bound (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:18.862Z",
+      "duration_s": 0.194,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 2 \"upper\" line(s) naming \"S2: the high estimate\"",
+        "  FAIL  upper  S2: the high estimate 29.90 h exceeds the roadmap's upper bound 28.50 h (3–6 wk)  [content/stages/budget.yaml]",
+        "  FAIL  upper  S2: the high estimate 29.90 h exceeds the roadmap's upper bound 28.50 h (3–6 wk)  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "upper",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-over-bound.txt",
+          "sha256": "5511aee02956c946f01680a413377fc4f6b86e8a2c549a6827897103d71c18fc",
+          "bytes": 6243
+        }
+      ]
+    },
+    {
+      "id": "planted-lower-bound",
+      "purpose": "S8's roadmap cell read as 30 to 60 weeks: its high estimate falls below half of the lower bound, a warning on both paths, exit 0 (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.062Z",
+      "duration_s": 0.188,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: the gate exits 0 (expected 0) and reports 2 \"lower\" line(s) naming \"S8: the high estimate\"",
+        "  WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+        "  WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "lower",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-lower-bound.txt",
+          "sha256": "fc6424455680cbc58f3136ae7b395cc199fba1cf2bea432fb66d10cd4ff2b115",
+          "bytes": 6259
+        }
+      ]
+    },
+    {
+      "id": "planted-lower-bound-strict",
+      "purpose": "the same under --strict, where a warning fails (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root",
+        "--strict"
+      ],
+      "started_at": "2026-10-24T14:42:19.254Z",
+      "duration_s": 0.113,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 2 \"lower\" line(s) naming \"S8: the high estimate\"",
+        "  WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]",
+        "  WARN  lower  S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h of 142.50 h, 30–60 wk); a section 12 justification clears it  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "lower",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-lower-bound-strict.txt",
+          "sha256": "fc6424455680cbc58f3136ae7b395cc199fba1cf2bea432fb66d10cd4ff2b115",
+          "bytes": 6259
+        }
+      ]
+    },
+    {
+      "id": "planted-lower-justified",
+      "purpose": "the same with a section 12 item that names S8 and its lower bound and a justification that cites it: no warning is left (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.372Z",
+      "duration_s": 0.109,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: the gate exits 0 (expected 0) and no lower warning is left; the notes say what cleared them",
+        "  NOTE  lower     S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h); section 12 item 48 justifies it",
+        "  NOTE  lower     S8: the high estimate 13.15 h is below half of the roadmap's lower bound (71.25 h); section 12 item 48 justifies it"
+      ],
+      "planted_check": "lower",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-lower-justified.txt",
+          "sha256": "bc07c5b56aaeebad3ded6efecbd10d470548dde814d09f904a39d04089c13a42",
+          "bytes": 6153
+        }
+      ]
+    },
+    {
+      "id": "planted-keep",
+      "purpose": "forty reviews per KC instead of ten: the blocks' review minutes pass the planned Keep block (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.482Z",
+      "duration_s": 0.105,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 34 \"keep\" line(s) naming \"the implied Keep load\"",
+        "  FAIL  keep  S1 (11 new KCs): the implied Keep load is up to 111.1 min/week at 6 h/week, above the planned 75 (reviews 102.7, fixed items 8.5)  [content/stages/budget.yaml]",
+        "  FAIL  keep  S1 (11 new KCs): the implied Keep load is up to 111.1 min/week at 10 h/week, above the planned 105 (reviews 102.7, fixed items 8.5)  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "keep",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-keep.txt",
+          "sha256": "28d60fe268cd7874cf3735962ef7cc9d808b205607ee2ca7bfc0d3c8e4b3fe87",
+          "bytes": 12483
+        }
+      ]
+    },
+    {
+      "id": "planted-cadence-gap",
+      "purpose": "SP-2.2, S2's first specimen, taken out of the specimen table: S1's last claim to S2's next claim passes two weeks (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.590Z",
+      "duration_s": 0.13,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"cadence\" line(s) naming \"CL-1.3 (LAB-1.5) to CL-2.1 (LAB-2.2)\"",
+        "  FAIL  cadence  CL-1.3 (LAB-1.5) to CL-2.1 (LAB-2.2): 10.57 h of stage work = 2.2 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]"
+      ],
+      "planted_check": "cadence",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-cadence-gap.txt",
+          "sha256": "a26e3a649fc7764908129557e937136eb62c92cd5798c0e25fc69dbff75ba6ff",
+          "bytes": 5088
+        }
+      ]
+    },
+    {
+      "id": "planted-no-records",
+      "purpose": "the two scheduled records of LAB-10.8 taken out: CL-10.1 to CL-10.2 passes two weeks at the high estimate (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.724Z",
+      "duration_s": 0.109,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 2 \"cadence\" line(s) naming \"CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8)\"",
+        "  FAIL  cadence  CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8): 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]",
+        "  FAIL  cadence  CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8): 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]"
+      ],
+      "planted_check": "cadence",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-no-records.txt",
+          "sha256": "db49b354aa3ab4733d58bda925bd68fc0366a46bdf5cfc10f637a5605858e4c1",
+          "bytes": 4306
+        }
+      ]
+    },
+    {
+      "id": "planted-two-tools",
+      "purpose": "a second new tool in S1 (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.834Z",
+      "duration_s": 0.108,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"tools\" line(s) naming \"S1 introduces 2 new tools\"",
+        "FAIL  tools  S1 introduces 2 new tools (Z3Py, Lean 4); the plan allows one per stage  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "tools",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-two-tools.txt",
+          "sha256": "16c6736ea9e2094f3555ad85aac2e71d7b25997cc56bc59599553f62c0134f75",
+          "bytes": 5989
+        }
+      ]
+    },
+    {
+      "id": "planted-cut-seam",
+      "purpose": "row 1 of the cut list replaced by S3.L1, which plants SEAM-6 (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:19.945Z",
+      "duration_s": 0.127,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"cutlist\" line(s) naming \"plants SEAM-6\"",
+        "FAIL  cutlist  cut list row 1: S3.L1 is not cut-eligible: (2) it plants SEAM-6  [docs/spine/SPINE.md:1751]"
+      ],
+      "planted_check": "cutlist",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-cut-seam.txt",
+          "sha256": "d8a05ea3e32a3f6eb156b9f8e7f0d5cc6056a8f410e9c7df1db85048e2bdb0df",
+          "bytes": 6734
+        }
+      ]
+    },
+    {
+      "id": "planted-no-displacement",
+      "purpose": "S2.L0's addition naming no displacement (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.075Z",
+      "duration_s": 0.11,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"additions\" line(s) naming \"S2.L0 names no displacement\"",
+        "FAIL  additions  S2: the addition S2.L0 names no displacement: say what it displaces, or \"headroom\" when S2 still fits its roadmap bound  [content/stages/budget.yaml additions S2.L0]"
+      ],
+      "planted_check": "additions",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-no-displacement.txt",
+          "sha256": "a3dd122a261c8bbcf03e51accaf811e1922f49c32d227dcb6e0db615e710ccac",
+          "bytes": 5923
+        }
+      ]
+    },
+    {
+      "id": "planted-builder-path",
+      "purpose": "the S2 and S3 blocks of the builder's path swapped (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.186Z",
+      "duration_s": 0.109,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"paths\" line(s) naming \"differ from spine section 3.0\"",
+        "FAIL  paths  the lessons of the builder path differ from spine section 3.0 at lesson 23: the spine has S2.L0, content/stages/budget.yaml has S3.L1  [docs/spine/SPINE.md:186]"
+      ],
+      "planted_check": "paths",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-builder-path.txt",
+          "sha256": "5d4d0f8201f01ca033e55ef71f3003d06a1ddbaf7362a1f292807d800d8e3e30",
+          "bytes": 5119
+        }
+      ]
+    },
+    {
+      "id": "planted-quote",
+      "purpose": "the spine's \"about 2 minutes per review\" changed: a sentence the budget file quotes is gone (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.298Z",
+      "duration_s": 0.105,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"table\" line(s) naming \"no longer says\"",
+        "FAIL  table  budget.parameters.review_load quotes \"about 2 minutes per review\", which docs/spine/SPINE.md no longer says  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "table",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-quote.txt",
+          "sha256": "14b2da624736414d69f3b5b528c9a5a1980a1eb7b682062b35bf2f6ab3fd8bbc",
+          "bytes": 5895
+        }
+      ]
+    },
+    {
+      "id": "planted-arc",
+      "purpose": "the spine's arc projection changed from 43–80 to 43–81 weeks (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.407Z",
+      "duration_s": 0.105,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"rows\" line(s) naming \"projects the arc\"",
+        "FAIL  rows  the spine projects the arc to 43–81 weeks at 6 h/week and 25–46 at 10 h/week, the totals row at 1.6x with 2 reserve weeks in 12 gives 43–80 and 25–46  [docs/spine/SPINE.md section 3.11]"
+      ],
+      "planted_check": "rows",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-arc.txt",
+          "sha256": "4718c145382d341de41c2b0920e4ba1195ca0fae92b0dbbbc94b72731134cd41",
+          "bytes": 5835
+        }
+      ]
+    },
+    {
+      "id": "planted-order-accepted",
+      "purpose": "the two cut-list warnings of the builder path accepted by two section 12 items that name the bridge and the path: no warning is left (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.515Z",
+      "duration_s": 0.098,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: the gate exits 0 (expected 0) and no cutlist warning is left; the notes say what cleared them",
+        "NOTE  cutlist   cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path; section 12 item 48 accepts it",
+        "NOTE  cutlist   cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path; section 12 item 49 accepts it"
+      ],
+      "planted_check": "cutlist",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-order-accepted.txt",
+          "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+          "bytes": 5890
+        }
+      ]
+    },
+    {
+      "id": "planted-records-alone",
+      "purpose": "the two cut-list warnings accepted as above, so that the cadence warning of each path is the only warning left; under --strict the strict lane fails on it alone (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root",
+        "--strict"
+      ],
+      "started_at": "2026-10-24T14:42:20.616Z",
+      "duration_s": 0.109,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 2 \"cadence\" line(s) naming \"the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers\", with 0 other warning(s) or failure(s)",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]"
+      ],
+      "planted_check": "cadence",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-records-alone.txt",
+          "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+          "bytes": 5890
+        }
+      ]
+    },
+    {
+      "id": "planted-records-alone-green",
+      "purpose": "the same without --strict: the cadence warnings are the only warnings left and the gate exits 0 (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.728Z",
+      "duration_s": 0.101,
+      "exit_code": 0,
+      "verdict_lines": [
+        "PASS: the gate exits 0 (expected 0) and reports 2 \"cadence\" line(s) naming \"the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers\", with 0 other warning(s) or failure(s)",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]",
+        "  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\": \"GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template\"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1864]"
+      ],
+      "planted_check": "cadence",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-records-alone-green.txt",
+          "sha256": "1d526198dd20499bbb32fa9cdab69c57ff218c912445adf022aa6793cc0ab4dd",
+          "bytes": 5890
+        }
+      ]
+    },
+    {
+      "id": "planted-ruling-quote",
+      "purpose": "the spine's ruling that the planned records go against reworded: the sentence that the budget file quotes is gone, so the gate fails until the budget file is revisited (planted in the scratch copy)",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--root",
+        "<scratch>/root"
+      ],
+      "started_at": "2026-10-24T14:42:20.832Z",
+      "duration_s": 0.105,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: the gate exits 1 (expected 1) and reports 1 \"table\" line(s) naming \"no longer says\"",
+        "FAIL  table  budget.planned_records_ruling quotes \"GATE-budget plans the cadence from templates before any learner writes, so it ca...\", which docs/spine/SPINE.md no longer says  [content/stages/budget.yaml]"
+      ],
+      "planted_check": "table",
+      "outputs": [
+        {
+          "path": "runs/RUN-budget-gate/planted-ruling-quote.txt",
+          "sha256": "313897f3e05e93d02e0d916c28f8ffcfcf7ca493f124015853bc195669980bba",
+          "bytes": 5818
+        }
+      ]
+    }
+  ],
+  "owner_actions": [
+    "Decide the two cut-list warnings of the builder path: spine section 14 rows 3 (S5.L9 into S5.L8) and 17 (S6.L5 into S6.L2) would teach a KC before its hard prerequisite on the builder path. Either name another receiving lesson, or log a section 12 item that names the bridge and the path and list it under cut_list.accepted in content/stages/budget.yaml.",
+    "Decide the S10 claim cadence, which is green only conditionally: the plan counts two records that no claim template covers (planned_records in content/stages/budget.yaml: LAB-10.8 passes 4 and 6). The S10 spec (curriculum/S10-assembly.md section 13, issue 9) asks the gate to count them; the spine (\"Left unchanged, with reasons\", S10 issue 9, its cadence clause) says GATE-budget cannot count claims without a template. Without the records CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h at the high estimate (6.08 h at the low), against the 9.50 h limit. Either add claim templates for the [C] and [N] records to spine section 5.2 and delete planned_records and planned_records_ruling from the budget file, or rule in the spine that the gate counts scheduled records (the sentence that the budget file quotes then changes, the gate reports it, and the warning is revised with the ruling). Until then each path prints a cadence warning, which fails under --strict."
+  ],
+  "recorded_at": "2026-10-24T14:42:20.996Z",
+  "notes": [
+    "The gate is the course's own script, so engine and version name the Node runtime that ran it.",
+    "The real tree is green with 4 warnings: 2 cut-list warnings on the builder path (folding S5.L9 into S5.L8 and S6.L5 into S6.L2, spine section 14 rows 3 and 17, would put a KC before its hard prerequisite) and 2 cadence warnings (one per path, below). Under --strict every one of them fails (the gate-strict configuration). The owner actions say what clears them.",
+    "The claim-cadence check is green on both paths only conditionally. The plan counts two records that no claim template covers (planned_records in content/stages/budget.yaml: LAB-10.8 passes 4 and 6) because the S10 spec (curriculum/S10-assembly.md section 13, issue 9) asks the gate to count them, while the spine (its \"Left unchanged, with reasons\" paragraph, S10 issue 9, its cadence clause) says GATE-budget plans the cadence from templates and cannot count claims without one. Without the records CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h at the high estimate (6.08 h at the low), against the 9.50 h limit, so the check fails on both paths (planted-no-records). The gate therefore prints a warning on each path for as long as the cadence holds only with the records, with the spine's sentence and the gap without them, and the criterion's green is green pending the owner's decision on the S10 cadence. The crosscheck configuration recomputes that gap independently and agrees.",
+    "The rule for the lower-bound warning is the written one (spine 3.0 and 11.2): the high estimate against half of the roadmap's lower bound. Spine sections 3.8 and 14 and the S8 spec read it on the low estimate; on that reading S6 (9.2 h against 9.5 h) is below the line today and S7 and S8 would cross it after the cut list. The gate prints that as a note and does not warn on it.",
+    "Margins are thin by the plan's own figures and the gate prints them: the longest claim-or-specimen gap is 9.42 h of 9.50 h (CL-9.2 to SP-9.1, at the high estimate); S1 to S2 is 9.32 h; S2's high estimate is 28.40 h of 28.50 h; the Keep block of S5 to S8 at 6 h/week reaches 74.5 of the planned 75 min/week (three Today sessions of 12 minutes, the weekly review, the retro, an incident and the keep-alive, all at their high figures).",
+    "Reading (the Read column, up to 29.5 h) is placed on no unit of the timeline, because the spine gives it per stage only; spread evenly over each stage's lessons it would put four gaps past two weeks on each path (the gate prints that as a note). For comparison, the S9 stage spec puts its longest gap, SP-9.3 to CL-9.2, at about 8.6 h; the gate gets 8.73 h for that span, without reading.",
+    "The technical notes carry no hours in the spine. The budget file gives each 90 to 150 minutes, the one range that reproduces the Write cells of S2, S5, S7 and S9; S10's card hours (30 to 45 minutes) reproduce its Write cell the same way. The gate checks all of them.",
+    "The planted configurations plant one defect each in a scratch copy of the spine, the budget file and the files the budget file cites; each PASS says the gate exits with the expected code and reports the expected finding, and the baseline copy reports the same as the real files.",
+    "The crosscheck configuration shares no code with the gate: it parses the spine's tables itself, reads the budget file with PyYAML, rebuilds both paths in integer units and agrees with the gate on the event counts, the hours and the five longest gaps of each path.",
+    "RUN-budget-gate is not among the run ids of spine section 9.5, which lists no run for W0-T06; it records this task's acceptance evidence. The run hashes the spine, the budget file and the files the budget file cites as inputs: re-record it with node scripts/spikes/W0-T06/record-run.mjs --scratch <dir> after a change to any of them.",
+    "The checks of other gates (links-check, privacy-check) read other tasks' files as they stood at the run time; GATE-links is red on the tree for a finding outside this task, and the configuration records only that none of its findings names this task's files.",
+    "Validated against run@1 (schemas/run.schema.json) with the validator of packages/schema before writing: ok."
+  ]
+}

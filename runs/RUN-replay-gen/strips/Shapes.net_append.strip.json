@@ -1,0 +1,82 @@
+{
+  "schema": "statespace/goal-strip-spike@0",
+  "id": "Shapes.net_append",
+  "theorem": "net_append",
+  "source": {
+    "file": "Shapes.lean",
+    "sha256": "a2a32de8bd322801c4d7fd319b92a9b3fc5f2e23a259d2697d900f4395dcb4a3"
+  },
+  "request": "$/lean/plainGoal",
+  "tactics": [
+    "induction xs with",
+    "simp [net]",
+    "simp [net, ih]",
+    "omega"
+  ],
+  "states": [
+    {
+      "when": "before",
+      "index": 0,
+      "line": 10,
+      "character": 2,
+      "goals": [
+        [
+          "xs ys : List Int",
+          "⊢ net (xs ++ ys) = net xs + net ys"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 1,
+      "line": 11,
+      "character": 11,
+      "goals": [
+        [
+          "case nil",
+          "ys : List Int",
+          "⊢ net ([] ++ ys) = net [] + net ys"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 2,
+      "line": 13,
+      "character": 4,
+      "goals": [
+        [
+          "case cons",
+          "ys : List Int",
+          "x : Int",
+          "xs : List Int",
+          "ih : net (xs ++ ys) = net xs + net ys",
+          "⊢ net (x :: xs ++ ys) = net (x :: xs) + net ys"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 3,
+      "line": 14,
+      "character": 4,
+      "goals": [
+        [
+          "case cons",
+          "ys : List Int",
+          "x : Int",
+          "xs : List Int",
+          "ih : net (xs ++ ys) = net xs + net ys",
+          "⊢ x + (net xs + net ys) = x + net xs + net ys"
+        ]
+      ]
+    },
+    {
+      "when": "end",
+      "index": 4,
+      "line": 14,
+      "character": 9,
+      "goals": []
+    }
+  ]
+}

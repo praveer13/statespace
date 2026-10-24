@@ -1,0 +1,1688 @@
+=== 1/6 Start the lane clock
+
+--- exit 0 in 0.097 s
+=== 2/6 Check out the repository (emulated)
+
+--- exit 0 in 0.202 s
+=== 3/6 Set up Node (emulated)
+node.tar.xz: OK
+sha256 88fd1ce767091fd8d4a99fdb2356e98c819f93f3b1f8663853a2dee9b438068a node-v22.22.2-linux-x64.tar.xz
+v22.22.2
+10.9.7
+--- exit 0 in 1.966 s
+=== 4/6 Set up uv (emulated)
+uv-x86_64-unknown-linux-gnu.tar.gz: OK
+sha256 6aa4576c31f791c0b9d4739e256d07358d45e7535695287fec03cf6839e25512 uv-x86_64-unknown-linux-gnu.tar.gz
+uv 0.10.2
+--- exit 0 in 1.394 s
+=== 5/6 Install the pinned packages
+
+added 88 packages in 838ms
+--- exit 0 in 0.988 s
+=== 6/6 Run the fast lane
+fast lane: 28 step(s), root <repo>, budget 300 s
+::group::[ 1/28] vendor-verify  (npm run vendor:verify)
+
+> vendor:verify
+> node scripts/vendor-drift.mjs verify
+
+vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)
+::endgroup::
+[ 1/28] vendor-verify          PASS       0.4 s  vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)
+::group::[ 2/28] lint-purity  (npm run lint:purity)
+
+> lint:purity
+> node packages/purity-lint/check.mjs
+
+purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)
+::endgroup::
+[ 2/28] lint-purity            PASS       0.3 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)
+::group::[ 3/28] typecheck  (npm run typecheck)
+
+> typecheck
+> npm run typecheck --workspaces --if-present
+
+
+> @statespace/instruments@0.0.0 typecheck
+> tsc -p . && tsc -p tsconfig.node.json
+
+
+> @statespace/site@0.0.0 typecheck
+> tsc -p . && tsc -p tsconfig.node.json
+
+
+> @statespace/ids@0.0.0 typecheck
+> tsc -p . && tsc -p test
+
+
+> @statespace/learner@0.0.0 typecheck
+> tsc -p . && tsc -p test
+
+
+> @statespace/rng@0.0.0 typecheck
+> tsc -p . && tsc -p test
+
+
+> @statespace/runs@0.0.0 typecheck
+> tsc -p . && tsc -p test
+
+
+> @statespace/schema@0.0.0 typecheck
+> tsc -p . && tsc -p test
+
+::endgroup::
+[ 3/28] typecheck              PASS       5.0 s  no output
+::group::[ 4/28] unit-tests  (npm test)
+
+> test
+> npm run test --workspaces --if-present && npm run test:vendor
+
+
+> @statespace/ids@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: verify-links exits 0 on a consistent tree
+ok 1 - verify-links exits 0 on a consistent tree
+  ---
+  duration_ms: 258.664098
+  type: 'test'
+  ...
+# Subtest: a pending proposal is reported and does not fail the gate
+ok 2 - a pending proposal is reported and does not fail the gate
+  ---
+  duration_ms: 253.39518
+  type: 'test'
+  ...
+# Subtest: --strict fails while proposals remain, and names each one
+ok 3 - --strict fails while proposals remain, and names each one
+  ---
+  duration_ms: 187.409224
+  type: 'test'
+  ...
+# Subtest: without the proposals file, a proposed ID is an ordinary failure (the gate falls back to the spine)
+ok 4 - without the proposals file, a proposed ID is an ordinary failure (the gate falls back to the spine)
+  ---
+  duration_ms: 191.900071
+  type: 'test'
+  ...
+# Subtest: IDs are resolved in docs, curriculum, labs, content, tracker and design; v1 history is exempt
+ok 5 - IDs are resolved in docs, curriculum, labs, content, tracker and design; v1 history is exempt
+  ---
+  duration_ms: 184.123879
+  type: 'test'
+  ...
+# Subtest: a mistyped ID used in several places is one finding with its places
+ok 6 - a mistyped ID used in several places is one finding with its places
+  ---
+  duration_ms: 203.483459
+  type: 'test'
+  ...
+# Subtest: --json prints the findings and the same exit status
+ok 7 - --json prints the findings and the same exit status
+  ---
+  duration_ms: 178.390524
+  type: 'test'
+  ...
+# Subtest: an unreadable required file is exit 2, not a pass
+ok 8 - an unreadable required file is exit 2, not a pass
+  ---
+  duration_ms: 169.814821
+  type: 'test'
+  ...
+# Subtest: a proposals file that is not valid is exit 2, not a pass
+ok 9 - a proposals file that is not valid is exit 2, not a pass
+  ---
+  duration_ms: 168.540054
+  type: 'test'
+  ...
+# Subtest: build-ids writes the registry and the types, and --check agrees afterwards
+ok 10 - build-ids writes the registry and the types, and --check agrees afterwards
+  ---
+  duration_ms: 292.362933
+  type: 'test'
+  ...
+# Subtest: build-ids --against fails when an ID of an earlier revision is gone or names another kind, and not when IDs are added or fields change
+ok 11 - build-ids --against fails when an ID of an earlier revision is gone or names another kind, and not when IDs are added or fields change
+  ---
+  duration_ms: 399.495193
+  type: 'test'
+  ...
+# Subtest: build-ids refuses to write a registry from a spine whose tables no longer parse
+ok 12 - build-ids refuses to write a registry from a spine whose tables no longer parse
+  ---
+  duration_ms: 59.244893
+  type: 'test'
+  ...
+# Subtest: every kind has an example that matches its own format, and only its own
+ok 13 - every kind has an example that matches its own format, and only its own
+  ---
+  duration_ms: 0.885755
+  type: 'test'
+  ...
+# Subtest: the kinds of the grammar are the kinds of the generated module
+ok 14 - the kinds of the grammar are the kinds of the generated module
+  ---
+  duration_ms: 0.391722
+  type: 'test'
+  ...
+# Subtest: the formats of the spine ID table, one by one
+ok 15 - the formats of the spine ID table, one by one
+  ---
+  duration_ms: 0.204584
+  type: 'test'
+  ...
+# Subtest: tokens are found in prose, tables, lists and emphasis
+ok 16 - tokens are found in prose, tables, lists and emphasis
+  ---
+  duration_ms: 0.693505
+  type: 'test'
+  ...
+# Subtest: the most specific kind wins, and the inside of a token is not a second token
+ok 17 - the most specific kind wins, and the inside of a token is not a second token
+  ---
+  duration_ms: 0.143225
+  type: 'test'
+  ...
+# Subtest: wildcards, placeholders, format strings and path fragments are not IDs
+ok 18 - wildcards, placeholders, format strings and path fragments are not IDs
+  ---
+  duration_ms: 0.094761
+  type: 'test'
+  ...
+# Subtest: a typo is a token that will not resolve, not text that goes unchecked
+ok 19 - a typo is a token that will not resolve, not text that goes unchecked
+  ---
+  duration_ms: 0.114817
+  type: 'test'
+  ...
+# Subtest: line and column are one-based and point at the token
+ok 20 - line and column are one-based and point at the token
+  ---
+  duration_ms: 0.088525
+  type: 'test'
+  ...
+# Subtest: idsOfKind and allIds keep order and drop repeats
+ok 21 - idsOfKind and allIds keep order and drop repeats
+  ---
+  duration_ms: 0.218571
+  type: 'test'
+  ...
+# Subtest: the real files parse, and the committed registry is what they generate
+ok 22 - the real files parse, and the committed registry is what they generate
+  ---
+  duration_ms: 0.832415
+  type: 'test'
+  ...
+# Subtest: files with CRLF line endings read the same as files with LF
+ok 23 - files with CRLF line endings read the same as files with LF
+  ---
+  duration_ms: 140.125042
+  type: 'test'
+  ...
+# Subtest: an ID that is not in the registry fails, with file, line and column
+ok 24 - an ID that is not in the registry fails, with file, line and column
+  ---
+  duration_ms: 140.959507
+  type: 'test'
+  ...
+# Subtest: every document that is scanned counts: docs, curriculum, labs, tracker and README
+ok 25 - every document that is scanned counts: docs, curriculum, labs, tracker and README
+  ---
+  duration_ms: 7.02853
+  type: 'test'
+  ...
+# Subtest: misconception keys resolve against the registry generated from EVIDENCE.md
+ok 26 - misconception keys resolve against the registry generated from EVIDENCE.md
+  ---
+  duration_ms: 100.223992
+  type: 'test'
+  ...
+# Subtest: a proposed ID is pending, not a failure; --strict fails on it; a stale entry fails
+ok 27 - a proposed ID is pending, not a failure; --strict fails on it; a stale entry fails
+  ---
+  duration_ms: 576.387622
+  type: 'test'
+  ...
+# Subtest: a run ID in a task's proposed_ids is pending until the spine registers it
+ok 28 - a run ID in a task's proposed_ids is pending until the spine registers it
+  ---
+  duration_ms: 103.509222
+  type: 'test'
+  ...
+# Subtest: an unowned mechanic in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 29 - an unowned mechanic in the catalog fails; an owner in tracker/tasks.yaml clears it
+  ---
+  duration_ms: 186.826507
+  type: 'test'
+  ...
+# Subtest: an unowned screen in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 30 - an unowned screen in the catalog fails; an owner in tracker/tasks.yaml clears it
+  ---
+  duration_ms: 186.556279
+  type: 'test'
+  ...
+# Subtest: an unowned drawer in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 31 - an unowned drawer in the catalog fails; an owner in tracker/tasks.yaml clears it
+  ---
+  duration_ms: 187.552847
+  type: 'test'
+  ...
+# Subtest: an unowned instrument in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 32 - an unowned instrument in the catalog fails; an owner in tracker/tasks.yaml clears it
+  ---
+  duration_ms: 195.024982
+  type: 'test'
+  ...
+# Subtest: the owner message names the task that the spine gives an unowned ID to
+ok 33 - the owner message names the task that the spine gives an unowned ID to
+  ---
+  duration_ms: 118.687713
+  type: 'test'
+  ...
+# Subtest: an unowned gate is a note, not a failure; an implements entry must be exactly one ID
+ok 34 - an unowned gate is a note, not a failure; an implements entry must be exactly one ID
+  ---
+  duration_ms: 196.535227
+  type: 'test'
+  ...
+# Subtest: every implements entry and every depends_on resolves (a dropped task is a dangling reference)
+ok 35 - every implements entry and every depends_on resolves (a dropped task is a dangling reference)
+  ---
+  duration_ms: 92.378585
+  type: 'test'
+  ...
+# Subtest: 9.1 "Used in": a stage that no lesson row gives is a mismatch
+ok 36 - 9.1 "Used in": a stage that no lesson row gives is a mismatch
+  ---
+  duration_ms: 93.212745
+  type: 'test'
+  ...
+# Subtest: 9.1 "Used in": a cell that is neither a stage list nor an exempt phrase fails; "all labs" is exempt
+ok 37 - 9.1 "Used in": a cell that is neither a stage list nor an exempt phrase fails; "all labs" is exempt
+  ---
+  duration_ms: 185.302643
+  type: 'test'
+  ...
+# Subtest: 9.1 "Used in": a lesson row that uses an instrument in another stage is a mismatch
+ok 38 - 9.1 "Used in": a lesson row that uses an instrument in another stage is a mismatch
+  ---
+  duration_ms: 102.290785
+  type: 'test'
+  ...
+# Subtest: 9.1 "Used in": a capstone step counts, and Lane A counts the labs that the step is built in
+ok 39 - 9.1 "Used in": a capstone step counts, and Lane A counts the labs that the step is built in
+  ---
+  duration_ms: 103.284003
+  type: 'test'
+  ...
+# Subtest: 8.3 "Stages": a generator used in another stage is a mismatch; the exempt cells are exempt
+ok 40 - 8.3 "Stages": a generator used in another stage is a mismatch; the exempt cells are exempt
+  ---
+  duration_ms: 92.744864
+  type: 'test'
+  ...
+# Subtest: 3.12 "Used in": a stage spec that references a drawer the cell omits is a mismatch
+ok 41 - 3.12 "Used in": a stage spec that references a drawer the cell omits is a mismatch
+  ---
+  duration_ms: 184.644632
+  type: 'test'
+  ...
+# Subtest: parseStageList and stagesNamedIn read the cells of the spine
+ok 42 - parseStageList and stagesNamedIn read the cells of the spine
+  ---
+  duration_ms: 0.237099
+  type: 'test'
+  ...
+# Subtest: a [step] row changes the step count and leaves the lesson count alone
+ok 43 - a [step] row changes the step count and leaves the lesson count alone
+  ---
+  duration_ms: 92.552543
+  type: 'test'
+  ...
+# Subtest: a spine that counts the steps among its lessons fails the gate
+ok 44 - a spine that counts the steps among its lessons fails the gate
+  ---
+  duration_ms: 91.620201
+  type: 'test'
+  ...
+# Subtest: a lesson added to a table disagrees with the stated counts
+ok 45 - a lesson added to a table disagrees with the stated counts
+  ---
+  duration_ms: 99.399439
+  type: 'test'
+  ...
+# Subtest: a count paragraph or clause that went missing is a finding, so a reworded sentence is not silently unchecked
+ok 46 - a count paragraph or clause that went missing is a finding, so a reworded sentence is not silently unchecked
+  ---
+  duration_ms: 190.339822
+  type: 'test'
+  ...
+# Subtest: a status in docs/TRACKER.md that differs from tasks.yaml fails
+ok 47 - a status in docs/TRACKER.md that differs from tasks.yaml fails
+  ---
+  duration_ms: 112.892793
+  type: 'test'
+  ...
+# Subtest: the other direction: tasks.yaml moves and the checklist does not
+ok 48 - the other direction: tasks.yaml moves and the checklist does not
+  ---
+  duration_ms: 103.153184
+  type: 'test'
+  ...
+# Subtest: the four statuses map to the four markers, and a consistent change in both files passes
+ok 49 - the four statuses map to the four markers, and a consistent change in both files passes
+  ---
+  duration_ms: 447.000345
+  type: 'test'
+  ...
+# Subtest: a task missing from the checklist, listed twice, or unknown to tasks.yaml fails
+ok 50 - a task missing from the checklist, listed twice, or unknown to tasks.yaml fails
+  ---
+  duration_ms: 311.124559
+  type: 'test'
+  ...
+# Subtest: a task of spine section 13 that tasks.yaml dropped, and a status it does not allow, fail
+ok 51 - a task of spine section 13 that tasks.yaml dropped, and a status it does not allow, fail
+  ---
+  duration_ms: 265.613522
+  type: 'test'
+  ...
+# Subtest: a tasks.yaml that does not parse is one finding, not a cascade
+ok 52 - a tasks.yaml that does not parse is one finding, not a cascade
+  ---
+  duration_ms: 85.1767
+  type: 'test'
+  ...
+# Subtest: a spine edit without regenerating packages/ids is a stale registry
+ok 53 - a spine edit without regenerating packages/ids is a stale registry
+  ---
+  duration_ms: 100.144932
+  type: 'test'
+  ...
+# Subtest: a missing committed registry fails
+ok 54 - a missing committed registry fails
+  ---
+  duration_ms: 98.185285
+  type: 'test'
+  ...
+# Subtest: [step] IDs are lessons by shape and are excluded from every lesson count
+ok 55 - [step] IDs are lessons by shape and are excluded from every lesson count
+  ---
+  duration_ms: 3.160004
+  type: 'test'
+  ...
+# Subtest: steps count towards Used in, and Lane A also counts the labs a step is built in
+ok 56 - steps count towards Used in, and Lane A also counts the labs a step is built in
+  ---
+  duration_ms: 0.734098
+  type: 'test'
+  ...
+# Subtest: the real spine builds with no problems
+ok 57 - the real spine builds with no problems
+  ---
+  duration_ms: 23.70595
+  type: 'test'
+  ...
+# Subtest: every ID of the registry is unique, in its kind format, and has a section
+ok 58 - every ID of the registry is unique, in its kind format, and has a section
+  ---
+  duration_ms: 8.984543
+  type: 'test'
+  ...
+# Subtest: a malformed table, a duplicate ID and a missing table are problems, not a shorter registry
+ok 59 - a malformed table, a duplicate ID and a missing table are problems, not a shorter registry
+  ---
+  duration_ms: 25.049082
+  type: 'test'
+  ...
+# Subtest: stage and lab arithmetic
+ok 60 - stage and lab arithmetic
+  ---
+  duration_ms: 0.100934
+  type: 'test'
+  ...
+# Subtest: drawer references of a stage spec: the Drawers and Sibling bridges paragraphs, ranges expanded
+ok 61 - drawer references of a stage spec: the Drawers and Sibling bridges paragraphs, ranges expanded
+  ---
+  duration_ms: 0.137827
+  type: 'test'
+  ...
+# Subtest: misconception keys: catalog rows plus the ranges proposed in section 6.11
+ok 62 - misconception keys: catalog rows plus the ranges proposed in section 6.11
+  ---
+  duration_ms: 0.125562
+  type: 'test'
+  ...
+# Subtest: the generated files are deterministic, and a registry diff names added, removed and changed IDs
+ok 63 - the generated files are deterministic, and a registry diff names added, removed and changed IDs
+  ---
+  duration_ms: 41.585641
+  type: 'test'
+  ...
+# Subtest: mappings, sequences of mappings and scalars of the subset
+ok 64 - mappings, sequences of mappings and scalars of the subset
+  ---
+  duration_ms: 1.747206
+  type: 'test'
+  ...
+# Subtest: literal and kept block scalars
+ok 65 - literal and kept block scalars
+  ---
+  duration_ms: 0.155759
+  type: 'test'
+  ...
+# Subtest: constructs outside the subset fail loudly instead of being half-read
+ok 66 - constructs outside the subset fail loudly instead of being half-read
+  ---
+  duration_ms: 0.385704
+  type: 'test'
+  ...
+# Subtest: tracker/tasks.yaml stays inside the subset and has the shape the gate reads
+ok 67 - tracker/tasks.yaml stays inside the subset and has the shape the gate reads
+  ---
+  duration_ms: 38.831175
+  type: 'test'
+  ...
+# Subtest: agrees with PyYAML on tracker/tasks.yaml
+ok 68 - agrees with PyYAML on tracker/tasks.yaml # SKIP
+  ---
+  duration_ms: 0.156031
+  type: 'test'
+  ...
+1..68
+# tests 68
+# suites 0
+# pass 67
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 5209.671885
+
+> @statespace/learner@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: the recorded reference
+    # Subtest: is ts-fsrs 5.4.2 with 2000 replays of 1 to 12 steps
+    ok 1 - is ts-fsrs 5.4.2 with 2000 replays of 1 to 12 steps
+      ---
+      duration_ms: 0.557529
+      type: 'test'
+      ...
+    # Subtest: the weights are the 21 FSRS-6 defaults of the reference
+    ok 2 - the weights are the 21 FSRS-6 defaults of the reference
+      ---
+      duration_ms: 0.351528
+      type: 'test'
+      ...
+    # Subtest: every replayed step matches {R, S, D, interval} to 1e-8
+    ok 3 - every replayed step matches {R, S, D, interval} to 1e-8
+      ---
+      duration_ms: 19.18449
+      type: 'test'
+      ...
+    # Subtest: R(t, S) matches over the grid, including t = 0 and the S ends
+    ok 4 - R(t, S) matches over the grid, including t = 0 and the S ends
+      ---
+      duration_ms: 0.17119
+      type: 'test'
+      ...
+    # Subtest: intervals match exactly over S x desired retention in [0.5, 1]
+    ok 5 - intervals match exactly over S x desired retention in [0.5, 1]
+      ---
+      duration_ms: 0.134795
+      type: 'test'
+      ...
+    1..5
+ok 1 - the recorded reference
+  ---
+  duration_ms: 20.916097
+  type: 'suite'
+  ...
+# Subtest: model properties
+    # Subtest: R is 0.9 at t = S, 1 at t = 0, and falls with t
+    ok 1 - R is 0.9 at t = S, 1 at t = 0, and falls with t
+      ---
+      duration_ms: 0.196122
+      type: 'test'
+      ...
+    # Subtest: first review: S0 is w[G-1] floored at 0.1, D0 is clamped to [1, 10]
+    ok 2 - first review: S0 is w[G-1] floored at 0.1, D0 is clamped to [1, 10]
+      ---
+      duration_ms: 0.124509
+      type: 'test'
+      ...
+    # Subtest: a lapse never leaves a card more stable than before
+    ok 3 - a lapse never leaves a card more stable than before
+      ---
+      duration_ms: 0.143867
+      type: 'test'
+      ...
+    # Subtest: Easy grows stability more than Good, and Good more than Hard
+    ok 4 - Easy grows stability more than Good, and Good more than Hard
+      ---
+      duration_ms: 0.129751
+      type: 'test'
+      ...
+    # Subtest: difficulty stays within [1, 10] under any run of ratings
+    ok 5 - difficulty stays within [1, 10] under any run of ratings
+      ---
+      duration_ms: 0.19419
+      type: 'test'
+      ...
+    # Subtest: intervals are whole days in [1, MAX_INTERVAL]; a retention outside (0, 1] throws
+    ok 6 - intervals are whole days in [1, MAX_INTERVAL]; a retention outside (0, 1] throws
+      ---
+      duration_ms: 0.236966
+      type: 'test'
+      ...
+    # Subtest: the same replay twice gives identical bits
+    ok 7 - the same replay twice gives identical bits
+      ---
+      duration_ms: 0.099345
+      type: 'test'
+      ...
+    1..7
+ok 2 - model properties
+  ---
+  duration_ms: 1.302362
+  type: 'suite'
+  ...
+1..2
+# tests 12
+# suites 2
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.166295
+
+> @statespace/purity-lint@0.0.0 test
+> node --test "test/*.test.mjs"
+
+TAP version 13
+# Subtest: the planted fixtures trip the lint, line by line
+ok 1 - the planted fixtures trip the lint, line by line
+  ---
+  duration_ms: 233.999542
+  type: 'test'
+  ...
+# Subtest: the clean fixtures pass: locals, keys, strings, types, wrapper homes and apps
+ok 2 - the clean fixtures pass: locals, keys, strings, types, wrapper homes and apps
+  ---
+  duration_ms: 240.90097
+  type: 'test'
+  ...
+# Subtest: the repository passes
+ok 3 - the repository passes
+  ---
+  duration_ms: 300.192728
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 805.979261
+
+> @statespace/rng@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: splitmix32u equals an independent BigInt implementation over 11 seeds x 200 draws
+ok 1 - splitmix32u equals an independent BigInt implementation over 11 seeds x 200 draws
+  ---
+  duration_ms: 1.568001
+  type: 'test'
+  ...
+# Subtest: splitmix32 is splitmix32u over 2^32, in [0, 1)
+ok 2 - splitmix32 is splitmix32u over 2^32, in [0, 1)
+  ---
+  duration_ms: 0.387297
+  type: 'test'
+  ...
+# Subtest: the same seed gives the same sequence twice, and different seeds differ
+ok 3 - the same seed gives the same sequence twice, and different seeds differ
+  ---
+  duration_ms: 0.682528
+  type: 'test'
+  ...
+# Subtest: shuffledOrder is a deterministic permutation of [0, n)
+ok 4 - shuffledOrder is a deterministic permutation of [0, n)
+  ---
+  duration_ms: 0.353442
+  type: 'test'
+  ...
+# Subtest: hash32 is FNV-1a over 32 bits: the published test vectors
+ok 5 - hash32 is FNV-1a over 32 bits: the published test vectors
+  ---
+  duration_ms: 0.095097
+  type: 'test'
+  ...
+# Subtest: the package does not re-export the entropy source or the quiz-export order
+ok 6 - the package does not re-export the entropy source or the quiz-export order
+  ---
+  duration_ms: 0.061253
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 54.132252
+
+> @statespace/runs@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: a value tag passes when its sentence states the value, and fails when it states another
+ok 1 - a value tag passes when its sentence states the value, and fails when it states another
+  ---
+  duration_ms: 4.500378
+  type: 'test'
+  ...
+# Subtest: a value tag on a run that is not on disk, or on a path that names no one value, fails
+ok 2 - a value tag on a run that is not on disk, or on a path that names no one value, fails
+  ---
+  duration_ms: 0.251298
+  type: 'test'
+  ...
+# Subtest: a value reference prints one value; a reference to a run not yet recorded waits
+ok 3 - a value reference prints one value; a reference to a run not yet recorded waits
+  ---
+  duration_ms: 0.25813
+  type: 'test'
+  ...
+# Subtest: citations name no value, so nothing is compared
+ok 4 - citations name no value, so nothing is compared
+  ---
+  duration_ms: 0.165558
+  type: 'test'
+  ...
+# Subtest: learner copy prints run outputs and never types them
+ok 5 - learner copy prints run outputs and never types them
+  ---
+  duration_ms: 0.798576
+  type: 'test'
+  ...
+# Subtest: fact references name registry facts
+ok 6 - fact references name registry facts
+  ---
+  duration_ms: 0.219847
+  type: 'test'
+  ...
+# Subtest: a finding names the line of its reference inside a multi-line unit
+ok 7 - a finding names the line of its reference inside a multi-line unit
+  ---
+  duration_ms: 0.24268
+  type: 'test'
+  ...
+# Subtest: a value tag after its sentence's full stop is reported as standing alone
+ok 8 - a value tag after its sentence's full stop is reported as standing alone
+  ---
+  duration_ms: 0.129825
+  type: 'test'
+  ...
+# Subtest: the copy rule names the value reference that prints a typed value, or says the cited run holds no such value
+ok 9 - the copy rule names the value reference that prints a typed value, or says the cited run holds no such value
+  ---
+  duration_ms: 0.31615
+  type: 'test'
+  ...
+# Subtest: dates
+ok 10 - dates
+  ---
+  duration_ms: 0.837952
+  type: 'test'
+  ...
+# Subtest: the clock: checked on 2026-10-23 with 60 days, stale since 2026-12-22 (docs/LANDSCAPE.md section 6.2)
+ok 11 - the clock: checked on 2026-10-23 with 60 days, stale since 2026-12-22 (docs/LANDSCAPE.md section 6.2)
+  ---
+  duration_ms: 0.399329
+  type: 'test'
+  ...
+# Subtest: a run's clock: its execution date plus ttl_days; none without ttl_days
+ok 12 - a run's clock: its execution date plus ttl_days; none without ttl_days
+  ---
+  duration_ms: 18.705696
+  type: 'test'
+  ...
+# Subtest: the committed registry is well formed, and its saved copies still hold their quotes
+ok 13 - the committed registry is well formed, and its saved copies still hold their quotes
+  ---
+  duration_ms: 11.108078
+  type: 'test'
+  ...
+# Subtest: tool facts: a source, a check date that has happened, a TTL of 60 to 90 days
+ok 14 - tool facts: a source, a check date that has happened, a TTL of 60 to 90 days
+  ---
+  duration_ms: 0.470359
+  type: 'test'
+  ...
+# Subtest: dated facts state their own date and never have a TTL
+ok 15 - dated facts state their own date and never have a TTL
+  ---
+  duration_ms: 0.197906
+  type: 'test'
+  ...
+# Subtest: twins: the pin lives in a run with a 60-day TTL, and the twin follows the run's clock
+ok 16 - twins: the pin lives in a run with a 60-day TTL, and the twin follows the run's clock
+  ---
+  duration_ms: 0.374869
+  type: 'test'
+  ...
+# Subtest: evidence: the saved copy keeps its SHA-256 and holds the quote
+ok 17 - evidence: the saved copy keeps its SHA-256 and holds the quote
+  ---
+  duration_ms: 20.069726
+  type: 'test'
+  ...
+# Subtest: errata: the format, and supersedes that never loops
+ok 18 - errata: the format, and supersedes that never loops
+  ---
+  duration_ms: 0.792346
+  type: 'test'
+  ...
+# Subtest: re-check flags: an erratum flags a lesson the learner finished on or before its date; a newer erratum replaces the one it supersedes
+ok 19 - re-check flags: an erratum flags a lesson the learner finished on or before its date; a newer erratum replaces the one it supersedes
+  ---
+  duration_ms: 0.354396
+  type: 'test'
+  ...
+# Subtest: GATE-facts fails on a fixture sentence whose tagged value disagrees with its run
+ok 20 - GATE-facts fails on a fixture sentence whose tagged value disagrees with its run
+  ---
+  duration_ms: 171.274104
+  type: 'test'
+  ...
+# Subtest: GATE-facts warns on an expired-TTL fixture without failing
+ok 21 - GATE-facts warns on an expired-TTL fixture without failing
+  ---
+  duration_ms: 137.09419
+  type: 'test'
+  ...
+# Subtest: GATE-facts is green on the repository today
+ok 22 - GATE-facts is green on the repository today
+  ---
+  duration_ms: 370.226663
+  type: 'test'
+  ...
+# Subtest: a tag with paths, a template with a path, a citation and a fact reference
+ok 23 - a tag with paths, a template with a path, a citation and a fact reference
+  ---
+  duration_ms: 1.322079
+  type: 'test'
+  ...
+# Subtest: a path may hold a parenthesised argument list with a comma: values.canread(1,3)
+ok 24 - a path may hold a parenthesised argument list with a comma: values.canread(1,3)
+  ---
+  duration_ms: 0.143605
+  type: 'test'
+  ...
+# Subtest: code spans: a placeholder there is a format mention; a real ID there is still a reference
+ok 25 - code spans: a placeholder there is a format mention; a real ID there is still a reference
+  ---
+  duration_ms: 0.280142
+  type: 'test'
+  ...
+# Subtest: maskReferences keeps every offset
+ok 26 - maskReferences keeps every offset
+  ---
+  duration_ms: 0.190049
+  type: 'test'
+  ...
+# Subtest: the ID grammars
+ok 27 - the ID grammars
+  ---
+  duration_ms: 0.133977
+  type: 'test'
+  ...
+# Subtest: on every document of the tree, the run references agree with the ones GATE-runs reads
+ok 28 - on every document of the tree, the run references agree with the ones GATE-runs reads
+  ---
+  duration_ms: 73.32424
+  type: 'test'
+  ...
+# Subtest: the run chip: id, engine, version and the day the run executed
+ok 29 - the run chip: id, engine, version and the day the run executed
+  ---
+  duration_ms: 0.854093
+  type: 'test'
+  ...
+# Subtest: the chip of a run with a TTL shows "stale since" once the TTL has passed
+ok 30 - the chip of a run with a TTL shows "stale since" once the TTL has passed
+  ---
+  duration_ms: 0.191329
+  type: 'test'
+  ...
+# Subtest: the run sheet: commands, inputs, outputs, verdict lines and the command that re-executes the run
+ok 31 - the run sheet: commands, inputs, outputs, verdict lines and the command that re-executes the run
+  ---
+  duration_ms: 0.374893
+  type: 'test'
+  ...
+# Subtest: every record on disk yields a chip and a sheet
+ok 32 - every record on disk yields a chip and a sheet
+  ---
+  duration_ms: 0.537953
+  type: 'test'
+  ...
+# Subtest: resolvePath reads own properties and list indices, as GATE-runs does
+ok 33 - resolvePath reads own properties and list indices, as GATE-runs does
+  ---
+  duration_ms: 0.835848
+  type: 'test'
+  ...
+# Subtest: the real records: values GATE-facts prints
+ok 34 - the real records: values GATE-facts prints
+  ---
+  duration_ms: 10.694054
+  type: 'test'
+  ...
+# Subtest: isPrintable: a non-empty string, a finite number or a boolean
+ok 35 - isPrintable: a non-empty string, a finite number or a boolean
+  ---
+  duration_ms: 0.291835
+  type: 'test'
+  ...
+# Subtest: renderings and the printed form
+ok 36 - renderings and the printed form
+  ---
+  duration_ms: 0.349359
+  type: 'test'
+  ...
+# Subtest: findValue: a sentence states a value only as a whole token
+ok 37 - findValue: a sentence states a value only as a whole token
+  ---
+  duration_ms: 0.78228
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 735.636121
+
+> @statespace/schema@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: every shared vector hashes to its expected SHA-256 through the text and bytes entry points
+ok 1 - every shared vector hashes to its expected SHA-256 through the text and bytes entry points
+  ---
+  duration_ms: 8.189079
+  type: 'test'
+  ...
+# Subtest: every error vector is rejected with its code
+ok 2 - every error vector is rejected with its code
+  ---
+  duration_ms: 0.672206
+  type: 'test'
+  ...
+# Subtest: vectors that name sameAs hash like the vector they name
+ok 3 - vectors that name sameAs hash like the vector they name
+  ---
+  duration_ms: 0.162466
+  type: 'test'
+  ...
+# Subtest: trimRight removes exactly what the engine trimEnd removes, for every UTF-16 code unit
+ok 4 - trimRight removes exactly what the engine trimEnd removes, for every UTF-16 code unit
+  ---
+  duration_ms: 9.311953
+  type: 'test'
+  ...
+# Subtest: trimRight leaves the start and the middle alone and is idempotent
+ok 5 - trimRight leaves the start and the middle alone and is idempotent
+  ---
+  duration_ms: 0.119424
+  type: 'test'
+  ...
+# Subtest: generated types accept the records the schemas accept
+ok 6 - generated types accept the records the schemas accept
+  ---
+  duration_ms: 0.859661
+  type: 'test'
+  ...
+# Subtest: generated types reject shapes the schemas reject
+ok 7 - generated types reject shapes the schemas reject
+  ---
+  duration_ms: 0.122442
+  type: 'test'
+  ...
+# Subtest: the package embeds every published schema
+not ok 8 - the package embeds every published schema
+  ---
+  duration_ms: 1.27617
+  type: 'test'
+  location: '<repo>/packages/schema/test/validate.test.ts:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'claim',
+        'defs',
+        'event',
+        'ir',
+    +   'receipt',
+    +   'run'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'claim'
+    1: 'defs'
+    2: 'event'
+    3: 'ir'
+  actual:
+    0: 'claim'
+    1: 'defs'
+    2: 'event'
+    3: 'ir'
+    4: 'receipt'
+    5: 'run'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/packages/schema/test/validate.test.ts:14:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: claim: every valid fixture validates
+ok 9 - claim: every valid fixture validates
+  ---
+  duration_ms: 1.630913
+  type: 'test'
+  ...
+# Subtest: claim: every invalid fixture fails on the keyword and path its index names
+ok 10 - claim: every invalid fixture fails on the keyword and path its index names
+  ---
+  duration_ms: 1.316793
+  type: 'test'
+  ...
+# Subtest: event: every valid fixture validates
+ok 11 - event: every valid fixture validates
+  ---
+  duration_ms: 1.536272
+  type: 'test'
+  ...
+# Subtest: event: every invalid fixture fails on the keyword and path its index names
+ok 12 - event: every invalid fixture fails on the keyword and path its index names
+  ---
+  duration_ms: 1.452017
+  type: 'test'
+  ...
+# Subtest: ir: every valid fixture validates
+ok 13 - ir: every valid fixture validates
+  ---
+  duration_ms: 0.322784
+  type: 'test'
+  ...
+# Subtest: ir: every invalid fixture fails on the keyword and path its index names
+ok 14 - ir: every invalid fixture fails on the keyword and path its index names
+  ---
+  duration_ms: 0.352131
+  type: 'test'
+  ...
+# Subtest: shared definitions accept their valid values and reject their invalid ones, including a trailing newline
+ok 15 - shared definitions accept their valid values and reject their invalid ones, including a trailing newline
+  ---
+  duration_ms: 0.610727
+  type: 'test'
+  ...
+# Subtest: validateRecord dispatches on the schema field
+ok 16 - validateRecord dispatches on the schema field
+  ---
+  duration_ms: 0.360005
+  type: 'test'
+  ...
+# Subtest: isRecord narrows a value to its record type
+ok 17 - isRecord narrows a value to its record type
+  ---
+  duration_ms: 0.282597
+  type: 'test'
+  ...
+# Subtest: a recursive $ref, oneOf, not, if/then and uniqueItems behave as JSON Schema says
+ok 18 - a recursive $ref, oneOf, not, if/then and uniqueItems behave as JSON Schema says
+  ---
+  duration_ms: 0.276183
+  type: 'test'
+  ...
+# Subtest: minLength counts code points, not UTF-16 units
+ok 19 - minLength counts code points, not UTF-16 units
+  ---
+  duration_ms: 0.069578
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 18
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 90.539227
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path <repo>/packages/schema
+npm error workspace @statespace/schema@0.0.0
+npm error location <repo>/packages/schema
+npm error command failed
+npm error command sh -c node --test "test/*.test.ts"
+::endgroup::
+[ 4/28] unit-tests             FAIL       7.2 s  145 tests, 143 passed, 1 failed, 1 skipped
+::error title=unit-tests::unit-tests fail: 145 tests, 143 passed, 1 failed, 1 skipped
+::group::[ 5/28] build  (npm run build)
+
+> build
+> npm run build --workspaces --if-present
+
+
+> @statespace/instruments@0.0.0 build
+> npm run typecheck && vite build
+
+
+> @statespace/instruments@0.0.0 typecheck
+> tsc -p . && tsc -p tsconfig.node.json
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 29 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/.vite/manifest.json                          0.55 kB │ gzip:  0.21 kB
+dist/instrument.html                              0.71 kB │ gzip:  0.41 kB
+dist/host.html                                    0.77 kB │ gzip:  0.43 kB
+dist/assets/host-BqRlkqgy.js                      0.15 kB │ gzip:  0.15 kB
+dist/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:  0.40 kB
+dist/assets/instrument-BbW4VJxX.js              222.05 kB │ gzip: 69.14 kB
+✓ built in 447ms
+
+> @statespace/site@0.0.0 build
+> npm run typecheck && vite build
+
+
+> @statespace/site@0.0.0 typecheck
+> tsc -p . && tsc -p tsconfig.node.json
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 41 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/.vite/manifest.json          0.19 kB │ gzip:   0.14 kB
+dist/index.html                   0.83 kB │ gzip:   0.44 kB
+dist/assets/index-DSCAf_Cr.css    0.46 kB │ gzip:   0.31 kB
+dist/assets/index-Bm7V7eY6.js   315.67 kB │ gzip: 100.69 kB
+✓ built in 628ms
+::endgroup::
+[ 5/28] build                  PASS       3.4 s  ✓ built in 628ms
+::group::[ 6/28] lane-tests  (node --test scripts/spikes/W0-T04/lane.test.mjs scripts/spikes/W0-T04/lane-manifest.test.mjs scripts/spikes/W0-T04/status-branch.test.mjs scripts/spikes/W0-T04/file-issue.test.mjs scripts/spikes/W0-T04/emulate-runner.test.mjs scripts/spikes/W0-T04/workflows.test.mjs)
+TAP version 13
+# Subtest: expressions: contexts, literals, ||, &&, ==, != and !
+ok 1 - expressions: contexts, literals, ||, &&, ==, != and !
+  ---
+  duration_ms: 0.852599
+  type: 'test'
+  ...
+# Subtest: expressions the emulator does not know stop the run instead of being guessed
+ok 2 - expressions the emulator does not know stop the run instead of being guessed
+  ---
+  duration_ms: 0.316859
+  type: 'test'
+  ...
+# Subtest: interpolate replaces every ${{ }} and prints a missing value as empty text
+ok 3 - interpolate replaces every ${{ }} and prints a missing value as empty text
+  ---
+  duration_ms: 0.138531
+  type: 'test'
+  ...
+# Subtest: a step runs after success by default, always() runs after a failure, and a bare condition still needs success
+ok 4 - a step runs after success by default, always() runs after a failure, and a bare condition still needs success
+  ---
+  duration_ms: 0.184853
+  type: 'test'
+  ...
+# Subtest: GITHUB_ENV files: KEY=value lines and KEY<<DELIMITER blocks
+ok 5 - GITHUB_ENV files: KEY=value lines and KEY<<DELIMITER blocks
+  ---
+  duration_ms: 0.975372
+  type: 'test'
+  ...
+# Subtest: the committed fast workflow reads as the emulator expects
+ok 6 - the committed fast workflow reads as the emulator expects
+  ---
+  duration_ms: 252.395544
+  type: 'test'
+  ...
+# Subtest: in a container: env files carry between steps, a failure skips the rest except always(), and the clock covers every step
+ok 7 - in a container: env files carry between steps, a failure skips the rest except always(), and the clock covers every step # SKIP set STATESPACE_EMULATOR_TESTS=1 with Docker and ubuntu:24.04 present
+  ---
+  duration_ms: 0.168002
+  type: 'test'
+  ...
+# Subtest: red with no open issue creates one, labelled, with the table and the tail of the failing output
+ok 8 - red with no open issue creates one, labelled, with the table and the tail of the failing output
+  ---
+  duration_ms: 84.734226
+  type: 'test'
+  ...
+# Subtest: red with an open issue comments on it and creates nothing
+ok 9 - red with an open issue comments on it and creates nothing
+  ---
+  duration_ms: 77.262401
+  type: 'test'
+  ...
+# Subtest: green closes the open issue, and does nothing when none is open
+ok 10 - green closes the open issue, and does nothing when none is open
+  ---
+  duration_ms: 138.704701
+  type: 'test'
+  ...
+# Subtest: when no step ran (GATE-labs is not built yet) nothing is filed and gh is not called
+ok 11 - when no step ran (GATE-labs is not built yet) nothing is filed and gh is not called
+  ---
+  duration_ms: 17.959158
+  type: 'test'
+  ...
+# Subtest: a lane that could not run, or left no summary, is red and says why
+ok 12 - a lane that could not run, or left no summary, is red and says why
+  ---
+  duration_ms: 187.600901
+  type: 'test'
+  ...
+# Subtest: the link to the run is added when the environment names it
+ok 13 - the link to the run is added when the environment names it
+  ---
+  duration_ms: 86.589239
+  type: 'test'
+  ...
+# Subtest: a gh failure is exit 1 with its message; usage problems are exit 2
+ok 14 - a gh failure is exit 1 with its message; usage problems are exit 2
+  ---
+  duration_ms: 158.82575
+  type: 'test'
+  ...
+# Subtest: --dry-run prints the plan and calls nothing
+ok 15 - --dry-run prints the plan and calls nothing
+  ---
+  duration_ms: 29.400199
+  type: 'test'
+  ...
+# Subtest: decide: only steps that ran are tabled, and a timeout counts as red
+ok 16 - decide: only steps that ran are tabled, and a timeout counts as red
+  ---
+  duration_ms: 1.241537
+  type: 'test'
+  ...
+# Subtest: the manifest is valid
+ok 17 - the manifest is valid
+  ---
+  duration_ms: 1.117228
+  type: 'test'
+  ...
+# Subtest: it lists exactly the gates of the spine, as the generated ID registry has them
+ok 18 - it lists exactly the gates of the spine, as the generated ID registry has them
+  ---
+  duration_ms: 1.581399
+  type: 'test'
+  ...
+# Subtest: every lane the spine names for a gate runs it
+ok 19 - every lane the spine names for a gate runs it
+  ---
+  duration_ms: 1.702253
+  type: 'test'
+  ...
+# Subtest: the spine says GATE-labs also runs monthly, and the manifest runs it there
+ok 20 - the spine says GATE-labs also runs monthly, and the manifest runs it there
+  ---
+  duration_ms: 1.730851
+  type: 'test'
+  ...
+# Subtest: every gate that runs in the fast lane also runs in the nightly lane, so a green night means every gate was green
+ok 21 - every gate that runs in the fast lane also runs in the nightly lane, so a green night means every gate was green
+  ---
+  duration_ms: 0.205531
+  type: 'test'
+  ...
+# Subtest: GATE-release is the one step the release lane requires, and nothing else is required anywhere
+ok 22 - GATE-release is the one step the release lane requires, and nothing else is required anywhere
+  ---
+  duration_ms: 0.239177
+  type: 'test'
+  ...
+# Subtest: each gate script names a task that the tracker has, and that task lists the script as a deliverable
+ok 23 - each gate script names a task that the tracker has, and that task lists the script as a deliverable
+  ---
+  duration_ms: 1.379584
+  type: 'test'
+  ...
+# Subtest: the one gate without a task says so in its note
+ok 24 - the one gate without a task says so in its note
+  ---
+  duration_ms: 0.097727
+  type: 'test'
+  ...
+# Subtest: the privacy gate turns strict where the CI secrets exist, and always in the release lane
+ok 25 - the privacy gate turns strict where the CI secrets exist, and always in the release lane
+  ---
+  duration_ms: 0.187935
+  type: 'test'
+  ...
+# Subtest: the fast lane has a budget of 300 seconds, as spine section 11.2 says
+ok 26 - the fast lane has a budget of 300 seconds, as spine section 11.2 says
+  ---
+  duration_ms: 0.872207
+  type: 'test'
+  ...
+# Subtest: lane-tests names every test file of this folder, so a deleted or renamed file cannot pass unseen
+ok 27 - lane-tests names every test file of this folder, so a deleted or renamed file cannot pass unseen
+  ---
+  duration_ms: 0.181373
+  type: 'test'
+  ...
+# Subtest: an absent step is reported with the task that builds it, and neither passes nor fails the lane
+ok 28 - an absent step is reported with the task that builds it, and neither passes nor fails the lane
+  ---
+  duration_ms: 45.273769
+  type: 'test'
+  ...
+# Subtest: a failing gate fails the lane; the summary keeps its verdict line and the tail of its output
+ok 29 - a failing gate fails the lane; the summary keeps its verdict line and the tail of its output
+  ---
+  duration_ms: 61.79965
+  type: 'test'
+  ...
+# Subtest: exit 2 ("the gate could not run") is an error and also fails the lane; a gate that was not started is an error
+ok 30 - exit 2 ("the gate could not run") is an error and also fails the lane; a gate that was not started is an error
+  ---
+  duration_ms: 38.303036
+  type: 'test'
+  ...
+# Subtest: a step that outlives its timeout is killed with its children, and the lane fails
+ok 31 - a step that outlives its timeout is killed with its children, and the lane fails
+  ---
+  duration_ms: 1045.279904
+  type: 'test'
+  ...
+# Subtest: the lane budget fails the lane after the fact, and steps that would start past it are skipped
+ok 32 - the lane budget fails the lane after the fact, and steps that would start past it are skipped
+  ---
+  duration_ms: 1462.621871
+  type: 'test'
+  ...
+# Subtest: STATESPACE_LANE_START puts the setup steps of the job inside the budget
+ok 33 - STATESPACE_LANE_START puts the setup steps of the job inside the budget
+  ---
+  duration_ms: 23.535236
+  type: 'test'
+  ...
+# Subtest: in the release lane a required step whose script is missing fails the lane (the GATE-release stub fails closed)
+ok 34 - in the release lane a required step whose script is missing fails the lane (the GATE-release stub fails closed)
+  ---
+  duration_ms: 68.523167
+  type: 'test'
+  ...
+# Subtest: arguments: a lane adds its own, and args_if_env adds more only when the variable is set
+ok 35 - arguments: a lane adds its own, and args_if_env adds more only when the variable is set
+  ---
+  duration_ms: 172.119046
+  type: 'test'
+  ...
+# Subtest: --only runs named steps, and a name the lane lacks is a usage error
+ok 36 - --only runs named steps, and a name the lane lacks is a usage error
+  ---
+  duration_ms: 62.299133
+  type: 'test'
+  ...
+# Subtest: --only on the nightly lane would write a partial status, so it must name another file
+ok 37 - --only on the nightly lane would write a partial status, so it must name another file
+  ---
+  duration_ms: 62.723748
+  type: 'test'
+  ...
+# Subtest: the monthly lane needs --lean and hands it to its steps as a toolchain name
+ok 38 - the monthly lane needs --lean and hands it to its steps as a toolchain name
+  ---
+  duration_ms: 122.842378
+  type: 'test'
+  ...
+# Subtest: paths of the machine are replaced in everything the runner stores
+ok 39 - paths of the machine are replaced in everything the runner stores
+  ---
+  duration_ms: 39.530726
+  type: 'test'
+  ...
+# Subtest: in GitHub Actions the runner groups each step, annotates a failure and writes the job summary
+ok 40 - in GitHub Actions the runner groups each step, annotates a failure and writes the job summary
+  ---
+  duration_ms: 59.358717
+  type: 'test'
+  ...
+# Subtest: --source or STATESPACE_LANE_SOURCE labels a run that is not what it looks like (the emulated runner)
+ok 41 - --source or STATESPACE_LANE_SOURCE labels a run that is not what it looks like (the emulated runner)
+  ---
+  duration_ms: 48.69243
+  type: 'test'
+  ...
+# Subtest: nightly writes status/nightly.json: commit, date, each failed gate with its claims, and the gates not built yet
+ok 42 - nightly writes status/nightly.json: commit, date, each failed gate with its claims, and the gates not built yet
+  ---
+  duration_ms: 92.841106
+  type: 'test'
+  ...
+# Subtest: a gate that stays red keeps its since date; a gate that turns red gets today; a green night clears red_since
+ok 43 - a gate that stays red keeps its since date; a gate that turns red gets today; a green night clears red_since
+  ---
+  duration_ms: 379.875842
+  type: 'test'
+  ...
+# Subtest: a previous status that is missing, unreadable or of another format is ignored, not trusted
+ok 44 - a previous status that is missing, unreadable or of another format is ignored, not trusted
+  ---
+  duration_ms: 279.346543
+  type: 'test'
+  ...
+# Subtest: --blocked runs nothing, writes a red status and keeps the earlier failures listed with their dates
+ok 45 - --blocked runs nothing, writes a red status and keeps the earlier failures listed with their dates
+  ---
+  duration_ms: 139.434315
+  type: 'test'
+  ...
+# Subtest: the default status path is status/nightly.json under the root, and only the nightly lane writes one
+ok 46 - the default status path is status/nightly.json under the root, and only the nightly lane writes one
+  ---
+  duration_ms: 119.193084
+  type: 'test'
+  ...
+# Subtest: buildStatus: a failing check makes the night red without naming a gate; an over-budget night is red
+ok 47 - buildStatus: a failing check makes the night red without naming a gate; an over-budget night is red
+  ---
+  duration_ms: 0.38395
+  type: 'test'
+  ...
+# Subtest: verdictOf skips npm's own lines; redactor replaces the repository, tmp and home paths
+ok 48 - verdictOf skips npm's own lines; redactor replaces the repository, tmp and home paths
+  ---
+  duration_ms: 0.59745
+  type: 'test'
+  ...
+# Subtest: the manifest validator names each problem
+ok 49 - the manifest validator names each problem
+  ---
+  duration_ms: 0.490475
+  type: 'test'
+  ...
+# Subtest: resolveSteps keeps manifest order, resolves arguments for the lane and reports presence
+ok 50 - resolveSteps keeps manifest order, resolves arguments for the lane and reports presence
+  ---
+  duration_ms: 0.379798
+  type: 'test'
+  ...
+# Subtest: the first publish creates the branch with one commit that holds only status/nightly.json
+ok 51 - the first publish creates the branch with one commit that holds only status/nightly.json
+  ---
+  duration_ms: 50.675191
+  type: 'test'
+  ...
+# Subtest: a later publish replaces the file in a new commit, and the same content pushes nothing
+ok 52 - a later publish replaces the file in a new commit, and the same content pushes nothing
+  ---
+  duration_ms: 82.747751
+  type: 'test'
+  ...
+# Subtest: a publish that loses a race fetches the new tip and tries again
+ok 53 - a publish that loses a race fetches the new tip and tries again
+  ---
+  duration_ms: 122.461401
+  type: 'test'
+  ...
+# Subtest: a publish that cannot win gives up with the push error
+ok 54 - a publish that cannot win gives up with the push error
+  ---
+  duration_ms: 89.638201
+  type: 'test'
+  ...
+# Subtest: fetch returns what was published, and null before the branch exists
+ok 55 - fetch returns what was published, and null before the branch exists
+  ---
+  duration_ms: 51.395373
+  type: 'test'
+  ...
+# Subtest: the command line: publish, then fetch from another clone; fetch exits 3 while nothing is published
+ok 56 - the command line: publish, then fetch from another clone; fetch exits 3 while nothing is published
+  ---
+  duration_ms: 182.390769
+  type: 'test'
+  ...
+# Subtest: a file that is not a nightly status is refused before anything is pushed
+ok 57 - a file that is not a nightly status is refused before anything is pushed
+  ---
+  duration_ms: 100.096076
+  type: 'test'
+  ...
+# Subtest: two nights through the branch: what the lane writes is accepted, and the next night reads the since date back
+ok 58 - two nights through the branch: what the lane writes is accepted, and the next night reads the since date back
+  ---
+  duration_ms: 201.322004
+  type: 'test'
+  ...
+# Subtest: every action is pinned by a full commit SHA with its release in a comment
+ok 59 - every action is pinned by a full commit SHA with its release in a comment
+  ---
+  duration_ms: 1.330702
+  type: 'test'
+  ...
+# Subtest: each workflow declares read-only permissions at the top, and only the jobs that need more ask for more
+ok 60 - each workflow declares read-only permissions at the top, and only the jobs that need more ask for more
+  ---
+  duration_ms: 0.383672
+  type: 'test'
+  ...
+# Subtest: the jobs that run repository code never keep the token; the one that pushes does
+ok 61 - the jobs that run repository code never keep the token; the one that pushes does
+  ---
+  duration_ms: 0.161835
+  type: 'test'
+  ...
+# Subtest: nobody uses pull_request_target, ubuntu-slim or an unpinned runner label
+ok 62 - nobody uses pull_request_target, ubuntu-slim or an unpinned runner label
+  ---
+  duration_ms: 0.095578
+  type: 'test'
+  ...
+# Subtest: fast: every pull request and push to the default branch, by hand too; a 300 s lane inside a short job timeout
+ok 63 - fast: every pull request and push to the default branch, by hand too; a 300 s lane inside a short job timeout
+  ---
+  duration_ms: 0.144006
+  type: 'test'
+  ...
+# Subtest: nightly: a daily schedule off the hour, on demand, the Bench image by digest, and a publish job that runs after any outcome
+ok 64 - nightly: a daily schedule off the hour, on demand, the Bench image by digest, and a publish job that runs after any outcome
+  ---
+  duration_ms: 0.164289
+  type: 'test'
+  ...
+# Subtest: release: an edition tag starts it, and it runs the release lane, whose GATE-release is required
+ok 65 - release: an edition tag starts it, and it runs the release lane, whose GATE-release is required
+  ---
+  duration_ms: 0.233973
+  type: 'test'
+  ...
+# Subtest: monthly: the 1st of each month, on demand, and an issue job that may write issues and nothing else
+ok 66 - monthly: the 1st of each month, on demand, and an issue job that may write issues and nothing else
+  ---
+  duration_ms: 0.114823
+  type: 'test'
+  ...
+# Subtest: every script a workflow runs exists, and every lane it names is a lane
+ok 67 - every script a workflow runs exists, and every lane it names is a lane
+  ---
+  duration_ms: 0.390159
+  type: 'test'
+  ...
+# Subtest: the workflows write no email address or private path
+ok 68 - the workflows write no email address or private path
+  ---
+  duration_ms: 0.434992
+  type: 'test'
+  ...
+1..68
+# tests 68
+# suites 0
+# pass 67
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 4412.379829
+::endgroup::
+[ 6/28] lane-tests             PASS       4.4 s  68 tests, 67 passed, 0 failed, 1 skipped
+::group::[ 7/28] GATE-numbers  (node scripts/verify-numbers.mjs)
+GATE-numbers
+  read  40 files (39 documents, 1 copy); 2634 tool-shaped tokens in 30470 units; 185 source keys defined
+  pass  1893 under a run reference, 65 tagged [D], 98 tagged [V], 52 under a source citation, 10 under an executed-evidence key, 443 introduced with a tag elsewhere in the same document
+  known 73 untagged tokens listed as debt in scripts/runs/numbers-baseline.json, in 22 documents (docs/ARCHITECTURE.md 1, docs/ASSESSMENT.md 2, docs/AUDIT-DESK.md 1, docs/DECISIONS.md 3, docs/DESIGN.md 9, docs/LANDSCAPE.md 6, docs/TRACKER.md 1, docs/WORLD.md 1, docs/spikes/W0-S01.md 4, docs/spikes/W0-S03.md 4, docs/spikes/W0-S05.md 6, docs/spikes/W0-S07.md 3, docs/spikes/W0-S08.md 5, docs/spikes/W0-S10.md 1, docs/spine/SPINE.md 1, curriculum/S05-time.md 8, curriculum/S06-correspondence.md 1, curriculum/S07-secrecy.md 1, curriculum/S10-assembly.md 1, tracker/tasks.yaml 4, labs/README.md 5, labs/TOOLS.md 5); --strict fails on them
+  note  16 baseline entries match nothing now (tagged or rewritten); shrink the list with --write-baseline
+GATE-numbers: PASS (2634 tokens in 40 files, 73 known; 0.5 s)
+::endgroup::
+[ 7/28] GATE-numbers           PASS       0.5 s  GATE-numbers: PASS (2634 tokens in 40 files, 73 known; 0.5 s)
+::group::[ 8/28] GATE-facts  (node scripts/verify-facts.mjs)
+GATE-facts
+  read  51 files (1 of learner copy), 31329 units; 67 run records (1 with a TTL); content/registry/: 13 facts (10 with a TTL) and 0 errata
+  pass  3 value tags stated by their sentences; 1 value reference naming one value (0 waiting for their runs); 0 fact references; 0 run outputs in learner copy checked; 2370 citations and 101 format placeholders (nothing to compare)
+  date  TTLs judged on 2026-10-24
+GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)
+::endgroup::
+[ 8/28] GATE-facts             PASS       0.4 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)
+::group::[18/28] GATE-links  (node scripts/verify-links.mjs)
+GATE-links: 46 files, 32977 ID tokens (1365 distinct) against 1203 registry entries and 263 tasks
+FAIL  owner  tracker/tasks.yaml  SCR-instrument (screen, spine §10.1) is implemented by no task; spine §13 gives it to W1-T14, so add it to that task's implements
+PENDING  10 proposed ID(s), not failures until `--strict`; W0-T10 registers or declines each:
+  LAB-2.9  13 place(s): content/stages/budget.yaml:525:9, content/stages/budget.yaml:532:22, curriculum/S02-proof.md:273:299, ...  (packages/ids/proposals.json)
+  CL-2.6  12 place(s): curriculum/S02-proof.md:26:112, curriculum/S02-proof.md:273:291, curriculum/S02-proof.md:433:24, ...  (packages/ids/proposals.json)
+  RUN-lean-run-nonneg  7 place(s): curriculum/S02-proof.md:439:400, curriculum/S02-proof.md:509:373, curriculum/S02-proof.md:578:271, ...  (packages/ids/proposals.json)
+  LAB-8.10  14 place(s): curriculum/S08-effects.md:29:110, curriculum/S08-effects.md:297:151, curriculum/S08-effects.md:342:3, ...  (packages/ids/proposals.json)
+  RUN-tlc-outbox-inductive  4 place(s): curriculum/S08-effects.md:342:113, curriculum/S08-effects.md:405:60, curriculum/S08-effects.md:475:3, ...  (packages/ids/proposals.json)
+  RUN-z3-outbox-inductive-param  4 place(s): curriculum/S08-effects.md:342:194, curriculum/S08-effects.md:405:97, curriculum/S08-effects.md:476:3, ...  (packages/ids/proposals.json)
+  AUD-10.1  2 place(s): curriculum/S10-assembly.md:557:92, docs/spine/SPINE.md:1862:689  (packages/ids/proposals.json)
+  AUD-10.2  1 place(s): curriculum/S10-assembly.md:557:547  (packages/ids/proposals.json)
+  AUD-10.3  2 place(s): curriculum/S10-assembly.md:557:919, docs/spine/SPINE.md:1862:698  (packages/ids/proposals.json)
+  RUN-tlc-tracemodule  2 place(s): tracker/tasks.yaml:479:76, tracker/tasks.yaml:487:21  (tracker/tasks.yaml (W0-S13))
+NOTE  owner  tracker/tasks.yaml  GATE-coverage is implemented by no task (the ownership rule covers sections 7, 9.1, 10.1 and 3.12; gates are not checked)
+NOTE  used-in  docs/spine/SPINE.md:452  LAB-7.6 names Lane A, but §9.1 does not list S7 for INS-lane-a (no lesson row or capstone step of S7 names it)
+NOTE  proposal  tracker/tasks.yaml  21 proposed_ids entries are registered in the spine now and can move into their tasks' descriptions (tracker README, "Registering a proposed run"): RUN-tlc-help (W0-S11), RUN-tlc-sym-liveness (W0-S11), RUN-z3-smtlib-tour (W1-T11), RUN-z3-boot-variant (W1-T12), ...
+GATE-links: FAIL (1 finding(s))
+::endgroup::
+[18/28] GATE-links             FAIL       0.2 s  GATE-links: FAIL (1 finding(s))
+::error title=GATE-links::GATE-links fail: GATE-links: FAIL (1 finding(s))
+::group::[20/28] GATE-budget  (node scripts/verify-budget.mjs)
+GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml
+OK    table     every cell of the section 3.11 table equals content/stages/budget.yaml; 42 quoted sentences of the budget file still stand
+OK    rows      138 figures recomputed: lessons, build and write from the lesson and lab tables (each at its printed precision), stage totals within a printed tenth, the ten rows summed per column, the five column totals against the total, and the weeks
+OK    tools     at most one new tool per stage, and the spine's stage paragraphs agree: 5 stages introduce one
+OK    paths     2 published paths: each takes every unit of every stage once, and their lessons are the paths that spine section 3.0 prints
+OK    stages    10 of 10 stages pass: S1 pass, S2 pass, S3 pass, S4 pass, S5 pass, S6 pass, S7 pass, S8 pass, S9 pass, S10 pass
+PATH  default (roadmap order): 10 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)
+  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h
+  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)
+  OK    keep      10 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S5 at 6 h/week, 74.5 of 75 min/week
+  OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 5.70 h); the cadence holds only with the planned records, see the warning below
+  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under "Left unchanged, with reasons": "GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]
+  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 12.04 h between CL-1.3 (LAB-1.5) and SP-2.2 (S2.L5)
+PATH  builder (builder's path): 13 blocks, 90.8–167.5 h of sequenced work (reading, up to 29.5 h, is placed on no unit)
+  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h
+  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)
+  OK    keep      13 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S7 at 6 h/week, 74.5 of 75 min/week
+  OK    cadence   110 events (69 specimens, 39 claims, 2 planned records that no claim template covers); claim number 2 at 4.03 h = 0.8 weeks (limit week 4); longest gap 9.42 h = 2.0 weeks, CL-9.2 (LAB-9.6) to SP-9.1 (S9.L7) (limit 2 weeks = 9.50 h, margin 0.08 h; at the low estimate 4.95 h); the cadence holds only with the planned records, see the warning below
+  WARN  cadence  the cadence holds only by counting 2 planned records of LAB-10.8 that no claim template covers; without them, CL-10.1 (LAB-10.7) to CL-10.2 (LAB-10.8) is 11.83 h of stage work = 2.5 weeks at 6 h/week, above the 2-week limit (9.50 h; 6.08 h at the low estimate); the spine rules out counting them (S10 issue 9, its cadence clause, under "Left unchanged, with reasons": "GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template"); owner decision pending (content/stages/budget.yaml, planned_records)  [docs/spine/SPINE.md:1862]
+  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 10.79 h between CL-8.2 (LAB-8.5) and SP-2.2 (S2.L5)
+OK    cutlist   20 listed bridges, all cut-eligible under criteria (1) to (4); the rule gives 21 eligible bridges, the 20 listed and the spare S7.L1; 30 bridges stay; every receiving lesson stays in its stage and is not cut; no cut takes a high estimate below its lower-bound line; 2 KCs would fold ahead of a hard prerequisite on a path
+WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path  [docs/spine/SPINE.md:1753]
+WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path  [docs/spine/SPINE.md:1767]
+NOTE  cutlist   lower bound: the rule is on the high estimate (spine 3.0 and 11.2), which no cut moves below its line. Read on the low estimate, S6 already has a low estimate below that line, and cutting the list would take the low estimate of S8, S7 below it
+OK    additions 10 adopted additions name what they displace (stretch stages, drawers or headroom); 1 waiting for a named displacement
+NOTE  additions S2: LAB-2.9 would add 0.75–2.25 h to S2, which has 0.10 h of room under its roadmap bound: it needs a named displacement before it enters the rows
+GATE-budget: green (4 warnings), 4 notes
+::endgroup::
+[20/28] GATE-budget            PASS       0.1 s  GATE-budget: green (4 warnings), 4 notes
+::group::[24/28] GATE-privacy  (node scripts/verify-privacy.mjs)
+warning: course-license: no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner
+warning: private-term: not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)
+verify-privacy: 1 problem(s)
+  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file
+::endgroup::
+[24/28] GATE-privacy           FAIL       0.8 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file
+::error title=GATE-privacy::GATE-privacy fail: vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file
+::group::[25/28] GATE-schema  (node scripts/verify-schema.mjs)
+GATE-schema
+  ok    schemas: 6 published (claim, defs, event, ir, receipt, run); 5 describe a value, 3 of them tagged records; subset and portable patterns hold
+  ok    drafts: 1 draft parse; drafts are not published and generate no types
+  ok    expected schemas: defs, claim, event, ir present
+  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:be05b030b77b...)
+  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)
+  ok    package loads: @statespace/schema imports under Node and embeds every published schema
+  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)
+  ok    fixtures: 36 valid and 134 invalid record fixtures, 149 values for 14 shared definitions
+  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (54 object types across all schemas) and Python
+  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads
+  ok    records: 93 files declare a statespace/... schema: 67 JSON records validated, 0 YAML records validated
+  note  records: budget (1 file), id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here
+  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \p{Zs}; x-statementHash is written once
+  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)
+  ok    python: Python 3.12.3, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3
+  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree
+  note  dialect probes: $ before a final newline (ECMAScript false, Python true)
+  note  dialect probes: \d on an Arabic-Indic digit (ECMAScript false, Python true)
+  note  dialect probes: \w on e with an acute accent (ECMAScript false, Python true)
+  note  dialect probes: . on a carriage return (ECMAScript false, Python true)
+  note  dialect probes: . on a line separator (ECMAScript false, Python true)
+  note  dialect probes: \s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)
+  note  dialect probes: \s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)
+  ok    meta-schema: 7 schemas pass the draft 2020-12 meta-schema (jsonschema)
+  ok    validators agree: 13144 documents (168 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 67 repository records, 12659 generated mutants): TypeScript and Python reach the same verdict on all; 2107 valid, 11037 invalid; every invalid fixture fails on its stated keyword and path in both
+  ok    yaml: 2 YAML records read by PyYAML and validated by both validators
+  ok    types in sync: 47 object types and 21 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (54 object types) agrees too
+  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points
+  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)
+  ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json
+GATE-schema: PASS (22 checks; 5.7 s)
+::endgroup::
+[25/28] GATE-schema            PASS       5.7 s  GATE-schema: PASS (22 checks; 5.7 s)
+::group::[28/28] GATE-runs  (node scripts/verify-runs.mjs)
+GATE-runs
+  read  67 run records (628 output files and 914 input files hashed); 2469 run references in 55 files: 1425 [X] tags, 943 {{run:}} templates, 101 format placeholders
+  pass  1695 references resolve; 673 {{run:}} references wait for their runs (documents and drafts; the release lane fails on them)
+  warn  inputs: 5 (the release lane fails on them)
+          runs/RUN-facts-gate.json: input package-lock.json changed since the run (re-record before release)
+          runs/RUN-scaffold.json: input package-lock.json changed since the run (re-record before release)
+          runs/RUN-scaffold.json: input package-lock.json changed since the run (re-record before release)
+          runs/RUN-spectacle.json: input research/evidence/A5v2/spectacle-run/site/spectacle/js/eval.js is no longer in the repository
+          runs/RUN-spectacle.json: input research/evidence/A5v2/spectacle-run/site/spectacle/js/worker.js is no longer in the repository
+  warn  index: 1 (the release lane fails on them)
+          runs/index.json: stale: a record was added or changed; regenerate with node scripts/runs/build-index.mjs
+GATE-runs: PASS (67 records, 1695 resolved references; 0.1 s)
+::endgroup::
+[28/28] GATE-runs              PASS       0.1 s  GATE-runs: PASS (67 records, 1695 resolved references; 0.1 s)
+absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage, GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)
+fast lane: FAIL in 33.8 s (10 passed, 3 failed, 0 skipped, 15 absent)
+--- exit 1 in 28.69 s

@@ -1,0 +1,323 @@
+{
+ "rule": {
+  "margin": 1.25,
+  "round_ms": 500,
+  "reference_tier": "cpu0.25",
+  "unthrottled_tier": "cpu20",
+  "links": {
+   "slow": {
+    "mbps": 1.6,
+    "rtt_ms": 150
+   },
+   "lte": {
+    "mbps": 10,
+    "rtt_ms": 50
+   }
+  },
+  "link_table_mbps": [
+   1,
+   2,
+   5,
+   10,
+   25
+  ],
+  "link_table_rtt_ms": 100,
+  "wall_factor": 2,
+  "ci_floor_ms": 250,
+  "lag_round_ms": 50,
+  "lag_floor_ms": 100,
+  "wall_min_ms": 10000,
+  "cell_wall_ms": [
+   2000,
+   5000
+  ]
+ },
+ "reference": {
+  "kind": "emulated",
+  "profiles": [
+   {
+    "id": "cpu0.25/chromium",
+    "kind": "emulated",
+    "engine": "chromium"
+   },
+   {
+    "id": "cpu0.25/firefox",
+    "kind": "emulated",
+    "engine": "firefox"
+   },
+   {
+    "id": "cpu0.25/webkit",
+    "kind": "emulated",
+    "engine": "webkit"
+   }
+  ]
+ },
+ "provisional": true,
+ "profiles": [
+  {
+   "id": "cpu0.25/chromium",
+   "kind": "emulated",
+   "engine": "chromium",
+   "q": {
+    "handshake_ms": 280.3,
+    "warm_live_ms": 7339.5,
+    "cold_cpu_ms": 14157,
+    "respawn_ms": 6995.1,
+    "nia_1e5_ms": 485,
+    "nia_1e6_ms": 2114.1,
+    "nia_5e6_ms": 4620.2,
+    "bv_1e5_ms": 169.7,
+    "bv_1e6_ms": 775.7,
+    "bv_5e6_ms": 2969.9,
+    "yardstick_js_ms": 490.1,
+    "yardstick_wasm_ms": 14.9,
+    "heap_mib": 63.3,
+    "lag_max_ms": 129.7
+   }
+  },
+  {
+   "id": "cpu0.25/firefox",
+   "kind": "emulated",
+   "engine": "firefox",
+   "q": {
+    "handshake_ms": 461,
+    "warm_live_ms": 12951,
+    "cold_cpu_ms": 14031,
+    "respawn_ms": 12654,
+    "nia_1e5_ms": 270.5,
+    "nia_1e6_ms": 2065.5,
+    "nia_5e6_ms": 5061.5,
+    "bv_1e5_ms": 289.5,
+    "bv_1e6_ms": 1195,
+    "bv_5e6_ms": 3721,
+    "yardstick_js_ms": 530,
+    "yardstick_wasm_ms": 18.5,
+    "heap_mib": 63.3,
+    "lag_max_ms": 160
+   }
+  },
+  {
+   "id": "cpu0.25/webkit",
+   "kind": "emulated",
+   "engine": "webkit",
+   "q": {
+    "handshake_ms": 330,
+    "warm_live_ms": 16788,
+    "cold_cpu_ms": 17326,
+    "respawn_ms": 17944,
+    "nia_1e5_ms": 1270.5,
+    "nia_1e6_ms": 5754.5,
+    "nia_5e6_ms": 6861.5,
+    "bv_1e5_ms": 464,
+    "bv_1e6_ms": 1244.5,
+    "bv_5e6_ms": 3579.5,
+    "yardstick_js_ms": 505.5,
+    "yardstick_wasm_ms": 12,
+    "heap_mib": 63.3,
+    "lag_max_ms": 99
+   }
+  }
+ ],
+ "reference_values": {
+  "handshake_ms": 461,
+  "warm_live_ms": 16788,
+  "cold_cpu_ms": 17326,
+  "respawn_ms": 17944,
+  "nia_5e6_ms": 6861.5,
+  "bv_5e6_ms": 3721,
+  "yardstick_js_ms": 530,
+  "heap_mib": 63.3,
+  "lag_max_ms": 160
+ },
+ "budget_ms": {
+  "consent_sheet_ready": 1000,
+  "warm_live_verdict": 21000,
+  "cold_cpu_part": 22000,
+  "worker_restart_after_stop": 22500,
+  "watchdog_wall_ms_default": 14000,
+  "main_thread_latest_tick": 200
+ },
+ "watchdog_wall_ms_by_default_rlimit": {
+  "100000": 10000,
+  "1000000": 12000,
+  "5000000": 14000
+ },
+ "ci_thresholds_ms": {
+  "chromium": {
+   "yardstick_here_ms": 120.3,
+   "handshake_ms": 250,
+   "warm_live_ms": 3797,
+   "cold_cpu_ms": 2449,
+   "respawn_ms": 4302,
+   "main_thread_throttle_rate": 4
+  },
+  "firefox": {
+   "yardstick_here_ms": 125,
+   "handshake_ms": 250,
+   "warm_live_ms": 2641,
+   "cold_cpu_ms": 2802,
+   "respawn_ms": 2895,
+   "main_thread_throttle_rate": 4
+  },
+  "webkit": {
+   "yardstick_here_ms": 123,
+   "handshake_ms": 250,
+   "warm_live_ms": 1968,
+   "cold_cpu_ms": 2228,
+   "respawn_ms": 2032,
+   "main_thread_throttle_rate": 4
+  }
+ },
+ "cold_live_by_link": {
+  "slow": {
+   "mbps": 1.6,
+   "rtt_ms": 150,
+   "fill_net_ms": 65367,
+   "cold_live_ms": 82693,
+   "budget_ms": 103500
+  },
+  "lte": {
+   "mbps": 10,
+   "rtt_ms": 50,
+   "fill_net_ms": 10615,
+   "cold_live_ms": 27941,
+   "budget_ms": 35000
+  }
+ },
+ "link_table": [
+  {
+   "mbps": 1,
+   "rtt_ms": 100,
+   "fill_net_ms": 103747,
+   "cold_live_ms": 121073
+  },
+  {
+   "mbps": 2,
+   "rtt_ms": 100,
+   "fill_net_ms": 52174,
+   "cold_live_ms": 69500
+  },
+  {
+   "mbps": 5,
+   "rtt_ms": 100,
+   "fill_net_ms": 21229,
+   "cold_live_ms": 38555
+  },
+  {
+   "mbps": 10,
+   "rtt_ms": 100,
+   "fill_net_ms": 10915,
+   "cold_live_ms": 28241
+  },
+  {
+   "mbps": 25,
+   "rtt_ms": 100,
+   "fill_net_ms": 4726,
+   "cold_live_ms": 22052
+  }
+ ],
+ "rlimit": {
+  "reference_ms": {
+   "nia_1e5_ms": 1270.5,
+   "nia_1e6_ms": 5754.5,
+   "nia_5e6_ms": 6861.5,
+   "bv_1e5_ms": 464,
+   "bv_1e6_ms": 1244.5,
+   "bv_5e6_ms": 3721
+  },
+  "largest_ladder_rlimit_within": {
+   "2000 ms": {
+    "nia": 100000,
+    "bv": 1000000
+   },
+   "5000 ms": {
+    "nia": 100000,
+    "bv": 5000000
+   },
+   "14000 ms (the watchdog)": {
+    "nia": 5000000,
+    "bv": 5000000
+   }
+  }
+ },
+ "ci_mapping": {
+  "note": "The gate asserts q_runner <= budget * (yardstick_runner / yardstick_here) / k, with k the reference-to-unthrottled ratio below and yardstick_here the unthrottled tier's JS yardstick; it needs the yardstick run on the runner.",
+  "engines": {
+   "chromium": {
+    "unthrottled": {
+     "handshake_ms": 16.7,
+     "warm_live_ms": 1326.9,
+     "cold_cpu_ms": 1575.7,
+     "respawn_ms": 1337.9,
+     "nia_1e5_ms": 34.6,
+     "nia_1e6_ms": 270.2,
+     "nia_5e6_ms": 1039.5,
+     "bv_1e5_ms": 58.6,
+     "bv_1e6_ms": 458.7,
+     "bv_5e6_ms": 538.8,
+     "yardstick_js_ms": 120.3,
+     "yardstick_wasm_ms": 3.7,
+     "heap_mib": 63.3,
+     "lag_max_ms": 0.2
+    },
+    "k": {
+     "handshake_ms": 16.78,
+     "warm_live_ms": 5.53,
+     "cold_cpu_ms": 8.98,
+     "respawn_ms": 5.23,
+     "yardstick_js_ms": 4.07
+    }
+   },
+   "firefox": {
+    "unthrottled": {
+     "handshake_ms": 31,
+     "warm_live_ms": 1630,
+     "cold_cpu_ms": 1787,
+     "respawn_ms": 1629,
+     "nia_1e5_ms": 27.5,
+     "nia_1e6_ms": 315.5,
+     "nia_5e6_ms": 1027,
+     "bv_1e5_ms": 66,
+     "bv_1e6_ms": 499,
+     "bv_5e6_ms": 431.5,
+     "yardstick_js_ms": 125,
+     "yardstick_wasm_ms": 4,
+     "heap_mib": 63.3,
+     "lag_max_ms": 4
+    },
+    "k": {
+     "handshake_ms": 14.87,
+     "warm_live_ms": 7.95,
+     "cold_cpu_ms": 7.85,
+     "respawn_ms": 7.77,
+     "yardstick_js_ms": 4.24
+    }
+   },
+   "webkit": {
+    "unthrottled": {
+     "handshake_ms": 23,
+     "warm_live_ms": 1573,
+     "cold_cpu_ms": 1756,
+     "respawn_ms": 1621,
+     "nia_1e5_ms": 32.5,
+     "nia_1e6_ms": 267.5,
+     "nia_5e6_ms": 1091,
+     "bv_1e5_ms": 51,
+     "bv_1e6_ms": 328.5,
+     "bv_5e6_ms": 478.5,
+     "yardstick_js_ms": 123,
+     "yardstick_wasm_ms": 4,
+     "heap_mib": 63.3,
+     "lag_max_ms": 4
+    },
+    "k": {
+     "handshake_ms": 14.35,
+     "warm_live_ms": 10.67,
+     "cold_cpu_ms": 9.87,
+     "respawn_ms": 11.07,
+     "yardstick_js_ms": 4.11
+    }
+   }
+  }
+ }
+}

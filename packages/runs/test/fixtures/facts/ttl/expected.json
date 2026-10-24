@@ -1,0 +1,88 @@
+{
+  "about": "Acceptance of W0-T08: GATE-facts warns on an expired-TTL fixture without failing, RUN-twin-pins' 60-day TTL included. A tool fact checked on 2026-10-23 with 60 days is stale from 2026-12-22; the twin and both runs, which ran on 2026-10-24, from 2026-12-23; the incident never. Every run exits 0.",
+  "runs": [
+    {
+      "what": "the day after the check: everything fresh",
+      "today": "2026-10-24",
+      "exit": 0,
+      "findings": [],
+      "warnings": []
+    },
+    {
+      "what": "day 59 of the tool fact: still fresh",
+      "today": "2026-12-21",
+      "exit": 0,
+      "findings": [],
+      "warnings": []
+    },
+    {
+      "what": "day 60 of the tool fact: stale, a warning, exit 0",
+      "today": "2026-12-22",
+      "exit": 0,
+      "findings": [],
+      "warnings": [
+        {
+          "check": "ttl",
+          "where": "content/registry/facts.json tool.pyodide.latest",
+          "detail": "checked 2026-10-23, TTL 60 days: stale since 2026-12-22"
+        }
+      ]
+    },
+    {
+      "what": "day 60 of RUN-twin-pins: the twin, its run and RUN-lean-asset are stale too; warnings only, exit 0",
+      "today": "2026-12-23",
+      "exit": 0,
+      "findings": [],
+      "warnings": [
+        {
+          "check": "ttl",
+          "where": "content/registry/facts.json tool.pyodide.latest",
+          "detail": "checked 2026-10-23, TTL 60 days: stale since 2026-12-22"
+        },
+        {
+          "check": "ttl",
+          "where": "content/registry/facts.json twin.lean4.toolchain",
+          "detail": "pinned in RUN-twin-pins on 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        },
+        {
+          "check": "ttl",
+          "where": "runs/RUN-lean-asset.json",
+          "detail": "ran 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        },
+        {
+          "check": "ttl",
+          "where": "runs/RUN-twin-pins.json",
+          "detail": "ran 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        }
+      ]
+    },
+    {
+      "what": "a year later: the same four warnings, still exit 0; the incident states its own date and never warns",
+      "today": "2027-10-24",
+      "exit": 0,
+      "findings": [],
+      "warnings": [
+        {
+          "check": "ttl",
+          "where": "content/registry/facts.json tool.pyodide.latest",
+          "detail": "checked 2026-10-23, TTL 60 days: stale since 2026-12-22"
+        },
+        {
+          "check": "ttl",
+          "where": "content/registry/facts.json twin.lean4.toolchain",
+          "detail": "pinned in RUN-twin-pins on 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        },
+        {
+          "check": "ttl",
+          "where": "runs/RUN-lean-asset.json",
+          "detail": "ran 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        },
+        {
+          "check": "ttl",
+          "where": "runs/RUN-twin-pins.json",
+          "detail": "ran 2026-10-24, TTL 60 days: stale since 2026-12-23"
+        }
+      ]
+    }
+  ]
+}

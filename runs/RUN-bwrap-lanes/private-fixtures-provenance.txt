@@ -1,0 +1,29 @@
+# Hashes and modification times of the private fixture files of RUN-bwrap-lanes, read on 2026-10-24 from the copies
+# kept outside this repository. The copies were made with cp -p, which keeps the modification time, from the files in
+# scripts/spikes/W0-S06/pack/ that the probe containers mounted at /pack. The first recorded configuration started at
+# 2026-10-24T13:41:34Z (engine-local.env), after the last of these files was modified.
+# command: sha256sum <file>; TZ=UTC stat -c %y <file>
+# columns: sha256, modification time (UTC), name (as in scripts/spikes/W0-S06/private-fixtures.json)
+b0e14b11e08f8c03612ccd5c975ad7c25eecfec189227492fb84742ffe28f402  2026-10-24T12:25:46Z  Solution.lean
+db16ce081de9f829bae32ca03d4671e86c4eab66570988f89f049dd6de0cb333  2026-10-24T12:26:13Z  broken/Broken.lean
+a0b287ba1aa04e2bc3d2570d55feb4588952d333c5f89714c032ba11a01866a4  2026-10-24T12:26:13Z  fixed/Fixed.lean
+2e1e98493d958fa731f982c7ec9a07deacbcd072e694c798caeab1a0243c1849  2026-10-24T12:40:51Z  variants/Solution.axiom.lean
+9de35659448c44968daf5bb87af5f4debf63416aaaab2cda8c43d1c8e2b2a203  2026-10-24T12:40:51Z  variants/Solution.builderror.lean
+1a273670881ff999a223a8946d4eceebc8fa08fcfd662ad4e86839ed3f0894d5  2026-10-24T12:41:47Z  variants/Solution.kernelskip.lean
+6df156d4bd6b72cbe7902fee0f7138c7caae4bc7a404842e1df9905504a9c2e5  2026-10-24T12:52:41Z  variants/Solution.missing.lean
+c187090429ccea49eb6a12b969a451a3ee9bd0db88ba0615a4cddde065f4dea2  2026-10-24T12:40:51Z  variants/Solution.native.lean
+f32589a1f828fa4f107b7fb8b006c5b9ce72c749bfbaa663191e000a222eba61  2026-10-24T12:41:03Z  variants/Solution.redef.lean
+c052d496ed1b5feb046fe801e5498afdf81a8103688e7a4950eee77cbc1ffcbe  2026-10-24T12:40:51Z  variants/Solution.sorry.lean
+45cdbfdc33dae4d107cf2792f5d5e222935d067942512397792573931ac6093e  2026-10-24T12:41:47Z  variants/Solution.weak.lean
+#
+# mutate.mjs check, run on 2026-10-24: each rejected solution above was also made from Solution.lean with
+#   node scripts/spikes/W0-S06/mutate.mjs --solutions <the folder with the three fixtures> --out <a temporary folder>
+# and compared with the copy of the file that ran, with cmp(1):
+identical  variants/Solution.axiom.lean
+identical  variants/Solution.builderror.lean
+identical  variants/Solution.kernelskip.lean
+identical  variants/Solution.missing.lean
+identical  variants/Solution.native.lean
+identical  variants/Solution.redef.lean
+identical  variants/Solution.sorry.lean
+identical  variants/Solution.weak.lean

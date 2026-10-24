@@ -1,0 +1,175 @@
+# W0-S06: the sandbox on GitHub's CI runners. A TEMPLATE, not a workflow of this repository, and never run.
+#
+# To record the CI-runner lane of RUN-bwrap-lanes, the owner copies this file to
+# .github/workflows/w0-s06-sandbox-lanes.yml, dispatches it (Actions > w0-s06-sandbox-lanes > Run workflow),
+# downloads each job's artifact into runs/RUN-bwrap-lanes/ (each artifact is one configuration folder), and runs
+#   node scripts/spikes/W0-S06/assemble-run.mjs
+# then commits the folders and the regenerated runs/RUN-bwrap-lanes.json. W0-T04 owns .github/workflows/, so
+# this file stays under scripts/spikes/ until the owner promotes it.
+#
+# Three kinds of job, because a runner offers three ways to run Lean:
+#   host           the steps run on the runner VM itself; its steps run with passwordless sudo [V]. The labels are those of
+#                  GitHub's reference page, read 2026-10-24: ubuntu-latest, ubuntu-24.04, ubuntu-22.04 and ubuntu-24.04-arm
+#                  (the page also lists ubuntu-26.04, which actionlint 1.7.12 does not know yet: add it when yours does).
+#                  Ubuntu 24.04 restricts unprivileged user namespaces through AppArmor [V], so each OS runs twice: as the
+#                  runner comes ("default") and after `sysctl kernel.apparmor_restrict_unprivileged_userns=0` ("open"), on
+#                  the images that have that sysctl. ubuntu-slim is left out on purpose: it runs in an unprivileged
+#                  container where, GitHub says, mounting file systems is not supported [V].
+#   docker         run-matrix.sh builds the probe image and runs three container profiles on the runner's Docker: the
+#                  default one, the opt-in "narrow" one, and seccomp and system paths unconfined.
+#   job-container  the steps run inside a job container (the `container:` key), which is how a course CI that runs in its
+#                  own image would run Lean; default options, and with seccomp, system paths and AppArmor unconfined (a
+#                  seccomp profile file cannot be used here: the container starts before checkout).
+#
+# Every job records the facts of its environment (kernel, seccomp mode, capabilities, the AppArmor sysctl,
+# bubblewrap's version) beside the verdicts, so a failure can be read against its cause. Actions are pinned by
+# tag here; pin them by commit SHA when this is promoted.
+#
+# The private fixtures. The pack's three solution files (Solution.lean, broken/Broken.lean, fixed/Fixed.lean) are
+# complete proofs of the lab's theorems and are not in this repository (spine section 11.1). Each job therefore
+# checks out the private companion repository, the way GATE-labs does (ARCHITECTURE.md section 13.5: a read-only
+# deploy key), into .private/ and points W0S06_SOLUTIONS at the folder of the fixtures inside it. Set up once:
+#   repository variable  W0S06_SOLUTIONS_REPO   the private companion repository, as owner/name
+#   repository variable  W0S06_SOLUTIONS_DIR    optional: the folder inside it (default spikes/W0-S06)
+#   repository secret    W0S06_SOLUTIONS_DEPLOY_KEY   a read-only deploy key of that repository (the private key)
+# A job stops with a message that names these when they are not set. Nothing from .private/ is uploaded: each
+# artifact is one configuration folder, which holds hashes of the fixtures (fixtures.sha256) and never their text.
+
+name: w0-s06-sandbox-lanes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  host:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm]
+        userns: [default, open]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    env:
+      CONFIG: ci-${{ matrix.os }}-host-${{ matrix.userns }}
+      W0S06_SOLUTIONS: ${{ github.workspace }}/.private/${{ vars.W0S06_SOLUTIONS_DIR || 'spikes/W0-S06' }}
+    steps:
+      - name: Stop early when the private fixtures are not configured
+        env:
+          SOLUTIONS_REPO: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          DEPLOY_KEY: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+        run: |
+          if [ -z "$SOLUTIONS_REPO" ] || [ -z "$DEPLOY_KEY" ]; then
+            echo "::error title=Private fixtures not configured::set the repository variable W0S06_SOLUTIONS_REPO and the secret W0S06_SOLUTIONS_DEPLOY_KEY (a read-only deploy key of the private companion repository); the LAB-2 fixture solutions are not published"
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - name: Fetch the private LAB-2 fixture solutions
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          ssh-key: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+          path: .private
+          persist-credentials: false
+      - name: Open user namespaces (only for the "open" legs)
+        if: matrix.userns == 'open'
+        run: |
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          else
+            echo "this image has no apparmor_restrict_unprivileged_userns sysctl; the leg repeats the default one"
+          fi
+      - name: Probe the sandbox on the runner
+        run: |
+          scripts/spikes/W0-S06/lane-probe.sh --config "$CONFIG" --lane "ci-${{ matrix.os }}" \
+            --label "host-${{ matrix.userns }}" --out "runs/RUN-bwrap-lanes/$CONFIG" --install --profile standard --off-controls
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ env.CONFIG }}
+          path: runs/RUN-bwrap-lanes/${{ env.CONFIG }}
+
+  docker:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    env:
+      W0S06_SOLUTIONS: ${{ github.workspace }}/.private/${{ vars.W0S06_SOLUTIONS_DIR || 'spikes/W0-S06' }}
+    steps:
+      - name: Stop early when the private fixtures are not configured
+        env:
+          SOLUTIONS_REPO: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          DEPLOY_KEY: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+        run: |
+          if [ -z "$SOLUTIONS_REPO" ] || [ -z "$DEPLOY_KEY" ]; then
+            echo "::error title=Private fixtures not configured::set the repository variable W0S06_SOLUTIONS_REPO and the secret W0S06_SOLUTIONS_DEPLOY_KEY (a read-only deploy key of the private companion repository); the LAB-2 fixture solutions are not published"
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - name: Fetch the private LAB-2 fixture solutions
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          ssh-key: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+          path: .private
+          persist-credentials: false
+      - name: Container profiles on the runner's Docker
+        run: scripts/spikes/W0-S06/run-matrix.sh --lane "ci-${{ matrix.os }}-docker" --only default,narrow,unconfined-both
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-${{ matrix.os }}-docker
+          path: |
+            runs/RUN-bwrap-lanes/ci-${{ matrix.os }}-docker-*
+            runs/RUN-bwrap-lanes/engine-ci-${{ matrix.os }}-docker.env
+            runs/RUN-bwrap-lanes/profiles
+
+  job-container:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - { name: default, options: "" }
+          - { name: unconfined, options: "--security-opt seccomp=unconfined --security-opt systempaths=unconfined --security-opt apparmor=unconfined" }
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    container:
+      image: ubuntu:24.04
+      options: ${{ matrix.profile.options }}
+    env:
+      CONFIG: ci-ubuntu-24.04-jobcontainer-${{ matrix.profile.name }}
+      W0S06_SOLUTIONS: ${{ github.workspace }}/.private/${{ vars.W0S06_SOLUTIONS_DIR || 'spikes/W0-S06' }}
+    steps:
+      - name: Stop early when the private fixtures are not configured
+        env:
+          SOLUTIONS_REPO: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          DEPLOY_KEY: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+        run: |
+          if [ -z "$SOLUTIONS_REPO" ] || [ -z "$DEPLOY_KEY" ]; then
+            echo "::error title=Private fixtures not configured::set the repository variable W0S06_SOLUTIONS_REPO and the secret W0S06_SOLUTIONS_DEPLOY_KEY (a read-only deploy key of the private companion repository); the LAB-2 fixture solutions are not published"
+            exit 1
+          fi
+      - name: Tools the checkouts and the probe need
+        run: apt-get update && apt-get install -y --no-install-recommends git openssh-client ca-certificates curl sudo
+      - uses: actions/checkout@v4
+      - name: Fetch the private LAB-2 fixture solutions
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.W0S06_SOLUTIONS_REPO }}
+          ssh-key: ${{ secrets.W0S06_SOLUTIONS_DEPLOY_KEY }}
+          path: .private
+          persist-credentials: false
+      - name: Probe the sandbox in the job container
+        run: |
+          scripts/spikes/W0-S06/lane-probe.sh --config "$CONFIG" --lane ci-ubuntu-24.04-jobcontainer \
+            --label "${{ matrix.profile.name }}" --out "runs/RUN-bwrap-lanes/$CONFIG" --install --profile standard --off-controls
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ env.CONFIG }}
+          path: runs/RUN-bwrap-lanes/${{ env.CONFIG }}

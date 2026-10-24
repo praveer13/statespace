@@ -1,0 +1,186 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1chk s2b_rc s2chk s1ins s1c s2ins s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(10, 20);
+overlapping
+-----------
+          0
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(15, 25);
+overlapping
+-----------
+          0
+(1 row)
+
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  conflicting key value violates exclusion constraint "booking_during_excl"
+step s2c: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+
+starting permutation: s1b_rr s1chk s2b_rr s2chk s1ins s1c s2ins s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(10, 20);
+overlapping
+-----------
+          0
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(15, 25);
+overlapping
+-----------
+          0
+(1 row)
+
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  conflicting key value violates exclusion constraint "booking_during_excl"
+step s2c: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2chk s1ins s1c s2ins s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(10, 20);
+overlapping
+-----------
+          0
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(15, 25);
+overlapping
+-----------
+          0
+(1 row)
+
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s1c s2ins s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  conflicting key value violates exclusion constraint "booking_during_excl"
+step s2c: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2chk s1ins s1c s2ins s2c s2b2_ser s2chk2 s2ins2_guarded s2c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(10, 20);
+overlapping
+-----------
+          0
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(15, 25);
+overlapping
+-----------
+          0
+(1 row)
+
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step s2b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk2: SELECT count(*) AS overlapping FROM booking WHERE during && int4range(15, 25);
+overlapping
+-----------
+          1
+(1 row)
+
+step s2ins2_guarded: INSERT INTO booking SELECT int4range(15, 25), 's2' WHERE NOT EXISTS (SELECT 1 FROM booking WHERE during && int4range(15, 25)) RETURNING during, who;
+during|who
+------+---
+(0 rows)
+
+step s2c2: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s1c s2ins s2c s2b2_ser s2ins2_blind s2c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO booking VALUES (int4range(10, 20), 's1') RETURNING during, who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  conflicting key value violates exclusion constraint "booking_during_excl"
+step s2c: COMMIT;
+step s2b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2ins2_blind: INSERT INTO booking VALUES (int4range(15, 25), 's2') RETURNING during, who;
+ERROR:  conflicting key value violates exclusion constraint "booking_during_excl"
+step s2c2: COMMIT;
+step chk: SELECT during, who FROM booking ORDER BY who;
+during |who
+-------+---
+[10,20)|s1 
+(1 row)
+

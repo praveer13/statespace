@@ -1,0 +1,136 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1m s2b_rc s2m s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v; <waiting ...>
+step s1c: COMMIT;
+step s2m: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s1m s2b_rr s2m s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v; <waiting ...>
+step s1c: COMMIT;
+step s2m: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s1m s2b_ser s2m s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v; <waiting ...>
+step s1c: COMMIT;
+step s2m: <... completed>
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rc s1m s1c s2b_rc s2m s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+UPDATE|1|s2
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+
+
+starting permutation: s1b_rr s1m s1c s2b_rr s2m s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+UPDATE|1|s2
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+
+
+starting permutation: s1b_ser s1m s1c s2b_ser s2m s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1m: MERGE INTO kv USING (VALUES (1, 's1')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+INSERT|1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2m: MERGE INTO kv USING (VALUES (1, 's2')) AS src(k, v) ON kv.k = src.k WHEN MATCHED THEN UPDATE SET v = src.v WHEN NOT MATCHED THEN INSERT (k, v) VALUES (src.k, src.v) RETURNING merge_action() AS action, kv.k, kv.v;
+action|k|v 
+------+-+--
+UPDATE|1|s2
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+

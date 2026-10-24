@@ -1,0 +1,87 @@
+{
+  "id": "RUN-pg-anomalies",
+  "title": "PostgreSQL 18.6: the isolation table of RESULTS.md (conditional UPDATE, read-modify-write, write skew, NULL, 22003)",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "PostgreSQL 18.6: the isolation table in RESULTS.md (conditional UPDATE, read-modify-write, write skew, NULL, 22003)",
+  "engine": "postgres",
+  "version": "18.6",
+  "binary": "PostgreSQL 18.6 in the postgres:18 image",
+  "binary_sha256": null,
+  "image": "postgres:18",
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-20",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/spikes/pg_anomalies.py",
+      "sha256": "44688a5a38ffe210f40e38d3fb0f43bb83997e51a20cc9aae630d779da938456",
+      "bytes": 4810,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "## PostgreSQL 18.6 (docker `postgres:18`), script: `spikes/pg_anomalies.py` (psycopg 3)",
+    "| Two concurrent `UPDATE acct SET bal = bal - 80 WHERE id=1 AND bal >= 80` from bal=100 | READ COMMITTED | both statements \"ok\"; second re-evaluates WHERE on the new row version (EvalPlanQual), updates 0 rows; final bal **20** — **no lost update** |",
+    "| App-level read-modify-write: both `SELECT bal` (100), both `UPDATE … SET bal = <read>-80` | READ COMMITTED | final bal **20**, but **160 spent from 100** — lost update / double spend |",
+    "| Same read-modify-write | REPEATABLE READ | second writer: **SerializationFailure, SQLSTATE 40001**; final 20 |",
+    "| Write skew: invariant sum(team) ≥ 0, each txn checks sum (200) then withdraws 150 from a *different* account | REPEATABLE READ | **both commit; team total −100** |",
+    "| Same write skew | SERIALIZABLE | t1 commits, t2 **40001**; total 50 |",
+    "| `CHECK (bal >= 0)` with `INSERT … (NULL)` | — | **accepted** (CHECK passes on NULL/unknown) |",
+    "| `UPDATE … SET bal = bal - 10 WHERE bal >= 10` over rows {NULL, 50} | — | only the non-NULL row updated; the NULL row is **silently skipped** |",
+    "| `9223372036854775807::bigint + 1` | — | **error 22003 \"bigint out of range\"** — Postgres raises, it does not wrap |"
+  ],
+  "outputs": [
+    {
+      "path": "research/spikes/RESULTS.md",
+      "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+      "bytes": 5758,
+      "kind": "results record"
+    }
+  ],
+  "values": {
+    "conditional_update_rc_final_bal": 20,
+    "rmw_rc_spent": 160,
+    "rmw_rr_sqlstate": "40001",
+    "write_skew_rr_team_total": -100,
+    "write_skew_serializable_sqlstate": "40001",
+    "overflow_sqlstate": "22003"
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "RESULTS.md does not hash the server binary"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "RESULTS.md records the table, not the command line; the script reads its DSN from PG_DSN"
+    },
+    {
+      "field": "exit_code",
+      "reason": "RESULTS.md does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "RESULTS.md does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "RESULTS.md does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from research/spikes/pg_anomalies.py; RESULTS.md (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "RESULTS.md is the record (spine precedence item 2); the script is on disk, its output log is not. RUN-pg-claims repeats these experiments with a log."
+  ]
+}

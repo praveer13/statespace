@@ -1,0 +1,840 @@
+{
+  "id": "RUN-w0-integration",
+  "title": "Every W0 gate and the fast lane, run on the host after the W0 integration: the fast lane fails only on GATE-links and GATE-privacy, and every planted-fault self-check holds",
+  "engine": "node",
+  "version": "22.22.2",
+  "version_string": "v22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-24T18:12:59.575Z",
+  "started_at": "2026-10-24T18:09:13.834Z",
+  "duration_s": 34.229,
+  "argv": [
+    "node",
+    "scripts/spikes/W0-T04/lane.mjs",
+    "fast",
+    "--summary",
+    "<scratch>/w0integ/stage/fast-lane-summary.json"
+  ],
+  "inputs": [
+    {
+      "path": "package.json",
+      "sha256": "8021a05342d5859b7b2ce0ef8d3e5de8e99eafc2e3b0b9293ffad3b9697afe87",
+      "role": "the workspace scripts the lane calls"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "9f01a5036a191cc79546d4a6d69f4d30c5023a2b7902875ffb4779cda0a7e729",
+      "role": "the lockfile npm ci installs from"
+    },
+    {
+      "path": ".github/workflows/fast.yml",
+      "sha256": "34c9e4ab840bfe85fc488aebd1cc0943b944bf021d0802d0492bc361f79ec018",
+      "role": "the workflow whose steps 5 and 6 ran"
+    },
+    {
+      "path": "scripts/spikes/W0-T04/gates.json",
+      "sha256": "1539b7429d7faffb5adf5f15208af0f747417c15923e42140aff59f191394110",
+      "role": "the lane manifest"
+    },
+    {
+      "path": "scripts/spikes/W0-T04/lane.mjs",
+      "sha256": "73e0a8324c855c788145d5b774cf28ec0078467df88da73483a2e8d2216ab43b",
+      "role": "the lane runner"
+    },
+    {
+      "path": "scripts/vendor-drift.mjs",
+      "sha256": "a3731d4d3ec23c32558ef53c82faffa948caa8967bc76ae1e43a8e6c43aefc8f",
+      "role": "vendor-verify"
+    },
+    {
+      "path": "packages/purity-lint/check.mjs",
+      "sha256": "611e12f9595e3bf37419ac55d57ffc92635a54b703862d0205741d939da4ee75",
+      "role": "lint-purity"
+    },
+    {
+      "path": "scripts/verify-numbers.mjs",
+      "sha256": "a5da928383a65f765510a73aad4d039a41ab870c3c66eb09fbd10a932eaa6add",
+      "role": "GATE-numbers"
+    },
+    {
+      "path": "scripts/runs/numbers-rules.mjs",
+      "sha256": "36d42f6dab902124215df162ff7992d0f3c873ffa53dbea3e09d8aff3dfa1595",
+      "role": "GATE-numbers' rules"
+    },
+    {
+      "path": "scripts/runs/numbers-baseline.json",
+      "sha256": "4ac4dcbcb524c0bf1c88e7612a37fd07c153df2477d93d34abab2da9d80de989",
+      "role": "GATE-numbers' known debt"
+    },
+    {
+      "path": "scripts/runs/gate-self-check.mjs",
+      "sha256": "59c11c55a3d32b0e3f31c224456b07ce3c21a671e7ec6141f5e03e471a98df42",
+      "role": "the GATE-numbers and GATE-runs self-checks"
+    },
+    {
+      "path": "scripts/verify-runs.mjs",
+      "sha256": "5890b4c637025ae8fcbfc7b4c80b4370acc67febf1aee0a45d528c4dc757f0b6",
+      "role": "GATE-runs"
+    },
+    {
+      "path": "scripts/verify-links.mjs",
+      "sha256": "cd6b67430c9ec5d11a867e8520d36fd07d958335ab4ff977cbc722b9c943dba1",
+      "role": "GATE-links"
+    },
+    {
+      "path": "packages/ids/proposals.json",
+      "sha256": "1f76aefa749376821f8ddbae1c0152bf2b047de2e7830b24369981b63673e879",
+      "role": "GATE-links' pending IDs"
+    },
+    {
+      "path": "scripts/verify-budget.mjs",
+      "sha256": "41179cd1a517ca2f4e3bdc149b6e2a1a9768bd514a53b64af6b0c07af68b25f8",
+      "role": "GATE-budget"
+    },
+    {
+      "path": "scripts/verify-schema.mjs",
+      "sha256": "0de1ccad77e2ffc05b1ee0061bf9f97029db1173de29807b259bd5b4486e714e",
+      "role": "GATE-schema"
+    },
+    {
+      "path": "schemas/codegen/self-check.mjs",
+      "sha256": "b3aa7d480d41593d4a5997ae561819b1a55208ae815505502ce83c0fb12051ac",
+      "role": "GATE-schema's self-check scenarios"
+    },
+    {
+      "path": "schemas/codegen/subset.mjs",
+      "sha256": "4dbd9c41385d74130bc65e954dbeff84ef153fe7223319a5e6ff783b80221f3f",
+      "role": "GATE-schema's keyword subset"
+    },
+    {
+      "path": "schemas/drafts/lasso.schema.json",
+      "sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef",
+      "role": "W0-S05's draft"
+    },
+    {
+      "path": "scripts/verify-privacy.mjs",
+      "sha256": "01818abefce8490e3ac5c68f2db5e40e70a49607e323c607b784962887044c0e",
+      "role": "GATE-privacy"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "dc4d4bf36b223fb000ff45c5eac3a2d9042400fa3c52f84bdde6804c98f2a92a",
+      "role": "what GATE-privacy scans"
+    },
+    {
+      "path": "scripts/verify-facts.mjs",
+      "sha256": "e7e4449235bf05b90ccbc93736d61187f2c9564e2a78a3139a400569421498cd",
+      "role": "GATE-facts"
+    },
+    {
+      "path": "tracker/tasks.yaml",
+      "sha256": "4e9cbc7ee956ab2361cbb6444fbcb8ee9ce09c9175b1166c44799c2e74d14088",
+      "role": "the tracker after the integration"
+    },
+    {
+      "path": "docs/TRACKER.md",
+      "sha256": "2cbcb89afaadceefd57b0c561c4e045444cf35bc3e5287b633a88fc599b632aa",
+      "role": "the tracker's view after the integration"
+    },
+    {
+      "name": "statespace-bench image (the image RUN-doctor-devcontainer recorded), by image ID",
+      "sha256": "b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "role": "bench-image-localtime"
+    }
+  ],
+  "budget": {
+    "timeout_s": 300,
+    "timeout_scope": "the fast lane, counted from the start of npm ci as fast.yml counts it from its first step (gates.json budget_s)",
+    "step_timeout_s": 120,
+    "network": "the npm registry for npm ci; no other step uses the network, and the container check runs with --network=none",
+    "memory": "the container check is capped at 1g; the host runs are not capped"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "fast lane: 28 step(s), root <repo>, budget 300 s",
+    "[ 1/28] vendor-verify          PASS       0.4 s  vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)",
+    "[ 2/28] lint-purity            PASS       0.4 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)",
+    "[ 3/28] typecheck              PASS       5.2 s  no output",
+    "[ 4/28] unit-tests             PASS      11.8 s  153 tests, 152 passed, 0 failed, 1 skipped",
+    "[ 5/28] build                  PASS       3.5 s  ✓ built in 649ms",
+    "[ 6/28] lane-tests             PASS       4.6 s  68 tests, 67 passed, 0 failed, 1 skipped",
+    "[ 7/28] GATE-numbers           PASS       0.5 s  GATE-numbers: PASS (2933 tokens in 42 files, 72 known; 0.5 s)",
+    "[ 8/28] GATE-facts             PASS       0.4 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)",
+    "[18/28] GATE-links             FAIL       0.2 s  GATE-links: FAIL (1 finding(s))",
+    "[20/28] GATE-budget            PASS       0.1 s  GATE-budget: green (4 warnings), 4 notes",
+    "[24/28] GATE-privacy           FAIL       0.8 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file",
+    "[25/28] GATE-schema            PASS       6.1 s  GATE-schema: PASS (22 checks; 6.0 s)",
+    "[28/28] GATE-runs              PASS       0.2 s  GATE-runs: PASS (70 records, 1844 resolved references; 0.1 s)",
+    "absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage, GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)",
+    "fast lane: FAIL in 35.1 s (11 passed, 2 failed, 0 skipped, 15 absent)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-w0-integration/fast-npm-ci.txt",
+      "sha256": "ed1c6ad808fc2c1aad0dc7c019c40d2408ffa9e9aa4c439431199a286257de4b",
+      "bytes": 28,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/fast-lane.txt",
+      "sha256": "cbda9afccc1005fa25d821b12c5a523ba3eb7101eb76f1c2e6cc16185a1d634d",
+      "bytes": 71345,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/fast-lane-summary.json",
+      "sha256": "32edb8a445273ce9c35870325f2fbfb00d8f451c2c89f991b4ea4048b898e3b3",
+      "bytes": 12494,
+      "kind": "report"
+    },
+    {
+      "path": "runs/RUN-w0-integration/numbers-self-check.txt",
+      "sha256": "e8b50a43f0780663589911d5d23d3dfb0e7a994ddd57bc6aa1c75acb4ab93e1d",
+      "bytes": 1981,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/runs-self-check.txt",
+      "sha256": "4c8bd3c35c140a668b8ac8a6c8fbb8b3c56a28e27b6e8196600a7fab6f765ea5",
+      "bytes": 2948,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/schema-self-check.txt",
+      "sha256": "7cfba3376b886ee075ecc0152d7ca6db7e95ddc29ea436d518f417f9f7cc5922",
+      "bytes": 3738,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/facts-self-check.txt",
+      "sha256": "672d76f45c1e5368d0f6daf7d5a4177e5f6e67bef9be3c0df6c775e750e01a13",
+      "bytes": 6165,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/privacy-self-test.txt",
+      "sha256": "57183e0e9bffc91740377302e701774e51d04b041b8ccb730611883c4e6fe389",
+      "bytes": 2012,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/numbers-strict.txt",
+      "sha256": "a8f0c708954f2703f967ebc88581b7f6f0370f155a0e997c7d303fb11ab48b01",
+      "bytes": 17134,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/runs-release.txt",
+      "sha256": "2b3e6ef8138018e4c3957f9d80e691bb83417fc1e6b9d7de64748642f957933c",
+      "bytes": 122101,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/links-strict.txt",
+      "sha256": "5e559818732ce53051a7ac43db2722526135da3c6b6f06cd51e25d9a9fa9f7e5",
+      "bytes": 5321,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/budget-strict.txt",
+      "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+      "bytes": 5882,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/schema-strict.txt",
+      "sha256": "03d84a3de8ef7598016c5309cc29d59d837fd3fd690fa71b981bce0272c4a718",
+      "bytes": 3909,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/privacy-strict.txt",
+      "sha256": "eb1bb2ce5217808edaf2d0f089fa189bd34a4428d059c73a56501a90abf4c743",
+      "bytes": 416,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/privacy-local.txt",
+      "sha256": "8b666e6bde5f239bf17b07fe9afda2c6d4d92615848df4cc5c44e615d41fedff",
+      "bytes": 459,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/lasso-draft-subset-lint.txt",
+      "sha256": "bff665762554b61bf46c6f4edee0500fb0d9abd9bbb7e797e89987543f3c57cb",
+      "bytes": 59,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-integration/bench-image-localtime.txt",
+      "sha256": "339676b3308d3541a2890cc95daa0fb4853b0cac154a8a60003a1962be71f1e0",
+      "bytes": 149,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "fast_lane_result": "FAIL",
+    "fast_lane_total_s": 35.1,
+    "fast_lane_budget_s": 300,
+    "fast_lane_steps_passed": 11,
+    "fast_lane_steps_failed": 2,
+    "fast_lane_steps_absent": 15,
+    "fast_lane_failed_steps": "GATE-links, GATE-privacy",
+    "npm_ci_s": 0.689,
+    "numbers_self_check_held": "14 of 14",
+    "runs_self_check_held": "15 of 15",
+    "schema_self_check_held": "48 of 48",
+    "facts_self_check_held": "23 of 23",
+    "privacy_self_test_held": "33 of 33"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64 (NixOS 26.05)",
+    "cpu_count": 20,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i5-13600KF",
+    "ram_gib": 31,
+    "node": "v22.22.2",
+    "npm": "10.9.7",
+    "uv": "uv 0.10.2",
+    "git": "git version 2.51.2",
+    "docker": "Docker version 29.1.3, build v29.1.3",
+    "container": null,
+    "image_digest": null,
+    "emulated": false
+  },
+  "configs": [
+    {
+      "id": "fast-npm-ci",
+      "purpose": "fast.yml step 5, 'Install the pinned packages', from the committed lockfile; the lane clock starts here",
+      "group": "fast",
+      "argv": [
+        "npm",
+        "ci",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:09:13.143Z",
+      "duration_s": 0.689,
+      "exit_code": 0,
+      "verdict_lines": [
+        "added 88 packages in 651ms"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/fast-npm-ci.txt",
+          "sha256": "ed1c6ad808fc2c1aad0dc7c019c40d2408ffa9e9aa4c439431199a286257de4b",
+          "bytes": 28,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fast-lane",
+      "purpose": "fast.yml step 6, 'Run the fast lane': every fast-lane step of scripts/spikes/W0-T04/gates.json, with the clock started at npm ci as STATESPACE_LANE_START does in the workflow",
+      "group": "fast",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T04/lane.mjs",
+        "fast",
+        "--summary",
+        "<scratch>/w0integ/stage/fast-lane-summary.json"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:09:13.834Z",
+      "duration_s": 34.229,
+      "exit_code": 1,
+      "verdict_lines": [
+        "fast lane: 28 step(s), root <repo>, budget 300 s",
+        "[ 1/28] vendor-verify          PASS       0.4 s  vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)",
+        "[ 2/28] lint-purity            PASS       0.4 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)",
+        "[ 3/28] typecheck              PASS       5.2 s  no output",
+        "[ 4/28] unit-tests             PASS      11.8 s  153 tests, 152 passed, 0 failed, 1 skipped",
+        "[ 5/28] build                  PASS       3.5 s  ✓ built in 649ms",
+        "[ 6/28] lane-tests             PASS       4.6 s  68 tests, 67 passed, 0 failed, 1 skipped",
+        "[ 7/28] GATE-numbers           PASS       0.5 s  GATE-numbers: PASS (2933 tokens in 42 files, 72 known; 0.5 s)",
+        "[ 8/28] GATE-facts             PASS       0.4 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)",
+        "[18/28] GATE-links             FAIL       0.2 s  GATE-links: FAIL (1 finding(s))",
+        "[20/28] GATE-budget            PASS       0.1 s  GATE-budget: green (4 warnings), 4 notes",
+        "[24/28] GATE-privacy           FAIL       0.8 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file",
+        "[25/28] GATE-schema            PASS       6.1 s  GATE-schema: PASS (22 checks; 6.0 s)",
+        "[28/28] GATE-runs              PASS       0.2 s  GATE-runs: PASS (70 records, 1844 resolved references; 0.1 s)",
+        "absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage, GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)",
+        "fast lane: FAIL in 35.1 s (11 passed, 2 failed, 0 skipped, 15 absent)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/fast-lane.txt",
+          "sha256": "cbda9afccc1005fa25d821b12c5a523ba3eb7101eb76f1c2e6cc16185a1d634d",
+          "bytes": 71345,
+          "kind": "log"
+        },
+        {
+          "path": "runs/RUN-w0-integration/fast-lane-summary.json",
+          "sha256": "32edb8a445273ce9c35870325f2fbfb00d8f451c2c89f991b4ea4048b898e3b3",
+          "bytes": 12494,
+          "kind": "report"
+        }
+      ]
+    },
+    {
+      "id": "numbers-self-check",
+      "purpose": "GATE-numbers must fail on each planted fault, among them an untagged number (nightly and release lanes)",
+      "group": "self-check",
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:09:48.063Z",
+      "duration_s": 7.128,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-numbers self-check: PASS (14 of 14 held)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/numbers-self-check.txt",
+          "sha256": "e8b50a43f0780663589911d5d23d3dfb0e7a994ddd57bc6aa1c75acb4ab93e1d",
+          "bytes": 1981,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "runs-self-check",
+      "purpose": "GATE-runs must fail on each planted fault, among them an unresolved run reference (nightly and release lanes)",
+      "group": "self-check",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:09:55.192Z",
+      "duration_s": 2.741,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-runs self-check: PASS (15 of 15 held)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/runs-self-check.txt",
+          "sha256": "4c8bd3c35c140a668b8ac8a6c8fbb8b3c56a28e27b6e8196600a7fab6f765ea5",
+          "bytes": 2948,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "schema-self-check",
+      "purpose": "GATE-schema's planted-fault scenarios and pattern probes (nightly and release lanes)",
+      "group": "self-check",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:09:57.933Z",
+      "duration_s": 111.246,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-schema self-check: PASS (48 of 48 held)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/schema-self-check.txt",
+          "sha256": "7cfba3376b886ee075ecc0152d7ca6db7e95ddc29ea436d518f417f9f7cc5922",
+          "bytes": 3738,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "facts-self-check",
+      "purpose": "GATE-facts' planted-fault cases (nightly and release lanes)",
+      "group": "self-check",
+      "argv": [
+        "node",
+        "scripts/verify-facts.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:49.180Z",
+      "duration_s": 6.194,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-facts self-check: PASS (23 of 23 held)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/facts-self-check.txt",
+          "sha256": "672d76f45c1e5368d0f6daf7d5a4177e5f6e67bef9be3c0df6c775e750e01a13",
+          "bytes": 6165,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "privacy-self-test",
+      "purpose": "GATE-privacy's self-test (nightly and release lanes)",
+      "group": "self-check",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--self-test"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:55.375Z",
+      "duration_s": 0.033,
+      "exit_code": 0,
+      "verdict_lines": [
+        "verify-privacy self-test: ok, 33/33"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/privacy-self-test.txt",
+          "sha256": "57183e0e9bffc91740377302e701774e51d04b041b8ccb730611883c4e6fe389",
+          "bytes": 2012,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "numbers-strict",
+      "purpose": "GATE-numbers as the release lane runs it: the known debt fails",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:55.408Z",
+      "duration_s": 0.507,
+      "exit_code": 1,
+      "verdict_lines": [
+        "  FAIL 72 untagged tokens listed as debt in scripts/runs/numbers-baseline.json, in 21 documents (docs/ARCHITECTURE.md 1, docs/ASSESSMENT.md 2, docs/AUDIT-DESK.md 1, docs/DECISIONS.md 3, docs/DESIGN.md 9, docs/LANDSCAPE.md 6, docs/WORLD.md 1, docs/spikes/W0-S01.md 4, docs/spikes/W0-S03.md 4, docs/spikes/W0-S05.md 6, docs/spikes/W0-S07.md 3, docs/spikes/W0-S08.md 5, docs/spikes/W0-S10.md 1, docs/spine/SPINE.md 1, curriculum/S05-time.md 8, curriculum/S06-correspondence.md 1, curriculum/S07-secrecy.md 1, curriculum/S10-assembly.md 1, tracker/tasks.yaml 4, labs/README.md 5, labs/TOOLS.md 5)",
+        "  FAIL  docs/ARCHITECTURE.md:673  untagged verdict \"Deadlock reached\": \"TLC stopped at \\\"Deadlock reached\\\" before exploring every reachable state yields [?] with its distinct-state count, never \\\"no error\\\" ([R] only when the property was deadlock freedom);\" (listed debt)",
+        "  FAIL  docs/ASSESSMENT.md:502  untagged count \"at depth 1\": \"| t3 reachable | violation at depth 1–2 | depth 3–4 | depth 5–6; the trace asked |\" (listed debt)",
+        "  FAIL  docs/ASSESSMENT.md:820  untagged verdict \"unsat\": \"*Statement alone:* \\\"The guarded transfer never overdraws the sender: Z3 returns `unsat`.\\\"\" (listed debt)",
+        "  FAIL  docs/AUDIT-DESK.md:187  untagged verdict \"sat\": \"The premises alone return `sat`, the premise witness, recorded with the anchor's key run.\" (listed debt)",
+        "  FAIL  docs/DECISIONS.md:51  untagged measure \"5 MB\": \"| OD-6 · Download consent | Any download above 5 MB asks first. | W1-T06. |\" (listed debt)",
+        "(68 more FAIL lines in the output file)",
+        "GATE-numbers: FAIL (72 findings: 0 untagged, 0 deny-list, 72 listed debt; 0.5 s)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/numbers-strict.txt",
+          "sha256": "a8f0c708954f2703f967ebc88581b7f6f0370f155a0e997c7d303fb11ab48b01",
+          "bytes": 17134,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "runs-release",
+      "purpose": "GATE-runs as the release lane runs it: forward references, changed inputs and a stale index fail",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--release"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:55.916Z",
+      "duration_s": 0.165,
+      "exit_code": 1,
+      "verdict_lines": [
+        "  FAIL  references  README.md:307:280: {{run:RUN-twin-pins}} does not resolve: runs/RUN-twin-pins.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:332:186: {{run:RUN-z3-vacuous-unsat}} does not resolve: runs/RUN-z3-vacuous-unsat.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:413:757: {{run:RUN-z3-capture}} does not resolve: runs/RUN-z3-capture.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:506:210: {{run:RUN-z3-cti-pair}} does not resolve: runs/RUN-z3-cti-pair.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:634:390: {{run:RUN-z3-leaky-field}} does not resolve: runs/RUN-z3-leaky-field.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:746:133: {{run:RUN-lean-ih-ungeneralised}} does not resolve: runs/RUN-lean-ih-ungeneralised.json does not exist (the release lane resolves every reference)",
+        "(650 more FAIL lines in the output file)",
+        "GATE-runs: FAIL (655 findings, release; 0.1 s)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/runs-release.txt",
+          "sha256": "2b3e6ef8138018e4c3957f9d80e691bb83417fc1e6b9d7de64748642f957933c",
+          "bytes": 122101,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "links-strict",
+      "purpose": "GATE-links as the release lane runs it: pending proposals fail",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-links.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:56.081Z",
+      "duration_s": 0.184,
+      "exit_code": 1,
+      "verdict_lines": [
+        "FAIL  owner  tracker/tasks.yaml  SCR-instrument (screen, spine §10.1) is implemented by no task; spine §13 gives it to W1-T14, so add it to that task's implements",
+        "FAIL  proposed  LAB-2.9 is proposed, not registered in the spine yet (packages/ids/proposals.json)  [14 places: content/stages/budget.yaml:525:9, content/stages/budget.yaml:532:22, curriculum/S02-proof.md:273:299, curriculum/S02-proof.md:306:432, curriculum/S02-proof.md:460:95, +9 more]",
+        "FAIL  proposed  CL-2.6 is proposed, not registered in the spine yet (packages/ids/proposals.json)  [12 places: curriculum/S02-proof.md:26:112, curriculum/S02-proof.md:273:291, curriculum/S02-proof.md:433:24, curriculum/S02-proof.md:509:252, curriculum/S02-proof.md:509:296, +7 more]",
+        "FAIL  proposed  RUN-lean-run-nonneg is proposed, not registered in the spine yet (packages/ids/proposals.json)  [7 places: curriculum/S02-proof.md:439:400, curriculum/S02-proof.md:509:373, curriculum/S02-proof.md:578:271, curriculum/S02-proof.md:638:3, curriculum/S02-proof.md:663:40, +2 more]",
+        "FAIL  proposed  LAB-8.10 is proposed, not registered in the spine yet (packages/ids/proposals.json)  [14 places: curriculum/S08-effects.md:29:110, curriculum/S08-effects.md:297:151, curriculum/S08-effects.md:342:3, curriculum/S08-effects.md:344:3, curriculum/S08-effects.md:402:96, +9 more]",
+        "FAIL  proposed  RUN-tlc-outbox-inductive is proposed, not registered in the spine yet (packages/ids/proposals.json)  [4 places: curriculum/S08-effects.md:342:113, curriculum/S08-effects.md:405:60, curriculum/S08-effects.md:475:3, curriculum/S08-effects.md:498:347]",
+        "(16 more FAIL lines in the output file)",
+        "GATE-links: FAIL (90 finding(s))"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/links-strict.txt",
+          "sha256": "5e559818732ce53051a7ac43db2722526135da3c6b6f06cd51e25d9a9fa9f7e5",
+          "bytes": 5321,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "budget-strict",
+      "purpose": "GATE-budget as the release lane runs it: warnings fail",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:56.266Z",
+      "duration_s": 0.098,
+      "exit_code": 1,
+      "verdict_lines": [
+        "GATE-budget: green (4 warnings), 4 notes"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/budget-strict.txt",
+          "sha256": "439d22f8910948214e6f0944fb097f1c41418bcd930fec8c3350c6c320461d6b",
+          "bytes": 5882,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "schema-strict",
+      "purpose": "GATE-schema as the release lane runs it: work owed by a later task fails",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:11:56.364Z",
+      "duration_s": 6.066,
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-schema: PASS (22 checks, strict; 6.0 s)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/schema-strict.txt",
+          "sha256": "03d84a3de8ef7598016c5309cc29d59d837fd3fd690fa71b981bce0272c4a718",
+          "bytes": 3909,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "privacy-strict",
+      "purpose": "GATE-privacy as the release lane runs it: the missing term list and course licenses fail",
+      "group": "release-mode",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T18:12:02.430Z",
+      "duration_s": 0.821,
+      "exit_code": 1,
+      "verdict_lines": [
+        "verify-privacy: 3 problem(s)",
+        "  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file",
+        "  course-license (strict)  no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner",
+        "  private-term   (strict)  not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/privacy-strict.txt",
+          "sha256": "eb1bb2ce5217808edaf2d0f089fa189bd34a4428d059c73a56501a90abf4c743",
+          "bytes": 416,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "privacy-local",
+      "purpose": "GATE-privacy as a developer runs it, CI unset, so the local identity (account name, git user name, email local part) is also checked",
+      "group": "local",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs"
+      ],
+      "env": {
+        "CI": "(unset)"
+      },
+      "started_at": "2026-10-24T18:12:03.252Z",
+      "duration_s": 4.298,
+      "exit_code": 1,
+      "verdict_lines": [
+        "warning: course-license: no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner",
+        "warning: private-term: not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE); only your local identity was checked (3 terms)",
+        "verify-privacy: 1 problem(s)",
+        "  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/privacy-local.txt",
+          "sha256": "8b666e6bde5f239bf17b07fe9afda2c6d4d92615848df4cc5c44e615d41fedff",
+          "bytes": 459,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "lasso-draft-subset-lint",
+      "purpose": "W0-S05's draft lasso@1 against GATE-schema's keyword subset (schemas/codegen/subset.mjs), to settle W0-S05's report that the subset excludes prefixItems",
+      "group": "check",
+      "argv": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import { checkKeywords } from './schemas/codegen/subset.mjs'; import fs from 'node:fs'; const p = checkKeywords(JSON.parse(fs.readFileSync('schemas/drafts/lasso.schema.json', 'utf8'))); console.log(JSON.stringify({ draft: 'schemas/drafts/lasso.schema.json', problems: p })); process.exit(p.length === 0 ? 0 : 1);"
+      ],
+      "env": {},
+      "started_at": "2026-10-24T18:12:07.551Z",
+      "duration_s": 0.021,
+      "exit_code": 0,
+      "verdict_lines": [
+        "{\"draft\":\"schemas/drafts/lasso.schema.json\",\"problems\":[]}"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/lasso-draft-subset-lint.txt",
+          "sha256": "bff665762554b61bf46c6f4edee0500fb0d9abd9bbb7e797e89987543f3c57cb",
+          "bytes": 59,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "bench-image-localtime",
+      "purpose": "W0-S10's request that the image running lean --server has a localtime file: the Bench image RUN-doctor-devcontainer recorded, by image ID",
+      "group": "check",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ss-w0integ-localtime",
+        "--memory=1g",
+        "--network=none",
+        "--entrypoint",
+        "sh",
+        "sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "-c",
+        "ls -l /etc/localtime; readlink -f /etc/localtime; dpkg -S /usr/share/zoneinfo/Etc/UTC"
+      ],
+      "env": {},
+      "started_at": "2026-10-24T18:12:07.572Z",
+      "duration_s": 0.141,
+      "exit_code": 0,
+      "verdict_lines": [
+        "lrwxrwxrwx 1 root root 27 Oct 24 17:29 /etc/localtime -> /usr/share/zoneinfo/Etc/UTC",
+        "/usr/share/zoneinfo/Etc/UTC",
+        "tzdata: /usr/share/zoneinfo/Etc/UTC"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-w0-integration/bench-image-localtime.txt",
+          "sha256": "339676b3308d3541a2890cc95daa0fb4853b0cac154a8a60003a1962be71f1e0",
+          "bytes": 149,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "fast-lane",
+  "checks": [
+    {
+      "id": "fast-lane-within-budget",
+      "pass": true,
+      "detail": "35.1 s from the start of npm ci, against the 300 s budget of gates.json; host, not a GitHub runner"
+    },
+    {
+      "id": "fast-lane-fails-only-on-known-findings",
+      "pass": true,
+      "detail": "failed steps: GATE-links, GATE-privacy; GATE-links waits for SCR-instrument in W1-T14 (W0-T10) and GATE-privacy for the kernelspace license (OD-16)"
+    },
+    {
+      "id": "npm-ci-installs-from-the-lockfile",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "id": "self-checks-hold",
+      "pass": true,
+      "detail": "numbers-self-check 14 of 14; runs-self-check 15 of 15; schema-self-check 48 of 48; facts-self-check 23 of 23; privacy-self-test 33 of 33"
+    },
+    {
+      "id": "lasso-draft-in-subset",
+      "pass": true,
+      "detail": "{\"draft\":\"schemas/drafts/lasso.schema.json\",\"problems\":[]}"
+    },
+    {
+      "id": "bench-image-has-localtime",
+      "pass": true,
+      "detail": "lrwxrwxrwx 1 root root 27 Oct 24 17:29 /etc/localtime -> /usr/share/zoneinfo/Etc/UTC | /usr/share/zoneinfo/Etc/UTC | tzdata: /usr/share/zoneinfo/Etc/UTC"
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "Local, on the host: not a GitHub-hosted runner and not the 4-CPU container emulation of RUN-ci-fastlane. The fast lane ran fast.yml steps 5 and 6 with CI=true and without the privacy secrets, as a pull request from a fork would; steps 1 to 4 (clock, checkout, Node and uv setup) were the host itself, with the same Node and uv versions as the workflow pins.",
+    "Recorded by the W0 integration, after every W0 task had finished and after the integration changes listed in docs/waves/W0-report.md section 3; runs/index.json was regenerated just before this run and again after this record was written.",
+    "The fast lane is red on two known findings and nothing else: GATE-links, SCR-instrument implemented by no task (spine section 13 gives it to W1-T14; W0-T10 adds it), and GATE-privacy, vendor/kernelspace/ without a license file (owner decision OD-16).",
+    "The release-mode configurations are informational for W0-T11: the release lane fails on GATE-numbers known debt, pending ID proposals, GATE-budget warnings, forward run references, inputs changed since their runs, and the missing course licenses and term list.",
+    "Outputs are normalised: the repository path is <repo>, the scratch directory <scratch>, temporary directories <tmp>, the home directory <home>, store paths <nix-store>, and the local account and git identity <user>. The outputs were staged outside runs/ while the gates ran and copied here afterwards.",
+    "The commands in configs[].argv reproduce the run from the repository root; the script that ran them and wrote this record is not part of the repository."
+  ]
+}

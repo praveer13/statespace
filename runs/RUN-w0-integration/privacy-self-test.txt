@@ -1,0 +1,35 @@
+verify-privacy self-test: 33 cases
+  ok   an email outside the allow-list fails
+  ok   role addresses, reserved domains and the removal placeholder pass
+  ok   home, per-user and agent session directories fail
+  ok   URLs, container homes, CI accounts and placeholders pass
+  ok   a prompt naming a user fails; root in a container passes
+  ok   tokens and private keys fail
+  ok   a real instrument host fails; the placeholder and example hosts pass
+  ok   a private-design term fails outside the roadmap and history
+  ok   camelCase, hyphens and a line break still match
+  ok   plurals in -s and -es, and a substring, match
+  ok   the roadmap, a quotation of it and v1 history pass
+  ok   the redaction marker and the generic phrase are masked
+  ok   a personal name fails except on the copyright line of a license file
+  ok   a term allowed for a path passes only there
+  ok   file names are scanned
+  ok   learner copy keeps the roadmap names
+  ok   learner copy naming the product fails; a roadmap quotation passes; design docs are out of scope
+  ok   printable strings inside a binary file are scanned
+  ok   a UTF-16 text file is decoded
+  ok   review JSONs fail by name
+  ok   review JSONs fail by fingerprint under any name
+  ok   a vendored directory without its own license fails
+  ok   a vendored directory with its license passes
+  ok   missing course licenses are a warning, and a failure under --strict
+  ok   a key that does not match the hashed list is refused
+  ok   a hashed list without its keyId is refused
+  ok   a list from --hash-terms round-trips
+  ok   a term list inside the repository is refused
+  ok   the course domain from the environment is checked
+  ok   outside CI, your account name, git user.name and git email local part are caught
+  ok   generic and placeholder identities add no terms
+  ok   the local identity is off in CI and when STATESPACE_PRIVACY_LOCAL_IDENTITY=0
+  ok   a term list's allowance outranks the same local identity term
+verify-privacy self-test: ok, 33/33

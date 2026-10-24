@@ -1,0 +1,595 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1chk s2b_rc s2chk s1ins s1c s2ins s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s1chk s2b_rr s2chk s1ins s1c s2ins s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2chk s1ins s1c s2ins s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rc s1chk s2b_rc s2chk s1ins s2ins s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s1chk s2b_rr s2chk s1ins s2ins s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2chk s1ins s2ins s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rc s1chk s2b_rc s2ins s2c s1ins s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+k|v 
+-+--
+1|s2
+(1 row)
+
+step s2c: COMMIT;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s1c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+
+
+starting permutation: s1b_rr s1chk s2b_rr s2ins s2c s1ins s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+k|v 
+-+--
+1|s2
+(1 row)
+
+step s2c: COMMIT;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s1c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2ins s2c s1ins s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+k|v 
+-+--
+1|s2
+(1 row)
+
+step s2c: COMMIT;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s1c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+
+
+starting permutation: s1b_rc s2b_rc s2chk s1ins s1c s2ins s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s2b_rr s2chk s1ins s1c s2ins s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s2chk s1ins s1c s2ins s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rc s2b_rc s1ins s2ins s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s2b_rr s1ins s2ins s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s2ins s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v; <waiting ...>
+step s1c: COMMIT;
+step s2ins: <... completed>
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rc s2b_rc s1ins s1c s2ins s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_rr s2b_rr s1ins s1c s2ins s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s1c s2ins s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2chk s1ins s1c s2ins s2c s2b2_ser s2chk2 s2ins2_guarded s2c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step s2b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk2: SELECT v FROM kv WHERE k = 1;
+v 
+--
+s1
+(1 row)
+
+step s2ins2_guarded: INSERT INTO kv SELECT 1, 's2' WHERE NOT EXISTS (SELECT 1 FROM kv WHERE k = 1) RETURNING k, v;
+k|v
+-+-
+(0 rows)
+
+step s2c2: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s1c s2ins s2c s2b2_ser s2ins2_blind s2c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step s2b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2ins2_blind: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c2: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s2b_ser s1ins s1c s2ins s2c s2b2_ser s2chk2 s2ins2_guarded s2c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+k|v 
+-+--
+1|s1
+(1 row)
+
+step s1c: COMMIT;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s2c: COMMIT;
+step s2b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2chk2: SELECT v FROM kv WHERE k = 1;
+v 
+--
+s1
+(1 row)
+
+step s2ins2_guarded: INSERT INTO kv SELECT 1, 's2' WHERE NOT EXISTS (SELECT 1 FROM kv WHERE k = 1) RETURNING k, v;
+k|v
+-+-
+(0 rows)
+
+step s2c2: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s1
+(1 row)
+
+
+starting permutation: s1b_ser s1chk s2b_ser s2ins s2c s1ins s1c s1b2_ser s1chk2 s1ins2_guarded s1c2 chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk: SELECT v FROM kv WHERE k = 1;
+v
+-
+(0 rows)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2ins: INSERT INTO kv VALUES (1, 's2') RETURNING k, v;
+k|v 
+-+--
+1|s2
+(1 row)
+
+step s2c: COMMIT;
+step s1ins: INSERT INTO kv VALUES (1, 's1') RETURNING k, v;
+ERROR:  duplicate key value violates unique constraint "kv_pkey"
+step s1c: COMMIT;
+step s1b2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1chk2: SELECT v FROM kv WHERE k = 1;
+v 
+--
+s2
+(1 row)
+
+step s1ins2_guarded: INSERT INTO kv SELECT 1, 's1' WHERE NOT EXISTS (SELECT 1 FROM kv WHERE k = 1) RETURNING k, v;
+k|v
+-+-
+(0 rows)
+
+step s1c2: COMMIT;
+step chk: SELECT k, v FROM kv ORDER BY k;
+k|v 
+-+--
+1|s2
+(1 row)
+

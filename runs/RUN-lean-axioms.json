@@ -1,0 +1,176 @@
+{
+  "id": "RUN-lean-axioms",
+  "title": "Axiom probe: grind adds Classical.choice and omega does not; lake check errors while logging that the kernel accepts; a sorry file exits 0",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "axiom probe: `grind` adds `Classical.choice`, `omega` does not; `_native`, `sorryAx` and a custom axiom listed; `lake check` errors while logging \"Lean default kernel accepts the solution\"; a `sorry` file exits 0",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "the Lean 4.35.0 toolchain installed by elan",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/lean-measure/proj/ledger/Ledger/Basic.lean",
+      "sha256": "86da2841a350f6ad5f580ae8fe4a224863f1572689809b03ec359c853f29a3a3",
+      "bytes": 892,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/ledger/Ledger/Bad.lean",
+      "sha256": "80a5ed00b60f586b486523f8b52008f1cca395205dd998712819fb5322a72dfe",
+      "bytes": 371,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/proj/Probe/Trust.lean",
+      "sha256": "6dd61b8f884d2fa1a810fc9cacb061b6d0506867d4f5a8a4b92861603812b857",
+      "bytes": 315,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/proj/Probe/Conserve.lean",
+      "sha256": "30a960545d472c9de793e887d7d6860d07104b497ef50b52d4a2ad8d0ef4a99a",
+      "bytes": 937,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/lean-measure/scripts/measure-local.sh",
+      "sha256": "eafe46fb1148c80917f54a59ac5fe0818420f58c30258fd6bcea4367eb25e67a",
+      "bytes": 4356,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "WARNING: Sandbox disabled, this run is not trustworthy.",
+    "info: Ledger/Basic.lean:27:0: 'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+    "info: Ledger/Basic.lean:28:0: 'transfer_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "warning: Ledger/Bad.lean:4:8: declaration uses `sorry`",
+    "info: Ledger/Bad.lean:7:0: 'big_native' depends on axioms: [big_native._native.native_decide.ax_1_1]",
+    "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]",
+    "info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]",
+    "error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'",
+    "Lean default kernel accepts the solution",
+    "[01:23:24] lean Ledger/Bad.lean rc=0: 0.1 s",
+    "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'by_omega' depends on axioms: [propext, Quot.sound]"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/lean-measure/proj/check-bad.out",
+      "sha256": "939a08b531d2e40de56bfd0bfd3e98ac59c6b649c092d0663f4813b0c679116e",
+      "bytes": 1192,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/lean-measure/run.out",
+      "sha256": "2a07bd09ca3b338dfdc1b8c648663fb2139db4f2fc7a250d1584f2aca39e1c2d",
+      "bytes": 1969,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/out/lean_trust.txt",
+      "sha256": "5bde4a08a2429fb68161280fdc1dc1bd3a683fe4753e4fefa1de0b775278d804",
+      "bytes": 906,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "grind_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "omega_axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "sorry_file_exit": 0,
+    "lake_check_kernel_line": "Lean default kernel accepts the solution"
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "check-bad",
+      "origin": "imported",
+      "purpose": "lake check with the sandbox disabled on the project with Bad.lean (lean-measure/proj/check-bad.out)",
+      "verdict_lines": [
+        "error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'",
+        "Lean default kernel accepts the solution"
+      ]
+    },
+    {
+      "id": "lean-bad",
+      "origin": "imported",
+      "purpose": "lean Ledger/Bad.lean, which uses sorry, a native axiom and a custom axiom (lean-measure/run.out)",
+      "exit_code": 0,
+      "environment": {
+        "os": "Linux 6.12.63",
+        "cpu_count": 20,
+        "ram_gib": 31
+      },
+      "verdict_lines": [
+        "[01:23:08] host: 20 cpus; 31 GiB RAM; Linux 6.12.63",
+        "[01:23:24] lean Ledger/Bad.lean rc=0: 0.1 s"
+      ]
+    },
+    {
+      "id": "trust-probe",
+      "origin": "imported",
+      "purpose": "lake build and #print axioms on the a2r3 probe project (a2r3/out/lean_trust.txt)",
+      "verdict_lines": [
+        "lake exit=0",
+        "'by_native' depends on axioms: [by_native._native.native_decide.ax_1_1]",
+        "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'by_omega' depends on axioms: [propext, Quot.sound]"
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the logs do not hash the toolchain"
+    },
+    {
+      "field": "image",
+      "reason": "lean-measure ran on the host with elan (measure-local.sh); the a2r3 probe paths do not name an image"
+    },
+    {
+      "field": "started_at",
+      "reason": "the lean-measure log stamps times of day ([01:23:08]) without a date"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the logs hold the output; lean-measure's log is written by measure-local.sh, whose command lines are in the script, and the check-bad run's command line is not recorded"
+    },
+    {
+      "field": "exit_code",
+      "reason": "one exit code per configuration; there is no single one"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the logs come from separate sessions: lean-measure/run.out describes its own host (the lean-bad configuration), the other two describe none"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the logs come from separate sessions: lean-measure/run.out describes its own host (the lean-bad configuration), the other two describe none"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from evidence/lean-measure/proj/check-bad.out; lean-measure/run.out; a2r3/out/lean_trust.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

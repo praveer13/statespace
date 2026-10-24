@@ -1,0 +1,109 @@
+{
+  "id": "RUN-tlc-fingerprint",
+  "title": "TLC 1.8.0 prints fingerprint-collision estimates on a complete run",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "TLC 1.8.0 prints fingerprint-collision estimates on a complete run",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0 (the log prints its banner, not its hash)",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/exp/tla/Inc.tla",
+      "sha256": "55909004079289288e846acf05dc4da82da89403935840aa5ce648c5ad63e1d9",
+      "bytes": 497,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/exp/tla/Inc.cfg",
+      "sha256": "3a5273a6d9da5e3af6a201c2b759b56ba25f41dfbffa6cf32e62349d4fd976cf",
+      "bytes": 69,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Model checking completed. No error has been found.",
+    "  Estimates of the probability that TLC did not check all reachable states",
+    "  because two distinct states had the same fingerprint:",
+    "  calculated (optimistic):  val = 8.3E-7",
+    "  based on the actual fingerprints:  val = 2.1E-9",
+    "8106621 states generated, 2986377 distinct states found, 0 states left on queue."
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/exp/tla/inc-native.log",
+      "sha256": "7b0ec189efc1214d808916b502201837bd21ab9b18bc7d31fe796ef135c3ea5d",
+      "bytes": 1411,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/exp/tla/inc-n.log",
+      "sha256": "334de3e10ef7aeecac0ac914dc1e64d48a72fb077fae41e87809ae4d1c6f9c1b",
+      "bytes": 1192,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "calculated": "8.3E-7",
+    "actual": "2.1E-9",
+    "distinct_states": 2986377,
+    "states_generated": 8106621,
+    "depth": 25
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "cpu_architecture": "amd64",
+    "java": "Eclipse Adoptium 21.0.12.1"
+  },
+  "configs": [
+    {
+      "id": "inc-n",
+      "origin": "imported",
+      "purpose": "a smaller instance of the same spec in the same session: only the calculated estimate is printed",
+      "verdict_lines": [
+        "Model checking completed. No error has been found.",
+        "  calculated (optimistic):  val = 3.9E-11",
+        "53704 states generated, 26260 distinct states found, 0 states left on queue."
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log prints the build banner, not the jar hash"
+    },
+    {
+      "field": "image",
+      "reason": "the banner shows a container (pid 1), not its image"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output, not the command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from evidence/exp/tla/inc-native.log (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "The log gives local times (2026-10-21 01:33) without a zone, so started_at holds the date. It reports Finished in 07s."
+  ]
+}

@@ -1,0 +1,84 @@
+Parsed test spec with 3 sessions
+
+starting permutation: ab_rc bb_rc au bu ac bc chk
+step ab_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step bb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step au: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step bu: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step ac: COMMIT;
+step bu: <... completed>
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step bc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: ab_rr bb_rr au bu ac bc bb2_rr bu2 bc2 chk
+step ab_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step bb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step au: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step bu: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step ac: COMMIT;
+step bu: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step bc: COMMIT;
+step bb2_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step bu2: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step bc2: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: ab_ser bb_ser au bu ac bc bb2_ser bu2 bc2 chk
+step ab_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step bb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step au: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step bu: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step ac: COMMIT;
+step bu: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step bc: COMMIT;
+step bb2_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step bu2: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step bc2: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+

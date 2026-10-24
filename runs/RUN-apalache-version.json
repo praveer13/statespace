@@ -1,0 +1,168 @@
+{
+  "id": "RUN-apalache-version",
+  "title": "Apalache 0.62.4: its version and a bounded smoke check",
+  "engine": "apalache",
+  "version": "0.62.4",
+  "binary": "lib/apalache.jar from apalache-0.62.4.tgz",
+  "binary_sha256": "e5223915507b65cc5f1638bd037ede60f8a4fc1644aff46355779f9b05df9262",
+  "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+  "recorded_at": "2026-10-24T13:15:36.468Z",
+  "started_at": "2026-10-24T13:15:34.560Z",
+  "primary_config": "version",
+  "argv": [
+    "/opt/apalache/bin/apalache-mc",
+    "version"
+  ],
+  "inputs": [
+    {
+      "url": "https://github.com/apalache-mc/apalache/releases/download/v0.62.4/apalache-0.62.4.tgz",
+      "sha256": "b781b53bba32fac14ac2e02b0332e1dc2edc64cb7b850c0608d8142cc7aa2ef4",
+      "bytes": 192038424,
+      "kind": "release asset",
+      "committed": false
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 120
+  },
+  "exit_code": 0,
+  "duration_s": 0.5,
+  "verdict_lines": [
+    "0.62.4"
+  ],
+  "outputs": [],
+  "values": {
+    "version": "0.62.4",
+    "build": "7954daf",
+    "tgz_sha256": "b781b53bba32fac14ac2e02b0332e1dc2edc64cb7b850c0608d8142cc7aa2ef4",
+    "jar_sha256": "e5223915507b65cc5f1638bd037ede60f8a4fc1644aff46355779f9b05df9262",
+    "license_sha256": "2dd033a9407b570f58ba4efe7c726f0eb734f3b3fa184d3cc056048883cfe495",
+    "java": "OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "smoke_outcome": "The outcome is: NoError"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "eclipse-temurin:21-jre",
+      "digest": "sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "architecture": "amd64",
+      "run_flags": [
+        "--rm",
+        "--memory=6g",
+        "--network=none",
+        "--user <uid>:<gid>",
+        "-e HOME=/tmp",
+        "-v <apalache>:/opt/apalache:ro",
+        "-v <smoke>:/work:ro",
+        "-v <out>:/out",
+        "-w /tmp"
+      ],
+      "java": "OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)"
+    },
+    "host_tools": {
+      "node": "v22.22.2",
+      "uv": "uv 0.10.2"
+    },
+    "emulated": false
+  },
+  "notes": [
+    "Apalache 0.62.4 is optional and used only by S5.L9 and drawer D-18 (spine section 9.2). Its inductive-invariant check is bounded by the constants and types it instantiates, so it earns [M], never [P] alone (D-18); the smoke check here is a bounded check of five steps and says nothing more.",
+    "binary_sha256 is the SHA-256 of lib/apalache.jar inside the release archive; the archive itself is the input, pinned by the SHA-256 that the release lists in its sha256sum.txt.",
+    "The archive unpacks to bin/apalache-mc (a bash launcher), lib/apalache.jar (one fat jar) and LICENSE; it runs unchanged on Eclipse Temurin 21 with the network off.",
+    "The smoke log carries a clock time on every line, so a re-run is compared on verdict_lines only."
+  ],
+  "configs": [
+    {
+      "id": "version",
+      "purpose": "the version string of the pinned release",
+      "engine": "apalache",
+      "version": "0.62.4",
+      "binary_sha256": "e5223915507b65cc5f1638bd037ede60f8a4fc1644aff46355779f9b05df9262",
+      "argv": [
+        "/opt/apalache/bin/apalache-mc",
+        "version"
+      ],
+      "inputs": [
+        {
+          "url": "https://github.com/apalache-mc/apalache/releases/download/v0.62.4/apalache-0.62.4.tgz",
+          "sha256": "b781b53bba32fac14ac2e02b0332e1dc2edc64cb7b850c0608d8142cc7aa2ef4",
+          "bytes": 192038424,
+          "kind": "release asset",
+          "committed": false
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T13:15:34.560Z",
+      "duration_s": 0.5,
+      "exit_code": 0,
+      "verdict_lines": [
+        "0.62.4"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "smoke",
+      "purpose": "a bounded check of one invariant on a counter, to show the launcher, the bundled solver and the type checker run on the Bench base",
+      "engine": "apalache",
+      "version": "0.62.4",
+      "binary_sha256": "e5223915507b65cc5f1638bd037ede60f8a4fc1644aff46355779f9b05df9262",
+      "argv": [
+        "/opt/apalache/bin/apalache-mc",
+        "check",
+        "--out-dir=/out",
+        "--length=5",
+        "--inv=Inv",
+        "--init=Init",
+        "--next=Next",
+        "/work/Counter.tla"
+      ],
+      "inputs": [
+        {
+          "url": "https://github.com/apalache-mc/apalache/releases/download/v0.62.4/apalache-0.62.4.tgz",
+          "sha256": "b781b53bba32fac14ac2e02b0332e1dc2edc64cb7b850c0608d8142cc7aa2ef4",
+          "bytes": 192038424,
+          "kind": "release asset",
+          "committed": false
+        },
+        {
+          "path": "runs/RUN-apalache-version/smoke/Counter.tla",
+          "sha256": "b38cb4633b91172eb5421165b2e812d072b1b9a0207c2ad1fe94493118a746ef",
+          "bytes": 147
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120,
+        "length": 5
+      },
+      "started_at": "2026-10-24T13:15:35.060Z",
+      "duration_s": 1.359,
+      "exit_code": 0,
+      "verdict_lines": [
+        "The outcome is: NoError",
+        "Checker reports no error up to computation length 5",
+        "EXITCODE: OK"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-apalache-version/smoke/apalache.stdout.txt",
+          "sha256": "e5b37d786639c36ba4b4c1b318e1e75af38749b34afe7887948ec823738c5d65",
+          "bytes": 6414,
+          "kind": "apalache stdout",
+          "compare": "informational: every line carries a clock time"
+        }
+      ]
+    }
+  ]
+}

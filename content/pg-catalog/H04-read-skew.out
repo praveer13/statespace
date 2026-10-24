@@ -1,0 +1,1081 @@
+Parsed test spec with 3 sessions
+
+starting permutation: rdb_rc rd1 mvb_rc mvt mvc rd2 rdc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+150
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rc rd1 rd2 rdc mvb_rc mvt mvc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rc rd1 rd2 mvb_rc mvt rdc mvc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rc rd1 rd2 mvb_rc mvt mvc rdc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rc rd1 mvb_rc mvt rd2 rdc mvc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rc rd1 mvb_rc mvt rd2 mvc rdc chk
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rc mvt rdb_rc rd1 rd2 rdc mvc chk
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rc mvt rdb_rc rd1 rd2 mvc rdc chk
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rc mvt rdb_rc rd1 mvc rd2 rdc chk
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+150
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rc mvt mvc rdb_rc rd1 rd2 rdc chk
+step mvb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+ 50
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+150
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 mvb_rr mvt mvc rd2 rdc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 rd2 rdc mvb_rr mvt mvc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 rd2 mvb_rr mvt rdc mvc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 rd2 mvb_rr mvt mvc rdc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 mvb_rr mvt rd2 rdc mvc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_rr rd1 mvb_rr mvt rd2 mvc rdc chk
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rr mvt rdb_rr rd1 rd2 rdc mvc chk
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rr mvt rdb_rr rd1 rd2 mvc rdc chk
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rr mvt rdb_rr rd1 mvc rd2 rdc chk
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_rr mvt mvc rdb_rr rd1 rd2 rdc chk
+step mvb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+ 50
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+150
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 mvb_ser mvt mvc rd2 rdc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 rd2 rdc mvb_ser mvt mvc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 rd2 mvb_ser mvt rdc mvc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 rd2 mvb_ser mvt mvc rdc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 mvb_ser mvt rd2 rdc mvc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: rdb_ser rd1 mvb_ser mvt rd2 mvc rdc chk
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_ser mvt rdb_ser rd1 rd2 rdc mvc chk
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step mvc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_ser mvt rdb_ser rd1 rd2 mvc rdc chk
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_ser mvt rdb_ser rd1 mvc rd2 rdc chk
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+100
+(1 row)
+
+step mvc: COMMIT;
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+100
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+
+
+starting permutation: mvb_ser mvt mvc rdb_ser rd1 rd2 rdc chk
+step mvb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step mvt: UPDATE acct SET bal = bal - 50 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; UPDATE acct SET bal = bal + 50 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     50
+(1 row)
+
+old_bal|new_bal
+-------+-------
+    100|    150
+(1 row)
+
+step mvc: COMMIT;
+step rdb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step rd1: SELECT bal FROM acct WHERE id = 1;
+bal
+---
+ 50
+(1 row)
+
+step rd2: SELECT bal FROM acct WHERE id = 2;
+bal
+---
+150
+(1 row)
+
+step rdc: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 50
+ 2|150
+(2 rows)
+

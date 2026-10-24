@@ -1,0 +1,33 @@
+{
+  "format": "statespace facts registry, revision 1",
+  "about": "Fixture for the TTL warnings of GATE-facts: a tool fact on its own clock (copied from content/registry/facts.json without its saved copy), a twin on the clock of the fixture RUN-twin-pins, and an incident, which states its own date and never goes stale.",
+  "facts": [
+    {
+      "id": "tool.pyodide.latest",
+      "kind": "tool",
+      "statement": "Pyodide 314.0.7, published on 2026-09-14, is the npm latest.",
+      "value": "314.0.7",
+      "source": { "key": "npmpyodide", "url": "https://registry.npmjs.org/pyodide", "title": "pyodide on npm, registry metadata", "quote": "\"latest\":\"314.0.7\"" },
+      "checked_at": "2026-10-23",
+      "ttl_days": 60,
+      "via": "docs/LANDSCAPE.md section 6.3"
+    },
+    {
+      "id": "twin.lean4.toolchain",
+      "kind": "twin",
+      "statement": "Lean's own repository, pinned at the commit the 4.35.0 toolchain reports.",
+      "source": { "url": "https://github.com/leanprover/lean4", "title": "Lean 4, on GitHub" },
+      "run": "RUN-twin-pins",
+      "pin": "values.pins.lean4.commit"
+    },
+    {
+      "id": "incident.lean-kernel-14576",
+      "kind": "incident",
+      "statement": "Lean issue #14576, a kernel soundness bug, was fixed on 2026-07-28; its postmortem followed on 2026-08-01.",
+      "source": { "key": "pmortem", "url": "https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/", "title": "Postmortem for kernel soundness bug #14576" },
+      "date": "2026-07-28",
+      "checked_at": "2026-10-23",
+      "via": "docs/LANDSCAPE.md sections 7.2 and 10"
+    }
+  ]
+}

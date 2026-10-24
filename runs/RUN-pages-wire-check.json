@@ -1,0 +1,138 @@
+{
+  "id": "RUN-pages-wire-check",
+  "title": "What GitHub Pages sends for the six engine files of W0-S02's build on the real instrument origin: encoding, Content-Length and hash (the OD-6 first load)",
+  "task": "W0-S02",
+  "engine": "wire-check.mjs (Node)",
+  "version": "v22.22.2",
+  "version_string": "v22.22.2",
+  "binary": "node, on the host",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-24T18:19:41.167Z",
+  "started_at": "2026-10-24T18:19:39.955Z",
+  "duration_s": 1.125,
+  "argv": [
+    "node",
+    "scripts/spikes/W0-S02/wire-check.mjs",
+    "https://statespace-instruments.<course-domain>",
+    "96137b0f594f"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S02/wire-check.mjs",
+      "sha256": "fe20a5fead4e685076445430b2904c68d0575ebb79d7ee85d08b9df541bb4369",
+      "bytes": 2354,
+      "role": "script"
+    },
+    {
+      "url": "https://statespace-instruments.<course-domain>/b/96137b0f594f/manifest.json",
+      "role": "the deployed build manifest the script reads (build 96137b0f594f)",
+      "sha256": "6326ce1012b2712d7f1f39ef29121c15aadca6c7afa7007c8fc367756e6e062b",
+      "bytes": 2236
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "sent in all: 12935856 bytes (the manifest's gzip level 5 total is 12893420, raw 20056541); decoded bytes match the manifest: true"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pages-wire-check/wire-check.txt",
+      "sha256": "2173660c2a5f3b46a79f6db0bc887b87102ea49444d79c92aafbfc887ae27895",
+      "bytes": 3014,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "sent_total_bytes": 12935856,
+    "manifest_gzip5_total_bytes": 12893420,
+    "raw_total_bytes": 20056541,
+    "decoded_bytes_match_manifest": true,
+    "files": [
+      {
+        "file": "pyodide.mjs",
+        "status": 200,
+        "encoding": "gzip",
+        "content_length": 7161,
+        "raw": 17931,
+        "gzip5": 7161,
+        "brotli11": 6453,
+        "same_as": "gzip level 5",
+        "hash_ok": true
+      },
+      {
+        "file": "pyodide.asm.mjs",
+        "status": 200,
+        "encoding": "gzip",
+        "content_length": 261999,
+        "raw": 1250344,
+        "gzip5": 261999,
+        "brotli11": 207390,
+        "same_as": "gzip level 5",
+        "hash_ok": true
+      },
+      {
+        "file": "pyodide.asm.wasm",
+        "status": 200,
+        "encoding": "gzip",
+        "content_length": 3582449,
+        "raw": 9598218,
+        "gzip5": 3582449,
+        "brotli11": 2741061,
+        "same_as": "gzip level 5",
+        "hash_ok": true
+      },
+      {
+        "file": "python_stdlib.zip",
+        "status": 200,
+        "encoding": "identity",
+        "content_length": 2545637,
+        "raw": 2545637,
+        "gzip5": 2503201,
+        "brotli11": 2487479,
+        "same_as": "raw",
+        "hash_ok": true
+      },
+      {
+        "file": "pyodide-lock.json",
+        "status": 200,
+        "encoding": "gzip",
+        "content_length": 26858,
+        "raw": 119077,
+        "gzip5": 26858,
+        "brotli11": 21689,
+        "same_as": "gzip level 5",
+        "hash_ok": true
+      },
+      {
+        "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+        "status": 200,
+        "encoding": "gzip",
+        "content_length": 6511752,
+        "raw": 6525334,
+        "gzip5": 6511752,
+        "brotli11": 3365621,
+        "same_as": "gzip level 5",
+        "hash_ok": true
+      }
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "host": "GitHub Pages, serving praveer13/statespace-instruments (branch main) on the owner's subdomain"
+  },
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the script ran on the host, not in a container; it only makes HTTPS requests"
+    }
+  ],
+  "ttl_days": 90,
+  "notes": [
+    "Owner action 2 of docs/spikes/W0-S02.md: the first deployment's bytes. The instrument origin is GitHub Pages on the owner's subdomain, recorded as <course-domain>.",
+    "Every engine file came back gzip-encoded at level 5 except python_stdlib.zip, which came back uncompressed (identity); the sum of Content-Length is the first load as OD-6 counts it.",
+    "The host serves what it serves today; GitHub can change its compression, so the TTL is 90 days."
+  ]
+}

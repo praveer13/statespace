@@ -1,0 +1,19 @@
+W0S07/ContractFail.lean:22:0: error: unproved verification conditions for the contract of `transferWeakContract`; discharge them in a `where finally | spec => ...` section of the definition
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "amount" ∧ 0 ≤ s✝.bal (s✝¹.acct "from")
+a✝ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.lit 0)) s✝¹ s✝
+⊢ 0 ≤
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+          (Expr.eval s✝¹ s✝ (Expr.var "amount"))).bal
+      (s✝¹.acct "from")
+W0S07/ContractFail.lean:31:0: error: unproved verification conditions for the contract of `transferContractRejects`; the `where finally | spec => ...` section does not discharge them
+case vc2
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "amount" ∧ NonNeg s✝
+a✝ : fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s✝¹ s✝
+⊢ ⊥ (Err.guardFailed "Transfer")
+W0S07/ContractFail.lean:42:0: error: No spec found for program Transfer.
+W0S07/ContractFail.lean:49:0: error: No spec found for program Transfer.exec ρ s.

@@ -1,0 +1,28 @@
+GATE-budget: 84 lessons, 91 lab stages, 105 KCs and 69 specimens read from the spine, against content/stages/budget.yaml
+FAIL  table  S3: the spine's section 3.11 says S3 is "pass" under GATE-budget, and the gate says "fail"  [docs/spine/SPINE.md:588]
+FAIL  rows  S3 build, low: the table prints 5.0 h, the lesson and lab tables give 5.8 h (5.78 h exactly)  [docs/spine/SPINE.md section 3.11]
+FAIL  rows  S3 build, high: the table prints 12.0 h, the lesson and lab tables give 13.5 h (13.48 h exactly)  [docs/spine/SPINE.md section 3.11]
+FAIL  rows  S3 total, low: the table prints 11.9 h, the rows give 12.62 h (more than a printed tenth apart)  [docs/spine/SPINE.md section 3.11]
+FAIL  rows  S3 total, high: the table prints 23.7 h, the rows give 25.15 h (more than a printed tenth apart)  [docs/spine/SPINE.md section 3.11]
+OK    tools     at most one new tool per stage, and the spine's stage paragraphs agree: 5 stages introduce one
+OK    paths     2 published paths: each takes every unit of every stage once, and their lessons are the paths that spine section 3.0 prints
+FAIL  stages    9 of 10 stages pass: S1 pass, S2 pass, S3 fail, S4 pass, S5 pass, S6 pass, S7 pass, S8 pass, S9 pass, S10 pass
+PATH  default (roadmap order): 10 blocks, 91.5–169.0 h of sequenced work (reading, up to 29.5 h, is placed on no unit)
+  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h
+  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)
+  OK    keep      10 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S5 at 6 h/week, 74.5 of 75 min/week
+  FAIL  cadence  SP-2.9 (S2.L10) to SP-3.1 (S3.L4): 9.82 h of stage work = 2.1 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]
+  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 12.04 h between CL-1.3 (LAB-1.5) and SP-2.2 (S2.L5)
+PATH  builder (builder's path): 13 blocks, 91.5–169.0 h of sequenced work (reading, up to 29.5 h, is placed on no unit)
+  OK    upper     10 of 10 stages within the roadmap's upper bound; tightest S2, high 28.40 h of 28.50 h
+  OK    lower     9 stages against half of the roadmap's lower bound, none below it; tightest S8, 13.15 h against 7.13 h (the plan sits wholly below the lower bound in S6, S7, S8)
+  OK    keep      13 blocks, 105 KCs: each block's reviews (2.33 min/week per KC over 60 days) plus the Keep items stay within the planned block at 6 and 10 h/week; tightest S7 at 6 h/week, 74.5 of 75 min/week
+  FAIL  cadence  SP-2.9 (S2.L10) to SP-3.1 (S3.L4): 9.82 h of stage work = 2.1 weeks at 6 h/week, above the 2-week limit (9.50 h)  [docs/spine/SPINE.md section 4.1]
+  NOTE  cadence   reading (up to 29.5 h over the ten stages) is placed on no unit; spread evenly over each stage's lessons it would put 4 gaps past 2 weeks, the longest 11.59 h between SP-2.9 (S2.L10) and SP-3.1 (S3.L4)
+OK    cutlist   20 listed bridges, all cut-eligible under criteria (1) to (4); the rule gives 21 eligible bridges, the 20 listed and the spare S7.L1; 30 bridges stay; every receiving lesson stays in its stage and is not cut; no cut takes a high estimate below its lower-bound line; 2 KCs would fold ahead of a hard prerequisite on a path
+WARN  cutlist  cut list row 3: folding S5.L9 into S5.L8 puts KC-5.inductive-invariant-tla at S5.L8 before its hard prerequisite KC-4.invariant-vs-inductive is taught (at S4.L4) on the builder path  [docs/spine/SPINE.md:1753]
+WARN  cutlist  cut list row 17: folding S6.L5 into S6.L2 puts KC-6.enforce-at-commit at S6.L2 before its hard prerequisite KC-4.prove-or-enforce is taught (at S4.L7) on the builder path  [docs/spine/SPINE.md:1767]
+NOTE  cutlist   lower bound: the rule is on the high estimate (spine 3.0 and 11.2), which no cut moves below its line. Read on the low estimate, S6 already has a low estimate below that line, and cutting the list would take the low estimate of S8, S7 below it
+OK    additions 10 adopted additions name what they displace (stretch stages, drawers or headroom); 1 waiting for a named displacement
+NOTE  additions S2: LAB-2.9 would add 0.75–2.25 h to S2, which has 0.10 h of room under its roadmap bound: it needs a named displacement before it enters the rows
+GATE-budget: FAIL (7 findings, 2 warnings)

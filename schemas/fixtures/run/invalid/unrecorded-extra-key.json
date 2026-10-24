@@ -1,0 +1,76 @@
+{
+  "id": "RUN-z3-starter-fixture",
+  "title": "The roadmap starter on Z3 5.3.1: sat, then unsat once the guard is added",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "Z3 5.3.1: the roadmap starter gives sat [b = 0, amount = 1, a = 0], then unsat",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:30:00Z",
+  "started_at": "2026-10-20",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/z3_claims.py",
+      "sha256": "a558596e31782a8d3f0dc3a2062cb7cb713d71a93417d453b0818b6434cc592d",
+      "bytes": 3651,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]",
+    "[1.3 guard added] unsat (0.00s) "
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/z3_5.3.1.txt",
+      "sha256": "21b93295b35ad28621cf6f28f87ded8bb64a20b4182cb7696b6e00d7d01aa4be",
+      "bytes": 1257,
+      "kind": "log"
+    }
+  ],
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "argv",
+      "reason": "the log records the script output only; the script header gives the usage line",
+      "guess": "java -jar"
+    },
+    {
+      "field": "binary_sha256",
+      "reason": "uv installed the wheel without logging its hash"
+    },
+    {
+      "field": "image",
+      "reason": "the run used no container"
+    },
+    {
+      "field": "duration_s",
+      "reason": "not logged"
+    },
+    {
+      "field": "exit_code",
+      "reason": "not logged"
+    },
+    {
+      "field": "environment.os",
+      "reason": "not logged"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "not logged"
+    }
+  ],
+  "notes": [
+    "A fixture in the shape of an imported run."
+  ]
+}

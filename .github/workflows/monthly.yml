@@ -1,0 +1,152 @@
+# The monthly lane (spine section 11.2; ARCHITECTURE.md section 13.1; labs/TOOLS.md section 6; W0-T04).
+#
+# Once a month, and on demand: GATE-labs on the newest stable Lean release, so that a toolchain bump never arrives unseen.
+# It files an issue when the check is red and closes it when the check turns green. It blocks nothing, and the course stays on
+# its pin until a reviewed change moves it (labs/TOOLS.md section 6.2).
+#
+# The newest stable release is the latest GitHub release of the Lean repository that is not a pre-release, so 4.36.0-rc1 does
+# not count. The labs job runs in the digest-pinned Bench image (variable BENCH_IMAGE, as in nightly.yml), installs that
+# release with elan and runs the monthly column of scripts/spikes/W0-T04/gates.json: GATE-labs, with the toolchain named in
+# STATESPACE_LEAN_TOOLCHAIN. GATE-labs does not exist yet (W1-T43), so until then the lane reports it absent and files nothing.
+#
+# GitHub runs a scheduled workflow from the default branch only and disables it in a public repository after 60 days without
+# repository activity; the minute is not 0, to stay clear of the start of the hour.
+
+name: monthly
+
+on:
+  schedule:
+    - cron: '41 4 1 * *' # the 1st of each month, 04:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monthly
+  cancel-in-progress: false
+
+jobs:
+  newest-lean:
+    name: newest stable Lean
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.newest.outputs.tag }}
+    steps:
+      - name: Read the latest stable release of Lean
+        id: newest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="$(gh api repos/leanprover/lean4/releases/latest --jq .tag_name)"
+          if ! [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error title=Lean release::the latest release is '$tag', which is not a stable release tag"
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "Newest stable Lean: $tag" >> "$GITHUB_STEP_SUMMARY"
+
+  labs:
+    name: GATE-labs on the newest Lean
+    needs: newest-lean
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: ${{ vars.BENCH_IMAGE }}
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      LEAN_TAG: ${{ needs.newest-lean.outputs.tag }}
+      STATESPACE_BENCH_IMAGE: ${{ vars.BENCH_IMAGE }}
+    steps:
+      - name: Check that the image is pinned by digest and has git and elan
+        run: |
+          if ! [[ "$STATESPACE_BENCH_IMAGE" =~ @sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error title=Bench image::BENCH_IMAGE must name the image by digest (name@sha256:...), not by tag; it is '${STATESPACE_BENCH_IMAGE:-unset}'"
+            exit 1
+          fi
+          for tool in git elan; do
+            command -v "$tool" > /dev/null || { echo "::error title=Bench image::the image has no $tool"; exit 1; }
+          done
+
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Install the pinned packages
+        run: npm ci --no-audit --no-fund
+
+      - name: Install the newest stable toolchain
+        run: elan toolchain install "leanprover/lean4:$LEAN_TAG"
+
+      - name: Run GATE-labs on it
+        run: node scripts/spikes/W0-T04/lane.mjs monthly --lean "$LEAN_TAG" --summary lane-summary.json
+
+      - name: Keep the lane summary
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: monthly
+          path: lane-summary.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  report:
+    name: issue
+    needs: [newest-lean, labs]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+
+      - name: Download the lane summary
+        continue-on-error: true
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: monthly
+          path: monthly
+
+      - name: File, update or close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LEAN_TAG: ${{ needs.newest-lean.outputs.tag }}
+          LABS_RESULT: ${{ needs.labs.result }}
+          BENCH_IMAGE: ${{ vars.BENCH_IMAGE }}
+        run: |
+          if [ -z "$LEAN_TAG" ]; then
+            echo "::error title=Lean release::the newest stable Lean release could not be read, so no issue can name it"
+            exit 1
+          fi
+          if [ -f monthly/lane-summary.json ]; then
+            node scripts/spikes/W0-T04/file-issue.mjs --summary monthly/lane-summary.json --lean "$LEAN_TAG"
+          else
+            reason="the labs job produced no summary (result: $LABS_RESULT)"
+            if [ -z "$BENCH_IMAGE" ]; then reason="the repository variable BENCH_IMAGE is not set, so the Bench image cannot be pulled ($reason)"; fi
+            node scripts/spikes/W0-T04/file-issue.mjs --unavailable "$reason" --lean "$LEAN_TAG"
+          fi

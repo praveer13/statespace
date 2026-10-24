@@ -1,0 +1,71 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 52 and seed 8900773176732613719 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 3365] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/OutboxLive.tla
+Parsing file scripts/spikes/W0-S04/specs/s8/Outbox.tla
+Parsing file scripts/spikes/W0-S04/specs/s8/OutboxIface.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module OutboxIface
+Semantic processing of module Outbox
+Semantic processing of module OutboxLive
+Linting of module OutboxIface
+Linting of module Outbox
+Linting of module OutboxLive
+Starting... (2026-10-24 13:51:14)
+Implied-temporal checking--satisfiability problem has 2 branches.
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:51:14.
+Progress(11) at 2026-10-24 13:51:14: 45 states generated, 32 distinct states found, 0 states left on queue.
+Checking 2 branches of temporal properties for the complete state space with 64 total distinct states at (2026-10-24 13:51:14)
+Error: Temporal properties EventuallyAcked and EventuallyDispatched were violated.
+
+Error: The following behavior constitutes a counter-example:
+
+State 1: <Initial predicate>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {}
+/\ status = (c1 :> "none")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 2: <Commit(c1) line 22, col 14 to line 26, col 41 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 3: <Crash line 84, col 10 to line 91, col 39 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 1
+/\ attempts = (c1 :> 0)
+/\ up = FALSE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 4: Stuttering
+Finished checking temporal properties in 00s at 2026-10-24 13:51:14
+45 states generated, 32 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 11.
+Finished in 00s at (2026-10-24 13:51:14)

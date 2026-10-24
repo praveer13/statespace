@@ -1,0 +1,196 @@
+{
+  "id": "RUN-lean-vcgen",
+  "title": "Lean's experimental vcgen on the transfer contract: the contract and its loop elaborate, and a weakened guard is refused",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-24T14:32:37.658Z",
+  "started_at": "2026-10-24T14:32:37.065Z",
+  "duration_s": 0.592,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "w0s11-run-lean-vcgen-contract",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "ss-lean:4.35.0",
+    "lean",
+    "Contract.lean"
+  ],
+  "inputs": [
+    {
+      "path": "research/evidence/lean-measure/proj/ledger/Ledger/Contract.lean",
+      "sha256": "a68931a617d7cde5a40627f3d9f1ba316409dbc168fe4e01682e0efae1a01fc7",
+      "bytes": 631,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/ledger/Ledger/ContractBad.lean",
+      "sha256": "764e21ab266824b2f8a426710c40f89d42c49fc278fbc555342df738e66a86a3",
+      "bytes": 314,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "transfer.spec : ∀ (a b amt : Int),",
+    "  ⦃ 0 < amt ∧ amt ≤ a ⦄ transfer a b amt ⦃ fun r => r.fst + r.snd = a + b ∧ 0 ≤ r.fst ∨ a < 0 ⦄",
+    "applyAll.spec : ∀ (amts : List Int) (total : Int),",
+    "  ⦃ fun s => s.fst + s.snd = total ⦄ applyAll amts total ⦃ fun x s => s.fst + s.snd = total ⦄",
+    "'applyAll.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-vcgen/contract.log",
+      "sha256": "cef2c9271486babedb2beb95b2169dc44f57fd804d8386823b77388694390902",
+      "bytes": 381,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-vcgen/contract-bad.log",
+      "sha256": "f8f0dacf9c2fe41aec5d30149dc0efdcfff3e1901639072ae145a984e26b9db2",
+      "bytes": 256,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "contract_exit": 0,
+    "contract_bad_exit": 1,
+    "contract_bad_first_error": "ContractBad.lean:6:0: error: unproved verification conditions for the contract of `transferBad`; discharge them in a `where finally | spec => ...` section of the definition"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "contract",
+  "configs": [
+    {
+      "id": "contract",
+      "origin": "recorded",
+      "purpose": "Contract.lean: experimental vcgen with requires and ensures on the transfer contract, and a loop invariant; #check and #print axioms",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-24T14:32:37.065Z",
+      "duration_s": 0.331,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-lean-vcgen-contract",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0",
+        "lean",
+        "Contract.lean"
+      ],
+      "inputs": [
+        {
+          "path": "research/evidence/lean-measure/proj/ledger/Ledger/Contract.lean",
+          "sha256": "a68931a617d7cde5a40627f3d9f1ba316409dbc168fe4e01682e0efae1a01fc7",
+          "bytes": 631,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "transfer.spec : ∀ (a b amt : Int),",
+        "  ⦃ 0 < amt ∧ amt ≤ a ⦄ transfer a b amt ⦃ fun r => r.fst + r.snd = a + b ∧ 0 ≤ r.fst ∨ a < 0 ⦄",
+        "applyAll.spec : ∀ (amts : List Int) (total : Int),",
+        "  ⦃ fun s => s.fst + s.snd = total ⦄ applyAll amts total ⦃ fun x s => s.fst + s.snd = total ⦄",
+        "'applyAll.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-vcgen/contract.log"
+      ]
+    },
+    {
+      "id": "contract-bad",
+      "origin": "recorded",
+      "purpose": "ContractBad.lean: the guard forgets amt <= a, so the non-negativity postcondition must not be provable",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-24T14:32:37.396Z",
+      "duration_s": 0.261,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-lean-vcgen-contract-bad",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0",
+        "lean",
+        "ContractBad.lean"
+      ],
+      "inputs": [
+        {
+          "path": "research/evidence/lean-measure/proj/ledger/Ledger/ContractBad.lean",
+          "sha256": "764e21ab266824b2f8a426710c40f89d42c49fc278fbc555342df738e66a86a3",
+          "bytes": 314,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "ContractBad.lean:6:0: error: unproved verification conditions for the contract of `transferBad`; discharge them in a `where finally | spec => ...` section of the definition",
+        "case vc1",
+        "a b amt : Int",
+        "a✝ : 0 < amt ∧ 0 ≤ a",
+        "⊢ 0 ≤ (a - amt, b + amt).fst"
+      ],
+      "outputs": [
+        "runs/RUN-lean-vcgen/contract-bad.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Recorded by W0-S11 from the sources on disk; until now their outputs existed only as prose in the R1 verification report (spine section 9.5). The vcgen options are experimental in 4.35.0."
+  ]
+}

@@ -1,0 +1,124 @@
+Parsed test spec with 3 sessions
+
+starting permutation: ab_rc aupd mb_rc msel ac mc chk
+step ab_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step aupd: UPDATE users SET group_id = 1 WHERE user_name = 'mallory'; UPDATE information SET info = 'secret from mallory' WHERE group_id = 2 RETURNING info, group_id;
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step mb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step msel: SELECT info, group_id FROM information WHERE group_id = 2 FOR UPDATE; <waiting ...>
+step ac: COMMIT;
+step msel: <... completed>
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step mc: COMMIT;
+step chk: SELECT user_name, group_id FROM users ORDER BY user_name;
+user_name|group_id
+---------+--------
+alice    |       5
+bob      |       2
+mallory  |       1
+(3 rows)
+
+
+starting permutation: ab_rr aupd mb_rr msel ac mc chk
+step ab_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step aupd: UPDATE users SET group_id = 1 WHERE user_name = 'mallory'; UPDATE information SET info = 'secret from mallory' WHERE group_id = 2 RETURNING info, group_id;
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step mb_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step msel: SELECT info, group_id FROM information WHERE group_id = 2 FOR UPDATE; <waiting ...>
+step ac: COMMIT;
+step msel: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step mc: COMMIT;
+step chk: SELECT user_name, group_id FROM users ORDER BY user_name;
+user_name|group_id
+---------+--------
+alice    |       5
+bob      |       2
+mallory  |       1
+(3 rows)
+
+
+starting permutation: ab_ser aupd mb_ser msel ac mc chk
+step ab_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step aupd: UPDATE users SET group_id = 1 WHERE user_name = 'mallory'; UPDATE information SET info = 'secret from mallory' WHERE group_id = 2 RETURNING info, group_id;
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step mb_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step msel: SELECT info, group_id FROM information WHERE group_id = 2 FOR UPDATE; <waiting ...>
+step ac: COMMIT;
+step msel: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step mc: COMMIT;
+step chk: SELECT user_name, group_id FROM users ORDER BY user_name;
+user_name|group_id
+---------+--------
+alice    |       5
+bob      |       2
+mallory  |       1
+(3 rows)
+
+
+starting permutation: ab_rc aupd ac mb_rc msel mc chk
+step ab_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step aupd: UPDATE users SET group_id = 1 WHERE user_name = 'mallory'; UPDATE information SET info = 'secret from mallory' WHERE group_id = 2 RETURNING info, group_id;
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step ac: COMMIT;
+step mb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step msel: SELECT info, group_id FROM information WHERE group_id = 2 FOR UPDATE;
+info|group_id
+----+--------
+(0 rows)
+
+step mc: COMMIT;
+step chk: SELECT user_name, group_id FROM users ORDER BY user_name;
+user_name|group_id
+---------+--------
+alice    |       5
+bob      |       2
+mallory  |       1
+(3 rows)
+
+
+starting permutation: ab_rc aupd ac mb_rc mplain mc chk
+step ab_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step aupd: UPDATE users SET group_id = 1 WHERE user_name = 'mallory'; UPDATE information SET info = 'secret from mallory' WHERE group_id = 2 RETURNING info, group_id;
+info               |group_id
+-------------------+--------
+secret from mallory|       2
+(1 row)
+
+step ac: COMMIT;
+step mb_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step mplain: SELECT info, group_id FROM information WHERE group_id = 2;
+info|group_id
+----+--------
+(0 rows)
+
+step mc: COMMIT;
+step chk: SELECT user_name, group_id FROM users ORDER BY user_name;
+user_name|group_id
+---------+--------
+alice    |       5
+bob      |       2
+mallory  |       1
+(3 rows)
+

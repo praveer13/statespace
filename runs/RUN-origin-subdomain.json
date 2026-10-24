@@ -1,0 +1,1331 @@
+{
+  "id": "RUN-origin-subdomain",
+  "title": "The instrument origin on a stand-in custom subdomain: Z3 cross-origin in three engines, parent storage, handshake, and the framed cache across browser restarts (W0-S01)",
+  "task": "W0-S01",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl from PyPI, installed by pyodide.loadPackage in a module worker on the instrument origin",
+  "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+  "runtime": {
+    "pyodide": {
+      "version": "314.0.7",
+      "npm_tarball": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "npm_integrity": "sha512-0YvXxEhfEdpLfb/XkM2BFAeMROq0iMUX2bzzH9pOttyMcWkwq+HbE5uyuGD82LN7y2q+SNvi/6V5JEsOlD2R1A==",
+      "tarball_sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0"
+    },
+    "playwright_core": "1.63.0",
+    "browsers": {
+      "chromium": {
+        "version": "153.0.8010.12"
+      },
+      "firefox": {
+        "version": "155.0"
+      },
+      "webkit": {
+        "version": "26.6"
+      }
+    },
+    "browser_builds": "chromium-1243 chromium_headless_shell-1243 ffmpeg-1011 firefox-1543 webkit-2359"
+  },
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-24T13:18:29.427Z",
+  "started_at": "2026-10-24T13:14:06.603Z",
+  "duration_s": 262.6,
+  "argv": [
+    "scripts/spikes/W0-S01/run.sh",
+    "<work-dir>",
+    "--record"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S01/build.mjs",
+      "sha256": "9778632417a7c674425b7d299d743af18d1297018843049892dab2f657d4959c"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/certs.sh",
+      "sha256": "2d8f227f7df88ee019c5a86116730c3087d9b3b98c4d6aadfe63b319c82fe112"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/container.sh",
+      "sha256": "1f2db1e82e163ccf7da365895f05fd66ee37b98edb3a1c6a68c1b3bb815b644b"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/fetch-engines.mjs",
+      "sha256": "35720684f06e9c93ab7ef6df6ac3614ebf2ed27f38ac7201f5e732a7127039e7"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/harness.mjs",
+      "sha256": "2805798ace8c1da90a2c540e50eb4f2daddf101e572edb893ed41dbe1aaeba90"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/package.json",
+      "sha256": "ea4368a5a29c8245daf9df1d45db74af8e9bb0cc497236769546dc3290e55085"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/record.mjs",
+      "sha256": "eb28dcb0f87b64d5ed0764afbe4374df5c81dfcca38a892983da5af3e2608a06"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/run.sh",
+      "sha256": "49b3c601d30fc3f4e151538dc924a8edd3c0ecc590bda5e1bcb54bee5cdbb063"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/server.mjs",
+      "sha256": "5fe61666285da32fd1d211ed0ee0fabd301c62d7b0d3b8497e13fcfa8ff61168"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/attacker/attack.html",
+      "sha256": "d30945546a2528613fc1c79cbeece9f7d34748ab362807b1508025626d3d93af"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/attacker/attack.js",
+      "sha256": "ec74c4accf16c194f8d5ba9f87dbc7bfa2930656be39c3154bf3fb8f457dcfc0"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/attacker/landing.html",
+      "sha256": "2dadacfe960d91b607aec891dc2c5fa9fb8c822a523510411b8230fd55a591c3"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/b/BUILD/host.html",
+      "sha256": "990969d9dffbbc706734e3e6edc524ca6c53f280b0001b7de93f0ac6929a2d60"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/b/BUILD/host.js",
+      "sha256": "20ffee51693fd20a1c8b33d2d03515a5b6ddecfe6579db244376f4a1c7ce9f0a"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/b/BUILD/worker.mjs",
+      "sha256": "3d8cedab2b9947c6bb2f452182abaa4260a91925ea595ac4bb4669e3c0171baf"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/diag.html",
+      "sha256": "daacdd8b3a3bd594c5d0ccdb2efbed14818f694c6b6117d806ded1d661d3279f"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/diag.js",
+      "sha256": "ec4eb7e5ef109430d6e4dcd4d38e893b500ebe4776424c62cb76ee22e3e54eaf"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/instruments/sw.js",
+      "sha256": "4bc0bc7612ec76c3425add885739dafd5eeda47121bcc3f1741ee590168e5db3"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/main/main.js",
+      "sha256": "67993fd1b8336fbb993a972e15333e21d8cc8519892125d78c1080066b7b84e2"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/main/navigated.html",
+      "sha256": "9cdb14281dda38bb9660c704939eb96b86ffc631135b79a8a8a5bd31156b0866"
+    },
+    {
+      "path": "scripts/spikes/W0-S01/site/main/page.html",
+      "sha256": "63e2bd248c7dc4c41e37cf9ec1d1526db8e0f15bbefd6be0fa144a3995ba6b96"
+    }
+  ],
+  "input_sha256": "8f4417b2ae43bf6b0b3e8afd66e86cb174c70f8f9db6aa4d1ecf5da1c639906b",
+  "input_sha256_method": "SHA-256 of the sha256sum-style manifest of inputs[], one \"<sha256>  <path>\\n\" line per file, sorted by path",
+  "budget": {
+    "z3_rlimit": 5000000,
+    "wall_ms_per_request": 120000,
+    "handshake_timeout_s": 30,
+    "top_navigation_delay_ms": 6000,
+    "consent_threshold_bytes": 5000000,
+    "consent_threshold_note": "OD-6: ask before a first load above 5 MB; the byte value is a course parameter [D]",
+    "container_memory": "6g",
+    "container_memory_prep": "2g"
+  },
+  "exit_code": 0,
+  "exit_code_note": "the harness and the recorder exited 0; each acceptance check is in checks[]",
+  "verdict_lines": [
+    "chromium 153.0.8010.12 | A s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1448 ms | instrument-host requests 16 (engine 7) | parent storage unreadable",
+    "chromium 153.0.8010.12 | A s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1428 ms | instrument-host requests 0 (engine 0) | parent storage unreadable",
+    "chromium 153.0.8010.12 | A s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1342 ms | instrument-host requests 0 (engine 0) | parent storage (not probed)",
+    "chromium 153.0.8010.12 | B s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1564 ms | instrument-host requests 15 (engine 7) | parent storage unreadable",
+    "chromium 153.0.8010.12 | B s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1456 ms | instrument-host requests 0 (engine 0) | parent storage unreadable",
+    "chromium 153.0.8010.12 | B s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1286 ms | instrument-host requests 0 (engine 0) | parent storage (not probed)",
+    "chromium 153.0.8010.12 | C s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1484 ms | instrument-host requests 15 (engine 7) | parent storage unreadable",
+    "chromium 153.0.8010.12 | C s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1652 ms | instrument-host requests 0 (engine 0) | parent storage unreadable",
+    "chromium 153.0.8010.12 | C s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1431 ms | instrument-host requests 0 (engine 0) | parent storage (not probed)",
+    "firefox 155.0 | A s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1588 ms | instrument-host requests 16 (engine 7) | parent storage unreadable",
+    "firefox 155.0 | A s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1913 ms | instrument-host requests 2 (engine 0) | parent storage unreadable",
+    "firefox 155.0 | A s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 2457 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)",
+    "firefox 155.0 | B s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1983 ms | instrument-host requests 16 (engine 7) | parent storage unreadable",
+    "firefox 155.0 | B s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1898 ms | instrument-host requests 2 (engine 0) | parent storage unreadable",
+    "firefox 155.0 | B s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1618 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)",
+    "firefox 155.0 | C s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1527 ms | instrument-host requests 18 (engine 7) | parent storage unreadable",
+    "firefox 155.0 | C s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1556 ms | instrument-host requests 4 (engine 0) | parent storage unreadable",
+    "firefox 155.0 | C s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1571 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)",
+    "webkit 26.6 | A s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1545 ms | instrument-host requests 15 (engine 7) | parent storage unreadable",
+    "webkit 26.6 | A s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 2370 ms | instrument-host requests 1 (engine 0) | parent storage unreadable",
+    "webkit 26.6 | A s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 2407 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)",
+    "webkit 26.6 | B s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 2642 ms | instrument-host requests 15 (engine 7) | parent storage unreadable",
+    "webkit 26.6 | B s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1946 ms | instrument-host requests 1 (engine 0) | parent storage unreadable",
+    "webkit 26.6 | B s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1493 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)",
+    "webkit 26.6 | C s1 | handshake ok | controlled at load no | engine cache at start 0/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1497 ms | instrument-host requests 15 (engine 7) | parent storage unreadable",
+    "webkit 26.6 | C s2 | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1726 ms | instrument-host requests 1 (engine 0) | parent storage unreadable",
+    "webkit 26.6 | C s3 (instrument host offline) | handshake ok | controlled at load yes | engine cache at start 6/6 | z3 \"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\" witness checked ready 1565 ms | instrument-host requests 1 (engine 0) | parent storage (not probed)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-origin-subdomain/engines.json",
+      "sha256": "6d200ee29b2f24d1da36462b122c5410691032fced25efc4735530294c7e9582",
+      "bytes": 1112
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/environment.txt",
+      "sha256": "b13031ba6a2ff4c0e9f6b04479284895813e14e9c325b0ca2e000af7d475b00d",
+      "bytes": 200
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/firefox-pref.txt",
+      "sha256": "641b660911a0feda770e85c8ee63118cee2053bf2feb36e772cbe56c75b97a27",
+      "bytes": 60
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/harness.txt",
+      "sha256": "01ab6ea946be3ba537406a966acaec816463f829db89e487c1449f021eb0460e",
+      "bytes": 151
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/manifest.json",
+      "sha256": "3995945003edbef15837ab00d9a2971c12864ba53e5aed88f57449ed0ead6e7e",
+      "bytes": 2078
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/matrix.txt",
+      "sha256": "eab570c6ea2384960461df68090d8373a5fad88f578d7a23b1058bc05e5ea7c6",
+      "bytes": 6714
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/meta.json",
+      "sha256": "a94f7a6bcabddcf220d61381a61a2e4d5d7e23d8b0657a9bb0ae0406e387e25c",
+      "bytes": 2560
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/negative.jsonl",
+      "sha256": "caf59dcb077964cfeffc13832b75a73899f0a1f05a81e6b03c3871772b9362f8",
+      "bytes": 4745
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/sessions.jsonl",
+      "sha256": "83b429157513d606ecb1de50e2ec9c595a1ae51a8df5e134c3d992ef0deb0422",
+      "bytes": 164530
+    },
+    {
+      "path": "runs/RUN-origin-subdomain/topnav.jsonl",
+      "sha256": "6b443bc870e95aeb24b5ddd987f1adf75f1a2bb336dc2980e52782ed201fc8c7",
+      "bytes": 12264
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+      "digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27"
+    },
+    "container_os": "Ubuntu 24.04.4 LTS",
+    "container_node": "v24.20.0",
+    "container_ca_certificates": "20260601~24.04.1",
+    "host_tools": {
+      "node": "v22.22.2"
+    },
+    "emulated": true,
+    "emulation": [
+      "emulated: no real custom subdomain, DNS or GitHub Pages. Stand-in hostnames under the reserved .test TLD (course-domain.test, instruments.course-domain.test, instruments.other-host.test, attacker.test) resolved to 127.0.0.1 inside the container and were served over HTTPS on port 443 by scripts/spikes/W0-S01/server.mjs, with headers like GitHub Pages sends (no COOP or COEP, Access-Control-Allow-Origin *, Cache-Control max-age=600, ETag) and no compression",
+      "emulated: a throwaway test CA, made per run by certs.sh, was trusted in each engine's own store (the container's system store for WebKit, $HOME/.pki/nssdb for Chromium, each Firefox profile's cert9.db), standing in for a public certificate",
+      "emulated: a \"desktop session\" is one headless browser process on a persistent profile (Playwright launchPersistentContext, then close); sessions were seconds apart, so no time-based eviction was exercised; not a real user's browser restart",
+      "Playwright 1.63.0 defaults changed back toward the shipped browsers: Chromium ran without Playwright's --disable-features entry ThirdPartyStoragePartitioning (meta.json records both flag lists); Firefox ran with network.cookie.cookieBehavior 5, the value its build's defaults/preferences/firefox.js sets, instead of Playwright's 4 (firefox-pref.txt)",
+      "left as Playwright sets it: Firefox fission.webContentIsolationStrategy 0 (frames share a process); process placement does not change the same-origin checks measured here"
+    ]
+  },
+  "configs": [
+    {
+      "id": "A",
+      "label": "same-site, plain iframe: the hosting plan",
+      "main_page": "https://course-domain.test/index.html",
+      "instrument_origin": "https://instruments.course-domain.test",
+      "iframe": "hidden, title, referrerpolicy=\"no-referrer\""
+    },
+    {
+      "id": "B",
+      "label": "same-site, sandbox=\"allow-scripts allow-same-origin\" (ARCHITECTURE.md section 5.3)",
+      "main_page": "https://course-domain.test/sandboxed.html",
+      "instrument_origin": "https://instruments.course-domain.test",
+      "iframe": "as A, plus sandbox=\"allow-scripts allow-same-origin\""
+    },
+    {
+      "id": "C",
+      "label": "cross-site, plain iframe: another static host on its own domain",
+      "main_page": "https://course-domain.test/xsite.html",
+      "instrument_origin": "https://instruments.other-host.test",
+      "iframe": "as A"
+    }
+  ],
+  "sessions_note": "Each engine and configuration ran three browser sessions on one fresh persistent profile: s1 online and cold (consent, cache fill, run, probes, then the top-navigation probe last); s2 online after a restart (cache state read before any request, run without consent, probes, first-party view of the instrument origin); s3 after a restart with the instrument hostname answering 503 to every request (run without consent, then evict).",
+  "values": {
+    "build_id": "f55311ae303f",
+    "engine_assets": 6,
+    "engine_first_load_bytes_uncompressed": 20056541,
+    "engine_first_load_note": "the six engine files as served by the stand-in server, uncompressed; compressed first-load sizes on real devices are W0-S02's RUN-phone-pyodide",
+    "browsers": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    }
+  },
+  "checks": [
+    {
+      "id": "chromium A: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "chromium A: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "chromium A: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "chromium A: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "chromium A: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "chromium A: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "chromium B: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "chromium B: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "chromium B: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "chromium B: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "chromium B: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "chromium B: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "chromium C: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.other-host.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "chromium C: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "chromium C: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "chromium C: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "chromium C: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "chromium C: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "chromium: sandbox=\"allow-scripts allow-same-origin\" changes no measured mechanic and blocks top navigation",
+      "pass": true,
+      "detail": "B top navigation by a never-activated frame: main-origin target navigated false (SecurityError); cross-site target navigated false (SecurityError)"
+    },
+    {
+      "id": "chromium: the handshake adopts one port, from the allowed parent only",
+      "pass": true,
+      "detail": "second port answered: null; hostile page got 0 hello messages; plain frame: ancestorOrigins [\"https://attacker.test\"], refused (ancestor-origin); noReferrer frame: ancestorOrigins [\"https://attacker.test\"], refused (ancestor-origin); top-level host: top-level"
+    },
+    {
+      "id": "firefox A: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "firefox A: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "firefox A: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "firefox A: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "firefox A: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "firefox A: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "firefox B: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "firefox B: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "firefox B: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "firefox B: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "firefox B: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "firefox B: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "firefox C: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.other-host.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "firefox C: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "firefox C: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "firefox C: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "firefox C: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "firefox C: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "firefox: sandbox=\"allow-scripts allow-same-origin\" changes no measured mechanic and blocks top navigation",
+      "pass": true,
+      "detail": "B top navigation by a never-activated frame: main-origin target navigated false (SecurityError); cross-site target navigated false (SecurityError)"
+    },
+    {
+      "id": "firefox: the handshake adopts one port, from the allowed parent only",
+      "pass": true,
+      "detail": "second port answered: null; hostile page got 0 hello messages; plain frame: ancestorOrigins [\"https://attacker.test\"], refused (ancestor-origin); noReferrer frame: ancestorOrigins [\"null\"], connect rejected (origin); top-level host: top-level"
+    },
+    {
+      "id": "webkit A: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "webkit A: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "webkit A: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "webkit A: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "webkit A: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "webkit A: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "webkit B: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.course-domain.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "webkit B: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "webkit B: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "webkit B: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "webkit B: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "webkit B: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "webkit C: Z3 runs in a module worker on the instrument origin, framed cross-origin, in all three sessions",
+      "pass": true,
+      "detail": "https://instruments.other-host.test framed by https://course-domain.test; s1 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s2 5.3.1 sat [b = 0, amount = 1, a = 0] unsat; s3 5.3.1 sat [b = 0, amount = 1, a = 0] unsat"
+    },
+    {
+      "id": "webkit C: the parent's storage is unreadable from the frame and its worker",
+      "pass": true,
+      "detail": "window.parent localStorage, document and indexedDB throw SecurityError; the parent's marker is absent from the frame's localStorage, sessionStorage, IndexedDB list, Cache API names and host-only cookies; same in the worker"
+    },
+    {
+      "id": "webkit C: consent is enforced before the first load and not asked again from the cache",
+      "pass": true,
+      "detail": "s1 without consent: consent-required; cached after restart: s2 true, s3 true"
+    },
+    {
+      "id": "webkit C: the service worker caches only bytes whose SHA-256 matches the manifest, and serves engine assets only from that cache",
+      "pass": true,
+      "detail": "before the fill an engine asset came back 504; filled 6 of 6; rejected tampered.bin"
+    },
+    {
+      "id": "webkit C: the framed service worker and its engine cache persist across browser restarts, offline included",
+      "pass": true,
+      "detail": "s2: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server; s3: controlled at load true, 6 entries, 6 engine fetches served from the cache to a worker, 0 engine requests reached the server, instrument host answering 503"
+    },
+    {
+      "id": "webkit C: evict clears the caches and unregisters the worker",
+      "pass": true,
+      "detail": "unregistered true; caches after []"
+    },
+    {
+      "id": "webkit: sandbox=\"allow-scripts allow-same-origin\" changes no measured mechanic and blocks top navigation",
+      "pass": true,
+      "detail": "B top navigation by a never-activated frame: main-origin target navigated false (SecurityError); cross-site target navigated false (SecurityError)"
+    },
+    {
+      "id": "webkit: the handshake adopts one port, from the allowed parent only",
+      "pass": true,
+      "detail": "second port answered: null; hostile page got 0 hello messages; plain frame: ancestorOrigins [\"https://attacker.test\"], refused (ancestor-origin); noReferrer frame: ancestorOrigins [\"https://attacker.test\"], refused (ancestor-origin); top-level host: top-level"
+    }
+  ],
+  "pass": true,
+  "observations": {
+    "chromium": {
+      "version": "153.0.8010.12",
+      "configs": {
+        "A": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": true,
+              "threw": null,
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": "frame gone (navigated)"
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "no-throw",
+            "after": "instruments.course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [
+              "ss-engines-v1",
+              "ss-shell-f55311ae303f"
+            ],
+            "engineCacheEntries": 6,
+            "controlled": true,
+            "registrations": [
+              "https://instruments.course-domain.test/"
+            ]
+          },
+          "readyMs": [
+            1448,
+            1428,
+            1342
+          ],
+          "requestsAfterRestart": {
+            "s2": [],
+            "s3": []
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "B": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "SecurityError",
+            "after": "instruments.course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [
+              "ss-engines-v1",
+              "ss-shell-f55311ae303f"
+            ],
+            "engineCacheEntries": 6,
+            "controlled": true,
+            "registrations": [
+              "https://instruments.course-domain.test/"
+            ]
+          },
+          "readyMs": [
+            1564,
+            1456,
+            1286
+          ],
+          "requestsAfterRestart": {
+            "s2": [],
+            "s3": []
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "C": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": true,
+              "threw": null,
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": "frame gone (navigated)"
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.other-host.test",
+            "attempt": "not-applicable"
+          },
+          "domainCookieVisibleToFrame": false,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.other-host.test",
+            "cacheNames": [],
+            "engineCacheEntries": 0,
+            "controlled": false,
+            "registrations": []
+          },
+          "readyMs": [
+            1484,
+            1652,
+            1431
+          ],
+          "requestsAfterRestart": {
+            "s2": [],
+            "s3": []
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "firefox": {
+      "version": "155.0",
+      "configs": {
+        "A": {
+          "ancestorOrigins": [
+            [
+              "null"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "no-throw",
+            "after": "course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [
+              "ss-engines-v1",
+              "ss-shell-f55311ae303f"
+            ],
+            "engineCacheEntries": 6,
+            "controlled": true,
+            "registrations": [
+              "https://instruments.course-domain.test/"
+            ]
+          },
+          "readyMs": [
+            1588,
+            1913,
+            2457
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.course-domain.test/sw.js",
+              "404 instruments.course-domain.test/favicon.ico"
+            ],
+            "s3": [
+              "503 instruments.course-domain.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "B": {
+          "ancestorOrigins": [
+            [
+              "null"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "SecurityError",
+            "after": "instruments.course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [
+              "ss-engines-v1",
+              "ss-shell-f55311ae303f"
+            ],
+            "engineCacheEntries": 6,
+            "controlled": true,
+            "registrations": [
+              "https://instruments.course-domain.test/"
+            ]
+          },
+          "readyMs": [
+            1983,
+            1898,
+            1618
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.course-domain.test/sw.js",
+              "404 instruments.course-domain.test/favicon.ico"
+            ],
+            "s3": [
+              "503 instruments.course-domain.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "C": {
+          "ancestorOrigins": [
+            [
+              "null"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.other-host.test",
+            "attempt": "not-applicable"
+          },
+          "domainCookieVisibleToFrame": false,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.other-host.test",
+            "cacheNames": [],
+            "engineCacheEntries": 0,
+            "controlled": false,
+            "registrations": []
+          },
+          "readyMs": [
+            1527,
+            1556,
+            1571
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.other-host.test/sw.js",
+              "200 instruments.other-host.test/diag.html",
+              "200 instruments.other-host.test/diag.js",
+              "404 instruments.other-host.test/favicon.ico"
+            ],
+            "s3": [
+              "503 instruments.other-host.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "webkit": {
+      "version": "26.6",
+      "configs": {
+        "A": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": true,
+              "threw": null,
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": "frame gone (navigated)"
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "no-throw",
+            "after": "course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [],
+            "engineCacheEntries": 0,
+            "controlled": false,
+            "registrations": []
+          },
+          "readyMs": [
+            1545,
+            2370,
+            2407
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.course-domain.test/sw.js"
+            ],
+            "s3": [
+              "503 instruments.course-domain.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "B": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.course-domain.test",
+            "attempt": "SecurityError",
+            "after": "instruments.course-domain.test",
+            "parentDocumentAfter": "SecurityError"
+          },
+          "domainCookieVisibleToFrame": true,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.course-domain.test",
+            "cacheNames": [],
+            "engineCacheEntries": 0,
+            "controlled": false,
+            "registrations": []
+          },
+          "readyMs": [
+            2642,
+            1946,
+            1493
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.course-domain.test/sw.js"
+            ],
+            "s3": [
+              "503 instruments.course-domain.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        },
+        "C": {
+          "ancestorOrigins": [
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ],
+            [
+              "https://course-domain.test"
+            ]
+          ],
+          "topNavigation": {
+            "main-origin": {
+              "navigated": true,
+              "threw": null,
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": "frame gone (navigated)"
+            },
+            "cross-site": {
+              "navigated": false,
+              "threw": "SecurityError",
+              "delayMs": 6000,
+              "parentActivationAtRequest": {
+                "isActive": true,
+                "hasBeenActive": true
+              },
+              "frameActivationAtRequest": {
+                "isActive": false,
+                "hasBeenActive": false
+              },
+              "frameActivationAtAttempt": {
+                "isActive": false,
+                "hasBeenActive": false
+              }
+            }
+          },
+          "documentDomain": {
+            "before": "instruments.other-host.test",
+            "attempt": "not-applicable"
+          },
+          "domainCookieVisibleToFrame": false,
+          "firstPartyViewOfInstrumentOrigin": {
+            "origin": "https://instruments.other-host.test",
+            "cacheNames": [],
+            "engineCacheEntries": 0,
+            "controlled": false,
+            "registrations": []
+          },
+          "readyMs": [
+            1497,
+            1726,
+            1565
+          ],
+          "requestsAfterRestart": {
+            "s2": [
+              "304 instruments.other-host.test/sw.js"
+            ],
+            "s3": [
+              "503 instruments.other-host.test/sw.js"
+            ]
+          },
+          "persisted": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    }
+  },
+  "notes": [
+    "Question: does the instrument origin work on its own custom subdomain, with Z3 running cross-origin and the parent's storage unreadable in Chromium, Firefox and WebKit, and do the framed origin's Cache API and service worker persist across desktop sessions under storage partitioning?",
+    "Answer on the stand-in: yes in all three engines and all three configurations; see checks[] and docs/spikes/W0-S01.md.",
+    "Model values are not canonical: each run checks the witness against the property (witness_ok) rather than matching the printed model.",
+    "The real deployment (DNS, GitHub Pages, a public certificate) is an owner action; run.sh and build.mjs take the real origins without committing them."
+  ]
+}

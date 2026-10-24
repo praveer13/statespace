@@ -1,0 +1,36 @@
+== lakefile.toml
+name = "t"
+defaultTargets = ["Broken", "Fixed"]
+
+[[lean_lib]]
+name = "Broken"
+srcDir = "broken"
+roots = ["SelfTransfer"]
+
+[[lean_lib]]
+name = "Fixed"
+srcDir = "fixed"
+roots = ["SelfTransfer"]
+== lake build
+info: t: no previous manifest, creating one from scratch
+info: toolchain not updated; already up-to-date
+✔ [2/4] Built SelfTransfer (153ms)
+Build completed successfully (4 jobs).
+exit 0
+== the compiled modules
+SelfTransfer.ilean
+SelfTransfer.ilean.hash
+SelfTransfer.olean
+SelfTransfer.olean.hash
+SelfTransfer.trace
+== which theorems the one SelfTransfer.olean holds
+selftransfer_mints : 1 = 1
+/tmp/probe.lean:3:8: error(lean.unknownIdentifier): Unknown identifier `selftransfer_fixed`
+== lake check --inadvisably-no-sandbox
+WARNING: Sandbox disabled, this run is not trustworthy.
+Resolving dependencies
+Building and exporting
+Running Lean default kernel on solution
+Lean default kernel accepts the solution
+Uses axioms: Classical.choice, propext, Quot.sound
+exit 0

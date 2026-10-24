@@ -1,0 +1,341 @@
+{
+  "id": "RUN-tlc-unsafe-3w",
+  "title": "The unsafe spec with three workers at Amount 40 re-run with argv: with -deadlock the invariant is violated at 69 distinct states; default flags stop first at a deadlock",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "records": "the unsafe spec with three workers at Amount 40: violated, 69 distinct when found",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+  "recorded_at": "2026-10-24T14:14:31.993Z",
+  "started_at": "2026-10-24T14:14:31.152Z",
+  "duration_s": 0.838,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "w0s11-run-tlc-unsafe-3w-w3-a40-deadlock-off",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-v",
+    "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+    "-w",
+    "/w",
+    "eclipse-temurin:21-jre",
+    "java",
+    "-jar",
+    "/t/tla2tools.jar",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "U3.cfg",
+    "DoubleSpend.tla"
+  ],
+  "inputs": [
+    {
+      "path": "research/spikes/tla/DoubleSpend.tla",
+      "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+      "bytes": 1105,
+      "role": "spec"
+    },
+    {
+      "path": "research/spikes/tla/U3.cfg",
+      "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+      "bytes": 101,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 12,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 17 and seed 8508605877394314569 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Error: Invariant NoOverspend is violated.",
+    "Error: The behavior up to this point is:",
+    "89 states generated, 69 distinct states found, 22 states left on queue.",
+    "The depth of the complete state graph search is 7.",
+    "Finished in 00s at (2026-10-24 14:14:31)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-unsafe-3w/w3-a40-default.log",
+      "sha256": "67aeb457f2d9b3288b153524e320c096251e6735ad2aedb4b9c6d2b358ef2482",
+      "bytes": 3385,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-unsafe-3w/w3-a40-deadlock-off.log",
+      "sha256": "369843d81c55a8dc746eeb3e0dc73418e2ba712ba09843b546638273dc6e5165",
+      "bytes": 3606,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "w3-a40-default": {
+      "result": "deadlock",
+      "distinct_states": 68,
+      "states_generated": 88,
+      "depth": 6
+    },
+    "w3-a40-deadlock-off": {
+      "result": "violated",
+      "distinct_states": 69,
+      "states_generated": 89,
+      "depth": 7
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS"
+    }
+  },
+  "primary_config": "w3-a40-deadlock-off",
+  "configs": [
+    {
+      "id": "w3-a40-default",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:31.152Z",
+      "duration_s": 0.41,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-unsafe-3w-w3-a40-default",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "U3.cfg",
+        "DoubleSpend.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpend.tla",
+          "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+          "bytes": 1105,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/U3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 11,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 43 and seed 4321035935977128371 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "88 states generated, 68 distinct states found, 23 states left on queue.",
+        "The depth of the complete state graph search is 6.",
+        "Finished in 00s at (2026-10-24 14:14:31)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-unsafe-3w/w3-a40-default.log"
+      ],
+      "values": {
+        "result": "deadlock",
+        "distinct_states": 68,
+        "states_generated": 88,
+        "depth": 6
+      }
+    },
+    {
+      "id": "w3-a40-deadlock-off",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "started_at": "2026-10-24T14:14:31.563Z",
+      "duration_s": 0.428,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-run-tlc-unsafe-3w-w3-a40-deadlock-off",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<sandbox>/tla2tools-1.8.0.jar:/t/tla2tools.jar:ro",
+        "-w",
+        "/w",
+        "eclipse-temurin:21-jre",
+        "java",
+        "-jar",
+        "/t/tla2tools.jar",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "U3.cfg",
+        "DoubleSpend.tla"
+      ],
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpend.tla",
+          "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+          "bytes": 1105,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/U3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 17 and seed 8508605877394314569 with 1 worker on 20 cores with 1536MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Invariant NoOverspend is violated.",
+        "Error: The behavior up to this point is:",
+        "89 states generated, 69 distinct states found, 22 states left on queue.",
+        "The depth of the complete state graph search is 7.",
+        "Finished in 00s at (2026-10-24 14:14:31)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-unsafe-3w/w3-a40-deadlock-off.log"
+      ],
+      "values": {
+        "result": "violated",
+        "distinct_states": 69,
+        "states_generated": 89,
+        "depth": 7
+      }
+    },
+    {
+      "id": "original",
+      "origin": "imported",
+      "purpose": "the execution the spine registered (the unsafe spec with three workers at Amount 40: violated, 69 distinct when found), imported from research/ as it was before this re-run",
+      "engine": "tlc",
+      "version": "1.8.0 nightly of 2026-10-20",
+      "binary_sha256": null,
+      "image": "eclipse-temurin:21-jre",
+      "started_at": "2026-10-20",
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/spikes/tla/DoubleSpend.tla",
+          "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+          "bytes": 1105,
+          "role": "spec"
+        },
+        {
+          "path": "research/spikes/tla/U3.cfg",
+          "sha256": "f6a45f2bf025812740c2aa01ce43f3e5881c6fb3578d21ff4710b8efdacb41a2",
+          "bytes": 101,
+          "role": "config"
+        }
+      ],
+      "exit_code": null,
+      "verdict_lines": [
+        "- Unsafe with 3 workers, Amount=40: violated; 89 generated, 69 distinct when found, depth 7."
+      ],
+      "outputs": [
+        {
+          "path": "research/spikes/RESULTS.md",
+          "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+          "bytes": 5758,
+          "kind": "results record"
+        }
+      ],
+      "values": {
+        "result": "violated",
+        "distinct_states": 69,
+        "states_generated": 89,
+        "depth": 7
+      },
+      "unrecorded": [
+        {
+          "field": "binary_sha256",
+          "reason": "RESULTS.md does not hash the jar"
+        },
+        {
+          "field": "duration_s",
+          "reason": "the log does not time the run"
+        },
+        {
+          "field": "argv",
+          "reason": "RESULTS.md records the counts, not the command line"
+        },
+        {
+          "field": "exit_code",
+          "reason": "RESULTS.md does not record it"
+        },
+        {
+          "field": "environment.os",
+          "reason": "the log does not describe the host"
+        },
+        {
+          "field": "environment.cpu_count",
+          "reason": "the log does not describe the host"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Re-run by W0-S11 with argv recorded, because the earlier record holds no command line (spine section 9.5). The configuration \"original\" and those that start with \"original-\" hold the earlier execution as it was imported from research/.",
+    "The jar is the pinned 1.8.0 pre-release (SHA-256 5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2); <sandbox>/tla2tools-1.8.0.jar in argv stands for it, and <sandbox>/work for a scratch copy of the spec and configuration listed in inputs.",
+    "TLC writes its state queue under -metadir /tmp/tlc-states inside the container, so the scratch copy holds only the inputs.",
+    "With default flags TLC checks for deadlock and stops at the first state with no successor, before it reaches the violation; RESULTS.md's \"violated; 69 distinct when found\" matches the -deadlock run."
+  ]
+}

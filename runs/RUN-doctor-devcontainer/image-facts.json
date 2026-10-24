@@ -1,0 +1,90 @@
+{
+  "id": "sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+  "built_as": "statespace_devcontainer-bench",
+  "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+  "architecture": "amd64",
+  "os": "linux",
+  "created": "2026-10-24T10:29:41.297380263-07:00",
+  "inspect_size_bytes": 1663129890,
+  "images_disk_usage": "7.63GB",
+  "unpacked_rootfs_bytes": 5799502321,
+  "sum_of_layer_sizes_bytes": 5969502208,
+  "layers": 21,
+  "layer_diff_ids": [
+    "sha256:32ab39660fd51c6dc3aae486b42d42bbe8fe4c1db78eaf57bb9c21198de48a16",
+    "sha256:0c6dc8ea00d220050ff454f96cda3099e03d136816f4d4b621b1280c0b2e02cc",
+    "sha256:6d1500c8fc90667af9d143f8a8116116a734723c5c845369aa4f5ab17666a930",
+    "sha256:f365d0033851622a709374d6eac690883a1027eb28f16357b3f0977f428ed3bb",
+    "sha256:b832eab9ee590f329f67c30c96e0366dccdca11d274ad8e0953b48b29ee50226",
+    "sha256:29911bbe5432e2347b4b8eb98d97f1eb80487db885587281876c3bca7e1984f9",
+    "sha256:f20fd0779729a046066f49d3e7896d0aa0302579627a035133cea414e1b5e120",
+    "sha256:552f11c73dbfac2f862ce38b0c47556ebe719218ed6182bf052348b6b1f75cdb",
+    "sha256:82929f812b5e19fba3ebec67d53fb7c2888564fd0ddecd8c0ff6ea59f0c04232",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+    "sha256:dea329b1870b76a9d03aeee9860335e21bd888d8605899b2417d14f3eee76130",
+    "sha256:52fde63a9cfb5abc4b0b52d44e76faf8c6b850e1f14e4e93863cdf6e15202454",
+    "sha256:9baf3a4fe2270726aba482e1288f8c7ac55422e63232940e5dc977b43204a72f",
+    "sha256:28fab3d3d639624a5ce2544bcf1c02e033d7ba52c2673bfff87a2f36699ed402",
+    "sha256:52f2435cebab2496b0bda913dbc6df33e94bd234955a3489b5e2b0f982d0fbbf",
+    "sha256:1dfae696662a38ade2b8a3a93226d092c216bec97d1f9253b7bde222d6f802f0",
+    "sha256:f872290771e64f61871a081fa011c51be5c44a8e7df37d03b0d3475047caf083",
+    "sha256:144f3432a7cf28a692db875251b45e41fcd2ce586ca6c90dfdc53a80a906bd92",
+    "sha256:00656bbf3ce64cba23324e41e667e47c9f76f0ef58cfa22de8eb950fc1a65da0",
+    "sha256:8759680bfe4b8bed226562ef1a2d6d42e216772d7089861a1312b2545deafb72",
+    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+  ],
+  "user": "learner",
+  "env": [
+    "PATH=/opt/venv/bin:/opt/elan/bin:/opt/cargo/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "DEBIAN_FRONTEND=noninteractive",
+    "LANG=C.UTF-8",
+    "ELAN_HOME=/opt/elan",
+    "RUSTUP_HOME=/opt/rustup",
+    "CARGO_HOME=/opt/cargo",
+    "JAVA_HOME=/opt/java/openjdk",
+    "UV_PYTHON_INSTALL_DIR=/opt/python",
+    "UV_NO_PROGRESS=1"
+  ],
+  "steps_over_50_MB": [
+    {
+      "bytes": 3197829120,
+      "step": "RUN set -eux; curl -fsSL --retry 3 -o /tmp/elan.tar.gz \"https://github.com/leanprover/elan/releases/download/v${ELAN_VER"
+    },
+    {
+      "bytes": 850296832,
+      "step": "RUN set -eux; apt-get update; apt-get install -y --no-install-recommends bubblewrap build-essential ca-certificates curl"
+    },
+    {
+      "bytes": 729882624,
+      "step": "RUN set -eux; curl -fsSL --retry 3 -o /tmp/rustup-init \"https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/x8"
+    },
+    {
+      "bytes": 538079232,
+      "step": "RUN set -eux; cd /opt/statespace/rust; mkdir src; echo 'fn main() {}' > src/main.rs; cargo fetch --locked; cargo metadat"
+    },
+    {
+      "bytes": 165752832,
+      "step": "COPY /opt/java/openjdk /opt/java/openjdk # buildkit"
+    },
+    {
+      "bytes": 111497216,
+      "step": "RUN set -eux; UV_PROJECT_ENVIRONMENT=/opt/venv uv sync --project /opt/statespace/bench --locked --no-install-project --g"
+    },
+    {
+      "bytes": 107585536,
+      "step": "RUN uv python install \"${PYTHON_VERSION}\" # buildkit"
+    },
+    {
+      "bytes": 87633920,
+      "step": "RUN #(nop) ADD file:7121eb4a5ba391efb4ba9a38c532d1c5dc2d22d276f04e062f357eea36ee62c4 in / "
+    },
+    {
+      "bytes": 71372800,
+      "step": "RUN set -eux; curl -fsSL --retry 3 -o /tmp/souffle.deb \"https://github.com/souffle-lang/souffle/releases/download/${SOUF"
+    },
+    {
+      "bytes": 55382016,
+      "step": "RUN set -eux; curl -fsSL --retry 3 -o /tmp/uv.tar.gz \"https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv"
+    }
+  ]
+}

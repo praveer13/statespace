@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:receipt@1",
+  "title": "statespace receipt, version 1",
+  "description": "The Bench's report of what real tools said about one lab stage (spine section 9.4; ARCHITECTURE.md section 10). statespace check and statespace trace validate write it to receipts/ in the learner's lab repository; INS-receipt imports it on the instrument origin, where it yields stamps and claims, never evidence of learning. A receipt never trusts an exit code alone: every runs[] entry carries the verdict lines verbatim, and the importer re-derives each verdict from them. A file may carry only the lanes reported (shown as reported from your machine) and self-assessed; only the tab assigns re-checked here, at read time, to checks it re-ran itself, so that badge is never stored in a receipt. Statement hashes follow statement-hash@1 (defs.schema.json), and a changed hash voids the claim to [?]. The receipt version, the hash rule and the rule that versions are recorded verbatim never change in place (labs/TOOLS.md section 6.4). Fields are camelCase as spine section 9.4 writes them, except reason_unknown, which is Z3's own name.",
+  "x-typeName": "Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "lab", "stage", "lane", "createdAt", "cli", "environment", "tools", "statements", "runs", "checks", "provenance"],
+  "properties": {
+    "schema": { "const": "statespace/receipt@1" },
+    "lab": {
+      "description": "The lab, such as LAB-2.",
+      "$ref": "urn:statespace:defs@1#/$defs/labId"
+    },
+    "stage": {
+      "description": "The lab stage the receipt reports, such as LAB-2.2. It must belong to lab; the importer checks that (ARCHITECTURE.md section 10.3, step 5).",
+      "$ref": "urn:statespace:defs@1#/$defs/labStageId"
+    },
+    "lane": {
+      "description": "reported (badge: reported from your machine) when the CLI ran the checks; self-assessed when the learner judged them. re-checked here is not a value: the tab assigns it at read time and never stores it.",
+      "enum": ["reported", "self-assessed"]
+    },
+    "createdAt": {
+      "description": "When the CLI wrote the receipt.",
+      "$ref": "urn:statespace:defs@1#/$defs/instant"
+    },
+    "cli": {
+      "description": "The CLI that wrote the receipt.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "statespace" },
+        "version": { "description": "The CLI's version, verbatim.", "type": "string", "minLength": 1 }
+      }
+    },
+    "environment": {
+      "x-typeName": "ReceiptEnvironment",
+      "description": "Where the checks ran. The sandbox is recorded, never required (spine section 9.2).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["devcontainer", "os", "sandbox"],
+      "properties": {
+        "devcontainer": {
+          "description": "The devcontainer image digest, or null when the stage ran outside it (LAB-1 runs under uv).",
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "os": {
+          "description": "The operating system the tools ran on, and the CPU architecture.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "arch"],
+          "properties": {
+            "name": { "description": "Such as Linux.", "type": "string", "minLength": 1 },
+            "version": { "description": "The kernel or OS version.", "type": "string", "minLength": 1 },
+            "arch": { "description": "The CPU architecture, such as x86_64 or aarch64.", "type": "string", "minLength": 1 }
+          }
+        },
+        "sandbox": {
+          "description": "on: built, exported and checked inside bubblewrap; off: run without it; failed: wanted and could not start (labs/TOOLS.md section 4).",
+          "enum": ["on", "off", "failed"]
+        },
+        "sandboxDetail": {
+          "description": "The sandbox's own error line, verbatim, when sandbox is failed.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "tools": {
+      "description": "Every tool the checks ran, with its version verbatim and the SHA-256 of its binary, jar or wheel.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/tool" }
+    },
+    "statements": {
+      "description": "The pinned statements the checks were about, each with its statement hash (I7).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/statement" }
+    },
+    "runs": {
+      "description": "One entry per tool execution, in the order the CLI ran them.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/run" }
+    },
+    "lean": { "$ref": "#/$defs/lean" },
+    "goldens": { "$ref": "#/$defs/goldens" },
+    "tlc": { "$ref": "#/$defs/tlc" },
+    "z3": { "$ref": "#/$defs/z3" },
+    "pg": { "$ref": "#/$defs/pg" },
+    "traces": { "$ref": "#/$defs/traces" },
+    "datalog": { "$ref": "#/$defs/datalog" },
+    "pairs": { "$ref": "#/$defs/pairs" },
+    "checks": {
+      "description": "The stage's checks and whether each passed. Every id belongs to lab (ARCHITECTURE.md section 10.3, step 5).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/check" }
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "claims": {
+      "description": "The claim cards to mint or update in the lab repository, by template or by the learner's id.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/claim" }
+    },
+    "tcb": {
+      "description": "The trusted computing base of the stage's guarantee: each component and how it is backed.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/tcbEntry" }
+    },
+    "attestation": {
+      "description": "A Sigstore attestation; absent by default (OD-13).",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ext": {
+      "description": "Forward-compatible extras. The stamp deriver ignores them.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "tool": {
+      "x-typeName": "ReceiptTool",
+      "description": "A tool that ran: lean, lake, tlc, java, z3, cvc5, postgres, souffle, cargo.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "sha256"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "description": "The tool's own version string, verbatim (cvc5's pip wheel prints 1.4.2-modified; keep it).", "type": "string", "minLength": 1 },
+        "sha256": { "description": "SHA-256 of the binary, jar or wheel that ran.", "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "pinned": { "description": "Whether sha256 equals the course's pin for this tool. False flags the tool as unpinned; the check still runs (labs/TOOLS.md section 6.2).", "type": "boolean" }
+      }
+    },
+    "statement": {
+      "x-typeName": "ReceiptStatement",
+      "description": "A pinned statement and its statement hash.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "kind", "sha256"],
+      "properties": {
+        "path": { "description": "The statement file in the lab repository.", "$ref": "urn:statespace:defs@1#/$defs/repoPath" },
+        "kind": { "description": "lean-challenge (a challenge module), tla, smt2, yaml (a claim file) or sql.", "enum": ["lean-challenge", "tla", "smt2", "yaml", "sql"] },
+        "sha256": { "description": "sha256(trimRight(text) + \"\\n\"), statement-hash@1: Comparator Live's challenge hash.", "$ref": "urn:statespace:defs@1#/$defs/statementSha256" }
+      }
+    },
+    "run": {
+      "x-typeName": "ReceiptRun",
+      "description": "One tool execution. The verdict is re-derived from verdictLines on import; a disagreement rejects the receipt.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "version", "argv", "inputSha256", "budget", "exitCode", "verdictLines", "verdict"],
+      "properties": {
+        "step": { "description": "The pipeline step this execution is, such as build, axioms, check or comparator.", "$ref": "urn:statespace:defs@1#/$defs/localId" },
+        "engine": { "type": "string", "minLength": 1 },
+        "version": { "description": "The engine's version, verbatim.", "type": "string", "minLength": 1 },
+        "argv": { "description": "The exact command line, flags included.", "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "inputSha256": { "description": "SHA-256 of the input the engine read.", "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "budget": {
+          "description": "The run's budget: rlimit for Z3, workers for TLC, the seed for seeded runs. Empty when the run had none.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "rlimit": { "type": "integer", "minimum": 0 },
+            "workers": { "type": "integer", "minimum": 1 },
+            "seed": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+          }
+        },
+        "exitCode": { "description": "Recorded, never read alone: lake comparator exits 1 both on a rejection and when bubblewrap cannot start under default Docker [X RUN-lean-bwrap-docker].", "type": "integer" },
+        "verdictLines": { "description": "The lines that carry the verdict, copied verbatim from the tool's output.", "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "verdict": {
+          "description": "The verdict the CLI parsed from verdictLines.",
+          "enum": ["accepted", "rejected", "sat", "unsat", "unknown", "no-error", "violated", "deadlock", "stopped", "passed", "failed", "error"]
+        },
+        "ms": { "description": "Wall-clock duration in milliseconds.", "type": "integer", "minimum": 0 }
+      }
+    },
+    "lean": {
+      "x-typeName": "ReceiptLean",
+      "description": "The Lean section: what the kernel and the other checkers said, which axioms each theorem uses, and how the statement was checked.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["toolchain", "checkers", "theorems", "nativeAxioms", "sorryCount"],
+      "properties": {
+        "toolchain": { "description": "The lean-toolchain line, such as leanprover/lean4:v4.35.0.", "type": "string", "minLength": 1 },
+        "challengeSha": { "description": "The statement hash of the challenge module.", "$ref": "urn:statespace:defs@1#/$defs/statementSha256" },
+        "permittedAxioms": { "description": "The permitted axioms from comparator.json.", "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "checkers": {
+          "description": "One row per checker that ran, the --paranoid ones included.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "version", "verdict"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "version": { "type": "string", "minLength": 1 },
+              "verdict": { "enum": ["accepts", "rejects", "not-run"] }
+            }
+          }
+        },
+        "theorems": {
+          "description": "Axioms per theorem, as #print axioms lists them.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "axioms"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "axioms": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "nativeAxioms": { "description": "Axioms introduced by native_decide or bv_decide (the _native ones).", "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "sorryCount": { "description": "Declarations that use sorry. A file with sorry still builds with exit code 0 [X RUN-lean-axioms].", "type": "integer", "minimum": 0 },
+        "automation": {
+          "description": "Which automation closed goals, so a stamp can say so (M-manual-mode).",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "manualMode": { "type": "boolean" },
+            "grind": { "type": "boolean" },
+            "omega": { "type": "boolean" },
+            "decide": { "type": "boolean" }
+          }
+        },
+        "statementCheck": { "description": "comparator, goldens, or weak, which renders as \"statement check: weak\".", "enum": ["comparator", "goldens", "weak"] },
+        "goldens": {
+          "description": "The kernel-checked goldens behind a goldens statement check.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "count": { "type": "integer", "minimum": 0 },
+            "kernelChecked": { "type": "boolean" },
+            "referenceSha": { "$ref": "urn:statespace:defs@1#/$defs/sha256" }
+          }
+        },
+        "lints": { "description": "Lint findings, such as a flagged declare_syntax_cat.", "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "goldens": {
+      "x-typeName": "ReceiptGoldens",
+      "description": "A run of a pool of kernel-checked goldens: the pool's hash and the counts.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["poolSha", "n", "passed", "failed", "noVerdict"],
+      "properties": {
+        "poolSha": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "n": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "noVerdict": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tlc": {
+      "x-typeName": "ReceiptTlc",
+      "description": "The TLC section. A stop at \"Deadlock reached\" ends exploration early, so it is never complete.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["specSha256", "configSha256", "constants", "flags", "distinctStates", "depth", "result", "complete"],
+      "properties": {
+        "specSha256": { "$ref": "urn:statespace:defs@1#/$defs/statementSha256" },
+        "configSha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "constants": { "description": "The constants as the configuration assigns them, verbatim.", "type": "object", "additionalProperties": { "type": "string" } },
+        "flags": { "description": "TLC's flags as passed, such as -workers 1 and -deadlock.", "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "distinctStates": { "type": "integer", "minimum": 0 },
+        "depth": { "type": "integer", "minimum": 0 },
+        "result": { "enum": ["no-error", "violated", "deadlock", "stopped"] },
+        "complete": { "description": "Whether exploration covered the whole reachable state space.", "type": "boolean" },
+        "traceFile": { "description": "The JSON or text trace TLC wrote.", "$ref": "urn:statespace:defs@1#/$defs/repoPath" }
+      }
+    },
+    "z3": {
+      "x-typeName": "ReceiptZ3",
+      "description": "The Z3 section. entry records whether the query went through the SMT-LIB command line or the Python API, because the two can answer differently [X RUN-z3-11179].",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["smtlibSha256", "entry", "rlimit", "verdict"],
+      "properties": {
+        "smtlibSha256": { "$ref": "urn:statespace:defs@1#/$defs/statementSha256" },
+        "entry": { "enum": ["cli", "api"] },
+        "rlimit": { "type": "integer", "minimum": 0 },
+        "verdict": { "enum": ["sat", "unsat", "unknown"] },
+        "reason_unknown": { "description": "Z3's reason_unknown, verbatim, when the verdict is unknown.", "type": "string", "minLength": 1 }
+      }
+    },
+    "pg": {
+      "x-typeName": "ReceiptPg",
+      "description": "The PostgreSQL section.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["serverVersion", "isolationLevel", "sqlstateClasses"],
+      "properties": {
+        "serverVersion": { "description": "select version(), verbatim.", "type": "string", "minLength": 1 },
+        "isolationLevel": { "enum": ["read-committed", "repeatable-read", "serializable", "mixed"] },
+        "historySha256": { "description": "The hash of the history@1 file statespace isorun wrote.", "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "sqlstateClasses": { "description": "SQLSTATE code to count, such as 40001 or 22003.", "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "rls": {
+          "description": "Row-level security: the role the statements ran as, the policy's hash, how many read-backs were compared and how many disagreed.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["roleMode", "policySha256", "readBacks", "disagreements"],
+          "properties": {
+            "roleMode": { "type": "string", "minLength": 1 },
+            "policySha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+            "readBacks": { "type": "integer", "minimum": 0 },
+            "disagreements": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "traces": {
+      "x-typeName": "ReceiptTraces",
+      "description": "Trace validation (statespace trace validate): how many traces, the hash of the seed list, and each trace's verdict with its first non-conforming line.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "seedListSha256", "verdicts"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 0 },
+        "seedListSha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "verdicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["trace", "verdict"],
+            "properties": {
+              "trace": { "description": "The trace file in the lab repository.", "$ref": "urn:statespace:defs@1#/$defs/repoPath" },
+              "seed": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+              "verdict": { "enum": ["accepted", "rejected", "partial"] },
+              "firstNonConformingLine": { "description": "The 1-based NDJSON line where the trace stops conforming; null when it conforms.", "type": ["integer", "null"], "minimum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "datalog": {
+      "x-typeName": "ReceiptDatalog",
+      "description": "The Datalog section: the engine, a hash per computed relation, the derivation checks and the generator's statistics.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "relations"],
+      "properties": {
+        "engine": { "description": "Such as souffle@2.5.", "$ref": "urn:statespace:defs@1#/$defs/engineAtVersion" },
+        "relations": { "description": "Relation name to the SHA-256 of its sorted tuples.", "type": "object", "additionalProperties": { "$ref": "urn:statespace:defs@1#/$defs/sha256" } },
+        "derivations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["checked", "invalid"],
+          "properties": {
+            "checked": { "type": "integer", "minimum": 0 },
+            "invalid": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "generator": { "description": "The generator's statistics, as the generator reports them.", "type": "object", "additionalProperties": true }
+      }
+    },
+    "pairs": {
+      "x-typeName": "ReceiptPairs",
+      "description": "A paired-state check: the hashes of the witness, the relation and the observer, and the bound it ran under (I10).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["witnessSha256", "relationSha256", "observerSha256", "bound"],
+      "properties": {
+        "witnessSha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "relationSha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "observerSha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "bound": { "description": "The bound as the stamp prints it, such as the domain and n.", "type": "string", "minLength": 1 }
+      }
+    },
+    "check": {
+      "x-typeName": "ReceiptCheck",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "pass"],
+      "properties": {
+        "id": { "$ref": "urn:statespace:defs@1#/$defs/checkId" },
+        "pass": { "type": "boolean" }
+      }
+    },
+    "provenance": {
+      "x-typeName": "ReceiptProvenance",
+      "description": "Self-reported provenance (OD-8). It sets the weight of the receipt-import event and nothing else.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assisted", "agent", "guard"],
+      "properties": {
+        "assisted": { "description": "none, explain or code, self-reported.", "enum": ["none", "explain", "code"] },
+        "agent": { "description": "Whether a coding agent worked in the repository, self-reported.", "type": "boolean" },
+        "guard": { "description": "off when the agent-guardrail hook was switched off with STATESPACE_GUARD=off.", "enum": ["on", "off"] }
+      }
+    },
+    "claim": {
+      "x-typeName": "ReceiptClaim",
+      "description": "A claim card to mint or update.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "template": { "$ref": "urn:statespace:defs@1#/$defs/claimTemplateId" },
+        "id": { "description": "The learner's id for the card.", "$ref": "urn:statespace:defs@1#/$defs/localId" }
+      }
+    },
+    "tcbEntry": {
+      "x-typeName": "ReceiptTcbEntry",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component", "status"],
+      "properties": {
+        "component": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["proved", "validated", "tested", "trusted"] }
+      }
+    }
+  }
+}

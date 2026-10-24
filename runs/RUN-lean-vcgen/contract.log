@@ -1,0 +1,5 @@
+transfer.spec : ∀ (a b amt : Int),
+  ⦃ 0 < amt ∧ amt ≤ a ⦄ transfer a b amt ⦃ fun r => r.fst + r.snd = a + b ∧ 0 ≤ r.fst ∨ a < 0 ⦄
+applyAll.spec : ∀ (amts : List Int) (total : Int),
+  ⦃ fun s => s.fst + s.snd = total ⦄ applyAll amts total ⦃ fun x s => s.fst + s.snd = total ⦄
+'applyAll.spec' depends on axioms: [propext, Classical.choice, Quot.sound]

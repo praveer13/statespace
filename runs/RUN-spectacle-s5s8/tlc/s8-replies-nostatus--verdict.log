@@ -1,0 +1,39 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 42 and seed 2895013748285473453 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 2950] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/OutboxReplies.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module OutboxReplies
+Linting of module OutboxReplies
+Starting... (2026-10-24 13:51:10)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:51:10.
+Error: Invariant StatusOk is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ last = [status |-> "none", cost |-> 0, key |-> "none"]
+/\ hst = "held"
+/\ inbox = {}
+/\ handled = {}
+/\ captures = 0
+/\ released = FALSE
+
+State 2: <Deliver([status |-> "declined", cost |-> 80, key |-> "k1"]) line 24, col 15 to line 26, col 69 of module OutboxReplies>
+/\ last = [status |-> "none", cost |-> 0, key |-> "none"]
+/\ hst = "held"
+/\ inbox = {[status |-> "declined", cost |-> 80, key |-> "k1"]}
+/\ handled = {}
+/\ captures = 0
+/\ released = FALSE
+
+State 3: <Handle([status |-> "declined", cost |-> 80, key |-> "k1"]) line 36, col 14 to line 46, col 45 of module OutboxReplies>
+/\ last = [status |-> "declined", cost |-> 80, key |-> "k1"]
+/\ hst = "captured"
+/\ inbox = {[status |-> "declined", cost |-> 80, key |-> "k1"]}
+/\ handled = {"k1"}
+/\ captures = 1
+/\ released = FALSE
+
+20 states generated, 17 distinct states found, 12 states left on queue.
+The depth of the complete state graph search is 3.
+Finished in 00s at (2026-10-24 13:51:10)

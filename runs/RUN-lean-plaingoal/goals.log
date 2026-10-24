@@ -1,0 +1,25 @@
+--- transfer_conserves: before `unfold` (t=298 ms)
+s : Ledger
+n : Int
+⊢ total (transfer s n) = total s
+--- transfer_conserves: before `split` (t=354 ms)
+s : Ledger
+n : Int
+⊢ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a +
+      (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b =
+    s.a + s.b
+--- run_conserves: before `induction` (t=364 ms)
+s : Ledger
+ns : List Int
+⊢ total (run s ns) = total s
+--- run_conserves: nil case, before `rfl` (t=365 ms)
+case nil
+s : Ledger
+⊢ total (run s []) = total s
+--- run_conserves: cons case, before `simp` (t=367 ms)
+case cons
+n : Int
+ns : List Int
+ih : ∀ (s : Ledger), total (run s ns) = total s
+s : Ledger
+⊢ total (run s (n :: ns)) = total s

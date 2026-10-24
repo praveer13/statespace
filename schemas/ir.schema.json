@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:ir@1",
+  "x-typeName": "IR",
+  "title": "statespace IR, version 1",
+  "description": "The one JSON IR that links S3, S6 and S9 (spine section 9.3), written by `lake exe export-ir` and read by the TypeScript interpreter, the Lane A host and the Rust crates. TODO(W2-T08): this is the skeleton W0-T02 reserves. It fixes the envelope and the parts that curriculum/S03-semantics.md names (the policy fields of decision 6, and a golden's fields in section 2.7); the encodings of programs, calls, states and outcomes are open objects until W2-T08 publishes IR@1 from the Lean reference semantics. Narrowing an open object to a closed one is a compatible change for a writer that already emits only the narrowed form.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema"],
+  "properties": {
+    "schema": { "const": "statespace/ir@1" },
+    "programs": {
+      "description": "Mini-Plinth programs: commands with distinct names.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/program" }
+    },
+    "calls": {
+      "description": "Calls of a command with raw argument values.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/call" }
+    },
+    "states": {
+      "description": "States: balances, holds, nextHold and flags.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/state" }
+    },
+    "policy": {
+      "description": "The edge-case decisions the semantics takes, which the learner's evaluator declares as Lab3.policy.",
+      "$ref": "#/$defs/policy"
+    },
+    "outcomes": {
+      "description": "Outcomes: ok with state, output and effects, or an Err with payload.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/outcome" }
+    },
+    "goldens": {
+      "description": "Kernel-checked goldens. Each right-hand side comes from the golden module's literals, never from a fresh #eval.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/golden" }
+    }
+  },
+  "$defs": {
+    "program": {
+      "description": "TODO(W2-T08): the encoding of a program.",
+      "type": "object"
+    },
+    "call": {
+      "description": "TODO(W2-T08): the encoding of a call.",
+      "type": "object"
+    },
+    "state": {
+      "description": "TODO(W2-T08): the encoding of a state.",
+      "type": "object"
+    },
+    "outcome": {
+      "description": "TODO(W2-T08): the encoding of an outcome.",
+      "type": "object"
+    },
+    "policy": {
+      "description": "The four policy fields of curriculum/S03-semantics.md section 1.1, decision 6. The reference defaults are zero reject, self allow, guard error and overflow unbounded.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zero", "self", "guard", "overflow"],
+      "properties": {
+        "zero": {
+          "description": "What an amount of 0 does: reject it, or return the state unchanged.",
+          "enum": ["reject", "noop"]
+        },
+        "self": {
+          "description": "Whether a move from an account to itself is allowed or rejected.",
+          "enum": ["allow", "reject"]
+        },
+        "guard": {
+          "description": "What a false guard gives: an error, or the state unchanged with no output.",
+          "enum": ["error", "silent"]
+        },
+        "overflow": {
+          "description": "Unbounded balances, or balances bounded to [-maxBal, maxBal]. TODO(W2-T08): confirm the encoding against the export.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": {
+            "mode": { "enum": ["unbounded", "bounded"] },
+            "maxBal": { "type": "integer", "minimum": 0 }
+          },
+          "if": {
+            "required": ["mode"],
+            "properties": { "mode": { "const": "bounded" } }
+          },
+          "then": { "required": ["maxBal"] }
+        }
+      }
+    },
+    "golden": {
+      "description": "One golden: a theorem about a call on a pre-state, with its outcome.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pool", "theorem", "statementSha256", "pre", "call", "outcome"],
+      "properties": {
+        "pool": {
+          "description": "The golden pool the golden belongs to.",
+          "type": "string",
+          "minLength": 1
+        },
+        "theorem": {
+          "description": "The Lean theorem name that proves the golden.",
+          "type": "string",
+          "minLength": 1
+        },
+        "statementSha256": {
+          "description": "The statement hash of the theorem's text, by the rule of statement-hash@1.",
+          "$ref": "urn:statespace:defs@1#/$defs/statementSha256"
+        },
+        "pre": { "$ref": "#/$defs/state" },
+        "call": { "$ref": "#/$defs/call" },
+        "outcome": { "$ref": "#/$defs/outcome" }
+      }
+    }
+  }
+}

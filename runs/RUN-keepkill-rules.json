@@ -1,0 +1,702 @@
+{
+  "id": "RUN-keepkill-rules",
+  "title": "The SHA-256 of the keep/kill rules (content/governance/keepkill-rules.yaml), fixed before the first learner-zero event, with the checks that the rules match their sources and that GATE-schema holds the hash",
+  "task": "W0-T07",
+  "engine": "sha256sum",
+  "version": "sha256sum (GNU coreutils) 9.8",
+  "binary": "sha256sum (GNU coreutils, the host binary; no container)",
+  "binary_sha256": "1285ef1dffcf5cf31f4e23d0fc211c49a3dd264cf225bd4bcc6fd6f4c52dacdd",
+  "image": null,
+  "recorded_at": "2026-10-24T14:02:01.391Z",
+  "started_at": "2026-10-24T14:01:20.211Z",
+  "duration_s": 41.179,
+  "primary_config": "hash",
+  "argv": [
+    "sha256sum",
+    "content/governance/keepkill-rules.yaml"
+  ],
+  "inputs": [
+    {
+      "path": "content/governance/keepkill-rules.yaml",
+      "sha256": "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+      "bytes": 30227,
+      "role": "the keep/kill rules, W0-T07's deliverable; GATE-schema fails if the file stops hashing to this value"
+    },
+    {
+      "path": "scripts/spikes/W0-T07/keepkill.mjs",
+      "sha256": "6be71fd922490c483f3ef61117dccacb5d8b8fbdd9b56f8936dfa30f49216c3d",
+      "role": "the reference implementation of the rules' allocation, intervals and decisions"
+    },
+    {
+      "path": "scripts/spikes/W0-T07/check.mjs",
+      "sha256": "802cb43e0e64c951542f00744135612c5e27c1e9db1b9d8e37c79e5af9e8696d",
+      "role": "checks the rules against their sources and writes the vectors"
+    },
+    {
+      "path": "scripts/spikes/W0-T07/crosscheck.py",
+      "sha256": "fb6d9f32d070836d450765ae097dc9e0ee1080395e22ec9e0ebe4349618344ea",
+      "role": "the independent check in Python"
+    },
+    {
+      "path": "scripts/spikes/W0-T07/tamper.mjs",
+      "sha256": "449092f53dc9d31d1fdbf1e75fbfd518a33110b8dbc2e73bfeb7497f3d95f202",
+      "role": "planted changes in scratch copies"
+    },
+    {
+      "path": "scripts/spikes/W0-T07/record.mjs",
+      "sha256": "c4ba1cf2c0344b13bbe525f7041827a27834c992d38ee603f4fb2acdb62246f6",
+      "role": "this recorder"
+    }
+  ],
+  "sources_at_recording": [
+    {
+      "path": "docs/spine/SPINE.md",
+      "sha256": "4a6c6016672a2bd61e4adb8c1c15159b5ee99852d103c12f6ea83a7eedd2d198",
+      "role": "source of comparison 1's units (section 4) and of W0-T07 (section 13)"
+    },
+    {
+      "path": "docs/ASSESSMENT.md",
+      "sha256": "5d85fb3248d7121e18c1a59d9818cabed172b8f07aa104d130806a8f8a824a3b",
+      "role": "source of comparison 2's and 3's units (section 4) and of fresh, solid, sign-off and VRK₃₀"
+    },
+    {
+      "path": "docs/EVIDENCE.md",
+      "sha256": "49a4bea101d397c0b3e14d3026eee1b5c252d5accb1a93029ae127c440d89423",
+      "role": "section 7, the proposal the rules are cut from"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "sha256": "198cfb7fc6d37ff6b9856fbea9388f3da49eafc20e90b84ed101aed8fed1c85e",
+      "role": "section 14.4"
+    },
+    {
+      "path": "research/synthesis/BRIEF.md",
+      "sha256": "61653a174c4b733a69ef2dc107612fc2a65db7b929bc84427eccaa81879c6a0b",
+      "role": "sections 3.3 and 3.5"
+    },
+    {
+      "path": "packages/ids/src/registry.json",
+      "sha256": "f872fe4afd79cf2d4f4fd675c0992a6629019fd820b6f134497d8a72d8bf05ab",
+      "role": "the ID registry GATE-links resolves against"
+    },
+    {
+      "path": "packages/ids/src/yaml-subset.ts",
+      "sha256": "fdb7f082c747822347f9909f81dad1440d156a340f54d1137c39c0b70c0c99bf",
+      "role": "the dependency-free YAML parser the gates use"
+    },
+    {
+      "path": "packages/ids/src/grammar.ts",
+      "sha256": "1f75280806a528cd14dc390450212f661675adbfc64f9d729893166f50f32438",
+      "role": "the ID grammar GATE-links scans with"
+    },
+    {
+      "path": "packages/rng/src/index.ts",
+      "sha256": "07b5e4eba7e784fd243d510530ce29cc776c017f80a91d88e279c1fba4172d1b",
+      "role": "hash32, re-exported from the vendored kernelspace module"
+    },
+    {
+      "path": "vendor/kernelspace/src/lib/rng.ts",
+      "sha256": "078ef989d77ca4c88f8b2fe55cc130bd7561770780b397ae2511ef1404da6817",
+      "role": "the vendored hash32"
+    },
+    {
+      "path": "scripts/verify-schema.mjs",
+      "sha256": "0de1ccad77e2ffc05b1ee0061bf9f97029db1173de29807b259bd5b4486e714e",
+      "role": "GATE-schema"
+    },
+    {
+      "path": "schemas/run.schema.json",
+      "sha256": "a303d33dedae8307d42bace2fb66bcdf3ca5eb614a0a20761047136a164ef442",
+      "role": "run@1, which GATE-schema validates this record against"
+    },
+    {
+      "path": "scripts/verify-links.mjs",
+      "sha256": "cd6b67430c9ec5d11a867e8520d36fd07d958335ab4ff977cbc722b9c943dba1",
+      "role": "GATE-links"
+    },
+    {
+      "path": "tracker/tasks.yaml",
+      "sha256": "2ad97bd68f21b2ed367e4811b3e705f863c06a51b47b5a514092d157594f8299",
+      "role": "task statuses for the before-learner-zero check"
+    }
+  ],
+  "budget": {
+    "timeout_s": 600,
+    "network": "uv fetches the pinned Python wheels when its cache is cold",
+    "memory": "host",
+    "containers": "none",
+    "example_seeds": [
+      0,
+      1,
+      2654435769,
+      4294967295
+    ]
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589  content/governance/keepkill-rules.yaml",
+    "node:crypto agrees: true",
+    "ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json",
+    "tamper, the rules and the record as written (control): exit 0, keep/kill ok",
+    "tamper, one parameter changed after the fact (min_outcomes_per_arm 20 to 19): exit 1, keep/kill FAIL",
+    "tamper, a trailing newline added (whitespace only): exit 1, keep/kill FAIL",
+    "tamper, line endings converted to CRLF (a checkout with core.autocrlf): exit 1, keep/kill FAIL",
+    "tamper, the rules file removed, the record kept: exit 1, keep/kill FAIL",
+    "tamper, the rules changed and the record re-hashed in the same change (a limit of this check): exit 0, keep/kill ok",
+    "check: 54 of 54 checks hold",
+    "crosscheck: 4 of 4 checks hold",
+    "gate-links: 0 findings in content/governance/keepkill-rules.yaml",
+    "no learner-zero event exists: no RUN-lz-* record, no W1 task started, no event or bundle record in the repository"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-keepkill-rules/hash.txt",
+      "sha256": "2d4a1b5c756b5ad27da8bd65bb91efd58a98d0d098d995bc9f4e35e89ff3245b",
+      "bytes": 211
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/check.json",
+      "sha256": "ff7b7b55e8b520d08b4b4859a630d0e9697ddcdedd5afe644f9d152e0226dc8c",
+      "bytes": 11921
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/allocation-vectors.json",
+      "sha256": "4525ca0526ffe0597a5623c594ff58f8d23bec64a45f8ec7886e9cba4b8d2e13",
+      "bytes": 179233
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/interval-vectors.json",
+      "sha256": "b36677557c9ee78586f673206f07f3745ffeb12c89778f25fe702495cd64b8b0",
+      "bytes": 19148
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/crosscheck.json",
+      "sha256": "8ccdbc1da906422dfd58ba0b5d163cb32f7296ca8b26c18e345e78e334c2d6be",
+      "bytes": 8844
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/gate-links.json",
+      "sha256": "6952ee619d5d82bff8abc10ce473f1728dab2350a7b6dd4aa9778ff6053f859e",
+      "bytes": 366
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/before-learner-zero.json",
+      "sha256": "213cfbbdfa450969627e6fdbbfd3a2ce57554b83c10c2b2fdc366b385fed26ff",
+      "bytes": 261
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/gate-schema.txt",
+      "sha256": "2d45e38700643b43915258ef4409234af6532a3ba58609d48556b7d96c9410e7",
+      "bytes": 3770
+    },
+    {
+      "path": "runs/RUN-keepkill-rules/tamper.json",
+      "sha256": "6c2ed5bab61e6727ccc8de9c340e778eeda515bfd088c9bc55c975618a24d620",
+      "bytes": 3648
+    }
+  ],
+  "values": {
+    "rules_sha256": "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+    "rules_bytes": 30227,
+    "units": {
+      "misconception_note": 105,
+      "proof_blocks_distractors": 10,
+      "witness_generalization": 42
+    },
+    "arms_under_example_seeds": [
+      {
+        "number": 1,
+        "per_seed": [
+          {
+            "seed": 0,
+            "counts": {
+              "open": 52,
+              "collapsed": 53
+            }
+          },
+          {
+            "seed": 1,
+            "counts": {
+              "open": 53,
+              "collapsed": 52
+            }
+          },
+          {
+            "seed": 2654435769,
+            "counts": {
+              "open": 53,
+              "collapsed": 52
+            }
+          },
+          {
+            "seed": 4294967295,
+            "counts": {
+              "open": 53,
+              "collapsed": 52
+            }
+          }
+        ]
+      },
+      {
+        "number": 2,
+        "per_seed": [
+          {
+            "seed": 0,
+            "counts": {
+              "distractors": 5,
+              "no-distractors": 5
+            }
+          },
+          {
+            "seed": 1,
+            "counts": {
+              "distractors": 5,
+              "no-distractors": 5
+            }
+          },
+          {
+            "seed": 2654435769,
+            "counts": {
+              "distractors": 5,
+              "no-distractors": 5
+            }
+          },
+          {
+            "seed": 4294967295,
+            "counts": {
+              "distractors": 5,
+              "no-distractors": 5
+            }
+          }
+        ]
+      },
+      {
+        "number": 3,
+        "per_seed": [
+          {
+            "seed": 0,
+            "counts": {
+              "class-named": 21,
+              "contrast-then-class": 21
+            }
+          },
+          {
+            "seed": 1,
+            "counts": {
+              "class-named": 21,
+              "contrast-then-class": 21
+            }
+          },
+          {
+            "seed": 2654435769,
+            "counts": {
+              "class-named": 21,
+              "contrast-then-class": 21
+            }
+          },
+          {
+            "seed": 4294967295,
+            "counts": {
+              "class-named": 21,
+              "contrast-then-class": 21
+            }
+          }
+        ]
+      }
+    ],
+    "first_window_under_example_seeds": [
+      {
+        "seed": 0,
+        "window_1": "no-reserve"
+      },
+      {
+        "seed": 1,
+        "window_1": "no-reserve"
+      },
+      {
+        "seed": 2654435769,
+        "window_1": "reserve"
+      },
+      {
+        "seed": 4294967295,
+        "window_1": "reserve"
+      }
+    ],
+    "z": {
+      "rules": 1.9599639845400543,
+      "rules_exact": "1.9599639845400542714770608654362149536609649658203125",
+      "quantile_50_digits": "1.9599639845400542355245944305205515279555500778695",
+      "nearest_double": "z",
+      "scipy_norm_ppf_0975": 1.959963984540054,
+      "scipy_norm_isf_0025": 1.9599639845400545
+    },
+    "library_quantiles": "python statistics.NormalDist().inv_cdf(0.975) = 1.9599639845400536; scipy.stats.norm.ppf(0.975) = 1.959963984540054; scipy.stats.norm.isf(0.025) = 1.9599639845400545; the rules' z = 1.9599639845400543",
+    "interval_agreement": "27 intervals; the largest difference is 2.22e-16 (tolerance 1e-12)",
+    "precision_near_0_8": [
+      "10 per arm: ±34.1 points",
+      "20 per arm: ±24.7 points",
+      "30 per arm: ±20.2 points",
+      "50 per arm: ±15.7 points"
+    ],
+    "evidence_examples": [
+      {
+        "case": "18/20 against 14/20",
+        "L": -0.05355829382522587,
+        "U": 0.4305479119622835
+      },
+      {
+        "case": "45/50 against 35/50",
+        "L": 0.04258735609193745,
+        "U": 0.3486680965761124
+      }
+    ],
+    "wilson_examples": [
+      {
+        "x": 41,
+        "n": 52,
+        "l": 0.6596789537149542,
+        "u": 0.8775562946751251
+      },
+      {
+        "x": 10,
+        "n": 12,
+        "l": 0.5519691377470265,
+        "u": 0.9530348578161462
+      }
+    ],
+    "floating_point_trap": {
+      "expression": "18/20 - 16/20",
+      "double": 0.09999999999999998,
+      "below_0_10_in_doubles": true,
+      "exact_test_10_points": true
+    },
+    "window_ordering_chance": [
+      "1 no-reserve against 1 reserve windows: 1 in 2",
+      "2 no-reserve against 1 reserve windows: 1 in 3",
+      "2 no-reserve against 2 reserve windows: 1 in 6",
+      "3 no-reserve against 2 reserve windows: 1 in 10",
+      "3 no-reserve against 3 reserve windows: 1 in 20"
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_architecture": "x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "node": "v22.22.2",
+    "node_binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+    "uv": "uv 0.10.2",
+    "uv_binary_sha256": "e10271e5051b432e76fc17b34ae2ae985ecd74ec9b6fe2b57a034a4544475ddf",
+    "python_default": "Python 3.13.12",
+    "python_packages": {
+      "python": "3.13.12",
+      "statsmodels": "0.14.4",
+      "scipy": "1.18.1",
+      "numpy": "2.5.4",
+      "mpmath": "1.3.0",
+      "pyyaml": "6.0.3"
+    },
+    "coreutils": "sha256sum (GNU coreutils) 9.8",
+    "container": null
+  },
+  "configs": [
+    {
+      "id": "hash",
+      "purpose": "the SHA-256 of the rules file by GNU coreutils sha256sum; node:crypto computes it again and must agree",
+      "argv": [
+        "sha256sum",
+        "content/governance/keepkill-rules.yaml"
+      ],
+      "started_at": "2026-10-24T14:01:20.336Z",
+      "duration_s": 0.003,
+      "exit_code": 0,
+      "engine": "sha256sum",
+      "version": "sha256sum (GNU coreutils) 9.8",
+      "binary_sha256": "1285ef1dffcf5cf31f4e23d0fc211c49a3dd264cf225bd4bcc6fd6f4c52dacdd",
+      "verdict_lines": [
+        "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589  content/governance/keepkill-rules.yaml",
+        "node:crypto: 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+        "agree: true"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/hash.txt"
+      ]
+    },
+    {
+      "id": "pyyaml",
+      "purpose": "PyYAML reads the rules file; its JSON is compared with the subset parser in the next configuration",
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "pyyaml==6.0.3",
+        "python",
+        "-I",
+        "-c",
+        "import json, sys, yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1], encoding=\"utf-8\")), ensure_ascii=False, sort_keys=True))",
+        "content/governance/keepkill-rules.yaml"
+      ],
+      "started_at": "2026-10-24T14:01:20.345Z",
+      "duration_s": 0.141,
+      "exit_code": 0,
+      "engine": "uv",
+      "version": "uv 0.10.2",
+      "binary_sha256": "e10271e5051b432e76fc17b34ae2ae985ecd74ec9b6fe2b57a034a4544475ddf",
+      "verdict_lines": [
+        "exit 0; 27404 bytes of JSON, compared in the check configuration"
+      ],
+      "outputs": []
+    },
+    {
+      "id": "check",
+      "purpose": "the file against its sources: parsers agree, IDs resolve, units equal the spine and ASSESSMENT.md, hashing and allocation rules hold; writes the vectors",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T07/check.mjs",
+        "--out",
+        "runs/RUN-keepkill-rules",
+        "--pyyaml",
+        "<sandbox>/keepkill-record-JiEpmw/pyyaml.json"
+      ],
+      "started_at": "2026-10-24T14:01:20.540Z",
+      "duration_s": 0.138,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "v22.22.2",
+      "verdict_lines": [
+        "ok   yaml subset parser: packages/ids/src/yaml-subset.ts reads the file",
+        "ok   two parsers agree: PyYAML and the subset parser give the same document",
+        "ok   four comparisons: 1 misconception-note; 2 proof-blocks-distractors; 3 witness-generalization; 4 reserve-weeks",
+        "ok   no counterexample-only arm: both arms of comparison 3 show the class",
+        "ok   IDs resolve: 268 ID tokens, 147 distinct; unresolved: none",
+        "ok   comparison 1 S1 stage: 11 KCs, each in S1",
+        "ok   comparison 1 S2 stage: 12 KCs, each in S2",
+        "ok   comparison 1 S3 stage: 12 KCs, each in S3",
+        "ok   comparison 1 S4 stage: 11 KCs, each in S4",
+        "ok   comparison 1 S5 stage: 11 KCs, each in S5",
+        "ok   comparison 1 S6 stage: 12 KCs, each in S6",
+        "ok   comparison 1 S7 stage: 11 KCs, each in S7",
+        "ok   comparison 1 S8 stage: 10 KCs, each in S8",
+        "ok   comparison 1 S9 stage: 11 KCs, each in S9",
+        "ok   comparison 1 S10 stage: 4 KCs, each in S10",
+        "ok   comparison 1 no duplicates: 105 units",
+        "ok   comparison 1 units known: every unit is a registered KC",
+        "ok   comparison 2 S2 stage: 5 KCs, each in S2",
+        "ok   comparison 2 S3 stage: 2 KCs, each in S3",
+        "ok   comparison 2 S9 stage: 3 KCs, each in S9",
+        "ok   comparison 2 no duplicates: 10 units",
+        "ok   comparison 2 units known: every unit is a registered KC",
+        "ok   comparison 3 S1 stage: 8 KCs, each in S1",
+        "ok   comparison 3 S2 stage: 1 KCs, each in S2",
+        "ok   comparison 3 S3 stage: 1 KCs, each in S3",
+        "ok   comparison 3 S4 stage: 8 KCs, each in S4",
+        "ok   comparison 3 S5 stage: 7 KCs, each in S5",
+        "ok   comparison 3 S6 stage: 4 KCs, each in S6",
+        "ok   comparison 3 S7 stage: 8 KCs, each in S7",
+        "ok   comparison 3 S8 stage: 3 KCs, each in S8",
+        "ok   comparison 3 S9 stage: 2 KCs, each in S9",
+        "ok   comparison 3 no duplicates: 42 units",
+        "ok   comparison 3 units known: every unit is a registered KC",
+        "ok   comparison 1 equals the KC graph: 105 units; the spine table has 105 KC rows",
+        "ok   comparison 2 equals GEN-proof-structure: 10 units; the family lists 10",
+        "ok   comparison 3 equals its families: 42 units; the 9 families list 42 distinct KCs",
+        "ok   parameter min_outcomes_per_arm: 20 in parameters and in the prose",
+        "ok   parameter harm_read_outcomes_per_arm: 10 in parameters and in the prose",
+        "ok   parameter switch_min_points: 10 in parameters and in the prose",
+        "ok   parameter final_read_days_after_last_sign_off: 60 in parameters and in the prose",
+        "ok   parameter cap_days_after_first_event: 730 in parameters and in the prose",
+        "ok   parameter min_windows_per_arm: 2 in parameters and in the prose",
+        "ok   parameter window_margin_weeks: 2 in parameters and in the prose",
+        "ok   parameter non_inferiority_margin_points: 5 points; the prose writes L > −0.05",
+        "ok   parameter z: 1.9599639845400543",
+        "ok   hash32 equals packages/rng: 632 keys; mismatches: 0",
+        "ok   parity identity: on all 632 keys, the lowest bit of hash32 is 1 XOR the parity of the key's code units",
+        "ok   hash32 % 2 follows the name: in 12 of 12 (comparison, seed) groups, hash32 % 2 equals one constant XOR the parity of the unit ID's code units",
+        "ok   allocation balanced: over 12 (comparison, seed) allocations the arms differ by at most one in every stratum and overall",
+        "ok   floating-point trap: 18/20 - 16/20 = 0.09999999999999998 in doubles, below 0.1; the exact test finds 10 points",
+        "ok   decision vectors: clear benefit: switch; exactly 10 points, interval spans zero: inconclusive; clear harm at the final read: harm stop; interim read, harm: harm stop; interim read, no harm: continue; below the minimum: not enough data; below the harm-read count: not enough data; non-inferior and cheaper (only with more units than comparison 2 lists): switch; non-inferior but not cheaper: inconclusive; cheaper, interval too wide: inconclusive",
+        "ok   comparison 1 vectors: open clearly better: open in every eligible KC; collapsed clearly better: collapsed in every eligible KC; no clear difference: inconclusive: the shipped defaults stand; interim, open clearly worse: harm stop",
+        "ok   comparison 4 vectors: ordered with the margin, secondary no worse: switch; ordered, but accuracy worse: default stands; one window per arm: not enough data; harm at a window end: harm stop; no KC with an outcome in one arm: default stands",
+        "ok   window ordering chance: 1 against 1: 1 in 2; 2 against 1: 1 in 3; 2 against 2: 1 in 6; 3 against 2: 1 in 10; 3 against 3: 1 in 20"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/check.json",
+        "runs/RUN-keepkill-rules/allocation-vectors.json",
+        "runs/RUN-keepkill-rules/interval-vectors.json"
+      ]
+    },
+    {
+      "id": "crosscheck",
+      "purpose": "an independent check: statsmodels intervals, mpmath for z, the allocation implemented again in Python",
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "statsmodels==0.14.4",
+        "--with",
+        "mpmath==1.3.0",
+        "--with",
+        "pyyaml==6.0.3",
+        "python",
+        "-I",
+        "scripts/spikes/W0-T07/crosscheck.py",
+        "content/governance/keepkill-rules.yaml",
+        "runs/RUN-keepkill-rules/allocation-vectors.json",
+        "runs/RUN-keepkill-rules/interval-vectors.json"
+      ],
+      "started_at": "2026-10-24T14:01:20.681Z",
+      "duration_s": 1.147,
+      "exit_code": 0,
+      "engine": "python",
+      "version": "3.13.12",
+      "verdict_lines": [
+        "ok   intervals agree with statsmodels: 27 intervals; the largest difference is 2.22e-16 (tolerance 1e-12)",
+        "ok   z is the nearest double: the 0.975 quantile is 1.959963984540054235524594; the rules' z is 1.9599639845400542714770608654362149536609649658203125 exactly, 3.6e-17 away, nearer than either neighbouring double",
+        "ok   libraries differ in the last digits: python statistics.NormalDist().inv_cdf(0.975) = 1.9599639845400536; scipy.stats.norm.ppf(0.975) = 1.959963984540054; scipy.stats.norm.isf(0.025) = 1.9599639845400545; the rules' z = 1.9599639845400543",
+        "ok   allocation implemented again in Python: 632 unit arms and window draws compared, 0 differ; hash32 and fmix32 vectors agree"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/crosscheck.json"
+      ]
+    },
+    {
+      "id": "gate-links",
+      "purpose": "GATE-links over the repository; the findings that name the rules file",
+      "argv": [
+        "node",
+        "scripts/verify-links.mjs",
+        "--json"
+      ],
+      "started_at": "2026-10-24T14:01:21.828Z",
+      "duration_s": 0.382,
+      "exit_code": 1,
+      "engine": "node",
+      "version": "v22.22.2",
+      "verdict_lines": [
+        "findings in content/governance/keepkill-rules.yaml: 0",
+        "overall: FAIL on 1 finding(s), none in content/governance/keepkill-rules.yaml"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/gate-links.json"
+      ]
+    },
+    {
+      "id": "before-learner-zero",
+      "purpose": "the hash is recorded before any learner-zero event: no learner-zero record, no started W1 task, no event@1 or bundle@1 record outside the schema fixtures",
+      "engine": "node",
+      "version": "v22.22.2",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T07/record.mjs"
+      ],
+      "started_at": "2026-10-24T14:01:22.257Z",
+      "duration_s": 0.063,
+      "exit_code": 0,
+      "verdict_lines": [
+        "no learner-zero event exists: no RUN-lz-* record, no W1 task started, no event or bundle record in the repository",
+        "W1 tasks in tracker/tasks.yaml: 47, started: 0"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/before-learner-zero.json"
+      ]
+    },
+    {
+      "id": "gate-schema",
+      "purpose": "GATE-schema on the repository, which compares the rules file with the hash this record holds and validates this record against run@1",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs"
+      ],
+      "started_at": "2026-10-24T14:01:22.509Z",
+      "duration_s": 7.687,
+      "exit_code": 1,
+      "engine": "node",
+      "version": "v22.22.2",
+      "verdict_lines": [
+        "ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json",
+        "record runs/RUN-pg-catalog.json: expected valid but both validators say invalid (/argv/0 type, /argv/1 type, /argv/2 type, /argv/3 type, /inputs/0/path pattern)",
+        "GATE-schema: FAIL (1 of 22 checks failed)"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/gate-schema.txt"
+      ]
+    },
+    {
+      "id": "tamper",
+      "purpose": "planted changes to the rules file in scratch copies of what GATE-schema reads; the repository is not modified",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T07/tamper.mjs"
+      ],
+      "started_at": "2026-10-24T14:01:30.196Z",
+      "duration_s": 31.189,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "v22.22.2",
+      "verdict_lines": [
+        "as expected: the rules and the record as written (control): exit 0; ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json",
+        "as expected: one parameter changed after the fact (min_outcomes_per_arm 20 to 19): exit 1; FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to 8c1aa47407cc56b572632cfda2490cfabc7713c8e47ebc754177bca50d933b7e, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+        "as expected: a trailing newline added (whitespace only): exit 1; FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to 30ed20b4774d9747d2cb924e0dba20c5334fb1181f24bcbb2f74af7392a9899c, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+        "as expected: line endings converted to CRLF (a checkout with core.autocrlf): exit 1; FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to e45b630724a22fb8fb55504d8d95be0c942500221c1edf4bd10ed9098ae8b707, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+        "as expected: the rules file removed, the record kept: exit 1; FAIL  keep/kill rules: runs/RUN-keepkill-rules.json exists without content/governance/keepkill-rules.yaml",
+        "as expected: the rules changed and the record re-hashed in the same change (a limit of this check): exit 0; ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json"
+      ],
+      "outputs": [
+        "runs/RUN-keepkill-rules/tamper.json"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "sha256sum and node:crypto agree",
+      "pass": true
+    },
+    {
+      "id": "the rules match their sources (check.mjs)",
+      "pass": true
+    },
+    {
+      "id": "the independent check agrees (crosscheck.py)",
+      "pass": true
+    },
+    {
+      "id": "no GATE-links finding in the rules file",
+      "pass": true
+    },
+    {
+      "id": "no learner-zero event exists yet",
+      "pass": true
+    },
+    {
+      "id": "GATE-schema: keep/kill rules ok",
+      "pass": true
+    },
+    {
+      "id": "GATE-schema: this record validates against run@1",
+      "pass": true
+    },
+    {
+      "id": "GATE-schema fails on every planted change to the rules, and passes the control",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "learner_zero": {
+    "first_event_before_this_record": false,
+    "evidence": "no learner-zero event exists: no RUN-lz-* record, no W1 task started, no event or bundle record in the repository",
+    "later_check": "W1 confirms that learner-zero's first event is later than recorded_at (an owner action and a cross-task request of W0-T07)"
+  },
+  "notes": [
+    "This record fixes the rules: GATE-schema compares content/governance/keepkill-rules.yaml with the one sha256 this record gives for it (inputs[0]); the sha256sum line in configs[0] repeats the same value.",
+    "inputs holds the rules file and this task's scripts. sources_at_recording holds the hashes of the living documents the checks read (the spine, ASSESSMENT.md, the gates); they will change, and a later run of check.mjs compares the rules with their new text. The rules freeze their unit lists, so a check that fails only because the KC graph moved on does not change the rules (common.units).",
+    "Nothing here was emulated. The one thing this machine cannot show is the future: that the first learner-zero event comes after recorded_at. At recording no learner-zero record, started W1 task or event record existed (configuration before-learner-zero); W1 confirms the ordering when it records its first learner-zero run.",
+    "Limit of the gate, shown by the last tamper scenario: a change that edits the rules and re-hashes this record together passes GATE-schema. The rules therefore also store their SHA-256 beside expSeed on the device and every read checks it (common.experiment_seed), and review of this record's history is the remaining guard.",
+    "A checkout that converts line endings changes the hash (tamper scenario: CRLF). The file needs a -text or eol=lf rule in .gitattributes, which no W0 task owns; W0-T07 asks for it in its result.",
+    "The z the rules fix is the double nearest to the 0.975 normal quantile (mpmath at 50 digits); Python's statistics module and scipy return three other doubles, so implementations must use the literal (configuration crosscheck).",
+    "The allocation vectors use four example seeds. They are not learner-zero's expSeed, which the device draws when the comparisons are turned on.",
+    "docs/EVIDENCE.md section 7.1 gives approximate 95% half-widths of ±35, ±25, ±20 and ±16 points for 10, 20, 30 and 50 units per arm near 0.8 [D]; Newcombe's interval gives the values in values.precision_near_0_8, within a point of each.",
+    "GATE-schema exited 1 on the repository because of records other tasks own (record runs/RUN-pg-catalog.json: expected valid but both validators say invalid (/argv/0 type, /argv/1 type, /argv/2 type, /argv/3 type, /inputs/0/path pattern)); its keep/kill line and this record's validation pass."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "statespace/receipt@1",
+  "lab": "LAB-1",
+  "stage": "LAB-1.3",
+  "lane": "reported",
+  "createdAt": "2026-10-24T14:02:11Z",
+  "cli": {
+    "name": "statespace",
+    "version": "0.0.0"
+  },
+  "environment": {
+    "devcontainer": null,
+    "os": {
+      "name": "Linux",
+      "version": "6.12.63",
+      "arch": "x86_64"
+    },
+    "sandbox": "off"
+  },
+  "tools": [
+    {
+      "name": "z3",
+      "version": "5.3.1",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "pinned": true
+    },
+    {
+      "name": "cvc5",
+      "version": "1.4.2",
+      "sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "pinned": true
+    }
+  ],
+  "statements": [
+    {
+      "path": "claims/guard.smt2",
+      "kind": "smt2",
+      "sha256": "ecd4abd06a716df4ef3667c1976b260331a9a199c2ef3cfd96eaeebddceeacda"
+    }
+  ],
+  "runs": [
+    {
+      "step": "z3",
+      "engine": "z3",
+      "version": "5.3.1",
+      "argv": [
+        "z3",
+        "-smt2",
+        "rlimit=5000000",
+        "claims/guard.smt2"
+      ],
+      "inputSha256": "ecd4abd06a716df4ef3667c1976b260331a9a199c2ef3cfd96eaeebddceeacda",
+      "budget": {
+        "rlimit": 5000000
+      },
+      "exitCode": 0,
+      "verdictLines": [
+        "unsat"
+      ],
+      "verdict": "unsat"
+    },
+    {
+      "step": "cross-check",
+      "engine": "cvc5",
+      "version": "1.4.2",
+      "argv": [
+        "cvc5",
+        "--lang=smt2",
+        "claims/guard.smt2"
+      ],
+      "inputSha256": "ecd4abd06a716df4ef3667c1976b260331a9a199c2ef3cfd96eaeebddceeacda",
+      "budget": {},
+      "exitCode": 0,
+      "verdictLines": [
+        "unsat"
+      ],
+      "verdict": "unsat"
+    }
+  ],
+  "z3": {
+    "smtlibSha256": "ecd4abd06a716df4ef3667c1976b260331a9a199c2ef3cfd96eaeebddceeacda",
+    "entry": "wasm",
+    "rlimit": 5000000,
+    "verdict": "unsat"
+  },
+  "checks": [
+    {
+      "id": "LAB-1.c3",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "assisted": "none",
+    "agent": false,
+    "guard": "on"
+  },
+  "claims": [
+    {
+      "template": "CL-1.1"
+    }
+  ],
+  "tcb": [
+    {
+      "component": "Z3 5.3.1 and cvc5 1.4.2",
+      "status": "trusted"
+    },
+    {
+      "component": "the SMT-LIB encoding of the guard",
+      "status": "trusted"
+    }
+  ]
+}

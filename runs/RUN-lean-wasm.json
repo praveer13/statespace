@@ -1,0 +1,387 @@
+{
+  "id": "RUN-lean-wasm",
+  "title": "The community WebAssembly build of Lean in Chromium: cross-origin isolated, its ready time, the version it reports and what a cold load downloads",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "chromium",
+  "version": "153.0.8010.12",
+  "version_string": "Google Chrome for Testing 153.0.8010.12",
+  "binary": "the Chromium of the Playwright image (/ms-playwright/chromium-1243/chrome-linux64/chrome), driven by playwright-core 1.63.0",
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-24T14:27:06.643Z",
+  "started_at": "2026-10-24T14:26:13.079Z",
+  "duration_s": 53.255,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "w0s11-lean-wasm-cold",
+    "--memory=6g",
+    "--ipc=host",
+    "--user",
+    "<uid>:<gid>",
+    "-e",
+    "HOME=/tmp",
+    "-v",
+    "<sandbox>/pw:/pw:ro",
+    "-v",
+    "<sandbox>/probe:/probe",
+    "-w",
+    "/probe",
+    "-e",
+    "PW_DIR=/pw",
+    "-e",
+    "CHROME_EXE=/ms-playwright/chromium-1243/chrome-linux64/chrome",
+    "mcr.microsoft.com/playwright:v1.63.0-noble",
+    "sh",
+    "-c",
+    "'node' '/probe/probe-wasm2.cjs' 'https://lean.cau.li' '/probe/out/caul2'; status=$?; chmod -R a+rX /probe/out; exit $status"
+  ],
+  "inputs": [
+    {
+      "path": "research/evidence/lean-measure/scripts/probe-wasm.cjs",
+      "sha256": "d92c712a6df50c0dd22f210f2ac5f34e49b7ffdaab4b534151fc6340472294da",
+      "bytes": 2604,
+      "role": "probe, as committed"
+    },
+    {
+      "path": "research/evidence/lean-measure/scripts/probe-wasm2.cjs",
+      "sha256": "2e47a55021144de19c43353c6a4e1642102fa37784f806ab8c31711ad935fc18",
+      "bytes": 4519,
+      "role": "probe, as committed"
+    },
+    {
+      "path": "research/evidence/lean-measure/scripts/probe-wasm3.cjs",
+      "sha256": "f550c81ef534f93118a9d8100ee06482bad073272f9f1503ddc42f30a3a1b212",
+      "bytes": 3246,
+      "role": "probe, as committed"
+    },
+    {
+      "name": "probe-wasm.cjs, as run",
+      "sha256": "d92c712a6df50c0dd22f210f2ac5f34e49b7ffdaab4b534151fc6340472294da",
+      "bytes": 2604,
+      "role": "probe, unchanged"
+    },
+    {
+      "name": "probe-wasm2.cjs, as run",
+      "sha256": "1311ac6104383c3f054c046cf34238e45b6c5cc57c913ea1947b013d31fc5ff9",
+      "bytes": 4558,
+      "role": "probe with the net-log parse fixed"
+    },
+    {
+      "name": "probe-wasm3.cjs, as run",
+      "sha256": "f550c81ef534f93118a9d8100ee06482bad073272f9f1503ddc42f30a3a1b212",
+      "bytes": 3246,
+      "role": "probe, unchanged"
+    },
+    {
+      "url": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.63.0.tgz",
+      "name": "playwright-core@1.63.0",
+      "sha256": "208593d4e1bcd8f8fe5f869cad1cc332dc7f1d70dc1d58c102dc3ac36e30f26c",
+      "bytes": 3123044,
+      "integrity": "sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==",
+      "role": "driver, installed with npm into scratch space"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 420,
+    "network": "the public site, live"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    " \"tReady\": 6141,",
+    " \"tOut\": null,",
+    " \"socketMB\": 0.1,",
+    " \"iso\": true,",
+    "   \"u\": \"https://lean.cau.li/lean-wasm/lean.wasm?v=62b6a2291302d4bbeace37642a066b7510d0145c-dlsym1-compact1\",",
+    "   \"MB\": 16.11",
+    "   \"u\": \"https://lean.cau.li/assets/lean-loader-Crf4L4fS.js\",",
+    "   \"MB\": 0.7",
+    "   \"u\": \"https://lean.cau.li/lean-wasm/lean.js?v=62b6a2291302d4bbeace37642a066b7510d0145c-dlsym1-compact1\",",
+    "   \"MB\": 0.2",
+    "   \"u\": \"https://lean.cau.li/assets/index-C6KgzFlT.js\",",
+    "   \"MB\": 0.06",
+    "   \"u\": \"https://lean.cau.li/lean-wasm/core-layer.json\",",
+    "   \"MB\": 0.03",
+    "   \"u\": \"https://lean.cau.li/lean-wasm/lean-lib-files.json\",",
+    "   \"MB\": 0.01",
+    "   \"u\": \"https://lean.cau.li/assets/lean-loader-BzOv8av-.css\",",
+    "   \"MB\": 0.01",
+    "   \"u\": \"https://lean.cau.li/cdn-cgi/challenge-platform/h/b/scripts/jsd/d2d3316b729e/main.js?\",",
+    "   \"MB\": 0.01"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-wasm/home.log",
+      "sha256": "7dd0429b09d13c18586bd5186652982e93cfd267dce059e00153234a55fdea96",
+      "bytes": 202,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/cold.log",
+      "sha256": "3fba873b7c3c3b7608c3d8d88fde9b4a02df680bc7b76daafa48dfe110ad8f50",
+      "bytes": 876,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/warm.log",
+      "sha256": "a7470c8d29e20ceb5d6f48a638ac7f88c9679b50298b4e2fbeb51616853b7916",
+      "bytes": 1526,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/caul-home.json",
+      "sha256": "2cec3bc106bd94bb9b2ad87caaab6d5fc320864d35f1381fa52e23e5a369c8dc",
+      "bytes": 2226,
+      "kind": "probe report"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/caul2.json",
+      "sha256": "9a571c87682da2346c5e3f993c0a62e477a6d26b9bb62b7f43fec2563960c3d6",
+      "bytes": 6228,
+      "kind": "probe report"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/caul3.json",
+      "sha256": "c868ac2468091c4716602b88c1e7adeb2a3d5d7abb911753b4d27baa90c6dfe9",
+      "bytes": 2552,
+      "kind": "probe report"
+    },
+    {
+      "path": "runs/RUN-lean-wasm/netlog-summary.json",
+      "sha256": "c0a4e04ec7a77152225cc50ad8718f37d59533e9d1683ef9f1b24712915f0ae0",
+      "bytes": 2934,
+      "kind": "net-log summary"
+    }
+  ],
+  "values": {
+    "url": "https://lean.cau.li",
+    "cross_origin_isolated": true,
+    "ready_ms_cold": 6141,
+    "lean_version_reported": "Lean 4.33.0-pre",
+    "socket_bytes_received_cold": 73817,
+    "udp_bytes_received_cold": 50510096,
+    "body_bytes_total_cold": 17179888,
+    "decoded_bytes_total_cold": 137362599,
+    "lean_wasm_bytes_cold": 16112931,
+    "page_level_bytes_home": 0.9,
+    "not_committed": [
+      {
+        "name": "caul-home.png",
+        "sha256": "fe0bebcb7a728b3b1c51fb96531d82fcf2244fbd449e7256d8c2dbb81dbe2b08",
+        "bytes": 35531
+      },
+      {
+        "name": "caul2-ready.png",
+        "sha256": "39182acf8c09b1a0344a4148cd9c7aae6e7ef0a00b6f0e918766cd841c8815eb",
+        "bytes": 35460
+      },
+      {
+        "name": "caul2-run.png",
+        "sha256": "39182acf8c09b1a0344a4148cd9c7aae6e7ef0a00b6f0e918766cd841c8815eb",
+        "bytes": 35460
+      },
+      {
+        "name": "caul2.netlog.json",
+        "sha256": "8238f9ef7f21146ba403596b2066a8785b722542e9fc45156605cdba9ee4f2a0",
+        "bytes": 42757413
+      },
+      {
+        "name": "caul3-run.png",
+        "sha256": "7b82c185b3b3be2fd6791ebd992184691ac00a026c96844e1c80be40f332d61d",
+        "bytes": 39345
+      }
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "chromium": "Google Chrome for Testing 153.0.8010.12",
+      "playwright_core": "1.63.0"
+    }
+  },
+  "primary_config": "cold",
+  "configs": [
+    {
+      "id": "home",
+      "origin": "recorded",
+      "purpose": "probe-wasm.cjs: page-level bytes, time to network idle, isolation, the page text and buttons",
+      "engine": "chromium",
+      "version": "Google Chrome for Testing 153.0.8010.12",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-24T14:26:13.079Z",
+      "duration_s": 3.697,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-lean-wasm-home",
+        "--memory=6g",
+        "--ipc=host",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>/pw:/pw:ro",
+        "-v",
+        "<sandbox>/probe:/probe",
+        "-w",
+        "/probe",
+        "-e",
+        "PW_DIR=/pw",
+        "-e",
+        "CHROME_EXE=/ms-playwright/chromium-1243/chrome-linux64/chrome",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "sh",
+        "-c",
+        "'node' '/probe/probe-wasm.cjs' 'https://lean.cau.li' '/probe/out/caul-home' '90000'; status=$?; chmod -R a+rX /probe/out; exit $status"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        " \"url\": \"https://lean.cau.li\",",
+        " \"tDom\": 101,",
+        " \"tIdle\": 2933,",
+        " \"iso\": true,",
+        " \"totalMB\": 0.9,"
+      ],
+      "outputs": [
+        "runs/RUN-lean-wasm/home.log"
+      ]
+    },
+    {
+      "id": "cold",
+      "origin": "recorded",
+      "purpose": "probe-wasm2.cjs: a cold load with a Chromium net log, ready time, then an attempt to type and run a proof",
+      "engine": "chromium",
+      "version": "Google Chrome for Testing 153.0.8010.12",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-24T14:26:16.777Z",
+      "duration_s": 12.215,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-lean-wasm-cold",
+        "--memory=6g",
+        "--ipc=host",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>/pw:/pw:ro",
+        "-v",
+        "<sandbox>/probe:/probe",
+        "-w",
+        "/probe",
+        "-e",
+        "PW_DIR=/pw",
+        "-e",
+        "CHROME_EXE=/ms-playwright/chromium-1243/chrome-linux64/chrome",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "sh",
+        "-c",
+        "'node' '/probe/probe-wasm2.cjs' 'https://lean.cau.li' '/probe/out/caul2'; status=$?; chmod -R a+rX /probe/out; exit $status"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        " \"tReady\": 6141,",
+        " \"tOut\": null,",
+        " \"socketMB\": 0.1,",
+        " \"iso\": true,",
+        "   \"u\": \"https://lean.cau.li/lean-wasm/lean.wasm?v=62b6a2291302d4bbeace37642a066b7510d0145c-dlsym1-compact1\",",
+        "   \"MB\": 16.11",
+        "   \"u\": \"https://lean.cau.li/assets/lean-loader-Crf4L4fS.js\",",
+        "   \"MB\": 0.7",
+        "   \"u\": \"https://lean.cau.li/lean-wasm/lean.js?v=62b6a2291302d4bbeace37642a066b7510d0145c-dlsym1-compact1\",",
+        "   \"MB\": 0.2",
+        "   \"u\": \"https://lean.cau.li/assets/index-C6KgzFlT.js\",",
+        "   \"MB\": 0.06",
+        "   \"u\": \"https://lean.cau.li/lean-wasm/core-layer.json\",",
+        "   \"MB\": 0.03",
+        "   \"u\": \"https://lean.cau.li/lean-wasm/lean-lib-files.json\",",
+        "   \"MB\": 0.01",
+        "   \"u\": \"https://lean.cau.li/assets/lean-loader-BzOv8av-.css\",",
+        "   \"MB\": 0.01",
+        "   \"u\": \"https://lean.cau.li/cdn-cgi/challenge-platform/h/b/scripts/jsd/d2d3316b729e/main.js?\",",
+        "   \"MB\": 0.01"
+      ],
+      "outputs": [
+        "runs/RUN-lean-wasm/cold.log"
+      ]
+    },
+    {
+      "id": "warm",
+      "origin": "recorded",
+      "purpose": "probe-wasm3.cjs: load, pick examples from the menu, run them, time to output",
+      "engine": "chromium",
+      "version": "Google Chrome for Testing 153.0.8010.12",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-24T14:26:28.992Z",
+      "duration_s": 37.343,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s11-lean-wasm-warm",
+        "--memory=6g",
+        "--ipc=host",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>/pw:/pw:ro",
+        "-v",
+        "<sandbox>/probe:/probe",
+        "-w",
+        "/probe",
+        "-e",
+        "PW_DIR=/pw",
+        "-e",
+        "CHROME_EXE=/ms-playwright/chromium-1243/chrome-linux64/chrome",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "sh",
+        "-c",
+        "'node' '/probe/probe-wasm3.cjs' 'https://lean.cau.li' '/probe/out/caul3'; status=$?; chmod -R a+rX /probe/out; exit $status"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        " \"tReady\": 5653,",
+        "  \"run\": [",
+        "  \"cm\": false,",
+        "  \"monaco\": true,",
+        "  \"selCount\": 1",
+        "   \"label\": \"omega — linear arithmetic\",",
+        "   \"tOutMs\": 28,",
+        "   \"label\": \"error: omega on a false goal\",",
+        "   \"tOutMs\": 18,",
+        "  \"5467ms [COMPILE] done in 301ms (tag 0)\",",
+        "  \"6149ms [COMPILE] done in 140ms (tag 0)\",",
+        "  \"6568ms [COMPILE] done in 12ms (tag 0)\""
+      ],
+      "outputs": [
+        "runs/RUN-lean-wasm/warm.log"
+      ]
+    }
+  ],
+  "unrecorded": [],
+  "notes": [
+    "Re-run by W0-S11 from research/evidence/lean-measure/scripts/probe-wasm*.cjs (spine section 9.5). The earlier probe outputs (lean-measure/out/caul*.json) recorded ready times and the isolation flag but not the payload: probe-wasm2 appended \"]}\" to a complete net log and failed to parse it. The copy that ran tries the log as it is first; that is its only change.",
+    "The probes ran against the live site with Chromium from the pinned Playwright image (the earlier probes used a Chrome on the host). The net log itself and the screenshots are not committed; values.not_committed lists them with their hashes. netlog-summary.json sums the net log: bytes received on sockets, and body bytes per URL.",
+    "binary_sha256 is null because Chromium is a directory of files in the image; the image digest pins it.",
+    "The site is a third-party service whose content can change; this is a measurement of 2026-10-24, not a pin."
+  ]
+}

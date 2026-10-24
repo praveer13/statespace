@@ -1,0 +1,103 @@
+{
+  "id": "RUN-tlc-help",
+  "title": "The 1.8.0 and 1.7.4 help text: -deadlock means do not check for deadlock; -workers defaults to 1",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "the 1.8.0 and 1.7.4 help text: `-deadlock` \"if specified DO NOT CHECK FOR DEADLOCK\"; `-workers` \"defaults to 1\"",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "binary": "tla2tools.jar 1.8.0 and 1.7.4",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "\tTLC - provides model checking and simulation of TLA+ specifications - Version 2026.10.20.183001",
+    "\t-deadlock",
+    "\t\tif specified DO NOT CHECK FOR DEADLOCK. Setting the flag is",
+    "\t-workers num",
+    "\t\tthe number of TLC worker threads; defaults to 1. Use 'auto'",
+    "\t-dumpTrace format file"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/tlc-help-tla180.txt",
+      "sha256": "12d616eafd7c8111f2072c00a4f0376a34ca60362a09c1b17fa71c2d564f7edf",
+      "bytes": 10238,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/out/tlc-help-tla174.txt",
+      "sha256": "e6db85612248c6b90768283f26c7759528441914d770f0344308c480340c1c9c",
+      "bytes": 5777,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "deadlock_flag": "if specified DO NOT CHECK FOR DEADLOCK",
+    "workers_default": 1,
+    "dumptrace_in_1_8_0": true,
+    "dumptrace_in_1_7_4": false
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "1.7.4",
+      "origin": "imported",
+      "purpose": "the fallback jar: the same -deadlock and -workers text, and no -dumpTrace",
+      "version": "2.19 of 08 August 2024",
+      "verdict_lines": [
+        "\tTLC - provides model checking and simulation of TLA+ specifications - Version 2.19 of 08 August 2024",
+        "\t-deadlock",
+        "\t\tif specified DO NOT CHECK FOR DEADLOCK. Setting the flag is",
+        "\t\tthe number of TLC worker threads; defaults to 1. Use 'auto'"
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the files do not hash the jars; RUN-tlc-jars does"
+    },
+    {
+      "field": "image",
+      "reason": "the files do not name a container"
+    },
+    {
+      "field": "started_at",
+      "reason": "the files are undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "not timed"
+    },
+    {
+      "field": "argv",
+      "reason": "the files hold the help text, not the command that printed it"
+    },
+    {
+      "field": "exit_code",
+      "reason": "not recorded"
+    },
+    {
+      "field": "environment.os",
+      "reason": "not recorded"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "not recorded"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/out/tlc-help-tla180.txt, tlc-help-tla174.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "The 1.7.4 help text has no -dumpTrace line; GATE-numbers takes its list of TLC flags from these two files."
+  ]
+}

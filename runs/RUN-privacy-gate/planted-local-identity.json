@@ -1,0 +1,94 @@
+{
+  "gate": "GATE-privacy",
+  "node": "v22.22.2",
+  "strict": false,
+  "findings": [
+    {
+      "check": "course-domain",
+      "path": "apps/site/planted.ts",
+      "line": 1,
+      "col": 24,
+      "message": "a real host for the instrument origin; committed files write <course-domain> (OD-5)"
+    },
+    {
+      "check": "email",
+      "path": "docs/planted.md",
+      "line": 1,
+      "col": 5,
+      "message": "an email address"
+    },
+    {
+      "check": "private-path",
+      "path": "docs/planted.md",
+      "line": 1,
+      "col": 45,
+      "message": "a home directory"
+    },
+    {
+      "check": "your-system",
+      "path": "labs/planted.md",
+      "line": 1,
+      "col": 28,
+      "message": "learner-facing copy names the learner's product; write \"your system\" (I9) or a roadmap name (OD-2)"
+    },
+    {
+      "check": "private-term",
+      "path": "scripts/planted-leak.mjs",
+      "line": 1,
+      "col": 6,
+      "message": "an account identifier matching your operating-system account name"
+    },
+    {
+      "check": "review-json",
+      "path": "history:research/review-merged-1.json",
+      "message": "a review JSON in git history (OD-11)"
+    },
+    {
+      "check": "vendor-license",
+      "path": "vendor/planted/",
+      "message": "a vendored directory (inside vendor/) without its own license file"
+    }
+  ],
+  "warnings": [
+    {
+      "check": "course-license",
+      "message": "no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner"
+    },
+    {
+      "check": "private-term",
+      "message": "not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE); only your local identity was checked (3 terms)"
+    }
+  ],
+  "notes": [],
+  "scanned": {
+    "via": "git",
+    "paths": 361,
+    "files": 361,
+    "bytes": 5874875,
+    "digest": "148f5d2f81c9765cb563befe2f6be3f5f17e7010a4ce0449540ebbf3d0c5ccfa"
+  },
+  "history": {
+    "commits": 4,
+    "objects": 394,
+    "shallow": false
+  },
+  "vendored": [
+    "vendor/planted"
+  ],
+  "courseLicenses": [],
+  "terms": {
+    "checked": false,
+    "listed": 0,
+    "identity": 3,
+    "count": 3,
+    "sources": [
+      "local identity"
+    ]
+  },
+  "ok": false,
+  "durationMs": 1111,
+  "allowed": {
+    "npm's trusted-publishing address in saved registry metadata": 31,
+    "the Lean FRO's published security contact": 1
+  }
+}

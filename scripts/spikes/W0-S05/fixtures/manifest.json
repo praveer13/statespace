@@ -1,0 +1,392 @@
+{
+  "notes": {
+    "origin": "tlc: written by a 1.8.0 jar and left as written; edited: a recorded 1.8.0 trace changed by hand in an earlier spike; mutant: the recorded Hold trace with one thing broken (fixtures/make-negatives.mjs)",
+    "paths": "repository-relative"
+  },
+  "schema": "schemas/drafts/lasso.schema.json",
+  "json": [
+    {
+      "id": "hold-recorded",
+      "origin": "tlc",
+      "path": "research/evidence/a2r3/tla/live/Hold.trace.json",
+      "why": "the recorded Hold trace (RUN-tlc-hold-lasso); the acceptance fixture",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": true,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "closingLabel": "Busy",
+        "closingChanges": true
+      }
+    },
+    {
+      "id": "hold-180",
+      "origin": "tlc",
+      "path": "runs/RUN-tlc-lasso-json/hold-180/Hold.trace.json",
+      "why": "the same run repeated on the pinned 1.8.0 jar",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": true,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "closingLabel": "Busy",
+        "closingChanges": true
+      }
+    },
+    {
+      "id": "hold-nofair-180",
+      "origin": "tlc",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/HoldNoFair.trace.json",
+      "why": "Hold without fairness: the lasso is a stutter at state 1",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": true,
+        "n": 1,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 1,
+        "stutter": true,
+        "closingLabel": "UnnamedAction",
+        "closingChanges": false
+      }
+    },
+    {
+      "id": "stem-cycle-180",
+      "origin": "tlc",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/HoldStemCycle.trace.json",
+      "why": "a stem of one state, then a cycle that closes on state 2; the stem action is parameterized",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": true,
+        "n": 5,
+        "loopStart": 2,
+        "stem": 1,
+        "cycle": 4,
+        "stutter": false,
+        "closingLabel": "Busy",
+        "closingChanges": true
+      }
+    },
+    {
+      "id": "stem-stutter-180",
+      "origin": "tlc",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/HoldStemStutter.trace.json",
+      "why": "a stem of two states, then a stutter at state 3",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": true,
+        "n": 3,
+        "loopStart": 3,
+        "stem": 2,
+        "cycle": 1,
+        "stutter": true,
+        "closingLabel": "Try",
+        "closingChanges": false
+      }
+    },
+    {
+      "id": "doublespend-finite",
+      "origin": "tlc",
+      "path": "research/spikes/tla/trace.json",
+      "why": "a recorded finite counterexample, the DoubleSpend invariant violation: valid structure, not a lasso",
+      "expect": {
+        "schema": true,
+        "kind": "finite",
+        "ok": true,
+        "n": 5
+      }
+    },
+    {
+      "id": "rtw3-finite",
+      "origin": "tlc",
+      "path": "research/evidence/a2r3/tla/rtw3/RTW3.trace.json",
+      "why": "a recorded finite counterexample with seven states (RUN-tlc-rtw3)",
+      "expect": {
+        "schema": true,
+        "kind": "finite",
+        "ok": true,
+        "n": 7
+      }
+    },
+    {
+      "id": "deadlock-finite",
+      "origin": "tlc",
+      "path": "research/evidence/A5spike/tla174/trace180.json",
+      "why": "a recorded finite counterexample that ends in a deadlock (the default-flags run of RUN-tlc-doublespend)",
+      "expect": {
+        "schema": true,
+        "kind": "finite",
+        "ok": true,
+        "n": 4
+      }
+    },
+    {
+      "id": "one-state-finite",
+      "origin": "tlc",
+      "path": "runs/RUN-tlc-lasso-json/init-violation-180/InitBad.trace.json",
+      "why": "a finite counterexample of one state: TLC writes an empty action list, so there is no closing step and the schema refuses it",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "tampered-consistent",
+      "origin": "edited",
+      "path": "research/evidence/exp/tla/trace-tampered.json",
+      "why": "a recorded trace in which every copy of one value was edited the same way: the structure still holds, so only the spec can refuse it",
+      "expect": {
+        "schema": true,
+        "kind": "finite",
+        "ok": true,
+        "n": 5
+      }
+    },
+    {
+      "id": "tampered-partial",
+      "origin": "edited",
+      "path": "research/evidence/a2r3/tla/rtw2/Tampered.json",
+      "why": "a recorded trace in which a value was edited in two of its copies: step 3 no longer starts at state 3",
+      "expect": {
+        "schema": true,
+        "kind": "finite",
+        "ok": false,
+        "n": 5,
+        "errorIncludes": "rule 3"
+      }
+    },
+    {
+      "id": "closing-target-out-of-range",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/closing-target-out-of-range.json",
+      "why": "Hold with the closing step ending at state 9 of 4",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "errorIncludes": "rule 4"
+      }
+    },
+    {
+      "id": "closing-target-values-differ",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/closing-target-values-differ.json",
+      "why": "Hold with the closing step ending at state 1 but carrying the values of state 2",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "errorIncludes": "rule 4"
+      }
+    },
+    {
+      "id": "step-chain-broken",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/step-chain-broken.json",
+      "why": "Hold with step 2 starting from values that state 2 does not have",
+      "expect": {
+        "schema": true,
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "errorIncludes": "rule 3"
+      }
+    },
+    {
+      "id": "too-many-steps",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/too-many-steps.json",
+      "why": "Hold with a fifth step: neither a lasso nor a finite trace",
+      "expect": {
+        "schema": true,
+        "kind": "invalid",
+        "ok": false,
+        "n": 4,
+        "errorIncludes": "rule 2"
+      }
+    },
+    {
+      "id": "no-vars",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/no-vars.json",
+      "why": "Hold without `vars`",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "extra-top-level-key",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/extra-top-level-key.json",
+      "why": "Hold with an unlisted `loop` key, as a later TLC build might add",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "state-index-zero",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-index-zero.json",
+      "why": "Hold with the first state numbered 0",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "state-index-string",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-index-string.json",
+      "why": "Hold with the first state's index written as the string \"1\"",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "state-values-array",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-values-array.json",
+      "why": "Hold with the first state's values given as an array",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "step-missing-target",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/step-missing-target.json",
+      "why": "Hold with the first step cut to two elements",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "action-missing-location",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/action-missing-location.json",
+      "why": "Hold with the first action lacking `location`",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "location-missing-module",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/location-missing-module.json",
+      "why": "Hold with the first location lacking `module`",
+      "expect": {
+        "schema": false
+      }
+    },
+    {
+      "id": "empty-action-list",
+      "origin": "mutant",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/empty-action-list.json",
+      "why": "Hold with no steps, as a one-state finite trace would have: a lasso has at least its closing step",
+      "expect": {
+        "schema": false
+      }
+    }
+  ],
+  "text": [
+    {
+      "id": "hold-180-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-180/tlc.stdout.txt",
+      "pairedWith": "hold-180",
+      "why": "1.8.0's text trace of the same run: same states, labels and ending as the JSON, and the headline names the property",
+      "expect": {
+        "closing": "back:1",
+        "propertyNamed": true,
+        "property": "EventuallyResolves"
+      }
+    },
+    {
+      "id": "hold-nofair-180-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/tlc.stdout.txt",
+      "pairedWith": "hold-nofair-180",
+      "why": "the text of the stutter at state 1: a state 2 that is 'Stuttering'",
+      "expect": {
+        "closing": "stutter:2",
+        "propertyNamed": true,
+        "property": "EventuallyResolves"
+      }
+    },
+    {
+      "id": "stem-cycle-180-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/tlc.stdout.txt",
+      "pairedWith": "stem-cycle-180",
+      "why": "the text of a stem and a cycle closing on state 2",
+      "expect": {
+        "closing": "back:2",
+        "propertyNamed": true,
+        "property": "EventuallyResolves"
+      }
+    },
+    {
+      "id": "stem-stutter-180-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/tlc.stdout.txt",
+      "pairedWith": "stem-stutter-180",
+      "why": "the text of a stem and a stutter",
+      "expect": {
+        "closing": "stutter:4",
+        "propertyNamed": true,
+        "property": "EventuallyResolves"
+      }
+    },
+    {
+      "id": "hold-174-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-174/tlc.stdout.txt",
+      "pairedWith": "hold-180",
+      "why": "the fallback: 1.7.4's text trace of Hold, compared with the JSON trace of 1.8.0; the headline does not name the property",
+      "expect": {
+        "closing": "back:1",
+        "propertyNamed": false,
+        "property": null
+      }
+    },
+    {
+      "id": "hold-nofair-174-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-174/tlc.stdout.txt",
+      "pairedWith": "hold-nofair-180",
+      "why": "the fallback on the stutter at state 1",
+      "expect": {
+        "closing": "stutter:2",
+        "propertyNamed": false,
+        "property": null
+      }
+    },
+    {
+      "id": "stem-cycle-174-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-174/tlc.stdout.txt",
+      "pairedWith": "stem-cycle-180",
+      "why": "the fallback on a stem and a cycle",
+      "expect": {
+        "closing": "back:2",
+        "propertyNamed": false,
+        "property": null
+      }
+    },
+    {
+      "id": "stem-stutter-174-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-174/tlc.stdout.txt",
+      "pairedWith": "stem-stutter-180",
+      "why": "the fallback on a stem and a stutter",
+      "expect": {
+        "closing": "stutter:4",
+        "propertyNamed": false,
+        "property": null
+      }
+    }
+  ]
+}

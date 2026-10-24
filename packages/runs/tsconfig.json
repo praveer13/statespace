@@ -1,0 +1,12 @@
+{
+  // See packages/rng/tsconfig.json: sources compile with no DOM, no WebWorker and no Node types, so a package
+  // that names window, fetch or fs fails here; packages/purity-lint checks the same rule on the text. Tests
+  // compile separately (test/tsconfig.json), because they use Node's test runner and file system.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": [],
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.runs.tsbuildinfo"
+  },
+  "include": ["src"]
+}

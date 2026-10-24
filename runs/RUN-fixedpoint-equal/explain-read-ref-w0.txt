@@ -1,0 +1,252 @@
+{ "proof":
+	{ "premises": "inteam(\"dana\", \"Payments\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"dana\", \"Payments\", \"editor\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "inteam(\"frank\", \"Growth\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"frank\", \"Growth\", \"viewer\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "inteam(\"gia\", \"Legal\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"gia\", \"Legal\", \"admin\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "inteam(\"hal\", \"Legal\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"hal\", \"Legal\", \"viewer\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"dana\", \"q3-plan\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"dana\", \"Payments\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"dana\", \"Payments\", \"editor\")"}		]
+		},
+		{ "axiom": "owns(\"Payments\", \"q3-plan\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"dana\", \"roadmap\")",
+	  "rule-number": "(R3)",
+	  "children": [
+		{ "premises": "inteam(\"dana\", \"Payments\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"dana\", \"Payments\", \"editor\")"}		]
+		},
+		{ "axiom": "share_team(\"roadmap\", \"Payments\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"dana\", \"contract\")",
+	  "rule-number": "(R2)",
+	  "children": [
+		{ "axiom": "share_user(\"contract\", \"dana\")"},
+		{ "axiom": "!revoked(\"contract\", \"dana\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"frank\", \"roadmap\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"frank\", \"Growth\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"frank\", \"Growth\", \"viewer\")"}		]
+		},
+		{ "axiom": "owns(\"Growth\", \"roadmap\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"gia\", \"contract\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"gia\", \"Legal\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"gia\", \"Legal\", \"admin\")"}		]
+		},
+		{ "axiom": "owns(\"Legal\", \"contract\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"gia\", \"layoffs-memo\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"gia\", \"Legal\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"gia\", \"Legal\", \"admin\")"}		]
+		},
+		{ "axiom": "owns(\"Legal\", \"layoffs-memo\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"hal\", \"contract\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"hal\", \"Legal\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"hal\", \"Legal\", \"viewer\")"}		]
+		},
+		{ "axiom": "owns(\"Legal\", \"contract\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canread(\"hal\", \"layoffs-memo\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "premises": "inteam(\"hal\", \"Legal\")",
+		  "rule-number": "(R1)",
+		  "children": [
+			{ "axiom": "member(\"hal\", \"Legal\", \"viewer\")"}		]
+		},
+		{ "axiom": "owns(\"Legal\", \"layoffs-memo\")"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canedit(\"dana\", \"q3-plan\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"dana\", \"Payments\", \"editor\")"},
+		{ "axiom": "owns(\"Payments\", \"q3-plan\")"},
+		{ "axiom": "21 != 18"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canedit(\"gia\", \"contract\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"gia\", \"Legal\", \"admin\")"},
+		{ "axiom": "owns(\"Legal\", \"contract\")"},
+		{ "axiom": "26 != 18"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}
+{ "proof":
+	{ "premises": "canedit(\"gia\", \"layoffs-memo\")",
+	  "rule-number": "(R1)",
+	  "children": [
+		{ "axiom": "member(\"gia\", \"Legal\", \"admin\")"},
+		{ "axiom": "owns(\"Legal\", \"layoffs-memo\")"},
+		{ "axiom": "26 != 18"}	]
+	},"rules": [
+	{ "rule-number": "(R1)", "rule": "canedit(u,d) :- \n   member(u,t,r),\n   owns(t,d),\n   r != \"viewer\"."},
+	{ "rule-number": "(R1)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   owns(t,d)."},
+	{ "rule-number": "(R2)", "rule": "canread(u,d) :- \n   share_user(d,u),\n   !revoked(d,u)."},
+	{ "rule-number": "(R3)", "rule": "canread(u,d) :- \n   inteam(u,t),\n   share_team(d,t)."},
+	{ "rule-number": "(R1)", "rule": "inteam(u,t) :- \n   member(u,t,+underscore_3)."},
+	{ "rule-number": "(R2)", "rule": "inteam(u,t) :- \n   inteam(u,s),\n   subteam(s,t)."}
+]
+}

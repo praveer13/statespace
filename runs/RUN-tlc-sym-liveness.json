@@ -1,0 +1,80 @@
+{
+  "id": "RUN-tlc-sym-liveness",
+  "title": "With SYMMETRY and a liveness PROPERTY, TLC warns that it might miss violations of the liveness properties",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "the Sym spec, with `SYMMETRY` and a liveness `PROPERTY`: TLC warns that declaring symmetry during liveness checking \"might cause TLC to miss violations of the stated liveness properties\"",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "binary": "the 1.8.0 tla2tools.jar; its SHA-256 is the one the same log prints at its end (sha256sum of dl/tla180/tla2tools.jar), the build its banner names",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/tla/sym/Sym.tla",
+      "sha256": "7ccb4c64404049dc545c79a6dd969938b55bd13f7213afa51e995797b576b8b6",
+      "bytes": 354,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/sym/Sym.cfg",
+      "sha256": "9f326ec4186a646a1d733214d9c2ed9ef3f206f5d1d4e2175401842cc8d0daea",
+      "bytes": 101,
+      "role": "config"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "===== Sym (symmetry + liveness)",
+    "Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined."
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/tlc_runs.txt",
+      "sha256": "d5a2ecb63876b51c885ee7b8b67b98067d60bde4b413beadac68df5e93df70b0",
+      "bytes": 23989,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "warning": "Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined."
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the log does not name the container image"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output, not the command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log is filtered to the verdicts"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log is filtered to the verdicts"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/out/tlc_runs.txt (\"Sym\"); a2r3/tla/sym/Sym.tla, Sym.cfg (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

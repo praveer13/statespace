@@ -1,0 +1,213 @@
+{
+  "id": "RUN-cvc5-alethe",
+  "title": "cvc5 1.4.2 from the pip wheel re-run: unsat on the guard query, with the whole Alethe proof committed",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "records": "cvc5 from the pip wheel, version string `1.4.2-modified` recorded verbatim: `unsat` on the guard query with a 19-line Alethe proof containing a `hole` step (only the proof's first lines are on disk, so copy cites a `hole` step, never a count; W0-S11 commits the full proof)",
+  "engine": "cvc5",
+  "version": "1.4.2-modified",
+  "version_string": "cvc5 b'1.4.2-modified' -> unsat",
+  "binary": "cvc5/cvc5_python_base.cpython-313-x86_64-linux-gnu.so from the cvc5 1.4.2 wheel (cvc5-1.4.2-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl)",
+  "binary_sha256": "7d2551fa659923cea8492c1f2d2f98645605c0e81ae5fbc29240cf2dcd6f5bf5",
+  "image": null,
+  "recorded_at": "2026-10-24T14:33:16.092Z",
+  "started_at": "2026-10-24T14:33:15.771Z",
+  "duration_s": 0.162,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "--with",
+    "cvc5==1.4.2",
+    "python",
+    "-I",
+    "cvc5_alethe.py"
+  ],
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/cvc5_alethe.py",
+      "sha256": "6438e8f700349ad62d8ecb24ac4fb7c8de80f2dd6c249aca2be47914b0acd9d2",
+      "bytes": 1106,
+      "role": "script"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/5e/86/6634ae2fa0800b05724ba0504ea3bd17212f938300f57bd8e6ffe4d8dbde/cvc5-1.4.2-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "file": "cvc5-1.4.2-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "sha256": "3eaf2bc2e752ca48bef428a9bfea9de9fd9fe3c59cab1755a103c2c5d3afa64a",
+      "bytes": 14286103,
+      "role": "wheel"
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "cvc5 b'1.4.2-modified' -> unsat",
+    "Alethe proof: 19 lines; first lines:",
+    "(",
+    "(assume a0 (>= a 0))",
+    "(assume a1 (>= b 0))",
+    "(assume a2 (> amount 0))",
+    "(assume a3 (! (<= amount a) :named @p_1))",
+    "(assume a4 (! (< (! (- a amount) :named @p_2) 0) :named @p_3))",
+    "(step t0 (cl (not (! (= @p_1 (! (>= (! (+ a (* -1 amount)) :named @p_4) 0) :named @p_5)) :named @p_10)) (not @p_1) @p_5) :rule equiv_pos2)",
+    "(step t1 (cl @p_10) :rule hole :args (\"untranslated rewrite\"))",
+    "steps: 12 | hole steps: 3"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-cvc5-alethe/run.log",
+      "sha256": "168ae3c2b648623db4c2573f18ac3e988b125646235c9aeb875b34447ecd5fdc",
+      "bytes": 471,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-cvc5-alethe/cvc5_guard.alethe",
+      "sha256": "583d0207f231a9dfb2d7b8ac0f127f458de76acca8b0ac2dc4d5108e6abe5ca7",
+      "bytes": 1037,
+      "kind": "Alethe proof"
+    }
+  ],
+  "values": {
+    "version_printed": "1.4.2-modified",
+    "wheel_version": "1.4.2",
+    "verdict": "unsat",
+    "proof_lines": 19,
+    "proof_steps": 12,
+    "hole_steps": 3,
+    "hole_args": [
+      "\"untranslated rewrite\"",
+      "\"untranslated rewrite\"",
+      "\"untranslated rewrite\""
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "3.13.12",
+    "uv": "uv 0.10.2",
+    "container": null
+  },
+  "primary_config": "rerun",
+  "configs": [
+    {
+      "id": "rerun",
+      "origin": "recorded",
+      "purpose": "the script on disk under uv with the cvc5 1.4.2 wheel; it writes the proof to cvc5_guard.alethe",
+      "version": "1.4.2-modified",
+      "binary_sha256": "7d2551fa659923cea8492c1f2d2f98645605c0e81ae5fbc29240cf2dcd6f5bf5",
+      "started_at": "2026-10-24T14:33:15.771Z",
+      "duration_s": 0.162,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "cvc5==1.4.2",
+        "python",
+        "-I",
+        "cvc5_alethe.py"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "cvc5 b'1.4.2-modified' -> unsat",
+        "Alethe proof: 19 lines; first lines:",
+        "(",
+        "(assume a0 (>= a 0))",
+        "(assume a1 (>= b 0))",
+        "(assume a2 (> amount 0))",
+        "(assume a3 (! (<= amount a) :named @p_1))",
+        "(assume a4 (! (< (! (- a amount) :named @p_2) 0) :named @p_3))",
+        "(step t0 (cl (not (! (= @p_1 (! (>= (! (+ a (* -1 amount)) :named @p_4) 0) :named @p_5)) :named @p_10)) (not @p_1) @p_5) :rule equiv_pos2)",
+        "(step t1 (cl @p_10) :rule hole :args (\"untranslated rewrite\"))",
+        "steps: 12 | hole steps: 3"
+      ],
+      "outputs": [
+        "runs/RUN-cvc5-alethe/run.log",
+        "runs/RUN-cvc5-alethe/cvc5_guard.alethe"
+      ]
+    },
+    {
+      "id": "original",
+      "origin": "imported",
+      "purpose": "the execution the spine registered (cvc5 from the pip wheel, version string `1.4.2-modified` recorded verbatim: `unsat` on the guard query with a 19-line Alethe proof containing a `hole` step (only the proof's first lines are on disk, so copy cites a `hole` step, never a count; W0-S11 commits the full proof)), imported from research/ as it was before this re-run",
+      "engine": "cvc5",
+      "version": "1.4.2-modified",
+      "binary_sha256": null,
+      "image": null,
+      "started_at": null,
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/scripts/cvc5_alethe.py",
+          "sha256": "6438e8f700349ad62d8ecb24ac4fb7c8de80f2dd6c249aca2be47914b0acd9d2",
+          "bytes": 1106,
+          "role": "script"
+        }
+      ],
+      "exit_code": null,
+      "verdict_lines": [
+        "cvc5 b'1.4.2-modified' -> unsat",
+        "Alethe proof: 19 lines; first lines:",
+        "(step t1 (cl @p_10) :rule hole :args (\"untranslated rewrite\"))"
+      ],
+      "outputs": [
+        {
+          "path": "research/evidence/a2r3/out/cvc5_alethe.txt",
+          "sha256": "1d2582c13960c1963ec1879d5b37dd538cbea6be532427f363abefe248d78ae3",
+          "bytes": 445,
+          "kind": "log"
+        }
+      ],
+      "values": {
+        "verdict": "unsat",
+        "version_string": "1.4.2-modified",
+        "proof_lines": 19,
+        "hole_step_seen": true
+      },
+      "unrecorded": [
+        {
+          "field": "binary_sha256",
+          "reason": "the log does not hash the wheel"
+        },
+        {
+          "field": "image",
+          "reason": "no container is recorded"
+        },
+        {
+          "field": "started_at",
+          "reason": "the log is undated"
+        },
+        {
+          "field": "duration_s",
+          "reason": "the log does not time the run"
+        },
+        {
+          "field": "argv",
+          "reason": "the log holds the output; the script gives no usage line"
+        },
+        {
+          "field": "exit_code",
+          "reason": "the log does not record the exit code"
+        },
+        {
+          "field": "environment.os",
+          "reason": "the log does not describe the host"
+        },
+        {
+          "field": "environment.cpu_count",
+          "reason": "the log does not describe the host"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Re-run by W0-S11 to commit the whole proof (spine section 9.5): the earlier log kept only its first eight lines.",
+    "binary_sha256 is the hash of the native library the wheel installs, the code that ran; the wheel itself is listed in inputs with the SHA-256 PyPI publishes for it.",
+    "version is what the solver printed, verbatim; the wheel's own metadata says 1.4.2 (values.wheel_version). Receipts keep the printed string (labs/TOOLS.md section 2.3).",
+    "uv ran on the host; no container."
+  ]
+}

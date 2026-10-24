@@ -1,0 +1,144 @@
+{
+  "id": "RUN-pg-claims",
+  "title": "PostgreSQL 18.6 and 17.11: the isolation experiments plus holds write skew, 40P01, NULL amount, unknown account, sum(bigint) as numeric and the CASE self-transfer",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "PostgreSQL 18.6 and 17.11: the same, plus holds write skew, 40P01, NULL amount, unknown account, `sum(bigint)` as `numeric`, and the CASE self-transfer (100 → 70)",
+  "engine": "postgres",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2), with psycopg-binary from uv",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/pg_claims.py",
+      "sha256": "9c97762ac373edb5121f1e614b272cf236fb5be963875b13e0a40d9554b25f95",
+      "bytes": 7120,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)",
+    "[E1 conditional UPDATE, READ COMMITTED] A=1 row(s); B blocked=True; B -> 0 row(s); final bal=20",
+    "[E1 conditional UPDATE, REPEATABLE READ] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20",
+    "[E1 conditional UPDATE, SERIALIZABLE] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20",
+    "[E2 app RMW, READ COMMITTED] both read 100,100; B blocked=True; B -> committed; final bal=20; spent=160 of 100",
+    "[E2 app RMW, REPEATABLE READ] both read 100,100; B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20; spent=80 of 100",
+    "[E3 holds write-skew, READ COMMITTED] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100",
+    "[E3 holds write-skew, REPEATABLE READ] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100",
+    "[E3 holds write-skew, SERIALIZABLE] avail seen 100,100; A commit=ok ; B commit=ERR SerializationFailure [40001] could not serialize access due to read/write dependencies among transactions; total held=80 vs bal 100",
+    "[E4 opposite transfers, RC] A -> DeadlockDetected [40P01] deadlock detected; B -> ok",
+    "[E5 CHECK (bal >= 0) accepts NULL] ('ok', 1)",
+    "[E5 guarded UPDATE on NULL bal] ('ok', 0)",
+    "[E5 guard with NULL amount] ('ok', 0)",
+    "[E5 unknown account] ('ok', 0)",
+    "[E6 credit past 2^63-1] ('ERR', 'NumericValueOutOfRange [22003] bigint out of range')",
+    "[E6 sum(bigint) type/value] ('numeric', Decimal('9223372036854775812'))",
+    "[E6 bal after failed credit] 9223372036854775807",
+    "[E7 self-transfer, single UPDATE with CASE] ('ok', 1, [(1, 70)])",
+    "[E7 self-transfer, two UPDATEs] ('ok', 1) ('ok', 1) final 100"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/pg_claims.txt",
+      "sha256": "d234f7e8fc616f88403caa6cf71c8191a085c38dd96a556e4695eb214c18aa17",
+      "bytes": 3671,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "e3_holds_write_skew_rr": "both commit; total held 160 vs bal 100",
+    "e4_sqlstate": "40P01",
+    "e6_overflow_sqlstate": "22003",
+    "e6_sum_type": "numeric",
+    "e7_case_self_transfer_final": 70,
+    "e7_two_updates_final": 100
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "18.6",
+      "origin": "imported",
+      "purpose": "the experiments on PostgreSQL 18.6",
+      "version": "18.6",
+      "verdict_lines": [
+        "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)"
+      ]
+    },
+    {
+      "id": "17.11",
+      "origin": "imported",
+      "purpose": "the same experiments on PostgreSQL 17.11: the same outcomes",
+      "version": "17.11",
+      "verdict_lines": [
+        "server: PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2)",
+        "[E1 conditional UPDATE, READ COMMITTED] A=1 row(s); B blocked=True; B -> 0 row(s); final bal=20",
+        "[E1 conditional UPDATE, REPEATABLE READ] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20",
+        "[E1 conditional UPDATE, SERIALIZABLE] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20",
+        "[E2 app RMW, READ COMMITTED] both read 100,100; B blocked=True; B -> committed; final bal=20; spent=160 of 100",
+        "[E2 app RMW, REPEATABLE READ] both read 100,100; B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20; spent=80 of 100",
+        "[E3 holds write-skew, READ COMMITTED] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100",
+        "[E3 holds write-skew, REPEATABLE READ] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100",
+        "[E3 holds write-skew, SERIALIZABLE] avail seen 100,100; A commit=ok ; B commit=ERR SerializationFailure [40001] could not serialize access due to read/write dependencies among transactions; total held=80 vs bal 100",
+        "[E4 opposite transfers, RC] A -> DeadlockDetected [40P01] deadlock detected; B -> ok",
+        "[E5 CHECK (bal >= 0) accepts NULL] ('ok', 1)",
+        "[E5 guarded UPDATE on NULL bal] ('ok', 0)",
+        "[E5 guard with NULL amount] ('ok', 0)",
+        "[E5 unknown account] ('ok', 0)",
+        "[E6 credit past 2^63-1] ('ERR', 'NumericValueOutOfRange [22003] bigint out of range')",
+        "[E6 sum(bigint) type/value] ('numeric', Decimal('9223372036854775812'))",
+        "[E6 bal after failed credit] 9223372036854775807",
+        "[E7 self-transfer, single UPDATE with CASE] ('ok', 1, [(1, 70)])",
+        "[E7 self-transfer, two UPDATEs] ('ok', 1) ('ok', 1) final 100"
+      ]
+    }
+  ],
+  "primary_config": "18.6",
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the server binaries"
+    },
+    {
+      "field": "image",
+      "reason": "the log names the servers, not their images"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the script gives no usage line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/scripts/pg_claims.py; a2r3/out/pg_claims.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

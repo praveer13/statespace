@@ -1,0 +1,67 @@
+{
+  "id": "RUN-browser-fixture",
+  "title": "A module worker on a separate origin runs Z3 in three engines",
+  "engine": "chromium",
+  "version": "153.0.8010.12",
+  "binary": null,
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-24T15:00:00+01:00",
+  "started_at": "2026-10-24T13:59:00Z",
+  "duration_s": 40,
+  "argv": [
+    "node",
+    "harness.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "<sandbox>/site/index.html",
+      "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69"
+    },
+    {
+      "path": "scripts/runs/",
+      "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+      "sha256_method": "manifest of sorted file hashes"
+    },
+    {
+      "name": "pyodide.mjs",
+      "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97"
+    }
+  ],
+  "budget": {
+    "timeout_s": 120,
+    "rlimit": 5000000
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "chromium {\"readyMs\":1458,\"z3\":\"5.3.1 sat [b = 0, amount = 1, a = 0]\"}"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-browser-fixture/report.json",
+      "sha256": "c0b5b1a6d5a3a0a8f4b3a7d76c1d0b6a2b0e8c5f9e1d2c3b4a5968778695a4b3",
+      "bytes": 3574,
+      "kind": "report",
+      "compare": "exact"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": null,
+    "emulated": "no"
+  },
+  "checks": [
+    {
+      "id": "parent-storage-blocked",
+      "pass": true,
+      "detail": "SecurityError"
+    }
+  ],
+  "pass": true,
+  "ttl_days": 0,
+  "notes": [
+    "A fixture in the shape of a browser run."
+  ]
+}

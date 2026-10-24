@@ -1,0 +1,182 @@
+{
+  "format": "statespace facts registry, revision 1",
+  "about": "Fixture: one planted fault per fact, for the registry checks of GATE-facts. Every statement here is a fixture, not a claim about any tool. fixture.ok is the control and draws no finding.",
+  "facts": [
+    {
+      "id": "fixture.ok",
+      "kind": "tool",
+      "statement": "Fixture: a well-formed tool fact.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 90
+    },
+    {
+      "id": "fixture.no-source",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact with no source.",
+      "checked_at": "2026-10-23",
+      "ttl_days": 60
+    },
+    {
+      "id": "fixture.short-ttl",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact with a TTL shorter than 60 days.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 30
+    },
+    {
+      "id": "fixture.future-check",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact checked after the day the gate runs.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "checked_at": "2026-12-01",
+      "ttl_days": 60
+    },
+    {
+      "id": "fixture.incident-with-ttl",
+      "kind": "incident",
+      "statement": "Fixture: an incident with a TTL.",
+      "source": {
+        "url": "https://example.org/incident",
+        "title": "Fixture source"
+      },
+      "date": "2020-06-12",
+      "ttl_days": 60
+    },
+    {
+      "id": "fixture.twin-without-run",
+      "kind": "twin",
+      "statement": "Fixture: a twin whose run is not recorded.",
+      "source": {
+        "url": "https://example.org/repo",
+        "title": "Fixture source"
+      },
+      "run": "RUN-twin-pins",
+      "pin": "values.pins.example"
+    },
+    {
+      "id": "fixture.twin-run-without-ttl",
+      "kind": "twin",
+      "statement": "Fixture: a twin whose run has no 60-day TTL.",
+      "source": {
+        "url": "https://example.org/repo",
+        "title": "Fixture source"
+      },
+      "run": "RUN-z3-starter",
+      "pin": "values.version"
+    },
+    {
+      "id": "fixture.evidence-changed",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact whose saved copy no longer has its recorded SHA-256.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "evidence": {
+        "path": "research/saved.json",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 60
+    },
+    {
+      "id": "fixture.quote-missing",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact whose quote is not in its saved copy.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source",
+        "quote": "\"latest\":\"9.9.9\""
+      },
+      "evidence": {
+        "path": "research/saved.json",
+        "sha256": "aed9ac607e0d036f2d3af8170f656d746a40d0ac5de84117c6af39a42281fb9b"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 60
+    },
+    {
+      "id": "fixture.duplicate",
+      "kind": "incident",
+      "statement": "Fixture: the first of two facts with one id.",
+      "source": {
+        "url": "https://example.org/incident",
+        "title": "Fixture source"
+      },
+      "date": "2010-08"
+    },
+    {
+      "id": "fixture.duplicate",
+      "kind": "incident",
+      "statement": "Fixture: the second of two facts with one id.",
+      "source": {
+        "url": "https://example.org/incident",
+        "title": "Fixture source"
+      },
+      "date": "2010"
+    },
+    {
+      "id": "fixture.typo-field",
+      "kind": "tool",
+      "statement": "Fixture: a tool fact that misspells ttl_days.",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_day": 60
+    },
+    {
+      "id": "Fixture.BadId",
+      "kind": "paper",
+      "statement": "Fixture: a paper whose id is not dotted lowercase.",
+      "source": {
+        "url": "https://example.org/paper",
+        "title": "Fixture source"
+      },
+      "date": "2021"
+    },
+    {
+      "id": "fixture.bad-kind",
+      "kind": "rumor",
+      "statement": "Fixture: a fact of no known kind.",
+      "source": {
+        "url": "https://example.org/rumor",
+        "title": "Fixture source"
+      }
+    },
+    {
+      "id": "fixture.http-source",
+      "kind": "quotation",
+      "statement": "Fixture: a quotation whose source is not https.",
+      "source": {
+        "url": "http://example.org/quote",
+        "title": "Fixture source"
+      },
+      "date": "2025-12-08"
+    },
+    {
+      "id": "fixture.value-drift",
+      "kind": "tool",
+      "statement": "Fixture: version 1.0 of a tool is its latest release.",
+      "value": "2.0",
+      "source": {
+        "url": "https://example.org/releases",
+        "title": "Fixture source"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 60
+    }
+  ]
+}

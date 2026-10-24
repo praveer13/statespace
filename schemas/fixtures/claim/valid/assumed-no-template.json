@@ -1,0 +1,23 @@
+{
+  "schema": "statespace/claim@1",
+  "id": "retries-finite",
+  "proposition": "every command commits or is refused without exhausting its retry budget",
+  "assumptions": [
+    {
+      "text": "contention is finite"
+    }
+  ],
+  "model": "the retry loop of LAB-6",
+  "method": {
+    "text": "assumed by design; no checker reads it"
+  },
+  "correspondence": {
+    "text": "the loop is the code that runs"
+  },
+  "if_weakened": {
+    "text": "unbounded contention: a command can retry forever"
+  },
+  "requirement": {
+    "text": "a caller always gets an answer"
+  }
+}

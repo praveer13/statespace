@@ -1,0 +1,2143 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s1c s2b_rc s2r s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s1c s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s2w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s1c s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s1w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s1w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s2c s1w s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s1c s2w s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s2w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s2w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s1w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s1w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s2c s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s1w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s1w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s2c s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s2c s1b_rc s1r s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s1c s2b_rr s2r s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s1c s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s2w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s1c s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s1w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s1w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s2c s1w s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s1c s2w s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s2w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s2w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s1w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s1w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s2c s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s1w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s1w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s2c s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100| 160
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s2c s1b_rr s1r s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s1c s2b_ser s2r s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s1c s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s2w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s1c s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s1w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s1w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s2c s1w s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s1c s2w s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s2w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s2w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s1w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s1w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s2c s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s1w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s1w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s2c s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2c: COMMIT;
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s2c s1b_ser s1r s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step s2w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step s2c: COMMIT;
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step s1w: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT (SELECT bal FROM acct WHERE id = 1) AS bal, coalesce(sum(amt), 0) AS held FROM holds;
+bal|held
+---+----
+100|  80
+(1 row)
+

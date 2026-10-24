@@ -1,0 +1,556 @@
+{
+  "id": "RUN-privacy-gate",
+  "title": "GATE-privacy over every published path, with a one-line account term list, as a developer runs it, its fixtures, planted violations, and a placeholder license (W0-T01)",
+  "primary_config": "gate",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "argv": [
+    "node",
+    "scripts/verify-privacy.mjs",
+    "--json"
+  ],
+  "env": {
+    "CI": "true"
+  },
+  "inputs": [
+    {
+      "path": "scripts/verify-privacy.mjs",
+      "sha256": "01818abefce8490e3ac5c68f2db5e40e70a49607e323c607b784962887044c0e",
+      "role": "the gate"
+    },
+    {
+      "path": "scripts/spikes/W0-T01/record-run.mjs",
+      "sha256": "cb2593efa9c277d2ceba9583739a082f2be976e0c7a4b2b0a1c4b12269d47a9f",
+      "role": "this recorder"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "bc06274f2067970dbe22300dd7e6b1f458be9f56794edc030310eeed951b7124",
+      "role": "what is published"
+    },
+    {
+      "path": ".",
+      "role": "every published path at the time of the gate configuration (tracked, plus untracked and not ignored), other tasks' work in progress included",
+      "head": "44d12a9395f1b60c44a37c8977bd529eeee35319",
+      "files": 1441,
+      "bytes": 13582701,
+      "sha256": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e",
+      "sha256_method": "SHA-256 over the lines \"<sha256 of file>  <path>\\n\" in path order, as the gate computes it"
+    }
+  ],
+  "budget": {
+    "timeout_s": 120,
+    "timeout_scope": "each gate invocation",
+    "max_file_bytes": 67108864,
+    "network": "not used",
+    "term_list": "none for gate, planted and the substitute; one account entry for account-term and planted-account-term; the local identity for local-identity and planted-local-identity"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x64",
+    "cpu_count": 20,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i5-13600KF",
+    "ram_gib": 31,
+    "node": "v22.22.2",
+    "git": "git version 2.51.2",
+    "container": null,
+    "image_digest": null
+  },
+  "started_at": "2026-10-24T13:07:01.471Z",
+  "duration_s": 0.441,
+  "exit_code": 1,
+  "verdict_lines": [
+    "gate: exit 1: 1 problem(s): vendor-license vendor/kernelspace/",
+    "account-term: exit 1: 1 problem(s): vendor-license vendor/kernelspace/",
+    "local-identity: exit 1: 1 problem(s): vendor-license vendor/kernelspace/",
+    "self-test: verify-privacy self-test: ok, 33/33",
+    "planted: PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1}",
+    "planted-account-term: PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"private-term\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1,\"private-term\":1}",
+    "planted-local-identity: PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"private-term\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1,\"private-term\":1}",
+    "license-placeholder-substitute: exit 0: ok, no problem found"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-privacy-gate/gate.json",
+      "sha256": "72696546c3f28971032fd9f3a217c924bfbfffde50167673c0c2e9acf7f3050c",
+      "bytes": 1348
+    },
+    {
+      "path": "runs/RUN-privacy-gate/account-term.json",
+      "sha256": "4bc483492e1df3202acfbe359df0782e6ced93e23d97d0efa9eaf40ca0296216",
+      "bytes": 1203
+    },
+    {
+      "path": "runs/RUN-privacy-gate/local-identity.json",
+      "sha256": "e9fc411007728dd12c3f946cab94dffb0442aa270681598fbed37eea1c1ecde8",
+      "bytes": 1425
+    },
+    {
+      "path": "runs/RUN-privacy-gate/self-test.txt",
+      "sha256": "57183e0e9bffc91740377302e701774e51d04b041b8ccb730611883c4e6fe389",
+      "bytes": 2012
+    },
+    {
+      "path": "runs/RUN-privacy-gate/planted.json",
+      "sha256": "99b516ce7b897041b31bf03e424d89dd32c6d63d4e9d52577077d938992ee839",
+      "bytes": 2146
+    },
+    {
+      "path": "runs/RUN-privacy-gate/planted-account-term.json",
+      "sha256": "ea7683fb622feff72469e4604252e9cb12bdbce617a450ee18e5db19bed1c332",
+      "bytes": 2180
+    },
+    {
+      "path": "runs/RUN-privacy-gate/planted-local-identity.json",
+      "sha256": "28c804387d4120cabe9606c235b706cf153db25b652fbd9097dc7c0d8b069e79",
+      "bytes": 2427
+    },
+    {
+      "path": "runs/RUN-privacy-gate/substitute.json",
+      "sha256": "bd3b01d3b720816b8ef60f7cf2627ceb485df263fcb6d6c6f6a221082b830776",
+      "bytes": 1194
+    }
+  ],
+  "configs": [
+    {
+      "id": "gate",
+      "purpose": "every published path, as the fast lane runs it: CI=true and no term list in the environment, since the owner has not set the CI secrets yet",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T13:07:01.471Z",
+      "duration_s": 0.441,
+      "exit_code": 1,
+      "verdict_lines": [
+        "exit 1: 1 problem(s): vendor-license vendor/kernelspace/"
+      ],
+      "findings_by_check": {
+        "vendor-license": 1
+      },
+      "findings": [
+        {
+          "check": "vendor-license",
+          "path": "vendor/kernelspace/",
+          "message": "a vendored directory (inside vendor/) without its own license file"
+        }
+      ],
+      "warnings": [
+        "course-license",
+        "private-term"
+      ],
+      "scanned": {
+        "via": "git",
+        "files": 1441,
+        "bytes": 13582701,
+        "sha256": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e"
+      },
+      "history": {
+        "commits": 2,
+        "objects": 389,
+        "shallow": false
+      },
+      "vendored": [
+        "vendor/kernelspace"
+      ],
+      "allowed": {
+        "npm's trusted-publishing address in saved registry metadata": 32,
+        "the Lean FRO's published security contact": 3,
+        "a reserved example domain": 3,
+        "the SSH remote user, not a mailbox": 1
+      },
+      "attempts": 1,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/gate.json",
+          "sha256": "72696546c3f28971032fd9f3a217c924bfbfffde50167673c0c2e9acf7f3050c",
+          "bytes": 1348
+        }
+      ]
+    },
+    {
+      "id": "account-term",
+      "purpose": "local substitute for the owner's CI term list: the same scan with a one-line plaintext list holding only `account: <local user>`, kept in <scratch> outside the repository and read through STATESPACE_PRIVACY_TERMS_FILE, with CI=1 so a match prints only as a hash prefix",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json"
+      ],
+      "env": {
+        "CI": "1",
+        "STATESPACE_PRIVACY_TERMS_FILE": "<scratch>/terms/privacy-terms.txt"
+      },
+      "started_at": "2026-10-24T13:07:01.912Z",
+      "duration_s": 2.486,
+      "exit_code": 1,
+      "verdict_lines": [
+        "exit 1: 1 problem(s): vendor-license vendor/kernelspace/"
+      ],
+      "findings_by_check": {
+        "vendor-license": 1
+      },
+      "private_term_findings": [],
+      "warnings": [
+        "course-license"
+      ],
+      "terms": {
+        "listed": 1,
+        "identity": 0,
+        "sources": [
+          "STATESPACE_PRIVACY_TERMS_FILE"
+        ]
+      },
+      "scanned": {
+        "via": "git",
+        "files": 1441,
+        "bytes": 13582701,
+        "sha256": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e"
+      },
+      "same_tree_as_gate": true,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/account-term.json",
+          "sha256": "4bc483492e1df3202acfbe359df0782e6ced93e23d97d0efa9eaf40ca0296216",
+          "bytes": 1203
+        }
+      ],
+      "term_list": {
+        "location": "<scratch>/terms/privacy-terms.txt",
+        "entries": 1,
+        "kinds": [
+          "account"
+        ],
+        "sha256": null,
+        "sha256_note": "not recorded: a hash of a one-line list would confirm a guessed account name",
+        "deleted_after_use": true
+      }
+    },
+    {
+      "id": "local-identity",
+      "purpose": "the same scan as a developer runs it: CI unset and no term list, so the gate adds the local identity by itself (the operating-system account name, git user.name and the local part of git user.email; the values are not recorded)",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json"
+      ],
+      "env": {},
+      "started_at": "2026-10-24T13:07:04.398Z",
+      "duration_s": 2.563,
+      "exit_code": 1,
+      "verdict_lines": [
+        "exit 1: 1 problem(s): vendor-license vendor/kernelspace/"
+      ],
+      "findings_by_check": {
+        "vendor-license": 1
+      },
+      "private_term_findings": [],
+      "warnings": [
+        "course-license",
+        "private-term"
+      ],
+      "terms": {
+        "listed": 0,
+        "identity": 3,
+        "sources": [
+          "local identity"
+        ]
+      },
+      "scanned": {
+        "via": "git",
+        "files": 1441,
+        "bytes": 13582701,
+        "sha256": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e"
+      },
+      "same_tree_as_gate": true,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/local-identity.json",
+          "sha256": "e9fc411007728dd12c3f946cab94dffb0442aa270681598fbed37eea1c1ecde8",
+          "bytes": 1425
+        }
+      ]
+    },
+    {
+      "id": "self-test",
+      "purpose": "in-memory fixtures: every check fires on its plant, and every allowance passes its case; run with CI unset, so a fixture that read the local identity would show",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--self-test"
+      ],
+      "env": {},
+      "started_at": "2026-10-24T13:07:06.961Z",
+      "duration_s": 0.038,
+      "exit_code": 0,
+      "verdict_lines": [
+        "verify-privacy self-test: ok, 33/33"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/self-test.txt",
+          "sha256": "57183e0e9bffc91740377302e701774e51d04b041b8ccb730611883c4e6fe389",
+          "bytes": 2012
+        }
+      ]
+    },
+    {
+      "id": "planted",
+      "purpose": "a clone of the committed tree in <scratch>, with this task's .gitignore, a review JSON committed and then deleted, and untracked files planting an email, a home path, learner copy naming the product, a real instrument host and an unlicensed vendored directory, plus scripts/planted-leak.mjs holding the local account name in a regular expression; CI=true and no term list, as the fast lane runs today, so the account name is expected to pass unseen",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json",
+        "--root",
+        "<scratch>/clone"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-24T13:07:07.105Z",
+      "duration_s": 0.225,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1}"
+      ],
+      "findings_by_check": {
+        "course-domain": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "review-json": 1,
+        "vendor-license": 1
+      },
+      "expected": {
+        "review-json": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "course-domain": 1,
+        "vendor-license": 1
+      },
+      "private_term_findings": [],
+      "terms": {
+        "listed": 0,
+        "identity": 0,
+        "sources": []
+      },
+      "pass": true,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/planted.json",
+          "sha256": "99b516ce7b897041b31bf03e424d89dd32c6d63d4e9d52577077d938992ee839",
+          "bytes": 2146
+        }
+      ]
+    },
+    {
+      "id": "planted-account-term",
+      "purpose": "the planted clone under the one-line term list (CI=1): the account name is caught as well",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json",
+        "--root",
+        "<scratch>/clone"
+      ],
+      "env": {
+        "CI": "1",
+        "STATESPACE_PRIVACY_TERMS_FILE": "<scratch>/terms/privacy-terms.txt"
+      },
+      "started_at": "2026-10-24T13:07:07.330Z",
+      "duration_s": 1.131,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"private-term\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1,\"private-term\":1}"
+      ],
+      "findings_by_check": {
+        "course-domain": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "private-term": 1,
+        "review-json": 1,
+        "vendor-license": 1
+      },
+      "expected": {
+        "review-json": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "course-domain": 1,
+        "vendor-license": 1,
+        "private-term": 1
+      },
+      "private_term_findings": [
+        {
+          "check": "private-term",
+          "path": "scripts/planted-leak.mjs",
+          "line": 1,
+          "message": "an account identifier from the term list"
+        }
+      ],
+      "terms": {
+        "listed": 1,
+        "identity": 0,
+        "sources": [
+          "STATESPACE_PRIVACY_TERMS_FILE"
+        ]
+      },
+      "pass": true,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/planted-account-term.json",
+          "sha256": "ea7683fb622feff72469e4604252e9cb12bdbce617a450ee18e5db19bed1c332",
+          "bytes": 2180
+        }
+      ]
+    },
+    {
+      "id": "planted-local-identity",
+      "purpose": "the planted clone as a developer runs it (CI unset, no term list): the local identity catches the account name",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json",
+        "--root",
+        "<scratch>/clone"
+      ],
+      "env": {},
+      "started_at": "2026-10-24T13:07:08.461Z",
+      "duration_s": 1.143,
+      "exit_code": 1,
+      "verdict_lines": [
+        "PASS: findings by check {\"course-domain\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"private-term\":1,\"review-json\":1,\"vendor-license\":1}, expected {\"review-json\":1,\"email\":1,\"private-path\":1,\"your-system\":1,\"course-domain\":1,\"vendor-license\":1,\"private-term\":1}"
+      ],
+      "findings_by_check": {
+        "course-domain": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "private-term": 1,
+        "review-json": 1,
+        "vendor-license": 1
+      },
+      "expected": {
+        "review-json": 1,
+        "email": 1,
+        "private-path": 1,
+        "your-system": 1,
+        "course-domain": 1,
+        "vendor-license": 1,
+        "private-term": 1
+      },
+      "private_term_findings": [
+        {
+          "check": "private-term",
+          "path": "scripts/planted-leak.mjs",
+          "line": 1,
+          "message": "an account identifier matching your operating-system account name"
+        }
+      ],
+      "terms": {
+        "listed": 0,
+        "identity": 3,
+        "sources": [
+          "local identity"
+        ]
+      },
+      "pass": true,
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/planted-local-identity.json",
+          "sha256": "28c804387d4120cabe9606c235b706cf153db25b652fbd9097dc7c0d8b069e79",
+          "bytes": 2427
+        }
+      ]
+    },
+    {
+      "id": "license-placeholder-substitute",
+      "purpose": "substitute: placeholder license standing in for the owner's OD-16 choice; not a real license. Every published path at the time of the gate configuration, copied into <scratch>/sim, plus a placeholder vendor/kernelspace/LICENSE; CI=true and no term list, as in the gate configuration",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--json",
+        "--root",
+        "<scratch>/sim"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "inputs": [
+        {
+          "path": "<scratch>/sim",
+          "role": "the copy: every published path, listed by git ls-files -z --cached --others --exclude-standard",
+          "files": 1441,
+          "sha256": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e",
+          "same_as_gate_tree": true
+        },
+        {
+          "path": "<scratch>/sim/vendor/kernelspace/LICENSE",
+          "role": "the placeholder; not a real license",
+          "sha256": "2738ba0183d3760ae9012c0ae03d28be5d361532443cbc30db4fd6d4c93a4f4c",
+          "bytes": 276
+        }
+      ],
+      "started_at": "2026-10-24T13:07:09.621Z",
+      "duration_s": 0.401,
+      "exit_code": 0,
+      "verdict_lines": [
+        "exit 0: ok, no problem found"
+      ],
+      "findings_by_check": {},
+      "findings": [],
+      "warnings": [
+        "course-license",
+        "private-term"
+      ],
+      "gate_notes": [
+        "not a git checkout: every file under the root was scanned, and history was not checked"
+      ],
+      "scanned": {
+        "via": "walk",
+        "files": 1442,
+        "bytes": 13582977,
+        "sha256": "dfd8c80e688dcf7e23963188c71d55fcf02670313777553f6b0fae45298dfdd4"
+      },
+      "vendored": [
+        "vendor/kernelspace"
+      ],
+      "owner_action": "OD-16: the owner chooses the code license and adds its LICENSE file to kernelspace; W0-S12 then vendors that file beside vendor/kernelspace/VENDOR.md, and GATE-privacy turns green on the real tree",
+      "outputs": [
+        {
+          "path": "runs/RUN-privacy-gate/substitute.json",
+          "sha256": "bd3b01d3b720816b8ef60f7cf2627ceb485df263fcb6d6c6f6a221082b830776",
+          "bytes": 1194
+        }
+      ]
+    }
+  ],
+  "owner_actions": [
+    "OD-16: the owner chooses the code license and adds its LICENSE file to kernelspace; W0-S12 then vendors that file beside vendor/kernelspace/VENDOR.md, and GATE-privacy turns green on the real tree",
+    "OD-16: add the course's two LICENSE files (content and code) at the repository root; until then the gate warns, and --strict fails",
+    "Write the private term list outside the repository, hash it with `node scripts/verify-privacy.mjs --hash-terms <file>`, and store the result and its key as the CI secrets STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, and the course domain as the CI variable STATESPACE_COURSE_DOMAIN; account-term stands in for that list with a single entry until then"
+  ],
+  "recorded_at": "2026-10-24T13:07:10.106Z",
+  "recording_started_at": "2026-10-24T13:07:01.416Z",
+  "notes": [
+    "The gate is the course's own script, so engine and version name the Node runtime that ran it.",
+    "GATE-privacy is red on the real tree for one reason, in all three repository scans (gate, account-term, local-identity): vendor/kernelspace/ has no license file of its own. Kernelspace has none upstream; choosing it is OD-16, open for the owner, and W0-S12 vendors the file once it exists.",
+    "license-placeholder-substitute exits 0: substitute: placeholder license standing in for the owner's OD-16 choice; not a real license. It shows that the license is the only finding left on this tree; it is not evidence that GATE-privacy is green.",
+    "The substitute's copy has the same digest as the tree the gate configuration scanned (attempt 1), so the placeholder is the only difference.",
+    "<scratch>/sim is not a git checkout, so the gate scans every file under it and skips the git history and .gitignore checks; the gate configuration covers both on the real tree.",
+    "account-term: no match of the local account name in the published tree.",
+    "local-identity: 3 local identity term(s), no match in the published tree.",
+    "A hardcoded account name passes the fast lane as it runs today, without a term list (planted); the one-line list catches it (planted-account-term), and so does a local run (planted-local-identity).",
+    "Recorded outputs keep each finding's check, path, line and message, never the matched text. The term list's SHA-256 is not recorded either.",
+    "The repository scans cover other tasks' files as they stood at the run time; the fast lane re-runs the gate on every change, so a later tree needs a later run.",
+    "RUN-privacy-gate is not among the run ids of spine section 9.5, which lists no run for W0-T01; it records this task's acceptance evidence.",
+    "schemas/run.schema.json did not exist when this run was recorded, so the record is not validated against it."
+  ]
+}

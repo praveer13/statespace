@@ -1,0 +1,21 @@
+// Role-based access as many rules that differ only in constants (S7.L1's role-permission template).
+// Fourteen such rules is past Z3's similarity compressor, which merges eleven or more.
+.decl member(u: symbol, t: symbol, r: symbol)
+.input member
+.decl perm(u: symbol, p: symbol)
+.output perm
+
+perm(u, "read")    :- member(u, _, "viewer").
+perm(u, "list")    :- member(u, _, "viewer").
+perm(u, "comment") :- member(u, _, "viewer").
+perm(u, "read")    :- member(u, _, "editor").
+perm(u, "list")    :- member(u, _, "editor").
+perm(u, "comment") :- member(u, _, "editor").
+perm(u, "write")   :- member(u, _, "editor").
+perm(u, "share")   :- member(u, _, "editor").
+perm(u, "read")    :- member(u, _, "admin").
+perm(u, "list")    :- member(u, _, "admin").
+perm(u, "comment") :- member(u, _, "admin").
+perm(u, "write")   :- member(u, _, "admin").
+perm(u, "share")   :- member(u, _, "admin").
+perm(u, "delete")  :- member(u, _, "admin").

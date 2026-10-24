@@ -1,0 +1,283 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1w s2b_rc s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2w: <... completed>
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rc s1w s1c s2b_rc s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_rc s2w s1b_rc s1w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1w: <... completed>
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_rc s2w s2c s1b_rc s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rr s1w s2b_rr s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2w: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rr s1w s1c s2b_rr s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_rr s2w s1b_rr s1w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1w: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_rr s2w s2c s1b_rr s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_ser s1w s2b_ser s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2w: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_ser s1w s1c s2b_ser s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1c: COMMIT;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_ser s2w s1b_ser s1w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1w: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_ser s2w s2c s1b_ser s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     20
+(1 row)
+
+step s2c: COMMIT;
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1w: UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 20
+ 2|100
+(2 rows)
+

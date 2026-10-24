@@ -1,0 +1,16 @@
+GATE-numbers self-check: copy the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it
+  ok    the untouched copy: passes
+  ok    planted: an untagged TLC count and timing as a new paragraph of README.md: fails as it should, on README.md:319 untagged count "9,999 distinct states"
+  ok    planted: an untagged sentence after the last tag of a tagged paragraph in docs/PLAN.md: fails as it should, on docs/PLAN.md:391 untagged measure "4.25 s"
+  ok    planted: an untagged TLC flag in docs/WORLD.md: fails as it should, on docs/WORLD.md:541 untagged flag "-coverage"
+  ok    planted: an untagged SQLSTATE in README.md: fails as it should, on README.md:319 untagged sqlstate "23514"
+  ok    planted: an untagged solver verdict with its model in README.md: fails as it should, on README.md:319 untagged verdict "sat [x = 7]"
+  ok    planted: a deny-list sentence, even with a run reference (BRIEF section 2.2): fails as it should, on README.md:319 deny-list 212-states
+  ok    planted: learner copy repeating a tagged number without its own tag: fails as it should, on content/stages/S1/L1.md:3 untagged version "Z3 5.3.1"
+  ok    control: the planted README.md sentence with a run reference passes: adds no finding, as it should: a run reference covers its sentence
+  ok    control: a design value tagged [D] passes: adds no finding, as it should: [D] covers a design value
+  ok    control: learner copy with a reference in every sentence passes: adds no finding, as it should: every unit of copy carries its tag
+  ok    control: a fenced code block is not read: adds no finding, as it should: fenced output is GATE-facts' to check
+  ok    planted: a listed (baseline) sentence that is edited no longer matches its entry: fails as it should, on curriculum/S05-time.md:137 untagged count "at depth 4"
+  ok    release lane: --strict fails on the listed debt: fails, as it should: 89 listed tokens
+GATE-numbers self-check: PASS (14 of 14 held)

@@ -1,18 +1,73 @@
+# What never enters the public repository. GATE-privacy (scripts/verify-privacy.mjs) scans every
+# path these rules let through; W0-T01 keeps this file.
+
+# Dependencies and build products: rebuilt from pinned sources, and they carry absolute paths,
+# user names and third-party metadata
 node_modules/
 dist/
-.DS_Store
-*.log
-.env*
-labs/_solutions/
+.lake/
 labs/**/target/
-labs/**/.lake/
+scripts/**/target/
+bench/**/target/
+vendor/**/target/
 __pycache__/
+*.py[cod]
 .venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.vite/
+*.tsbuildinfo
+test-results/
+playwright-report/
+blob-report/
+
+# Tool scratch output
+*.log
 states/
 *.tlc-trace
 
-# evidence logs are cited by the docs; keep them
+# Evidence is kept: the docs cite research logs, and run records cite their output folders
+# (spine section 9.5), so nothing under runs/ is ignored as a build product
 !research/**/*.log
+!runs/**/
+!runs/**/*.log
+
+# Editor and OS files, which record user names, host names and paths
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+*~
+.#*
+\#*#
+.claude/settings.local.json
+
+# Secrets and private material (I9, OD-11): credentials, GATE-privacy's term list, which lives in
+# CI configuration and outside the repository, and the raw review JSONs, which the digests replace
+.env*
+*.pem
+id_rsa*
+id_ed25519*
+privacy-terms*
+review-merged*.json
+research/reviews/**/*.json
+research/synthesis/**/*.json
+research/**/*review*.json
+
+# Reference solutions live in a private companion repository (spine section 11.1)
+labs/_solutions/
+# W0-S06's LAB-2 fixtures hold complete proofs; its harness reads them from --solutions DIR, so a copy left
+# in the pack never enters the public tree
+scripts/spikes/W0-S06/pack/lab2/Solution.lean
+scripts/spikes/W0-S06/pack/lab2/broken/
+scripts/spikes/W0-S06/pack/lab2/fixed/
+
+# Generated: the nightly lane writes it and publishes it to the nightly-status branch, never to the default
+# branch (status/README.md)
+status/nightly.json
 
 # third-party copies used by the spikes; restore them as research/evidence/THIRD-PARTY.md says
 research/evidence/A5v2/spectacle-run/site/spectacle/

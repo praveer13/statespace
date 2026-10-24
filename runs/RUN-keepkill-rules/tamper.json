@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "rules_sha256": "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+  "scenarios": [
+    {
+      "scenario": "the rules and the record as written (control)",
+      "planted_rules_sha256": null,
+      "exit_code": 0,
+      "keepkill_line": "ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json",
+      "gate_summary": "GATE-schema: PASS (21 checks)",
+      "expected": {
+        "exit_code": 0,
+        "keepkill": "ok"
+      },
+      "as_expected": true
+    },
+    {
+      "scenario": "one parameter changed after the fact (min_outcomes_per_arm 20 to 19)",
+      "planted_rules_sha256": "8c1aa47407cc56b572632cfda2490cfabc7713c8e47ebc754177bca50d933b7e",
+      "exit_code": 1,
+      "keepkill_line": "FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to 8c1aa47407cc56b572632cfda2490cfabc7713c8e47ebc754177bca50d933b7e, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+      "gate_summary": "GATE-schema: FAIL (1 of 21 checks failed)",
+      "expected": {
+        "exit_code": 1,
+        "keepkill": "FAIL"
+      },
+      "as_expected": true
+    },
+    {
+      "scenario": "a trailing newline added (whitespace only)",
+      "planted_rules_sha256": "30ed20b4774d9747d2cb924e0dba20c5334fb1181f24bcbb2f74af7392a9899c",
+      "exit_code": 1,
+      "keepkill_line": "FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to 30ed20b4774d9747d2cb924e0dba20c5334fb1181f24bcbb2f74af7392a9899c, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+      "gate_summary": "GATE-schema: FAIL (1 of 21 checks failed)",
+      "expected": {
+        "exit_code": 1,
+        "keepkill": "FAIL"
+      },
+      "as_expected": true
+    },
+    {
+      "scenario": "line endings converted to CRLF (a checkout with core.autocrlf)",
+      "planted_rules_sha256": "e45b630724a22fb8fb55504d8d95be0c942500221c1edf4bd10ed9098ae8b707",
+      "exit_code": 1,
+      "keepkill_line": "FAIL  keep/kill rules: content/governance/keepkill-rules.yaml hashes to e45b630724a22fb8fb55504d8d95be0c942500221c1edf4bd10ed9098ae8b707, but runs/RUN-keepkill-rules.json records 67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589: the rules changed after they were fixed",
+      "gate_summary": "GATE-schema: FAIL (1 of 21 checks failed)",
+      "expected": {
+        "exit_code": 1,
+        "keepkill": "FAIL"
+      },
+      "as_expected": true
+    },
+    {
+      "scenario": "the rules file removed, the record kept",
+      "planted_rules_sha256": null,
+      "exit_code": 1,
+      "keepkill_line": "FAIL  keep/kill rules: runs/RUN-keepkill-rules.json exists without content/governance/keepkill-rules.yaml",
+      "gate_summary": "GATE-schema: FAIL (1 of 21 checks failed)",
+      "expected": {
+        "exit_code": 1,
+        "keepkill": "FAIL"
+      },
+      "as_expected": true
+    },
+    {
+      "scenario": "the rules changed and the record re-hashed in the same change (a limit of this check)",
+      "planted_rules_sha256": "8c1aa47407cc56b572632cfda2490cfabc7713c8e47ebc754177bca50d933b7e",
+      "exit_code": 0,
+      "keepkill_line": "ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json",
+      "gate_summary": "GATE-schema: PASS (21 checks)",
+      "expected": {
+        "exit_code": 0,
+        "keepkill": "ok"
+      },
+      "as_expected": true
+    }
+  ]
+}

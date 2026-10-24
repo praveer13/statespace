@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W0-S08 harness</title>
+</head>
+<body>
+<p>W0-S08 harness page: it hosts one module worker and answers <code>window.runTask(task)</code>.</p>
+<script type="module">
+// The page owns one module worker, as the supervisor of the instrument origin does (architecture section 6.1).
+const t0 = performance.now()
+const worker = new Worker('/spec/browser/worker.mjs', { type: 'module' })
+let nextId = 1
+const pending = new Map()
+worker.onmessage = (e) => {
+  const m = e.data
+  if (m.progress) { console.log(m.progress); return }
+  const p = pending.get(m.id)
+  if (!p) return
+  pending.delete(m.id)
+  if (m.error) p.reject(new Error(m.error)); else p.resolve(m.result)
+}
+worker.onerror = (e) => { console.error('worker error: ' + e.message); for (const p of pending.values()) p.reject(new Error('worker error: ' + e.message)) }
+window.runTask = (task) => new Promise((resolve, reject) => {
+  const id = nextId++
+  const sent = performance.now()
+  pending.set(id, { resolve: (r) => resolve({ ...r, page_ms: performance.now() - sent, page_since_start_ms: performance.now() - t0 }), reject })
+  worker.postMessage({ id, ...task })
+})
+window.__pageReady = true
+</script>
+</body>
+</html>

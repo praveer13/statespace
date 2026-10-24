@@ -1,0 +1,84 @@
+{
+  "id": "RUN-z3-bv64-pyodide",
+  "title": "Under Pyodide in a Node harness, a recipient-wrap witness for B >= 0, M > 0, B + M < 0",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "under Pyodide in a Node harness, a recipient-wrap witness for `B ≥ 0, M > 0, B + M < 0`, a different query from RUN-z3-bv64's guarded one, so no same-query comparison exists yet",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3_solver-5.3.1.0 pyemscripten wheel on Pyodide 314.0.7",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21T16:12:38Z",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/scripts/z3unk.mjs",
+      "sha256": "014bd54673e79a20050a500314e7bf7c5134d9380376534ce4868afa11b9de87",
+      "bytes": 1937,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "# z3py in pyodide 314.0.7 under node v22.22.2, 2026-10-21T16:12:38Z",
+    "recipient-wrap sat [M = 9223372036854775803, B = 9223336852482686975]"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/z3-pyodide.log",
+      "sha256": "ead08dda83552b081d39e77a8f93561dde580e3c058887e1e588071388e76103",
+      "bytes": 572,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "verdict": "sat",
+    "witness": {
+      "M": "9223372036854775803",
+      "B": "9223336852482686975"
+    }
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null,
+    "node": "v22.22.2"
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the wheel; PyPI publishes z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl with SHA-256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90 (research/evidence/A5v2/z3pypi.json)"
+    },
+    {
+      "field": "image",
+      "reason": "the log names Node v22.22.2 and no container"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the script's usage line reads `node z3unk.mjs <pyodide dir> <z3 wheel>`"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from evidence/A5r3/z3-pyodide.log; A5r3/scripts/z3unk.mjs (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "A different query from RUN-z3-bv64: no sender guard and two variables, so no same-query comparison exists (spine section 9.5)."
+  ]
+}

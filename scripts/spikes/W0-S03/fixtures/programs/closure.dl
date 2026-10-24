@@ -1,0 +1,24 @@
+// The Souffle tutorial's transitive closure, plus negation over the recursive relation.
+.decl node(x: symbol)
+.decl edge(x: symbol, y: symbol)
+.input node
+.input edge
+.decl path(x: symbol, y: symbol)
+.decl unreachable(x: symbol, y: symbol)
+.output path
+.output unreachable
+
+path(x, y) :- edge(x, y).
+path(x, y) :- path(x, z), edge(z, y).
+unreachable(x, y) :- node(x), node(y), !path(x, y).
+
+.decl cycle(x: symbol)
+.decl mutual(x: symbol, y: symbol)
+.decl selfpair(x: symbol, y: symbol)
+.output cycle
+.output mutual
+.output selfpair
+
+cycle(x) :- path(x, x).
+mutual(x, y) :- path(x, y), path(y, x), x != y.
+selfpair(x, x) :- node(x).

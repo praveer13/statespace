@@ -1,0 +1,105 @@
+{
+  "id": "RUN-z3-starter",
+  "title": "The roadmap's starter on Z3 5.3.1: an overdraft witness, then unsat once the guard is added",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "Z3 5.3.1: the roadmap starter gives `sat [b = 0, amount = 1, a = 0]`, then `unsat`",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3-solver 5.3.1.0 from PyPI, installed by uv",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/z3_claims.py",
+      "sha256": "a558596e31782a8d3f0dc3a2062cb7cb713d71a93417d453b0818b6434cc592d",
+      "bytes": 3651,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "z3 version: 5.3.1",
+    "[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]",
+    "[1.3 guard added] unsat (0.00s) "
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/z3_5.3.1.txt",
+      "sha256": "21b93295b35ad28621cf6f28f87ded8bb64a20b4182cb7696b6e00d7d01aa4be",
+      "bytes": 1257,
+      "kind": "log"
+    },
+    {
+      "path": "research/spikes/RESULTS.md",
+      "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+      "bytes": 5758,
+      "kind": "results record"
+    }
+  ],
+  "values": {
+    "version": "5.3.1",
+    "starter": "sat",
+    "model": "[b = 0, amount = 1, a = 0]",
+    "guarded": "unsat"
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "results-2026-10-20",
+      "origin": "imported",
+      "purpose": "the earlier execution RESULTS.md records; its script and log are not on disk",
+      "started_at": "2026-10-20",
+      "argv": null,
+      "verdict_lines": [
+        "- `z3.get_version_string()` = **5.3.1**. npm `z3-solver` latest = **5.3.1** (modified 2026-10-16), unpacked 35.5 MB, `z3-built.wasm` 34.6 MB.",
+        "- Roadmap starter code reproduces exactly: `sat [b = 0, amount = 1, a = 0]`, then `unsat` after `amount <= a`."
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "uv did not log the wheel it installed; PyPI publishes z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl with SHA-256 3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386 (research/evidence/A5v2/z3pypi.json), the wheel uv selects on x86_64 Linux"
+    },
+    {
+      "field": "image",
+      "reason": "no container is recorded: the script's usage line runs it under uv on the host"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated; RESULTS.md, dated 2026-10-20, records the starter from an earlier execution"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from research/spikes/RESULTS.md; research/evidence/a2r3/out/z3_5.3.1.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

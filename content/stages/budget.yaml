@@ -1,0 +1,537 @@
+# The stage plans as data, for GATE-budget (spine section 11.2; W0-T06). scripts/verify-budget.mjs reads this
+# file together with docs/spine/SPINE.md and fails when they disagree or when a plan rule breaks:
+#   node scripts/verify-budget.mjs [--verbose] [--json] [--strict]
+#
+# What it holds
+#   rows        each stage's row of the spine's section 3.11 table, cell by cell as printed. The gate checks that
+#               every cell equals the spine's table, then recomputes every figure from the lesson and lab tables.
+#   plan        what the printed rows need beyond those tables: the order of the work inside a stage (from the stage
+#               specs' "Build this" cards), the lab stages that count as writing, and a few named extras.
+#   paths       the two published paths of spine section 3.0, as blocks of stage work.
+#   parameters  the planning constants. A parameter that the spine states carries the sentence that states it
+#               (`quote`), and the gate checks that the sentence is still there.
+#   claim_mints, planned_records, planned_records_ruling
+#               where the claim cadence places each claim, and the two records of S10 that no claim template covers.
+#               The spine says the gate cannot count such records, so the cadence is green only conditionally: each
+#               path prints a warning until the owner decides (see the comment above planned_records).
+#   additions, justifications, cut_list
+#               the displacement rule (V2-09), the section 12 justifications for lower-bound warnings, and the data
+#               the section 14 cut-list lint needs beyond the spine's own tables.
+#
+# Units. Hours are decimals as the spine prints them. Minutes are nominal lab or lesson minutes. Logged times from
+# learner-zero replace these estimates after each wave (spine section 3.0); edit the rows and the plan, and the
+# gate shows what no longer adds up.
+
+schema: statespace/budget@1
+
+parameters:
+  # Stage work per week: the hours left after the planned Keep block (spine section 3.0).
+  stage_work_h:
+    h6: 4.75
+    h10: 8.25
+    quote: "so a 6 h week gives at least 4.75 h of stage work and a 10 h week at least 8.25 h"
+  # The planned Keep block, in minutes a week.
+  keep_block_min:
+    h6: [45, 75]
+    h10: [60, 105]
+    quote: "the Keep block is planned at 45–75 min/week at 6 h/week and 60–105 min/week at 10 h/week"
+  # What the planned Keep block assumes each week (spine section 3.0), and what a Today session holds. A block's implied
+  # Keep load is the larger of its review minutes and the planned Today sessions, plus the other Keep items that run in
+  # the block: the weekly review and the retro always, the incidents once the Clearinghouse has opened, the keep-alive
+  # while Lean is idle. Reviews are done inside Today sessions, so they are not added to them. At their high figures
+  # (3 sessions of 12 minutes, the weekly review, the retro, an incident, the keep-alive) the items add to 74.5 of the
+  # planned 75 min/week, so the planned block is the sum that the model gives for S5 to S8.
+  keep_assumed:
+    today_sessions: {h6: 3, h10: 4}
+    incidents: {h6: 1, h10: 2}
+    today_session_min: [10, 12]
+    incident_min: [10, 15]
+    quotes:
+      - "The planned figures assume about three Today sessions and one Clearinghouse incident (10–15 minutes [D]) a week at 6 h/week, and about four sessions and two incidents at 10 h/week"
+      - "10–12 min, 3–5 times a week inside the Keep block"
+  # The Keep items that are not Today sessions.
+  keep_items:
+    weekly_review_min: 5
+    retro_min_per_month: 15
+    keep_alive_min: [20, 30]
+    keep_alive_every_weeks: [2, 3]
+    quotes:
+      - "the 5-minute weekly review"
+      - "15 minutes, re-prompted at stage start and re-entry"
+      - "20–30 min every 2–3 weeks while Lean is idle"
+  # Review load of one introduced KC: reviews times minutes each, spread over the window.
+  review_load:
+    window_days: 60
+    reviews_per_kc: 10
+    seconds_per_review: 120
+    quotes:
+      - "introduced KCs × about 10 graded reviews each"
+      - "about 2 minutes per review"
+      - "at least 8 graded opportunities in its first 60 days"
+  # Claim cadence (spine section 4.1), checked on both paths at 6 h/week. A gap is the stage work between two events,
+  # counted in the units of the sequences below (lessons, lab stages, Defences, notes and extras) at the high estimate.
+  # Reading is a column of the table that no unit holds (the spine gives reading per stage only), so a gap does not
+  # count it; the gate prints what it would add. An event is a claim minted, a specimen mounted, or a planned record.
+  cadence:
+    max_gap_weeks: 2
+    claims_by_week: 4
+    min_claims: 2
+    quote: "2 by about week 4; never more than 2 weeks without a new claim or specimen"
+  # Lesson minutes by tier (spine section 3.0). A step briefing (S10) is planned at the core rate.
+  lessons:
+    boot_min: 8
+    core_min: [40, 60]
+    bridge_min: [15, 25]
+    quote: "lessons (core 40–60 min, bridge 15–25 min, Boot 8 min)"
+  # Lab stages: nominal minutes up to a multiple (spine section 3.0).
+  labs:
+    proof_multiplier: 3
+    other_multiplier: 2
+    quote: "Lean proof stages are planned at up to 3× their nominal minutes (the stuck protocol parks a goal at 90 minutes); other stages at up to 2×"
+  # The arc projection of spine section 3.11: the totals row at the planning factor, with reserve weeks.
+  arc:
+    planning_factor: 1.6
+    reserve_weeks: 2
+    per_weeks: 12
+    quote: "At the pessimistic planning factor of 1.6 [buehler94] and two reserve weeks in every twelve, the arc projects to about"
+  # Roadmap bounds. A stage's bound is weeks times the stage work of a 6 h week; S1's roadmap time is in sessions.
+  roadmap:
+    session_h: 2.5
+    lower_bound_factor: 0.5
+    quotes:
+      - "S1's \"session\" read as at most 2.5 h"
+      - "warns, until a justification is logged in §12, when a stage's high estimate falls below half of the roadmap's lower bound × 4.75 h"
+      - "GATE-budget fails a stage whose high estimate exceeds the roadmap's upper bound in weeks × 4.75 h"
+
+stages:
+  S1:
+    title: Counterexample
+    rows:
+      read: "0.5–1.0"
+      lessons: "2.2–3.4"
+      build: "1.5–2.9"
+      write: "0.4–0.8"
+      defence: "0.75–1.25"
+      total: "5.3–9.4"
+      weeks_6: "1.1–2.0"
+      weeks_10: "0.6–1.1"
+      roadmap: "2–4 sessions (≤ 10 h)"
+      gate: pass
+    new_tools: [Z3Py]
+    # The write stage whose title does not say "write stage" (curriculum/S01-counterexample.md, time budget).
+    write_stages: [LAB-1.6]
+    # The first weekend (spine section 3.1) is Boot to LAB-1.6; S1.L4, S1.L5 and LAB-1.5 follow in week 2.
+    sequence: >-
+      S1.L0 LAB-1.1 S1.L1 LAB-1.2 S1.L2 S1.L3 LAB-1.3 LAB-1.4 LAB-1.6
+      S1.L4 S1.L5 LAB-1.5 DEFENCE
+  S2:
+    title: Proof
+    rows:
+      read: "3.0–5.0"
+      lessons: "4.4–6.8"
+      build: "5.4–12.1"
+      write: "1.8–3.0"
+      defence: "1.0–1.5"
+      total: "15.6–28.4"
+      weeks_6: "3.3–6.0"
+      weeks_10: "1.9–3.4"
+      roadmap: "3–6 wk"
+      gate: pass
+    new_tools: [Lean 4]
+    # The write stage whose title does not say "write stage" (curriculum/S02-proof.md, time budget).
+    write_stages: [LAB-2.7]
+    # S2.L0 is "a 15–20-minute unit" (spine section 3.2), not the 15–25 of a bridge.
+    lesson_minutes:
+      S2.L0: [15, 20]
+    extras:
+      NNG:
+        column: build
+        minutes: [180, 300]
+        what: Natural Number Game play, which the spine counts under Build (spine section 3.2)
+        source:
+          file: curriculum/S02-proof.md
+          quote: "plus 3–5 h of Natural Number Game play"
+      NOTE:
+        column: write
+        minutes: [90, 150]
+        what: technical note 1 (M-notes). The spine gives a technical note no hours; 90 to 150 minutes reproduces the Write cells of S2, S5, S7 and S9, which the gate checks
+    # The stage spec's default sequence (curriculum/S02-proof.md).
+    sequence: >-
+      S2.L0 S2.L1 NNG S2.L2 LAB-2.1 S2.L3 S2.L4 S2.L5 LAB-2.2 S2.L6 LAB-2.3 LAB-2.4
+      S2.L7 LAB-2.5 S2.L8 LAB-2.6 S2.L9 S2.L10 LAB-2.7 DEFENCE NOTE
+  S3:
+    title: Semantics
+    rows:
+      read: "2.0–4.0"
+      lessons: "3.5–5.5"
+      build: "5.0–12.0"
+      write: "0.3–0.7"
+      defence: "1.0–1.5"
+      total: "11.9–23.7"
+      weeks_6: "2.5–5.0"
+      weeks_10: "1.4–2.9"
+      roadmap: "4–8 wk"
+      gate: pass
+    new_tools: []
+    # Each lab stage follows the lesson whose "Build this" card names it last.
+    sequence: >-
+      S3.L1 LAB-3.1 S3.L2 LAB-3.2 S3.L3 S3.L4 LAB-3.3 S3.L5 S3.L6 LAB-3.4 LAB-3.5
+      S3.L7 LAB-3.7 S3.L8 S3.L9 LAB-3.6 LAB-3.8 LAB-3.9 LAB-3.10 LAB-3.11 DEFENCE
+  S4:
+    title: Obligations
+    rows:
+      read: "1.5–3.0"
+      lessons: "3.5–5.5"
+      build: "2.5–5.1"
+      write: "0.25–0.5"
+      defence: "1.0–1.5"
+      total: "8.8–15.6"
+      weeks_6: "1.9–3.3"
+      weeks_10: "1.1–1.9"
+      roadmap: "3–6 wk"
+      gate: pass
+    new_tools: []
+    sequence: >-
+      S4.L1 LAB-4.1 S4.L2 LAB-4.2 S4.L3 LAB-4.3 S4.L4 S4.L5 LAB-4.4 S4.L6 LAB-4.6
+      S4.L7 LAB-4.5 S4.L8 LAB-4.7 S4.L9 LAB-4.8 DEFENCE
+  S5:
+    title: Time
+    rows:
+      read: "2.5–4.0"
+      lessons: "3.5–5.5"
+      build: "1.7–3.4"
+      write: "1.8–3.2"
+      defence: "1.0–1.5"
+      total: "10.5–17.6"
+      weeks_6: "2.2–3.7"
+      weeks_10: "1.3–2.1"
+      roadmap: "3–6 wk"
+      gate: pass
+    new_tools: [TLA+]
+    extras:
+      NOTE:
+        column: write
+        minutes: [90, 150]
+        what: technical note 2 (M-notes), as in S2
+    sequence: >-
+      S5.L1 S5.L2 LAB-5.1 S5.L3 LAB-5.2 S5.L4 LAB-5.3 S5.L5 LAB-5.4 S5.L6 S5.L7 LAB-5.5
+      S5.L8 LAB-5.6 S5.L9 DEFENCE NOTE
+  S6:
+    title: Correspondence
+    rows:
+      read: "1.5–2.5"
+      lessons: "3.5–5.5"
+      build: "3.0–5.9"
+      write: "0.25–0.5"
+      defence: "1.0–1.5"
+      total: "9.2–15.9"
+      weeks_6: "1.9–3.3"
+      weeks_10: "1.1–1.9"
+      roadmap: "4–8 wk"
+      gate: pass
+    new_tools: [PostgreSQL]
+    sequence: >-
+      S6.L1 LAB-6.1 S6.L2 LAB-6.2 LAB-6.3 S6.L3 LAB-6.4 S6.L4 S6.L5 S6.L6 LAB-6.5
+      S6.L7 LAB-6.6 S6.L8 LAB-6.7 S6.L9 LAB-6.8 LAB-6.9 DEFENCE
+  S7:
+    title: Secrecy
+    rows:
+      read: "1.5–3.0"
+      lessons: "3.25–5.1"
+      build: "2.1–4.2"
+      write: "1.8–3.2"
+      defence: "1.0–1.5"
+      total: "9.7–17.0"
+      weeks_6: "2.0–3.6"
+      weeks_10: "1.2–2.1"
+      roadmap: "4–8 wk"
+      gate: pass
+    new_tools: [Soufflé]
+    extras:
+      NOTE:
+        column: write
+        minutes: [90, 150]
+        what: technical note 3 (M-notes), as in S2
+    # The recommended order of curriculum/S07-secrecy.md.
+    sequence: >-
+      S7.L1 LAB-7.1 S7.L2 LAB-7.2 S7.L3 LAB-7.3 S7.L4 LAB-7.4 S7.L5 S7.L6 S7.L7 LAB-7.5
+      S7.L8 LAB-7.6 LAB-7.7 DEFENCE NOTE
+  S8:
+    title: Effects
+    rows:
+      read: "1.0–2.0"
+      lessons: "2.6–4.1"
+      build: "2.5–5.1"
+      write: "0.25–0.5"
+      defence: "1.0–1.5"
+      total: "7.4–13.2"
+      weeks_6: "1.6–2.8"
+      weeks_10: "0.9–1.6"
+      roadmap: "3–6 wk"
+      gate: pass
+    new_tools: []
+    # The default order of curriculum/S08-effects.md: LAB-8.3 needs S8.L5.
+    sequence: >-
+      S8.L1 LAB-8.1 S8.L2 LAB-8.2 S8.L3 LAB-8.4 S8.L4 LAB-8.5 S8.L5 LAB-8.3
+      S8.L6 LAB-8.6 LAB-8.7 S8.L7 LAB-8.8 DEFENCE
+  S9:
+    title: Preservation
+    rows:
+      read: "2.0–4.0"
+      lessons: "3.5–5.5"
+      build: "6.5–18.3"
+      write: "1.8–3.2"
+      defence: "2.3–2.8"
+      total: "16.1–33.8"
+      weeks_6: "3.4–7.1"
+      weeks_10: "2.0–4.1"
+      roadmap: "6–10 wk"
+      gate: pass
+    new_tools: []
+    extras:
+      NOTE:
+        column: write
+        minutes: [90, 150]
+        what: technical note 4 (M-notes), as in S2
+    # Two mini-Defences (spine section 3.9), each half of the Defence cell. Half A: LAB-9.1 to S9.L4; half B: the rest.
+    sequence: >-
+      LAB-9.1 S9.L1 LAB-9.2 S9.L2 S9.L3 LAB-9.3 S9.L4 DEFENCE:A
+      S9.L5 LAB-9.4 S9.L6 LAB-9.5 LAB-9.6 LAB-9.7 LAB-9.8 LAB-9.9 LAB-9.10 S9.L7 S9.L8 LAB-9.11 S9.L9 LAB-9.12
+      DEFENCE:B NOTE
+  S10:
+    title: Assembly
+    rows:
+      read: "0.5–1.0"
+      lessons: "1.4–2.2 (step briefings)"
+      build: "2.5–5.1"
+      write: "6.3–12.4"
+      defence: "1.5–2.0"
+      total: "12.2–22.7"
+      weeks_6: "2.6–4.8"
+      weeks_10: "1.5–2.8"
+      roadmap: "open; final ≤6 wk"
+      gate: pass
+    new_tools: []
+    # S10.L1 to S10.L5 are built inside earlier labs; only the two step briefings are S10 lesson time.
+    briefings: [S10.L6, S10.L7]
+    extras:
+      REENTRY:
+        column: lessons
+        minutes: [5, 10]
+        what: re-entry cards for the steps built in earlier labs
+        source:
+          file: curriculum/S10-assembly.md
+          quote: "plus 5–10 min of re-entry cards"
+      CARDS:
+        column: write
+        minutes: [30, 45]
+        what: the claim cards for CL-10.1 and CL-10.2 (the stage spec prints 0.5 to 0.8 h)
+        source:
+          file: curriculum/S10-assembly.md
+          quote: "the CL-10.1 and CL-10.2 cards (0.5–0.8 h)"
+    # LAB-10.8 is one write stage of nine passes, four of a weekday window and five of a weekend window.
+    passes:
+      LAB-10.8: [25, 45, 45, 25, 45, 45, 25, 45, 25]
+    sequence: >-
+      LAB-10.1 REENTRY LAB-10.2 LAB-10.3 S10.L6 LAB-10.4 LAB-10.5 LAB-10.6 LAB-10.7
+      S10.L7 LAB-10.8 CARDS LAB-10.9 DEFENCE
+
+totals:
+  read: "16.0–29.5"
+  lessons: "31.4–49.1"
+  build: "32.7–74.1"
+  write: "15.0–28.0"
+  defence: "11.6–16.6"
+  total: "106.7–197.3"
+  weeks_6: "22.5–41.5"
+  weeks_10: "12.9–23.9"
+
+# A claim is minted at the last lab stage that its "Minted in" cell lists (the lesson teaches it, the stage mints it),
+# or at its lesson when the cell lists no lab stage; a claim minted in a [stretch] stage is not a planned event.
+# Two cells list a unit that does not mint the claim, and the cell itself says so.
+claim_mints:
+  CL-6.4:
+    unit: S6.L5
+    quote: "S6.L5; re-stamped from LAB-6.8's Bench receipt"
+  CL-9.2:
+    unit: LAB-9.6
+    quote: "minted after LAB-9.6 as"
+
+# Records that no claim template covers, which the stage spec schedules inside a multi-pass stage. The gate counts
+# them as events of the cadence rule, because without them LAB-10.8's nine passes leave a longer gap than two weeks
+# between CL-10.1 and CL-10.2 at the high estimate (the spine's template list has no event there).
+#
+# The spine does not allow that count, so the cadence is green only conditionally. The S10 spec (curriculum/
+# S10-assembly.md section 13, issue 9) asks GATE-budget to count these records. The spine's "Left unchanged, with
+# reasons" paragraph resolves that issue the other way: under "S10 issue 9, its cadence clause", GATE-budget plans the
+# cadence from templates, so it cannot count claims without one (the quote under planned_records_ruling below, which the
+# gate re-checks). The gate therefore says so where its result is read: each path prints a warning (a failure under
+# --strict) for as long as its cadence holds only with these records, together with the gap that it has without them.
+# TODO (owner): decide it. Claim templates for the two records in spine section 5.2 settle it, and this list and its
+# ruling go; a ruling that the gate counts scheduled records changes the spine's sentence, which the quote check then
+# reports, and the warning is revised with it.
+planned_records:
+  - id: records-configured
+    unit: LAB-10.8
+    after_pass: 4
+    what: "[C] claims minted from read-backs (pass 4 of LAB-10.8)"
+    source:
+      file: curriculum/S10-assembly.md
+      quote: "ENFORCED and CONFIGURED: mint [C] claims from read-backs of `transaction_isolation`, the server version and the row-security settings"
+  - id: records-not-covered
+    unit: LAB-10.8
+    after_pass: 6
+    what: "[N] lines and the erosion log (pass 6 of LAB-10.8)"
+    source:
+      file: curriculum/S10-assembly.md
+      quote: "ASSUMED, NOT COVERED and the erosion log"
+
+# The spine's ruling that the planned records go against (see the comment above them). The warning prints `item` and
+# `quote`; `asked_by` is the S10 spec's request that the ruling answers. The gate re-checks both sentences.
+planned_records_ruling:
+  item: "S10 issue 9, its cadence clause, under \"Left unchanged, with reasons\""
+  quote: "GATE-budget plans the cadence from templates before any learner writes, so it cannot count claims without a template"
+  asked_by:
+    file: curriculum/S10-assembly.md
+    quote: "claim@1 validation must accept claims without a template, and GATE-budget's cadence check must count them"
+
+paths:
+  # Roadmap order is the default: each stage whole, in order.
+  default:
+    label: roadmap order
+    blocks: [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10]
+    lean_idle: [S5, S6, S7, S8]
+    clearinghouse_after: S3
+    quotes:
+      - "Roadmap order is the default."
+      - "runs while Lean is idle (S5–S8 on the default path; S7 and the later S6 and S8 blocks on the builder's path)"
+      - "| Clearinghouse | the persistent world your components plug into | S3, after LAB-3 |"
+  # The builder's path (OD-3), block by block. The gate checks that the lessons, in this order, are the path that
+  # spine section 3.0 prints, and that the lab stages of S6 and S8 are the ones its table assigns to each block.
+  # DEFENCE and NOTE sit where a stage's last lab stage is done; `rest` is every unit not taken earlier on the path.
+  builder:
+    label: builder's path
+    lean_idle: [S7, S6-late, S8-late]
+    clearinghouse_after: S3
+    blocks:
+      - {id: S1, stage: S1}
+      - {id: S5-early, stage: S5, take: [S5.L1–S5.L8, LAB-5.1–LAB-5.6, DEFENCE, NOTE]}
+      - {id: S6-early, stage: S6, take: [S6.L1, S6.L2, S6.L6, S6.L7, LAB-6.1, LAB-6.5, LAB-6.6]}
+      - {id: S8-early, stage: S8, take: [S8.L1–S8.L4, LAB-8.1, LAB-8.2, LAB-8.4, LAB-8.5]}
+      - {id: S2, stage: S2}
+      - {id: S3, stage: S3}
+      - {id: S4, stage: S4}
+      - {id: S5-late, stage: S5, take: rest}
+      - {id: S7, stage: S7}
+      - {id: S6-late, stage: S6, take: rest}
+      - {id: S8-late, stage: S8, take: rest}
+      - {id: S9, stage: S9}
+      - {id: S10, stage: S10}
+
+# The section 14 cut list is read from the spine. Criterion (4) of the eligibility rule, "the only lesson of a
+# roadmap completion test or of a mechanic", is not in any spine table, so the bridges that the spine's section 14
+# names as sole lessons are listed here; the gate checks that its text still names each of them.
+cut_list:
+  # A section 12 item that accepts folding a bridge on a path where its receiving lesson comes ahead of a hard
+  # prerequisite of the KCs it receives: {bridge: S5.L9, path: builder, item: 48}. The item must name the bridge and the
+  # path. The gate warns about each such fold until an item accepts it; none is logged yet.
+  accepted: []
+  sole_lessons:
+    S6.L7: the only lesson for the roadmap's SERIALIZABLE-with-retries work
+    S4.L3: the only lesson for conditionals in S4's completion test
+    S6.L1: the only lesson for NULL and bag semantics in S6's completion test
+    S2.L0: the self-explanation unit itself
+  quotes:
+    - "S6.L7 is the only lesson for the roadmap's SERIALIZABLE-with-retries work"
+    - "S4.L3 (the only lesson for conditionals in S4's completion test), S6.L1 (the only lesson for NULL and bag semantics in S6's) and S2.L0 (the self-explanation unit itself) are not eligible either"
+
+# Additions to the plan and what each displaces (V2-09). An adopted addition names its displacement: items that moved
+# to stretch (the gate checks that they are stretch stages), or `headroom` when the stage still fits its roadmap bound
+# with the addition in its rows. A waiting addition is not in the rows; the gate shows whether its stage has room.
+additions:
+  - id: S1.L0
+    stage: S1
+    status: adopted
+    displaces: "Course 00's six lessons, now the drawers D-01–D-06 plus Boot"
+    displaces_ids: [D-01, D-02, D-03, D-04, D-05, D-06]
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "Course 00's six lessons → drawers plus Boot."
+  - id: S2.L0
+    stage: S2
+    status: adopted
+    displaces: "the C3.1–C3.2 and C4.3 proofs, now stretch"
+    displaces_ids: [LAB-3.12, LAB-3.13, LAB-4.9]
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "The C3.1–C3.2 and C4.3 proofs → stretch. That frees time for 2.0 and 4.6 (CTI)."
+  - id: S4.L6
+    stage: S4
+    status: adopted
+    displaces: "the C3.1–C3.2 and C4.3 proofs, now stretch"
+    displaces_ids: [LAB-3.12, LAB-3.13, LAB-4.9]
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "The C3.1–C3.2 and C4.3 proofs → stretch. That frees time for 2.0 and 4.6 (CTI)."
+  - id: S5.L9
+    stage: S5
+    status: adopted
+    displaces: "v1 lesson 5.9, merged into v1 lesson 6.8"
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "v1 5.9 → merged into 6.8; the new 5.9 is \"MODEL-CHECKED ≤ N → PROVED for every N\"."
+  - id: S6.L5
+    stage: S6
+    status: adopted
+    displaces: "v1 lesson 6.5, now a test-out plus a tablespace bridge (the prerequisite card D-11)"
+    displaces_ids: [D-11]
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "v1 6.5 → test-out plus a tablespace bridge; the new 6.5 is \"Enforced at commit\"."
+  - id: S7.L4
+    stage: S7
+    status: adopted
+    displaces: "v1 lesson 7.4 (Alloy), now the drawer D-16 and the stretch stage LAB-7.8"
+    displaces_ids: [D-16, LAB-7.8]
+    source:
+      file: research/synthesis/BRIEF.md
+      quote: "v1 7.4 (Alloy) → drawer; the new 7.4 is RLS."
+  # OD-15's lab stages for the roadmap's hands-on acts and S8's liveness guarantee were paid from the stages' headroom.
+  - id: LAB-3.6
+    stage: S3
+    status: adopted
+    displaces: headroom
+    source:
+      quote: "the roadmap's three hands-on acts that were lesson-only now have lab stages (LAB-3.6 `force move`, LAB-4.7 the miscompiler, LAB-7.6 revocation), S8's progress guarantees have a liveness stage (LAB-8.3)"
+  - id: LAB-4.7
+    stage: S4
+    status: adopted
+    displaces: headroom
+    source:
+      quote: "the roadmap's three hands-on acts that were lesson-only now have lab stages (LAB-3.6 `force move`, LAB-4.7 the miscompiler, LAB-7.6 revocation), S8's progress guarantees have a liveness stage (LAB-8.3)"
+  - id: LAB-7.6
+    stage: S7
+    status: adopted
+    displaces: headroom
+    source:
+      quote: "the roadmap's three hands-on acts that were lesson-only now have lab stages (LAB-3.6 `force move`, LAB-4.7 the miscompiler, LAB-7.6 revocation), S8's progress guarantees have a liveness stage (LAB-8.3)"
+  - id: LAB-8.3
+    stage: S8
+    status: adopted
+    displaces: headroom
+    source:
+      quote: "the roadmap's three hands-on acts that were lesson-only now have lab stages (LAB-3.6 `force move`, LAB-4.7 the miscompiler, LAB-7.6 revocation), S8's progress guarantees have a liveness stage (LAB-8.3)"
+  # Proposed by a stage spec, not in the rows, and waiting for the owner to name a displacement.
+  - id: LAB-2.9
+    stage: S2
+    status: waiting
+    adds_h: [0.75, 2.25]
+    displaces: null
+    source:
+      file: curriculum/S02-proof.md
+      quote: "making LAB-2.9 required would add 0.75–2.25 h [D], so it waits for a named displacement"
+
+# A lower-bound warning (a stage's high estimate below half of the roadmap's lower bound) is cleared only by a
+# justification in spine section 12. List each as {stage: S8, item: 28}; the gate checks that the numbered item exists
+# and names the stage and its lower bound. No stage warns today, so none is listed.
+justifications: []

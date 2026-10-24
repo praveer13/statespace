@@ -1,0 +1,121 @@
+{
+ "MERGE command cannot affect row a second time": {
+  "sqlstate": "21000",
+  "count": 4,
+  "detail": [],
+  "hint": [
+   "Ensure that not more than one source row matches any one target row."
+  ]
+ },
+ "bigint out of range": {
+  "sqlstate": "22003",
+  "count": 12,
+  "detail": [],
+  "hint": []
+ },
+ "conflicting key value violates exclusion constraint \"booking_during_excl\"": {
+  "sqlstate": "23P01",
+  "count": 10,
+  "detail": [
+   "Key (during)=([15,25)) conflicts with existing key (during)=([10,20))."
+  ],
+  "hint": []
+ },
+ "could not serialize access due to concurrent update": {
+  "sqlstate": "40001",
+  "count": 118,
+  "detail": [],
+  "hint": []
+ },
+ "could not serialize access due to read/write dependencies among transactions": {
+  "sqlstate": "40001",
+  "count": 266,
+  "detail": [
+   "Reason code: Canceled on conflict out to pivot <xid>, during read.",
+   "Reason code: Canceled on identification as a pivot, during commit attempt.",
+   "Reason code: Canceled on identification as a pivot, during conflict in checking.",
+   "Reason code: Canceled on identification as a pivot, during write."
+  ],
+  "hint": [
+   "The transaction might succeed if retried."
+  ]
+ },
+ "current transaction is aborted, commands ignored until end of transaction block": {
+  "sqlstate": "25P02",
+  "count": 32,
+  "detail": [],
+  "hint": []
+ },
+ "deadlock detected": {
+  "sqlstate": "40P01",
+  "count": 50,
+  "detail": [
+   "Process <pid> waits for AccessExclusiveLock on relation <oid> of database <oid>; blocked by Process <pid>.\nProcess <pid> waits for AccessExclusiveLock on relation <oid> of database <oid>; blocked by Process <pid>.\nProcess <pid>: LOCK TABLE a1 IN ACCESS EXCLUSIVE MODE;\nProcess <pid>: LOCK TABLE a1 IN ACCESS EXCLUSIVE MODE;",
+   "Process <pid> waits for ShareLock on transaction <xid>; blocked by Process <pid>.\nProcess <pid> waits for ShareLock on transaction <xid>; blocked by Process <pid>.\nProcess <pid>: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;\nProcess <pid>: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;",
+   "Process <pid> waits for ShareLock on transaction <xid>; blocked by Process <pid>.\nProcess <pid> waits for ShareLock on transaction <xid>; blocked by Process <pid>.\nProcess <pid>: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;\nProcess <pid>: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;"
+  ],
+  "hint": [
+   "See server log for query details."
+  ]
+ },
+ "duplicate key value violates unique constraint \"invoice_pkey\"": {
+  "sqlstate": "23505",
+  "count": 4,
+  "detail": [
+   "Key (year, invoice_number)=(2016, 3) already exists."
+  ],
+  "hint": []
+ },
+ "duplicate key value violates unique constraint \"kv_pkey\"": {
+  "sqlstate": "23505",
+  "count": 44,
+  "detail": [
+   "Key (k)=(1) already exists."
+  ],
+  "hint": []
+ },
+ "duplicate key value violates unique constraint \"target_pkey\"": {
+  "sqlstate": "23505",
+  "count": 6,
+  "detail": [
+   "Key (key)=(1) already exists."
+  ],
+  "hint": []
+ },
+ "duplicate key value violates unique constraint \"test_pkey\"": {
+  "sqlstate": "23505",
+  "count": 4,
+  "detail": [
+   "Key (i)=(42) already exists."
+  ],
+  "hint": []
+ },
+ "new row violates row-level security policy for table \"racct\"": {
+  "sqlstate": "42501",
+  "count": 6,
+  "detail": [],
+  "hint": []
+ },
+ "tuple to be deleted was already modified by an operation triggered by the current command": {
+  "sqlstate": "27000",
+  "count": 2,
+  "detail": [],
+  "hint": [
+   "Consider using an AFTER trigger instead of a BEFORE trigger to propagate changes to other rows."
+  ]
+ },
+ "tuple to be locked was already moved to another partition due to concurrent update": {
+  "sqlstate": "40001",
+  "count": 4,
+  "detail": [],
+  "hint": []
+ },
+ "tuple to be updated was already modified by an operation triggered by the current command": {
+  "sqlstate": "27000",
+  "count": 2,
+  "detail": [],
+  "hint": [
+   "Consider using an AFTER trigger instead of a BEFORE trigger to propagate changes to other rows."
+  ]
+ }
+}

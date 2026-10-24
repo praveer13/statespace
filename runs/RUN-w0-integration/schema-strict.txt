@@ -1,0 +1,32 @@
+GATE-schema
+  ok    schemas: 6 published (claim, defs, event, ir, receipt, run); 5 describe a value, 3 of them tagged records; subset and portable patterns hold
+  ok    drafts: 1 draft parse; drafts are not published and generate no types
+  ok    expected schemas: defs, claim, event, ir present
+  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:be05b030b77b...)
+  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)
+  ok    package loads: @statespace/schema imports under Node and embeds every published schema
+  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)
+  ok    fixtures: 36 valid and 134 invalid record fixtures, 149 values for 14 shared definitions
+  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (54 object types across all schemas) and Python
+  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads
+  ok    records: 97 files declare a statespace/... schema: 70 JSON records validated, 0 YAML records validated
+  note  records: budget (1 file), id-proposals (1 file), ids (1 file), nightly-status (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here
+  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \p{Zs}; x-statementHash is written once
+  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)
+  ok    python: Python 3.13.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3
+  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree
+  note  dialect probes: $ before a final newline (ECMAScript false, Python true)
+  note  dialect probes: \d on an Arabic-Indic digit (ECMAScript false, Python true)
+  note  dialect probes: \w on e with an acute accent (ECMAScript false, Python true)
+  note  dialect probes: . on a carriage return (ECMAScript false, Python true)
+  note  dialect probes: . on a line separator (ECMAScript false, Python true)
+  note  dialect probes: \s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)
+  note  dialect probes: \s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)
+  ok    meta-schema: 7 schemas pass the draft 2020-12 meta-schema (jsonschema)
+  ok    validators agree: 13147 documents (168 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 70 repository records, 12659 generated mutants): TypeScript and Python reach the same verdict on all; 2110 valid, 11037 invalid; every invalid fixture fails on its stated keyword and path in both
+  ok    yaml: 2 YAML records read by PyYAML and validated by both validators
+  ok    types in sync: 47 object types and 21 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (54 object types) agrees too
+  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points
+  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)
+  ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json
+GATE-schema: PASS (22 checks, strict; 6.0 s)

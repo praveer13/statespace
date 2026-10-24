@@ -1,0 +1,125 @@
+Parsed test spec with 5 sessions
+
+starting permutation: s1b s1rt s2b s2rt s1wt s2wt s1c s2c plan_tiny chk
+step s1b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1rt: SELECT v FROM tiny WHERE id = 1;
+v
+-
+0
+(1 row)
+
+step s2b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2rt: SELECT v FROM tiny WHERE id = 2;
+v
+-
+0
+(1 row)
+
+step s1wt: UPDATE tiny SET v = v + 1 WHERE id = 1 RETURNING id, v;
+id|v
+--+-
+ 1|1
+(1 row)
+
+step s2wt: UPDATE tiny SET v = v + 1 WHERE id = 2 RETURNING id, v;
+id|v
+--+-
+ 2|1
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step plan_tiny: EXPLAIN (COSTS OFF) SELECT v FROM tiny WHERE id = 1;
+QUERY PLAN        
+------------------
+Seq Scan on tiny  
+  Filter: (id = 1)
+(2 rows)
+
+step chk: SELECT (SELECT v FROM tiny WHERE id = 1) AS tiny1, (SELECT v FROM tiny WHERE id = 2) AS tiny2, (SELECT v FROM big WHERE id = 1) AS big1, (SELECT v FROM big WHERE id = 1000) AS big1000;
+tiny1|tiny2|big1|big1000
+-----+-----+----+-------
+    1|    0|   0|      0
+(1 row)
+
+
+starting permutation: s1b s1rb s2b s2rb s1wb s2wb s1c s2c plan_big chk
+step s1b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1rb: SELECT v FROM big WHERE id = 1;
+v
+-
+0
+(1 row)
+
+step s2b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2rb: SELECT v FROM big WHERE id = 1000;
+v
+-
+0
+(1 row)
+
+step s1wb: UPDATE big SET v = v + 1 WHERE id = 1 RETURNING id, v;
+id|v
+--+-
+ 1|1
+(1 row)
+
+step s2wb: UPDATE big SET v = v + 1 WHERE id = 1000 RETURNING id, v;
+  id|v
+----+-
+1000|1
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step plan_big: EXPLAIN (COSTS OFF) SELECT v FROM big WHERE id = 1;
+QUERY PLAN                      
+--------------------------------
+Index Scan using big_pkey on big
+  Index Cond: (id = 1)          
+(2 rows)
+
+step chk: SELECT (SELECT v FROM tiny WHERE id = 1) AS tiny1, (SELECT v FROM tiny WHERE id = 2) AS tiny2, (SELECT v FROM big WHERE id = 1) AS big1, (SELECT v FROM big WHERE id = 1000) AS big1000;
+tiny1|tiny2|big1|big1000
+-----+-----+----+-------
+    0|    0|   1|      1
+(1 row)
+
+
+starting permutation: s3b s3rb s4b s4rb s3wb s4wb s3c s4c chk
+step s3b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s3rb: SELECT v FROM big WHERE id = 1;
+v
+-
+0
+(1 row)
+
+step s4b: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s4rb: SELECT v FROM big WHERE id = 1000;
+v
+-
+0
+(1 row)
+
+step s3wb: UPDATE big SET v = v + 1 WHERE id = 1 RETURNING id, v;
+id|v
+--+-
+ 1|1
+(1 row)
+
+step s4wb: UPDATE big SET v = v + 1 WHERE id = 1000 RETURNING id, v;
+  id|v
+----+-
+1000|1
+(1 row)
+
+step s3c: COMMIT;
+step s4c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT (SELECT v FROM tiny WHERE id = 1) AS tiny1, (SELECT v FROM tiny WHERE id = 2) AS tiny2, (SELECT v FROM big WHERE id = 1) AS big1, (SELECT v FROM big WHERE id = 1000) AS big1000;
+tiny1|tiny2|big1|big1000
+-----+-----+----+-------
+    0|    0|   1|      0
+(1 row)
+

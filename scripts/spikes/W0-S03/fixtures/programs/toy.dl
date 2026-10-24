@@ -1,0 +1,12 @@
+// RUN-z3-fixedpoint's toy program (curriculum/S07-secrecy.md S7.L1, LAB-7.1), over numbers.
+.decl member(u: number, d: number)
+.decl shared(u: number, d: number)
+.decl revoked(u: number, d: number)
+.decl canread(u: number, d: number)
+.input member
+.input shared
+.input revoked
+.output canread
+
+canread(u, d) :- member(u, d).
+canread(u, d) :- shared(u, d), !revoked(u, d).

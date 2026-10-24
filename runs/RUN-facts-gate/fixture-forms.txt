@@ -1,0 +1,20 @@
+GATE-facts (root packages/runs/test/fixtures/facts/forms)
+  read  2 files (1 of learner copy), 38 units; 3 run records (0 with a TTL); content/registry/: 1 fact (1 with a TTL) and 0 errata
+  pass  11 value tags stated by their sentences; 5 value references naming one value (1 waiting for its run); 1 fact reference; 5 run outputs in learner copy checked; 6 citations and 3 format placeholders (nothing to compare)
+  date  TTLs judged on 2026-10-24
+  FAIL  values  docs/forms.md:23: the sentence does not state RUN-cvc5-alethe#values.version_printed, which is 1.4.2-modified; it states "1.4.2": "The pip wheel prints its version as 1.4.2 [X RUN-cvc5-alethe#values.version_printed]."
+  FAIL  values  docs/forms.md:25: the sentence does not state RUN-z3-starter#values.guarded, which is unsat; it states "sat": "On the guarded query Z3 answers `sat` [X RUN-z3-starter#values.guarded]."
+  FAIL  values  docs/forms.md:27: the sentence does not state RUN-z3-starter#values.starter, which is sat; it states "unsat": "On the starter Z3 answers `unsat` [X RUN-z3-starter#values.starter]."
+  FAIL  values  docs/forms.md:29: the sentence does not state RUN-spectacle#values.trace_length_w2, which is 5; it states "15-state": "Spectacle's two-worker counterexample is a 15-state trace [X RUN-spectacle#values.trace_length_w2]."
+  FAIL  values  docs/forms.md:31: [X RUN-phone-pyodide#values.first_load_bytes]: runs/RUN-phone-pyodide.json is not on disk, so the value the sentence states cannot be checked (a value tag claims an executed run)
+  FAIL  values  docs/forms.md:39: {{run:RUN-spectacle#values.distinct_states}} names an object with keys w2, w3, w4, w5, not one value a reader can read; name a member, such as values.distinct_states.w2
+  FAIL  values  docs/forms.md:41: {{run:RUN-spectacle#values.states_per_s.chromium}} names a list of 4 items, not one value a reader can read; name a member, such as values.states_per_s.chromium.0
+  FAIL  values  docs/forms.md:43: {{run:RUN-spectacle#outputs.values.trace_length_w2}} uses ARCHITECTURE.md's spelling outputs.values; run@1 keeps named values at the top level of the record, so write {{run:RUN-spectacle#values.trace_length_w2}}
+  FAIL  values  docs/forms.md:45: {{run:RUN-spectacle#values.no_such_value}} names nothing in runs/RUN-spectacle.json; values has distinct_states, states_per_s, trace_length_w2
+  FAIL  facts  docs/forms.md:57: {{fact:tool.no-such.fact}} names no fact in content/registry/facts.json
+  FAIL  values  docs/forms.md:61: [X RUN-spectacle#values.trace_length_w2] stands alone after its sentence's full stop, so no sentence states 5: put the tag inside the sentence it checks, before the full stop
+  FAIL  copy  content/stages/S5/fixture.md:3: learner copy types "5-state" (a count) in a sentence about a run; print it from the record: {{run:RUN-spectacle#values.trace_length_w2}} (ARCHITECTURE.md section 18, item 14): "With two workers, Spectacle shows a 5-state trace {{run:RUN-spectacle}}."
+  FAIL  copy  content/stages/S5/fixture.md:9: learner copy types "Z3 5.3.1" (a version) in a sentence about a run; print it from the record: {{run:RUN-z3-starter#version}} or {{run:RUN-z3-starter#values.version}} (ARCHITECTURE.md section 18, item 14): "Z3 5.3.1 answers the starter {{run:RUN-z3-starter}}."
+  FAIL  copy  content/stages/S5/fixture.md:15: learner copy types "5 states" (a count) in a sentence about a run; print it from the record: {{run:RUN-spectacle#values.trace_length_w2}} (ARCHITECTURE.md section 18, item 14): "Its two-worker trace has 5 states {{run:RUN-spectacle}}."
+  FAIL  copy  content/stages/S5/fixture.md:17: learner copy types "6-state" (a count) in a sentence about a run; no value of RUN-spectacle is "6-state", so check it against the run, then print it with a value reference, {{run:RUN-id#values.<name>}} (ARCHITECTURE.md section 18, item 14): "With two workers, Spectacle shows a 6-state trace {{run:RUN-spectacle}}."
+GATE-facts: FAIL (15 findings; 11 value tags stated, 5 value references, 1 fact, 0 TTL warnings; 0.0 s)

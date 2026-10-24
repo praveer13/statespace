@@ -1,0 +1,99 @@
+{
+  "schema": "statespace/goal-strip-spike@0",
+  "id": "Ledger.transfer_nonneg",
+  "theorem": "transfer_nonneg",
+  "source": {
+    "file": "Ledger.lean",
+    "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb"
+  },
+  "request": "$/lean/plainGoal",
+  "tactics": [
+    "unfold transfer",
+    "split",
+    "simp_all",
+    "omega"
+  ],
+  "states": [
+    {
+      "when": "before",
+      "index": 0,
+      "line": 19,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ s.a",
+          "hb : 0 ≤ s.b",
+          "⊢ 0 ≤ (transfer s n).a ∧ 0 ≤ (transfer s n).b"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 1,
+      "line": 20,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ s.a",
+          "hb : 0 ≤ s.b",
+          "⊢ 0 ≤ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a ∧",
+          "    0 ≤ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 2,
+      "line": 20,
+      "character": 12,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ s.a",
+          "hb : 0 ≤ s.b",
+          "h✝ : 0 ≤ n ∧ n ≤ s.a",
+          "⊢ 0 ≤ { a := s.a - n, b := s.b + n }.a ∧ 0 ≤ { a := s.a - n, b := s.b + n }.b"
+        ],
+        [
+          "case isFalse",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ s.a",
+          "hb : 0 ≤ s.b",
+          "h✝ : ¬(0 ≤ n ∧ n ≤ s.a)",
+          "⊢ 0 ≤ s.a ∧ 0 ≤ s.b"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 3,
+      "line": 20,
+      "character": 25,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "ha : 0 ≤ s.a",
+          "hb : 0 ≤ s.b",
+          "h✝ : 0 ≤ n ∧ n ≤ s.a",
+          "⊢ 0 ≤ s.b + n"
+        ]
+      ]
+    },
+    {
+      "when": "end",
+      "index": 4,
+      "line": 20,
+      "character": 30,
+      "goals": []
+    }
+  ]
+}

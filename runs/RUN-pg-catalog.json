@@ -1,0 +1,1702 @@
+{
+ "id": "RUN-pg-catalog",
+ "task": "W0-S09",
+ "title": "PostgreSQL 18.6 isolation catalog: rows H01-H24 in isolationtester format, the upstream baseline, the SERIALIZABLE behavior of 40001, 40P01, 23505 and 23P01, and the seeded GEN-anomaly-id grid",
+ "engine": "postgres",
+ "version": "18.6",
+ "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+ "binary": "usr/lib/postgresql/18/bin/postgres inside the postgres:18 image (the server under test)",
+ "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+ "harness": {
+  "name": "isolationtester",
+  "version": "18.6",
+  "version_string": "isolationtester (PostgreSQL) 18.6",
+  "binary_sha256": "e2547e04ddba546e77740c64e8186838efaa450ca67b65d1ca7faba1d0de4194",
+  "binary": "src/test/isolation/isolationtester, built from postgresql-18.6.tar.bz2 and run beside the server"
+ },
+ "server": {
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "image": "postgres:18",
+  "image_id": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "repo_digest": "postgres@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "settings": {
+   "deadlock_timeout": "1s",
+   "default_transaction_isolation": "read committed",
+   "max_connections": "100",
+   "shared_buffers": "128MB",
+   "fsync": "on",
+   "synchronous_commit": "on",
+   "max_prepared_transactions": "0",
+   "io_method": "worker",
+   "autovacuum": "on",
+   "datestyle": "ISO, MDY",
+   "TimeZone": "Etc/UTC",
+   "max_pred_locks_per_transaction": "64",
+   "max_pred_locks_per_relation": "-2",
+   "max_pred_locks_per_page": "2",
+   "enable_seqscan": "on",
+   "enable_indexscan": "on",
+   "logging_collector": "on",
+   "log_destination": "csvlog"
+  }
+ },
+ "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+ "recorded_at": "2026-10-24T14:46:03Z",
+ "started_at": "2026-10-24T14:23:49Z",
+ "argv": [
+  [
+   "python3",
+   "-I",
+   "scripts/spikes/W0-S09/make_rows.py"
+  ],
+  [
+   "python3",
+   "-I",
+   "scripts/spikes/W0-S09/run_catalog.py"
+  ],
+  [
+   "python3",
+   "-I",
+   "scripts/spikes/W0-S09/run_grid.py",
+   "--passes",
+   "2"
+  ],
+  [
+   "python3",
+   "-I",
+   "scripts/spikes/W0-S09/record.py"
+  ]
+ ],
+ "env": {
+  "W0S09_PGSRC": "<postgresql-18.6 source tree, built>",
+  "W0S09_CONTAINER": "<container>",
+  "W0S09_TARBALL": "<postgresql-18.6.tar.bz2>",
+  "W0S09_BUILDLOG": "<build log>"
+ },
+ "engine_argv": [
+  "docker exec -i -e PGAPPNAME=<tag> -e PG_TEST_TIMEOUT_DEFAULT=10 <container> <build>/src/test/isolation/isolationtester \"host=/var/run/postgresql user=postgres dbname=iso\" < <spec>",
+  "PGDATESTYLE='Postgres, MDY' is added for receipt-report and its variant, as pg_regress sets it"
+ ],
+ "inputs": [
+  {
+   "url": "https://ftp.postgresql.org/pub/source/v18.6/postgresql-18.6.tar.bz2",
+   "sha256": "555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f",
+   "bytes": 22632314,
+   "role": "PostgreSQL 18.6 source tarball (the tester and the 25 upstream specs and expected outputs come from it)"
+  },
+  {
+   "path": "content/pg-catalog/H01-lost-update-rmw.spec",
+   "sha256": "f4f2cec6661bed35810a64122be5f3caf1e5cdf0dda163e0b834c3bc55135161",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H02-conditional-update.spec",
+   "sha256": "99d3ebe0269c644d41e19524e663e563fc068f2274e02f219df569c2af7e38bb",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H03-recheck-misses-a-row.spec",
+   "sha256": "de26a10208765213a982ae2ec9ec6f612ee2c1fc879054633473f97eb47a33c1",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H04-read-skew.spec",
+   "sha256": "672c7d0bfc66cebebc4df06d56ecb41b161f720dc9585c2d7bc43edb2ea9fd16",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H05-write-skew-team-sum.spec",
+   "sha256": "620027d6b0e5733fb7ecd86250641072c0172245c5d35b908ac1540f69adff0f",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H06a-predicate-write-skew-mytab.spec",
+   "sha256": "a3d664fbef918d7d45f1a90f86ab68cbe81ff4ef8a48b7a723aee23cf4afeac0",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H06b-predicate-write-skew-holds.spec",
+   "sha256": "9210a7773bb0fbc2c734fb1d19686f31652a1c1c2ffcf79ab080dd2447e78174",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H09-phantom.spec",
+   "sha256": "b30911b820735bea64f2f60332ef3df35deb16659c6d4cd76da320ab5d2eae07",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H10-mixed-levels.spec",
+   "sha256": "af7f652ebba57eabb05a5aad7cf5e61d1d79995894e5f0e6319b615e144dc425",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H11-false-positive-predicate-lock.spec",
+   "sha256": "0a29c0cdc416933fca41909e4204bc7ceab0b6814b0a545b652c1a5ef680ef72",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H12a-unique-violation-under-serializable.spec",
+   "sha256": "48eaab192f0680160aeba7484259106ad633873e557c03a9a4f3d82c54c80599",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H12b-exclusion-violation-under-serializable.spec",
+   "sha256": "b9edb769e5bf0cce22ab5233dd4101f7c062b2f1be6da56ef5ab038be379184a",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H13-on-conflict-do-update-invisible-row.spec",
+   "sha256": "68454330318e1e30b16159ee89ae27c3dab4469220b840b8f033826fa97960fb",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H14-merge-no-insert-or-update-guarantee.spec",
+   "sha256": "a7a85139c66fd2928e6944900358bcd42a42afcb01e9b2620c23ccfcd7abfe5c",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H15-skip-locked-inconsistent-view.spec",
+   "sha256": "1cdcd58f4a64795290087e50fabb815771f040cdd921d1e7729a4bd9e870d2b5",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H16-order-by-for-update-out-of-order.spec",
+   "sha256": "2eb8e687bda66021ed3ab585b0b801c084084f4e770a3390e73848b00e1ebda7",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H17-rls-policy-subquery-race.spec",
+   "sha256": "6fed3927dbcdf24618112328c326355030f122a36ee28bcfb0d5dffa1d7f0e81",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H18-null-in-three-predicates.spec",
+   "sha256": "9a6217eee18eeff71f3648f4513275e4f07bb21aff2d9fa0abba38635c2ce9a1",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H19-bigint-overflow-refused.spec",
+   "sha256": "9a6242ca5e738028dae806904a30021d82f6e0ef635cd8c72ef86137645edd71",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H20-high-water-mark-skips-late-commit.spec",
+   "sha256": "fc0601b73db609f90aa5f301dba13c99dd1d75c6cd9233a5e0c317598230d13b",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H22a-opposite-order-moves.spec",
+   "sha256": "61462db5e0916d223af6ab5e198993928c94cbc24182fc5dbf7e3ccc267f8bf5",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H22b-ascending-order-moves.spec",
+   "sha256": "6119574cbd6336326dcbac0b8d77091bd5e2517a94a567fb1f0690087b027ca9",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H23-serializable-holds-retry.spec",
+   "sha256": "8e984639c87245c9cf29e0af0e13319a3712fa1e4b19812bacd81a4e6f3d308c",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "content/pg-catalog/H24-conditional-update-retry.spec",
+   "sha256": "c9185c4bdcaa16c5f35ed615b08c9a16e74821c264334c37c4c51fd4d7ee0896",
+   "role": "catalog row spec"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/iso.py",
+   "sha256": "26795eaa6ea9f714f7093406e3da5d0c093e96433aa3ddc65c517a23f2c73a4e",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/make_rows.py",
+   "sha256": "11de4c60908a7ab9279a5e8e0720e120504422a5e7fa3ea6db1f8ad9e5e16e73",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/patterns.py",
+   "sha256": "056794d9adeec87db5d760621df57367b1f1dd4e84ae3168fe0ff00f62035ab6",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/record.py",
+   "sha256": "8557390dc2338c9f165e488fecee59c118c5d0d9d7ad286a5904809212105d68",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/rows.py",
+   "sha256": "fc272f735087149b97d03529fe3ed8920da8294b0822bb427a7de839601c05b5",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/run_catalog.py",
+   "sha256": "b3244b9c9e2c4604851fd18353f849fb3b378975c4357ded38ef82f9e0114900",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/run_grid.py",
+   "sha256": "ce3a2e6ecc8fd4e8fcf56077cc6b5830738463eccdb940a5127581582840b7a2",
+   "role": "script"
+  },
+  {
+   "path": "scripts/spikes/W0-S09/verify.py",
+   "sha256": "46f65e83287e030959f41feb45bb58b32e5960edaa38cf76c06a2c3657e17aa2",
+   "role": "script"
+  },
+  {
+   "path": "content/pg-catalog/grid/grid.json",
+   "sha256": "c50c5603b8eeba570ed81f94a3be13fc373eff177f1e7b729ecda594c522ecc2",
+   "role": "grid definition (written by run_grid.py; the generator and seed regenerate every cell spec)"
+  }
+ ],
+ "budget": {
+  "container_memory": "6g",
+  "data_directory": "tmpfs, 2g (a speed choice; visibility rules do not depend on it)",
+  "network": "default bridge, unused during the runs",
+  "step_timeout": "PG_TEST_TIMEOUT_DEFAULT=10 (the tester cancels a step after 20 s and exits after 40 s); 2 for the one-permutation fallback",
+  "deadlock_timeout": "1s",
+  "cpu": "no cap; other tasks used the host at the same time, so durations are noisy",
+  "passes": 2
+ },
+ "exit_code": 0,
+ "duration_s": 1003.2,
+ "verdict_lines": [
+  "RESULT rows-recorded: PASS (24 of 24 catalog rows recorded; 24 specs run, 366 permutations, each output beside its spec)",
+  "RESULT upstream-baseline: PASS (25 of 25 upstream specs print exactly the expected output of the 18.6 source tree)",
+  "RESULT stable-across-passes: PASS (50 of 50 row, upstream and variant outputs byte-identical in two passes)",
+  "RESULT sqlstate-join: PASS (564 errors printed by the tester in the row runs, 564 logged by the server, matched error for error and session by session; each message maps to one SQLSTATE)",
+  "RESULT upstream-variant receipt-report-s3-read-write: INFO (session s3 declared READ WRITE instead of READ ONLY; 210 permutations, 48 end with an error)",
+  "RESULT grid-model-check: PASS (3717 histories; 1337 lock waits observed, all predicted by the lock model; 0 cells needed the one-permutation fallback)",
+  "RESULT grid-stable-across-passes: PASS (3717 histories compared across two passes; 0 differ)",
+  "RESULT grid-t1: PASS (read-modify-write: 558 recorded histories against a target of 200; display half 279, graded half 279; patterns {'rmw2': 378, 'cond2': 108, 'rmw3': 72})",
+  "RESULT grid-t2: PASS (write skew: 1080 recorded histories against a target of 200; display half 540, graded half 540; patterns {'teamsum2': 540, 'holds2': 540})",
+  "RESULT grid-t3: PASS (read skew: 1134 recorded histories against a target of 200; display half 569, graded half 565; patterns {'readskew2': 270, 'readskew3': 324, 'readskew2-mixed': 540})",
+  "RESULT grid-t4: PASS (serialization failure or deadlock: 837 recorded histories against a target of 200; display half 413, graded half 424; patterns {'opposite2': 288, 'ordered2': 90, 'retry-overflow': 27, 'retry-unique': 18, 'retry-holds': 162, 'retry-cond': 36, 'retry-opposite': 216})",
+  "RESULT grid-excluded: INFO (after abort 108; unstable 0; dropped 0)",
+  "ROW H01 [agrees]: READ COMMITTED: both commit, final 20, the second debit's write returns 20 -> 20. SERIALIZABLE, only expected before, is recorded: 40001.",
+  "ROW H02 [agrees]: READ COMMITTED: the waiting statement updates 0 rows. REPEATABLE READ and SERIALIZABLE, only expected before, are recorded: 40001.",
+  "ROW H03 [agrees]: READ COMMITTED: the DELETE removes 0 rows and a hits = 10 row exists before and after. REPEATABLE READ and SERIALIZABLE: 40001.",
+  "ROW H04 [agrees]: The reader's two reads total 250 at READ COMMITTED and 200 at REPEATABLE READ and SERIALIZABLE.",
+  "ROW H05 [agrees]: Both commit at READ COMMITTED and REPEATABLE READ with a team total of -100; at SERIALIZABLE the second committer fails with 40001 and the total is 50.",
+  "ROW H06 [agrees]: Both commit at READ COMMITTED and REPEATABLE READ (160 held against 100); at SERIALIZABLE one fails with 40001 and 80 stays held.",
+  "ROW H07 [agrees]: Run from the upstream specs: REPEATABLE READ gives s3 a state no serial order shows; SERIALIZABLE aborts s2 with 40001 (-2); DEFERRABLE makes s3 wait (-3).",
+  "ROW H08 [agrees]: 6 of 210 permutations fail with s3 READ ONLY; the READ WRITE variant is measured here, not read from the spec comment.",
+  "ROW H09 [agrees]: The second count is 3 at READ COMMITTED, 2 at REPEATABLE READ and SERIALIZABLE.",
+  "ROW H10 [agrees]: With one session SERIALIZABLE and the other READ COMMITTED both commit, in both assignments and both commit orders; with both SERIALIZABLE one fails with 40001.",
+  "ROW H11 [agrees]: A sequential scan aborts a SERIALIZABLE transaction that shares no row with the other; the same transactions on an index scan over distant keys both commit.",
+  "ROW H12 [agrees, with additions]: 23505 and 23P01 appear under SERIALIZABLE; which of 40001 and 23505 appears depends on whether the failing session checked first and on the order, and a whole-command retry with a re-check ends without error where a blind retry fails again.",
+  "ROW H13 [agrees]: READ COMMITTED: the statement waits, then updates the row it could not see. REPEATABLE READ and SERIALIZABLE: 40001.",
+  "ROW H14 [agrees]: READ COMMITTED: 23505, no restart. REPEATABLE READ: 23505. SERIALIZABLE: 40001.",
+  "ROW H15 [agrees]: Disjoint claims at all three levels; the count through SKIP LOCKED is 0 while 4 jobs are pending.",
+  "ROW H16 [agrees]: READ COMMITTED returns the rows out of order; REPEATABLE READ and SERIALIZABLE raise 40001; FOR UPDATE in a subquery returns them in order.",
+  "ROW H17 [agrees]: READ COMMITTED: mallory sees 'secret from mallory'. REPEATABLE READ and SERIALIZABLE: her locking read fails with 40001, so it is prevented by failure.",
+  "ROW H18 [agrees]: CHECK accepts NULL, the guarded UPDATE skips the NULL row, USING hides it, WITH CHECK raises 42501; the same at all three levels.",
+  "ROW H19 [agrees]: 22003 'bigint out of range' at all three levels; the balance is unchanged; sum(bigint) is numeric.",
+  "ROW H20 [agrees]: Row 1 is never delivered: the mark is 2, both ids exist, the next poll returns nothing; the same at all three levels.",
+  "ROW H21 [agrees]: Both permutations of the regression test end with bar's 40001, the output the upstream file expects.",
+  "ROW H22 [differs]: Ascending order removes the deadlock and both commit at READ COMMITTED. At REPEATABLE READ and SERIALIZABLE, 4 of the 6 ascending-order permutations still fail with 40001 (first updater wins), so ordering is no substitute for the retry.",
+  "ROW H23 [agrees]: B's COMMIT fails with 40001; its retry reads 20 available, the guard refuses (0 rows) and nothing is written.",
+  "ROW H24 [agrees]: REPEATABLE READ and SERIALIZABLE: B fails with 40001 and its retry updates 0 rows. READ COMMITTED: no error, 0 rows."
+ ],
+ "outputs": [
+  {
+   "path": "content/pg-catalog/H01-lost-update-rmw.out",
+   "sha256": "108f00d1dca3d068091e5da4d3871c6e23e9fa6ad0a1b6480535054d49ed8892",
+   "bytes": 41629,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H02-conditional-update.out",
+   "sha256": "412f6a5cde73361339de611c2a146272aaf16616fc867c85e6e2a615c3687af1",
+   "bytes": 7745,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H03-recheck-misses-a-row.out",
+   "sha256": "b29b6e93f385d5a94c715dc548ab5e9a783ce0db1c0cc2188922dd0a3c2d6efe",
+   "bytes": 3854,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H04-read-skew.out",
+   "sha256": "bdcdd61d32adebe2191cb5be9b8e72f982675cfe8f6fa94342658896758dc4ae",
+   "bytes": 21923,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H05-write-skew-team-sum.out",
+   "sha256": "5c1b25d588bcb7deec11d315a5a575393bbe760599286af80fa9cde597579e0a",
+   "bytes": 66991,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H06a-predicate-write-skew-mytab.out",
+   "sha256": "78c61e4e54a4b8cb2e7c0569db07089679dcff553dcb81e8a2b86bbd7858e143",
+   "bytes": 5781,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H06b-predicate-write-skew-holds.out",
+   "sha256": "9bdc51bab30857ac11309d6517e64d371b378af0211e25918e46191515eef748",
+   "bytes": 64099,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H09-phantom.out",
+   "sha256": "3ecdf1fabfcf3a247fc990ae34d902c8bd4299d83b57b3d84fd0965aef8efd96",
+   "bytes": 1771,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H10-mixed-levels.out",
+   "sha256": "ed0a1ee282324668c8b54d8ae8dcab4fcd4f3a794fd1ffe33a5b346e6b76ca8c",
+   "bytes": 6785,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H11-false-positive-predicate-lock.out",
+   "sha256": "10a13a222fa884fb60ed1450db9f77693cdb8dd66be47ff3d5b4fbbcd9581c8f",
+   "bytes": 2912,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H12a-unique-violation-under-serializable.out",
+   "sha256": "36a341ca25b4654bf4d01a0d7d17ffe3ea1201ca21575e54679a2c0dc806ca80",
+   "bytes": 13216,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H12b-exclusion-violation-under-serializable.out",
+   "sha256": "ab5451c4c9b5709f4b9c824c6ef1e3cabb181a7684276f75690ce4b54b79dbe7",
+   "bytes": 5514,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H13-on-conflict-do-update-invisible-row.out",
+   "sha256": "dcb70cdae77d84aa9b0802e09383bc4a6e024fceebe350a03c156a7c794c42f7",
+   "bytes": 4698,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H14-merge-no-insert-or-update-guarantee.out",
+   "sha256": "816175ed512a184c4d52f44c88d14762cc8a8b02dc3e6d2ba134df0882dcbc1f",
+   "bytes": 5019,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H15-skip-locked-inconsistent-view.out",
+   "sha256": "078c9a953a5f78be57402ea175b3f2fdf2f9e07a1cb9cfabfcf8fadcebb06757",
+   "bytes": 2423,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H16-order-by-for-update-out-of-order.out",
+   "sha256": "66f3a6ec383f1252f804a56061176f73becb25fa7396870bc463eb3893995641",
+   "bytes": 3122,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H17-rls-policy-subquery-race.out",
+   "sha256": "e5d3a9c77549a2576c131ffb2c9a25e02ed752b93a593ef3ddaf874a6b22a282",
+   "bytes": 3973,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H18-null-in-three-predicates.out",
+   "sha256": "8a3654c49a1b3e2048edf7d6efbe6ee72018beb9c7e8cfa500e5616db05cde6d",
+   "bytes": 3618,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H19-bigint-overflow-refused.out",
+   "sha256": "f9c282fcad4aa586ead052b41cbfb53c963fcfe2f48f88322395c6df70c1ca77",
+   "bytes": 2207,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H20-high-water-mark-skips-late-commit.out",
+   "sha256": "2718157ebad44cc463f83bf7ed0f624a4bc26e3484ba7fe29fd4691ce6540427",
+   "bytes": 4293,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H22a-opposite-order-moves.out",
+   "sha256": "afb2b585428b2009a7c7cc3661aefedbc90ada0896eb0567a5c8dd685dff9c19",
+   "bytes": 36205,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H22b-ascending-order-moves.out",
+   "sha256": "a43df942569afe9d59304441368d5964c92019bac60c150eeae1d159652a0253",
+   "bytes": 18095,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H23-serializable-holds-retry.out",
+   "sha256": "a26ae01bff66cabb996891444a4dbe353c54ee744ba1b032c126c04989044f5f",
+   "bytes": 2617,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/H24-conditional-update-retry.out",
+   "sha256": "f68e6d1bd2af21d19372afe17050a306270eb145d51d43ab0423b6e5b690946d",
+   "bytes": 2489,
+   "kind": "isolationtester output of the row spec beside it, unedited",
+   "compare": "byte-equal on re-run (checked across two passes)"
+  },
+  {
+   "path": "content/pg-catalog/catalog.json",
+   "sha256": "0b836b52e5825287432788982cec97da2d0fd9e9e8ac33740f69b1490bcacd50",
+   "bytes": 342586,
+   "kind": "index of rows H01-H24: outcomes per level, SQLSTATEs, upstream baseline",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "content/pg-catalog/grid/grid.json",
+   "sha256": "c50c5603b8eeba570ed81f94a3be13fc373eff177f1e7b729ecda594c522ecc2",
+   "bytes": 221135,
+   "kind": "the seeded grid: definition, test vectors, counts per template",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "content/pg-catalog/grid/t1-read-modify-write.ndjson",
+   "sha256": "35344bed020bb26d38cf46154a7eba345295cb2ee2fb8836fadb38081616a077",
+   "bytes": 870658,
+   "kind": "recorded histories of template t1, one JSON object per line, isolationtester blocks verbatim",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "content/pg-catalog/grid/t2-write-skew.ndjson",
+   "sha256": "b321d7176f8a3d6f4cf12d54316699f638e2148787da4c41e2224da133eb8baa",
+   "bytes": 1815387,
+   "kind": "recorded histories of template t2, one JSON object per line, isolationtester blocks verbatim",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "content/pg-catalog/grid/t3-read-skew.ndjson",
+   "sha256": "f8e3891a89692754f2b6450fcafad601a3981ba1c9df686894f34cae26aab5dc",
+   "bytes": 1571657,
+   "kind": "recorded histories of template t3, one JSON object per line, isolationtester blocks verbatim",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "content/pg-catalog/grid/t4-serialization-failure-or-deadlock.ndjson",
+   "sha256": "6ba11979998297c07cdd8a5228289a1ad495f80d43dd7221884b5c917f145e3f",
+   "bytes": 1544652,
+   "kind": "recorded histories of template t4, one JSON object per line, isolationtester blocks verbatim",
+   "compare": "byte-equal on re-run"
+  },
+  {
+   "path": "runs/RUN-pg-catalog/sqlstates.json",
+   "sha256": "605945d3cd87593a93d3f94a6c61637a204d7a4a9d67ccfa3f3c014aa3afefd4",
+   "bytes": 4154,
+   "kind": "every error message the server logged in the row runs, with its SQLSTATE, detail and hint"
+  },
+  {
+   "path": "runs/RUN-pg-catalog/rows-run.json",
+   "sha256": "6f5e038812fae144ef66807522bd7acac037b2d7e3c03e0a3f8657c5f4e8f385",
+   "bytes": 12710,
+   "kind": "timings and cross-pass checks of the row runs"
+  },
+  {
+   "path": "runs/RUN-pg-catalog/grid-run.json",
+   "sha256": "dc533b25491682f61dd1158b3ac1fdde56278172a4d70b65a23be175cf11afd2",
+   "bytes": 663,
+   "kind": "timings, exclusions and model checks of the grid runs"
+  }
+ ],
+ "environment": {
+  "os": "Linux 6.12.63 x86_64",
+  "cpu_count": 20,
+  "ram_gib": 31,
+  "cpu_architecture": "x86_64",
+  "container": {
+   "runtime": "docker",
+   "server_version": "29.1.3",
+   "image": "postgres:18",
+   "id": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+   "digest": "postgres@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+   "os": "Debian GNU/Linux 13 (trixie)",
+   "run_flags": [
+    "-d",
+    "--memory=6g",
+    "--tmpfs /var/lib/postgresql:rw,size=2g",
+    "-e POSTGRES_HOST_AUTH_METHOD=trust",
+    "-v <postgresql-18.6 build tree>:/opt/pgsrc:ro",
+    "-c logging_collector=on",
+    "-c log_destination=csvlog",
+    "-c log_filename=pg.log",
+    "-c log_rotation_age=0",
+    "-c log_rotation_size=0"
+   ]
+  },
+  "build": {
+   "image": "postgres:18 with build-essential, bison, flex and pkg-config added by apt in a throwaway container",
+   "configure": "./configure --without-icu --without-readline --without-zlib",
+   "make": [
+    "make -j20",
+    "make -C src/test/isolation"
+   ],
+   "tools": {
+    "gcc": "gcc (Debian 14.2.0-19) 14.2.0",
+    "bison": "bison (GNU Bison) 3.8.2",
+    "flex": "flex 2.6.4",
+    "make": "GNU Make 4.4.1",
+    "libc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41"
+   },
+   "source": {
+    "file": "postgresql-18.6.tar.bz2",
+    "url": "https://ftp.postgresql.org/pub/source/v18.6/postgresql-18.6.tar.bz2",
+    "sha256": "555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f",
+    "published_sha256_file_agrees": true
+   }
+  },
+  "host_tools": {
+   "python": "3.13.12"
+  },
+  "emulated": false
+ },
+ "notes": [
+  "The tester is PostgreSQL's own isolationtester, built from the 18.6 source tarball and run against the Debian-packaged 18.6 server of the postgres:18 image; it is not statespace isorun (W4-T16).",
+  "isolationtester prints errors as 'ERROR:  <message>' without a SQLSTATE. SQLSTATEs come from the server's csv log: each session's application_name is '<tag>/<session>', and for every session the messages the tester printed must equal the messages the server logged, in order; a mismatch stops the run.",
+  "NULL prints as an empty cell in isolationtester output; an empty string prints the same way.",
+  "A session that continues after an error meets 'current transaction is aborted' (25P02) at its next write. Those follow-on errors stay in the row outputs, as after_abort in the index, and keep a history out of the GEN-anomaly-id pool.",
+  "The lock model that decides which interleavings cannot hang the tester is sound and incomplete; every lock wait the tester reported was one the model predicted.",
+  "The grid's 'half' split, the target counts and the retry patterns are design defaults [D], not measurements.",
+  "Nothing was emulated: no browser, phone, hosted service or other PostgreSQL version was involved. PGlite is a different instrument (W0-S08)."
+ ],
+ "values": {
+  "rows": 24,
+  "row_specs": 24,
+  "row_permutations": 366,
+  "upstream_specs": 25,
+  "upstream_specs_identical_to_expected": 25,
+  "errors_printed_in_row_runs": 564,
+  "grid_cells": 369,
+  "grid_histories_run_per_pass": 3717,
+  "grid_histories_in_pool": 3609,
+  "grid_excluded_after_abort": 108,
+  "grid_lock_waits_observed": 1337,
+  "grid_target_per_template": 200,
+  "grid_target_per_half": 100,
+  "t1_recorded": 558,
+  "t1_distinct_shapes": 124,
+  "t1_display_half": 279,
+  "t1_graded_half": 279,
+  "t2_recorded": 1080,
+  "t2_distinct_shapes": 120,
+  "t2_display_half": 540,
+  "t2_graded_half": 540,
+  "t3_recorded": 1134,
+  "t3_distinct_shapes": 384,
+  "t3_display_half": 569,
+  "t3_graded_half": 565,
+  "t4_recorded": 837,
+  "t4_distinct_shapes": 97,
+  "t4_display_half": 413,
+  "t4_graded_half": 424
+ },
+ "checks": [
+  {
+   "id": "rows-recorded",
+   "pass": true
+  },
+  {
+   "id": "upstream-baseline",
+   "pass": true
+  },
+  {
+   "id": "stable-across-passes",
+   "pass": true
+  },
+  {
+   "id": "sqlstate-join",
+   "pass": true
+  },
+  {
+   "id": "grid-model-check",
+   "pass": true
+  },
+  {
+   "id": "grid-stable-across-passes",
+   "pass": true
+  },
+  {
+   "id": "grid-t1",
+   "pass": true
+  },
+  {
+   "id": "grid-t2",
+   "pass": true
+  },
+  {
+   "id": "grid-t3",
+   "pass": true
+  },
+  {
+   "id": "grid-t4",
+   "pass": true
+  }
+ ],
+ "pass": true,
+ "rows": {
+  "H01": {
+   "title": "Lost update through application read-modify-write",
+   "r4_status": "SPIKE (RC, RR); SER was DOC",
+   "executed_before": [
+    "RUN-pg-anomalies",
+    "RUN-pg-claims"
+   ],
+   "recorded": true,
+   "specs": [
+    "H01-lost-update-rmw.spec"
+   ],
+   "outputs": [
+    "H01-lost-update-rmw.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 42,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 14,
+     "signatures": {
+      "s1=commit s2=commit": 14
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 14,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 6,
+      "s1=commit s2=commit": 2,
+      "s1=abort:40001 s2=commit  [40001]": 6
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 14,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 6,
+      "s1=commit s2=commit": 2,
+      "s1=abort:40001 s2=commit  [40001]": 6
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: both commit, final 20, the second debit's write returns 20 -> 20. SERIALIZABLE, only expected before, is recorded: 40001."
+   }
+  },
+  "H02": {
+   "title": "Conditional single-statement UPDATE",
+   "r4_status": "SPIKE (RC); RR and SER were expected",
+   "executed_before": [
+    "RUN-pg-anomalies",
+    "RUN-pg-claims"
+   ],
+   "recorded": true,
+   "specs": [
+    "H02-conditional-update.spec"
+   ],
+   "outputs": [
+    "H02-conditional-update.out"
+   ],
+   "upstream_specs": [
+    "eval-plan-qual"
+   ],
+   "permutations": 12,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 4,
+     "signatures": {
+      "s1=commit s2=commit": 4
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 4,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 2,
+      "s1=abort:40001 s2=commit  [40001]": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 4,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 2,
+      "s1=abort:40001 s2=commit  [40001]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: the waiting statement updates 0 rows. REPEATABLE READ and SERIALIZABLE, only expected before, are recorded: 40001."
+   }
+  },
+  "H03": {
+   "title": "READ COMMITTED re-check misses a matching row",
+   "r4_status": "DOC",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H03-recheck-misses-a-row.spec"
+   ],
+   "outputs": [
+    "H03-recheck-misses-a-row.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 9,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=commit": 3
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 2
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 2
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: the DELETE removes 0 rows and a hits = 10 row exists before and after. REPEATABLE READ and SERIALIZABLE: 40001."
+   }
+  },
+  "H04": {
+   "title": "Read skew",
+   "r4_status": "DOC (Hermitage)",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H04-read-skew.spec"
+   ],
+   "outputs": [
+    "H04-read-skew.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 30,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 10,
+     "signatures": {
+      "mv=commit rd=commit": 10
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 10,
+     "signatures": {
+      "mv=commit rd=commit": 10
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 10,
+     "signatures": {
+      "mv=commit rd=commit": 10
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "The reader's two reads total 250 at READ COMMITTED and 200 at REPEATABLE READ and SERIALIZABLE."
+   }
+  },
+  "H05": {
+   "title": "Write skew on existing rows",
+   "r4_status": "SPIKE (RR, SER)",
+   "executed_before": [
+    "RUN-pg-anomalies"
+   ],
+   "recorded": true,
+   "specs": [
+    "H05-write-skew-team-sum.spec"
+   ],
+   "outputs": [
+    "H05-write-skew-team-sum.out"
+   ],
+   "upstream_specs": [
+    "simple-write-skew"
+   ],
+   "permutations": 60,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 20,
+     "signatures": {
+      "s1=commit s2=commit": 20
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 20,
+     "signatures": {
+      "s1=commit s2=commit": 20
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 20,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 9,
+      "s1=commit s2=commit": 2,
+      "s1=abort:40001 s2=commit  [40001]": 9
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Both commit at READ COMMITTED and REPEATABLE READ with a team total of -100; at SERIALIZABLE the second committer fails with 40001 and the total is 50."
+   }
+  },
+  "H06": {
+   "title": "Predicate write skew through INSERT",
+   "r4_status": "DOC",
+   "executed_before": [
+    "RUN-pg-claims (holds, one interleaving)"
+   ],
+   "recorded": true,
+   "specs": [
+    "H06a-predicate-write-skew-mytab.spec",
+    "H06b-predicate-write-skew-holds.spec"
+   ],
+   "outputs": [
+    "H06a-predicate-write-skew-mytab.out",
+    "H06b-predicate-write-skew-holds.out"
+   ],
+   "upstream_specs": [
+    "classroom-scheduling"
+   ],
+   "permutations": 66,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 22,
+     "signatures": {
+      "s1=commit s2=commit": 22
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 22,
+     "signatures": {
+      "s1=commit s2=commit": 22
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 22,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 10,
+      "s1=abort:40001 s2=commit  [40001]": 10,
+      "s1=commit s2=commit": 2
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Both commit at READ COMMITTED and REPEATABLE READ (160 held against 100); at SERIALIZABLE one fails with 40001 and 80 stays held."
+   }
+  },
+  "H07": {
+   "title": "Read-only anomaly (Fekete, O'Neil)",
+   "r4_status": "UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [],
+   "outputs": [],
+   "upstream_specs": [
+    "read-only-anomaly",
+    "read-only-anomaly-2",
+    "read-only-anomaly-3"
+   ],
+   "permutations": 0,
+   "by_level": {},
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Run from the upstream specs: REPEATABLE READ gives s3 a state no serial order shows; SERIALIZABLE aborts s2 with 40001 (-2); DEFERRABLE makes s3 wait (-3)."
+   }
+  },
+  "H08": {
+   "title": "Receipt report and its false positives",
+   "r4_status": "UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [],
+   "outputs": [],
+   "upstream_specs": [
+    "receipt-report"
+   ],
+   "permutations": 0,
+   "by_level": {},
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "6 of 210 permutations fail with s3 READ ONLY; the READ WRITE variant is measured here, not read from the spec comment."
+   }
+  },
+  "H09": {
+   "title": "Phantom",
+   "r4_status": "DOC",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H09-phantom.spec"
+   ],
+   "outputs": [
+    "H09-phantom.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 3,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 1,
+     "signatures": {
+      "s1=commit s2=commit": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 1,
+     "signatures": {
+      "s1=commit s2=commit": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 1,
+     "signatures": {
+      "s1=commit s2=commit": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "The second count is 3 at READ COMMITTED, 2 at REPEATABLE READ and SERIALIZABLE."
+   }
+  },
+  "H10": {
+   "title": "Mixed levels void the guarantee",
+   "r4_status": "DOC (scope quote); outcome PROPOSED",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H10-mixed-levels.spec"
+   ],
+   "outputs": [
+    "H10-mixed-levels.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 6,
+   "by_level": {
+    "SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=abort:40001 s2=commit  [40001]": 1
+     }
+    },
+    "SERIALIZABLE/READ COMMITTED": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=commit": 2
+     }
+    },
+    "READ COMMITTED/SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=commit": 2
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "With one session SERIALIZABLE and the other READ COMMITTED both commit, in both assignments and both commit orders; with both SERIALIZABLE one fails with 40001."
+   }
+  },
+  "H11": {
+   "title": "SERIALIZABLE false positive from a relation-level predicate lock",
+   "r4_status": "DOC; PROPOSED",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H11-false-positive-predicate-lock.spec"
+   ],
+   "outputs": [
+    "H11-false-positive-predicate-lock.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 3,
+   "by_level": {
+    "SERIALIZABLE": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 1,
+      "s3=commit s4=abort:40001  [40001]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "A sequential scan aborts a SERIALIZABLE transaction that shares no row with the other; the same transactions on an index scan over distant keys both commit."
+   }
+  },
+  "H12": {
+   "title": "23505 and 23P01 under SERIALIZABLE",
+   "r4_status": "DOC",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H12a-unique-violation-under-serializable.spec",
+    "H12b-exclusion-violation-under-serializable.spec"
+   ],
+   "outputs": [
+    "H12a-unique-violation-under-serializable.out",
+    "H12b-exclusion-violation-under-serializable.out"
+   ],
+   "upstream_specs": [
+    "read-write-unique",
+    "read-write-unique-2",
+    "read-write-unique-3",
+    "read-write-unique-4"
+   ],
+   "permutations": 28,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 7,
+     "signatures": {
+      "s1=commit s2=abort:23505  [23505]": 5,
+      "s1=abort:23505 s2=commit  [23505]": 1,
+      "s1=commit s2=abort:23P01  [23P01]": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 7,
+     "signatures": {
+      "s1=commit s2=abort:23505  [23505]": 5,
+      "s1=abort:23505 s2=commit  [23505]": 1,
+      "s1=commit s2=abort:23P01  [23P01]": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 14,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 3,
+      "s1=abort:23505 s2=commit  [23505]": 1,
+      "s1=commit s2=abort:23505  [23505]": 3,
+      "s1=commit s2=abort:40001+commit  [40001]": 2,
+      "s1=commit s2=abort:23505+abort:23505  [23505]": 1,
+      "s1=commit s2=abort:23505+commit  [23505]": 1,
+      "s1=abort:23505+commit s2=commit  [23505]": 1,
+      "s1=commit s2=abort:23P01  [23P01]": 1,
+      "s1=commit s2=abort:23P01+abort:23P01  [23P01]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees, with additions",
+    "note": "23505 and 23P01 appear under SERIALIZABLE; which of 40001 and 23505 appears depends on whether the failing session checked first and on the order, and a whole-command retry with a re-check ends without error where a blind retry fails again."
+   }
+  },
+  "H13": {
+   "title": "ON CONFLICT DO UPDATE on an invisible row",
+   "r4_status": "DOC + UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H13-on-conflict-do-update-invisible-row.spec"
+   ],
+   "outputs": [
+    "H13-on-conflict-do-update-invisible-row.out"
+   ],
+   "upstream_specs": [
+    "insert-conflict-do-update",
+    "insert-conflict-do-update-2",
+    "insert-conflict-do-update-3",
+    "insert-conflict-do-update-4",
+    "insert-conflict-do-nothing",
+    "insert-conflict-do-nothing-2"
+   ],
+   "permutations": 9,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=commit": 3
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 2,
+      "s1=commit s2=commit": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 2,
+      "s1=commit s2=commit": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: the statement waits, then updates the row it could not see. REPEATABLE READ and SERIALIZABLE: 40001."
+   }
+  },
+  "H14": {
+   "title": "MERGE gives no insert-or-update guarantee",
+   "r4_status": "DOC + UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H14-merge-no-insert-or-update-guarantee.spec"
+   ],
+   "outputs": [
+    "H14-merge-no-insert-or-update-guarantee.out"
+   ],
+   "upstream_specs": [
+    "merge-insert-update",
+    "merge-update"
+   ],
+   "permutations": 6,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:23505  [23505]": 1,
+      "s1=commit s2=commit": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:23505  [23505]": 1,
+      "s1=commit s2=commit": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 1,
+      "s1=commit s2=commit": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: 23505, no restart. REPEATABLE READ: 23505. SERIALIZABLE: 40001."
+   }
+  },
+  "H15": {
+   "title": "SKIP LOCKED gives an inconsistent view",
+   "r4_status": "DOC + UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H15-skip-locked-inconsistent-view.spec"
+   ],
+   "outputs": [
+    "H15-skip-locked-inconsistent-view.out"
+   ],
+   "upstream_specs": [
+    "skip-locked",
+    "skip-locked-2",
+    "skip-locked-3",
+    "skip-locked-4"
+   ],
+   "permutations": 3,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 1,
+     "signatures": {
+      "w1=commit w2=commit": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 1,
+     "signatures": {
+      "w1=commit w2=commit": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 1,
+     "signatures": {
+      "w1=commit w2=commit": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Disjoint claims at all three levels; the count through SKIP LOCKED is 0 while 4 jobs are pending."
+   }
+  },
+  "H16": {
+   "title": "ORDER BY with FOR UPDATE returns rows out of order",
+   "r4_status": "DOC",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H16-order-by-for-update-out-of-order.spec"
+   ],
+   "outputs": [
+    "H16-order-by-for-update-out-of-order.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 6,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=commit": 2
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 2
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit s2=abort:40001  [40001]": 2
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED returns the rows out of order; REPEATABLE READ and SERIALIZABLE raise 40001; FOR UPDATE in a subquery returns them in order."
+   }
+  },
+  "H17": {
+   "title": "Row-level security policy-subquery race",
+   "r4_status": "DOC",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H17-rls-policy-subquery-race.spec"
+   ],
+   "outputs": [
+    "H17-rls-policy-subquery-race.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 5,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 3,
+     "signatures": {
+      "alice=commit mallory=commit": 3
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 1,
+     "signatures": {
+      "alice=commit mallory=abort:40001  [40001]": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 1,
+     "signatures": {
+      "alice=commit mallory=abort:40001  [40001]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "READ COMMITTED: mallory sees 'secret from mallory'. REPEATABLE READ and SERIALIZABLE: her locking read fails with 40001, so it is prevented by failure."
+   }
+  },
+  "H18": {
+   "title": "NULL in three kinds of predicate",
+   "r4_status": "SPIKE (CHECK, WHERE) + DOC (WITH CHECK)",
+   "executed_before": [
+    "RUN-pg-anomalies",
+    "RUN-pg-claims"
+   ],
+   "recorded": true,
+   "specs": [
+    "H18-null-in-three-predicates.spec"
+   ],
+   "outputs": [
+    "H18-null-in-three-predicates.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 9,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit": 1,
+      "u=commit": 1,
+      "u=abort:42501  [42501]": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit": 1,
+      "u=commit": 1,
+      "u=abort:42501  [42501]": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 3,
+     "signatures": {
+      "s1=commit": 1,
+      "u=commit": 1,
+      "u=abort:42501  [42501]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "CHECK accepts NULL, the guarded UPDATE skips the NULL row, USING hides it, WITH CHECK raises 42501; the same at all three levels."
+   }
+  },
+  "H19": {
+   "title": "bigint overflow refused",
+   "r4_status": "SPIKE",
+   "executed_before": [
+    "RUN-pg-anomalies",
+    "RUN-pg-claims"
+   ],
+   "recorded": true,
+   "specs": [
+    "H19-bigint-overflow-refused.spec"
+   ],
+   "outputs": [
+    "H19-bigint-overflow-refused.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 6,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 2,
+     "signatures": {
+      "s1=abort:22003  [22003]": 2
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 2,
+     "signatures": {
+      "s1=abort:22003  [22003]": 2
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "s1=abort:22003  [22003]": 2
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "22003 'bigint out of range' at all three levels; the balance is unchanged; sum(bigint) is numeric."
+   }
+  },
+  "H20": {
+   "title": "High-water-mark poller skips a late commit",
+   "r4_status": "PROPOSED",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H20-high-water-mark-skips-late-commit.spec"
+   ],
+   "outputs": [
+    "H20-high-water-mark-skips-late-commit.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 4,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 2,
+     "signatures": {
+      "s1=commit": 2
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 1,
+     "signatures": {
+      "s1=commit": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 1,
+     "signatures": {
+      "s1=commit": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Row 1 is never delivered: the mark is 2, both ids exist, the next poll returns nothing; the same at all three levels."
+   }
+  },
+  "H21": {
+   "title": "SERIALIZABLE once allowed G2-item (9.5.22 to 13, 2020)",
+   "r4_status": "UPSTREAM",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [],
+   "outputs": [],
+   "upstream_specs": [
+    "update-conflict-out"
+   ],
+   "permutations": 0,
+   "by_level": {},
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "Both permutations of the regression test end with bar's 40001, the output the upstream file expects."
+   }
+  },
+  "H22": {
+   "title": "Opposite-order moves, and the ascending-order fix",
+   "r4_status": "proposed by S6 (spec section 12)",
+   "executed_before": [
+    "RUN-pg-claims (opposite order at READ COMMITTED)"
+   ],
+   "recorded": true,
+   "specs": [
+    "H22a-opposite-order-moves.spec",
+    "H22b-ascending-order-moves.spec"
+   ],
+   "outputs": [
+    "H22a-opposite-order-moves.out",
+    "H22b-ascending-order-moves.out"
+   ],
+   "upstream_specs": [
+    "deadlock-simple"
+   ],
+   "permutations": 54,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 18,
+     "signatures": {
+      "s1=abort:40P01 s2=commit  [40P01]": 4,
+      "s1=commit s2=commit": 10,
+      "s1=commit s2=abort:40P01  [40P01]": 4
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 18,
+     "signatures": {
+      "s1=abort:40P01 s2=commit  [40P01]": 4,
+      "s1=commit s2=commit": 4,
+      "s1=commit s2=abort:40001  [25P02, 40001]": 3,
+      "s1=commit s2=abort:40P01  [40P01]": 4,
+      "s1=abort:40001 s2=commit  [25P02, 40001]": 3
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 18,
+     "signatures": {
+      "s1=abort:40P01 s2=commit  [40P01]": 4,
+      "s1=commit s2=commit": 4,
+      "s1=commit s2=abort:40001  [25P02, 40001]": 3,
+      "s1=commit s2=abort:40P01  [40P01]": 4,
+      "s1=abort:40001 s2=commit  [25P02, 40001]": 3
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "differs",
+    "note": "Ascending order removes the deadlock and both commit at READ COMMITTED. At REPEATABLE READ and SERIALIZABLE, 4 of the 6 ascending-order permutations still fail with 40001 (first updater wins), so ordering is no substitute for the retry."
+   }
+  },
+  "H23": {
+   "title": "SERIALIZABLE holds, B retried from BEGIN after 40001",
+   "r4_status": "proposed by S6 (spec section 12)",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H23-serializable-holds-retry.spec"
+   ],
+   "outputs": [
+    "H23-serializable-holds-retry.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 2,
+   "by_level": {
+    "SERIALIZABLE": {
+     "permutations": 2,
+     "signatures": {
+      "a=commit b=abort:40001+commit  [40001]": 1,
+      "a=abort:40001 b=commit  [40001]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "B's COMMIT fails with 40001; its retry reads 20 available, the guard refuses (0 rows) and nothing is written."
+   }
+  },
+  "H24": {
+   "title": "Conditional UPDATE at REPEATABLE READ and SERIALIZABLE, 40001 then a whole-command retry",
+   "r4_status": "proposed by S6 (spec section 12)",
+   "executed_before": [],
+   "recorded": true,
+   "specs": [
+    "H24-conditional-update-retry.spec"
+   ],
+   "outputs": [
+    "H24-conditional-update-retry.out"
+   ],
+   "upstream_specs": [],
+   "permutations": 3,
+   "by_level": {
+    "READ COMMITTED": {
+     "permutations": 1,
+     "signatures": {
+      "a=commit b=commit": 1
+     }
+    },
+    "REPEATABLE READ": {
+     "permutations": 1,
+     "signatures": {
+      "a=commit b=abort:40001+commit  [40001]": 1
+     }
+    },
+    "SERIALIZABLE": {
+     "permutations": 1,
+     "signatures": {
+      "a=commit b=abort:40001+commit  [40001]": 1
+     }
+    }
+   },
+   "r4_check": {
+    "verdict": "agrees",
+    "note": "REPEATABLE READ and SERIALIZABLE: B fails with 40001 and its retry updates 0 rows. READ COMMITTED: no error, 0 rows."
+   }
+  }
+ },
+ "grid": {
+  "seed": "statespace/GEN-anomaly-id/grid/1",
+  "templates": {
+   "t1": {
+    "template": "read-modify-write",
+    "recorded": 558,
+    "target": 200,
+    "target_met": true,
+    "display_half": 279,
+    "graded_half": 279,
+    "by_pattern": {
+     "rmw2": 378,
+     "cond2": 108,
+     "rmw3": 72
+    },
+    "sha256": "35344bed020bb26d38cf46154a7eba345295cb2ee2fb8836fadb38081616a077"
+   },
+   "t2": {
+    "template": "write skew",
+    "recorded": 1080,
+    "target": 200,
+    "target_met": true,
+    "display_half": 540,
+    "graded_half": 540,
+    "by_pattern": {
+     "teamsum2": 540,
+     "holds2": 540
+    },
+    "sha256": "b321d7176f8a3d6f4cf12d54316699f638e2148787da4c41e2224da133eb8baa"
+   },
+   "t3": {
+    "template": "read skew",
+    "recorded": 1134,
+    "target": 200,
+    "target_met": true,
+    "display_half": 569,
+    "graded_half": 565,
+    "by_pattern": {
+     "readskew2": 270,
+     "readskew3": 324,
+     "readskew2-mixed": 540
+    },
+    "sha256": "f8e3891a89692754f2b6450fcafad601a3981ba1c9df686894f34cae26aab5dc"
+   },
+   "t4": {
+    "template": "serialization failure or deadlock",
+    "recorded": 837,
+    "target": 200,
+    "target_met": true,
+    "display_half": 413,
+    "graded_half": 424,
+    "by_pattern": {
+     "opposite2": 288,
+     "ordered2": 90,
+     "retry-overflow": 27,
+     "retry-unique": 18,
+     "retry-holds": 162,
+     "retry-cond": 36,
+     "retry-opposite": 216
+    },
+    "sha256": "6ba11979998297c07cdd8a5228289a1ad495f80d43dd7221884b5c917f145e3f"
+   }
+  },
+  "cells": 369,
+  "excluded": {
+   "after_abort": 108,
+   "unstable": 0,
+   "dropped": 0
+  },
+  "definition": "content/pg-catalog/grid/grid.json"
+ },
+ "configs": [
+  {
+   "id": "rows-and-upstream",
+   "purpose": "the 24 row specs, the 25 upstream specs and one upstream variant, twice",
+   "argv": [
+    "python3",
+    "-I",
+    "scripts/spikes/W0-S09/run_catalog.py"
+   ],
+   "started_at": "2026-10-24T14:23:49Z",
+   "duration_s": 64.1,
+   "exit_code": 0,
+   "passes": 2,
+   "specs_per_pass": 50
+  },
+  {
+   "id": "grid",
+   "purpose": "every cell of every pattern, twice",
+   "argv": [
+    "python3",
+    "-I",
+    "scripts/spikes/W0-S09/run_grid.py",
+    "--passes",
+    "2"
+   ],
+   "started_at": "2026-10-24T14:24:53Z",
+   "duration_s": 939.1,
+   "exit_code": 0,
+   "passes": 2,
+   "cells": 369,
+   "tester_invocations": 738
+  }
+ ]
+}

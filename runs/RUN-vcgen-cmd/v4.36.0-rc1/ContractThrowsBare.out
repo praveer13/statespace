@@ -1,0 +1,82 @@
+W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined
+
+Hint: Using `Err.guardFailed would be unambiguous:
+  [apply] `Err.guardFailed`
+W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed
+case grind
+s : Env
+s_1 : State
+h : 0 < s.num "amount" ∧ NonNeg s_1
+h_1 : fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1
+h_2 : ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed "Transfer")
+⊢ False
+[grind] Goal diagnostics
+  [facts] Asserted facts
+    [prop] -1 * s.num "amount" + 1 ≤ 0 ∧ NonNeg s_1
+    [prop] fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1
+    [prop] ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed "Transfer")
+    [prop] fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1 =
+          (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = false)
+    [prop] NonNeg s_1 = ∀ (a : String), ¬a = "mint" → -1 * s_1.bal a ≤ 0
+    [prop] (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = true) =
+          (-1 * Expr.eval s s_1 (Expr.balance (AExpr.var "from")) + Expr.eval s s_1 (Expr.var "amount") ≤ 0)
+    [prop] Expr.eval s s_1 (Expr.balance (AExpr.var "from")) = s_1.bal (AExpr.eval s (AExpr.var "from"))
+    [prop] Expr.eval s s_1 (Expr.var "amount") = s.num "amount"
+    [prop] ¬AExpr.eval s (AExpr.var "from") = "mint" → -1 * s_1.bal (AExpr.eval s (AExpr.var "from")) ≤ 0
+    [prop] AExpr.eval s (AExpr.var "from") = s.acct "from"
+  [eqc] True propositions
+    [prop] NonNeg s_1
+    [prop] -1 * s.num "amount" + 1 ≤ 0 ∧ NonNeg s_1
+    [prop] fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1
+    [prop] -1 * s.num "amount" + 1 ≤ 0
+    [prop] NonNeg s_1 = ∀ (a : String), ¬a = "mint" → -1 * s_1.bal a ≤ 0
+    [prop] fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1 =
+          (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = false)
+    [prop] BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = false
+    [prop] ∀ (a : String), ¬a = "mint" → -1 * s_1.bal a ≤ 0
+    [prop] (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = true) =
+          (-1 * Expr.eval s s_1 (Expr.balance (AExpr.var "from")) + Expr.eval s s_1 (Expr.var "amount") ≤ 0)
+    [prop] ¬AExpr.eval s (AExpr.var "from") = "mint" → -1 * s_1.bal (AExpr.eval s (AExpr.var "from")) ≤ 0
+  [eqc] False propositions
+    [prop] EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed "Transfer")
+    [prop] BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = true
+    [prop] -1 * Expr.eval s s_1 (Expr.balance (AExpr.var "from")) + Expr.eval s s_1 (Expr.var "amount") ≤ 0
+  [eqc] Equivalence classes
+    [eqc] {false, BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount"))}
+    [eqc] {s.num "amount", Expr.eval s s_1 (Expr.var "amount")}
+    [eqc] {Expr.eval s s_1 (Expr.balance (AExpr.var "from")), s_1.bal (AExpr.eval s (AExpr.var "from"))}
+    [eqc] {-1 * Expr.eval s s_1 (Expr.balance (AExpr.var "from")), -1 * s_1.bal (AExpr.eval s (AExpr.var "from"))}
+    [eqc] {AExpr.eval s (AExpr.var "from"), s.acct "from"}
+  [ematch] E-matching patterns
+    [thm] fails_apply: [fails #2 #1 #0]
+    [thm] NonNeg.eq_1: [NonNeg #0]
+    [thm] BExpr.eval.eq_1: [BExpr.eval #3 #2 (BExpr.ge #1 #0)]
+    [thm] local_0: [@LE.le `[Int] `[Int.instLEInt] (@HMul.hMul `[Int] `[Int] `[Int] `[instHMul] `[-1] (State.bal `[s_1] #1)) `[0]]
+    [thm] local_0: [State.bal `[s_1] #1]
+    [thm] Expr.eval.eq_3: [Expr.eval #2 #1 (Expr.balance #0)]
+    [thm] Expr.eval.eq_2: [Expr.eval #2 #1 (Expr.var #0)]
+    [thm] AExpr.eval.eq_2: [AExpr.eval #1 (AExpr.var #0)]
+  [cutsat] Assignment satisfying linear constraints
+    [assign] s.num "amount" := 1
+    [assign] Expr.eval s s_1 (Expr.balance (AExpr.var "from")) := 0
+    [assign] Expr.eval s s_1 (Expr.var "amount") := 1
+    [assign] s_1.bal (AExpr.eval s (AExpr.var "from")) := 0
+  [ring] Ring `Int`
+    [basis] Basis
+      [_] s.num "amount" + -1 * Expr.eval s s_1 (Expr.var "amount") = 0
+      [_] Expr.eval s s_1 (Expr.balance (AExpr.var "from")) + -1 * s_1.bal (AExpr.eval s (AExpr.var "from")) = 0
+[grind] Issues
+  [issue] failed to canonicalize instance
+        ?m.27
+      failed to synthesize
+        EPostSlot (Err → Prop) ?m.32 Prop
+[grind] Diagnostics
+  [ematch] E-matching Diagnostics
+    [thm] Theorem Instance Count
+      [thm] local_0 ↦ 1
+      [thm] fails_apply ↦ 1
+      [thm] NonNeg.eq_1 ↦ 1
+      [thm] AExpr.eval.eq_2 ↦ 1
+      [thm] BExpr.eval.eq_1 ↦ 1
+      [thm] Expr.eval.eq_2 ↦ 1
+      [thm] Expr.eval.eq_3 ↦ 1

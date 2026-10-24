@@ -1,0 +1,639 @@
+{
+  "id": "RUN-pglite-rls",
+  "title": "Row-level security in PGlite 0.5.11 against PostgreSQL 18.6 (W0-S08)",
+  "engine": "PGlite",
+  "version": "0.5.11",
+  "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "binary": "pglite.wasm in @electric-sql/pglite@0.5.11",
+  "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-24T13:28:21.423Z",
+  "started_at": "2026-10-24T13:10:21.945Z",
+  "argv": [
+    "node",
+    "scripts/spikes/W0-S08/run-all.mjs",
+    "--worlds",
+    "200"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S08/package.json",
+      "sha256": "76eb7f26af5ef089b41695ec68e907349517b6e057b3dc8e6d2a5f8a32261982",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/package-lock.json",
+      "sha256": "3ac0b158f015565290ac451682b2d1cd911d9b133dbf95da5dc571480f250bbc",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/rls-spec.mjs",
+      "sha256": "d44f79164c4420029bb2b5c1cc34baf06f06ee4e23b09e03120ae840b162070c",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/run-node.mjs",
+      "sha256": "0e714ad993fc3b14c94f02eae658093c7596974d1e9420563a42f65e8fa29d20",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/compare.mjs",
+      "sha256": "7864ec235e38be2283465b965e4bf6c1cf9f7840db9d54dcab5682808b608e88",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/serve.mjs",
+      "sha256": "5dd10b64920ab977a6a0bf62ee46c74cb1dee83537d368815371a0018ab1f3f0",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/precompress.mjs",
+      "sha256": "08c2027f59c2dcbd35b5fc320cf8c47350b8cba8fcd11e5827cdc1294f8c113c",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/browser-run.mjs",
+      "sha256": "32233b4854d8841c0683849094a13afb0183d9ada3c88056383c0a726a226216",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/browser/index.html",
+      "sha256": "83af983633b80f02a980a416b57790df7b41b6d4e632ed6290c2cf6478f19d0d",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/browser/worker.mjs",
+      "sha256": "2184b18c196e3921fa0320084068f5852a72e5a12b2c4efcc8d63f097422af13",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/size-report.mjs",
+      "sha256": "47ea6ec459719431c72cb9eb2519bb804819c68d3feb602becb5bd72b78cd403",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/summarize-first-load.mjs",
+      "sha256": "2253dd3df94c0c074afb71e9da51c0a14dd8ba169e9e4955a44497ba21232a9e",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/gh-pages-probe.mjs",
+      "sha256": "6f10ba47971a7fe8aa8f386c96e73e0ed33db739122d67a5c1bdcf495a1ddc6a",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/npm-meta.mjs",
+      "sha256": "b97833c443ad2b910e24b22ec244f7b8a76930a455e8505665c0ff06273c7226",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/run-all.mjs",
+      "sha256": "f63fa11c884c997a724453fb629e870f6ad5c4bf60da1345bc1054cb2e22f84f",
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/record-run.mjs",
+      "sha256": "0c9ba9f1d2286c704de1a0f4c5b1815ddc0c4dcb510c7923e05bbfc4c183bb69",
+      "role": "harness"
+    }
+  ],
+  "budget": {
+    "worlds": 200,
+    "seeds": "1..200",
+    "users_per_world": "3..8",
+    "variants": [
+      "restrictive",
+      "subset",
+      "norevoke",
+      "missing"
+    ],
+    "part1_steps": 53,
+    "part1_checks": 34
+  },
+  "limits": {
+    "container_memory": "6g",
+    "containers_at_once": 1,
+    "statement_timeout": "none",
+    "browser_timeout_ms": 900000,
+    "cross_origin_isolation": "none: no COOP, COEP or CORP headers"
+  },
+  "exit_code": 0,
+  "duration_s": 51.1,
+  "verdict_lines": [
+    "reference pg-18.6: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2); Part 1 34/34 checks pass; Part 2 200 worlds, 0 baseline disagreements with the matrix",
+    "pg-18.6: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.62 s, median 4.6 + 3.1 ms per world",
+    "pglite-0.5.11-node: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.82 s, median 3.7 + 4.6 ms per world",
+    "pglite-0.5.11-node: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+    "chromium: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.3 s, median 3 + 3.5 ms per world",
+    "chromium: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+    "firefox: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 2.62 s, median 6 + 7 ms per world",
+    "firefox: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+    "webkit: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.51 s, median 4 + 4 ms per world",
+    "webkit: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+    "generator: 200 worlds, 6969 matrix cells of which 2999 allowed; trivial matrices 0.5%; rules 1/2/3 fire in 98/72/85% of worlds; nesting 35%, teamless user 57%, revoked share 51%",
+    "variants distinguished from the matrix in (of 200 worlds): restrictive 200, subset 200, norevoke 66, missing 149",
+    "owner probe over 200 worlds: without FORCE the owner disagrees with the matrix in 199 worlds, with FORCE in 0",
+    "timing, PostgreSQL 18.6 over TCP from Node: the whole run took 6.985 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 33.1 ms per world",
+    "timing, PGlite 0.5.11 under Node: the whole run took 9.636 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 37.6 ms per world",
+    "timing, PGlite 0.5.11 in chromium 153.0.8010.12 (module worker): the whole run took 7.102 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 27.1 ms per world",
+    "timing, PGlite 0.5.11 in firefox 155.0 (module worker): the whole run took 12.89 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 56.5 ms per world",
+    "timing, PGlite 0.5.11 in webkit 26.6 (module worker): the whole run took 7.57 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 29.5 ms per world",
+    "checks that fail on PGlite: P1.18d; on PostgreSQL 18.6: none",
+    "SET app.user = 'dana' (the lesson's text): PostgreSQL 42601 \"syntax error at or near \"user\"\"; PGlite 42601 \"syntax error at or near \"user\"\"",
+    "after RESET SESSION AUTHORIZATION (current_user, session_user): PostgreSQL postgres, postgres; PGlite app_owner, app_owner",
+    "pg_class read-back (relrowsecurity/relforcerowsecurity) before and after FORCE: PostgreSQL true/false then true/true; PGlite true/false then true/true",
+    "reference world, variant restrictive, disagreements with the matrix on PGlite (+ extra ids, - missing ids): dana -contract,q3-plan,roadmap; frank -roadmap; gia -contract,layoffs-memo; hal -contract,layoffs-memo; eli -q3-plan,roadmap; equal to PostgreSQL: true",
+    "reference world, variant subset, disagreements with the matrix on PGlite (+ extra ids, - missing ids): dana +layoffs-memo; frank +contract,layoffs-memo,q3-plan; gia +q3-plan; hal +q3-plan; eli +contract,layoffs-memo; ivy +contract,layoffs-memo,q3-plan; equal to PostgreSQL: true",
+    "reference world, variant norevoke, disagreements with the matrix on PGlite (+ extra ids, - missing ids): gia +roadmap; equal to PostgreSQL: true",
+    "reference world, variant missing, disagreements with the matrix on PGlite (+ extra ids, - missing ids): dana -roadmap; eli -roadmap; equal to PostgreSQL: true",
+    "PGlite default role: postgres, postgres, true (current_user, session_user, rolsuper); PostgreSQL: postgres, postgres, true"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pglite-rls/chromium.json",
+      "sha256": "e7fedc14a6064b5963a8e49f96d6ddde7ce1e8809c85ed99bc739f69b237a025",
+      "bytes": 241327
+    },
+    {
+      "path": "runs/RUN-pglite-rls/commands.jsonl",
+      "sha256": "4bbf5ab525d785ebd37e16b05f79626570c3762d183846af595c4de6c173c857",
+      "bytes": 4245
+    },
+    {
+      "path": "runs/RUN-pglite-rls/environment.json",
+      "sha256": "43cb9aee20f2460f3bd29b9bbcf82b889f47a701d2145ad6ddaa29ef7c0c233f",
+      "bytes": 1098
+    },
+    {
+      "path": "runs/RUN-pglite-rls/firefox.json",
+      "sha256": "9526eef5381fe56ed850f17dc120121396ce30c4159589b242127000593821b8",
+      "bytes": 228377
+    },
+    {
+      "path": "runs/RUN-pglite-rls/pg-18.6.json",
+      "sha256": "c5736042c165842550f60ff7f0cc60ad1583ebdfd11fbe29662738ee544b5719",
+      "bytes": 243603
+    },
+    {
+      "path": "runs/RUN-pglite-rls/pglite-0.5.11-node.json",
+      "sha256": "ed076c5865f4c6bc903880cf5a9d60e78fd7c8b25158ec8f6cc178e8d14c16c4",
+      "bytes": 243757
+    },
+    {
+      "path": "runs/RUN-pglite-rls/summary.json",
+      "sha256": "1d5f6ceb7227209751d38b1fcc7fd65a87c73e6367197f7134aa0f50f6342bb9",
+      "bytes": 14051
+    },
+    {
+      "path": "runs/RUN-pglite-rls/webkit.json",
+      "sha256": "99947feee2525c4d343a87e75299d3cf0ff23d247c6f8b91f3f09aa60aa686cf",
+      "bytes": 228254
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+      "id": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "digest": "sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "reference_image": "postgres:18",
+      "reference_digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "run_flags": [
+        "--rm",
+        "--init",
+        "--ipc=host",
+        "--memory=6g",
+        "-v <harness>:/work:ro",
+        "-v <gzip copies>:/gz:ro",
+        "-w /work"
+      ],
+      "network": "Docker default bridge; the harness server listens on loopback inside the container; PostgreSQL is published on a loopback port of the host"
+    },
+    "host_tools": {
+      "node": "v22.22.2",
+      "node_zlib": "1.3.1",
+      "npm": "10.9.7",
+      "playwright_core": "1.63.0",
+      "pg_driver": "pg 8.23.1"
+    },
+    "cpu_architecture": "x86_64",
+    "load_average_at_start": [
+      5.46,
+      6.26,
+      7.06
+    ],
+    "load_average_at_end": [
+      9.11,
+      9.28,
+      8.23
+    ],
+    "emulated": false
+  },
+  "setup": [
+    {
+      "id": "npm-ci",
+      "purpose": "install the pinned dependencies of the harness from its lockfile",
+      "argv": [
+        "npm",
+        "ci",
+        "--prefix",
+        "scripts/spikes/W0-S08",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "started_at": "2026-10-24T13:10:21.945Z",
+      "duration_s": 0.64,
+      "exit_code": 0
+    },
+    {
+      "id": "precompress-0.5.11",
+      "purpose": "gzip copies of the 0.5.11 files at level 5, for the browser server",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S08/precompress.mjs",
+        "--dist",
+        "scripts/spikes/W0-S08/node_modules/@electric-sql/pglite/dist",
+        "--out",
+        "<tmp>/gz/pglite",
+        "--level",
+        "5"
+      ],
+      "started_at": "2026-10-24T13:10:22.586Z",
+      "duration_s": 0.47,
+      "exit_code": 0
+    },
+    {
+      "id": "precompress-0.5.10",
+      "purpose": "gzip copies of the 0.5.10 files at level 5, for the browser server",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S08/precompress.mjs",
+        "--dist",
+        "scripts/spikes/W0-S08/node_modules/pglite-0510/dist",
+        "--out",
+        "<tmp>/gz/pglite0510",
+        "--level",
+        "5"
+      ],
+      "started_at": "2026-10-24T13:10:23.052Z",
+      "duration_s": 0.71,
+      "exit_code": 0
+    },
+    {
+      "id": "start-postgresql",
+      "purpose": "a fresh PostgreSQL 18 container for the reference runs",
+      "argv": [
+        "docker",
+        "run",
+        "-d",
+        "--name",
+        "w0s08-pg18",
+        "--memory=6g",
+        "-e",
+        "POSTGRES_HOST_AUTH_METHOD=trust",
+        "-p",
+        "127.0.0.1::5432",
+        "postgres:18"
+      ],
+      "started_at": "2026-10-24T13:10:23.774Z",
+      "duration_s": 0.14,
+      "exit_code": 0
+    }
+  ],
+  "primary_config": "compare-with-postgresql",
+  "notes": [
+    "Reference: PostgreSQL 18.6 (the postgres:18 image) on one node-postgres connection, in a fresh container started for this run and removed at its end. Compared: PGlite 0.5.11 under Node 22 and in a module worker in Chromium, Firefox and WebKit as shipped by Playwright 1.63.0, headless, in the Playwright container, served from a loopback server that sends no cross-origin isolation headers.",
+    "The browsers are desktop engines on a 20-CPU host, not phones; no timing in this record is a phone timing.",
+    "The access matrix is computed in plain code from S7's three read rules and compared with what each engine returns under SET ROLE. Equality between engines is exact on rows, row counts, SQLSTATE, message and detail; per-world results compare as SHA-256 hashes of the full visible-id maps, and the first three worlds keep their full maps in the result files.",
+    "The reference world is S7's W0 plus Risk (a team nested in Payments, with eli in it), ivy (a teamless user) and a revoked share of roadmap to gia. Generated worlds follow S7's ranges, with WF1 to WF3 true by construction, and each seed gives the same world in every engine (the world hash is compared).",
+    "The SQL under test is this harness's realization of S7.L4's policies and functions (the lesson's own text for the three read policies; the UPDATE and INSERT policies and user_teams are written here). The lab template's policies and harness do not exist yet.",
+    "The policy-subquery race under READ COMMITTED (catalog row H17) needs two sessions and cannot run on PGlite's single connection; it is not tested here.",
+    "PGlite's default connection role is the superuser postgres, which bypasses row security even on a forced table, so every RLS specimen switches role with SET ROLE first; the owner connection is emulated by SET ROLE to the table owner.",
+    "RUN-pglite-rls and RUN-pglite-0511 come from one invocation of run-all.mjs; each lists the commands it used under configs and setup.",
+    "This record was rebuilt from the outputs on disk by record-run.mjs (its SHA-256 is in the inputs) after run-all.mjs finished; no measurement was repeated.",
+    "This record was not validated against run@1: schemas/run.schema.json did not exist when it was recorded (W0-S11 owns it). Field names follow the task rules for run records and the other W0 records."
+  ],
+  "configs": [
+    {
+      "id": "postgresql-18.6",
+      "purpose": "the reference: the specimens on PostgreSQL 18.6 over one node-postgres connection",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S08/run-node.mjs",
+        "--engine",
+        "pg",
+        "--dsn",
+        "127.0.0.1:<port>",
+        "--label",
+        "pg-18.6",
+        "--worlds",
+        "200",
+        "--out",
+        "runs/RUN-pglite-rls/pg-18.6.json"
+      ],
+      "started_at": "2026-10-24T13:10:25.208Z",
+      "duration_s": 7.03,
+      "exit_code": 0,
+      "engine": "PostgreSQL",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "driver": "pg 8.23.1",
+      "statements": {
+        "count": 29745,
+        "errors": 9,
+        "ms": 6717
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+        "part 1: 53 steps, 34/34 checks pass",
+        "the whole run took 6.985 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 33.1 ms per world; baseline disagreements with the matrix 0; owner probe under FORCE, disagreements 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/pg-18.6.json",
+          "sha256": "c5736042c165842550f60ff7f0cc60ad1583ebdfd11fbe29662738ee544b5719",
+          "bytes": 243603
+        }
+      ]
+    },
+    {
+      "id": "pglite-0.5.11-node",
+      "purpose": "the specimens on PGlite 0.5.11 under Node 22",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S08/run-node.mjs",
+        "--engine",
+        "pglite",
+        "--pglite",
+        "@electric-sql/pglite",
+        "--label",
+        "pglite-0.5.11-node",
+        "--worlds",
+        "200",
+        "--out",
+        "runs/RUN-pglite-rls/pglite-0.5.11-node.json"
+      ],
+      "started_at": "2026-10-24T13:10:32.479Z",
+      "duration_s": 9.72,
+      "exit_code": 0,
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "runtime": "node v22.22.2",
+      "statements": {
+        "count": 29745,
+        "errors": 9,
+        "ms": 8011
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+        "part 1: 53 steps, 33/34 checks pass (failed: P1.18d)",
+        "the whole run took 9.636 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 37.6 ms per world; baseline disagreements with the matrix 0; owner probe under FORCE, disagreements 0",
+        "against PostgreSQL 18.6: 52/53 part 1 steps equal, 200/200 worlds equal, 10/10 single-session steps equal; known divergence: P1.18d; unexplained: 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/pglite-0.5.11-node.json",
+          "sha256": "ed076c5865f4c6bc903880cf5a9d60e78fd7c8b25158ec8f6cc178e8d14c16c4",
+          "bytes": 243757
+        }
+      ]
+    },
+    {
+      "id": "pglite-0.5.11-chromium",
+      "purpose": "the specimens on PGlite 0.5.11 in a module worker in chromium",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--ipc=host",
+        "--memory=6g",
+        "-v",
+        "./scripts/spikes/W0-S08:/work:ro",
+        "-v",
+        "<tmp>/gz:/gz:ro",
+        "-w",
+        "/work",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "node",
+        "/work/browser-run.mjs",
+        "--engine",
+        "chromium",
+        "--task",
+        "rls",
+        "--pglite",
+        "@electric-sql/pglite",
+        "--gz-dir",
+        "/gz/pglite",
+        "--worlds",
+        "200"
+      ],
+      "started_at": "2026-10-24T13:10:42.198Z",
+      "duration_s": 7.79,
+      "exit_code": 0,
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "browser": {
+        "name": "chromium",
+        "version": "153.0.8010.12",
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+      },
+      "statements": {
+        "count": 29745,
+        "errors": 9,
+        "ms": 5592
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+        "part 1: 53 steps, 33/34 checks pass (failed: P1.18d)",
+        "the whole run took 7.102 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 27.1 ms per world; baseline disagreements with the matrix 0; owner probe under FORCE, disagreements 0",
+        "against PostgreSQL 18.6: 52/53 part 1 steps equal, 200/200 worlds equal, 10/10 single-session steps equal; known divergence: P1.18d; unexplained: 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/chromium.json",
+          "sha256": "e7fedc14a6064b5963a8e49f96d6ddde7ce1e8809c85ed99bc739f69b237a025",
+          "bytes": 241327
+        }
+      ]
+    },
+    {
+      "id": "pglite-0.5.11-firefox",
+      "purpose": "the specimens on PGlite 0.5.11 in a module worker in firefox",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--ipc=host",
+        "--memory=6g",
+        "-v",
+        "./scripts/spikes/W0-S08:/work:ro",
+        "-v",
+        "<tmp>/gz:/gz:ro",
+        "-w",
+        "/work",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "node",
+        "/work/browser-run.mjs",
+        "--engine",
+        "firefox",
+        "--task",
+        "rls",
+        "--pglite",
+        "@electric-sql/pglite",
+        "--gz-dir",
+        "/gz/pglite",
+        "--worlds",
+        "200"
+      ],
+      "started_at": "2026-10-24T13:10:49.990Z",
+      "duration_s": 14.42,
+      "exit_code": 0,
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "browser": {
+        "name": "firefox",
+        "version": "155.0",
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20100101 Firefox/155.0"
+      },
+      "statements": {
+        "count": 29745,
+        "errors": 9,
+        "ms": 11339
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+        "part 1: 53 steps, 33/34 checks pass (failed: P1.18d)",
+        "the whole run took 12.89 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 56.5 ms per world; baseline disagreements with the matrix 0; owner probe under FORCE, disagreements 0",
+        "against PostgreSQL 18.6: 52/53 part 1 steps equal, 200/200 worlds equal, 10/10 single-session steps equal; known divergence: P1.18d; unexplained: 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/firefox.json",
+          "sha256": "9526eef5381fe56ed850f17dc120121396ce30c4159589b242127000593821b8",
+          "bytes": 228377
+        }
+      ]
+    },
+    {
+      "id": "pglite-0.5.11-webkit",
+      "purpose": "the specimens on PGlite 0.5.11 in a module worker in webkit",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--ipc=host",
+        "--memory=6g",
+        "-v",
+        "./scripts/spikes/W0-S08:/work:ro",
+        "-v",
+        "<tmp>/gz:/gz:ro",
+        "-w",
+        "/work",
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "node",
+        "/work/browser-run.mjs",
+        "--engine",
+        "webkit",
+        "--task",
+        "rls",
+        "--pglite",
+        "@electric-sql/pglite",
+        "--gz-dir",
+        "/gz/pglite",
+        "--worlds",
+        "200"
+      ],
+      "started_at": "2026-10-24T13:11:04.408Z",
+      "duration_s": 8.6,
+      "exit_code": 0,
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "browser": {
+        "name": "webkit",
+        "version": "26.6",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15"
+      },
+      "statements": {
+        "count": 29745,
+        "errors": 9,
+        "ms": 5964
+      },
+      "verdict_lines": [
+        "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+        "part 1: 53 steps, 33/34 checks pass (failed: P1.18d)",
+        "the whole run took 7.57 s (start-up, part 1, 200 worlds and the single-session specimens), 29,745 statements, median 29.5 ms per world; baseline disagreements with the matrix 0; owner probe under FORCE, disagreements 0",
+        "against PostgreSQL 18.6: 52/53 part 1 steps equal, 200/200 worlds equal, 10/10 single-session steps equal; known divergence: P1.18d; unexplained: 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/webkit.json",
+          "sha256": "99947feee2525c4d343a87e75299d3cf0ff23d247c6f8b91f3f09aa60aa686cf",
+          "bytes": 228254
+        }
+      ]
+    },
+    {
+      "id": "compare-with-postgresql",
+      "purpose": "compare every PGlite configuration with PostgreSQL 18.6, statement by statement and world by world",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S08/compare.mjs",
+        "--ref",
+        "runs/RUN-pglite-rls/pg-18.6.json",
+        "--out",
+        "runs/RUN-pglite-rls/summary.json",
+        "runs/RUN-pglite-rls/pglite-0.5.11-node.json",
+        "runs/RUN-pglite-rls/chromium.json",
+        "runs/RUN-pglite-rls/firefox.json",
+        "runs/RUN-pglite-rls/webkit.json"
+      ],
+      "started_at": "2026-10-24T13:11:13.009Z",
+      "duration_s": 0.04,
+      "exit_code": 0,
+      "engine": "harness",
+      "verdict_lines": [
+        "reference pg-18.6: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2); Part 1 34/34 checks pass; Part 2 200 worlds, 0 baseline disagreements with the matrix",
+        "pg-18.6: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.62 s, median 4.6 + 3.1 ms per world",
+        "pglite-0.5.11-node: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.82 s, median 3.7 + 4.6 ms per world",
+        "pglite-0.5.11-node: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+        "chromium: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.3 s, median 3 + 3.5 ms per world",
+        "chromium: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+        "firefox: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 2.62 s, median 6 + 7 ms per world",
+        "firefox: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+        "webkit: SET ROLE rerun only (load each world, then the baseline differential): 200 worlds in 1.51 s, median 4 + 4 ms per world",
+        "webkit: PostgreSQL 18.6 (PGlite 0.5.11); Part 1 33/34 checks pass (failed: P1.18d); 52/53 Part 1 steps equal PostgreSQL; 200/200 worlds equal; 10/10 single-session steps equal; baseline disagreements 0; unexplained 0",
+        "generator: 200 worlds, 6969 matrix cells of which 2999 allowed; trivial matrices 0.5%; rules 1/2/3 fire in 98/72/85% of worlds; nesting 35%, teamless user 57%, revoked share 51%",
+        "variants distinguished from the matrix in (of 200 worlds): restrictive 200, subset 200, norevoke 66, missing 149",
+        "owner probe over 200 worlds: without FORCE the owner disagrees with the matrix in 199 worlds, with FORCE in 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-pglite-rls/summary.json",
+          "sha256": "1d5f6ceb7227209751d38b1fcc7fd65a87c73e6367197f7134aa0f50f6342bb9",
+          "bytes": 14051
+        }
+      ]
+    }
+  ]
+}

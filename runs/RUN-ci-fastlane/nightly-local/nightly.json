@@ -1,0 +1,245 @@
+{
+  "schema": "statespace/nightly-status@1",
+  "date": "2026-10-24",
+  "commit": "44d12a9395f1b60c44a37c8977bd529eeee35319",
+  "dirty": true,
+  "result": "red",
+  "blocked": null,
+  "red_since": "2026-10-24",
+  "source": {
+    "kind": "local"
+  },
+  "runner": {
+    "os": "Linux 6.12.63",
+    "arch": "x64",
+    "cpus": 20,
+    "node": "v22.22.2"
+  },
+  "image_digest": null,
+  "started_at": "2026-10-24T16:25:26.630Z",
+  "duration_s": 159.723,
+  "gates": [
+    {
+      "id": "GATE-numbers",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.496,
+      "verdict": "GATE-numbers: PASS (2634 tokens in 40 files, 73 known; 0.5 s)"
+    },
+    {
+      "id": "GATE-facts",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.379,
+      "verdict": "GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)"
+    },
+    {
+      "id": "GATE-links",
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 0.183,
+      "verdict": "GATE-links: FAIL (1 finding(s))"
+    },
+    {
+      "id": "GATE-budget",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.097,
+      "verdict": "GATE-budget: green (4 warnings), 4 notes"
+    },
+    {
+      "id": "GATE-privacy",
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 4.245,
+      "verdict": "vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file"
+    },
+    {
+      "id": "GATE-schema",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 6.026,
+      "verdict": "GATE-schema: PASS (22 checks; 6.0 s)"
+    },
+    {
+      "id": "GATE-runs",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.153,
+      "verdict": "GATE-runs: PASS (67 records, 1695 resolved references; 0.1 s)"
+    }
+  ],
+  "checks": [
+    {
+      "id": "vendor-verify",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.388,
+      "verdict": "vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)"
+    },
+    {
+      "id": "lint-purity",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.373,
+      "verdict": "purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)"
+    },
+    {
+      "id": "typecheck",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 5.268,
+      "verdict": "no output"
+    },
+    {
+      "id": "unit-tests",
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 7.055,
+      "verdict": "145 tests, 143 passed, 1 failed, 1 skipped"
+    },
+    {
+      "id": "build",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 3.541,
+      "verdict": "✓ built in 639ms"
+    },
+    {
+      "id": "lane-tests",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 4.722,
+      "verdict": "68 tests, 67 passed, 0 failed, 1 skipped"
+    },
+    {
+      "id": "numbers-self-check",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 6.966,
+      "verdict": "GATE-numbers self-check: PASS (14 of 14 held)"
+    },
+    {
+      "id": "runs-self-check",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 2.629,
+      "verdict": "GATE-runs self-check: PASS (15 of 15 held)"
+    },
+    {
+      "id": "schema-self-check",
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 117.156,
+      "verdict": "GATE-schema self-check: FAIL (46 of 48 held)"
+    },
+    {
+      "id": "privacy-self-test",
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.034,
+      "verdict": "verify-privacy self-test: ok, 33/33"
+    }
+  ],
+  "failed": [
+    {
+      "gate": "GATE-links",
+      "result": "fail",
+      "since": "2026-10-24",
+      "claims": []
+    },
+    {
+      "gate": "GATE-privacy",
+      "result": "fail",
+      "since": "2026-10-24",
+      "claims": []
+    }
+  ],
+  "absent": [
+    {
+      "gate": "GATE-calls",
+      "built_by": "W1-T05"
+    },
+    {
+      "gate": "GATE-interp",
+      "built_by": "W2-T08"
+    },
+    {
+      "gate": "GATE-items",
+      "built_by": "W1-T39"
+    },
+    {
+      "gate": "GATE-audit-blind",
+      "built_by": "W1-T40"
+    },
+    {
+      "gate": "GATE-generators",
+      "built_by": "W1-T05"
+    },
+    {
+      "gate": "GATE-kc",
+      "built_by": "W1-T04"
+    },
+    {
+      "gate": "GATE-stamps",
+      "built_by": "W1-T01"
+    },
+    {
+      "gate": "GATE-codes",
+      "built_by": "W1-T01"
+    },
+    {
+      "gate": "GATE-claims",
+      "built_by": "W1-T15"
+    },
+    {
+      "gate": "GATE-coverage",
+      "built_by": null
+    },
+    {
+      "gate": "GATE-glyphs",
+      "built_by": "W6-T03"
+    },
+    {
+      "gate": "GATE-bundle",
+      "built_by": "W1-T41"
+    },
+    {
+      "gate": "GATE-guardrails",
+      "built_by": "W1-T18"
+    },
+    {
+      "gate": "GATE-lessons",
+      "built_by": "W1-T38"
+    },
+    {
+      "gate": "GATE-erosions",
+      "built_by": "W2-T42"
+    },
+    {
+      "gate": "GATE-replay",
+      "built_by": "W2-T03"
+    },
+    {
+      "gate": "GATE-conformance",
+      "built_by": "W1-T42"
+    },
+    {
+      "gate": "GATE-specimens",
+      "built_by": "W1-T42"
+    },
+    {
+      "gate": "GATE-labs",
+      "built_by": "W1-T43"
+    },
+    {
+      "gate": "GATE-audit",
+      "built_by": "W1-T40"
+    },
+    {
+      "gate": "GATE-a11y",
+      "built_by": "W1-T41"
+    }
+  ],
+  "claims_source": null
+}

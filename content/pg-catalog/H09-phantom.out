@@ -1,0 +1,97 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1n1 s2b s2i s2c s1n2 s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1n1: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      2
+(1 row)
+
+step s2b: BEGIN;
+step s2i: INSERT INTO acct VALUES (3, 0, 1) RETURNING id, team;
+id|team
+--+----
+ 3|   1
+(1 row)
+
+step s2c: COMMIT;
+step s1n2: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      3
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal, team FROM acct ORDER BY id;
+id|bal|team
+--+---+----
+ 1|100|   1
+ 2|100|   1
+ 3|  0|   1
+(3 rows)
+
+
+starting permutation: s1b_rr s1n1 s2b s2i s2c s1n2 s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1n1: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      2
+(1 row)
+
+step s2b: BEGIN;
+step s2i: INSERT INTO acct VALUES (3, 0, 1) RETURNING id, team;
+id|team
+--+----
+ 3|   1
+(1 row)
+
+step s2c: COMMIT;
+step s1n2: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      2
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal, team FROM acct ORDER BY id;
+id|bal|team
+--+---+----
+ 1|100|   1
+ 2|100|   1
+ 3|  0|   1
+(3 rows)
+
+
+starting permutation: s1b_ser s1n1 s2b s2i s2c s1n2 s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1n1: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      2
+(1 row)
+
+step s2b: BEGIN;
+step s2i: INSERT INTO acct VALUES (3, 0, 1) RETURNING id, team;
+id|team
+--+----
+ 3|   1
+(1 row)
+
+step s2c: COMMIT;
+step s1n2: SELECT count(*) AS members FROM acct WHERE team = 1;
+members
+-------
+      2
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal, team FROM acct ORDER BY id;
+id|bal|team
+--+---+----
+ 1|100|   1
+ 2|100|   1
+ 3|  0|   1
+(3 rows)
+

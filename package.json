@@ -1,0 +1,33 @@
+{
+  "name": "statespace",
+  "private": true,
+  "type": "module",
+  "description": "statespace workspace root: the two static sites (apps/site on the main origin, apps/instruments on the instrument origin) and the pure packages they share.",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present && npm run test:vendor",
+    "test:vendor": "node --test \"scripts/spikes/W0-S12/*.test.mjs\"",
+    "lint:purity": "node packages/purity-lint/check.mjs",
+    "vendor:verify": "node scripts/vendor-drift.mjs verify",
+    "e2e": "npm run e2e --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "playwright-core": "1.63.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}

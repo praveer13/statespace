@@ -1,0 +1,187 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc ins_null ins_50 upd_where s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step ins_null: INSERT INTO nacct VALUES (1, NULL) RETURNING id, bal;
+id|bal
+--+---
+ 1|   
+(1 row)
+
+step ins_50: INSERT INTO nacct VALUES (2, 50) RETURNING id, bal;
+id|bal
+--+---
+ 2| 50
+(1 row)
+
+step upd_where: UPDATE nacct SET bal = bal - 10 WHERE bal >= 10 RETURNING id, bal;
+id|bal
+--+---
+ 2| 40
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1|   
+ 2| 40
+(2 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+
+
+starting permutation: ub_rc u_sel uc
+step ub_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step u_sel: SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1| 70
+(1 row)
+
+step uc: COMMIT;
+
+starting permutation: ub_rc u_ins_null uc chk
+step ub_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step u_ins_null: INSERT INTO racct VALUES (2, NULL) RETURNING id, bal;
+ERROR:  new row violates row-level security policy for table "racct"
+step uc: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+(0 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+
+
+starting permutation: s1b_rr ins_null ins_50 upd_where s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step ins_null: INSERT INTO nacct VALUES (1, NULL) RETURNING id, bal;
+id|bal
+--+---
+ 1|   
+(1 row)
+
+step ins_50: INSERT INTO nacct VALUES (2, 50) RETURNING id, bal;
+id|bal
+--+---
+ 2| 50
+(1 row)
+
+step upd_where: UPDATE nacct SET bal = bal - 10 WHERE bal >= 10 RETURNING id, bal;
+id|bal
+--+---
+ 2| 40
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1|   
+ 2| 40
+(2 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+
+
+starting permutation: ub_rr u_sel uc
+step ub_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step u_sel: SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1| 70
+(1 row)
+
+step uc: COMMIT;
+
+starting permutation: ub_rr u_ins_null uc chk
+step ub_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step u_ins_null: INSERT INTO racct VALUES (2, NULL) RETURNING id, bal;
+ERROR:  new row violates row-level security policy for table "racct"
+step uc: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+(0 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+
+
+starting permutation: s1b_ser ins_null ins_50 upd_where s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step ins_null: INSERT INTO nacct VALUES (1, NULL) RETURNING id, bal;
+id|bal
+--+---
+ 1|   
+(1 row)
+
+step ins_50: INSERT INTO nacct VALUES (2, 50) RETURNING id, bal;
+id|bal
+--+---
+ 2| 50
+(1 row)
+
+step upd_where: UPDATE nacct SET bal = bal - 10 WHERE bal >= 10 RETURNING id, bal;
+id|bal
+--+---
+ 2| 40
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1|   
+ 2| 40
+(2 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+
+
+starting permutation: ub_ser u_sel uc
+step ub_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step u_sel: SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+ 1| 70
+(1 row)
+
+step uc: COMMIT;
+
+starting permutation: ub_ser u_ins_null uc chk
+step ub_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step u_ins_null: INSERT INTO racct VALUES (2, NULL) RETURNING id, bal;
+ERROR:  new row violates row-level security policy for table "racct"
+step uc: COMMIT;
+step chk: SELECT id, bal FROM nacct ORDER BY id; SELECT id, bal FROM racct ORDER BY id;
+id|bal
+--+---
+(0 rows)
+
+id|bal
+--+---
+ 1| 70
+ 3|   
+(2 rows)
+

@@ -1,0 +1,67 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 36 and seed 231536943730194457 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 3205] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/Poller.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module Poller
+Linting of module Poller
+Starting... (2026-10-24 13:51:12)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:51:12.
+Error: Invariant MarkInv is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ mark = 0
+/\ wpc = (w1 :> "idle" @@ w2 :> "idle")
+/\ nextId = 1
+/\ idOf = (w1 :> 0 @@ w2 :> 0)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 2: <Insert(w1) line 21, col 14 to line 25, col 59 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "idle")
+/\ nextId = 2
+/\ idOf = (w1 :> 1 @@ w2 :> 0)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 3: <Insert(w2) line 21, col 14 to line 25, col 59 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "inserted")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 4: <CommitRow(w2) line 27, col 17 to line 30, col 62 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {}
+/\ committedIds = {2}
+
+State 5: <Poll line 35, col 9 to line 38, col 56 of module Poller>
+/\ mark = 2
+/\ wpc = (w1 :> "inserted" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {2}
+/\ committedIds = {2}
+
+State 6: <CommitRow(w1) line 27, col 17 to line 30, col 62 of module Poller>
+/\ mark = 2
+/\ wpc = (w1 :> "committed" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {2}
+/\ committedIds = {1, 2}
+
+28 states generated, 22 distinct states found, 5 states left on queue.
+The depth of the complete state graph search is 6.
+Finished in 00s at (2026-10-24 13:51:12)

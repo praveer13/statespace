@@ -1,0 +1,88 @@
+Parsed test spec with 3 sessions
+
+starting permutation: ab ar bb br aw bw ac bc bb2 br2 bw2 bc2 chk
+step ab: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step ar: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step bb: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step br: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step aw: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step bw: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step ac: COMMIT;
+step bc: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step bb2: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step br2: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+   20
+(1 row)
+
+step bw2: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+(0 rows)
+
+step bc2: COMMIT;
+step chk: SELECT coalesce(sum(amt), 0) AS held, count(*) AS holds FROM holds;
+held|holds
+----+-----
+  80|    1
+(1 row)
+
+
+starting permutation: ab ar bb br aw bw bc ac chk
+step ab: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step ar: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step bb: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step br: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT a.bal - coalesce((SELECT sum(h.amt) FROM holds h WHERE h.acct = 1), 0) AS avail FROM acct a WHERE a.id = 1; SELECT avail FROM seen;
+avail
+-----
+  100
+(1 row)
+
+step aw: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step bw: INSERT INTO holds SELECT 1, 80 WHERE (SELECT avail FROM seen) >= 80 RETURNING acct, amt;
+acct|amt
+----+---
+   1| 80
+(1 row)
+
+step bc: COMMIT;
+step ac: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT coalesce(sum(amt), 0) AS held, count(*) AS holds FROM holds;
+held|holds
+----+-----
+  80|    1
+(1 row)
+

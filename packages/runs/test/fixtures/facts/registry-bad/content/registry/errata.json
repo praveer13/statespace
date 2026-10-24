@@ -1,0 +1,94 @@
+{
+  "format": "statespace errata, revision 1",
+  "about": "Fixture: one planted fault per erratum, for the errata checks of GATE-facts. Every erratum here is a fixture. 2026-10-21-ok and 2026-10-23-newer are controls and draw no finding.",
+  "errata": [
+    {
+      "id": "2026-10-21-ok",
+      "date": "2026-10-21",
+      "kind": "changed",
+      "lessons": ["S1.L1"],
+      "runs": ["RUN-z3-starter"],
+      "facts": ["fixture.ok"],
+      "title": "Fixture: a well-formed erratum",
+      "before": "Fixture: the sentence as it was taught.",
+      "after": "Fixture: the corrected sentence.",
+      "why": "Fixture: why it changed.",
+      "source": { "url": "https://example.org/notes", "title": "Fixture source" }
+    },
+    {
+      "id": "2026-10-23-newer",
+      "date": "2026-10-23",
+      "kind": "error",
+      "lessons": ["S1.L1"],
+      "title": "Fixture: a later erratum on the same lesson",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-20-date-differs",
+      "date": "2026-10-21",
+      "kind": "error",
+      "lessons": ["S1.L2"],
+      "title": "Fixture: an id whose date is not its date",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-21-no-lessons",
+      "date": "2026-10-21",
+      "kind": "error",
+      "lessons": [],
+      "title": "Fixture: an erratum that flags no lesson",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-21-bad-lesson",
+      "date": "2026-10-21",
+      "kind": "error",
+      "lessons": ["L1"],
+      "title": "Fixture: a lesson that is not a lesson ID",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-21-missing-run",
+      "date": "2026-10-21",
+      "kind": "changed",
+      "lessons": ["S1.L2"],
+      "runs": ["RUN-does-not-exist"],
+      "title": "Fixture: a run that is not on disk",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-21-unknown-fact",
+      "date": "2026-10-21",
+      "kind": "changed",
+      "lessons": ["S1.L2"],
+      "facts": ["fixture.no-such-fact"],
+      "title": "Fixture: a fact the registry does not hold",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    },
+    {
+      "id": "2026-10-22-supersedes-newer",
+      "date": "2026-10-22",
+      "kind": "error",
+      "lessons": ["S1.L1"],
+      "title": "Fixture: an erratum that claims to replace a newer one",
+      "before": "Fixture: before.",
+      "after": "Fixture: after.",
+      "supersedes": "2026-10-23-newer"
+    },
+    {
+      "id": "2026-12-01-future",
+      "date": "2026-12-01",
+      "kind": "error",
+      "lessons": ["S1.L3"],
+      "title": "Fixture: an erratum dated after the day the gate runs",
+      "before": "Fixture: before.",
+      "after": "Fixture: after."
+    }
+  ]
+}

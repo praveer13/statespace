@@ -1,0 +1,7528 @@
+{
+ "engine": "node",
+ "userAgent": "Node.js v22.22.2 (V8 12.4.254.21-node.39)",
+ "platform": "Linux 6.12.63 x64",
+ "cpus": 20,
+ "parserInitMs": 12.093868,
+ "fingerprintProbe": [
+  {
+   "states": 10000,
+   "distinctFingerprints": 10000,
+   "collisions": 0,
+   "uniform32Expected": 0.011640368029475212,
+   "ms": 16.34223899996141
+  },
+  {
+   "states": 100000,
+   "distinctFingerprints": 100000,
+   "collisions": 0,
+   "uniform32Expected": 1.1641415767371655,
+   "ms": 161.91482300002826
+  },
+  {
+   "states": 1000000,
+   "distinctFingerprints": 999777,
+   "collisions": 223,
+   "uniform32Expected": 116.41520541161299,
+   "ms": 1791.7245980000007
+  }
+ ],
+ "results": [
+  {
+   "id": "s5-m1-w2",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 2.778863000000001,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 1.4705119999999994,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 13,
+    "depth": 5,
+    "deadlockStates": 3,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 11,
+     "depth": 5,
+     "traceStates": 5,
+     "ms": 41.973022,
+     "invariant": "NoOverspend"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 2.2044420000000002,
+    "ms": 64.234778,
+    "statesPerSec": 171.2467971789363
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 11,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 12,
+    "accepted": 12,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 12,
+    "labelAgree": 6,
+    "negTested": 98,
+    "negRejected": 98,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.9711165454545443,
+    "ms": 50.85591499999998,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 5,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 4,
+     "labelComparable": 4,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 9.488156000000004
+    }
+   ],
+   "wallMs": 137.234887
+  },
+  {
+   "id": "s5-m1-w2-deadlockon",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.9249289999999917,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.1563250000000096,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 13,
+    "depth": 5,
+    "deadlockStates": 3,
+    "violatingStates": 1,
+    "first": {
+     "kind": "deadlock",
+     "distinct": 10,
+     "depth": 4,
+     "traceStates": 4,
+     "ms": 7.042664000000002
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.319580000000002,
+    "ms": 9.873633000000012,
+    "statesPerSec": 1114.0782729112968
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": null,
+      "agree": null
+     },
+     "ms": 4.764557000000025
+    }
+   ],
+   "wallMs": 16.792719000000005
+  },
+  {
+   "id": "s5-m1-a40-w3",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.888986999999986,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.15344999999999231,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 78,
+    "distinctExact": 78,
+    "generated": 106,
+    "depth": 7,
+    "deadlockStates": 16,
+    "violatingStates": 10,
+    "first": {
+     "kind": "violated",
+     "distinct": 69,
+     "depth": 7,
+     "traceStates": 7,
+     "ms": 52.559909000000005,
+     "invariant": "NoOverspend"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.2790830000000142,
+    "ms": 75.82083500000002,
+    "statesPerSec": 1028.740978650525
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 78,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 105,
+    "accepted": 105,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 105,
+    "labelAgree": 39,
+    "negTested": 396,
+    "negRejected": 396,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.8462185897435867,
+    "ms": 88.18007699999998,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 7,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 6,
+     "labelComparable": 6,
+     "labelAgree": 3,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 4,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 9.136404000000027
+    }
+   ],
+   "wallMs": 175.27434300000002
+  },
+  {
+   "id": "s5-m1-a40-w2",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7730589999999893,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.19467300000002297,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 13,
+    "distinctExact": 13,
+    "generated": 15,
+    "depth": 5,
+    "deadlockStates": 3,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.2718060000000264,
+    "ms": 9.219816000000037,
+    "statesPerSec": 1410.006446983318
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 13,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 14,
+    "accepted": 14,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 14,
+    "labelAgree": 6,
+    "negTested": 142,
+    "negRejected": 142,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.6906524615384517,
+    "ms": 11.635376000000008,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 22.712486000000013
+  },
+  {
+   "id": "s5-m1-full-w2",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "=<",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.6985689999999636,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.12784700000003113,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 13,
+    "depth": 5,
+    "deadlockStates": 3,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.31370099999998047,
+    "ms": 7.660344000000009,
+    "statesPerSec": 1435.9668443088178
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 11,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 12,
+    "accepted": 12,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 12,
+    "labelAgree": 6,
+    "negTested": 98,
+    "negRejected": 98,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.6647159090909182,
+    "ms": 9.82340899999997,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 19.175164999999993
+  },
+  {
+   "id": "s5-m1-full-w3",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "=<",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7416410000000155,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.13280800000001136,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 45,
+    "distinctExact": 45,
+    "generated": 67,
+    "depth": 7,
+    "deadlockStates": 7,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.4802450000000249,
+    "ms": 37.81823600000001,
+    "statesPerSec": 1189.902141390201
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 45,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 66,
+    "accepted": 66,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 66,
+    "labelAgree": 33,
+    "negTested": 380,
+    "negRejected": 380,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.8069518444444422,
+    "ms": 47.34123599999998,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 86.83875799999998
+  },
+  {
+   "id": "s5-m1-full-w4",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "=<",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.6947360000000344,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.13634200000001329,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 191,
+    "distinctExact": 191,
+    "generated": 361,
+    "depth": 9,
+    "deadlockStates": 15,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.2527279999999905,
+    "ms": 195.73980099999994,
+    "statesPerSec": 975.7851955719525
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 191,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 360,
+    "accepted": 360,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 360,
+    "labelAgree": 180,
+    "negTested": 394,
+    "negRejected": 394,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.9610650209424118,
+    "ms": 238.2959350000001,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 435.67897999999997
+  },
+  {
+   "id": "s5-m1-full-w5",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "=<",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7196460000000116,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.13863600000001952,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 813,
+    "distinctExact": 813,
+    "generated": 1911,
+    "depth": 11,
+    "deadlockStates": 31,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.2502680000000055,
+    "ms": 922.1128809999999,
+    "statesPerSec": 881.6707983932827
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 813,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 1910,
+    "accepted": 1910,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 1910,
+    "labelAgree": 955,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.084613384993839,
+    "ms": 1141.391727,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 2065.195374
+  },
+  {
+   "id": "s5-m1-full-w6",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "=<",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7622749999995904,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.14999500000021726,
+   "actions": [
+    "Read(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 3431,
+    "distinctExact": 3431,
+    "generated": 9757,
+    "depth": 13,
+    "deadlockStates": 63,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.300883999999769,
+    "ms": 4535.7672760000005,
+    "statesPerSec": 756.4321075630071
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 3431,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 9756,
+    "accepted": 9756,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 9756,
+    "labelAgree": 4878,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.640259047799467,
+    "ms": 6935.714220000001,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 11473.689357
+  },
+  {
+   "id": "s5-m2-w2",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7487889999993058,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.26179899999988265,
+   "actions": [
+    "Spend(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 4,
+    "distinctExact": 4,
+    "generated": 5,
+    "depth": 3,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.6525979999987612,
+    "ms": 4.468637999998464,
+    "statesPerSec": 895.1273296251286
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 4,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 4,
+    "accepted": 4,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 4,
+    "labelAgree": 4,
+    "negTested": 8,
+    "negRejected": 8,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.48220425000045,
+    "ms": 11.212063000000853,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 22.020305000000008
+  },
+  {
+   "id": "s5-m2-a40-w3",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.6758720000016183,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.25527399999919,
+   "actions": [
+    "Spend(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 8,
+    "distinctExact": 8,
+    "generated": 13,
+    "depth": 4,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.3664730000000418,
+    "ms": 24.93545499999891,
+    "statesPerSec": 320.8283145424998
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Init_ and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 8,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 12,
+    "accepted": 12,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 12,
+    "labelAgree": 12,
+    "negTested": 44,
+    "negRejected": 44,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.26378950000003,
+    "ms": 24.418289999999615,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 51.32639899999958
+  },
+  {
+   "id": "s5-m3-rtw3",
+   "mode": "shim",
+   "ok": false,
+   "errors": [
+    "TypeError: Cannot read properties of undefined (reading '0')\nTypeError: Cannot read properties of undefined (reading '0')\n    at evalBoundInfix (eval.js:3221:43)\n    at evalBoundInfix (eval.js:5699:15)\n    at evalExpr (eval.js:5045:16)\n    at evalExpr (eval.js:5621:19)\n    at evalLand (eval.js:2618:33)\n    at evalBoundInfix (eval.js:3162:16)\n    at evalBoundInfix (eval.js:5699:15)\n    at evalExpr (eval.js:5045:16)\n    at evalExpr (eval.js:5621:19)\n    at evalExpr (eval.js:5028:16)"
+   ],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "Nat",
+     "UNCHANGED",
+     "[S -> T]",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "\\in",
+     "bulleted /\\ list",
+     "f[x]",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 7
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.1624850000007427,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 4.401959000000716,
+   "actions": [
+    "Read(w) \\/ Check(w) \\/ Write(w)"
+   ],
+   "wallMs": 9.40274700000009
+  },
+  {
+   "id": "s5-m3-rtw3-inv",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "Nat",
+     "[A]_v",
+     "[S -> T]",
+     "[]",
+     "\\in",
+     "{a, b}"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 6
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.106058999999732,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.24233900000035646,
+   "actions": [
+    "Read(w) \\/ Check(w) \\/ Write(w)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 20,
+    "distinctExact": 20,
+    "generated": 27,
+    "depth": 7,
+    "deadlockStates": 3,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 20,
+     "depth": 7,
+     "traceStates": 7,
+     "ms": 31.294224999999642,
+     "invariant": "NoOverspend"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.6145059999998921,
+    "ms": 35.20955299999878,
+    "statesPerSec": 568.0276599933176
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Initial and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 20,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 26,
+    "accepted": 26,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 26,
+    "labelAgree": 8,
+    "negTested": 354,
+    "negRejected": 354,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.6168279999998958,
+    "ms": 43.820504999999685,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 7,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 6,
+     "labelComparable": 6,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 4,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 15.608055000000604
+    }
+   ],
+   "wallMs": 97.72082299999965
+  },
+  {
+   "id": "s5-m4-hold",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "%",
+     "'",
+     "+",
+     "/\\",
+     "=",
+     "UNCHANGED",
+     "\\/"
+    ],
+    "parsedOnly": [
+     "<<...>>",
+     "<>",
+     "=>",
+     "WF_/SF_",
+     "[A]_v",
+     "[]",
+     "\\in",
+     "{a, b}"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 6
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.7345800000002782,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0008360000010725344,
+   "actions": [
+    "Try",
+    "Busy",
+    "Capture",
+    "Timeout"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "EventuallyResolves",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    },
+    {
+     "expr": "NeverTwice",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 8,
+    "distinctExact": 8,
+    "generated": 9,
+    "depth": 5,
+    "deadlockStates": 4,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.38755399999899964,
+    "ms": 6.849935000000187,
+    "statesPerSec": 1167.8942938874284
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 8,
+    "hashTraceLength": null,
+    "reachable": 8,
+    "ms": 6.678083999999217
+   },
+   "pairs": {
+    "tlcStates": 8,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 8,
+    "accepted": 8,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 8,
+    "labelAgree": 8,
+    "negTested": 48,
+    "negRejected": 48,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.6258062500005508,
+    "ms": 14.081879000001209,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 3,
+     "lasso": {
+      "backTo": 1,
+      "step": true,
+      "actions": [
+       "Busy"
+      ]
+     },
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 8.844612999999299
+    }
+   ],
+   "wallMs": 39.667757999999594
+  },
+  {
+   "id": "s5-lifecycle",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "=",
+     "=<",
+     "UNCHANGED",
+     "\\/",
+     "\\in",
+     "bulleted /\\ list",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "<<...>>",
+     "=>",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 7
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.9835309999998572,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0009790000003704336,
+   "actions": [
+    "Place",
+    "Capture",
+    "Release"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 4,
+    "distinctExact": 4,
+    "generated": 4,
+    "depth": 3,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.24724300000161747,
+    "ms": 5.961755000000267,
+    "statesPerSec": 670.9433715407328
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 4,
+    "hashTraceLength": null,
+    "reachable": 4,
+    "ms": 5.278156000000308
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 4,
+    "hashTraceLength": null,
+    "reachable": 4,
+    "ms": 3.397646999999779
+   },
+   "pairs": {
+    "tlcStates": 4,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 3,
+    "accepted": 3,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 3,
+    "labelAgree": 3,
+    "negTested": 9,
+    "negRejected": 9,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.5951804999999695,
+    "ms": 6.975889000001189,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 23.77748199999951
+  },
+  {
+   "id": "s5-lifecycle-prop",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "=",
+     "UNCHANGED",
+     "\\/"
+    ],
+    "parsedOnly": [
+     "..",
+     "<<...>>",
+     "=<",
+     "=>",
+     "[A]_v",
+     "[]",
+     "\\in",
+     "bulleted /\\ list",
+     "{a, b}"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.9619569999995292,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0009379999992233934,
+   "actions": [
+    "Place",
+    "Capture",
+    "Release"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "StaysResolved",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 4,
+    "distinctExact": 4,
+    "generated": 4,
+    "depth": 3,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.32032299999991665,
+    "ms": 2.6571960000001127,
+    "statesPerSec": 1505.3462371612143
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 4,
+    "hashTraceLength": null,
+    "reachable": 4,
+    "ms": 2.5671800000000076
+   },
+   "wallMs": 7.722032000001491
+  },
+  {
+   "id": "s5-holds-crashoff",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "HoldsEnv",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "HoldsEnv"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "BOOLEAN",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 12
+   },
+   "parse": {
+    "ok": true,
+    "ms": 4.016765000000305,
+    "modulesResolved": [
+     "HoldsEnv"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/HoldsEnv.tla"
+   ],
+   "constantsMs": 0.17259699999885925,
+   "actions": [
+    "Place",
+    "Dispatch",
+    "Handle(r)",
+    "Expire",
+    "Restart",
+    "Reply(r)",
+    "Crash"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 20,
+    "distinctExact": 20,
+    "generated": 27,
+    "depth": 9,
+    "deadlockStates": 5,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7239040000004024,
+    "ms": 82.22880100000111,
+    "statesPerSec": 243.22378238252227
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 20,
+    "hashTraceLength": null,
+    "reachable": 20,
+    "ms": 90.73747000000003
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 20,
+    "hashTraceLength": null,
+    "reachable": 20,
+    "ms": 51.6273999999994
+   },
+   "pairs": {
+    "tlcStates": 20,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 26,
+    "accepted": 26,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 26,
+    "labelAgree": 26,
+    "negTested": 354,
+    "negRejected": 354,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 8.633132099999784,
+    "ms": 179.74134799999956,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 411.2658810000012
+  },
+  {
+   "id": "s5-holds-crashon",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "HoldsEnv",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "HoldsEnv"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "BOOLEAN",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 12
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.3248830000011367,
+    "modulesResolved": [
+     "HoldsEnv"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/HoldsEnv.tla"
+   ],
+   "constantsMs": 0.1589960000001156,
+   "actions": [
+    "Place",
+    "Dispatch",
+    "Handle(r)",
+    "Expire",
+    "Restart",
+    "Reply(r)",
+    "Crash"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 40,
+    "distinctExact": 40,
+    "generated": 83,
+    "depth": 10,
+    "deadlockStates": 0,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7204170000004524,
+    "ms": 163.70786800000133,
+    "statesPerSec": 244.3376759387012
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 40,
+    "hashTraceLength": null,
+    "reachable": 40,
+    "ms": 205.0832219999993
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 40,
+    "hashTraceLength": null,
+    "reachable": 40,
+    "ms": 105.05834800000048
+   },
+   "pairs": {
+    "tlcStates": 40,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 82,
+    "accepted": 82,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 82,
+    "labelAgree": 82,
+    "negTested": 370,
+    "negRejected": 370,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 8.6628784,
+    "ms": 359.1979190000002,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 841.1266660000001
+  },
+  {
+   "id": "s5-holds-unsafe",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "FiniteSets",
+     "HoldsEnv"
+    ],
+    "localExtends": [
+     "HoldsEnv"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/=",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "BOOLEAN",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 14
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.6073969999997644,
+    "modulesResolved": [
+     "HoldsEnv"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/HoldsEnv.tla"
+   ],
+   "constantsMs": 0.16165300000102434,
+   "actions": [
+    "Place",
+    "Dispatch",
+    "HandleRead(r)",
+    "HandleWrite",
+    "ExpireRead",
+    "ExpireWrite",
+    "Restart",
+    "Reply(r) /\\ UNCHANGED <<wseen, eseen>>",
+    "Crash /\\ wseen' = \"none\" /\\ UNCHANGED eseen"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 204,
+    "distinctExact": 204,
+    "generated": 543,
+    "depth": 16,
+    "deadlockStates": 0,
+    "violatingStates": 37,
+    "first": {
+     "kind": "violated",
+     "distinct": 66,
+     "depth": 8,
+     "traceStates": 8,
+     "ms": 127.89322999999968,
+     "invariant": "NeverTwice"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.8415619999996125,
+    "ms": 463.03779100000065,
+    "statesPerSec": 440.5687915006482
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 48,
+    "hashTraceLength": 8,
+    "reachable": null,
+    "ms": 176.31039299999975
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 204,
+    "hashTraceLength": null,
+    "reachable": 204,
+    "ms": 379.08268300000054
+   },
+   "pairs": {
+    "tlcStates": 204,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 542,
+    "accepted": 542,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 316,
+    "labelAgree": 316,
+    "negTested": 399,
+    "negRejected": 399,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 7.233409024509831,
+    "ms": 1523.2374839999975,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 8,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 7,
+     "labelComparable": 6,
+     "labelAgree": 6,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 5,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 58.49742200000037
+    }
+   ],
+   "wallMs": 2607.0971250000002
+  },
+  {
+   "id": "s5-giftcard",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "*",
+     "+",
+     "-",
+     "=",
+     ">=",
+     "@",
+     "CHOOSE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "RECURSIVE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "<<...>>",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [
+     "Cardinality"
+    ],
+    "reachedDefinitions": 7
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.8950819999990927,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.21873100000084378,
+   "actions": [
+    "Check(i)",
+    "Debit(i)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 13,
+    "depth": 5,
+    "deadlockStates": 3,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 11,
+     "depth": 5,
+     "traceStates": 5,
+     "ms": 24.343962000002648,
+     "invariant": "Conserve"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.45717599999989034,
+    "ms": 28.966565000002447,
+    "statesPerSec": 379.74816827604764
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 7,
+    "hashTraceLength": 5,
+    "reachable": null,
+    "ms": 26.26223399999799
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 11,
+    "hashTraceLength": null,
+    "reachable": 11,
+    "ms": 15.999880999999732
+   },
+   "pairs": {
+    "tlcStates": 11,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 12,
+    "accepted": 12,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 12,
+    "labelAgree": 12,
+    "negTested": 98,
+    "negRejected": 98,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.2318284545452283,
+    "ms": 27.353878999998415,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 5,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 4,
+     "labelComparable": 4,
+     "labelAgree": 4,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 19.520809999998164
+    }
+   ],
+   "wallMs": 120.16539299999931
+  },
+  {
+   "id": "s5-holdlive",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "%",
+     "'",
+     "+",
+     "/\\",
+     "=",
+     "UNCHANGED",
+     "\\/",
+     "\\in",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "<<...>>",
+     "<>",
+     "WF_/SF_",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 6
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.9490240000013728,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0009749999990162905,
+   "actions": [
+    "Try",
+    "Busy",
+    "Capture",
+    "Timeout"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "EventuallyResolves",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 8,
+    "distinctExact": 8,
+    "generated": 11,
+    "depth": 5,
+    "deadlockStates": 4,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.33980499999961467,
+    "ms": 6.638394999998127,
+    "statesPerSec": 1205.1105726613523
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 8,
+    "hashTraceLength": null,
+    "reachable": 8,
+    "ms": 6.944052999999258
+   },
+   "pairs": {
+    "tlcStates": 8,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 10,
+    "accepted": 10,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 10,
+    "labelAgree": 10,
+    "negTested": 46,
+    "negRejected": 46,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.3527692500010744,
+    "ms": 11.432081999999355,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 27.667524999997113
+  },
+  {
+   "id": "s5-pcal",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "<>",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 9
+   },
+   "parse": {
+    "ok": true,
+    "ms": 2.1447119999975257,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.23218500000075437,
+   "actions": [
+    "worker(self)",
+    "Terminating"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 16,
+    "depth": 5,
+    "deadlockStates": 0,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 11,
+     "depth": 5,
+     "traceStates": 5,
+     "ms": 16.2813619999979,
+     "invariant": "NoOverspend"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.6545019999975921,
+    "ms": 20.601126999998087,
+    "statesPerSec": 533.9513707187486
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 8,
+    "hashTraceLength": 5,
+    "reachable": null,
+    "ms": 23.05053400000179
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 11,
+    "hashTraceLength": null,
+    "reachable": 11,
+    "ms": 21.545815000001312
+   },
+   "pairs": {
+    "tlcStates": 11,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 15,
+    "accepted": 15,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 15,
+    "labelAgree": 3,
+    "negTested": 98,
+    "negRejected": 98,
+    "selfLoopsTlc": 3,
+    "selfLoopsSpectacle": 3,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.398896545454177,
+    "ms": 30.864247999998042,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 5,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 4,
+     "labelComparable": 4,
+     "labelAgree": 0,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 37.23583299999882
+    }
+   ],
+   "wallMs": 137.9683789999981
+  },
+  {
+   "id": "s5-pcal-deadlockon",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "bulleted /\\ list",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "<>",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 9
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.0952199999992445,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.2521840000008524,
+   "actions": [
+    "worker(self)",
+    "Terminating"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 11,
+    "distinctExact": 11,
+    "generated": 16,
+    "depth": 5,
+    "deadlockStates": 0,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 11,
+     "depth": 5,
+     "traceStates": 5,
+     "ms": 26.11767499999769,
+     "invariant": "NoOverspend"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 2.79591199999777,
+    "ms": 30.345407999997406,
+    "statesPerSec": 362.49306649628636
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 8,
+    "hashTraceLength": 5,
+    "reachable": null,
+    "ms": 17.136657999999443
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 11,
+    "hashTraceLength": null,
+    "reachable": 11,
+    "ms": 19.255671999999322
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 5,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 4,
+     "labelComparable": 4,
+     "labelAgree": 0,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": null,
+      "agree": null
+     },
+     "ms": 13.171611000001576
+    }
+   ],
+   "wallMs": 85.93483900000138
+  },
+  {
+   "id": "s5-ind-strong",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "DoubleSpendAtomic"
+    ],
+    "localExtends": [
+     "DoubleSpendAtomic"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "..",
+     "/\\",
+     "<<...>>",
+     "=",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[S -> T]",
+     "\\E x \\in S",
+     "\\in",
+     "bulleted /\\ list",
+     "f[x]",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "=<",
+     "[A]_v",
+     "[]",
+     "[x \\in S |-> e]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 4
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.8700449999996636,
+    "modulesResolved": [
+     "DoubleSpendAtomic"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/DoubleSpendAtomic.tla"
+   ],
+   "constantsMs": 0.3624149999996007,
+   "actions": [
+    "Spend(w)"
+   ],
+   "explore": {
+    "initStates": 404,
+    "distinct": 404,
+    "distinctExact": 404,
+    "generated": 808,
+    "depth": 1,
+    "deadlockStates": 101,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 4395.546265999998,
+    "ms": 6119.338162,
+    "statesPerSec": 66.0202115497993
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT Inv and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 404,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 404,
+    "accepted": 404,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 404,
+    "labelAgree": 404,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.4563309554454607,
+    "ms": 228.89660699999877,
+    "mismatches": []
+   },
+   "traces": [],
+   "explicitPairs": [
+    {
+     "name": "cti-step (S5.L9: bal 100, spent 50, a Spend of 80)",
+     "step": true,
+     "stutter": false,
+     "actions": [
+      "Spend(w)"
+     ],
+     "tlcStep": true,
+     "tlcFromIsInit": true,
+     "agree": true,
+     "ms": 1.498399000000063
+    },
+    {
+     "name": "non-step from the same unreachable state",
+     "step": false,
+     "stutter": false,
+     "actions": [],
+     "tlcStep": false,
+     "tlcFromIsInit": true,
+     "agree": true,
+     "ms": 1.329755999999179
+    }
+   ],
+   "wallMs": 6355.291463999998
+  },
+  {
+   "id": "s5-ind-weak10",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "DoubleSpendAtomic"
+    ],
+    "localExtends": [
+     "DoubleSpendAtomic"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "..",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[S -> T]",
+     "\\E x \\in S",
+     "\\in",
+     "bulleted /\\ list",
+     "f[x]",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]",
+     "[x \\in S |-> e]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.8688890000012179,
+    "modulesResolved": [
+     "DoubleSpendAtomic"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/DoubleSpendAtomic.tla"
+   ],
+   "constantsMs": 0.09569900000133202,
+   "actions": [
+    "Spend(w)"
+   ],
+   "explore": {
+    "initStates": 484,
+    "distinct": 556,
+    "distinctExact": 556,
+    "generated": 1016,
+    "depth": 2,
+    "deadlockStates": 145,
+    "violatingStates": 72,
+    "first": {
+     "kind": "violated",
+     "distinct": 485,
+     "depth": 2,
+     "traceStates": 2,
+     "ms": 495.6756039999964,
+     "invariant": "WeakInv"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 32.80252699999983,
+    "ms": 628.7033239999982,
+    "statesPerSec": 884.3598860947036
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT WeakInv and NEXT Next"
+   },
+   "pairs": {
+    "tlcStates": 556,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 532,
+    "accepted": 532,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 532,
+    "labelAgree": 532,
+    "negTested": 398,
+    "negRejected": 398,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.4118478381295115,
+    "ms": 286.3499770000017,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 2,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 1,
+     "labelComparable": 1,
+     "labelAgree": 1,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": null,
+     "ms": 0.9741979999998875
+    }
+   ],
+   "wallMs": 917.8795559999999
+  },
+  {
+   "id": "s5-ind-weak100",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "DoubleSpendAtomic"
+    ],
+    "localExtends": [
+     "DoubleSpendAtomic"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "-",
+     "..",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     ">=",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[S -> T]",
+     "\\E x \\in S",
+     "\\in",
+     "bulleted /\\ list",
+     "f[x]",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]",
+     "[x \\in S |-> e]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 5
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.8320380000004661,
+    "modulesResolved": [
+     "DoubleSpendAtomic"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s5/DoubleSpendAtomic.tla"
+   ],
+   "constantsMs": 0.09729899999729241,
+   "actions": [
+    "Spend(w)"
+   ],
+   "explore": {
+    "initStates": 40804,
+    "distinct": 45844,
+    "distinctExact": 45844,
+    "generated": 84968,
+    "depth": 2,
+    "deadlockStates": 11881,
+    "violatingStates": 5040,
+    "first": {
+     "kind": "violated",
+     "distinct": 40805,
+     "depth": 2,
+     "traceStates": 2,
+     "ms": 182128.954958,
+     "invariant": "WeakInv"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 2788.079543,
+    "ms": 210370.88331099998,
+    "statesPerSec": 217.91989118678043
+   },
+   "native": {
+    "applicable": false,
+    "reason": "computeReachableStates ignores the configured names and uses Init and Next; this spec uses INIT WeakInv and NEXT Next"
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 2,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 1,
+     "labelComparable": 1,
+     "labelAgree": 1,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": null,
+     "ms": 1.0218989999848418
+    }
+   ],
+   "wallMs": 210374.43611299997
+  },
+  {
+   "id": "s5-sym",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "TLC"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "/\\",
+     "=",
+     "EXCEPT",
+     "[x \\in S |-> e]",
+     "\\E x \\in S",
+     "f[x]"
+    ],
+    "parsedOnly": [
+     "<>",
+     "WF_/SF_",
+     "[A]_v",
+     "[]",
+     "\\A x \\in S"
+    ],
+    "libraryOperators": [
+     "Permutations"
+    ],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.2659750000166241,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.04880399999092333,
+   "actions": [
+    "Go(w)"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "AllDone",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 4,
+    "distinctExact": 4,
+    "generated": 5,
+    "depth": 3,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.1304179999860935,
+    "ms": 1.1224400000064634,
+    "statesPerSec": 3563.6648729348267
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 4,
+    "hashTraceLength": null,
+    "reachable": 4,
+    "ms": 1.11114899997483
+   },
+   "pairs": {
+    "tlcStates": 4,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 4,
+    "accepted": 4,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 4,
+    "labelAgree": 4,
+    "negTested": 8,
+    "negRejected": 8,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 0.23188300000037998,
+    "ms": 1.3184190000174567,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 4.6412469999922905
+  },
+  {
+   "id": "s8-nooutbox-cts",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "<",
+     "<<...>>",
+     "=",
+     "=>",
+     ">",
+     "@",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 9
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.1641299999901094,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.09917699999641627,
+   "actions": [
+    "Start(c)",
+    "CommitStep(c)",
+    "SendStep(c)",
+    "Crash",
+    "Recover"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 12,
+    "distinctExact": 12,
+    "generated": 14,
+    "depth": 6,
+    "deadlockStates": 2,
+    "violatingStates": 2,
+    "first": {
+     "kind": "violated",
+     "distinct": 7,
+     "depth": 4,
+     "traceStates": 4,
+     "ms": 5.669556999986526,
+     "invariant": "NoLostIntent"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.32812699998612516,
+    "ms": 12.708998999994947,
+    "statesPerSec": 944.2128369043676
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 4,
+    "hashTraceLength": 4,
+    "reachable": null,
+    "ms": 6.228910000005271
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 12,
+    "hashTraceLength": null,
+    "reachable": 12,
+    "ms": 11.668341000011424
+   },
+   "pairs": {
+    "tlcStates": 12,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 13,
+    "accepted": 13,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 13,
+    "labelAgree": 13,
+    "negTested": 119,
+    "negRejected": 119,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.675873499996669,
+    "ms": 33.69784099998651,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 3,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 12.898967000015546
+    }
+   ],
+   "wallMs": 79.82206299999962
+  },
+  {
+   "id": "s8-nooutbox-stc",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "<",
+     "<<...>>",
+     "=",
+     "=>",
+     ">",
+     "@",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 9
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.175109000003431,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.09963100001914427,
+   "actions": [
+    "Start(c)",
+    "CommitStep(c)",
+    "SendStep(c)",
+    "Crash",
+    "Recover"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 12,
+    "distinctExact": 12,
+    "generated": 14,
+    "depth": 6,
+    "deadlockStates": 2,
+    "violatingStates": 2,
+    "first": {
+     "kind": "violated",
+     "distinct": 7,
+     "depth": 4,
+     "traceStates": 4,
+     "ms": 5.320582000014838,
+     "invariant": "NoEffectWithoutRecord"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.30550799999036826,
+    "ms": 12.266210000001593,
+    "statesPerSec": 978.2972898718058
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 4,
+    "hashTraceLength": 4,
+    "reachable": null,
+    "ms": 6.039284999977099
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 12,
+    "hashTraceLength": null,
+    "reachable": 12,
+    "ms": 11.60631099998136
+   },
+   "pairs": {
+    "tlcStates": 12,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 13,
+    "accepted": 13,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 13,
+    "labelAgree": 13,
+    "negTested": 119,
+    "negRejected": 119,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.6350722499967865,
+    "ms": 33.18544199998723,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 3,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 12.234532000002218
+    }
+   ],
+   "wallMs": 77.89790999999968
+  },
+  {
+   "id": "s8-outbox-cw1-nodedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.7769050000060815,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.20871299999998882,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 14,
+    "distinctExact": 14,
+    "generated": 14,
+    "depth": 9,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7176289999915753,
+    "ms": 59.51640999998199,
+    "statesPerSec": 235.22924181758003
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 14,
+    "hashTraceLength": null,
+    "reachable": 14,
+    "ms": 63.707136000011815
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 14,
+    "hashTraceLength": null,
+    "reachable": 14,
+    "ms": 38.38106800001697
+   },
+   "pairs": {
+    "tlcStates": 14,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 13,
+    "accepted": 13,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 11,
+    "labelAgree": 11,
+    "negTested": 169,
+    "negRejected": 169,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.45217750000094,
+    "ms": 207.90796000001137,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 376.8241609999968
+  },
+  {
+   "id": "s8-outbox-cw1-dedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.678191999992123,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2149820000049658,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 14,
+    "distinctExact": 14,
+    "generated": 14,
+    "depth": 9,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7679260000004433,
+    "ms": 59.07423800000106,
+    "statesPerSec": 236.98993798277598
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 14,
+    "hashTraceLength": null,
+    "reachable": 14,
+    "ms": 58.99849699999322
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 14,
+    "hashTraceLength": null,
+    "reachable": 14,
+    "ms": 36.01681400000234
+   },
+   "pairs": {
+    "tlcStates": 14,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 13,
+    "accepted": 13,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 11,
+    "labelAgree": 11,
+    "negTested": 169,
+    "negRejected": 169,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.402483000002187,
+    "ms": 207.44497000001138,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 368.954785000009
+  },
+  {
+   "id": "s8-outbox-cw2-nodedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4911319999955595,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.21118799998657778,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 24,
+    "distinctExact": 24,
+    "generated": 33,
+    "depth": 11,
+    "deadlockStates": 2,
+    "violatingStates": 4,
+    "first": {
+     "kind": "violated",
+     "distinct": 16,
+     "depth": 8,
+     "traceStates": 8,
+     "ms": 63.76532799997949,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7306140000000596,
+    "ms": 120.64249399999972,
+    "statesPerSec": 198.9348794463753
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 12,
+    "hashTraceLength": 8,
+    "reachable": null,
+    "ms": 63.89633099999628
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 24,
+    "hashTraceLength": null,
+    "reachable": 24,
+    "ms": 75.85226000001421
+   },
+   "pairs": {
+    "tlcStates": 24,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 32,
+    "accepted": 32,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 19,
+    "labelAgree": 19,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 15.72493345832845,
+    "ms": 387.72159500001,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 8,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 7,
+     "labelComparable": 5,
+     "labelAgree": 5,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 5,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 120.0569700000051
+    }
+   ],
+   "wallMs": 775.3638519999804
+  },
+  {
+   "id": "s8-outbox-cw2-dedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4802139999810606,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.20775599998887628,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 24,
+    "distinctExact": 24,
+    "generated": 33,
+    "depth": 11,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7134349999832921,
+    "ms": 98.26838100000168,
+    "statesPerSec": 244.22911780748265
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 24,
+    "hashTraceLength": null,
+    "reachable": 24,
+    "ms": 123.28683399999863
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 24,
+    "hashTraceLength": null,
+    "reachable": 24,
+    "ms": 76.16448700000183
+   },
+   "pairs": {
+    "tlcStates": 24,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 32,
+    "accepted": 32,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 19,
+    "labelAgree": 19,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.708054541665964,
+    "ms": 362.7583160000213,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 667.5520729999989
+  },
+  {
+   "id": "s8-outbox-cw3-nodedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.681209000002127,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2831130000122357,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 17,
+    "distinctExact": 17,
+    "generated": 21,
+    "depth": 11,
+    "deadlockStates": 2,
+    "violatingStates": 4,
+    "first": {
+     "kind": "violated",
+     "distinct": 12,
+     "depth": 8,
+     "traceStates": 8,
+     "ms": 45.41745499998797,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7262859999900684,
+    "ms": 70.57618599999114,
+    "statesPerSec": 240.87445020055537
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 10,
+    "hashTraceLength": 8,
+    "reachable": null,
+    "ms": 47.72329999998328
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 17,
+    "hashTraceLength": null,
+    "reachable": 17,
+    "ms": 46.49786400000448
+   },
+   "pairs": {
+    "tlcStates": 17,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 20,
+    "accepted": 20,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 15,
+    "labelAgree": 15,
+    "negTested": 252,
+    "negRejected": 252,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.961510999996202,
+    "ms": 244.01212400000077,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 8,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 7,
+     "labelComparable": 5,
+     "labelAgree": 5,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 5,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 114.91137799998978
+    }
+   ],
+   "wallMs": 531.071133999998
+  },
+  {
+   "id": "s8-outbox-cw3-dedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.3986169999989215,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2066179999965243,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 17,
+    "distinctExact": 17,
+    "generated": 21,
+    "depth": 11,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7127699999837205,
+    "ms": 67.54738899998483,
+    "statesPerSec": 251.67516097482047
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 17,
+    "hashTraceLength": null,
+    "reachable": 17,
+    "ms": 77.58735499999602
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 17,
+    "hashTraceLength": null,
+    "reachable": 17,
+    "ms": 44.73320099999546
+   },
+   "pairs": {
+    "tlcStates": 17,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 20,
+    "accepted": 20,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 15,
+    "labelAgree": 15,
+    "negTested": 252,
+    "negRejected": 252,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.000499176470946,
+    "ms": 244.77516299998388,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 442.00097500000265
+  },
+  {
+   "id": "s8-outbox-cw4-nodedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 6.629965000000084,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.24204400001326576,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 10,
+    "distinctExact": 10,
+    "generated": 10,
+    "depth": 9,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.731192999985069,
+    "ms": 38.755484999972396,
+    "statesPerSec": 258.02799268302596
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 10,
+    "hashTraceLength": null,
+    "reachable": 10,
+    "ms": 43.054813000024296
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 10,
+    "hashTraceLength": null,
+    "reachable": 10,
+    "ms": 25.820730000006733
+   },
+   "pairs": {
+    "tlcStates": 10,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 9,
+    "accepted": 9,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 8,
+    "labelAgree": 8,
+    "negTested": 81,
+    "negRejected": 81,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.827926700000535,
+    "ms": 141.9528430000064,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 259.7809010000201
+  },
+  {
+   "id": "s8-outbox-cw4-dedup",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4095929999893997,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.20760799999698065,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 10,
+    "distinctExact": 10,
+    "generated": 10,
+    "depth": 9,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.748384000005899,
+    "ms": 39.10373299999628,
+    "statesPerSec": 255.730060350017
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 10,
+    "hashTraceLength": null,
+    "reachable": 10,
+    "ms": 40.37426300000516
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 10,
+    "hashTraceLength": null,
+    "reachable": 10,
+    "ms": 26.273849000019254
+   },
+   "pairs": {
+    "tlcStates": 10,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 9,
+    "accepted": 9,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 8,
+    "labelAgree": 8,
+    "negTested": 81,
+    "negRejected": 81,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.739007500003208,
+    "ms": 141.0442880000046,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 254.0667539999995
+  },
+  {
+   "id": "s8-outbox-cw3-freshkey",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4668560000136495,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.20725200002198108,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 17,
+    "distinctExact": 17,
+    "generated": 21,
+    "depth": 11,
+    "deadlockStates": 2,
+    "violatingStates": 4,
+    "first": {
+     "kind": "violated",
+     "distinct": 12,
+     "depth": 8,
+     "traceStates": 8,
+     "ms": 43.52171899998211,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.711100999993505,
+    "ms": 69.07886199999484,
+    "statesPerSec": 246.09554222247132
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 10,
+    "hashTraceLength": 8,
+    "reachable": null,
+    "ms": 47.806199999991804
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 17,
+    "hashTraceLength": null,
+    "reachable": 17,
+    "ms": 46.20283699998981
+   },
+   "pairs": {
+    "tlcStates": 17,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 20,
+    "accepted": 20,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 15,
+    "labelAgree": 15,
+    "negTested": 252,
+    "negRejected": 252,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.896946647060652,
+    "ms": 243.08804599998984,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 8,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 7,
+     "labelComparable": 5,
+     "labelAgree": 5,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 5,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 115.07135499999276
+    }
+   ],
+   "wallMs": 528.5977469999925
+  },
+  {
+   "id": "s8-outbox-timeouts",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 4.159210000012536,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2216539999935776,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 26,
+    "distinctExact": 26,
+    "generated": 39,
+    "depth": 10,
+    "deadlockStates": 3,
+    "violatingStates": 5,
+    "first": {
+     "kind": "violated",
+     "distinct": 16,
+     "depth": 7,
+     "traceStates": 7,
+     "ms": 56.05885000000126,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7512520000163931,
+    "ms": 111.63165299998946,
+    "statesPerSec": 232.90885068236386
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 10,
+    "hashTraceLength": 7,
+    "reachable": null,
+    "ms": 59.456812999997055
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 26,
+    "hashTraceLength": null,
+    "reachable": 26,
+    "ms": 74.86475899998914
+   },
+   "pairs": {
+    "tlcStates": 26,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 38,
+    "accepted": 38,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 22,
+    "labelAgree": 22,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.431237269230992,
+    "ms": 386.6898430000001,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 7,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 6,
+     "labelComparable": 4,
+     "labelAgree": 4,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 4,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 104.94469100001152
+    }
+   ],
+   "wallMs": 745.5546120000072
+  },
+  {
+   "id": "s8-outbox-full",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 4.103963000001386,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2648709999921266,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 99,
+    "distinctExact": 99,
+    "generated": 177,
+    "depth": 15,
+    "deadlockStates": 6,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7359049999795388,
+    "ms": 512.0940520000004,
+    "statesPerSec": 193.32386231269862
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 99,
+    "hashTraceLength": null,
+    "reachable": 99,
+    "ms": 697.2930230000056
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 99,
+    "hashTraceLength": null,
+    "reachable": 99,
+    "ms": 313.564532999997
+   },
+   "pairs": {
+    "tlcStates": 99,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 176,
+    "accepted": 176,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 99,
+    "labelAgree": 99,
+    "negTested": 395,
+    "negRejected": 395,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.968762454545923,
+    "ms": 1525.0231400000048,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 3055.7945519999776
+  },
+  {
+   "id": "s8-outbox-full2",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4102870000060648,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.24716699999407865,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 3887,
+    "distinctExact": 3887,
+    "generated": 13094,
+    "depth": 25,
+    "deadlockStates": 14,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7544219999981578,
+    "ms": 34500.85689200001,
+    "statesPerSec": 112.6638683835505
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 3887,
+    "hashTraceLength": null,
+    "reachable": 3887,
+    "ms": 75574.63891899999
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 3887,
+    "hashTraceLength": null,
+    "reachable": 3887,
+    "ms": 23857.292187999992
+   },
+   "pairs": {
+    "tlcStates": 3887,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 13093,
+    "accepted": 13093,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 6149,
+    "labelAgree": 6149,
+    "negTested": 393,
+    "negRejected": 393,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 16.543033262670342,
+    "ms": 67002.72605699999,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 200942.729345
+  },
+  {
+   "id": "s8-ttl-never",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.451795000000857,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.22425900003872812,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 26,
+    "distinctExact": 26,
+    "generated": 39,
+    "depth": 10,
+    "deadlockStates": 3,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7280250000185333,
+    "ms": 116.16769600001862,
+    "statesPerSec": 223.81437262899516
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 26,
+    "hashTraceLength": null,
+    "reachable": 26,
+    "ms": 131.52702699997462
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 26,
+    "hashTraceLength": null,
+    "reachable": 26,
+    "ms": 71.88495000003604
+   },
+   "pairs": {
+    "tlcStates": 26,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 38,
+    "accepted": 38,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 22,
+    "labelAgree": 22,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 14.441153423070388,
+    "ms": 385.69833299994934,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 712.6310279999743
+  },
+  {
+   "id": "s8-ttl-afterdrain",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.4123970000073314,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.2068750000325963,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 28,
+    "distinctExact": 28,
+    "generated": 41,
+    "depth": 11,
+    "deadlockStates": 3,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7438770000007935,
+    "ms": 119.64499699999578,
+    "statesPerSec": 234.0256651099334
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 28,
+    "hashTraceLength": null,
+    "reachable": 28,
+    "ms": 145.99913000001106
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 28,
+    "hashTraceLength": null,
+    "reachable": 28,
+    "ms": 79.68861399998423
+   },
+   "pairs": {
+    "tlcStates": 28,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 40,
+    "accepted": 40,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 22,
+    "labelAgree": 22,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.86774007143062,
+    "ms": 399.2133010000107,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 751.6493839999894
+  },
+  {
+   "id": "s8-ttl-afterack",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.348667000012938,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.20136499998625368,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 32,
+    "distinctExact": 32,
+    "generated": 46,
+    "depth": 12,
+    "deadlockStates": 4,
+    "violatingStates": 2,
+    "first": {
+     "kind": "violated",
+     "distinct": 31,
+     "depth": 11,
+     "traceStates": 11,
+     "ms": 120.10278399998788,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7144529999932274,
+    "ms": 130.10890699998708,
+    "statesPerSec": 245.94780432674895
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 28,
+    "hashTraceLength": 11,
+    "reachable": null,
+    "ms": 147.3595000000205
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 32,
+    "hashTraceLength": null,
+    "reachable": 32,
+    "ms": 89.65774400002556
+   },
+   "pairs": {
+    "tlcStates": 32,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 45,
+    "accepted": 45,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 22,
+    "labelAgree": 22,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.861540250005419,
+    "ms": 456.348449000041,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 11,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 10,
+     "labelComparable": 7,
+     "labelAgree": 7,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 6,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 160.1149920000462
+    }
+   ],
+   "wallMs": 990.6489600000205
+  },
+  {
+   "id": "s8-ttl-anytime",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [
+     "OutboxIface"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[S -> T]",
+     "[f : S]",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 23
+   },
+   "parse": {
+    "ok": true,
+    "ms": 3.344509000016842,
+    "modulesResolved": [
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.19964800000889227,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 56,
+    "distinctExact": 56,
+    "generated": 99,
+    "depth": 12,
+    "deadlockStates": 5,
+    "violatingStates": 10,
+    "first": {
+     "kind": "violated",
+     "distinct": 32,
+     "depth": 8,
+     "traceStates": 8,
+     "ms": 101.80465599999297,
+     "invariant": "NoDoubleCharge"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7092339999508113,
+    "ms": 226.50430899998173,
+    "statesPerSec": 247.2359146156664
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 20,
+    "hashTraceLength": 8,
+    "reachable": null,
+    "ms": 129.53245599998627
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 56,
+    "hashTraceLength": null,
+    "reachable": 56,
+    "ms": 154.07833099999698
+   },
+   "pairs": {
+    "tlcStates": 56,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 98,
+    "accepted": 98,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 47,
+    "labelAgree": 47,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 13.8521434999992,
+    "ms": 797.8731280000065,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 8,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 7,
+     "labelComparable": 4,
+     "labelAgree": 4,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 5,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 115.39415800001007
+    }
+   ],
+   "wallMs": 1430.2914950000122
+  },
+  {
+   "id": "s8-replies-allon",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "UNCHANGED",
+     "[f : S]",
+     "[f |-> e]",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 11
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.1007389999576844,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.1648389999754727,
+   "actions": [
+    "Deliver(r)",
+    "TimerRelease",
+    "Handle(r)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 40,
+    "distinctExact": 40,
+    "generated": 101,
+    "depth": 6,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.6085219999658875,
+    "ms": 83.53576499997871,
+    "statesPerSec": 478.8368191757171
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 40,
+    "hashTraceLength": null,
+    "reachable": 40,
+    "ms": 100.75316299998667
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 40,
+    "hashTraceLength": null,
+    "reachable": 40,
+    "ms": 80.68988899997203
+   },
+   "pairs": {
+    "tlcStates": 40,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 100,
+    "accepted": 100,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 100,
+    "labelAgree": 100,
+    "negTested": 365,
+    "negRejected": 365,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.6861778250007773,
+    "ms": 118.12063299998408,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 385.71135599998524
+  },
+  {
+   "id": "s8-replies-nostatus",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "UNCHANGED",
+     "[f : S]",
+     "[f |-> e]",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 11
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.1093719999771565,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.1594199999817647,
+   "actions": [
+    "Deliver(r)",
+    "TimerRelease",
+    "Handle(r)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 48,
+    "distinctExact": 48,
+    "generated": 121,
+    "depth": 6,
+    "deadlockStates": 3,
+    "violatingStates": 8,
+    "first": {
+     "kind": "violated",
+     "distinct": 17,
+     "depth": 3,
+     "traceStates": 3,
+     "ms": 9.21483700000681,
+     "invariant": "StatusOk"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.33151300001190975,
+    "ms": 98.24582100001862,
+    "statesPerSec": 488.5703993454429
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 4,
+    "hashTraceLength": 3,
+    "reachable": null,
+    "ms": 11.1334720000159
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 48,
+    "hashTraceLength": null,
+    "reachable": 48,
+    "ms": 97.58830100001069
+   },
+   "pairs": {
+    "tlcStates": 48,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 120,
+    "accepted": 120,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 120,
+    "labelAgree": 120,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.7146713749995492,
+    "ms": 143.27856800000882,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 3,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 2,
+     "labelComparable": 2,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 2,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 7.974881000001915
+    }
+   ],
+   "wallMs": 360.7323070000275
+  },
+  {
+   "id": "s8-replies-nocost",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "UNCHANGED",
+     "[f : S]",
+     "[f |-> e]",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 11
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.0787969999946654,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.15687400003662333,
+   "actions": [
+    "Deliver(r)",
+    "TimerRelease",
+    "Handle(r)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 48,
+    "distinctExact": 48,
+    "generated": 121,
+    "depth": 6,
+    "deadlockStates": 3,
+    "violatingStates": 8,
+    "first": {
+     "kind": "violated",
+     "distinct": 15,
+     "depth": 3,
+     "traceStates": 3,
+     "ms": 7.30561600002693,
+     "invariant": "ChargeWithinHold"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.3046240000403486,
+    "ms": 98.43554500001483,
+    "statesPerSec": 487.6287320803961
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 3,
+    "hashTraceLength": 3,
+    "reachable": null,
+    "ms": 8.665922000014689
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 48,
+    "hashTraceLength": null,
+    "reachable": 48,
+    "ms": 97.90277500002412
+   },
+   "pairs": {
+    "tlcStates": 48,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 120,
+    "accepted": 120,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 120,
+    "labelAgree": 120,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.7138734791684933,
+    "ms": 142.8972079999512,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 3,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 2,
+     "labelComparable": 2,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 2,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 7.584367000032216
+    }
+   ],
+   "wallMs": 357.8740080000134
+  },
+  {
+   "id": "s8-replies-nolate",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "UNCHANGED",
+     "[f : S]",
+     "[f |-> e]",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 11
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.086180999991484,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.15675699996063486,
+   "actions": [
+    "Deliver(r)",
+    "TimerRelease",
+    "Handle(r)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 48,
+    "distinctExact": 48,
+    "generated": 121,
+    "depth": 7,
+    "deadlockStates": 2,
+    "violatingStates": 8,
+    "first": {
+     "kind": "violated",
+     "distinct": 27,
+     "depth": 4,
+     "traceStates": 4,
+     "ms": 21.326829999976326,
+     "invariant": "NoCaptureAfterRelease"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.3067060000030324,
+    "ms": 98.35024100000737,
+    "statesPerSec": 488.05167645696366
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 10,
+    "hashTraceLength": 4,
+    "reachable": null,
+    "ms": 26.15863800002262
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 48,
+    "hashTraceLength": null,
+    "reachable": 48,
+    "ms": 97.64235300000291
+   },
+   "pairs": {
+    "tlcStates": 48,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 120,
+    "accepted": 120,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 120,
+    "labelAgree": 120,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.698162833332996,
+    "ms": 142.39989499998046,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 3,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 11.32442599994829
+    }
+   ],
+   "wallMs": 378.2540380000137
+  },
+  {
+   "id": "s8-replies-statuscostonly",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "UNCHANGED",
+     "[f : S]",
+     "[f |-> e]",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 11
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.0907510000397451,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.1588950000004843,
+   "actions": [
+    "Deliver(r)",
+    "TimerRelease",
+    "Handle(r)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 64,
+    "distinctExact": 64,
+    "generated": 161,
+    "depth": 8,
+    "deadlockStates": 2,
+    "violatingStates": 24,
+    "first": {
+     "kind": "violated",
+     "distinct": 27,
+     "depth": 4,
+     "traceStates": 4,
+     "ms": 21.07994199998211,
+     "invariant": "NoCaptureAfterRelease"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.3095370000228286,
+    "ms": 128.98326100001577,
+    "statesPerSec": 496.1884162627286
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 10,
+    "hashTraceLength": 4,
+    "reachable": null,
+    "ms": 26.175288999977056
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 64,
+    "hashTraceLength": null,
+    "reachable": 64,
+    "ms": 127.80127299996093
+   },
+   "pairs": {
+    "tlcStates": 64,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 160,
+    "accepted": 160,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 160,
+    "labelAgree": 160,
+    "negTested": 381,
+    "negRejected": 381,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.695460046867993,
+    "ms": 189.44991900003515,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 4,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 3,
+     "labelComparable": 3,
+     "labelAgree": 3,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 3,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 11.485360999999102
+    }
+   ],
+   "wallMs": 486.28628999996
+  },
+  {
+   "id": "s8-poller-mark",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/=",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "CHOOSE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}",
+     "{x \\in S : P}"
+    ],
+    "parsedOnly": [
+     "..",
+     "/\\",
+     "WF_/SF_",
+     "[A]_v",
+     "[]",
+     "~>"
+    ],
+    "libraryOperators": [
+     "Cardinality"
+    ],
+    "reachedDefinitions": 8
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.0311450000153854,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.07979200000409037,
+   "actions": [
+    "Insert(w)",
+    "CommitRow(w)",
+    "Poll"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 25,
+    "distinctExact": 25,
+    "generated": 33,
+    "depth": 6,
+    "deadlockStates": 4,
+    "violatingStates": 2,
+    "first": {
+     "kind": "violated",
+     "distinct": 22,
+     "depth": 6,
+     "traceStates": 6,
+     "ms": 20.562166999967303,
+     "invariant": "MarkInv"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.3515289999777451,
+    "ms": 28.781669999996666,
+    "statesPerSec": 868.6083886029858
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": false,
+    "numStatesExplored": 16,
+    "hashTraceLength": 6,
+    "reachable": null,
+    "ms": 21.114992999995593
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 25,
+    "hashTraceLength": null,
+    "reachable": 25,
+    "ms": 26.984185000008438
+   },
+   "pairs": {
+    "tlcStates": 25,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 32,
+    "accepted": 32,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 32,
+    "labelAgree": 32,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.7671588800055906,
+    "ms": 49.841935999982525,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 6,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 5,
+     "labelComparable": 5,
+     "labelAgree": 5,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 4,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 12.490069999999832
+    }
+   ],
+   "wallMs": 141.43269400001736
+  },
+  {
+   "id": "s8-poller-status",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/=",
+     "<<...>>",
+     "=",
+     "=<",
+     "=>",
+     ">",
+     "CHOOSE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}",
+     "{x \\in S : P}"
+    ],
+    "parsedOnly": [
+     "..",
+     "/\\",
+     "WF_/SF_",
+     "[A]_v",
+     "[]",
+     "~>"
+    ],
+    "libraryOperators": [
+     "Cardinality"
+    ],
+    "reachedDefinitions": 8
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.024167999974452,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.07736100000329316,
+   "actions": [
+    "Insert(w)",
+    "CommitRow(w)",
+    "Poll"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 25,
+    "distinctExact": 25,
+    "generated": 35,
+    "depth": 6,
+    "deadlockStates": 2,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.35035899997456,
+    "ms": 24.742657999973744,
+    "statesPerSec": 1010.4007419100458
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 25,
+    "hashTraceLength": null,
+    "reachable": 25,
+    "ms": 26.97577399999136
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 25,
+    "hashTraceLength": null,
+    "reachable": 25,
+    "ms": 24.01292500004638
+   },
+   "pairs": {
+    "tlcStates": 25,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 34,
+    "accepted": 34,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 34,
+    "labelAgree": 34,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 1.6122915199981072,
+    "ms": 45.718426000035834,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 123.64579999999842
+  },
+  {
+   "id": "s8-poller-live",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "FiniteSets"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/=",
+     "<<...>>",
+     "=",
+     "=<",
+     ">",
+     "CHOOSE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\cup",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "{a, b}",
+     "{x \\in S : P}"
+    ],
+    "parsedOnly": [
+     "..",
+     "/\\",
+     "=>",
+     "WF_/SF_",
+     "[A]_v",
+     "[]",
+     "\\in",
+     "~>"
+    ],
+    "libraryOperators": [
+     "Cardinality"
+    ],
+    "reachedDefinitions": 7
+   },
+   "parse": {
+    "ok": true,
+    "ms": 1.0200539999641478,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.07491199998185039,
+   "actions": [
+    "Insert(w)",
+    "CommitRow(w)",
+    "Poll"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "EventuallyDelivered",
+     "outcome": "error",
+     "error": "unsupported infix symbol: '~>'"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 25,
+    "distinctExact": 25,
+    "generated": 33,
+    "depth": 6,
+    "deadlockStates": 4,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.47152800002368167,
+    "ms": 25.095484999998007,
+    "statesPerSec": 996.195132311728
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 25,
+    "hashTraceLength": null,
+    "reachable": 25,
+    "ms": 25.738210000039544
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 6,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 5,
+     "labelComparable": 5,
+     "labelAgree": 5,
+     "lasso": null,
+     "stutterEnd": {
+      "stutter": true,
+      "note": "TLC ends the lasso with stuttering; [Next]_vars allows it by definition"
+     },
+     "mutant": {
+      "removedState": 4,
+      "spectacleStep": false,
+      "tlcStep": null,
+      "agree": null
+     },
+     "ms": 11.824636000033934
+    }
+   ],
+   "wallMs": 65.65746700001182
+  },
+  {
+   "id": "s8-outbox-live-crash",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets",
+     "Outbox"
+    ],
+    "localExtends": [
+     "OutboxIface",
+     "Outbox"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "@",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "..",
+     "=<",
+     "=>",
+     ">",
+     "BOOLEAN",
+     "WF_/SF_",
+     "[A]_v",
+     "[S -> T]",
+     "[]",
+     "[f : S]",
+     "\\A x \\in S",
+     "\\subseteq",
+     "{e : x \\in S}",
+     "~>"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 16
+   },
+   "parse": {
+    "ok": true,
+    "ms": 4.319572000007611,
+    "modulesResolved": [
+     "Outbox",
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/Outbox.tla",
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.23793899995507672,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "EventuallyAcked",
+     "outcome": "error",
+     "error": "unsupported infix symbol: '~>'"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 32,
+    "distinctExact": 32,
+    "generated": 44,
+    "depth": 11,
+    "deadlockStates": 3,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.9102699999930337,
+    "ms": 69.51029999996535,
+    "statesPerSec": 460.3634281540426
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 32,
+    "hashTraceLength": null,
+    "reachable": 32,
+    "ms": 72.97081199998502
+   },
+   "pairs": {
+    "tlcStates": 32,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 43,
+    "accepted": 43,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 29,
+    "labelAgree": 29,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 9.79141509375222,
+    "ms": 325.3179850000306,
+    "mismatches": []
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 3,
+     "firstIsInit": true,
+     "allAccepted": true,
+     "steps": 2,
+     "labelComparable": 2,
+     "labelAgree": 2,
+     "lasso": null,
+     "stutterEnd": {
+      "stutter": true,
+      "note": "TLC ends the lasso with stuttering; [Next]_vars allows it by definition"
+     },
+     "mutant": {
+      "removedState": 2,
+      "spectacleStep": false,
+      "tlcStep": false,
+      "agree": true
+     },
+     "ms": 30.43383300001733
+    }
+   ],
+   "wallMs": 507.7321000000229
+  },
+  {
+   "id": "s8-outbox-live-nocrash",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets",
+     "Outbox"
+    ],
+    "localExtends": [
+     "OutboxIface",
+     "Outbox"
+    ],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "<<...>>",
+     "=",
+     "@",
+     "CASE",
+     "EXCEPT",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "UNCHANGED",
+     "[f |-> e]",
+     "[x \\in S |-> e]",
+     "\\ (set minus)",
+     "\\/",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "~"
+    ],
+    "parsedOnly": [
+     "..",
+     "=<",
+     "=>",
+     ">",
+     "BOOLEAN",
+     "WF_/SF_",
+     "[A]_v",
+     "[S -> T]",
+     "[]",
+     "[f : S]",
+     "\\A x \\in S",
+     "\\subseteq",
+     "{e : x \\in S}",
+     "~>"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 16
+   },
+   "parse": {
+    "ok": true,
+    "ms": 4.1129540000110865,
+    "modulesResolved": [
+     "Outbox",
+     "OutboxIface"
+    ]
+   },
+   "shimRequests": [
+    "/specs/s8/Outbox.tla",
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "constantsMs": 0.238201999978628,
+   "actions": [
+    "Commit(c)",
+    "Dispatch(c)",
+    "Timeout(c)",
+    "Receive(c)",
+    "Persist(c)",
+    "Ack(c)",
+    "Crash",
+    "Recover",
+    "Accept(r)",
+    "Forget(k)"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 7,
+    "distinctExact": 7,
+    "generated": 7,
+    "depth": 7,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.7426859999541193,
+    "ms": 12.92883599997731,
+    "statesPerSec": 541.4253843124227
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 7,
+    "hashTraceLength": null,
+    "reachable": 7,
+    "ms": 13.619943999976385
+   },
+   "pairs": {
+    "tlcStates": 7,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 6,
+    "accepted": 6,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 5,
+    "labelAgree": 5,
+    "negTested": 36,
+    "negRejected": 36,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 9.080108285715271,
+    "ms": 66.16626899997937,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 100.63042699999642
+  },
+  {
+   "id": "s8-trace",
+   "mode": "shim",
+   "ok": false,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "OutboxIface",
+     "Naturals",
+     "FiniteSets",
+     "Outbox",
+     "Json",
+     "Sequences",
+     "TLC"
+    ],
+    "localExtends": [
+     "OutboxIface",
+     "Outbox"
+    ],
+    "unresolvedExtends": [
+     "Json"
+    ],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<<...>>",
+     "=",
+     "=<",
+     "CHOOSE",
+     "EXCEPT",
+     "UNCHANGED",
+     "[x \\in S |-> e]",
+     "\\/",
+     "\\cup",
+     "\\notin",
+     "bulleted /\\ list",
+     "f[x]",
+     "r.f",
+     "{a, b}"
+    ],
+    "parsedOnly": [
+     "..",
+     "<",
+     "=>",
+     "@",
+     "BOOLEAN",
+     "CASE",
+     "IF THEN ELSE",
+     "LET IN",
+     "OTHER",
+     "[A]_v",
+     "[S -> T]",
+     "[]",
+     "[f : S]",
+     "[f |-> e]",
+     "\\ (set minus)",
+     "\\A x \\in S",
+     "\\E x \\in S",
+     "\\in",
+     "\\subseteq",
+     "bulleted \\/ list",
+     "{e : x \\in S}",
+     "~"
+    ],
+    "libraryOperators": [
+     "Len",
+     "ToString",
+     "ndJsonDeserialize"
+    ],
+    "reachedDefinitions": 10
+   },
+   "parse": {
+    "ok": false,
+    "error": "Assertion failed"
+   },
+   "shimRequests": [
+    "/specs/s8/Outbox.tla",
+    "/specs/s8/Json.tla",
+    "/specs/s8/OutboxIface.tla"
+   ],
+   "wallMs": 5.311349000025075
+  },
+  {
+   "id": "probe-community",
+   "mode": "shim",
+   "ok": false,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "SequencesExt"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [
+     "SequencesExt"
+    ],
+    "evaluated": [
+     "'",
+     "/\\",
+     "<",
+     "<<...>>",
+     "="
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [
+     "Append",
+     "Len"
+    ],
+    "reachedDefinitions": 2
+   },
+   "parse": {
+    "ok": false,
+    "error": "Assertion failed"
+   },
+   "shimRequests": [
+    "https://raw.githubusercontent.com/tlaplus/CommunityModules/master/modules/SequencesExt.tla"
+   ],
+   "wallMs": 1.029480000026524
+  },
+  {
+   "id": "probe-missing",
+   "mode": "shim",
+   "ok": false,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "NoSuchModule"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [
+     "NoSuchModule"
+    ],
+    "evaluated": [
+     "'",
+     "="
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [],
+    "reachedDefinitions": 2
+   },
+   "parse": {
+    "ok": false,
+    "error": "Assertion failed"
+   },
+   "shimRequests": [
+    "/specs/probes/NoSuchModule.tla"
+   ],
+   "wallMs": 0.24611800001002848
+  },
+  {
+   "id": "probe-fp-10k",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "-",
+     "..",
+     "/\\",
+     "<<...>>",
+     "UNCHANGED",
+     "\\in"
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [],
+    "reachedDefinitions": 2
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.23696999996900558,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.06117399997310713,
+   "actions": [
+    "UNCHANGED <<x, y>>"
+   ],
+   "explore": {
+    "initStates": 10000,
+    "distinct": 10000,
+    "distinctExact": 10000,
+    "generated": 20000,
+    "depth": 1,
+    "deadlockStates": 0,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 151.94916499999817,
+    "ms": 1394.03799599997,
+    "statesPerSec": 7173.405623586902
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 10000,
+    "hashTraceLength": null,
+    "reachable": 10000,
+    "ms": 1537.1934839999885
+   },
+   "wallMs": 2931.8962069999543
+  },
+  {
+   "id": "probe-fp-100k",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "-",
+     "..",
+     "/\\",
+     "<<...>>",
+     "UNCHANGED",
+     "\\in"
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [],
+    "reachedDefinitions": 2
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.25597599998582155,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.06334599998081103,
+   "actions": [
+    "UNCHANGED <<x, y>>"
+   ],
+   "explore": {
+    "initStates": 100000,
+    "distinct": 100000,
+    "distinctExact": 100000,
+    "generated": 200000,
+    "depth": 1,
+    "deadlockStates": 0,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 1550.9128969999729,
+    "ms": 14186.85026799998,
+    "statesPerSec": 7048.780956373462
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 100000,
+    "hashTraceLength": null,
+    "reachable": 100000,
+    "ms": 44883.68258600001
+   },
+   "wallMs": 59071.75369000004
+  },
+  {
+   "id": "probe-nat",
+   "mode": "shim",
+   "ok": false,
+   "errors": [
+    "TypeError: Cannot read properties of undefined (reading '0')\nTypeError: Cannot read properties of undefined (reading '0')\n    at evalBoundInfix (eval.js:3221:43)\n    at evalBoundInfix (eval.js:5699:15)\n    at evalExpr (eval.js:5045:16)\n    at evalExpr (eval.js:5621:19)\n    at evalIdentifierRef (eval.js:3895:19)\n    at evalExpr (eval.js:5062:16)\n    at evalExpr (eval.js:5621:19)\n    at evalInvariant (driver.js:200:15)\n    at firstViolated (driver.js:205:42)\n    at explore (driver.js:264:21)"
+   ],
+   "inventory": {
+    "extends": [
+     "Integers"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "-",
+     "/\\",
+     "=",
+     "Nat",
+     "UNCHANGED",
+     "\\in"
+    ],
+    "parsedOnly": [
+     "Int",
+     "STRING"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.26501899998402223,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0005169999785721302,
+   "actions": [
+    "x' = 1 - x /\\ UNCHANGED s"
+   ],
+   "wallMs": 1.0865920000360347
+  },
+  {
+   "id": "probe-int",
+   "mode": "shim",
+   "ok": false,
+   "errors": [
+    "TypeError: Cannot read properties of undefined (reading '0')\nTypeError: Cannot read properties of undefined (reading '0')\n    at evalBoundInfix (eval.js:3221:43)\n    at evalBoundInfix (eval.js:5699:15)\n    at evalExpr (eval.js:5045:16)\n    at evalExpr (eval.js:5621:19)\n    at evalIdentifierRef (eval.js:3895:19)\n    at evalExpr (eval.js:5062:16)\n    at evalExpr (eval.js:5621:19)\n    at evalInvariant (driver.js:200:15)\n    at firstViolated (driver.js:205:42)\n    at explore (driver.js:264:21)"
+   ],
+   "inventory": {
+    "extends": [
+     "Integers"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "-",
+     "/\\",
+     "=",
+     "Int",
+     "UNCHANGED",
+     "\\in"
+    ],
+    "parsedOnly": [
+     "Nat",
+     "STRING"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.24055300001055002,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0003939999733120203,
+   "actions": [
+    "x' = 1 - x /\\ UNCHANGED s"
+   ],
+   "wallMs": 0.8534949999884702
+  },
+  {
+   "id": "probe-string",
+   "mode": "shim",
+   "ok": false,
+   "errors": [
+    "TypeError: Cannot read properties of undefined (reading '0')\nTypeError: Cannot read properties of undefined (reading '0')\n    at evalBoundInfix (eval.js:3221:43)\n    at evalBoundInfix (eval.js:5699:15)\n    at evalExpr (eval.js:5045:16)\n    at evalExpr (eval.js:5621:19)\n    at evalIdentifierRef (eval.js:3895:19)\n    at evalExpr (eval.js:5062:16)\n    at evalExpr (eval.js:5621:19)\n    at evalInvariant (driver.js:200:15)\n    at firstViolated (driver.js:205:42)\n    at explore (driver.js:264:21)"
+   ],
+   "inventory": {
+    "extends": [
+     "Integers"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "-",
+     "/\\",
+     "=",
+     "STRING",
+     "UNCHANGED",
+     "\\in"
+    ],
+    "parsedOnly": [
+     "Int",
+     "Nat"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.2349520000279881,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0003500000457279384,
+   "actions": [
+    "x' = 1 - x /\\ UNCHANGED s"
+   ],
+   "wallMs": 0.8178110000444576
+  },
+  {
+   "id": "probe-init-inv",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "="
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.24990200001047924,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.00029799999902024865,
+   "actions": [
+    "x' = 0"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 2,
+    "distinctExact": 2,
+    "generated": 3,
+    "depth": 2,
+    "deadlockStates": 0,
+    "violatingStates": 1,
+    "first": {
+     "kind": "violated",
+     "distinct": 1,
+     "depth": 1,
+     "traceStates": 1,
+     "ms": 0.12078200001269579,
+     "invariant": "Inv"
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.060876999981701374,
+    "ms": 0.3233020000043325,
+    "statesPerSec": 6186.166494402133
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 2,
+    "hashTraceLength": null,
+    "reachable": 2,
+    "ms": 0.3170950000057928
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 2,
+    "hashTraceLength": null,
+    "reachable": 2,
+    "ms": 0.2170120000373572
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 1,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 0,
+     "labelComparable": 0,
+     "labelAgree": 0,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": null,
+     "ms": 0.023770000028889626
+    }
+   ],
+   "wallMs": 1.3639780000085011
+  },
+  {
+   "id": "probe-deadlock",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "/\\",
+     "<",
+     "=",
+     "=<"
+    ],
+    "parsedOnly": [],
+    "libraryOperators": [],
+    "reachedDefinitions": 3
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.20744699996430427,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.00033899996196851134,
+   "actions": [
+    "x < 2 /\\ x' = x + 1"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 3,
+    "distinctExact": 3,
+    "generated": 3,
+    "depth": 3,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": {
+     "kind": "deadlock",
+     "distinct": 3,
+     "depth": 3,
+     "traceStates": 3,
+     "ms": 0.48722400004044175
+    },
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.06312200002139434,
+    "ms": 0.49335900001460686,
+    "statesPerSec": 6080.7647167907735
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 3,
+    "hashTraceLength": null,
+    "reachable": 3,
+    "ms": 0.5703399999765679
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 3,
+    "hashTraceLength": null,
+    "reachable": 3,
+    "ms": 0.4705400000093505
+   },
+   "traces": [
+    {
+     "name": "tlc-counterexample",
+     "states": 3,
+     "firstIsInit": null,
+     "allAccepted": true,
+     "steps": 2,
+     "labelComparable": 0,
+     "labelAgree": 0,
+     "lasso": null,
+     "stutterEnd": null,
+     "mutant": {
+      "removedState": 2,
+      "spectacleStep": false,
+      "tlcStep": null,
+      "agree": null
+     },
+     "ms": 0.4593389999936335
+    }
+   ],
+   "wallMs": 2.418498000013642
+  },
+  {
+   "id": "probe-operators",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals",
+     "Sequences",
+     "FiniteSets"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "+",
+     "..",
+     "/=",
+     "<",
+     "<<...>>",
+     "=",
+     "=<",
+     ">",
+     "@",
+     "DOMAIN",
+     "ENABLED",
+     "EXCEPT",
+     "SUBSET",
+     "UNCHANGED",
+     "UNION",
+     "[S -> T]",
+     "[f |-> e]",
+     "\\/",
+     "\\E x \\in S",
+     "\\cup",
+     "\\in",
+     "\\notin",
+     "\\o",
+     "\\subseteq",
+     "bulleted /\\ list",
+     "bulleted \\/ list",
+     "f[x]",
+     "r.f",
+     "{a, b}",
+     "{e : x \\in S}"
+    ],
+    "parsedOnly": [
+     "/\\",
+     "[A]_v",
+     "[]"
+    ],
+    "libraryOperators": [
+     "Append",
+     "Cardinality",
+     "Head",
+     "Len",
+     "SubSeq",
+     "Tail"
+    ],
+    "reachedDefinitions": 8
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.8555060000508092,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0865009999834001,
+   "actions": [
+    "Send(m)",
+    "Recv",
+    "Drop"
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 79,
+    "distinctExact": 79,
+    "generated": 106,
+    "depth": 7,
+    "deadlockStates": 15,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.2149269999936223,
+    "ms": 192.23506199999247,
+    "statesPerSec": 410.95520857689894
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 79,
+    "hashTraceLength": null,
+    "reachable": 79,
+    "ms": 221.99821699998574
+   },
+   "nativeFull": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 79,
+    "hashTraceLength": null,
+    "reachable": 79,
+    "ms": 95.12533599999733
+   },
+   "pairs": {
+    "tlcStates": 79,
+    "missingInSpectacle": 0,
+    "extraInSpectacle": 0,
+    "initEqual": true,
+    "tlcEdges": 105,
+    "accepted": 105,
+    "rejectedTlcEdge": 0,
+    "extraEdges": 0,
+    "labelComparable": 105,
+    "labelAgree": 105,
+    "negTested": 400,
+    "negRejected": 400,
+    "selfLoopsTlc": 0,
+    "selfLoopsSpectacle": 0,
+    "graphEqual": true,
+    "meanPairCheckMs": 2.307693620252164,
+    "ms": 193.7856979999924,
+    "mismatches": []
+   },
+   "traces": [],
+   "wallMs": 705.2099140000064
+  },
+  {
+   "id": "probe-action-parse",
+   "mode": "shim",
+   "ok": true,
+   "errors": [],
+   "inventory": {
+    "extends": [
+     "Naturals"
+    ],
+    "localExtends": [],
+    "unresolvedExtends": [],
+    "evaluated": [
+     "'",
+     "/\\",
+     "=",
+     "UNCHANGED",
+     "bulleted /\\ list"
+    ],
+    "parsedOnly": [
+     "<<...>>",
+     "=>",
+     "[A]_v",
+     "[]",
+     "\\in",
+     "{a, b}"
+    ],
+    "libraryOperators": [],
+    "reachedDefinitions": 2
+   },
+   "parse": {
+    "ok": true,
+    "ms": 0.36453600000822917,
+    "modulesResolved": []
+   },
+   "shimRequests": [],
+   "constantsMs": 0.0004670000053010881,
+   "actions": [
+    "/\\ hst = \"available\"\n        /\\ hst' = \"held\"\n        /\\ UNCHANGED res\n"
+   ],
+   "temporalProbes": [
+    {
+     "expr": "StaysResolved",
+     "outcome": "error",
+     "error": "Cannot read properties of undefined (reading 'map')"
+    }
+   ],
+   "explore": {
+    "initStates": 1,
+    "distinct": 2,
+    "distinctExact": 2,
+    "generated": 2,
+    "depth": 2,
+    "deadlockStates": 1,
+    "violatingStates": 0,
+    "first": null,
+    "stopped": null,
+    "complete": true,
+    "initMs": 0.12340799998492002,
+    "ms": 0.5190689999726601,
+    "statesPerSec": 3853.0522919021205
+   },
+   "native": {
+    "applicable": true,
+    "invHolds": true,
+    "numStatesExplored": 2,
+    "hashTraceLength": null,
+    "reachable": 2,
+    "ms": 0.621062999998685
+   },
+   "wallMs": 2.2563390000141226
+  }
+ ]
+}

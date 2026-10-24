@@ -1,0 +1,1259 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1d s2b_rc s2d s1k s2k s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_rc s1d s1k s1c s2b_rc s2d s2k s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rc s1d s1k s2b_rc s2d s1c s2k s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2d: <... completed>
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rc s1d s2b_rc s2d s1k s2k s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_rc s1d s2b_rc s2d s2k s1k s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s1b_rc s1d s2b_rc s2d s2k s1k s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s1b_rc s1d s1k s2k s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s1b_rc s1d s1k s2k s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s1b_rc s1d s2k s1k s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s1b_rc s1d s2k s1k s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s2k s1b_rc s1d s2c s1k s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1d: <... completed>
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s2b_rc s2d s2k s2c s1b_rc s1d s1k s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s2b_rr s2d s1k s2k s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s1k s1c s2b_rr s2d s2k s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s1k s2b_rr s2d s1c s2k s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2d: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s2b_rr s2d s1k s2k s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s2b_rr s2d s2k s1k s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s1b_rr s1d s2b_rr s2d s2k s1k s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s1b_rr s1d s1k s2k s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s1b_rr s1d s1k s2k s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s1b_rr s1d s2k s1k s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s1b_rr s1d s2k s1k s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s2k s1b_rr s1d s2c s1k s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1d: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_rr s2d s2k s2c s1b_rr s1d s1k s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s2b_ser s2d s1k s2k s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s1k s1c s2b_ser s2d s2k s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s1k s2b_ser s2d s1c s2k s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1c: COMMIT;
+step s2d: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s2b_ser s2d s1k s2k s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s2b_ser s2d s2k s1k s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s1b_ser s1d s2b_ser s2d s2k s1k s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s1b_ser s1d s1k s2k s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s1b_ser s1d s1k s2k s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1k: <... completed>
+ERROR:  deadlock detected
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s1b_ser s1d s2k s1k s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s1b_ser s1d s2k s1k s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2k: <... completed>
+ERROR:  deadlock detected
+step s1k: <... completed>
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1| 90
+ 2|110
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s2k s1b_ser s1d s2c s1k s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal; <waiting ...>
+step s2c: COMMIT;
+step s1d: <... completed>
+ERROR:  could not serialize access due to concurrent update
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|110
+ 2| 90
+(2 rows)
+
+
+starting permutation: s2b_ser s2d s2k s2c s1b_ser s1d s1k s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2d: UPDATE acct SET bal = bal - 10 WHERE id = 2 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|     90
+(1 row)
+
+step s2k: UPDATE acct SET bal = bal + 10 WHERE id = 1 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    110
+(1 row)
+
+step s2c: COMMIT;
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1d: UPDATE acct SET bal = bal - 10 WHERE id = 1 AND bal >= 10 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    110|    100
+(1 row)
+
+step s1k: UPDATE acct SET bal = bal + 10 WHERE id = 2 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+     90|    100
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id;
+id|bal
+--+---
+ 1|100
+ 2|100
+(2 rows)
+

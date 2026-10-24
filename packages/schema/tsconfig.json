@@ -1,0 +1,14 @@
+{
+  // See packages/rng/tsconfig.json: sources compile with no DOM, no WebWorker and no Node types; tests compile
+  // separately (test/tsconfig.json). The two extra flags are this package's own: its sources index objects by
+  // schema key and its generated types mark optional properties.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": [],
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.schema.tsbuildinfo"
+  },
+  "include": ["src"]
+}

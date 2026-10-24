@@ -1,0 +1,454 @@
+{
+  "format": "lane-summary/1",
+  "lane": "fast",
+  "result": "fail",
+  "started_at": "2026-10-24T16:24:13.000Z",
+  "ended_at": "2026-10-24T16:24:54.051Z",
+  "duration_s": 41.051,
+  "budget_s": 300,
+  "over_budget": false,
+  "commit": "44d12a9395f1b60c44a37c8977bd529eeee35319",
+  "dirty": true,
+  "source": {
+    "kind": "emulated-runner"
+  },
+  "runner": {
+    "os": "Linux 6.12.63",
+    "arch": "x64",
+    "cpus": 2,
+    "node": "v22.22.2"
+  },
+  "counts": {
+    "pass": 10,
+    "fail": 3,
+    "error": 0,
+    "timeout": 0,
+    "absent": 15,
+    "skipped": 0
+  },
+  "steps": [
+    {
+      "id": "vendor-verify",
+      "kind": "check",
+      "built_by": "W0-S12",
+      "argv": [
+        "npm",
+        "run",
+        "vendor:verify"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.373,
+      "verdict": "vendor-drift: ok (34 files match VENDOR.md at 5ab8883e8431)"
+    },
+    {
+      "id": "lint-purity",
+      "kind": "check",
+      "built_by": "W0-S12",
+      "argv": [
+        "npm",
+        "run",
+        "lint:purity"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.379,
+      "verdict": "purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)"
+    },
+    {
+      "id": "typecheck",
+      "kind": "check",
+      "built_by": "W0-S12",
+      "argv": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 5.953,
+      "verdict": "no output"
+    },
+    {
+      "id": "unit-tests",
+      "kind": "check",
+      "built_by": "W0-S12",
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 10.237,
+      "verdict": "145 tests, 143 passed, 1 failed, 1 skipped",
+      "output_tail": [
+        "# fail 1",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 202.393478",
+        "npm error Lifecycle script `test` failed with error:",
+        "npm error code 1",
+        "npm error path <repo>/packages/schema",
+        "npm error workspace @statespace/schema@0.0.0",
+        "npm error location <repo>/packages/schema",
+        "npm error command failed",
+        "npm error command sh -c node --test \"test/*.test.ts\""
+      ]
+    },
+    {
+      "id": "build",
+      "kind": "check",
+      "built_by": "W0-S12",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 3.949,
+      "verdict": "✓ built in 739ms"
+    },
+    {
+      "id": "lane-tests",
+      "kind": "check",
+      "built_by": "W0-T04",
+      "argv": [
+        "node",
+        "--test",
+        "scripts/spikes/W0-T04/lane.test.mjs",
+        "scripts/spikes/W0-T04/lane-manifest.test.mjs",
+        "scripts/spikes/W0-T04/status-branch.test.mjs",
+        "scripts/spikes/W0-T04/file-issue.test.mjs",
+        "scripts/spikes/W0-T04/emulate-runner.test.mjs",
+        "scripts/spikes/W0-T04/workflows.test.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 6.65,
+      "verdict": "68 tests, 67 passed, 0 failed, 1 skipped"
+    },
+    {
+      "id": "GATE-numbers",
+      "kind": "gate",
+      "built_by": "W0-S11",
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.496,
+      "verdict": "GATE-numbers: PASS (2634 tokens in 40 files, 73 known; 0.5 s)"
+    },
+    {
+      "id": "GATE-facts",
+      "kind": "gate",
+      "built_by": "W0-T08",
+      "argv": [
+        "node",
+        "scripts/verify-facts.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.374,
+      "verdict": "GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)"
+    },
+    {
+      "id": "GATE-calls",
+      "kind": "gate",
+      "built_by": "W1-T05",
+      "argv": [
+        "node",
+        "scripts/verify-calls.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-calls.mjs does not exist yet (built by W1-T05)",
+      "required": false
+    },
+    {
+      "id": "GATE-interp",
+      "kind": "gate",
+      "built_by": "W2-T08",
+      "argv": [
+        "node",
+        "scripts/verify-interp.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-interp.mjs does not exist yet (built by W2-T08)",
+      "required": false
+    },
+    {
+      "id": "GATE-items",
+      "kind": "gate",
+      "built_by": "W1-T39",
+      "argv": [
+        "node",
+        "scripts/verify-items.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-items.mjs does not exist yet (built by W1-T39)",
+      "required": false
+    },
+    {
+      "id": "GATE-audit-blind",
+      "kind": "gate",
+      "built_by": "W1-T40",
+      "argv": [
+        "node",
+        "scripts/verify-audit-blind.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-audit-blind.mjs does not exist yet (built by W1-T40)",
+      "required": false
+    },
+    {
+      "id": "GATE-generators",
+      "kind": "gate",
+      "built_by": "W1-T05",
+      "argv": [
+        "node",
+        "scripts/verify-generators.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-generators.mjs does not exist yet (built by W1-T05)",
+      "required": false
+    },
+    {
+      "id": "GATE-kc",
+      "kind": "gate",
+      "built_by": "W1-T04",
+      "argv": [
+        "node",
+        "scripts/verify-kc.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-kc.mjs does not exist yet (built by W1-T04)",
+      "required": false
+    },
+    {
+      "id": "GATE-stamps",
+      "kind": "gate",
+      "built_by": "W1-T01",
+      "argv": [
+        "node",
+        "scripts/verify-stamps.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-stamps.mjs does not exist yet (built by W1-T01)",
+      "required": false
+    },
+    {
+      "id": "GATE-codes",
+      "kind": "gate",
+      "built_by": "W1-T01",
+      "argv": [
+        "node",
+        "scripts/verify-codes.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-codes.mjs does not exist yet (built by W1-T01)",
+      "required": false
+    },
+    {
+      "id": "GATE-claims",
+      "kind": "gate",
+      "built_by": "W1-T15",
+      "argv": [
+        "node",
+        "scripts/verify-claims.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-claims.mjs does not exist yet (built by W1-T15)",
+      "required": false
+    },
+    {
+      "id": "GATE-links",
+      "kind": "gate",
+      "built_by": "W0-T03",
+      "argv": [
+        "node",
+        "scripts/verify-links.mjs"
+      ],
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 0.18,
+      "verdict": "GATE-links: FAIL (1 finding(s))",
+      "output_tail": [
+        "  RUN-lean-run-nonneg  7 place(s): curriculum/S02-proof.md:439:400, curriculum/S02-proof.md:509:373, curriculum/S02-proof.md:578:271, ...  (packages/ids/proposals.json)",
+        "  LAB-8.10  14 place(s): curriculum/S08-effects.md:29:110, curriculum/S08-effects.md:297:151, curriculum/S08-effects.md:342:3, ...  (packages/ids/proposals.json)",
+        "  RUN-tlc-outbox-inductive  4 place(s): curriculum/S08-effects.md:342:113, curriculum/S08-effects.md:405:60, curriculum/S08-effects.md:475:3, ...  (packages/ids/proposals.json)",
+        "  RUN-z3-outbox-inductive-param  4 place(s): curriculum/S08-effects.md:342:194, curriculum/S08-effects.md:405:97, curriculum/S08-effects.md:476:3, ...  (packages/ids/proposals.json)",
+        "  AUD-10.1  2 place(s): curriculum/S10-assembly.md:557:92, docs/spine/SPINE.md:1862:689  (packages/ids/proposals.json)",
+        "  AUD-10.2  1 place(s): curriculum/S10-assembly.md:557:547  (packages/ids/proposals.json)",
+        "  AUD-10.3  2 place(s): curriculum/S10-assembly.md:557:919, docs/spine/SPINE.md:1862:698  (packages/ids/proposals.json)",
+        "  RUN-tlc-tracemodule  2 place(s): tracker/tasks.yaml:479:76, tracker/tasks.yaml:487:21  (tracker/tasks.yaml (W0-S13))",
+        "NOTE  owner  tracker/tasks.yaml  GATE-coverage is implemented by no task (the ownership rule covers sections 7, 9.1, 10.1 and 3.12; gates are not checked)",
+        "NOTE  used-in  docs/spine/SPINE.md:452  LAB-7.6 names Lane A, but §9.1 does not list S7 for INS-lane-a (no lesson row or capstone step of S7 names it)",
+        "NOTE  proposal  tracker/tasks.yaml  21 proposed_ids entries are registered in the spine now and can move into their tasks' descriptions (tracker README, \"Registering a proposed run\"): RUN-tlc-help (W0-S11), RUN-tlc-sym-liveness (W0-S11), RU",
+        "GATE-links: FAIL (1 finding(s))"
+      ]
+    },
+    {
+      "id": "GATE-coverage",
+      "kind": "gate",
+      "built_by": null,
+      "argv": [
+        "node",
+        "scripts/verify-coverage.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-coverage.mjs does not exist yet",
+      "required": false
+    },
+    {
+      "id": "GATE-budget",
+      "kind": "gate",
+      "built_by": "W0-T06",
+      "argv": [
+        "node",
+        "scripts/verify-budget.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.094,
+      "verdict": "GATE-budget: green (4 warnings), 4 notes"
+    },
+    {
+      "id": "GATE-glyphs",
+      "kind": "gate",
+      "built_by": "W6-T03",
+      "argv": [
+        "node",
+        "scripts/verify-glyphs.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-glyphs.mjs does not exist yet (built by W6-T03)",
+      "required": false
+    },
+    {
+      "id": "GATE-bundle",
+      "kind": "gate",
+      "built_by": "W1-T41",
+      "argv": [
+        "node",
+        "scripts/verify-bundle.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-bundle.mjs does not exist yet (built by W1-T41)",
+      "required": false
+    },
+    {
+      "id": "GATE-guardrails",
+      "kind": "gate",
+      "built_by": "W1-T18",
+      "argv": [
+        "node",
+        "scripts/verify-guardrails.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-guardrails.mjs does not exist yet (built by W1-T18)",
+      "required": false
+    },
+    {
+      "id": "GATE-privacy",
+      "kind": "gate",
+      "built_by": "W0-T01",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs"
+      ],
+      "result": "fail",
+      "exit_code": 1,
+      "duration_s": 0.787,
+      "verdict": "vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file",
+      "output_tail": [
+        "warning: course-license: no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner",
+        "warning: private-term: not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)",
+        "verify-privacy: 1 problem(s)",
+        "  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file"
+      ]
+    },
+    {
+      "id": "GATE-schema",
+      "kind": "gate",
+      "built_by": "W0-T02",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 5.829,
+      "verdict": "GATE-schema: PASS (22 checks; 5.8 s)"
+    },
+    {
+      "id": "GATE-lessons",
+      "kind": "gate",
+      "built_by": "W1-T38",
+      "argv": [
+        "node",
+        "scripts/verify-lessons.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-lessons.mjs does not exist yet (built by W1-T38)",
+      "required": false
+    },
+    {
+      "id": "GATE-erosions",
+      "kind": "gate",
+      "built_by": "W2-T42",
+      "argv": [
+        "node",
+        "scripts/verify-erosions.mjs"
+      ],
+      "result": "absent",
+      "exit_code": null,
+      "duration_s": 0,
+      "verdict": "scripts/verify-erosions.mjs does not exist yet (built by W2-T42)",
+      "required": false
+    },
+    {
+      "id": "GATE-runs",
+      "kind": "gate",
+      "built_by": "W0-S11",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs"
+      ],
+      "result": "pass",
+      "exit_code": 0,
+      "duration_s": 0.151,
+      "verdict": "GATE-runs: PASS (67 records, 1695 resolved references; 0.1 s)"
+    }
+  ]
+}

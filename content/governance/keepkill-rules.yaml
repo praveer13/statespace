@@ -1,0 +1,577 @@
+# statespace: keep/kill rules, fixed in advance for one learner (n = 1)
+#
+# W0-T07 (V2-32; BRIEF §3.5). Cut from docs/EVIDENCE.md §7 and docs/PLAN.md §14.4; where they
+# differ, this file governs. runs/RUN-keepkill-rules.json records this file's SHA-256 before the
+# first learner-zero event, and GATE-schema fails if a single byte of it changes. The file is never
+# edited: a change is an amendment (common.amendments).
+#
+# Every number below is a design value [D] unless its line cites a run. Names in the formulas are
+# fields of event@1 (schemas/event.schema.json) or the formulas' own variables.
+
+title: Keep/kill rules for one learner
+version: 1
+fixed_on: "2026-10-24"
+task: W0-T07
+implements: [V2-32]
+sources:
+  - research/synthesis/BRIEF.md §3.5, the four comparisons, and §3.3, which rules out counterexample-only feedback
+  - docs/EVIDENCE.md §7, the proposal this file is cut from
+  - docs/PLAN.md §14.4 and its spine issue 6
+  - docs/spine/SPINE.md §2.1, §2.3, §4, §8.2, §8.4, §8.9 and §13 (W0-T07)
+  - docs/ASSESSMENT.md §2.3 (fresh), §3.2 (sessions and first learning), §3.3 (solid), §3.4 (sign-off), §3.6 (VRK₃₀) and §4 (the families and their KCs)
+
+scope: >-
+  These rules decide whether the course keeps or kills four of its own mechanics, using one
+  learner's data. That learner is learner-zero, who is also the author. Units within the learner
+  (KCs, or 12-week windows) are allocated to arms; learners are not. Every comparison names an
+  evidence-backed default that stands unless the data are clear, and "not enough data" is an
+  expected result, stated here before any data exist. Results are read descriptively and support
+  no causal claim (spine §8.9). A result never changes a learner state, never locks anything (I5)
+  and is never compared across learners.
+
+participants: >-
+  The comparisons run only on an install whose learner turned them on in SCR-settings before the
+  first event was written; learner-zero does. Elsewhere no expSeed is drawn, every unit receives
+  the shipped defaults and nothing is read. Only learner-zero's reads decide anything.
+
+threats:
+  - Nothing is blinded. The learner knows each unit's arm and wrote the items, so expectancy can bias any result.
+  - A habit learned in one arm carries over to the other arm's units, which biases every comparison toward no difference.
+  - Time on task can differ between arms, so it is logged and reported for every comparison.
+  - The four allocations are independent, so a KC can be a unit of several comparisons at once; each estimate averages over the other comparisons' arms.
+  - Precision is the binding limit (docs/EVIDENCE.md §7.1). Comparison 2 cannot reach its minimum, and comparison 3 reaches it only if at most one unit per arm is missing an outcome.
+
+parameters:
+  confidence: 0.95
+  z: 1.9599639845400543
+  outcome_delay_days: 30
+  min_outcomes_per_arm: 20
+  harm_read_outcomes_per_arm: 10
+  switch_min_points: 10
+  non_inferiority_margin_points: 5
+  final_read_days_after_last_sign_off: 60
+  cap_days_after_first_event: 730
+  window_weeks: 12
+  reserve_weeks_per_window: 2
+  window_margin_weeks: 2
+  min_windows_per_arm: 2
+  harm_read_windows_per_arm: 1
+
+common:
+  experiment_seed: >-
+    expSeed is one uint32, drawn once from the platform's cryptographic random source (for example
+    crypto.getRandomValues) when the comparisons are turned on, before the first event is written,
+    and stored with the instant it was drawn and the SHA-256 of this file. Every read first checks
+    that the rules it applies hash to that value, or to an amendment's recorded value, and refuses
+    to run otherwise. expSeed is never redrawn and it travels in export bundles, so a read can be
+    recomputed from an export. When a merge-import meets a different expSeed, the
+    one drawn first governs (on equal instants, the smaller value); units exposed under the other
+    seed are deviations and are left out of every estimate.
+  units: >-
+    A unit is a KC (comparisons 1–3) or a 12-week window (comparison 4). Each comparison lists its
+    KC units below, by stage; a KC belongs to the stage its ID names. KCs that the graph gains
+    after this file are not units. A KC credited at placement, or whose first learning is a
+    test-out probe (ASSESSMENT.md §3.2), is never a unit of comparisons 1–3: their manipulations
+    act on practice that such a KC skips, and the exclusion is fixed before any arm can act on it.
+  allocation:
+    rule: >-
+      Each unit's arm is a pure function of expSeed and this file (I2, I3), computed once, before
+      any unit enters. Order the units stratum by stratum, and within a stratum by
+      v(u) = fmix32(hash32(key(u))) ascending, breaking a tie by unit ID in UTF-16 code-unit order.
+      Give the comparison's two arms alternately along that whole order: the first unit takes the
+      first-listed arm when the lowest bit of its v is 0 and the second arm when it is 1. So the
+      two arms differ in size by at most one within every stratum and over the whole comparison.
+    strata: >-
+      For comparisons 1–3, the units of one stage, taken in stage number order (S1, S2, and so on
+      to S10). Comparison 4 allocates windows in time order.
+    key: "<comparison id>:<unit id>:<expSeed in decimal, without leading zeros>"
+    hash32: >-
+      FNV-1a over 32 bits on the key's UTF-16 code units: h = 0x811c9dc5, then for each code unit
+      c, h = ((h XOR c) × 0x01000193) mod 2^32. It is hash32 of packages/rng, the vendored
+      kernelspace module.
+    fmix32: >-
+      MurmurHash3's 32-bit finalizer on an unsigned h: h = h XOR (h >>> 16); h = (h × 0x85ebca6b)
+      mod 2^32; h = h XOR (h >>> 13); h = (h × 0xc2b2ae35) mod 2^32; h = h XOR (h >>> 16).
+    why_fmix32: >-
+      The lowest bit of hash32 is fixed by the parities of the key's code units, so for one
+      comparison and one seed, hash32 % 2 is a function of the unit's name. That is the confound
+      kernelspace's corrected recipe removes (docs/EVIDENCE.md §7.2); RUN-keepkill-rules checks
+      the parity identity on every listed key.
+    vectors: >-
+      The outputs of RUN-keepkill-rules give every listed unit's arm under four example seeds,
+      written by the reference implementation in scripts/spikes/W0-T07/. An implementation
+      reproduces them exactly.
+  entry: >-
+    A unit enters its comparison at the instant (an at from the event log) that the comparison's
+    entry rule names. Only entered units have outcomes or count anywhere. No entry rule depends on
+    the unit's arm, and a unit whose entry would precede the draw of expSeed never enters.
+  exposure: >-
+    In comparisons 1–3 an arm acts only on practice (events of kind item) and only on the unit's
+    own items, those whose primary KC is the unit (ASSESSMENT.md §3.1); comparison 4's arm acts only
+    on SCR-week, as its section says. Probes (Defence, settled and test-out), audit cases, the
+    schedule and every invariant are the same in both arms, and the scheduler never reads an arm.
+    Nothing locks in either arm (I5): help stays open, and a collapsed note is one tap away, never
+    hidden. Neither arm of any comparison is counterexample-only feedback (BRIEF §3.3). Each event
+    whose display an arm changed records the comparison and the arm in its data, so a read can
+    count deviations.
+  outcome: >-
+    For a KC unit that entered at t0: the first fresh event (ASSESSMENT.md §2.3: own, unseen and
+    generated) whose primary KC is the unit, whose ok is true or false, and whose at is at least
+    outcome_delay_days after t0, in the arithmetic VRK₃₀ uses (ASSESSMENT.md §3.6). It scores
+    correct when ok is true. Ungraded events (ok null) are skipped, and so is any event whose item
+    form an arm changes (comparison 2's practice Proof Blocks items); assisted, agent and automated
+    events are never fresh. A unit with no outcome by the read is missing: it is reported and left
+    out of the estimate.
+  estimate:
+    difference: >-
+      The difference in accuracy between the two arms over units with an outcome, p = x/n in each
+      arm, taken in the direction each comparison names (p1 − p2).
+    interval: >-
+      Newcombe's hybrid score interval at 95% (Newcombe 1998, method 10). With d = p1 − p2 and each
+      arm's Wilson bounds (l, u): L = d − sqrt((p1 − l1)^2 + (u2 − p2)^2) and
+      U = d + sqrt((u1 − p1)^2 + (p2 − l2)^2).
+    wilson: >-
+      For x of n: c = (x + z^2/2)/(n + z^2) and h = (z/(n + z^2)) × sqrt(x(n − x)/n + z^2/4); the
+      bounds are c − h and c + h, clamped to [0, 1]. Each arm's accuracy is reported with its
+      Wilson interval.
+    z: >-
+      parameters.z is the double nearest to the 0.975 quantile of the standard normal distribution
+      {{run:RUN-keepkill-rules}}. Implementations use this literal, never their own library's
+      quantile, because libraries differ in the last digits {{run:RUN-keepkill-rules}}.
+    arithmetic: >-
+      IEEE 754 double precision using only +, −, ×, ÷ and sqrt (z^2 is z × z; no pow), so the same
+      log gives the same interval on every device. No random number generator is used.
+    exact_tests: >-
+      Point differences are compared in integers: p1 − p2 is at least k points when
+      100 × (x1 × n2 − x2 × n1) ≥ k × n1 × n2. In double arithmetic 18/20 − 16/20 falls just short
+      of 0.10 {{run:RUN-keepkill-rules}}, which would fail a 10-point test that the counts meet.
+    display: >-
+      Reports round to whole percentage points; decisions use the unrounded values and the exact
+      tests.
+    vectors: >-
+      The outputs of RUN-keepkill-rules give Wilson and Newcombe bounds and decisions for test
+      cases, from the reference implementation and from an independent one; an implementation
+      reproduces the bounds to within 1e-12 and the decisions exactly.
+  minimum: >-
+    No decision is read until each arm has at least 20 units with an outcome (comparisons 1–3) or
+    2 complete windows (comparison 4). Below that the report says "not enough data" and the
+    default stands.
+  decisions:
+    applies_to: comparisons 2 and 3; comparisons 1 and 4 state their own decisions and harm stops
+    order: harm stop, then switch, then the non-inferiority switch; otherwise inconclusive
+    harm_stop: >-
+      At any read at which each arm has at least 10 units with an outcome: if U < 0 (the
+      alternative is clearly worse), the alternative is withdrawn. From that read on every unit
+      receives the default, allocation ends, and the comparison is reported as stopped for harm
+      with its default standing.
+    switch: >-
+      At the final read, with the minimum met: switch to the alternative if L > 0 and the
+      alternative leads by at least 10 points (the exact test).
+    non_inferiority_switch: >-
+      At the final read, with the minimum met, and only in a comparison whose alternative is marked
+      cheaper: switch also if L > −0.05 (kernelspace's 5-point margin) and the alternative was
+      cheaper in time, meaning that the median time on task (ms) of its units' manipulated
+      practice items is below the default arm's.
+    inconclusive: Otherwise the result is inconclusive and the default stands.
+  reads:
+    interim: >-
+      One read for harm only, at the first moment at which each arm has at least 10 units with an
+      outcome, if that comes before the final read (comparison 4 reads harm as its section says).
+    final: >-
+      At the comparison's decision date: 60 days after the latest sign-off date (ASSESSMENT.md
+      §3.4) among the stages that contribute its units, once all of them are signed off, or 730
+      days after the first learner-zero event, whichever comes first. Decision dates follow
+      learner-zero's progress, not the calendar.
+    first_learner_zero_event: the earliest at in learner-zero's event log
+    inputs: >-
+      A read uses the events whose at precedes it, as the log holds them when the read is taken,
+      together with expSeed, this file and the content in force. Each read is recorded as a
+      learner-zero run record, as RUN-lz-boot-w1 records an event-log export, with the digest of
+      the event set it used, so anyone with the export can derive it again.
+  after_the_final_read: >-
+    Allocation ends and every unit receives the decided state: the alternative after a switch,
+    otherwise the default. A switch changes the course's shipped default in the next content
+    release, citing the read's record; it never changes a learner state.
+  reporting: >-
+    SCR-assurance shows, for each comparison: the units entered, with an outcome and missing, per
+    arm; each arm's accuracy with its Wilson interval; the difference with its interval; the median
+    time on task per manipulated practice item, per arm; deviations per arm; the read (interim or
+    final), its date, the rule applied and the decision; the digest of the event set the read used;
+    and the words "one learner; descriptive; no causal claim". For comparison 4 it shows each
+    window's arm, counted weeks and secondary outcomes in place of intervals. Before the first read
+    it shows the units entered so far.
+  deviations: >-
+    A deviation is an item shown with the other arm's variant, an item for which the allocated
+    variant could not be built (it shows the default and records why), or exposure under a
+    superseded expSeed. Units are read as allocated (intention to treat), except units exposed
+    under a superseded seed, which are left out. Every read reports deviations per arm.
+  amendments: >-
+    This file never changes: GATE-schema fails when its SHA-256 differs from the one
+    RUN-keepkill-rules records. An amendment is a new file beside this one, with a dated reason,
+    whose SHA-256 its own run record holds before it applies. It governs only units that enter a
+    comparison after that record's time, and it never changes how units that entered earlier are
+    read.
+
+comparisons:
+  - number: 1
+    id: misconception-note
+    question: Once the learner is competent on a KC, is the misconception note better left open or collapsed?
+    mechanic: M-layered-feedback
+    evidence: docs/EVIDENCE.md rows 9 and 20 (expertise reversal; layered, elaborated feedback)
+    manipulated: >-
+      Whether feedback layer 2, the chosen distractor's misconception note (ASSESSMENT.md §4.1),
+      opens by default on the unit's practice items.
+    arms: [open, collapsed]
+    default: >-
+      As shipped: collapsed in expert-treatment KCs and open in novice-treatment KCs. A KC's
+      treatment is the one its content declares (spine §2.1; each stage spec's scaffolding per KC);
+      a KC whose content declares none is novice, because the reversal is asymmetric and when unsure
+      the course helps.
+    alternative: The other state, per unit.
+    entry: >-
+      An expert-treatment KC enters at its first learning (ASSESSMENT.md §3.2). A novice-treatment
+      KC enters at the first graded event of the first session after the session in which it first
+      became solid (ASSESSMENT.md §3.3); until then its note is open in both arms.
+    safeguard: >-
+      While an entered novice-treatment KC is not solid (solid can revert), its note is open in both
+      arms.
+    estimate: open minus collapsed
+    decision: >-
+      Read in either direction. At the final read, with the minimum met: if L > 0 and open leads by
+      at least 10 points, the note opens in every eligible KC; if U < 0 and collapsed leads by at
+      least 10 points, it collapses in every eligible KC, novice KCs once solid included; otherwise
+      the shipped defaults stand. An eligible KC is an expert-treatment KC, or a novice-treatment KC
+      while it is solid.
+    harm_stop: >-
+      At a harm read, if U < 0, open is withdrawn from expert-treatment units; if L > 0, collapsed
+      is withdrawn from novice-treatment units. Units whose arm is their default continue.
+    cheaper_alternative: false
+    contributing_stages: [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10]
+    expected: >-
+      docs/EVIDENCE.md §7.3 expects each arm to reach 20 in the arc's second half [D]. The list
+      holds all 105 KCs of the graph (spine §4).
+    why_widened: >-
+      BRIEF §3.5 and the pedagogy digest frame this comparison in expert KCs, but the stage specs
+      give expert treatment to only a handful of KCs, so it could never reach its minimum. Novice
+      KCs join once solid: the question stays the one the evidence poses (does the note still help
+      once the learner is competent?), and a KC still being learned never loses its open note.
+    units:
+      S1:
+        - KC-1.only-if-direction
+        - KC-1.quantifier-negation
+        - KC-1.implication-vacuity
+        - KC-1.two-state-property
+        - KC-1.violation-as-sat
+        - KC-1.three-answers
+        - KC-1.unknown-fails-closed
+        - KC-1.witness-class
+        - KC-1.non-vacuity-check
+        - KC-1.encoding-is-the-claim
+        - KC-1.claim-anatomy
+      S2:
+        - KC-2.proof-reading
+        - KC-2.props-as-types
+        - KC-2.goal-state-reading
+        - KC-2.induction-principle
+        - KC-2.generalized-ih
+        - KC-2.theorem-statement-reading
+        - KC-2.rejection-unchanged
+        - KC-2.finite-map-update
+        - KC-2.axioms-and-trust
+        - KC-2.automation-scope
+        - KC-2.kernel-not-requirement
+        - KC-2.statement-pinning
+      S3:
+        - KC-3.abstract-syntax
+        - KC-3.typing-judgment
+        - KC-3.resource-postings
+        - KC-3.refined-types
+        - KC-3.big-step-errors
+        - KC-3.small-step-stuck
+        - KC-3.progress-preservation-scope
+        - KC-3.step-invariant
+        - KC-3.edge-cases-as-decisions
+        - KC-3.nat-truncation
+        - KC-3.termination-fuel
+        - KC-3.goldens-as-theorems
+      S4:
+        - KC-4.hoare-triple
+        - KC-4.wp-assignment
+        - KC-4.wp-sequence-conditional
+        - KC-4.vc-shape
+        - KC-4.symbolic-execution
+        - KC-4.frame-condition
+        - KC-4.capture-avoiding-substitution
+        - KC-4.invariant-vs-inductive
+        - KC-4.cti-or-bug
+        - KC-4.trust-stack
+        - KC-4.prove-or-enforce
+      S5:
+        - KC-5.behaviors-stuttering
+        - KC-5.tlc-flags-matter
+        - KC-5.interleaving-granularity
+        - KC-5.holds-lifecycle
+        - KC-5.hostile-environment
+        - KC-5.safety-vs-liveness
+        - KC-5.temporal-operators
+        - KC-5.fairness
+        - KC-5.lasso-reading
+        - KC-5.bounded-scope
+        - KC-5.inductive-invariant-tla
+      S6:
+        - KC-6.sql-not-algebra
+        - KC-6.null-guards
+        - KC-6.rowcount-as-guard
+        - KC-6.differential-testing
+        - KC-6.overflow-refusal
+        - KC-6.enforce-at-commit
+        - KC-6.compilation-pattern
+        - KC-6.anomaly-isolation
+        - KC-6.serializable-retries
+        - KC-6.refinement-relation
+        - KC-6.abstract-serializability
+        - KC-6.db-as-assumption
+      S7:
+        - KC-7.access-models
+        - KC-7.policy-as-datalog
+        - KC-7.policy-checking
+        - KC-7.small-scope
+        - KC-7.rls-semantics
+        - KC-7.side-channels
+        - KC-7.enforcement-vs-ni
+        - KC-7.hyperproperty
+        - KC-7.observer-equivalence
+        - KC-7.declassification
+        - KC-7.revocation-past
+      S8:
+        - KC-8.commit-not-send
+        - KC-8.outbox-chain
+        - KC-8.crash-windows
+        - KC-8.at-least-once
+        - KC-8.untrusted-replies
+        - KC-8.idempotency-keys
+        - KC-8.progress-needs-recovery
+        - KC-8.deterministic-simulation
+        - KC-8.trace-validation
+        - KC-8.provider-horizon
+      S9:
+        - KC-9.stack-machine-correctness
+        - KC-9.translation-validation
+        - KC-9.target-ir
+        - KC-9.observations
+        - KC-9.forward-simulation
+        - KC-9.simulation-kinds
+        - KC-9.preservation-proof
+        - KC-9.bad-optimization
+        - KC-9.sql-equivalence
+        - KC-9.three-claims
+        - KC-9.tcb
+      S10:
+        - KC-10.claim-graph-report
+        - KC-10.defeater-log
+        - KC-10.agent-proposal-triage
+        - KC-10.publish-limitations
+
+  - number: 2
+    id: proof-blocks-distractors
+    question: Do distractor blocks earn their extra time in Proof Blocks practice?
+    mechanic: M-proof-blocks
+    evidence: docs/EVIDENCE.md row 14
+    manipulated: >-
+      The distractor blocks of GEN-proof-structure template 2 (Proof Blocks) items in practice
+      whose primary KC is the unit. Probes keep the shipped distractors in both arms.
+    arms: [distractors, no-distractors]
+    default: distractors, one or two distractor blocks as M-proof-blocks ships them (template 2's bands)
+    alternative: >-
+      no-distractors, the same proof's blocks without its distractors, graded the same way (any
+      order the dependency graph allows)
+    entry: The first practice item of template 2 whose primary KC is the unit.
+    estimate: alternative minus default
+    decision: >-
+      The common decisions, the non-inferiority switch included. The list holds 10 KCs, so neither
+      arm can reach 10 units with an outcome, let alone 20: no harm read and no decision can happen,
+      and the default stands. The comparison runs for its descriptive report (accuracy and time on
+      task by arm) only.
+    cheaper_alternative: true
+    cheaper_basis: docs/EVIDENCE.md row 14, where distractors took about twice the time
+    contributing_stages: [S2, S3, S9]
+    expected: docs/EVIDENCE.md §7.3 expects about 10–18 units, below the minimum [D].
+    units:
+      S2:
+        - KC-2.proof-reading
+        - KC-2.props-as-types
+        - KC-2.goal-state-reading
+        - KC-2.induction-principle
+        - KC-2.generalized-ih
+      S3:
+        - KC-3.typing-judgment
+        - KC-3.step-invariant
+      S9:
+        - KC-9.stack-machine-correctness
+        - KC-9.forward-simulation
+        - KC-9.preservation-proof
+
+  - number: 3
+    id: witness-generalization
+    question: >-
+      After a witness, does naming its class serve the learner better than comparing it with a
+      second witness of the same class before the class is shown?
+    mechanic: M-class-hint
+    evidence: >-
+      docs/EVIDENCE.md rows 21 and 24 (class hints) and row 15 (contrasting cases, with the
+      principle after the comparison)
+    manipulated: >-
+      The generalization step of practice feedback that shows a witness, on items of the families
+      listed below whose primary KC is the unit. Probes stay one-shot in both arms, with all
+      feedback after submission (spine §8.4).
+    arms: [class-named, contrast-then-class]
+    default: class-named, the witness with its class named by the system, as M-class-hint ships
+    alternative: >-
+      contrast-then-class, the witness with a second witness of the same class, which the family's
+      engine certifies is in the class and differs from the first in structure, not only in one
+      value; a prompt asks what the two share (ungraded; it writes no evidence), and the class is
+      shown once the learner answers or skips.
+    neither_arm_is_counterexample_only: >-
+      Both arms show the witness's class: the default at once, the alternative after the
+      comparison. BRIEF §3.3 rules out counterexample-only and minimal-only feedback, and PLAN.md
+      spine issue 6 asks that neither arm be it. In both arms a fix must also kill a non-minimal
+      witness (M-class-hint).
+    families:
+      - GEN-negate-it
+      - GEN-spec-it
+      - GEN-wp-it
+      - GEN-find-the-witness
+      - GEN-cti-or-bug
+      - GEN-trace-allowed
+      - GEN-lasso-or-not
+      - GEN-anomaly-id
+      - GEN-leaks-to-observer
+    families_basis: >-
+      The families whose graders return a model, state, trace, history or state pair as the
+      witness, with its class (ASSESSMENT.md §4.1–§4.11); the units are the KCs those families
+      list. GEN-call-it, GEN-which-stamp, GEN-proof-structure, GEN-defend and GEN-spot-the-gap are
+      left out: their feedback is a scenario's run, a stamp, a goal, a mutant's receipt or an
+      audit's evidence, and three of them list their KCs only by rule.
+    entry: The first practice item of a listed family whose primary KC is the unit.
+    estimate: alternative minus default
+    secondary_outcome: >-
+      The share of the unit's lab fixes that also kill a non-minimal witness (the rule of LAB-1.4),
+      reported by arm. It decides nothing.
+    decision: The common decisions, without the non-inferiority switch.
+    cheaper_alternative: false
+    contributing_stages: [S1, S2, S3, S4, S5, S6, S7, S8, S9]
+    expected: >-
+      The list holds 42 KCs, 21 in each arm, so an arm reaches 20 units with an outcome only if at
+      most one of its units is missing at the read; "not enough data" is a likely result, and then
+      the default stands. docs/EVIDENCE.md §7.3 had expected about 50–70 [D].
+    units:
+      S1:
+        - KC-1.only-if-direction
+        - KC-1.quantifier-negation
+        - KC-1.implication-vacuity
+        - KC-1.two-state-property
+        - KC-1.violation-as-sat
+        - KC-1.witness-class
+        - KC-1.non-vacuity-check
+        - KC-1.encoding-is-the-claim
+      S2:
+        - KC-2.finite-map-update
+      S3:
+        - KC-3.small-step-stuck
+      S4:
+        - KC-4.wp-assignment
+        - KC-4.wp-sequence-conditional
+        - KC-4.vc-shape
+        - KC-4.frame-condition
+        - KC-4.capture-avoiding-substitution
+        - KC-4.invariant-vs-inductive
+        - KC-4.cti-or-bug
+        - KC-4.trust-stack
+      S5:
+        - KC-5.behaviors-stuttering
+        - KC-5.interleaving-granularity
+        - KC-5.holds-lifecycle
+        - KC-5.safety-vs-liveness
+        - KC-5.fairness
+        - KC-5.lasso-reading
+        - KC-5.inductive-invariant-tla
+      S6:
+        - KC-6.compilation-pattern
+        - KC-6.anomaly-isolation
+        - KC-6.serializable-retries
+        - KC-6.abstract-serializability
+      S7:
+        - KC-7.policy-as-datalog
+        - KC-7.policy-checking
+        - KC-7.side-channels
+        - KC-7.enforcement-vs-ni
+        - KC-7.hyperproperty
+        - KC-7.observer-equivalence
+        - KC-7.declassification
+        - KC-7.revocation-past
+      S8:
+        - KC-8.outbox-chain
+        - KC-8.crash-windows
+        - KC-8.progress-needs-recovery
+      S9:
+        - KC-9.observations
+        - KC-9.bad-optimization
+
+  - number: 4
+    id: reserve-weeks
+    question: Do two reserve weeks in every 12 keep the weekly rhythm better than none?
+    mechanic: M-set-your-week
+    evidence: docs/EVIDENCE.md rows 40, 41 and 52
+    manipulated: >-
+      Whether SCR-week offers reserve weeks in the window and whether the arc projection counts
+      them. The target range, the 7-day repair, declared breaks and everything else stay the same.
+    arms: [reserve, no-reserve]
+    default: reserve, two reserve weeks in every 12, as M-set-your-week ships
+    alternative: no-reserve, no reserve weeks, with the same target range
+    units: >-
+      Consecutive windows of 12 counted weeks, weeks as M-set-your-week counts them. Window 1
+      begins with the week of the first learner-zero event. A week with any day inside a declared
+      break is not counted and does not advance the window. A window still open at a read is
+      incomplete and is left out.
+    allocation: >-
+      Windows alternate between the arms in time order. Window 1 is a reserve window when the
+      lowest bit of fmix32(hash32(key)) is 0, with key "reserve-weeks:window-1:" followed by expSeed
+      in decimal, and a no-reserve window when it is 1.
+    entry: A window enters when it begins.
+    outcome: >-
+      The number of the window's 12 counted weeks that hold, by local day, at least one event of
+      kind call, item, probe, audit, prove-it, lab-check or receipt-import whose provenance is not
+      agent: weeks with graded or Bench work.
+    secondary_outcomes: >-
+      (a) The 30-day accuracy of the KCs first learned in the window: each such KC scores its first
+      fresh event at least 30 days after its first learning, pooled by arm. (b) Time on task in the
+      window, the sum of ms over its events, as a mean per window by arm.
+    minimum: 2 complete windows per arm
+    interval: >-
+      None is claimed. With 2 complete windows per arm, the no-reserve windows outrank both reserve
+      windows by chance one time in 6 before the margin, and with 3 per arm one time in 20
+      {{run:RUN-keepkill-rules}}.
+    decision: >-
+      At the final read, with the minimum met, switch to no-reserve only if every complete
+      no-reserve window counts at least 2 more weeks than every complete reserve window and both
+      secondary outcomes are no worse in the no-reserve arm: in (a), with at least one KC with an
+      outcome in each arm, its accuracy at least the reserve arm's, compared exactly in integers;
+      in (b), its mean at least the reserve arm's, compared exactly in integers. Otherwise the
+      default stands.
+    harm_stop: >-
+      At the end of each window, once each arm has a complete window: if every complete no-reserve
+      window counts at least 2 fewer weeks than every complete reserve window, no-reserve is
+      withdrawn and every later window is a reserve window.
+    cheaper_alternative: false
+    contributing_stages: [S1, S2, S3, S4, S5, S6, S7, S8, S9, S10]
+    expected: docs/EVIDENCE.md §7.3 expects 3–6 windows over the arc [D].
+
+not_adopted:
+  - comparison: Confidence prompts on review items, on or off (the pedagogy digest §7; docs/EVIDENCE.md row 8)
+    why: >-
+      BRIEF §3.5 lists four comparisons, and the "off" arm would remove calls that the Mirror needs,
+      which diagnoses nothing below its minimum (spine §8.5). It can join only by an amendment.
+  - comparison: Adversary-drafted against plain audit cases
+    why: GATE-audit fixes the audit pool's design, and both kinds are certified the same way.
+  - comparison: Morning against evening blocks, anchored against floating days, public against private notes
+    why: Scheduling is the learner's choice (M-set-your-week) and publishing notes is optional (M-notes); the course randomizes neither.

@@ -1,0 +1,39 @@
+# The statespace Bench CLI (spine section 9.6; ARCHITECTURE.md section 11.2), managed by uv.
+#
+# The distribution is statespace-lab ("shipped in statespace-lab"), the import package and the command
+# keep the course's name, `statespace`. The dependencies are few and pinned (ARCHITECTURE.md section
+# 11.2): a JSON Schema validator, a YAML parser, and psycopg for `statespace isorun`. The versions of
+# jsonschema and PyYAML are the ones GATE-schema runs (scripts/verify-schema.mjs); psycopg is the pin of
+# RUN-scaffold. bench/uv.lock holds every wheel's hash, and the Bench image installs from it with
+# `uv sync --locked`.
+#
+# What the command line holds so far is `statespace doctor` (W0-T05). W1-T29 adds check, receipt verify,
+# hash and run beside it.
+
+[project]
+name = "statespace-lab"
+version = "0.1.0"
+description = "The statespace Bench: the course's command line, from `statespace doctor` onward."
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema==4.26.0",
+  "pyyaml==6.0.3",
+  "psycopg[binary]==3.3.6",
+]
+
+[project.scripts]
+statespace = "statespace.__main__:main"
+
+# Tools that the Bench image installs beside the command line, and that the command line does not need:
+# LAB-1 gets the same Z3 with `uv run --with z3-solver==5.3.1` (spine section 12, item 34). The wheel's
+# version is 5.3.1.0 and `z3.get_version_string()` prints 5.3.1 (labs/TOOLS.md section 1).
+[dependency-groups]
+image = ["z3-solver==5.3.1.0"]
+
+[build-system]
+requires = ["uv_build==0.10.2"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "statespace"

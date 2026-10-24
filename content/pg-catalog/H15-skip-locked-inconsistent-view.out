@@ -1,0 +1,97 @@
+Parsed test spec with 3 sessions
+
+starting permutation: w1b_rc w1claim w2b_rc w2claim cnt_skip cnt_all w1c w2c
+step w1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step w1claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 1
+ 2
+(2 rows)
+
+step w2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step w2claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 3
+ 4
+(2 rows)
+
+step cnt_skip: SELECT count(*) AS counted_with_skip_locked FROM (SELECT id FROM jobs WHERE state = 'pending' FOR UPDATE SKIP LOCKED) AS q;
+counted_with_skip_locked
+------------------------
+                       0
+(1 row)
+
+step cnt_all: SELECT count(*) AS pending FROM jobs WHERE state = 'pending';
+pending
+-------
+      4
+(1 row)
+
+step w1c: COMMIT;
+step w2c: COMMIT;
+
+starting permutation: w1b_rr w1claim w2b_rr w2claim cnt_skip cnt_all w1c w2c
+step w1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step w1claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 1
+ 2
+(2 rows)
+
+step w2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step w2claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 3
+ 4
+(2 rows)
+
+step cnt_skip: SELECT count(*) AS counted_with_skip_locked FROM (SELECT id FROM jobs WHERE state = 'pending' FOR UPDATE SKIP LOCKED) AS q;
+counted_with_skip_locked
+------------------------
+                       0
+(1 row)
+
+step cnt_all: SELECT count(*) AS pending FROM jobs WHERE state = 'pending';
+pending
+-------
+      4
+(1 row)
+
+step w1c: COMMIT;
+step w2c: COMMIT;
+
+starting permutation: w1b_ser w1claim w2b_ser w2claim cnt_skip cnt_all w1c w2c
+step w1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step w1claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 1
+ 2
+(2 rows)
+
+step w2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step w2claim: SELECT id FROM jobs WHERE state = 'pending' ORDER BY id LIMIT 2 FOR UPDATE SKIP LOCKED;
+id
+--
+ 3
+ 4
+(2 rows)
+
+step cnt_skip: SELECT count(*) AS counted_with_skip_locked FROM (SELECT id FROM jobs WHERE state = 'pending' FOR UPDATE SKIP LOCKED) AS q;
+counted_with_skip_locked
+------------------------
+                       0
+(1 row)
+
+step cnt_all: SELECT count(*) AS pending FROM jobs WHERE state = 'pending';
+pending
+-------
+      4
+(1 row)
+
+step w1c: COMMIT;
+step w2c: COMMIT;

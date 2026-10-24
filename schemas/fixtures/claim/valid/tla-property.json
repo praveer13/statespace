@@ -1,0 +1,35 @@
+{
+  "schema": "statespace/claim@1",
+  "id": "never-overspends",
+  "template": "CL-5.1",
+  "proposition": "the atomic transfer never overspends",
+  "statement": {
+    "path": "claims/DoubleSpendAtomic.tla",
+    "property": "NoOverspend"
+  },
+  "assumptions": [
+    {
+      "text": "transfers are atomic actions",
+      "seam": "SEAM-2"
+    },
+    {
+      "text": "two workers"
+    }
+  ],
+  "model": "Init = 100, Amount = 80, Workers = {w1, w2}",
+  "method": {
+    "receipt": "receipts/LAB-5.2/lab-5.2-20261024.json",
+    "tool": "tlc",
+    "version": "2026.10.20.183001"
+  },
+  "correspondence": {
+    "text": "the spec is not the code"
+  },
+  "if_weakened": {
+    "specimen": "specimens/sp-5-1.yaml",
+    "text": "split the guard from the write"
+  },
+  "requirement": {
+    "text": "no more is spent than was there"
+  }
+}

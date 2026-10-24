@@ -1,0 +1,72 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 47 and seed -2058425007083116877 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 3497] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/TraceOutbox.tla
+Parsing file scripts/spikes/W0-S04/specs/s8/Outbox.tla
+Parsing file <tmp>/Json.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Json.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file <tmp>/TLC.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file scripts/spikes/W0-S04/specs/s8/OutboxIface.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module OutboxIface
+Semantic processing of module Outbox
+Semantic processing of module TLC
+Semantic processing of module Json
+Semantic processing of module TraceOutbox
+Linting of module OutboxIface
+Linting of module Outbox
+Linting of module Json
+Linting of module TraceOutbox
+Starting... (2026-10-24 13:51:15)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:51:15.
+Error: Invariant TraceAccepted is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ charges = (c1 :> 0)
+/\ durable = {}
+/\ attempts = (c1 :> 0)
+/\ reqs = {}
+/\ l = 1
+/\ replies = {}
+/\ committed = {}
+/\ crashes = 0
+/\ got = {}
+/\ up = TRUE
+/\ status = (c1 :> "none")
+/\ seen = {}
+
+State 2: <IsCommit line 14, col 13 to line 17, col 25 of module TraceOutbox>
+/\ charges = (c1 :> 0)
+/\ durable = {}
+/\ attempts = (c1 :> 0)
+/\ reqs = {}
+/\ l = 2
+/\ replies = {}
+/\ committed = {c1}
+/\ crashes = 0
+/\ got = {}
+/\ up = TRUE
+/\ status = (c1 :> "pending")
+/\ seen = {}
+
+State 3: <IsStutter line 19, col 14 to line 22, col 26 of module TraceOutbox>
+/\ charges = (c1 :> 0)
+/\ durable = {}
+/\ attempts = (c1 :> 0)
+/\ reqs = {}
+/\ l = 3
+/\ replies = {}
+/\ committed = {c1}
+/\ crashes = 0
+/\ got = {}
+/\ up = TRUE
+/\ status = (c1 :> "pending")
+/\ seen = {}
+
+3 states generated, 3 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 3.
+Finished in 00s at (2026-10-24 13:51:15)

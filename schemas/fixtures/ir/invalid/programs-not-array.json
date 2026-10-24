@@ -1,0 +1,51 @@
+{
+  "schema": "statespace/ir@1",
+  "policy": {
+    "zero": "reject",
+    "self": "allow",
+    "guard": "error",
+    "overflow": {
+      "mode": "unbounded"
+    }
+  },
+  "programs": {},
+  "calls": [
+    {
+      "command": "Transfer",
+      "args": [
+        1,
+        2,
+        30
+      ]
+    }
+  ],
+  "states": [
+    {
+      "balances": [],
+      "nextHold": 0
+    }
+  ],
+  "outcomes": [
+    {
+      "ok": {
+        "state": {}
+      }
+    }
+  ],
+  "goldens": [
+    {
+      "pool": "S3.core",
+      "theorem": "golden_transfer_ok",
+      "statementSha256": "5edc79ccdd088a446b9fd46a7971237df6912667387f8f767c0c964bc6bea091",
+      "pre": {
+        "balances": []
+      },
+      "call": {
+        "command": "Transfer"
+      },
+      "outcome": {
+        "ok": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+docstring of Lean.Parser.Tactic.vcgenMacro, first 4 paragraphs:
+`vcgen` will break down a Hoare triple proof goal like `⦃P⦄ prog ⦃Q⦄` into verification conditions,
+provided that all functions used in `prog` have specifications registered with `@[spec]`.
+
+`vcgen` is experimental and subject to change. `set_option experimental.vcgen true` acknowledges
+its experimental status and silences the warning that each call reports.
+
+### Program types
+
+`vcgen` works on any program type `Prog` that carries a `Std.WP.WP` interpretation. A monad
+is one such program type. An inductive type of commands is another, once its weakest precondition is
+defined in terms of an operational semantics.
+option experimental.vcgen: default false; acknowledge that the `vcgen` tactic is experimental and subject to change; `true` silences the warning that each `vcgen` call reports
+option experimental.intrinsic: default false; acknowledge that the intrinsic verification syntax (the contract clauses of a `def`, the `assert` element, and the `invariant` and `decreasing` clauses of a loop) is experimental and subject to change; `true` silences the warning that each of these forms reports
+option maxHeartbeats: default 200000
+Lean.Parser.Tactic.vcgen is declared in module Std.WP.Tactic
+Lean.Parser.Attr.spec is declared in module Std.WP.Tactic
+Std.WP.WP is declared in module Std.WP.Basic
+Std.WP.Triple is declared in module Std.WP.Triple.Basic
+Std.WP.WP : Type u_1 →
+  outParam (Type u_2) →
+    (Pred : outParam (Type u_3)) →
+      (EPosts : outParam (Type u_4)) →
+        [Std.WP.Assertion Pred] → [Std.WP.Assertion EPosts] → Type (max (max (max u_1 u_2) u_3) u_4)
+class Std.WP.WP.{u, v, w, w'} (Prog : Type u) (Value : outParam (Type v)) (Pred : outParam (Type w))
+  (EPosts : outParam (Type w')) [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts] : Type (max (max (max u v) w) w')
+number of parameters: 6
+fields:
+  Std.WP.WP.trans : Prog → Order.PredTrans Pred EPosts Value :=
+    Std.WP.WP.wpTrans
+  Std.WP.WP.wpTrans : Prog → Order.PredTrans Pred EPosts Value :=
+    Std.WP.WP.trans
+  Std.WP.WP.trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=
+    ⋯
+  Std.WP.WP.wp_trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=
+    ⋯
+constructor:
+  Std.WP.WP.mk.{u, v, w, w'} {Prog : Type u} {Value : outParam (Type v)} {Pred : outParam (Type w)}
+    {EPosts : outParam (Type w')} [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts]
+    (trans wpTrans : Prog → Order.PredTrans Pred EPosts Value)
+    (trans_monotone wp_trans_monotone : ∀ (x : Prog), (trans x).Monotone) : Std.WP.WP Prog Value Pred EPosts
+@Std.WP.Triple : {Pred : Type u_3} →
+  {EPosts : Type u_4} →
+    {Prog : Type u_1} →
+      {Value : Type u_2} →
+        [inst : Std.WP.Assertion Pred] →
+          [inst_1 : Std.WP.Assertion EPosts] →
+            Prog → [Std.WP.WP Prog Value Pred EPosts] → Pred → (Value → Pred) → EPosts → Prop
+@Std.WP.Triple.iff : ∀ {Pred : Type u_3} {EPosts : Type u_4} {Prog : Type u_1} {Value : Type u_2}
+  [inst : Std.WP.Assertion Pred] [inst_1 : Std.WP.Assertion EPosts] [inst_2 : Std.WP.WP Prog Value Pred EPosts]
+  {x : Prog} {pre : Pred} {post : Value → Pred} {eposts : EPosts},
+  ⦃ pre ⦄ x ⦃ post; eposts ⦄ ↔ Order.PartialOrder.rel pre (Std.WP.wp x post eposts)
+@Order.PredTrans.mk : {Pred : Type u_1} →
+  {EPosts : Type u_2} → {α : Type u_3} → ((α → Pred) → EPosts → Pred) → Order.PredTrans Pred EPosts α
+@Order.himp : {α : Type u_1} → [Order.CompleteLattice α] → α → α → α
+@Order.meet_apply : ∀ {σ : Type u_1} {β : σ → Type u_2} [inst : (s : σ) → Order.CompleteLattice (β s)]
+  (a b : (s : σ) → β s) (s : σ), Order.meet a b s = Order.meet (a s) (b s)
+@Order.himp_apply : ∀ {σ : Type u_2} {β : Type u_1} [inst : Order.CompleteLattice β] (a b : σ → β) (s : σ),
+  Order.himp a b s = Order.himp (a s) (b s)
+Order.meet_prop_eq_and : ∀ (a b : Prop), Order.meet a b = (a ∧ b)
+Order.himp_prop_eq_imp : ∀ (a b : Prop), Order.himp a b = (a → b)
+W0S07/Interface.lean:61:2: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.
+W0S07/Interface.lean:66:4: warning: The `ensures` clause is part of the experimental intrinsic verification syntax; `set_option experimental.intrinsic true` acknowledges its experimental status and silences this warning.
+W0S07/Interface.lean:65:0: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.

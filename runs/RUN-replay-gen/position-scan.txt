@@ -1,0 +1,156 @@
+$/lean/plainGoal: the state shown at each character position of each proof (0-based line and character)
+toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)
+
+Ledger.transfer_conserves   (Ledger.lean, lines 13-15)
+  state 0 = before `unfold transfer total`
+  state 1 = before `split`
+  state 2 = before `simp`
+  state 3 = before `omega`
+  state 4 = end of proof
+  line 13  "theorem transfer_conserves (s : Ledger) (n : Int) : total (transfer s n) = total s := by"
+    characters 0-85: no goal information
+    characters 86-88: state 0
+  line 14  "  unfold transfer total"
+    characters 0-2: state 0
+    characters 3-23: state 1
+  line 15  "  split <;> simp <;> omega"
+    characters 0-2: state 1
+    characters 3-12: state 2
+    characters 13-21: state 3
+    characters 22-26: no goals
+
+Ledger.transfer_nonneg   (Ledger.lean, lines 17-20)
+  state 0 = before `unfold transfer`
+  state 1 = before `split`
+  state 2 = before `simp_all`
+  state 3 = before `omega`
+  state 4 = end of proof
+  line 17  "theorem transfer_nonneg (s : Ledger) (n : Int) (ha : 0 ≤ s.a) (hb : 0 ≤ s.b) :"
+    characters 0-78: no goal information
+  line 18  "    0 ≤ (transfer s n).a ∧ 0 ≤ (transfer s n).b := by"
+    characters 0-50: no goal information
+    characters 51-53: state 0
+  line 19  "  unfold transfer"
+    characters 0-2: state 0
+    characters 3-17: state 1
+  line 20  "  split <;> simp_all <;> omega"
+    characters 0-2: state 1
+    characters 3-12: state 2
+    characters 13-25: state 3
+    characters 26-30: no goals
+
+Ledger.run_conserves   (Ledger.lean, lines 31-34)
+  state 0 = before `induction ns generalizing s with`
+  state 1 = before `rfl`
+  state 2 = before `simp [run, ih, transfer_conserves]`
+  state 3 = end of proof
+  line 31  "theorem run_conserves (s : Ledger) (ns : List Int) : total (run s ns) = total s := by"
+    characters 0-82: no goal information
+    characters 83-85: state 0
+  line 32  "  induction ns generalizing s with"
+    characters 0-34: state 0
+  line 33  "  | nil => rfl"
+    characters 0-1: state 0
+    characters 2-11: state 1
+    characters 12-14: no goals
+  line 34  "  | cons n ns ih => simp [run, ih, transfer_conserves]"
+    characters 0-1: no goals
+    characters 2-20: state 2
+    characters 21-54: no goals
+
+Shapes.net_append   (Shapes.lean, lines 9-14)
+  state 0 = before `induction xs with`
+  state 1 = before `simp [net]`
+  state 2 = before `simp [net, ih]`
+  state 3 = before `omega`
+  state 4 = end of proof
+  line 9  "theorem net_append (xs ys : List Int) : net (xs ++ ys) = net xs + net ys := by"
+    characters 0-75: no goal information
+    characters 76-78: state 0
+  line 10  "  induction xs with"
+    characters 0-19: state 0
+  line 11  "  | nil => simp [net]"
+    characters 0-1: state 0
+    characters 2-11: state 1
+    characters 12-21: no goals
+  line 12  "  | cons x xs ih =>"
+    characters 0-1: no goals
+    characters 2-19: state 2
+  line 13  "    simp [net, ih]"
+    characters 0-4: state 2
+    characters 5-18: state 3
+  line 14  "    omega"
+    characters 0-4: state 3
+    characters 5-9: no goals
+
+Shapes.guard_leaves_funds   (Shapes.lean, lines 16-18)
+  state 0 = before `obtain ⟨h0, h1⟩ := h`
+  state 1 = before `omega`
+  state 2 = end of proof
+  line 16  "theorem guard_leaves_funds (n a : Int) (h : 0 ≤ n ∧ n ≤ a) : 0 ≤ a - n := by"
+    characters 0-73: no goal information
+    characters 74-76: state 0
+  line 17  "  obtain ⟨h0, h1⟩ := h"
+    characters 0-2: state 0
+    characters 3-22: state 1
+  line 18  "  omega"
+    characters 0-2: state 1
+    characters 3-7: no goals
+
+Shapes.and_swap_example   (Shapes.lean, lines 20-23)
+  state 0 = before `constructor`
+  state 1 = before `·`
+  state 2 = before `exact hq`
+  state 3 = before `exact hp`
+  state 4 = end of proof
+  line 20  "theorem and_swap_example (p q : Prop) (hp : p) (hq : q) : q ∧ p := by"
+    characters 0-66: no goal information
+    characters 67-69: state 0
+  line 21  "  constructor"
+    characters 0-2: state 0
+    characters 3-13: state 1
+  line 22  "  · exact hq"
+    characters 0-2: state 1
+    characters 3-4: state 2
+    characters 5-12: no goals
+  line 23  "  · exact hp"
+    characters 0-4: state 3
+    characters 5-12: no goals
+
+Shapes.add_comm_example   (Shapes.lean, lines 25-26)
+  state 0 = before `rw [Int.add_comm]`
+  state 1 = end of proof
+  line 25  "theorem add_comm_example (x y : Int) : x + y = y + x := by"
+    characters 0-55: no goal information
+    characters 56-58: state 0
+  line 26  "  rw [Int.add_comm]"
+    characters 0-6: state 0
+    characters 7-18: other 1
+    character 19: no goals
+  other 1 is not a strip state:
+      x y : Int
+      ⊢ y + x = y + x
+
+Shapes.std_empty_size   (Shapes.lean, lines 28-29)
+  state 0 = before `simp`
+  state 1 = end of proof
+  line 28  "theorem std_empty_size : (Std.HashMap.emptyWithCapacity : Std.HashMap Nat Nat).size = 0 := by"
+    characters 0-90: no goal information
+    characters 91-93: state 0
+  line 29  "  simp"
+    characters 0-2: state 0
+    characters 3-6: no goals
+
+Shapes.and_intro_example   (Shapes.lean, lines 31-33)
+  state 0 = before `exact ⟨hp,`
+  state 1 = end of proof
+  line 31  "theorem and_intro_example (p q : Prop) (hp : p) (hq : q) : p ∧ q := by"
+    characters 0-67: no goal information
+    characters 68-70: state 0
+  line 32  "  exact ⟨hp,"
+    characters 0-2: state 0
+    characters 3-12: no goals
+  line 33  "    hq⟩"
+    characters 0-7: no goals
+
+scan: 9 strips, 1173 positions

@@ -1,0 +1,30 @@
+{
+  "canary_outputs_read": 74,
+  "failing_with_a_bwrap_line": 41,
+  "without_a_hint": 0,
+  "hints": {
+    "seccomp blocks pivot_root, which Docker's default profile does even with CAP_SYS_ADMIN": [
+      "bwrap: pivot_root: Operation not permitted"
+    ],
+    "the container's seccomp profile blocks clone with namespace flags, as Docker's default profile does, or the host forbids unprivileged user namespaces": [
+      "bwrap: No permissions to create new namespace, likely because ..."
+    ],
+    "the image has no /run/user directory": [
+      "bwrap: Can't mkdir /run/user: Read-only file system"
+    ],
+    "the container masks paths under /proc": [
+      "bwrap: Can't mount proc on /newroot/proc: Operation not permitted"
+    ],
+    "seccomp blocks unshare, mount or umount2": [
+      "bwrap: Failed to make / slave: Operation not permitted",
+      "bwrap: unmount old root: Operation not permitted",
+      "bwrap: unshare user ns: Operation not permitted"
+    ],
+    "Ubuntu 24.04's AppArmor restriction on unprivileged user namespaces": [
+      "bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"
+    ],
+    "Docker's AppArmor profile denies the mount that bubblewrap needs": [
+      "bwrap: Failed to make / slave: Permission denied"
+    ]
+  }
+}

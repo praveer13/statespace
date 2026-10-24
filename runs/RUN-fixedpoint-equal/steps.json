@@ -1,0 +1,224 @@
+[
+ {
+  "name": "fetch-deps",
+  "argv": [
+   "node",
+   "fetch-deps.mjs",
+   "<cache>"
+  ],
+  "started_at": "2026-10-24T13:49:46.084Z",
+  "duration_s": 0.07,
+  "exit_code": 0
+ },
+ {
+  "name": "npm-ci",
+  "argv": [
+   "npm",
+   "ci",
+   "--no-audit",
+   "--no-fund"
+  ],
+  "started_at": "2026-10-24T13:49:46.177Z",
+  "duration_s": 0.29,
+  "exit_code": 0
+ },
+ {
+  "name": "worldgen",
+  "argv": [
+   "node",
+   "worldgen.mjs",
+   "--out",
+   "<work>/corpus"
+  ],
+  "started_at": "2026-10-24T13:49:46.490Z",
+  "duration_s": 0.07,
+  "exit_code": 0
+ },
+ {
+  "name": "souffle",
+  "argv": [
+   "node",
+   "scripts/spikes/W0-S03/souffle-run.mjs",
+   "--corpus",
+   "<work>/corpus",
+   "--out",
+   "<work>/souffle-out"
+  ],
+  "started_at": "2026-10-24T13:49:55.353Z",
+  "duration_s": 71.29,
+  "exit_code": 0
+ },
+ {
+  "name": "browsers",
+  "argv": [
+   "node",
+   "scripts/spikes/W0-S03/browser-run.mjs",
+   "--corpus",
+   "<work>/corpus/corpus.json",
+   "--wheel",
+   "<cache>/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+   "--out",
+   "<work>/browsers",
+   "--probes"
+  ],
+  "started_at": "2026-10-24T13:51:06.664Z",
+  "duration_s": 229.17,
+  "exit_code": 0
+ },
+ {
+  "name": "container",
+  "argv": [
+   "docker",
+   "run",
+   "--rm",
+   "--memory=6g",
+   "--cpus=4",
+   "-e",
+   "HOST_UID=<uid>",
+   "-e",
+   "HOST_GID=<gid>",
+   "-e",
+   "W0S03_PATHMAP=[[\"/spike\",\"scripts/spikes/W0-S03\"],[\"/work\",\"<work>\"],[\"/cache\",\"<cache>\"]]",
+   "-v",
+   "scripts/spikes/W0-S03:/spike:ro",
+   "-v",
+   "<work>:/work",
+   "-v",
+   "<cache>:/cache:ro",
+   "mcr.microsoft.com/playwright:v1.63.0-noble",
+   "bash",
+   "/spike/container.sh"
+  ],
+  "started_at": "2026-10-24T13:49:46.586Z",
+  "duration_s": 309.45,
+  "exit_code": 0
+ },
+ {
+  "name": "native",
+  "argv": [
+   "uv",
+   "run",
+   "--no-project",
+   "--python",
+   "3.13",
+   "--with",
+   "<cache>/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+   "python",
+   "-I",
+   "-B",
+   "native_run.py",
+   "<work>/corpus/corpus.json",
+   "<work>/native.json"
+  ],
+  "started_at": "2026-10-24T13:54:56.065Z",
+  "duration_s": 15.53,
+  "exit_code": 0
+ },
+ {
+  "name": "native-planted",
+  "argv": [
+   "uv",
+   "run",
+   "--no-project",
+   "--python",
+   "3.13",
+   "--with",
+   "<cache>/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+   "python",
+   "-I",
+   "-B",
+   "native_run.py",
+   "<work>/corpus/corpus.json",
+   "<work>/planted-replies.json",
+   "--plant",
+   "drop-negation"
+  ],
+  "started_at": "2026-10-24T13:55:11.611Z",
+  "duration_s": 15.44,
+  "exit_code": 0
+ },
+ {
+  "name": "native-probes",
+  "argv": [
+   "uv",
+   "run",
+   "--no-project",
+   "--python",
+   "3.13",
+   "--with",
+   "<cache>/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+   "python",
+   "-I",
+   "-B",
+   "probes.py",
+   "--all",
+   "<work>/corpus/corpus.json",
+   "<work>/native-probes.json"
+  ],
+  "started_at": "2026-10-24T13:55:27.074Z",
+  "duration_s": 5.62,
+  "exit_code": 0
+ },
+ {
+  "name": "pyodide-node",
+  "argv": [
+   "node",
+   "pyodide-node.mjs",
+   "--corpus",
+   "<work>/corpus/corpus.json",
+   "--wheel",
+   "<cache>/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+   "--out",
+   "<work>/pyodide-node.json",
+   "--probes",
+   "<work>/pyodide-node-probes.json"
+  ],
+  "started_at": "2026-10-24T13:55:32.721Z",
+  "duration_s": 63.45,
+  "exit_code": 0
+ },
+ {
+  "name": "compare",
+  "argv": [
+   "node",
+   "compare.mjs",
+   "--corpus",
+   "<work>/corpus",
+   "--souffle",
+   "<work>/souffle-out",
+   "--out",
+   "<work>/comparison",
+   "--z3",
+   "native=<work>/native.json",
+   "--z3",
+   "pyodide-node22=<work>/pyodide-node.json",
+   "--z3",
+   "chromium=<work>/browsers/chromium.json",
+   "--z3",
+   "firefox=<work>/browsers/firefox.json",
+   "--z3",
+   "webkit=<work>/browsers/webkit.json"
+  ],
+  "started_at": "2026-10-24T13:56:36.195Z",
+  "duration_s": 0.75,
+  "exit_code": 0
+ },
+ {
+  "name": "compare-planted",
+  "argv": [
+   "node",
+   "compare.mjs",
+   "--corpus",
+   "<work>/corpus",
+   "--souffle",
+   "<work>/souffle-out",
+   "--out",
+   "<work>/planted",
+   "--z3",
+   "planted=<work>/planted-replies.json"
+  ],
+  "started_at": "2026-10-24T13:56:36.967Z",
+  "duration_s": 0.16,
+  "exit_code": 1
+ }
+]

@@ -1,0 +1,73 @@
+# The release lane (spine section 11.2; ARCHITECTURE.md sections 13.1 and 13.5; W0-T04). A stub.
+#
+# An edition tag (edition-1, edition-1.1, ...) starts it; it can also be started by hand to see what a release would face.
+# The edition deploys only through GATE-release: "models, proofs, differential tests and runs up to date; the nightly lane
+# green", read over the latest green nightly on the same commit.
+#
+# What it does now: it reads the latest nightly status into status/nightly.json (the branch nightly-status, status/README.md)
+# and runs the release column of scripts/spikes/W0-T04/gates.json: the strict forms of the gates (GATE-numbers, GATE-links,
+# GATE-budget, GATE-privacy and GATE-schema with --strict, GATE-runs with --release), the gates' own self-checks, and
+# GATE-release. GATE-release is the stub: scripts/verify-release.mjs does not exist yet, and the lane requires it, so the
+# lane fails closed. Nothing deploys from here; there is no deploy step to reach.
+#
+# TODO(W5-T09): build scripts/verify-release.mjs (the nightly status of this commit, the proofs, the models, GATE-labs in
+# full mode from a clean clone) and add its inputs to this workflow. TODO(W6-T14): the deploy step, behind GATE-release.
+
+name: release
+
+on:
+  push:
+    tags: ['edition-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: GATE-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      STATESPACE_PRIVACY_TERMS: ${{ secrets.STATESPACE_PRIVACY_TERMS }}
+      STATESPACE_PRIVACY_KEY: ${{ secrets.STATESPACE_PRIVACY_KEY }}
+      STATESPACE_COURSE_DOMAIN: ${{ vars.STATESPACE_COURSE_DOMAIN }}
+    steps:
+      - name: Start the lane clock
+        run: echo "STATESPACE_LANE_START=$(date +%s)" >> "$GITHUB_ENV"
+
+      - name: Check out the tagged commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: 0.10.2
+          enable-cache: false
+
+      - name: Install the pinned packages
+        run: npm ci --no-audit --no-fund
+
+      - name: Read the latest nightly status
+        # A missing status is not an error here: GATE-release fails closed on a missing input.
+        run: node scripts/spikes/W0-T04/status-branch.mjs fetch --out status/nightly.json || echo "::warning::no nightly status could be read"
+
+      - name: Run the release lane
+        run: node scripts/spikes/W0-T04/lane.mjs release

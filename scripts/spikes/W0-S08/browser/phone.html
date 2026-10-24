@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W0-S08 phone page</title>
+<style>
+  body { font: 16px/1.45 system-ui, sans-serif; margin: 16px; max-width: 42rem; }
+  button { font: inherit; padding: 10px 14px; margin: 4px 4px 4px 0; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #eee; color: #111; padding: 8px; }
+</style>
+</head>
+<body>
+<h1>PGlite on this device</h1>
+<p>Each button runs in a module worker and adds its numbers below. Run them in order, then copy the text. Close other tabs first, and note the device and browser.</p>
+<button id="load">1. First load, then two fresh instances</button>
+<button id="rls">2. SET ROLE differential, 20 worlds</button>
+<button id="spec">3. Single-session specimens</button>
+<button id="copy">Copy the text</button>
+<pre id="out"></pre>
+<script type="module">
+const out = document.getElementById('out')
+const say = (s) => { out.textContent += s + '\n' }
+say(JSON.stringify({ page: 'W0-S08 phone page', userAgent: navigator.userAgent, hardwareConcurrency: navigator.hardwareConcurrency ?? null, deviceMemoryGiB: navigator.deviceMemory ?? null, secureContext: window.isSecureContext, connection: navigator.connection ? { effectiveType: navigator.connection.effectiveType, downlink: navigator.connection.downlink } : null }))
+let worker = null
+let nextId = 1
+const pending = new Map()
+function fresh() {
+  if (worker) worker.terminate() // ends the worker and frees what it held
+  worker = new Worker('/spec/browser/worker.mjs', { type: 'module' })
+  worker.onmessage = (e) => {
+    const m = e.data
+    if (m.progress) { say('  ' + m.progress); return }
+    const p = pending.get(m.id)
+    if (p) { pending.delete(m.id); m.error ? p.reject(new Error(m.error)) : p.resolve(m.result) }
+  }
+  worker.onerror = (e) => say('worker error: ' + e.message)
+}
+const run = (task) => new Promise((resolve, reject) => { const id = nextId++; pending.set(id, { resolve, reject }); worker.postMessage({ id, ...task }) })
+async function go(label, task, show) {
+  say(`${label} ...`)
+  try { fresh(); const t = performance.now(); const r = await run(task); say(label + ': ' + JSON.stringify(show(r)) + ` (${Math.round(performance.now() - t)} ms in all)`) } catch (e) { say(label + ' failed: ' + e.message) }
+}
+document.getElementById('load').onclick = () => go('first load', { task: 'first-load', instances: 3 }, (r) => ({
+  import_ms: Math.round(r.first.import_ms), ready_ms: Math.round(r.first.ready_ms), first_query_ms: Math.round(r.first.first_query_ms), version: r.first.version.split(' on ')[0],
+  wasm_memory_bytes: r.first.wasm_memory_bytes, js_heap_bytes: r.first.js_heap_after, further_instance_ready_ms: r.further_instances.map((x) => Math.round(x.ready_ms)),
+  bytes_on_the_wire: r.resource_entries.filter((e) => e.name.startsWith('/pglite/')).reduce((n, e) => n + e.encoded_body_size, 0), files: r.resource_entries.filter((e) => e.name.startsWith('/pglite/')).length,
+}))
+document.getElementById('rls').onclick = () => go('SET ROLE differential', { task: 'rls', worlds: 20 }, (r) => ({
+  part1_checks_passed: r.part1.checks.filter((c) => c.pass).length, part1_checks: r.part1.checks.length, failed: r.part1.checks.filter((c) => !c.pass).map((c) => c.id),
+  worlds: r.part2.n, baseline_disagreements: r.part2.worlds.reduce((n, w) => n + w.baseline.disagreements, 0), seconds: r.duration_s,
+}))
+document.getElementById('spec').onclick = () => go('single-session specimens', { task: 'specimens' }, (r) => ({ version: r.server_version.split(' on ')[0], steps: r.single_session.map((s) => s.id + ':' + (s.outcome.kind === 'error' ? s.outcome.sqlstate : s.outcome.kind)), two_workers: r.serialize.log, final_balance: r.serialize.final }))
+document.getElementById('copy').onclick = async () => { try { await navigator.clipboard.writeText(out.textContent); say('copied') } catch { say('copying is not allowed here: select the text by hand') } }
+</script>
+</body>
+</html>

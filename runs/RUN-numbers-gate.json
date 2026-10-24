@@ -1,0 +1,249 @@
+{
+  "id": "RUN-numbers-gate",
+  "title": "GATE-numbers on this repository: the fast lane, the release lane and the planted-fault self-check",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-24T14:43:53.436Z",
+  "started_at": "2026-10-24T14:43:45.408Z",
+  "duration_s": 8.027,
+  "argv": [
+    "node",
+    "scripts/verify-numbers.mjs",
+    "--self-check"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-numbers.mjs",
+      "sha256": "a5da928383a65f765510a73aad4d039a41ab870c3c66eb09fbd10a932eaa6add",
+      "bytes": 6509,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/numbers-rules.mjs",
+      "sha256": "36d42f6dab902124215df162ff7992d0f3c873ffa53dbea3e09d8aff3dfa1595",
+      "bytes": 29796,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/numbers-deny-list.json",
+      "sha256": "76e4baf1e94ffed288ec6e5c8fb0dad1c17e15c838e17f066e37afacf112790a",
+      "bytes": 2822,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/numbers-baseline.json",
+      "sha256": "4ac4dcbcb524c0bf1c88e7612a37fd07c153df2477d93d34abab2da9d80de989",
+      "bytes": 29478,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/gate-self-check.mjs",
+      "sha256": "59c11c55a3d32b0e3f31c224456b07ce3c21a671e7ec6141f5e03e471a98df42",
+      "bytes": 17210,
+      "role": "gate"
+    },
+    {
+      "path": ".",
+      "sha256": "06d7cb4ecfee82836b6a0d6e18226b01036a34caf63b3346c64bc958160349ca",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of the files the gate read",
+      "files": 40,
+      "role": "the documents and copy the gate read"
+    }
+  ],
+  "budget": {
+    "network": "none used"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-numbers self-check: copy the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it",
+    "  ok    the untouched copy: passes",
+    "  ok    planted: an untagged TLC count and timing as a new paragraph of README.md: fails as it should, on README.md:319 untagged count \"9,999 distinct states\"",
+    "  ok    planted: an untagged sentence after the last tag of a tagged paragraph in docs/PLAN.md: fails as it should, on docs/PLAN.md:391 untagged measure \"4.25 s\"",
+    "  ok    planted: an untagged TLC flag in docs/WORLD.md: fails as it should, on docs/WORLD.md:541 untagged flag \"-coverage\"",
+    "  ok    planted: an untagged SQLSTATE in README.md: fails as it should, on README.md:319 untagged sqlstate \"23514\"",
+    "  ok    planted: an untagged solver verdict with its model in README.md: fails as it should, on README.md:319 untagged verdict \"sat [x = 7]\"",
+    "  ok    planted: a deny-list sentence, even with a run reference (BRIEF section 2.2): fails as it should, on README.md:319 deny-list 212-states",
+    "  ok    planted: learner copy repeating a tagged number without its own tag: fails as it should, on content/stages/S1/L1.md:3 untagged version \"Z3 5.3.1\"",
+    "  ok    control: the planted README.md sentence with a run reference passes: adds no finding, as it should: a run reference covers its sentence",
+    "  ok    control: a design value tagged [D] passes: adds no finding, as it should: [D] covers a design value",
+    "  ok    control: learner copy with a reference in every sentence passes: adds no finding, as it should: every unit of copy carries its tag",
+    "  ok    control: a fenced code block is not read: adds no finding, as it should: fenced output is GATE-facts' to check",
+    "  ok    planted: a listed (baseline) sentence that is edited no longer matches its entry: fails as it should, on curriculum/S05-time.md:137 untagged count \"at depth 4\"",
+    "  ok    release lane: --strict fails on the listed debt: fails, as it should: 89 listed tokens",
+    "GATE-numbers self-check: PASS (14 of 14 held)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-numbers-gate/fast.log",
+      "sha256": "c4acbf549391b7e0e708853a212fb013b5d863c8c6f0eddb95e440e7f44e9b6d",
+      "bytes": 1054,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-numbers-gate/self-check.log",
+      "sha256": "ef7ec49bc70324d38b9f17ee65dd0010a366c8961565c3132b09a89a1e19185b",
+      "bytes": 1981,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-numbers-gate/strict.log",
+      "sha256": "82cabc6c15ad41c90140d2dd825322ae4553545adbeb7c3b3e7c869a94500f9f",
+      "bytes": 21268,
+      "kind": "log"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "self-check",
+  "configs": [
+    {
+      "id": "fast",
+      "origin": "recorded",
+      "purpose": "the fast lane on this repository",
+      "started_at": "2026-10-24T14:43:45.408Z",
+      "duration_s": 0.495,
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-numbers",
+        "  read  40 files (39 documents, 1 copy); 2571 tool-shaped tokens in 30418 units; 185 source keys defined",
+        "  pass  1816 under a run reference, 63 tagged [D], 89 tagged [V], 52 under a source citation, 10 under an executed-evidence key, 452 introduced with a tag elsewhere in the same document",
+        "  known 89 untagged tokens listed as debt in scripts/runs/numbers-baseline.json, in 24 documents (docs/ARCHITECTURE.md 1, docs/ASSESSMENT.md 2, docs/AUDIT-DESK.md 1, docs/DECISIONS.md 3, docs/DESIGN.md 9, docs/LANDSCAPE.md 6, docs/TRACKER.md 1, docs/WORLD.md 1, docs/spikes/W0-S01.md 4, docs/spikes/W0-S03.md 4, docs/spikes/W0-S05.md 6, docs/spikes/W0-S06.md 15, docs/spikes/W0-S07.md 3, docs/spikes/W0-S08.md 5, docs/spikes/W0-S09.md 1, docs/spikes/W0-S10.md 1, docs/spine/SPINE.md 1, curriculum/S05-time.md 8, curriculum/S06-correspondence.md 1, curriculum/S07-secrecy.md 1, curriculum/S10-assembly.md 1, tracker/tasks.yaml 4, labs/README.md 5, labs/TOOLS.md 5); --strict fails on them",
+        "GATE-numbers: PASS (2571 tokens in 40 files, 89 known; 0.5 s)"
+      ],
+      "outputs": [
+        "runs/RUN-numbers-gate/fast.log"
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "plant faults one at a time in a scratch copy; the gate must fail on each and pass the controls",
+      "started_at": "2026-10-24T14:43:45.904Z",
+      "duration_s": 7.037,
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-numbers self-check: copy the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it",
+        "  ok    the untouched copy: passes",
+        "  ok    planted: an untagged TLC count and timing as a new paragraph of README.md: fails as it should, on README.md:319 untagged count \"9,999 distinct states\"",
+        "  ok    planted: an untagged sentence after the last tag of a tagged paragraph in docs/PLAN.md: fails as it should, on docs/PLAN.md:391 untagged measure \"4.25 s\"",
+        "  ok    planted: an untagged TLC flag in docs/WORLD.md: fails as it should, on docs/WORLD.md:541 untagged flag \"-coverage\"",
+        "  ok    planted: an untagged SQLSTATE in README.md: fails as it should, on README.md:319 untagged sqlstate \"23514\"",
+        "  ok    planted: an untagged solver verdict with its model in README.md: fails as it should, on README.md:319 untagged verdict \"sat [x = 7]\"",
+        "  ok    planted: a deny-list sentence, even with a run reference (BRIEF section 2.2): fails as it should, on README.md:319 deny-list 212-states",
+        "  ok    planted: learner copy repeating a tagged number without its own tag: fails as it should, on content/stages/S1/L1.md:3 untagged version \"Z3 5.3.1\"",
+        "  ok    control: the planted README.md sentence with a run reference passes: adds no finding, as it should: a run reference covers its sentence",
+        "  ok    control: a design value tagged [D] passes: adds no finding, as it should: [D] covers a design value",
+        "  ok    control: learner copy with a reference in every sentence passes: adds no finding, as it should: every unit of copy carries its tag",
+        "  ok    control: a fenced code block is not read: adds no finding, as it should: fenced output is GATE-facts' to check",
+        "  ok    planted: a listed (baseline) sentence that is edited no longer matches its entry: fails as it should, on curriculum/S05-time.md:137 untagged count \"at depth 4\"",
+        "  ok    release lane: --strict fails on the listed debt: fails, as it should: 89 listed tokens",
+        "GATE-numbers self-check: PASS (14 of 14 held)"
+      ],
+      "outputs": [
+        "runs/RUN-numbers-gate/self-check.log"
+      ]
+    },
+    {
+      "id": "strict",
+      "origin": "recorded",
+      "purpose": "the release lane: the known debt listed in numbers-baseline.json fails too",
+      "started_at": "2026-10-24T14:43:52.941Z",
+      "duration_s": 0.495,
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs",
+        "--strict"
+      ],
+      "exit_code": 1,
+      "verdict_lines": [
+        "GATE-numbers",
+        "  read  40 files (39 documents, 1 copy); 2571 tool-shaped tokens in 30418 units; 185 source keys defined",
+        "  pass  1816 under a run reference, 63 tagged [D], 89 tagged [V], 52 under a source citation, 10 under an executed-evidence key, 452 introduced with a tag elsewhere in the same document",
+        "  FAIL 89 untagged tokens listed as debt in scripts/runs/numbers-baseline.json, in 24 documents (docs/ARCHITECTURE.md 1, docs/ASSESSMENT.md 2, docs/AUDIT-DESK.md 1, docs/DECISIONS.md 3, docs/DESIGN.md 9, docs/LANDSCAPE.md 6, docs/TRACKER.md 1, docs/WORLD.md 1, docs/spikes/W0-S01.md 4, docs/spikes/W0-S03.md 4, docs/spikes/W0-S05.md 6, docs/spikes/W0-S06.md 15, docs/spikes/W0-S07.md 3, docs/spikes/W0-S08.md 5, docs/spikes/W0-S09.md 1, docs/spikes/W0-S10.md 1, docs/spine/SPINE.md 1, curriculum/S05-time.md 8, curriculum/S06-correspondence.md 1, curriculum/S07-secrecy.md 1, curriculum/S10-assembly.md 1, tracker/tasks.yaml 4, labs/README.md 5, labs/TOOLS.md 5)",
+        "  FAIL  docs/ARCHITECTURE.md:673  untagged verdict \"Deadlock reached\": \"TLC stopped at \\\"Deadlock reached\\\" before exploring every reachable state yields [?] with its distinct-state count, never \\\"no error\\\" ([R] only when the property was deadlock freedom);\" (listed debt)",
+        "  FAIL  docs/ASSESSMENT.md:502  untagged count \"at depth 1\": \"| t3 reachable | violation at depth 1–2 | depth 3–4 | depth 5–6; the trace asked |\" (listed debt)",
+        "  FAIL  docs/ASSESSMENT.md:820  untagged verdict \"unsat\": \"*Statement alone:* \\\"The guarded transfer never overdraws the sender: Z3 returns `unsat`.\\\"\" (listed debt)",
+        "  FAIL  docs/AUDIT-DESK.md:187  untagged verdict \"sat\": \"The premises alone return `sat`, the premise witness, recorded with the anchor's key run.\" (listed debt)",
+        "  FAIL  docs/DECISIONS.md:51  untagged measure \"5 MB\": \"| OD-6 · Download consent | Any download above 5 MB asks first. | W1-T06. |\" (listed debt)",
+        "  FAIL  docs/DECISIONS.md:208  untagged measure \"5 MB\": \"Any download above 5 MB asks first.\" (listed debt)",
+        "  FAIL  docs/DECISIONS.md:211  untagged measure \"5 MB\": \"Consent above 5 MB (BRIEF §8; M-consent; GATE-bundle).\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1379  untagged measure \"180 ms\": \"| Goal Replay step | changed hypotheses and target lines cross-fade; +, − and ~ marks slide in from the margin; unchanged lines stay still | 180 ms, ease-out | the marks appear; nothing moves |\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1380  untagged measure \"120 ms\": \"| Trace scrub (Theater, histories) | the step highlight moves column to column on desktop, row to row on phones; the shared band updates in place | 120 ms per step, linear; a drag follows the pointer | the highlight j...\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1381  untagged measure \"240 ms\": \"| Crack propagation | the zig-zag draws outward from the cracked assumption, edge by edge in order of graph distance | 240 ms per edge, at most 1.2 s in total, ease-in-out | the cracked state appears at once, with a l...\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1381  untagged measure \"1.2 s\": \"| Crack propagation | the zig-zag draws outward from the cracked assumption, edge by edge in order of graph distance | 240 ms per edge, at most 1.2 s in total, ease-in-out | the cracked state appears at once, with a l...\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1382  untagged measure \"120 ms\": \"| A stamp lands | opacity in, scale from 104% to 100%, identical for all nine stamps: PROVED gets no flourish | 120 ms, ease-out | appears at once |\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1383  untagged measure \"160 ms\": \"| Derivation step applied | the replaced subterm cross-fades to its replacement | 160 ms | instant; the replaced term stays struck through in the step history |\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1384  untagged measure \"160 ms\": \"| Sheets and side panels | a slide along one axis | 160 ms, ease-out | instant |\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1385  untagged measure \"120 ms\": \"| Disclosures | a height reveal | 120 ms | instant |\" (listed debt)",
+        "  FAIL  docs/DESIGN.md:1386  untagged measure \"120 ms\": \"| Rests-on arcs on focus | fade in | 120 ms | instant |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:183  untagged version \"Kani 0.68.0\": \"| Aeneas (Rust to Lean 4.35.0) and Velvet open when \\\"correspondence names Rust code\\\"; Kani 0.68.0 (2026-09-16) and Verus are pinned when their drawers open | [dl] (§2, Stage 9) | D-30; D-31 |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:282  untagged version \"0.8.1\": \"| Datalog and policy engines | `ascent` 0.8.1; the TypeScript evaluator; `cedar-policy` 4.14.0; OPA v1.21.3; Regorus 0.13.0 | various | field versions; engine versions go on receipts |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:282  untagged version \"4.14.0\": \"| Datalog and policy engines | `ascent` 0.8.1; the TypeScript evaluator; `cedar-policy` 4.14.0; OPA v1.21.3; Regorus 0.13.0 | various | field versions; engine versions go on receipts |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:282  untagged version \"0.13.0\": \"| Datalog and policy engines | `ascent` 0.8.1; the TypeScript evaluator; `cedar-policy` 4.14.0; OPA v1.21.3; Regorus 0.13.0 | various | field versions; engine versions go on receipts |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:286  untagged version \"Kani 0.68.0\": \"| Deferred drawers | Kani 0.68.0 (2026-09-16); Verus `release/0.2026.10.18.7d82994`; Aeneas; Velvet | various | drawers only (D-30, D-31); pinned when a drawer opens |\" (listed debt)",
+        "  FAIL  docs/LANDSCAPE.md:401  untagged version \"0.68.0\": \"| Kani | 0.68.0 (2026-09-16) | pinned when D-30 opens | deferred drawer |\" (listed debt)",
+        "  FAIL  docs/TRACKER.md:134  untagged flag \"--paranoid\": \"[ ] W0-S06 · Sandbox lanes and `--paranoid` timing · M · sonnet · —\" (listed debt)",
+        "  FAIL  docs/WORLD.md:35  untagged verdict \"unknown\": \"| Pure generators, keys from checkers | I3 | Every incident is made from a seed; its key comes from the reference pipeline at grade time; an instance whose key comes back `unknown` is discarded. |\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S01.md:21  untagged version \"5.3.1.0\": \"It asks the service worker to fill the engine cache, then runs the roadmap starter in a module worker on Pyodide 314.0.7 with the `z3_solver` 5.3.1.0 wheel, with an `rlimit` of 5,000,000.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S01.md:21  untagged budget \"rlimit` of 5,000,000\": \"It asks the service worker to fill the engine cache, then runs the roadmap starter in a module worker on Pyodide 314.0.7 with the `z3_solver` 5.3.1.0 wheel, with an `rlimit` of 5,000,000.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S01.md:37  untagged measure \"5 s\": \"The frame tries to navigate the top-level page 6 s after the request, past the 5 s transient-activation window, to a page on the main origin or to a page on `attacker.test`.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S01.md:40  untagged version \"Node 22\": \"To reproduce, with Docker, Node 22 and npm:\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S03.md:15  untagged version \"Ubuntu 24.04\": \"The upstream 2.5 package for Ubuntu 24.04, installed in a container, ran every case in its interpreter.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S03.md:16  untagged version \"Node 22\": \"The same cases through the adapter in five runtimes: native Z3 5.3.1 (the Bench wheel), Pyodide 314.0.7 under Node 22, and Pyodide in a module worker in Chromium, Firefox and WebKit, served from one local origin with ...\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S03.md:20  untagged version \"Node 22\": \"To reproduce, with Docker (the pinned Playwright image), Node 22, `uv` and network access:\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S03.md:174  untagged measure \"9 to 13 ms\": \"About 9 to 13 ms per case in the browsers is fine for a handful of fresh worlds and slow for a sweep (section 4.6).\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:21  untagged version \"Node 22\": \"To reproduce, with Docker, Node 22, `uv` and both pinned jars:\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:115  untagged flag \"-fp\": \"Run with `-fp` 0 to 15 (`stem-branches-sweep-180`), TLC reported `Open(0)` for 0, 1, 2, 7, 10, 12 and 14 and `Open(1)` for the other nine.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:115  untagged flag \"-fp\": \"With a fixed `-fp 7` (`stem-branches-fp-180`) it reported the same trace in 6 of 6 runs.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:115  untagged flag \"-fp\": \"Without `-fp`, TLC picks the function at random and prints it in the banner as `fp N`; the banners of the runs in this record show different values.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:139  untagged flag \"-fp\": \"A regenerated fixture records `-workers 1` and a fixed `-fp` in its argv, because on a spec with several valid lassos the one reported varies with the default fingerprint function (section 4.3).\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S05.md:166  untagged flag \"-fp\": \"TLC may report any of several valid lassos, so INS-lasso must accept any valid one, and a fixture check that regenerated traces would flake unless `-fp` is fixed.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:16  untagged measure \"58.9 s\": \"**Four findings other tasks need:** LAB-2's default targets cannot all define `Acct`, `Bal` and `upd` (`lake check` loads them into one environment); the Bench image needs `/run/user`, `git` and `env`; the \\\"about 3 s\\\"...\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:23  untagged flag \"--inadvisably-no-sandbox\": \"`lane-probe.sh` copies the pack, runs two canaries (bubblewrap alone, and bubblewrap with Lake's own flag set around `lean --version`), `lake build`, and then `lake comparator`, `lake comparator --paranoid`, `lake che...\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:133  untagged measure \"1.57 s\": \"**`lake comparator --paranoid`** takes 2.89 s against 1.57 s without `--paranoid`: it exports the closure of the seven named theorems (1,364 declarations) and replays it through six checkers.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:134  untagged measure \"58.9 s\": \"**`lake check --paranoid`** takes 174.4 s against 58.9 s for `lake check`: it exports and replays the whole environment, 57,966 declarations, most of it Lean's own library, through six checkers one after another.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:150  untagged measure \"144.4 s\": \"`lean4lean`, `leanchecker-paranoid` and the default kernel take 144.4 s of the 178.6 s; `nanoda`, `con-leche` and `con-ron` take 22.1 s together.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:150  untagged measure \"178.6 s\": \"`lean4lean`, `leanchecker-paranoid` and the default kernel take 144.4 s of the 178.6 s; `nanoda`, `con-leche` and `con-ron` take 22.1 s together.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:150  untagged measure \"22.1 s\": \"`lean4lean`, `leanchecker-paranoid` and the default kernel take 144.4 s of the 178.6 s; `nanoda`, `con-leche` and `con-ron` take 22.1 s together.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:151  untagged measure \"6.17 s\": \"**The sandbox costs nothing measurable:** the medians with and without it differ by 6.17 s for `lake check --paranoid` and 0.26 s for `lake comparator --paranoid`, inside the spread of the runs.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:151  untagged measure \"0.26 s\": \"**The sandbox costs nothing measurable:** the medians with and without it differ by 6.17 s for `lake check --paranoid` and 0.26 s for `lake comparator --paranoid`, inside the spread of the runs.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:152  untagged measure \"58.9 s\": \"`lake check --paranoid` used n/a s of CPU in 174.4 s of wall time, because some checkers run several threads (Lake gives nanoda 4); `lake check` without `--paranoid` is one thread's work, n/a s of CPU in 58.9 s.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:254  untagged flag \"--inadvisably-no-sandbox\": \"**The sandbox is off** only when the argv the CLI built holds `--inadvisably-no-sandbox` and Lake printed \\\"WARNING: Sandbox disabled, this run is not trustworthy.\\\"; the two must agree.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:254  untagged verdict \"Sandbox disabled\": \"**The sandbox is off** only when the argv the CLI built holds `--inadvisably-no-sandbox` and Lake printed \\\"WARNING: Sandbox disabled, this run is not trustworthy.\\\"; the two must agree.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:263  untagged flag \"--inadvisably-no-sandbox\": \"A receipt's `environment.sandbox` is `on` when the check's verdict-producing runs ran inside bubblewrap, `off` when they ran with `--inadvisably-no-sandbox`, and `failed` when the sandbox did not start and no unsandbo...\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:266  untagged flag \"--inadvisably-no-sandbox\": \"S02 §3 says a failed check re-runs with `--inadvisably-no-sandbox` on its own.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S06.md:278  untagged version \"1.7.12\": \"The template passes `actionlint` 1.7.12 and has never run on GitHub.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S07.md:16  untagged version \"4.37.0\": \"For stability, the same nine steps run on three toolchains: 4.35.0, the edition 1 pin (OD-12); 4.36.0-rc1, the next release candidate; and nightly-2026-10-24, the newest nightly on the recording date (4.37.0 developme...\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S07.md:152  untagged version \"4.36.0\": \"4.36.0-rc1 and the nightly are previews; 4.36.0 and 4.37.0 may differ.\" (listed debt)",
+        "  FAIL  docs/spikes/W0-S07.md:152  untagged version \"4.37.0\": \"4.36.0-rc1 and the nightly are previews; 4.36.0 and 4.37.0 may differ.\" (listed debt)"
+      ],
+      "outputs": [
+        "runs/RUN-numbers-gate/strict.log"
+      ]
+    }
+  ],
+  "notes": [
+    "The fast lane read 40 files; the input \".\" is their manifest hash (SHA-256 of the sorted \"sha256  path\" lines).",
+    "The self-check is the acceptance evidence that GATE-numbers trips on a planted untagged number (spine section 13, the W0 exit)."
+  ]
+}

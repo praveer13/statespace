@@ -1,0 +1,58 @@
+{
+  "sha256": {
+    "valid": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "0000000000000000000000000000000000000000000000000000000000000000", "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
+    "invalid": ["", "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8550", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n", "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg", " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", 5, null]
+  },
+  "statementSha256": {
+    "valid": ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"],
+    "invalid": ["", "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n", 5]
+  },
+  "instant": {
+    "valid": ["2026-10-24T05:20:00Z", "2026-10-24T05:20:00.123456+05:30", "2026-10-24T05:20:00-08:00", "2026-12-31T23:59:59Z"],
+    "invalid": ["2026-10-24", "2026-10-24T05:20:00", "2026-10-24 05:20:00Z", "2026-13-24T05:20:00Z", "2026-10-24T24:00:00Z", "2026-10-24T05:20:00Z\n", "2026-10-24T05:20:00z", "2026-10-24T05:20:60Z", "2026-10-24T05:20:00.Z", "2026-10-24T05:20:00+0100", 5]
+  },
+  "localDate": {
+    "valid": ["2026-10-24", "2026-01-01"],
+    "invalid": ["2026-10-4", "2026-13-01", "2026-10-24\n", "20261024", "2026-10-32", "2026-00-10"]
+  },
+  "repoPath": {
+    "valid": ["claims/inv.smt2", "labs/LAB-2/challenge/Challenge.lean", ".statespace/lab.toml", "receipts/LAB-2.2/lab-2.2-20261024.json", "a", "a.b/c_d/e-f", "node_modules/@scope/pkg", "..x", "a/..b", ".hidden"],
+    "invalid": ["", "/abs", "a/", "a//b", "../x", "a/../b", "./a", "a/.", "a/..", "..", ".", "a b", "a\\b", "C:\\x", "a/b\n", "~/x", "a/b\u0000c", "caf\u00e9"]
+  },
+  "localId": {
+    "valid": ["transfer-conserves", "CL-2.1", "a", "A_b.c-1", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"],
+    "invalid": ["", "-a", ".a", "_a", "a b", "a\n", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "caf\u00e9", 3]
+  },
+  "prose": {
+    "valid": ["a", " ", "text with\nnewline", "\u2200 x, x = x"],
+    "invalid": ["", 3, null, ["a"]]
+  },
+  "labId": {
+    "valid": ["LAB-1", "LAB-10"],
+    "invalid": ["LAB-", "lab-1", "LAB-1.2", "LAB-1\n", "LAB-\u0663", "LAB 1"]
+  },
+  "labStageId": {
+    "valid": ["LAB-2.2", "LAB-10.12"],
+    "invalid": ["LAB-2", "LAB-2.", "LAB-2.2.2", "LAB-2.c2", "LAB-2.2\n"]
+  },
+  "checkId": {
+    "valid": ["LAB-2.c7", "LAB-10.c12"],
+    "invalid": ["LAB-2.7", "LAB-2.c", "LAB-2.c7\n", "LAB-2.C7"]
+  },
+  "claimTemplateId": {
+    "valid": ["CL-1.1", "CL-10.2"],
+    "invalid": ["CL-1", "CL-1.", "cl-1.1", "CL-1.1.1", "CL-1.1\n"]
+  },
+  "seamId": {
+    "valid": ["SEAM-1", "SEAM-15"],
+    "invalid": ["SEAM-", "SEAM-x", "seam-1", "SEAM-1\n"]
+  },
+  "engineAtVersion": {
+    "valid": ["z3@5.3.1", "tlc@1.8.0", "spectacle@5827c22", "cvc5@1.4.2-modified", "pglite@0.5.11", "lean@4.35.0"],
+    "invalid": ["z3", "@1", "z3@", "Z3@1", "z3 @1", "z3@1\n", "z3@-1", "z3@@1"]
+  },
+  "misconceptionKey": {
+    "valid": ["dp:G4", "dp:Q16", "dp:A1"],
+    "invalid": ["dp:", "dp:g4", "dp:G", "dp:G4a", "G4", "dp:G4\n", "dp:GG4"]
+  }
+}

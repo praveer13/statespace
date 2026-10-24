@@ -1,0 +1,8 @@
+.decl edge(a: number, b: number)
+.decl path(a: number, b: number)
+edge(1, 2).
+edge(2, 3).
+edge(3, 4).
+path(a, b) :- edge(a, b).
+path(a, c) :- path(a, b), edge(b, c).
+.output path(IO=stdout)

@@ -1,0 +1,90 @@
+{
+  "schema": "statespace/receipt@1",
+  "lab": "LAB-7",
+  "stage": "LAB-7.2",
+  "lane": "reported",
+  "createdAt": "2026-10-24T18:00:00Z",
+  "cli": {
+    "name": "statespace",
+    "version": "0.0.0"
+  },
+  "environment": {
+    "devcontainer": null,
+    "os": {
+      "name": "Linux",
+      "arch": "x86_64"
+    },
+    "sandbox": "off"
+  },
+  "tools": [
+    {
+      "name": "souffle",
+      "version": "2.5",
+      "sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "pinned": true
+    }
+  ],
+  "statements": [
+    {
+      "path": "claims/access.yaml",
+      "kind": "yaml",
+      "sha256": "3c7476b78a172a861cdfc1422c416523c53963b725346a4e519fbb7a316c8455"
+    }
+  ],
+  "runs": [
+    {
+      "engine": "souffle",
+      "version": "2.5",
+      "argv": [
+        "souffle",
+        "-D",
+        "out/",
+        "access.dl"
+      ],
+      "inputSha256": "ebdbea360ce4a9233be11b958da7c24723ae04a951765c511868d29d7501d24f",
+      "budget": {},
+      "exitCode": 0,
+      "verdictLines": [
+        "canread: 2 tuples"
+      ],
+      "verdict": "passed"
+    }
+  ],
+  "datalog": {
+    "engine": "souffle@2.5",
+    "relations": {
+      "canread": "9ac44d29fde607ff6c4050d9765e1792afa9fac174601aba62cd441152f7b831"
+    },
+    "derivations": {
+      "checked": 2,
+      "invalid": 0
+    },
+    "generator": {
+      "worlds": 1
+    }
+  },
+  "pairs": {
+    "witnessSha256": "cf945b5236e101dbe0471d5200f28b1ae64f21c1f35bf55fcf40cd0fe42cd8e7",
+    "relationSha256": "8e54b0ca18020275e4aef1ca0eb5e197e066c065c1864817652a8a39c55402cd",
+    "observerSha256": "7427d152005f9ed0fa31c76ef9963cf4bb47dce6e2768111d9eb0edbfe59c704",
+    "bound": "two users, three documents"
+  },
+  "goldens": {
+    "poolSha": "a13a7147c137af0df7bdcd69d98215de1ecda9894de53c466f110409a38cb909",
+    "n": 2,
+    "passed": 2,
+    "failed": 0,
+    "noVerdict": 0
+  },
+  "checks": [
+    {
+      "id": "LAB-7.c2",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "assisted": "none",
+    "agent": false,
+    "guard": "on"
+  }
+}

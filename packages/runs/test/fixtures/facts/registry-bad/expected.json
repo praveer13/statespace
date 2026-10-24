@@ -1,0 +1,123 @@
+{
+  "about": "One planted fault per registry entry; fixture.ok, 2026-10-21-ok and 2026-10-23-newer are controls.",
+  "runs": [
+    {
+      "what": "the format of facts.json and errata.json",
+      "today": "2026-10-24",
+      "exit": 1,
+      "findings": [
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.no-source",
+          "detail": "source must be an object"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.short-ttl",
+          "detail": "from 60 to 90 .*got 30"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.future-check",
+          "detail": "checked_at 2026-12-01 is in the future"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.incident-with-ttl",
+          "detail": "an incident states its own date, so it has no TTL"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.twin-without-run",
+          "detail": "RUN-twin-pins is not on disk"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.twin-run-without-ttl",
+          "detail": "RUN-z3-starter must carry ttl_days 60"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.evidence-changed",
+          "detail": "evidence research/saved\\.json has SHA-256"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.quote-missing",
+          "detail": "does not occur in research/saved\\.json"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.duplicate",
+          "detail": "a second fact with this id"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.typo-field",
+          "detail": "ttl_day is not a field of a fact"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.typo-field",
+          "detail": "ttl_days must be .*got nothing"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json Fixture.BadId",
+          "detail": "id must be dotted lowercase"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.bad-kind",
+          "detail": "kind must be one of"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.http-source",
+          "detail": "source\\.url must be an https URL"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/facts.json fixture.value-drift",
+          "detail": "statement does not state its value, 2\\.0"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-20-date-differs",
+          "detail": "id must start with its date 2026-10-21"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-21-no-lessons",
+          "detail": "lessons must name at least one lesson"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-21-bad-lesson",
+          "detail": "\"L1\" is not a lesson ID"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-21-missing-run",
+          "detail": "RUN-does-not-exist is not on disk"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-21-unknown-fact",
+          "detail": "names no fact"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-12-01-future",
+          "detail": "date 2026-12-01 is in the future"
+        },
+        {
+          "check": "registry",
+          "where": "content/registry/errata.json 2026-10-22-supersedes-newer",
+          "detail": "supersedes 2026-10-23-newer, which is newer"
+        }
+      ],
+      "warnings": []
+    }
+  ]
+}

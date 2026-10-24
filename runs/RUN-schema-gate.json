@@ -1,0 +1,470 @@
+{
+  "id": "RUN-schema-gate",
+  "title": "GATE-schema: types in sync, every record validated by two validators, and the statement hash reproduced by TypeScript and Python on every shared vector",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "argv": [
+    "node",
+    "scripts/verify-schema.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-schema.mjs",
+      "sha256": "0de1ccad77e2ffc05b1ee0061bf9f97029db1173de29807b259bd5b4486e714e",
+      "role": "the gate"
+    },
+    {
+      "path": "schemas/codegen/gate_py.py",
+      "sha256": "aaa9d2e0b8ee5f5ef8ce6fc979b00cdc614a26c1cd3b95cd1377bcf97e2aefb8",
+      "role": "the Python half of the gate"
+    },
+    {
+      "path": "schemas/defs.schema.json",
+      "sha256": "5b24b7e091957108294c9ce0646503da6d0df715896c61a5c98db8478d2bc861",
+      "role": "shared definitions and the statement-hash specification"
+    },
+    {
+      "path": "schemas/claim.schema.json",
+      "sha256": "7e3dc21a19322059355cacfe058b01899371d33021d64e1fcb8d51801df506e9",
+      "role": "claim@1"
+    },
+    {
+      "path": "schemas/event.schema.json",
+      "sha256": "4d1a405fc1fb8a57f1d5d84f04560e80d2625a0b79a7887eca0440d2c24c22b7",
+      "role": "event@1"
+    },
+    {
+      "path": "schemas/ir.schema.json",
+      "sha256": "8f0ebe11e4e4c1dc29692cf96e11dd9ef3c1ef7c807bb6f634775c6d4345915a",
+      "role": "IR@1 (skeleton)"
+    },
+    {
+      "path": "schemas/vectors/statement-hash.json",
+      "sha256": "f67948e9a8e5fea13033b3911d06b175bd9738c7533e3d3a716f2c3aa4cc441d",
+      "role": "the shared hash vectors"
+    },
+    {
+      "path": "packages/schema/src/statement-hash.ts",
+      "sha256": "cbf647c9dcab7b43d0199ac58e51316f3b7ed32b541392215f1f2236c01bc82c",
+      "role": "the TypeScript statement hash"
+    },
+    {
+      "path": "bench/statespace/schema/statement_hash.py",
+      "sha256": "2b140f6b6b92fca9490e48fe67d05c38f8cde9e22ab70c709b2b8d10ba2952a9",
+      "role": "the Python statement hash"
+    },
+    {
+      "path": "schemas/fixtures/",
+      "sha256": "49b109c7fd89eaea3ca063097a4accead2b286de0a5c50c3428fe555c92aa796",
+      "files": 93,
+      "role": "fixtures"
+    },
+    {
+      "path": "schemas/codegen/",
+      "sha256": "edfb049592ee9715d9a67a5dc2406a786bcaad2b85f50daac2138b7931d55286",
+      "files": 9,
+      "role": "generators, lint and self-test"
+    },
+    {
+      "path": "packages/schema/",
+      "sha256": "ebc6e80027c53077f452cf86e9f31399aeb01645820ec1071fe51fe10ae92708",
+      "files": 13,
+      "role": "the TypeScript package, generated files included"
+    },
+    {
+      "path": "bench/statespace/schema/",
+      "sha256": "6f61a00594f2ab2068f251652a6540c0c64bf20279326a5d4e060564501e7af2",
+      "files": 6,
+      "role": "the Python package, generated files included"
+    }
+  ],
+  "budget": {
+    "network": "uv fetches the pinned Python packages when its cache is cold",
+    "timeout_s": 900,
+    "mutants_per_valid_document": 260,
+    "memory": "host"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "node": "v22.22.2",
+    "uv": "uv 0.10.2",
+    "python_default": "Python 3.13.12",
+    "container": null,
+    "python_packages": {
+      "python": "3.13.12",
+      "jsonschema": "4.26.0",
+      "referencing": "0.37.0",
+      "pyyaml": "6.0.3"
+    },
+    "typescript": "Version 5.9.3"
+  },
+  "started_at": "2026-10-24T13:20:12.177Z",
+  "duration_s": 2.611,
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-schema",
+    "  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold",
+    "  ok    drafts: 1 draft parse; drafts are not published and generate no types",
+    "  todo  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands",
+    "  todo  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands",
+    "  ok    expected schemas: defs, claim, event, ir present",
+    "  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)",
+    "  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)",
+    "  ok    package loads: @statespace/schema imports under Node and embeds every published schema",
+    "  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)",
+    "  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions",
+    "  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python",
+    "  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads",
+    "  todo  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands",
+    "  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated",
+    "  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here",
+    "  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \\p{Zs}; x-statementHash is written once",
+    "  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)",
+    "  ok    python: Python 3.13.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3",
+    "  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree",
+    "  note  dialect probes: $ before a final newline (ECMAScript false, Python true)",
+    "  note  dialect probes: \\d on an Arabic-Indic digit (ECMAScript false, Python true)",
+    "  note  dialect probes: \\w on e with an acute accent (ECMAScript false, Python true)",
+    "  note  dialect probes: . on a carriage return (ECMAScript false, Python true)",
+    "  note  dialect probes: . on a line separator (ECMAScript false, Python true)",
+    "  note  dialect probes: \\s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)",
+    "  note  dialect probes: \\s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)",
+    "  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)",
+    "  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both",
+    "  ok    yaml: 2 YAML records read by PyYAML and validated by both validators",
+    "  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too",
+    "  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points",
+    "  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)",
+    "  todo  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes",
+    "GATE-schema: PASS (21 checks, 4 waiting on a later task; 2.6 s)",
+    "type-check: 26 valid fixtures as typed literals; tsc 5.9.3 exit 0; pyright (strict, Python 3.11) over them and over bench/statespace/schema: 0 errors, 0 warnings, 0 informations",
+    "lasso-promotion: GATE-schema: PASS (20 checks, 4 waiting on a later task; 1.9 s); the TLC trace recorded for the Hold spec (4 steps): TypeScript accepts, Python accepts; with one item missing from a step: TypeScript rejects, Python rejects; with an unknown key: TypeScript rejects, Python rejects"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-schema-gate/gate.txt",
+      "sha256": "6743f7dd76fc22fe29010a962984f22a84881c7bc9a73d51a07ae23c9609fb0f",
+      "bytes": 4271
+    },
+    {
+      "path": "runs/RUN-schema-gate/gate-strict.txt",
+      "sha256": "d4964b098678cd4915ed39707b0c91d43682809057c1249586b517a0d14531d0",
+      "bytes": 4488
+    },
+    {
+      "path": "runs/RUN-schema-gate/gate-python-3.11.txt",
+      "sha256": "831d27b1ec237de9ba04ce0a714fffd7943d88bcea8c6b9460d06c6fc5503e3f",
+      "bytes": 4271
+    },
+    {
+      "path": "runs/RUN-schema-gate/gate-python-3.12.txt",
+      "sha256": "5c983eda82c97366413b219f98555ee43c070c7a49490cef5a795d2c92e75a36",
+      "bytes": 4271
+    },
+    {
+      "path": "runs/RUN-schema-gate/package-typecheck.txt",
+      "sha256": "dd8b9abf5e1e9d7ac0722d565c3b423614aee654bc42d2f14ffb6d61ef0bb592",
+      "bytes": 65
+    },
+    {
+      "path": "runs/RUN-schema-gate/package-tests.txt",
+      "sha256": "3421631c8964dafd728c126cd2675b7b750f5f493d368cd5d0e43dd549ceac67",
+      "bytes": 3789
+    },
+    {
+      "path": "runs/RUN-schema-gate/type-check.txt",
+      "sha256": "08c361955f3c41ff4154d9c2c80a4d9cb712325b83f9f5f6674826ae934481f5",
+      "bytes": 295
+    },
+    {
+      "path": "runs/RUN-schema-gate/lasso-promotion.txt",
+      "sha256": "f587fa0890d71fec15126340cb9f17623c299b0f1b441ce225245bb88649d9f0",
+      "bytes": 1183
+    }
+  ],
+  "configs": [
+    {
+      "id": "gate",
+      "purpose": "the gate as the fast lane runs it",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs"
+      ],
+      "env": {},
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:12.177Z",
+      "duration_s": 2.611,
+      "verdict_lines": [
+        "GATE-schema",
+        "  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold",
+        "  ok    drafts: 1 draft parse; drafts are not published and generate no types",
+        "  todo  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  todo  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  ok    expected schemas: defs, claim, event, ir present",
+        "  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)",
+        "  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)",
+        "  ok    package loads: @statespace/schema imports under Node and embeds every published schema",
+        "  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)",
+        "  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions",
+        "  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python",
+        "  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads",
+        "  todo  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands",
+        "  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated",
+        "  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here",
+        "  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \\p{Zs}; x-statementHash is written once",
+        "  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)",
+        "  ok    python: Python 3.13.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3",
+        "  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree",
+        "  note  dialect probes: $ before a final newline (ECMAScript false, Python true)",
+        "  note  dialect probes: \\d on an Arabic-Indic digit (ECMAScript false, Python true)",
+        "  note  dialect probes: \\w on e with an acute accent (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a carriage return (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a line separator (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)",
+        "  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)",
+        "  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both",
+        "  ok    yaml: 2 YAML records read by PyYAML and validated by both validators",
+        "  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too",
+        "  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points",
+        "  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)",
+        "  todo  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes",
+        "GATE-schema: PASS (21 checks, 4 waiting on a later task; 2.6 s)"
+      ],
+      "output": "runs/RUN-schema-gate/gate.txt"
+    },
+    {
+      "id": "gate-strict",
+      "purpose": "the gate with --strict, which fails on work a later task owns (expected exit 1 until W0-S11 and W0-T07 land)",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs",
+        "--strict"
+      ],
+      "env": {},
+      "exit_code": 1,
+      "started_at": "2026-10-24T13:20:14.788Z",
+      "duration_s": 2.575,
+      "verdict_lines": [
+        "GATE-schema",
+        "  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold",
+        "  ok    drafts: 1 draft parse; drafts are not published and generate no types",
+        "  FAIL  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands (--strict treats work owned by a later task as a failure)",
+        "  FAIL  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands (--strict treats work owned by a later task as a failure)",
+        "  ok    expected schemas: defs, claim, event, ir present",
+        "  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)",
+        "  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)",
+        "  ok    package loads: @statespace/schema imports under Node and embeds every published schema",
+        "  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)",
+        "  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions",
+        "  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python",
+        "  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads",
+        "  FAIL  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands (--strict treats work owned by a later task as a failure)",
+        "  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated",
+        "  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here",
+        "  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \\p{Zs}; x-statementHash is written once",
+        "  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)",
+        "  ok    python: Python 3.13.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3",
+        "  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree",
+        "  note  dialect probes: $ before a final newline (ECMAScript false, Python true)",
+        "  note  dialect probes: \\d on an Arabic-Indic digit (ECMAScript false, Python true)",
+        "  note  dialect probes: \\w on e with an acute accent (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a carriage return (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a line separator (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)",
+        "  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)",
+        "  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both",
+        "  ok    yaml: 2 YAML records read by PyYAML and validated by both validators",
+        "  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too",
+        "  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points",
+        "  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)",
+        "  FAIL  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes (--strict treats work owned by a later task as a failure)",
+        "GATE-schema: FAIL (4 of 25 checks failed; 2.5 s)"
+      ],
+      "output": "runs/RUN-schema-gate/gate-strict.txt"
+    },
+    {
+      "id": "gate-python-3.11",
+      "purpose": "the gate with uv choosing Python 3.11, the oldest version the generated types support",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs"
+      ],
+      "env": {
+        "UV_PYTHON": "3.11"
+      },
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:17.364Z",
+      "duration_s": 2.681,
+      "verdict_lines": [
+        "GATE-schema",
+        "  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold",
+        "  ok    drafts: 1 draft parse; drafts are not published and generate no types",
+        "  todo  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  todo  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  ok    expected schemas: defs, claim, event, ir present",
+        "  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)",
+        "  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)",
+        "  ok    package loads: @statespace/schema imports under Node and embeds every published schema",
+        "  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)",
+        "  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions",
+        "  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python",
+        "  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads",
+        "  todo  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands",
+        "  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated",
+        "  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here",
+        "  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \\p{Zs}; x-statementHash is written once",
+        "  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)",
+        "  ok    python: Python 3.11.14, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3",
+        "  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree",
+        "  note  dialect probes: $ before a final newline (ECMAScript false, Python true)",
+        "  note  dialect probes: \\d on an Arabic-Indic digit (ECMAScript false, Python true)",
+        "  note  dialect probes: \\w on e with an acute accent (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a carriage return (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a line separator (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)",
+        "  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)",
+        "  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both",
+        "  ok    yaml: 2 YAML records read by PyYAML and validated by both validators",
+        "  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too",
+        "  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points",
+        "  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)",
+        "  todo  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes",
+        "GATE-schema: PASS (21 checks, 4 waiting on a later task; 2.6 s)"
+      ],
+      "output": "runs/RUN-schema-gate/gate-python-3.11.txt"
+    },
+    {
+      "id": "gate-python-3.12",
+      "purpose": "the gate with uv choosing Python 3.12",
+      "argv": [
+        "node",
+        "scripts/verify-schema.mjs"
+      ],
+      "env": {
+        "UV_PYTHON": "3.12"
+      },
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:20.046Z",
+      "duration_s": 2.456,
+      "verdict_lines": [
+        "GATE-schema",
+        "  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold",
+        "  ok    drafts: 1 draft parse; drafts are not published and generate no types",
+        "  todo  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  todo  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands",
+        "  ok    expected schemas: defs, claim, event, ir present",
+        "  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)",
+        "  ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)",
+        "  ok    package loads: @statespace/schema imports under Node and embeds every published schema",
+        "  ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)",
+        "  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions",
+        "  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python",
+        "  ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads",
+        "  todo  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands",
+        "  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated",
+        "  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here",
+        "  ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \\p{Zs}; x-statementHash is written once",
+        "  ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)",
+        "  ok    python: Python 3.12.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3",
+        "  ok    dialect probes: 7 of 7 constructs the lint forbids read differently in ECMAScript and Python; the 8 portable probes agree",
+        "  note  dialect probes: $ before a final newline (ECMAScript false, Python true)",
+        "  note  dialect probes: \\d on an Arabic-Indic digit (ECMAScript false, Python true)",
+        "  note  dialect probes: \\w on e with an acute accent (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a carriage return (ECMAScript false, Python true)",
+        "  note  dialect probes: . on a line separator (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)",
+        "  note  dialect probes: \\s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)",
+        "  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)",
+        "  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both",
+        "  ok    yaml: 2 YAML records read by PyYAML and validated by both validators",
+        "  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too",
+        "  ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points",
+        "  ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)",
+        "  todo  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes",
+        "GATE-schema: PASS (21 checks, 4 waiting on a later task; 2.4 s)"
+      ],
+      "output": "runs/RUN-schema-gate/gate-python-3.12.txt"
+    },
+    {
+      "id": "package-typecheck",
+      "purpose": "npm run typecheck for @statespace/schema (tsc over src and test)",
+      "argv": [
+        "npm",
+        "run",
+        "typecheck",
+        "-w",
+        "@statespace/schema"
+      ],
+      "env": {},
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:22.502Z",
+      "duration_s": 0.713,
+      "verdict_lines": [],
+      "output": "runs/RUN-schema-gate/package-typecheck.txt"
+    },
+    {
+      "id": "package-tests",
+      "purpose": "npm test for @statespace/schema (node --test over test/*.test.ts)",
+      "argv": [
+        "npm",
+        "test",
+        "-w",
+        "@statespace/schema"
+      ],
+      "env": {},
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:23.215Z",
+      "duration_s": 0.184,
+      "verdict_lines": [],
+      "output": "runs/RUN-schema-gate/package-tests.txt"
+    },
+    {
+      "id": "type-check",
+      "purpose": "every valid fixture as a typed literal under tsc and pyright, and pyright strict over bench/statespace/schema",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T02/type-check.mjs"
+      ],
+      "env": {},
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:23.399Z",
+      "duration_s": 1.044,
+      "verdict_lines": [],
+      "output": "runs/RUN-schema-gate/type-check.txt"
+    },
+    {
+      "id": "lasso-promotion",
+      "purpose": "W0-S05's lasso draft promoted in a scratch copy: types regenerated, the gate run, the TLC trace recorded for the Hold spec validated in both languages",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T02/lasso-promotion.mjs"
+      ],
+      "env": {},
+      "exit_code": 0,
+      "started_at": "2026-10-24T13:20:24.443Z",
+      "duration_s": 2.096,
+      "verdict_lines": [],
+      "output": "runs/RUN-schema-gate/lasso-promotion.txt"
+    }
+  ],
+  "package_tests": {
+    "tests": 19,
+    "pass": 19,
+    "fail": 0
+  },
+  "recorded_at": "2026-10-24T13:20:26.604Z",
+  "notes": [
+    "The Python half of the gate runs Python through uv with jsonschema and pyyaml pinned by version; the versions are in environment.python_packages. The default interpreter of this host is in environment.python_default; the configurations gate-python-3.11 and gate-python-3.12 pin others with UV_PYTHON.",
+    "gate-strict is expected to fail: --strict turns the work that W0-S11 (receipt and run schemas, run records) and W0-T07 (keep/kill rules) own into failures, and it is meant for the W0 exit.",
+    "The type-check configuration uses the pyright package from PyPI, pinned to 1.1.411, which fetches its own npm package on first use; the fixtures are written to a scratch directory and nothing is written to the repository.",
+    "Nothing here is emulated. The statement hash was also run on real engines, which the browser engines of RUN-trimright-engines cover; this run uses Node."
+  ]
+}

@@ -1,0 +1,64 @@
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝¹ : 0 < s✝¹.num "amount" ∧ NonNeg s✝
+a✝ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s✝¹ s✝
+⊢ NonNeg
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+      (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝² : 0 < s✝¹.num "amount" ∧ 0 < s✝¹.num "fee" ∧ NonNeg s✝
+a✝¹ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) ((Expr.var "amount").add (Expr.var "fee"))) s✝¹ s✝
+a✝ :
+  holds (BExpr.ge (Expr.var "amount") (Expr.lit 100)) s✝¹
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+      (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+⊢ NonNeg
+    ((post
+          (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+            (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+          (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.lit "sink"))
+          (Expr.eval s✝¹
+            (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+              (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+            (Expr.var "fee"))).setFld
+      "transfers" (AExpr.eval s✝¹ (AExpr.var "from"))
+      (Expr.eval s✝¹
+        (post
+          (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+            (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+          (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.lit "sink"))
+          (Expr.eval s✝¹
+            (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+              (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+            (Expr.var "fee")))
+        ((Expr.field "transfers" (AExpr.var "from")).add (Expr.lit 1))))
+
+case vc2
+s✝¹ : Env
+s✝ : State
+a✝² : 0 < s✝¹.num "amount" ∧ 0 < s✝¹.num "fee" ∧ NonNeg s✝
+a✝¹ : holds (BExpr.ge (Expr.balance (AExpr.var "from")) ((Expr.var "amount").add (Expr.var "fee"))) s✝¹ s✝
+a✝ :
+  fails (BExpr.ge (Expr.var "amount") (Expr.lit 100)) s✝¹
+    (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+      (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+⊢ NonNeg
+    ((post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+          (Expr.eval s✝¹ s✝ (Expr.var "amount"))).setFld
+      "transfers" (AExpr.eval s✝¹ (AExpr.var "from"))
+      (Expr.eval s✝¹
+        (post s✝ (AExpr.eval s✝¹ (AExpr.var "from")) (AExpr.eval s✝¹ (AExpr.var "to"))
+          (Expr.eval s✝¹ s✝ (Expr.var "amount")))
+        ((Expr.field "transfers" (AExpr.var "from")).add (Expr.lit 1))))
+'W0S07.transfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transfer_nonneg_auto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transfer_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transfer_pair_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transfer_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.feeTransfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transferWeakGuard_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.transferWeakGuard_nonneg_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'W0S07.payTwo_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,156 @@
+# The nightly lane (spine section 11.2; ARCHITECTURE.md sections 13.1, 13.4 and 13.5; W0-T04).
+#
+# Once a night, and on demand. It runs every gate (the nightly column of scripts/spikes/W0-T04/gates.json: the fast gates
+# again, the gates' own planted-fault self-checks, and the heavy gates) inside the digest-pinned Bench image, so that a pin
+# cannot differ between the course's CI and the learner's Bench. It blocks releases, not merges.
+#
+# It writes status/nightly.json (ARCHITECTURE.md section 13.4): the commit, the date, and for each failed gate the course
+# claims it touches, with the date it first went red. The "publish" job puts that file on the branch nightly-status, at the
+# same path, and asks the site to redeploy, which renders those claims as "unverified since <date>" until a green night
+# clears them (status/README.md). A night that cannot run at all is published as a red night, never as silence.
+#
+# Repository settings this workflow reads (owner action; the Bench image is W0-T05's):
+#   variable BENCH_IMAGE                    the Bench image by digest, name@sha256:<64 hex>; a tag is refused
+#   secrets  STATESPACE_PRIVACY_TERMS, STATESPACE_PRIVACY_KEY, and variable STATESPACE_COURSE_DOMAIN: GATE-privacy (fast.yml)
+#
+# GitHub runs a scheduled workflow from the default branch only, may delay it near the top of the hour (hence minute 23), and
+# disables it in a public repository after 60 days without repository activity; re-enable it from the Actions tab.
+
+name: nightly
+
+on:
+  schedule:
+    - cron: '23 2 * * *' # 02:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  gates:
+    name: nightly gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: ${{ vars.BENCH_IMAGE }}
+      # The runner's workspace belongs to uid 1001; the image's own user may not be able to write there.
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      STATESPACE_BENCH_IMAGE: ${{ vars.BENCH_IMAGE }}
+      STATESPACE_PRIVACY_TERMS: ${{ secrets.STATESPACE_PRIVACY_TERMS }}
+      STATESPACE_PRIVACY_KEY: ${{ secrets.STATESPACE_PRIVACY_KEY }}
+      STATESPACE_COURSE_DOMAIN: ${{ vars.STATESPACE_COURSE_DOMAIN }}
+    steps:
+      - name: Check that the image is pinned by digest and has git
+        run: |
+          if ! [[ "$STATESPACE_BENCH_IMAGE" =~ @sha256:[0-9a-f]{64}$ ]]; then
+            echo "::error title=Bench image::BENCH_IMAGE must name the image by digest (name@sha256:...), not by tag; it is '${STATESPACE_BENCH_IMAGE:-unset}'"
+            exit 1
+          fi
+          command -v git > /dev/null || { echo "::error title=Bench image::the image has no git, which GATE-privacy needs for the history"; exit 1; }
+
+      - name: Start the lane clock
+        run: echo "STATESPACE_LANE_START=$(date +%s)" >> "$GITHUB_ENV"
+
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Install the pinned packages
+        run: npm ci --no-audit --no-fund
+
+      - name: Read the previous night's status
+        run: |
+          node scripts/spikes/W0-T04/status-branch.mjs fetch --out "$RUNNER_TEMP/previous-nightly.json" \
+            || echo "::warning::the previous status could not be read; the since dates restart tonight"
+
+      - name: Run the nightly lane
+        run: node scripts/spikes/W0-T04/lane.mjs nightly --previous "$RUNNER_TEMP/previous-nightly.json" --summary lane-summary.json
+
+      - name: Keep the status and the lane summary
+        if: ${{ always() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: nightly
+          path: |
+            status/nightly.json
+            lane-summary.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  publish:
+    name: publish status
+    needs: gates
+    # A run started by hand from another branch is a trial: its status is not the course's status.
+    if: ${{ always() && (github.event_name == 'schedule' || github.ref_name == github.event.repository.default_branch) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write # push the branch nightly-status
+      actions: write # start the site's redeploy
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+
+      - name: Download the status
+        continue-on-error: true
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: nightly
+          path: nightly
+
+      - name: A night that produced no status is a blocked night
+        env:
+          GATES_RESULT: ${{ needs.gates.result }}
+          BENCH_IMAGE: ${{ vars.BENCH_IMAGE }}
+        run: |
+          if [ ! -f nightly/status/nightly.json ]; then
+            reason="the gates job produced no status (result: $GATES_RESULT)"
+            if [ -z "$BENCH_IMAGE" ]; then reason="the repository variable BENCH_IMAGE is not set, so the Bench image cannot be pulled ($reason)"; fi
+            mkdir -p nightly/status
+            node scripts/spikes/W0-T04/status-branch.mjs fetch --out "$RUNNER_TEMP/previous-nightly.json" || true
+            # The blocked status is red by design, so the command exits 1; the status is what this step is for.
+            node scripts/spikes/W0-T04/lane.mjs nightly --blocked "$reason" \
+              --previous "$RUNNER_TEMP/previous-nightly.json" --status nightly/status/nightly.json || true
+          fi
+
+      - name: Publish the status on the branch nightly-status
+        run: node scripts/spikes/W0-T04/status-branch.mjs publish --file nightly/status/nightly.json
+
+      - name: Redeploy the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # TODO(deploy workflow): the workflow that deploys the site is not built yet (ARCHITECTURE.md section 13.5). It must
+          # accept workflow_dispatch and read the status with `status-branch.mjs fetch --out status/nightly.json` before it builds.
+          if [ -f .github/workflows/deploy.yml ]; then
+            gh workflow run deploy.yml --ref "$GITHUB_REF_NAME"
+          else
+            echo "::notice title=Redeploy::there is no deploy workflow yet, so a red night is not rendered on the site"
+          fi

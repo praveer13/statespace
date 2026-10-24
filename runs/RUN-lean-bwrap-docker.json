@@ -1,0 +1,117 @@
+{
+  "id": "RUN-lean-bwrap-docker",
+  "title": "Without bubblewrap lake comparator exits 2; bubblewrap under default Docker exits 1, the code of a rejection",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "no bubblewrap exits 2; bubblewrap under default Docker exits 1, the code of a rejection (the relaxed container options of the later passing runs are not on disk; RUN-bwrap-lanes records their `docker run` argv)",
+  "engine": "lean",
+  "version": "4.35.0",
+  "binary": "lake comparator of the Lean 4.35.0 toolchain",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/comp/good/Challenge.lean",
+      "sha256": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446",
+      "bytes": 298,
+      "role": "challenge"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/good/Solution.lean",
+      "sha256": "f2ce2623b1e6f1e39121d3ad74b626ce0ef3c18955df538fa4dfdbd85c0d12f9",
+      "bytes": 346,
+      "role": "solution"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/good/comparator.json",
+      "sha256": "d281fc22fabecf1618d34421a27cffc2b0e2450037d63da6dd80418f0a2edf5e",
+      "bytes": 175,
+      "role": "config"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "== good sandboxed(no bwrap) rc=2",
+    "bwrap: /usr/bin/bwrap",
+    "== good sandboxed(bwrap, default docker) rc=1 :: bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>. error: Child exited with 1 Resolving dependencies "
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/comp-run2.log",
+      "sha256": "b5f35ed23f9a1e8f69f0487a150929208f2e6ae96f8a9de7ae1e7fb8c6ba2304",
+      "bytes": 658,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "no_bwrap_exit": 2,
+    "default_docker_exit": 1,
+    "default_docker_line": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces."
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "no-bwrap",
+      "origin": "imported",
+      "purpose": "the sandboxed comparator with no bubblewrap installed",
+      "exit_code": 2,
+      "verdict_lines": [
+        "== good sandboxed(no bwrap) rc=2"
+      ]
+    },
+    {
+      "id": "default-docker",
+      "origin": "imported",
+      "purpose": "bubblewrap installed, under default Docker options",
+      "exit_code": 1,
+      "verdict_lines": [
+        "== good sandboxed(bwrap, default docker) rc=1 :: bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>. error: Child exited with 1 Resolving dependencies "
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the toolchain"
+    },
+    {
+      "field": "image",
+      "reason": "the log does not name the container image"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log prints a label and the exit code, not the command line; RUN-bwrap-lanes records the lanes' docker run argv"
+    },
+    {
+      "field": "exit_code",
+      "reason": "one exit code per case is in the configurations; there is no single one"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/comp-run2.log (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

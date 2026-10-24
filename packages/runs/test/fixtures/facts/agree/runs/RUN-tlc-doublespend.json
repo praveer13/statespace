@@ -1,0 +1,323 @@
+{
+  "id": "RUN-tlc-doublespend",
+  "title": "DoubleSpend (Init 100, Amount 80, two workers): default flags stop at Deadlock reached after 10 distinct states; -deadlock finds the violation at 11 with a 5-state trace; 1.7.4 rejects -dumpTrace",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "DoubleSpend (Init 100, Amount 80, two workers) on 1.7.4 and 1.8.0: default flags stop at \"Deadlock reached\" with 10 distinct states; `-deadlock` reports the violation at 11 distinct states with a 5-state, 4-action trace; 1.8.0 writes JSON traces, 1.7.4 rejects `-dumpTrace`",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0 (the log prints its banner, not its hash)",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/tla/DoubleSpend.tla",
+      "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+      "bytes": 1105,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/A5r3/tla/DoubleSpend.cfg",
+      "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+      "bytes": 97,
+      "role": "config"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/DoubleSpend.tla",
+      "sha256": "2dd02b13ef0381398044662e06ab3dd74083a2bdfd5d4eb32722721339c3bc97",
+      "bytes": 1105,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/DoubleSpend.cfg",
+      "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+      "bytes": 97,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 123 and seed 8943959373987628053 with 1 worker on 20 cores with 7984MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Error: Deadlock reached.",
+    "\"CounterExample written: trace180.json\"",
+    "11 states generated, 10 distinct states found, 3 states left on queue.",
+    "The depth of the complete state graph search is 4."
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/tla/run.log",
+      "sha256": "98691bbc7d542d43ff87073a27e9c429988b913fb4dda3612c2113410ed23705",
+      "bytes": 1581,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5r3/tla/t1.8.0.json",
+      "sha256": "5f29141f15eb1059870e66c99f4dbd8e69e4e2989c6ec2f5d0505ae9497e20cc",
+      "bytes": 1786,
+      "kind": "trace"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/run174.log",
+      "sha256": "0375131167071962979f5086e4bc5873ccc597ce5d10ca6219c4cf3787d2c295",
+      "bytes": 138,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/run180.log",
+      "sha256": "c930fdddcc9b1c64b744ecba7dcb13649ad17566997cd734c443a5f54561cac5",
+      "bytes": 3337,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/tool174.log",
+      "sha256": "5ebb4010a5192ac2669c110533e13efc505d6151c6840a704cdf113780a82893",
+      "bytes": 2797,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/dl-1.7.4.log",
+      "sha256": "ccb06d98ccfd67ba24ea4ba4a77a531aa3562777f7e9f68295c4cf64185e7afe",
+      "bytes": 1976,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/dl-1.8.0.log",
+      "sha256": "e4eb3a1469a9a566df8e7b163c8891200067ce30be1a437b9d77cc218a3aee22",
+      "bytes": 3110,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/dlw4.log",
+      "sha256": "aa4c4fbe2045deee4558b1f76e98462e3c95dfa9ea36d680d8bdf3176f4ae411",
+      "bytes": 3119,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5spike/tla174/trace180.json",
+      "sha256": "0720a2a3be0e72d256d02e904986283519351f1bf1fa269cc4f3262ed99e5ec8",
+      "bytes": 1360,
+      "kind": "trace"
+    },
+    {
+      "path": "research/spikes/RESULTS.md",
+      "sha256": "b1e5cfb81ffa7977cf10a8a196282805e79e0e332bcc4146e10b11171aa67d0f",
+      "bytes": 5758,
+      "kind": "results record"
+    }
+  ],
+  "values": {
+    "default": {
+      "result": "deadlock",
+      "distinct_states": 10,
+      "states_generated": 11,
+      "depth": 4
+    },
+    "deadlock_off": {
+      "result": "violated",
+      "invariant": "NoOverspend",
+      "distinct_states": 11,
+      "states_generated": 12,
+      "depth": 5,
+      "trace_states": 5,
+      "trace_actions": 4
+    },
+    "tlc174_dumptrace": "unrecognized option",
+    "tlc180_json_trace": "written"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "cpu_architecture": "amd64",
+    "java": "Eclipse Adoptium 21.0.12.1"
+  },
+  "configs": [
+    {
+      "id": "a5spike-1.8.0-default",
+      "origin": "imported",
+      "purpose": "the A5 spike session: default flags on the 1.8.0 jar, one TLC worker, with the counterexample written as JSON",
+      "budget": {
+        "workers": 1
+      },
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 123 and seed 8943959373987628053 with 1 worker on 20 cores with 7984MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Deadlock reached.",
+        "\"CounterExample written: trace180.json\"",
+        "11 states generated, 10 distinct states found, 3 states left on queue."
+      ],
+      "outputs": [
+        "research/evidence/A5spike/tla174/run180.log",
+        "research/evidence/A5spike/tla174/trace180.json"
+      ]
+    },
+    {
+      "id": "a5spike-1.7.4-dumptrace",
+      "origin": "imported",
+      "purpose": "the 1.7.4 jar rejects -dumpTrace",
+      "version": "2.19 of 08 August 2024",
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Error: unrecognized option: -dumpTrace"
+      ]
+    },
+    {
+      "id": "1.8.0-default",
+      "origin": "imported",
+      "purpose": "default flags, deadlock checking on",
+      "verdict_lines": [
+        "##### 1.8.0 default",
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-21 15:51:21.",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "11 states generated, 10 distinct states found, 3 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "exit=0"
+      ]
+    },
+    {
+      "id": "1.8.0-deadlock",
+      "origin": "imported",
+      "purpose": "-deadlock turns deadlock checking off; the invariant is violated",
+      "verdict_lines": [
+        "##### 1.8.0 -deadlock",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-21 15:51:21.",
+        "Error: Invariant NoOverspend is violated.",
+        "12 states generated, 11 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ]
+    },
+    {
+      "id": "1.8.0-dumptrace",
+      "origin": "imported",
+      "purpose": "-dumpTrace json writes the counterexample as JSON",
+      "verdict_lines": [
+        "##### 1.8.0 -dumpTrace json",
+        "Error: Invariant NoOverspend is violated.",
+        "Error: The behavior up to this point is:",
+        "-rw-r--r-- 1 root root 1786 Oct 21 15:51 t1.8.0.json"
+      ],
+      "outputs": [
+        "research/evidence/A5r3/tla/t1.8.0.json"
+      ]
+    },
+    {
+      "id": "1.7.4-default",
+      "origin": "imported",
+      "purpose": "the fallback jar, default flags",
+      "version": "2.19 of 08 August 2024",
+      "verdict_lines": [
+        "##### 1.7.4 default",
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-21 15:51:20.",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "11 states generated, 10 distinct states found, 3 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "exit=0"
+      ]
+    },
+    {
+      "id": "1.7.4-deadlock",
+      "origin": "imported",
+      "purpose": "the fallback jar with -deadlock",
+      "version": "2.19 of 08 August 2024",
+      "verdict_lines": [
+        "##### 1.7.4 -deadlock",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-21 15:51:20.",
+        "Error: Invariant NoOverspend is violated.",
+        "12 states generated, 11 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ]
+    },
+    {
+      "id": "1.7.4-dumptrace",
+      "origin": "imported",
+      "purpose": "the fallback jar rejects -dumpTrace",
+      "version": "2.19 of 08 August 2024",
+      "verdict_lines": [
+        "##### 1.7.4 -dumpTrace json",
+        "Error: Error: unrecognized option: -dumpTrace"
+      ]
+    },
+    {
+      "id": "a5spike-1.8.0-deadlock-off",
+      "origin": "imported",
+      "purpose": "the earlier A5 spike session, with its banner: -deadlock on the 1.8.0 jar, one TLC worker",
+      "budget": {
+        "workers": 1
+      },
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 69 and seed 4579780508817848029 with 1 worker on 20 cores with 7984MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Error: Invariant NoOverspend is violated.",
+        "12 states generated, 11 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ]
+    },
+    {
+      "id": "a5spike-1.7.4-deadlock-off",
+      "origin": "imported",
+      "purpose": "the same on the 1.7.4 jar",
+      "version": "2.19 of 08 August 2024",
+      "budget": {
+        "workers": 1
+      },
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Invariant NoOverspend is violated.",
+        "12 states generated, 11 distinct states found, 2 states left on queue."
+      ]
+    },
+    {
+      "id": "a5spike-1.8.0-four-workers",
+      "origin": "imported",
+      "purpose": "the same with four TLC workers: the count of generated states changes, the distinct count does not",
+      "budget": {
+        "workers": 4
+      },
+      "verdict_lines": [
+        "Running breadth-first search Model-Checking with fp 66 and seed -1854417865533337703 with 4 workers on 20 cores with 7984MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "13 states generated, 11 distinct states found, 0 states left on queue."
+      ]
+    }
+  ],
+  "primary_config": "a5spike-1.8.0-default",
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the logs print the build banner, not the jar hash; RUN-tlc-jars hashes the jar of that build (5bd7b64d...)"
+    },
+    {
+      "field": "image",
+      "reason": "the banner shows TLC as process 1 in a container on Eclipse Adoptium 21.0.12.1, not the image name; RESULTS.md names eclipse-temurin:21-jre for the 2026-10-20 session"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the logs print the TLC output, not the java command line (W0-S11 re-runs TLC with argv for RUN-tlc-atomic, RUN-tlc-unsafe-3w and RUN-tlc-full)"
+    },
+    {
+      "field": "exit_code",
+      "reason": "one per configuration; run.log's exit=0 lines are not TLC's own codes for the sections they close"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/tla/run.log; A5spike/tla174/*.log; RESULTS.md (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "'Two workers' in the spine is the spec's constant Workers = {w1, w2}; TLC itself ran with one worker thread, as the banners of the A5 spike session say.",
+    "Two sessions on 2026-10-21 agree: the A5 spike session (the top level and the a5spike configurations, whose banners name the host and the worker count) and the later A5r3 session (run.log, filtered to the verdicts).",
+    "The logs give local times (2026-10-21 05:50 and 15:51) without a zone, so started_at holds the date."
+  ]
+}

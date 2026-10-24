@@ -1,0 +1,280 @@
+{
+  "id": "RUN-runs-gate",
+  "title": "GATE-runs on this repository: the fast lane, the release lane and the planted-fault self-check",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-24T14:43:56.335Z",
+  "started_at": "2026-10-24T14:43:53.441Z",
+  "duration_s": 2.893,
+  "argv": [
+    "node",
+    "scripts/verify-runs.mjs",
+    "--self-check"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-runs.mjs",
+      "sha256": "5890b4c637025ae8fcbfc7b4c80b4370acc67febf1aee0a45d528c4dc757f0b6",
+      "bytes": 14795,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/registry.mjs",
+      "sha256": "eb1000a8622c2cfe5ad2c82b66ae3510b18ca1f34037b5a7442be2ff36b8cda3",
+      "bytes": 7238,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/runs/gate-self-check.mjs",
+      "sha256": "59c11c55a3d32b0e3f31c224456b07ce3c21a671e7ec6141f5e03e471a98df42",
+      "bytes": 17210,
+      "role": "gate"
+    },
+    {
+      "path": "schemas/run.schema.json",
+      "sha256": "14a39fea0e629fc7bb3ff2568cf606c2283b3d748b2316d282c6aecc24e82383",
+      "bytes": 14933,
+      "role": "gate"
+    },
+    {
+      "path": "runs/",
+      "sha256": "107de5d7a39a2c7fb6d4445307193269690948629f6a13e466737412c008b9f8",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of the run records",
+      "files": 64,
+      "role": "the registry the gate read"
+    }
+  ],
+  "budget": {
+    "network": "none used"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-runs self-check: copy the registry and the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it",
+    "  ok    the untouched copy: has 34 fast-lane findings of its own (the tree's, reported by the gate itself); the tests below look only at what each plant adds",
+    "  ok    planted: an unresolved {{run:}} in learner copy not labeled draft: fails as it should: references content/stages/S1/L1.md:1:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist, in learner copy not labeled draft",
+    "  ok    planted: an unresolved [X RUN-id] tag in a document: fails as it should: references docs/PLAN.md:1183:39: [X RUN-does-not-exist] claims an executed run, but runs/RUN-does-not-exist.json does not exist (record the run, or write {{run:RUN-does-not-",
+    "  ok    planted: a malformed {{run:}} ID: fails as it should: references docs/PLAN.md:1183:5: {{run:run_bad_id}} is not a run ID (RUN-{kebab})",
+    "  ok    planted: a value reference to a path the record does not have: fails as it should: references docs/PLAN.md:1183:14: {{run:RUN-z3-starter#values.no_such_value}}: the record has nothing at values.no_such_value",
+    "  ok    planted: an output file under runs/ tampered with: fails as it should: registry runs/RUN-tlc-atomic.json: outputs/0: output runs/RUN-tlc-atomic/w2-default.log has SHA-256 0e2efc055864..., the record says bacb66324cd5...",
+    "  ok    planted: a record whose id is not its file name: fails as it should: registry runs/RUN-z3-starter-copy.json: id \"RUN-z3-starter\" is not the file name RUN-z3-starter-copy",
+    "  ok    planted: an imported record with a null field it does not explain: fails as it should: registry runs/RUN-z3-starter.json: an imported record leaves argv null without an unrecorded entry",
+    "  ok    planted: a record that breaks run@1 (exit_code as a string): fails as it should: registry runs/RUN-tlc-full.json: does not validate against run@1: /exit_code type (must be integer or null)",
+    "  ok    planted: a primary_config that names no configuration: fails as it should: registry runs/RUN-tlc-full.json: primary_config \"nope\" names no configuration",
+    "  ok    control: format placeholders in code spans pass: adds no finding, as it should: placeholders are exempt",
+    "  ok    control: a value reference that resolves passes: adds no finding, as it should: the value exists",
+    "  ok    control: an unresolved {{run:}} in copy labeled draft passes the fast lane: adds no finding, as it should: a draft may wait for its run",
+    "  ok    release lane: the same draft fails --release: fails as it should: references content/stages/S1/L1.md:3:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist (the release lane resolves every reference)",
+    "  ok    release lane: an input changed since its run passes the fast lane and fails --release: the fast lane adds 0 findings (a warning only); the release lane adds runs/RUN-tlc-atomic.json: input research/spikes/tla/A3.cfg changed since the run (re-record before release",
+    "GATE-runs self-check: PASS (15 of 15 held)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-runs-gate/fast.log",
+      "sha256": "bac3fcf231162427806788d2b8ec811f3c207ef0f92f8d71baaf0f9cbb55561d",
+      "bytes": 8065,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-runs-gate/self-check.log",
+      "sha256": "75223c54b6b56b4a014f843d284c3c453eff74bc71eb4837df3ba32d6bd007be",
+      "bytes": 3057,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-runs-gate/release.log",
+      "sha256": "c79b0329e399c3b2754081cc3d0269af1e3b943071a620265daaf04ce3186459",
+      "bytes": 136044,
+      "kind": "log"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "self-check",
+  "configs": [
+    {
+      "id": "fast",
+      "origin": "recorded",
+      "purpose": "the fast lane on this repository",
+      "started_at": "2026-10-24T14:43:53.441Z",
+      "duration_s": 0.184,
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs"
+      ],
+      "exit_code": 1,
+      "verdict_lines": [
+        "GATE-runs",
+        "  read  65 run records (612 output files and 838 input files hashed); 2434 run references in 50 files: 1398 [X] tags, 943 {{run:}} templates, 93 format placeholders",
+        "  pass  1627 references resolve; 685 {{run:}} references wait for their runs (documents and drafts; the release lane fails on them)",
+        "  warn  inputs: 6 (the release lane fails on them)",
+        "  warn  index: 1 (the release lane fails on them)",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/24: output content/pg-catalog/catalog.json has SHA-256 0b836b52e582..., the record says 7077e5aa9dd6...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/25: output content/pg-catalog/grid/grid.json has SHA-256 c50c5603b8ee..., the record says 4b55430a2260...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/31: output runs/RUN-pg-catalog/rows-run.json has SHA-256 6f5e038812fa..., the record says 3e7335fd65f9...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/32: output runs/RUN-pg-catalog/grid-run.json has SHA-256 dc533b254916..., the record says d869c742bdf1...",
+        "  FAIL  references  docs/spikes/W0-S06.md:3:254: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:11:236: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:11:708: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:12:659: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:31:194: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:32:163: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:33:225: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:34:355: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:35:508: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:36:185: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:37:330: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:38:183: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:39:326: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:40:154: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:46:367: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:63:450: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:72:559: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:91:123: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:187:141: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:199:229: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:224:455: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:224:761: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:245:621: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:248:376: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:259:388: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:265:182: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:308:651: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:311:121: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "  FAIL  references  docs/spikes/W0-S06.md:316:67: [X RUN-bwrap-lanes] claims an executed run, but runs/RUN-bwrap-lanes.json does not exist (record the run, or write {{run:RUN-bwrap-lanes}} until it is recorded)",
+        "GATE-runs: FAIL (33 findings; 0.2 s)"
+      ],
+      "outputs": [
+        "runs/RUN-runs-gate/fast.log"
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "plant faults one at a time in a scratch copy; the gate must fail on each and pass the controls",
+      "started_at": "2026-10-24T14:43:53.626Z",
+      "duration_s": 2.557,
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-runs self-check: copy the registry and the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it",
+        "  ok    the untouched copy: has 34 fast-lane findings of its own (the tree's, reported by the gate itself); the tests below look only at what each plant adds",
+        "  ok    planted: an unresolved {{run:}} in learner copy not labeled draft: fails as it should: references content/stages/S1/L1.md:1:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist, in learner copy not labeled draft",
+        "  ok    planted: an unresolved [X RUN-id] tag in a document: fails as it should: references docs/PLAN.md:1183:39: [X RUN-does-not-exist] claims an executed run, but runs/RUN-does-not-exist.json does not exist (record the run, or write {{run:RUN-does-not-",
+        "  ok    planted: a malformed {{run:}} ID: fails as it should: references docs/PLAN.md:1183:5: {{run:run_bad_id}} is not a run ID (RUN-{kebab})",
+        "  ok    planted: a value reference to a path the record does not have: fails as it should: references docs/PLAN.md:1183:14: {{run:RUN-z3-starter#values.no_such_value}}: the record has nothing at values.no_such_value",
+        "  ok    planted: an output file under runs/ tampered with: fails as it should: registry runs/RUN-tlc-atomic.json: outputs/0: output runs/RUN-tlc-atomic/w2-default.log has SHA-256 0e2efc055864..., the record says bacb66324cd5...",
+        "  ok    planted: a record whose id is not its file name: fails as it should: registry runs/RUN-z3-starter-copy.json: id \"RUN-z3-starter\" is not the file name RUN-z3-starter-copy",
+        "  ok    planted: an imported record with a null field it does not explain: fails as it should: registry runs/RUN-z3-starter.json: an imported record leaves argv null without an unrecorded entry",
+        "  ok    planted: a record that breaks run@1 (exit_code as a string): fails as it should: registry runs/RUN-tlc-full.json: does not validate against run@1: /exit_code type (must be integer or null)",
+        "  ok    planted: a primary_config that names no configuration: fails as it should: registry runs/RUN-tlc-full.json: primary_config \"nope\" names no configuration",
+        "  ok    control: format placeholders in code spans pass: adds no finding, as it should: placeholders are exempt",
+        "  ok    control: a value reference that resolves passes: adds no finding, as it should: the value exists",
+        "  ok    control: an unresolved {{run:}} in copy labeled draft passes the fast lane: adds no finding, as it should: a draft may wait for its run",
+        "  ok    release lane: the same draft fails --release: fails as it should: references content/stages/S1/L1.md:3:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist (the release lane resolves every reference)",
+        "  ok    release lane: an input changed since its run passes the fast lane and fails --release: the fast lane adds 0 findings (a warning only); the release lane adds runs/RUN-tlc-atomic.json: input research/spikes/tla/A3.cfg changed since the run (re-record before release",
+        "GATE-runs self-check: PASS (15 of 15 held)"
+      ],
+      "outputs": [
+        "runs/RUN-runs-gate/self-check.log"
+      ]
+    },
+    {
+      "id": "release",
+      "origin": "recorded",
+      "purpose": "the release lane: every {{run:}} resolves, inputs unchanged, the index current",
+      "started_at": "2026-10-24T14:43:56.183Z",
+      "duration_s": 0.152,
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--release"
+      ],
+      "exit_code": 1,
+      "verdict_lines": [
+        "GATE-runs",
+        "  read  65 run records (612 output files and 838 input files hashed); 2434 run references in 50 files: 1398 [X] tags, 943 {{run:}} templates, 93 format placeholders",
+        "  pass  1627 references resolve; 685 {{run:}} references wait for their runs (documents and drafts; the release lane fails on them)",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/24: output content/pg-catalog/catalog.json has SHA-256 0b836b52e582..., the record says 7077e5aa9dd6...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/25: output content/pg-catalog/grid/grid.json has SHA-256 c50c5603b8ee..., the record says 4b55430a2260...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/31: output runs/RUN-pg-catalog/rows-run.json has SHA-256 6f5e038812fa..., the record says 3e7335fd65f9...",
+        "  FAIL  registry  runs/RUN-pg-catalog.json: outputs/32: output runs/RUN-pg-catalog/grid-run.json has SHA-256 dc533b254916..., the record says d869c742bdf1...",
+        "  FAIL  registry  runs/RUN-runs-gate.json: outputs/0: output runs/RUN-runs-gate/fast.log has SHA-256 bac3fcf23116..., the record says 002d6ef07ceb...",
+        "  FAIL  registry  runs/RUN-runs-gate.json: outputs/1: output runs/RUN-runs-gate/self-check.log has SHA-256 75223c54b6b5..., the record says 4283655de707...",
+        "  FAIL  references  README.md:307:280: {{run:RUN-twin-pins}} does not resolve: runs/RUN-twin-pins.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:354:667: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:364:242: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:374:95: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:969:219: {{run:RUN-bwrap-lanes}} does not resolve: runs/RUN-bwrap-lanes.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1128:81: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1129:98: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1130:157: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1501:116: {{run:RUN-phone-pyodide}} does not resolve: runs/RUN-phone-pyodide.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1505:70: {{run:RUN-bwrap-lanes}} does not resolve: runs/RUN-bwrap-lanes.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1512:43: {{run:RUN-ci-fastlane}} does not resolve: runs/RUN-ci-fastlane.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ARCHITECTURE.md:1513:53: {{run:RUN-doctor-devcontainer}} does not resolve: runs/RUN-doctor-devcontainer.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:332:186: {{run:RUN-z3-vacuous-unsat}} does not resolve: runs/RUN-z3-vacuous-unsat.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:413:757: {{run:RUN-z3-capture}} does not resolve: runs/RUN-z3-capture.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:506:210: {{run:RUN-z3-cti-pair}} does not resolve: runs/RUN-z3-cti-pair.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:634:390: {{run:RUN-z3-leaky-field}} does not resolve: runs/RUN-z3-leaky-field.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:746:133: {{run:RUN-lean-ih-ungeneralised}} does not resolve: runs/RUN-lean-ih-ungeneralised.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:781:141: {{run:RUN-lean-ih-ungeneralised}} does not resolve: runs/RUN-lean-ih-ungeneralised.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1057:209: {{run:RUN-tlc-inductive}} does not resolve: runs/RUN-tlc-inductive.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1058:261: {{run:RUN-z3-inductive-param}} does not resolve: runs/RUN-z3-inductive-param.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1063:80: {{run:RUN-drt-transfers}} does not resolve: runs/RUN-drt-transfers.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1065:63: {{run:RUN-pg-one-db}} does not resolve: runs/RUN-pg-one-db.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1066:88: {{run:RUN-tlc-trace-validation}} does not resolve: runs/RUN-tlc-trace-validation.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/ASSESSMENT.md:1068:65: {{run:RUN-pg-enforce-commit}} does not resolve: runs/RUN-pg-enforce-commit.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:152:35: {{run:RUN-z3-vacuous-unsat}} does not resolve: runs/RUN-z3-vacuous-unsat.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:153:84: {{run:RUN-z3-bv64-negamt}} does not resolve: runs/RUN-z3-bv64-negamt.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:160:30: {{run:RUN-lean-nat-trunc}} does not resolve: runs/RUN-lean-nat-trunc.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:161:46: {{run:RUN-z3-missing-frame}} does not resolve: runs/RUN-z3-missing-frame.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:163:48: {{run:RUN-z3-cti-pair}} does not resolve: runs/RUN-z3-cti-pair.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:164:54: {{run:RUN-tlc-eventually}} does not resolve: runs/RUN-tlc-eventually.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:165:54: {{run:RUN-tlc-eventually}} does not resolve: runs/RUN-tlc-eventually.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:166:55: {{run:RUN-tlc-inductive}} does not resolve: runs/RUN-tlc-inductive.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:166:82: {{run:RUN-z3-inductive-param}} does not resolve: runs/RUN-z3-inductive-param.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:168:36: {{run:RUN-drt-transfers}} does not resolve: runs/RUN-drt-transfers.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:169:61: {{run:RUN-drt-transfers}} does not resolve: runs/RUN-drt-transfers.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:170:53: {{run:RUN-pg-mixed-levels}} does not resolve: runs/RUN-pg-mixed-levels.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:170:82: {{run:RUN-history-g2item}} does not resolve: runs/RUN-history-g2item.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:170:110: {{run:RUN-isorun-upstream}} does not resolve: runs/RUN-isorun-upstream.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:171:53: {{run:RUN-z3-count-channel}} does not resolve: runs/RUN-z3-count-channel.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:171:83: {{run:RUN-pg-rls-covert}} does not resolve: runs/RUN-pg-rls-covert.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:172:51: {{run:RUN-z3-selfcomp}} does not resolve: runs/RUN-z3-selfcomp.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:173:30: {{run:RUN-tlc-double-charge}} does not resolve: runs/RUN-tlc-double-charge.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:173:61: {{run:RUN-tlc-key-ttl}} does not resolve: runs/RUN-tlc-key-ttl.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:173:86: {{run:RUN-tlc-outbox-safety}} does not resolve: runs/RUN-tlc-outbox-safety.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:174:36: {{run:RUN-tlc-trace-validation}} does not resolve: runs/RUN-tlc-trace-validation.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:175:36: {{run:RUN-lean-abort-blind}} does not resolve: runs/RUN-lean-abort-blind.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:176:42: {{run:RUN-sql-shape-validator}} does not resolve: runs/RUN-sql-shape-validator.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:176:75: {{run:RUN-pg-one-db}} does not resolve: runs/RUN-pg-one-db.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:192:12: {{run:RUN-z3-vacuous-unsat}} does not resolve: runs/RUN-z3-vacuous-unsat.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:200:83: {{run:RUN-z3-bv64-negamt}} does not resolve: runs/RUN-z3-bv64-negamt.json does not exist (the release lane resolves every reference)",
+        "  FAIL  references  docs/AUDIT-DESK.md:291:12: {{run:RUN-lean-nat-trunc}} does not resolve: runs/RUN-lean-nat-trunc.json does not exist (the release lane resolves every reference)"
+      ],
+      "outputs": [
+        "runs/RUN-runs-gate/release.log"
+      ]
+    }
+  ],
+  "notes": [
+    "The registry held 64 records besides this one; the input \"runs/\" is their manifest hash.",
+    "The self-check is the acceptance evidence that GATE-runs trips on an unresolved run reference (spine section 13, the W0 exit).",
+    "The fast and release lanes report the tree as it was at recording, including findings that belong to tasks still recording their runs; the configurations name them in their logs."
+  ]
+}

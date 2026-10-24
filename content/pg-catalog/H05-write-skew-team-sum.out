@@ -1,0 +1,2503 @@
+Parsed test spec with 3 sessions
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s1c s2b_rc s2r s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s1c s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s2w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s1w s2b_rc s2r s2w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s1c s2w s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s1w s2w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s1w s1c s2c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s1w s2c s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rc s1r s2b_rc s2r s2w s2c s1w s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s1c s2w s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s2w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s1w s2w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s1w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s1w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s1b_rc s1r s2w s2c s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s1w s1c s2c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s1w s2c s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s1b_rc s1r s2c s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rc s2r s2w s2c s1b_rc s1r s1w s1c chk
+step s2b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s1c s2b_rr s2r s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s1c s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s2w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s1w s2b_rr s2r s2w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s1c s2w s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s1w s2w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s1w s1c s2c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s1w s2c s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s1b_rr s1r s2b_rr s2r s2w s2c s1w s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s1c s2w s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s2w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s1w s2w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s1w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s1w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s1b_rr s1r s2w s2c s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s1w s1c s2c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s1w s2c s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s1b_rr s1r s2c s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|-50
+(2 rows)
+
+team_total
+----------
+      -100
+(1 row)
+
+
+starting permutation: s2b_rr s2r s2w s2c s1b_rr s1r s1w s1c chk
+step s2b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s1c s2b_ser s2r s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s1c s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s2w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s1w s2b_ser s2r s2w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s1c s2w s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s1w s2w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s1w s1c s2c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s1w s2c s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s1b_ser s1r s2b_ser s2r s2w s2c s1w s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s1c s2w s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s2c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s2w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s1w s2w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s1w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s1w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s1b_ser s1r s2w s2c s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s1w s1c s2c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1c: COMMIT;
+step s2c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|-50
+ 2|100
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s1w s2c s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1c: COMMIT;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s1b_ser s1r s2c s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2c: COMMIT;
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+ERROR:  could not serialize access due to read/write dependencies among transactions
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+
+
+starting permutation: s2b_ser s2r s2w s2c s1b_ser s1r s1w s1c chk
+step s2b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s2r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+  200
+(1 row)
+
+step s2w: UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+    100|    -50
+(1 row)
+
+step s2c: COMMIT;
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step s1r: CREATE TEMP TABLE seen ON COMMIT DROP AS SELECT sum(bal) AS total FROM acct WHERE team = 1; SELECT total FROM seen;
+total
+-----
+   50
+(1 row)
+
+step s1w: UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT total FROM seen) - 150 >= 0 RETURNING old.bal AS old_bal, new.bal AS new_bal;
+old_bal|new_bal
+-------+-------
+(0 rows)
+
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1;
+id|bal
+--+---
+ 1|100
+ 2|-50
+(2 rows)
+
+team_total
+----------
+        50
+(1 row)
+

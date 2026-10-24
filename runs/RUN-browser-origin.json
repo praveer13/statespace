@@ -1,0 +1,110 @@
+{
+  "id": "RUN-browser-origin",
+  "title": "An opaque-origin sandbox fails in Chromium; a separate origin with a module worker runs Z3 in three engines and cannot read the parent storage",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "an opaque-origin sandbox fails in Chromium; a separate origin with a module worker runs Z3 in three engines and cannot read the parent's storage",
+  "engine": "chromium",
+  "version": "153.0.8010.12",
+  "binary": "Chromium 153.0.8010.12, Firefox 155.0 and WebKit 26.6 in the Playwright image",
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/sbx/test.mjs",
+      "sha256": "4c41a610fbeea886bb0f248aff48f4a536064f312b0b5ba31d7420f26fc93486",
+      "bytes": 544,
+      "role": "harness"
+    },
+    {
+      "path": "research/evidence/A5r3/sbx/server.mjs",
+      "sha256": "c929d7da3a7eef4dc9e1149eff9cd368b2264d7cd7d20c5db084dc180c9704be",
+      "bytes": 1022,
+      "role": "server"
+    },
+    {
+      "path": "research/evidence/A5r3/xorigin/test.mjs",
+      "sha256": "3d9f16a11dca592ba6e38ed7de5761c4ae7e4d89fdb8468dc49e6d672dd8c8a2",
+      "bytes": 514,
+      "role": "harness"
+    },
+    {
+      "path": "research/evidence/A5r3/xorigin/server.mjs",
+      "sha256": "9e55b8e4ab80d327285d6de3cf1193fc9f66d5bc4654e35e250a2f1e57e1d8f0",
+      "bytes": 877,
+      "role": "server"
+    },
+    {
+      "path": "research/evidence/A5r3/xorigin/inst/worker.mjs",
+      "sha256": "82ecacffc84c82f30ad742c6e12bc4bb2cff86067ceea3d0142ff8596f9ce326",
+      "bytes": 816,
+      "role": "worker"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "## 2. Opaque-origin sandbox (iframe sandbox=\"allow-scripts\") + Blob worker (harness: sbx/)",
+    "module chromium {\"frame\":{\"ls\":\"blocked:SecurityError\",\"origin\":\"null\",\"kind\":\"module\"},\"err\":\"worker error: unknown @:\"}",
+    "## 3. Separate instrument origin (:8081) in a plain iframe of the app origin (:8080) + same-origin module worker (harness: xorigin/)",
+    "chromium {\"frame\":{\"origin\":\"http://localhost:8081\",\"parentLedger\":\"blocked:SecurityError\"},\"worker\":{\"readyMs\":1458,\"z3\":\"5.3.1 sat [b = 0, amount = 1, a = 0]\",\"cacheApi\":true}}",
+    "firefox  {\"frame\":{\"origin\":\"http://localhost:8081\",\"parentLedger\":\"blocked:SecurityError\"},\"worker\":{\"readyMs\":1686,\"z3\":\"5.3.1 sat [b = 0, amount = 1, a = 0]\",\"cacheApi\":true}}",
+    "webkit   {\"frame\":{\"origin\":\"http://localhost:8081\",\"parentLedger\":\"blocked:SecurityError\"},\"worker\":{\"readyMs\":1474,\"z3\":\"5.3.1 sat [b = 0, amount = 1, a = 0]\",\"cacheApi\":true}}"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/browser-runs.log",
+      "sha256": "b68f1261cabcb489b4e021f3f1d4ddb87144dcc05b3c229d77a6620b4153e119",
+      "bytes": 3574,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "opaque_origin_chromium": "worker error",
+    "separate_origin": {
+      "chromium": "z3 5.3.1 sat",
+      "firefox": "z3 5.3.1 sat",
+      "webkit": "z3 5.3.1 sat"
+    },
+    "parent_storage": "blocked:SecurityError",
+    "cache_api": true
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the browsers"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log times the engines, not the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log names the harnesses, not the command lines"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log names the container image, not the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log names the container image, not the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/browser-runs.log §2–3 (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "The log also records that CDP throttling did not reach the cross-origin worker; it was discarded as a phone proxy."
+  ]
+}

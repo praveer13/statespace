@@ -1,0 +1,50 @@
+# The Bench devcontainer's services (ARCHITECTURE.md section 11.1; W0-T05): the Bench image, and beside it a
+# PostgreSQL 18.6 service container. devcontainer.json names this file.
+#
+# The Bench image is built from bench/image/Dockerfile, which pins its base images by digest and checks every
+# download. A Codespaces prebuild builds the same Dockerfile, so a learner's codespace starts from the build.
+#
+# PostgreSQL runs from the image that reported 18.6 (RUN-scaffold). A tag moves, so the digest is the pin. The
+# service has no published port, so only the Bench container reaches it, and it trusts that container: it holds
+# nothing but what a lab puts there. The Bench finds it through STATESPACE_PG_DSN.
+#
+# Both images are linux/amd64, the platform of every pin (bench/image/Dockerfile). On an Apple-silicon machine
+# Docker Desktop runs them under emulation; nothing was run there.
+#
+# The Bench container is not memory-capped. The course's own measurements capped containers at 6 GiB and found that
+# `lake check --paranoid` on a project that imports Std needs more than that (W0-S06); set a limit only on purpose.
+
+x-postgres-image: &postgres-image postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336
+
+services:
+  bench:
+    build:
+      context: ..
+      dockerfile: bench/image/Dockerfile
+    platform: linux/amd64
+    command: sleep infinity
+    init: true
+    volumes:
+      - ..:/workspaces/statespace:cached
+    environment:
+      # A container cannot read its own image digest. Set this on the host to the digest of the image that runs
+      # (name@sha256:<64 hex digits>) and `statespace doctor` puts it in a receipt's environment; a lab template
+      # that names its image by digest writes the same reference here.
+      STATESPACE_BENCH_IMAGE: ${STATESPACE_BENCH_IMAGE:-}
+      STATESPACE_PG_DSN: postgresql://postgres@postgres:5432/postgres
+      STATESPACE_PG_IMAGE: *postgres-image
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: *postgres-image
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD", "pg_isready", "--username", "postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

@@ -1,0 +1,40 @@
+# The opt-in sandbox profile of the Bench devcontainer (W0-S06, decisions 4 and 5; labs/TOOLS.md section 4).
+#
+# NOT ENABLED BY DEFAULT. Read what it relaxes before you enable it.
+#
+# Lean's `lake check` and `lake comparator` run the code they check inside bubblewrap. A default Docker container
+# cannot start it: Docker's seccomp profile blocks the system calls it needs, `/proc` is masked, and the failure
+# exits with the code of a rejection. `statespace doctor` reports that as `failed`, and a receipt records it; the
+# sandbox is recorded and never required. If you want it on, enable this file by naming it after the first one in
+# devcontainer.json:
+#
+#     "dockerComposeFile": ["docker-compose.yml", "docker-compose.sandbox.yml"],
+#
+# and rebuild the container. `statespace doctor` then reports `on` where the host allows it.
+#
+# What each option gives up, for the Bench container only (the PostgreSQL service is untouched):
+#   seccomp=./seccomp/lean-sandbox.json
+#       Docker's default profile for Docker Engine 29.1.3 plus one rule that allows clone, mount, pivot_root, umount2
+#       and unshare. Every other system call that the default profile blocks stays blocked. No capability is added.
+#       The path is read by the Docker client and is relative to the folder of the first compose file (.devcontainer).
+#       If a newer engine rejects the profile, regenerate it (seccomp/NOTICE.md) or use `seccomp=unconfined`, which
+#       relaxes more: no system call is filtered.
+#   systempaths=unconfined
+#       Turns off the masked and read-only paths under /proc and /sys for every process in the container, and
+#       bubblewrap needs a fresh /proc mount. It matters most to a process running as root.
+#   apparmor=unconfined
+#       Removes Docker's AppArmor profile on a host that has one. On such a host Docker's profile denies the mount
+#       that bubblewrap performs.
+# None of them adds a capability: the container's bounding set still lacks CAP_SYS_ADMIN.
+#
+# Not enough on every host. On Ubuntu 24.04, AppArmor restricts unprivileged user namespaces, and no container option
+# lifts that: the host's sysctl kernel.apparmor_restrict_unprivileged_userns must be 0, or the host needs an AppArmor
+# profile for /usr/bin/bwrap. A Codespaces or Docker Desktop user cannot change a host setting, and whether these
+# options take effect in either is not measured (W0-S06 owner actions 3 and 4).
+
+services:
+  bench:
+    security_opt:
+      - seccomp=./seccomp/lean-sandbox.json
+      - systempaths=unconfined
+      - apparmor=unconfined

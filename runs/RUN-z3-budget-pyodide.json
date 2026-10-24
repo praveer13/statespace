@@ -1,0 +1,116 @@
+{
+  "id": "RUN-z3-budget-pyodide",
+  "title": "Under Pyodide in a Node harness, Z3's timeout never returned, while an rlimit of 5e6 gave unknown (canceled)",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "under Pyodide in a Node harness, `s.set('timeout', 2000)` never returned (stopped at 25 s); `rlimit` 5e6 → `unknown (canceled)` in 1.1 s",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3_solver-5.3.1.0 pyemscripten wheel on Pyodide 314.0.7",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21T16:12:38Z",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/scripts/z3py.mjs",
+      "sha256": "ad2c315eb68c3bd137e8140fd7e231233f1dcfe35497830012086a02134fce66",
+      "bytes": 1913,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "# z3py in pyodide 314.0.7 under node v22.22.2, 2026-10-21T16:12:38Z",
+    "2806ms py: rlimit-case unknown canceled 1.1 s",
+    "timeout-case (s.set('timeout',2000)): exit=124 after 25s (124 = killed by external 25 s timeout; never returned)"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/z3-pyodide.log",
+      "sha256": "ead08dda83552b081d39e77a8f93561dde580e3c058887e1e588071388e76103",
+      "bytes": 572,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "rlimit": 5000000,
+    "rlimit_verdict": "unknown",
+    "rlimit_reason": "canceled",
+    "rlimit_seconds": 1.1,
+    "timeout_ms": 2000,
+    "timeout_returned": false,
+    "external_kill_s": 25,
+    "external_kill_exit": 124
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null,
+    "node": "v22.22.2"
+  },
+  "configs": [
+    {
+      "id": "rlimit",
+      "origin": "imported",
+      "purpose": "`s.set('rlimit', 5000000)` on the Fermat cubic (the script's rlimit case)",
+      "budget": {
+        "rlimit": 5000000
+      },
+      "verdict_lines": [
+        "2806ms py: rlimit-case unknown canceled 1.1 s"
+      ]
+    },
+    {
+      "id": "timeout",
+      "origin": "imported",
+      "purpose": "`s.set('timeout', 2000)` on the same query (the script's timeout case), killed by an external 25 s timeout",
+      "budget": {
+        "timeout_ms": 2000,
+        "timeout_s": 25
+      },
+      "exit_code": 124,
+      "verdict_lines": [
+        "timeout-case (s.set('timeout',2000)): exit=124 after 25s (124 = killed by external 25 s timeout; never returned)"
+      ]
+    }
+  ],
+  "primary_config": "rlimit",
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the wheel; PyPI publishes z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl with SHA-256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90 (research/evidence/A5v2/z3pypi.json)"
+    },
+    {
+      "field": "image",
+      "reason": "the log names Node v22.22.2 and no container"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the script's usage line reads `node z3py.mjs <pyodide dir> <z3 wheel> <case>`"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/z3-pyodide.log (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

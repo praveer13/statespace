@@ -1,0 +1,466 @@
+{
+  "tool": {
+    "engine": "ajv",
+    "version": "8.20.0",
+    "dialect": "2020-12",
+    "strict": true,
+    "node": "v22.22.2"
+  },
+  "schema": {
+    "path": "schemas/drafts/lasso.schema.json",
+    "sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef"
+  },
+  "manifestSha256": "a24add05c0d657ee90813b729f79d750cbd6d6ab2eed19825822572ec0a0f79e",
+  "counts": {
+    "fixtures": 24,
+    "schemaValid": 14,
+    "schemaRejected": 10,
+    "lassos": 5,
+    "textTraces": 8
+  },
+  "pass": true,
+  "tlcTraces": 9,
+  "actionKeys": {
+    "location+name": 15,
+    "context+location+name+parameters": 15
+  },
+  "stepsInModuleBuiltins": 1,
+  "fixtures": [
+    {
+      "id": "hold-recorded",
+      "path": "research/evidence/a2r3/tla/live/Hold.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": true,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "hold-180",
+      "path": "runs/RUN-tlc-lasso-json/hold-180/Hold.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": true,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "hold-nofair-180",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/HoldNoFair.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": true,
+        "n": 1,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 1,
+        "stutter": true,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-cycle-180",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/HoldStemCycle.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": true,
+        "n": 5,
+        "loopStart": 2,
+        "stem": 1,
+        "cycle": 4,
+        "stutter": false,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-stutter-180",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/HoldStemStutter.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": true,
+        "n": 3,
+        "loopStart": 3,
+        "stem": 2,
+        "cycle": 1,
+        "stutter": true,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "doublespend-finite",
+      "path": "research/spikes/tla/trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "finite",
+        "ok": true,
+        "n": 5,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "rtw3-finite",
+      "path": "research/evidence/a2r3/tla/rtw3/RTW3.trace.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "finite",
+        "ok": true,
+        "n": 7,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "deadlock-finite",
+      "path": "research/evidence/A5spike/tla174/trace180.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "finite",
+        "ok": true,
+        "n": 4,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "one-state-finite",
+      "path": "runs/RUN-tlc-lasso-json/init-violation-180/InitBad.trace.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/action must NOT have fewer than 1 items"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "tampered-consistent",
+      "path": "research/evidence/exp/tla/trace-tampered.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "finite",
+        "ok": true,
+        "n": 5,
+        "errors": []
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "tampered-partial",
+      "path": "research/evidence/a2r3/tla/rtw2/Tampered.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "finite",
+        "ok": false,
+        "n": 5,
+        "errors": [
+          "rule 3: step 3 does not start at state 3"
+        ]
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "closing-target-out-of-range",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/closing-target-out-of-range.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "loopStart": null,
+        "stutter": null,
+        "errors": [
+          "rule 4: the closing step ends at state 9, outside 1..4"
+        ]
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "closing-target-values-differ",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/closing-target-values-differ.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "errors": [
+          "rule 4: the closing step ends at state 1 with values that differ from the listed state 1"
+        ]
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "step-chain-broken",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/step-chain-broken.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "lasso",
+        "ok": false,
+        "n": 4,
+        "loopStart": 1,
+        "stem": 0,
+        "cycle": 4,
+        "stutter": false,
+        "errors": [
+          "rule 3: step 2 does not start at state 2"
+        ]
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "too-many-steps",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/too-many-steps.json",
+      "schemaValid": true,
+      "schemaErrors": [],
+      "reading": {
+        "kind": "invalid",
+        "ok": false,
+        "n": 4,
+        "errors": [
+          "rule 2: 5 steps for 4 states; a lasso has 4, a finite trace 3"
+        ]
+      },
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "no-vars",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/no-vars.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/ must have required property 'vars'"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "extra-top-level-key",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/extra-top-level-key.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/ must NOT have additional properties"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "state-index-zero",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-index-zero.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/state/0/0 must be >= 1"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "state-index-string",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-index-string.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/state/0/0 must be integer"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "state-values-array",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/state-values-array.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/state/0/1 must be object"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "step-missing-target",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/step-missing-target.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/action/0 must NOT have fewer than 3 items"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "action-missing-location",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/action-missing-location.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/action/0/1 must have required property 'location'"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "location-missing-module",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/location-missing-module.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/action/0/1/location must have required property 'module'"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "empty-action-list",
+      "path": "scripts/spikes/W0-S05/fixtures/negative/empty-action-list.json",
+      "schemaValid": false,
+      "schemaErrors": [
+        "/counterexample/action must NOT have fewer than 1 items"
+      ],
+      "reading": null,
+      "pass": true,
+      "problems": []
+    }
+  ],
+  "textTraces": [
+    {
+      "id": "hold-180-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-180/tlc.stdout.txt",
+      "pairedWith": "hold-180",
+      "states": 4,
+      "closing": "back:1",
+      "property": "EventuallyResolves",
+      "propertyNamed": true,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "hold-nofair-180-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/tlc.stdout.txt",
+      "pairedWith": "hold-nofair-180",
+      "states": 1,
+      "closing": "stutter:2",
+      "property": "EventuallyResolves",
+      "propertyNamed": true,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-cycle-180-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/tlc.stdout.txt",
+      "pairedWith": "stem-cycle-180",
+      "states": 5,
+      "closing": "back:2",
+      "property": "EventuallyResolves",
+      "propertyNamed": true,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-stutter-180-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/tlc.stdout.txt",
+      "pairedWith": "stem-stutter-180",
+      "states": 3,
+      "closing": "stutter:4",
+      "property": "EventuallyResolves",
+      "propertyNamed": true,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "hold-174-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-174/tlc.stdout.txt",
+      "pairedWith": "hold-180",
+      "states": 4,
+      "closing": "back:1",
+      "property": null,
+      "propertyNamed": false,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "hold-nofair-174-text",
+      "path": "runs/RUN-tlc-lasso-json/hold-nofair-174/tlc.stdout.txt",
+      "pairedWith": "hold-nofair-180",
+      "states": 1,
+      "closing": "stutter:2",
+      "property": null,
+      "propertyNamed": false,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-cycle-174-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-cycle-174/tlc.stdout.txt",
+      "pairedWith": "stem-cycle-180",
+      "states": 5,
+      "closing": "back:2",
+      "property": null,
+      "propertyNamed": false,
+      "pass": true,
+      "problems": []
+    },
+    {
+      "id": "stem-stutter-174-text",
+      "path": "runs/RUN-tlc-lasso-json/stem-stutter-174/tlc.stdout.txt",
+      "pairedWith": "stem-stutter-180",
+      "states": 3,
+      "closing": "stutter:4",
+      "property": null,
+      "propertyNamed": false,
+      "pass": true,
+      "problems": []
+    }
+  ]
+}

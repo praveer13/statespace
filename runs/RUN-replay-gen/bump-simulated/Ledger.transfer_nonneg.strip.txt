@@ -1,0 +1,47 @@
+Ledger.transfer_nonneg   theorem transfer_nonneg   source Ledger.lean (sha256 4ac24c5d0ae6afa5)
+$/lean/plainGoal; positions are 0-based line and character
+
+[0] before `unfold transfer`   (line 19, character 2)
+    s : Ledger
+    n : Int
+    ha : 0 ≤ Ledger.a s
+    hb : 0 ≤ Ledger.b s
+    ⊢ 0 ≤ Ledger.a (transfer s n) ∧ 0 ≤ Ledger.b (transfer s n)
+
+[1] before `split`   (line 20, character 2)
+    s : Ledger
+    n : Int
+    ha : 0 ≤ Ledger.a s
+    hb : 0 ≤ Ledger.b s
+    ⊢ 0 ≤ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) ∧
+        0 ≤ Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s)
+
+[2] before `simp_all`   (line 20, character 12)
+    goal 1 of 2
+      case isTrue
+      s : Ledger
+      n : Int
+      ha : 0 ≤ Ledger.a s
+      hb : 0 ≤ Ledger.b s
+      h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+      ⊢ 0 ≤ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } ∧ 0 ≤ Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n }
+    goal 2 of 2
+      case isFalse
+      s : Ledger
+      n : Int
+      ha : 0 ≤ Ledger.a s
+      hb : 0 ≤ Ledger.b s
+      h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)
+      ⊢ 0 ≤ Ledger.a s ∧ 0 ≤ Ledger.b s
+
+[3] before `omega`   (line 20, character 25)
+    case isTrue
+    s : Ledger
+    n : Int
+    ha : 0 ≤ Ledger.a s
+    hb : 0 ≤ Ledger.b s
+    h✝ : 0 ≤ n ∧ n ≤ Ledger.a s
+    ⊢ 0 ≤ Ledger.b s + n
+
+[4] end of proof   (line 20, character 30)
+    no goals

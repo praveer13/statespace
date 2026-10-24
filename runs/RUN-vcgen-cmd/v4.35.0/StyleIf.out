@@ -1,0 +1,22 @@
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝ : 0 < s✝¹.num "amount" ∧ NonNeg s✝
+⊢ if BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) = true then
+    wp (Stmt.move (Expr.var "amount") (AExpr.var "from") (AExpr.var "to")) (fun x x_1 s => NonNeg s)
+      (fun e => e = Err.guardFailed "Transfer") s✝¹ s✝
+  else Err.guardFailed "Transfer" = Err.guardFailed "Transfer"
+case vc1
+s✝¹ : Env
+s✝ : State
+a✝ : 0 < s✝¹.num "amount" ∧ 0 < s✝¹.num "fee" ∧ NonNeg s✝
+⊢ if
+      BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var "from")) ((Expr.var "amount").add (Expr.var "fee"))) =
+        true then
+    wp
+      ((Stmt.move (Expr.var "amount") (AExpr.var "from") (AExpr.var "to")).seq
+        ((Stmt.ite (BExpr.ge (Expr.var "amount") (Expr.lit 100))
+              (Stmt.move (Expr.var "fee") (AExpr.var "from") (AExpr.lit "sink")) Stmt.skip).seq
+          (Stmt.set "transfers" (AExpr.var "from") ((Expr.field "transfers" (AExpr.var "from")).add (Expr.lit 1)))))
+      (fun x x_1 s => NonNeg s) (fun e => e = Err.guardFailed "FeeTransfer") s✝¹ s✝
+  else Err.guardFailed "FeeTransfer" = Err.guardFailed "FeeTransfer"

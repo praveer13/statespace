@@ -1,0 +1,128 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 83 and seed -2998383842586355515 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 2821] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s8/Outbox.tla
+Parsing file scripts/spikes/W0-S04/specs/s8/OutboxIface.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tmp>/FiniteSets.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tmp>/Sequences.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module OutboxIface
+Semantic processing of module Outbox
+Linting of module OutboxIface
+Linting of module Outbox
+Starting... (2026-10-24 13:51:09)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:51:09.
+Error: Invariant NoDoubleCharge is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {}
+/\ status = (c1 :> "none")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 2: <Commit(c1) line 22, col 14 to line 26, col 41 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 3: <Dispatch(c1) line 28, col 16 to line 36, col 43 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 1)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 4: <Timeout(c1) line 39, col 15 to line 46, col 57 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 1)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 5: <Dispatch(c1) line 28, col 16 to line 36, col 43 of module Outbox>
+/\ reqs = { [cmd |-> c1, key |-> <<c1, 0>>, att |-> 1],
+  [cmd |-> c1, key |-> <<c1, 0>>, att |-> 2] }
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 2)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 6: <Next line 109, col 12 to line 109, col 36 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 2]}
+/\ seen = {<<c1, 0>>}
+/\ replies = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ crashes = 0
+/\ attempts = (c1 :> 2)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 1)
+
+State 7: <Next line 110, col 12 to line 110, col 36 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 2]}
+/\ seen = {}
+/\ replies = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ crashes = 0
+/\ attempts = (c1 :> 2)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 1)
+
+State 8: <Next line 109, col 12 to line 109, col 36 of module Outbox>
+/\ reqs = {}
+/\ seen = {<<c1, 0>>}
+/\ replies = { [cmd |-> c1, key |-> <<c1, 0>>, att |-> 1],
+  [cmd |-> c1, key |-> <<c1, 0>>, att |-> 2] }
+/\ crashes = 0
+/\ attempts = (c1 :> 2)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 2)
+
+47 states generated, 32 distinct states found, 11 states left on queue.
+The depth of the complete state graph search is 8.
+Finished in 00s at (2026-10-24 13:51:09)

@@ -1,0 +1,27 @@
+GATE-facts (root packages/runs/test/fixtures/facts/registry-bad)
+  read  0 files (0 of learner copy), 0 units; 1 run record (0 with a TTL); content/registry/: 14 facts (10 with a TTL) and 2 errata
+  pass  0 value tags stated by their sentences; 0 value references naming one value (0 waiting for their runs); 0 fact references; 0 run outputs in learner copy checked; 0 citations and 0 format placeholders (nothing to compare)
+  date  TTLs judged on 2026-10-24
+  FAIL  registry  content/registry/facts.json fixture.no-source: source must be an object with an https url and a title
+  FAIL  registry  content/registry/facts.json fixture.short-ttl: ttl_days must be a whole number of days from 60 to 90 for a tool fact (BRIEF section 2.3); got 30
+  FAIL  registry  content/registry/facts.json fixture.future-check: checked_at 2026-12-01 is in the future
+  FAIL  registry  content/registry/facts.json fixture.incident-with-ttl: an incident states its own date, so it has no TTL (spine section 11.2)
+  FAIL  registry  content/registry/facts.json fixture.twin-without-run: RUN-twin-pins is not on disk (runs/RUN-twin-pins.json): record the pin before the twin ships
+  FAIL  registry  content/registry/facts.json fixture.twin-run-without-ttl: RUN-z3-starter must carry ttl_days 60 for production-twin pins (spine section 11.2); it has none
+  FAIL  registry  content/registry/facts.json fixture.evidence-changed: evidence research/saved.json has SHA-256 aed9ac607e0d..., the fact says 000000000000...
+  FAIL  registry  content/registry/facts.json fixture.quote-missing: source.quote "\"latest\":\"9.9.9\"" does not occur in research/saved.json
+  FAIL  registry  content/registry/facts.json fixture.duplicate: a second fact with this id
+  FAIL  registry  content/registry/facts.json fixture.typo-field: ttl_day is not a field of a fact
+  FAIL  registry  content/registry/facts.json fixture.typo-field: ttl_days must be a whole number of days from 60 to 90 for a tool fact (BRIEF section 2.3); got nothing
+  FAIL  registry  content/registry/facts.json Fixture.BadId: id must be dotted lowercase with at least two segments, such as tool.pyodide.latest; got "Fixture.BadId"
+  FAIL  registry  content/registry/facts.json fixture.bad-kind: kind must be one of tool, twin, incident, paper, leaderboard, quotation; got "rumor"
+  FAIL  registry  content/registry/facts.json fixture.http-source: source.url must be an https URL, got "http://example.org/quote"
+  FAIL  registry  content/registry/facts.json fixture.value-drift: statement does not state its value, 2.0
+  FAIL  registry  content/registry/errata.json 2026-10-20-date-differs: id must start with its date 2026-10-21
+  FAIL  registry  content/registry/errata.json 2026-10-21-no-lessons: lessons must name at least one lesson, S{n}.L{k}: the lessons it flags "re-check"
+  FAIL  registry  content/registry/errata.json 2026-10-21-bad-lesson: "L1" is not a lesson ID, S{n}.L{k}
+  FAIL  registry  content/registry/errata.json 2026-10-21-missing-run: RUN-does-not-exist is not on disk (runs/RUN-does-not-exist.json)
+  FAIL  registry  content/registry/errata.json 2026-10-21-unknown-fact: "fixture.no-such-fact" names no fact in content/registry/facts.json
+  FAIL  registry  content/registry/errata.json 2026-12-01-future: date 2026-12-01 is in the future
+  FAIL  registry  content/registry/errata.json 2026-10-22-supersedes-newer: supersedes 2026-10-23-newer, which is newer
+GATE-facts: FAIL (22 findings; 0 value tags stated, 0 value references, 14 facts, 0 TTL warnings; 0.0 s)

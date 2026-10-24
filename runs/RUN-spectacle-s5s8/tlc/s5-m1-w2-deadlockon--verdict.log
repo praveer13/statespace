@@ -1,0 +1,39 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 96 and seed -6464146095273939168 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 89] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s5/DoubleSpend.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module DoubleSpend
+Linting of module DoubleSpend
+Starting... (2026-10-24 13:50:45)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:50:46.
+Error: Deadlock reached.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ seen = (w1 :> 0 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "read" @@ w2 :> "read")
+
+State 2: <Read(w1) line 16, col 12 to line 19, col 38 of module DoubleSpend>
+/\ seen = (w1 :> 100 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "write" @@ w2 :> "read")
+
+State 3: <Write(w1) line 21, col 13 to line 25, col 29 of module DoubleSpend>
+/\ seen = (w1 :> 100 @@ w2 :> 0)
+/\ spent = 80
+/\ bal = 20
+/\ pc = (w1 :> "done" @@ w2 :> "read")
+
+State 4: <Read(w2) line 16, col 12 to line 19, col 38 of module DoubleSpend>
+/\ seen = (w1 :> 100 @@ w2 :> 20)
+/\ spent = 80
+/\ bal = 20
+/\ pc = (w1 :> "done" @@ w2 :> "done")
+
+11 states generated, 10 distinct states found, 3 states left on queue.
+The depth of the complete state graph search is 4.
+Finished in 00s at (2026-10-24 13:50:46)

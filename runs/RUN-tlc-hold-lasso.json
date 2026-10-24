@@ -1,0 +1,99 @@
+{
+  "id": "RUN-tlc-hold-lasso",
+  "title": "The Hold spec with fairness on Try and Busy only: EventuallyResolves is violated by a lasso that closes back to state 1",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "the Hold spec with fairness on Try and Busy only: EventuallyResolves violated by the lasso Try, Busy, Try, then Busy back to state 1; the 1.8.0 JSON trace closes the loop with that final action targeting state 1",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "binary": "the 1.8.0 tla2tools.jar; its SHA-256 is the one the same log prints at its end (sha256sum of dl/tla180/tla2tools.jar), the build its banner names",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/tla/live/Hold.tla",
+      "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+      "bytes": 762,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+      "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+      "bytes": 88,
+      "role": "config"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "===== Hold (liveness lasso)",
+    "Progress(5) at 2026-10-21 11:06:58: 9 states generated, 8 distinct states found, 0 states left on queue.",
+    "Error: Temporal property EventuallyResolves was violated.",
+    "State 1: <Initial predicate>",
+    "State 2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+    "State 3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+    "State 4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+    "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+    "9 states generated, 8 distinct states found, 0 states left on queue."
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/tlc_runs.txt",
+      "sha256": "d5a2ecb63876b51c885ee7b8b67b98067d60bde4b413beadac68df5e93df70b0",
+      "bytes": 23989,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/live/Hold.trace.json",
+      "sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+      "bytes": 835,
+      "kind": "trace"
+    }
+  ],
+  "values": {
+    "result": "violated",
+    "property": "EventuallyResolves",
+    "back_to_state": 1,
+    "closing_action": "Busy",
+    "distinct_states": 8,
+    "states_generated": 9
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the log does not name the container image"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output, not the command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log is filtered to the verdicts"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log is filtered to the verdicts"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from same; a2r3/tla/live/Hold.trace.json (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "W0-S05 documents the 1.8.0 JSON lasso format from a fresh run (RUN-tlc-lasso-json)."
+  ]
+}

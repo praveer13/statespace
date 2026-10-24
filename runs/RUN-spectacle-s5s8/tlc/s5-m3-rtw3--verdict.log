@@ -1,0 +1,57 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 49 and seed 8997406854247688279 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 712] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file scripts/spikes/W0-S04/specs/s5/RTW3.tla
+Parsing file <tmp>/Naturals.tla (jar:file:/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module RTW3
+Linting of module RTW3
+Starting... (2026-10-24 13:50:51)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-24 13:50:51.
+Error: Invariant NoOverspend is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ seen = (w1 :> 0 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "read" @@ w2 :> "read")
+
+State 2: <Read(w1) line 10, col 13 to line 11, col 75 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "check" @@ w2 :> "read")
+
+State 3: <Check(w1) line 12, col 13 to line 14, col 45 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "write" @@ w2 :> "read")
+
+State 4: <Read(w2) line 10, col 13 to line 11, col 75 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "write" @@ w2 :> "check")
+
+State 5: <Write(w1) line 15, col 13 to line 16, col 64 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 80
+/\ bal = 20
+/\ pc = (w1 :> "done" @@ w2 :> "check")
+
+State 6: <Check(w2) line 12, col 13 to line 14, col 45 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 80
+/\ bal = 20
+/\ pc = (w1 :> "done" @@ w2 :> "write")
+
+State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 160
+/\ bal = 20
+/\ pc = (w1 :> "done" @@ w2 :> "done")
+
+26 states generated, 20 distinct states found, 2 states left on queue.
+The depth of the complete state graph search is 7.
+Finished in 00s at (2026-10-24 13:50:51)

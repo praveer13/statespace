@@ -1,0 +1,13 @@
+W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined
+
+Hint: Using `Err.guardFailed would be unambiguous:
+  [apply] `Err.guardFailed`
+W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed
+case grind
+s : Env
+s_1 : State
+h : 0 < s.num "amount" ∧ NonNeg s_1
+h_1 : fails (BExpr.ge (Expr.balance (AExpr.var "from")) (Expr.var "amount")) s s_1
+h_2 : ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed "Transfer")
+⊢ False
+use `+verbose` to obtain diagnostic information

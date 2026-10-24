@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:lasso@1",
+  "title": "statespace lasso, version 1 (draft)",
+  "description": "DRAFT, fixed by W0-S05. A liveness counterexample as TLC writes it with `-dumpTrace json <file>`, read as a lasso. Observed on tla2tools 1.8.0, build 2026.10.20.183001 (rev d2e1472, jar SHA-256 5bd7b64d...52b1e2): see RUN-tlc-lasso-json and docs/spikes/W0-S05.md. The file carries no schema marker, so this schema describes it as TLC writes it. It checks structure only. The rules that make a trace a lasso compare one part of the document with another, which JSON Schema cannot do, so they are applied after this schema passes (docs/spikes/W0-S05.md, 'Reading rules'). Unknown keys are rejected on purpose: a key listed nowhere here means the jar is not the pinned build, or the format moved.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["counterexample", "vars"],
+  "properties": {
+    "counterexample": {
+      "title": "LassoCounterexample",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "state"],
+      "properties": {
+        "action": {
+          "description": "The steps, in order; step p leaves the state with index p. A lasso has as many steps as states: the last one is the closing step, and its target repeats the state where the cycle starts. A finite counterexample has one step fewer.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/step" }
+        },
+        "state": {
+          "description": "The positions of the trace, indexes 1..n in order. The closing step's target is not listed again.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/indexedState" }
+        }
+      }
+    },
+    "vars": {
+      "description": "The spec's variables in declaration order. The keys of a state's values are written in another order (the Hold spec declares st, tries and the file writes tries first), so read values by name.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "stateIndex": {
+      "description": "A 1-based position in the trace, as in TLC's text trace (State 1, State 2, ...).",
+      "type": "integer",
+      "minimum": 1
+    },
+    "stateValues": {
+      "title": "LassoStateValues",
+      "description": "Variable name to the variable's TLA+ value as JSON. Integers, strings and functions over strings (as objects) appear in the traces W0-S05 recorded; other TLA+ values were not exercised.",
+      "type": "object",
+      "minProperties": 1
+    },
+    "indexedState": {
+      "title": "LassoIndexedState",
+      "description": "[index, values]",
+      "type": "array",
+      "prefixItems": [
+        { "$ref": "#/$defs/stateIndex" },
+        { "$ref": "#/$defs/stateValues" }
+      ],
+      "minItems": 2,
+      "items": false
+    },
+    "location": {
+      "title": "LassoLocation",
+      "description": "Where the action is defined in the spec. A step with no action behind it, such as a stutter from state 1, has module '--TLA+ BUILTINS--' and every position 0.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["beginLine", "beginColumn", "endLine", "endColumn", "module"],
+      "properties": {
+        "beginLine": { "type": "integer", "minimum": 0 },
+        "beginColumn": { "type": "integer", "minimum": 0 },
+        "endLine": { "type": "integer", "minimum": 0 },
+        "endColumn": { "type": "integer", "minimum": 0 },
+        "module": { "type": "string", "minLength": 1 }
+      }
+    },
+    "action": {
+      "title": "LassoAction",
+      "description": "The label TLC puts on a step. It is a hint, not proof that the action ran: see the reading rules. `context` and `parameters` appeared together or not at all in every recorded trace, and only for a parameterized action: `parameters` names the parameters and `context` gives the values they took.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "location"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "location": { "$ref": "#/$defs/location" },
+        "context": { "type": "object" },
+        "parameters": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "step": {
+      "title": "LassoStep",
+      "description": "[source state, action, target state]. Both states are full copies of entries of `state`, except that the closing step's target repeats the state where the cycle starts.",
+      "type": "array",
+      "prefixItems": [
+        { "$ref": "#/$defs/indexedState" },
+        { "$ref": "#/$defs/action" },
+        { "$ref": "#/$defs/indexedState" }
+      ],
+      "minItems": 3,
+      "items": false
+    }
+  }
+}

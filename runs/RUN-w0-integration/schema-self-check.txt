@@ -1,0 +1,50 @@
+GATE-schema self-check: plant a fault in a scratch copy, run the gate there, require it to fail on the right check
+  ok    the pattern lint flags "^a$"
+  ok    the pattern lint flags "^\\d+(?![\\s\\S])"
+  ok    the pattern lint flags "^\\w+(?![\\s\\S])"
+  ok    the pattern lint flags "^\\s(?![\\s\\S])"
+  ok    the pattern lint flags "^.(?![\\s\\S])"
+  ok    the pattern lint flags "^(?<n>a)(?![\\s\\S])"
+  ok    the pattern lint flags "(?<=a)b"
+  ok    the pattern lint flags "^\\p{L}(?![\\s\\S])"
+  ok    the pattern lint flags "^a{2}+(?![\\s\\S])"
+  ok    the pattern lint flags "^(a)\\1(?![\\s\\S])"
+  ok    the pattern lint flags "\\bword"
+  ok    the pattern lint flags "^\\u{1F600}(?![\\s\\S])"
+  ok    the pattern lint accepts "^[0-9a-f]{64}(?![\\s\\S])"
+  ok    the pattern lint accepts "^(?:a|b)+(?![\\s\\S])"
+  ok    the pattern lint accepts "^[A-Za-z0-9._-]+(?![\\s\\S])"
+  ok    the pattern lint accepts "^(?!x)[a-z]+(?![\\s\\S])"
+  ok    the pattern lint accepts "^[^\\n]*(?![\\s\\S])"
+  ok    the pattern lint accepts "^a\\.b(?![\\s\\S])"
+  ok    an unmodified copy passes
+  ok    --strict fails while a later task owes receipt.schema.json: fails on schema receipt, generated files, package loads, keep/kill rules
+  ok    a generated TypeScript file is edited by hand: fails on generated files
+  ok    a schema gains a property and nobody regenerates: fails on generated files
+  ok    a Python record loses a key: fails on generated files
+  ok    a Python field becomes required: fails on generated files
+  ok    the Python emitter forgets that a property is optional, and the files are regenerated from it: fails on types in sync
+  ok    the TypeScript emitter forgets that a property is optional, and the files are regenerated from it: fails on types in sync
+  ok    a pattern ends with $ instead of the portable idiom: fails on schemas, generated files
+  ok    a $ pattern is regenerated: Python accepts a trailing newline, TypeScript does not: fails on schemas, validators agree
+  ok    a schema is loosened and regenerated: an invalid value is accepted: fails on validators agree
+  ok    a keyword outside the subset appears: fails on schemas, generated files
+  ok    a tuple lets a leading item be optional: fails on schemas, generated files
+  ok    a $ref names nothing: fails on schemas, generated files, self-test generation, trim set, vectors (TypeScript)
+  ok    the TypeScript validator miscounts a length: fails on validators agree
+  ok    the TypeScript trim forgets U+FEFF: fails on vectors (TypeScript), vectors (Python)
+  ok    the Python trim is str.rstrip(): fails on vectors (Python)
+  ok    the Python file entry point reads text mode and translates newlines: fails on vectors (Python)
+  ok    the Python decoder replaces invalid bytes instead of failing: fails on vectors (Python)
+  ok    an expected vector hash is edited: fails on statement-hash.json, vectors (TypeScript), vectors (Python)
+  ok    a code point leaves the schema list: fails on statement-hash.json, trim set, vectors (TypeScript), vectors (Python)
+  ok    an invalid fixture is not listed in its index: fails on fixtures
+  ok    a definition has no fixtures: fails on fixtures
+  ok    a valid fixture is broken: fails on validators agree
+  ok    a repository record is invalid: fails on validators agree
+  ok    a repository record names a version that is not published: fails on records
+  ok    the keep/kill rules and their run agree
+  ok    the keep/kill rules change after they were recorded: fails on keep/kill rules
+  ok    the keep/kill run records no hash: fails on validators agree, keep/kill rules
+  ok    the keep/kill rules exist without their run: fails on keep/kill rules
+GATE-schema self-check: PASS (48 of 48 held)

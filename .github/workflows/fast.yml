@@ -1,0 +1,73 @@
+# The fast lane (spine section 11.2; ARCHITECTURE.md section 13.1; W0-T04).
+#
+# Every pull request and every push to the default branch. It blocks merges: the owner marks the check "fast lane" as
+# required in the repository's branch rules (owner action), so a red or a missing run cannot be merged over. It must finish
+# in under 5 minutes, recorded as RUN-ci-fastlane.
+#
+# What runs is the fast column of scripts/spikes/W0-T04/gates.json, through scripts/spikes/W0-T04/lane.mjs. A gate that a
+# later task adds under scripts/ joins the lane without an edit here; a gate whose script does not exist yet is listed as
+# absent, with the task that builds it. The lane's budget is 300 s counted from the first step below, so the setup steps
+# are inside it; the job's own timeout is only the backstop for a hung step.
+#
+# Tools: Node and uv, pinned to the versions of RUN-scaffold, and the packages from the lockfile. GATE-calls, GATE-bundle and
+# the other gates that need Z3, cvc5, Pyodide or Playwright add their setup here when their tasks build them (W1-T05, W1-T41).
+#
+# Actions are pinned by commit, with the release in the comment; a bump is a reviewed change.
+
+name: fast
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fast-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  lane:
+    name: fast lane
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      # GATE-privacy's term list lives here and nowhere in the repository. A pull request from a fork has no secrets, so the
+      # gate then runs without the list and without --strict (gates.json).
+      STATESPACE_PRIVACY_TERMS: ${{ secrets.STATESPACE_PRIVACY_TERMS }}
+      STATESPACE_PRIVACY_KEY: ${{ secrets.STATESPACE_PRIVACY_KEY }}
+      STATESPACE_COURSE_DOMAIN: ${{ vars.STATESPACE_COURSE_DOMAIN }}
+    steps:
+      - name: Start the lane clock
+        run: echo "STATESPACE_LANE_START=$(date +%s)" >> "$GITHUB_ENV"
+
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # GATE-privacy reads the history
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: 0.10.2
+          enable-cache: false
+
+      - name: Install the pinned packages
+        run: npm ci --no-audit --no-fund
+
+      - name: Run the fast lane
+        run: node scripts/spikes/W0-T04/lane.mjs fast

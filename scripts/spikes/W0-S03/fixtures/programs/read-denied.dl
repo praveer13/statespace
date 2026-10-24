@@ -1,0 +1,34 @@
+// The access matrix and its complement: negation over a relation that itself rests on recursion.
+.decl tenant_of_user(u: symbol, a: symbol)
+.decl tenant_of_team(t: symbol, a: symbol)
+.decl member(u: symbol, t: symbol, r: symbol)
+.decl owns(t: symbol, d: symbol)
+.decl subteam(s: symbol, t: symbol)
+.decl share_user(d: symbol, u: symbol)
+.decl share_team(d: symbol, t: symbol)
+.decl revoked(d: symbol, u: symbol)
+.input tenant_of_user
+.input tenant_of_team
+.input member
+.input owns
+.input subteam
+.input share_user
+.input share_team
+.input revoked
+
+.decl inteam(u: symbol, t: symbol)
+.decl canread(u: symbol, d: symbol)
+.decl doc(d: symbol)
+.decl denied(u: symbol, d: symbol)
+.output inteam
+.output canread
+.output doc
+.output denied
+
+inteam(u, t)  :- member(u, t, _).
+inteam(u, t)  :- inteam(u, s), subteam(s, t).
+canread(u, d) :- inteam(u, t), owns(t, d).
+canread(u, d) :- share_user(d, u), !revoked(d, u).
+canread(u, d) :- inteam(u, t), share_team(d, t).
+doc(d)        :- owns(_, d).
+denied(u, d)  :- tenant_of_user(u, _), doc(d), !canread(u, d).

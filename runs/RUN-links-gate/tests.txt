@@ -1,0 +1,75 @@
+ok 1 - verify-links exits 0 on a consistent tree
+ok 2 - a pending proposal is reported and does not fail the gate
+ok 3 - --strict fails while proposals remain, and names each one
+ok 4 - without the proposals file, a proposed ID is an ordinary failure (the gate falls back to the spine)
+ok 5 - IDs are resolved in docs, curriculum, labs, content, tracker and design; v1 history is exempt
+ok 6 - a mistyped ID used in several places is one finding with its places
+ok 7 - --json prints the findings and the same exit status
+ok 8 - an unreadable required file is exit 2, not a pass
+ok 9 - a proposals file that is not valid is exit 2, not a pass
+ok 10 - build-ids writes the registry and the types, and --check agrees afterwards
+ok 11 - build-ids --against fails when an ID of an earlier revision is gone or names another kind, and not when IDs are added or fields change
+ok 12 - build-ids refuses to write a registry from a spine whose tables no longer parse
+ok 13 - every kind has an example that matches its own format, and only its own
+ok 14 - the kinds of the grammar are the kinds of the generated module
+ok 15 - the formats of the spine ID table, one by one
+ok 16 - tokens are found in prose, tables, lists and emphasis
+ok 17 - the most specific kind wins, and the inside of a token is not a second token
+ok 18 - wildcards, placeholders, format strings and path fragments are not IDs
+ok 19 - a typo is a token that will not resolve, not text that goes unchecked
+ok 20 - line and column are one-based and point at the token
+ok 21 - idsOfKind and allIds keep order and drop repeats
+ok 22 - the real files parse, and the committed registry is what they generate
+ok 23 - files with CRLF line endings read the same as files with LF
+ok 24 - an ID that is not in the registry fails, with file, line and column
+ok 25 - every document that is scanned counts: docs, curriculum, labs, tracker and README
+ok 26 - misconception keys resolve against the registry generated from EVIDENCE.md
+ok 27 - a proposed ID is pending, not a failure; --strict fails on it; a stale entry fails
+ok 28 - a run ID in a task's proposed_ids is pending until the spine registers it
+ok 29 - an unowned mechanic in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 30 - an unowned screen in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 31 - an unowned drawer in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 32 - an unowned instrument in the catalog fails; an owner in tracker/tasks.yaml clears it
+ok 33 - the owner message names the task that the spine gives an unowned ID to
+ok 34 - an unowned gate is a note, not a failure; an implements entry must be exactly one ID
+ok 35 - every implements entry and every depends_on resolves (a dropped task is a dangling reference)
+ok 36 - 9.1 "Used in": a stage that no lesson row gives is a mismatch
+ok 37 - 9.1 "Used in": a cell that is neither a stage list nor an exempt phrase fails; "all labs" is exempt
+ok 38 - 9.1 "Used in": a lesson row that uses an instrument in another stage is a mismatch
+ok 39 - 9.1 "Used in": a capstone step counts, and Lane A counts the labs that the step is built in
+ok 40 - 8.3 "Stages": a generator used in another stage is a mismatch; the exempt cells are exempt
+ok 41 - 3.12 "Used in": a stage spec that references a drawer the cell omits is a mismatch
+ok 42 - parseStageList and stagesNamedIn read the cells of the spine
+ok 43 - a [step] row changes the step count and leaves the lesson count alone
+ok 44 - a spine that counts the steps among its lessons fails the gate
+ok 45 - a lesson added to a table disagrees with the stated counts
+ok 46 - a count paragraph or clause that went missing is a finding, so a reworded sentence is not silently unchecked
+ok 47 - a status in docs/TRACKER.md that differs from tasks.yaml fails
+ok 48 - the other direction: tasks.yaml moves and the checklist does not
+ok 49 - the four statuses map to the four markers, and a consistent change in both files passes
+ok 50 - a task missing from the checklist, listed twice, or unknown to tasks.yaml fails
+ok 51 - a task of spine section 13 that tasks.yaml dropped, and a status it does not allow, fail
+ok 52 - a tasks.yaml that does not parse is one finding, not a cascade
+ok 53 - a spine edit without regenerating packages/ids is a stale registry
+ok 54 - a missing committed registry fails
+ok 55 - [step] IDs are lessons by shape and are excluded from every lesson count
+ok 56 - steps count towards Used in, and Lane A also counts the labs a step is built in
+ok 57 - the real spine builds with no problems
+ok 58 - every ID of the registry is unique, in its kind format, and has a section
+ok 59 - a malformed table, a duplicate ID and a missing table are problems, not a shorter registry
+ok 60 - stage and lab arithmetic
+ok 61 - drawer references of a stage spec: the Drawers and Sibling bridges paragraphs, ranges expanded
+ok 62 - misconception keys: catalog rows plus the ranges proposed in section 6.11
+ok 63 - the generated files are deterministic, and a registry diff names added, removed and changed IDs
+ok 64 - mappings, sequences of mappings and scalars of the subset
+ok 65 - literal and kept block scalars
+ok 66 - constructs outside the subset fail loudly instead of being half-read
+ok 67 - tracker/tasks.yaml stays inside the subset and has the shape the gate reads
+ok 68 - agrees with PyYAML on tracker/tasks.yaml # SKIP
+# tests 68
+# suites 0
+# pass 67
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0

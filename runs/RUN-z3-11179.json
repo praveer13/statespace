@@ -1,0 +1,238 @@
+{
+  "id": "RUN-z3-11179",
+  "title": "Z3 issue #11179: 5.3.0 answers unsat on two satisfiable inputs where 5.3.1 answers unknown",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "issue #11179 inputs through the command line: 5.3.0 → `unsat` on both satisfiable inputs; 5.3.1 → `unknown`; through the Python API, `unknown` on 5.3.1, 5.3.0, 5.1.0 and 4.15.4",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3-solver wheels 5.3.1, 5.3.0, 5.1.0 and 4.15.4 from PyPI, installed by uv",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/scripts/z3_11179_cli.py",
+      "sha256": "1527f15acc330536c016b184b12d8a6ae0e388f458906d314af012a9474a60d1",
+      "bytes": 626,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/a2r3/scripts/z3_11179.py",
+      "sha256": "b74d175e4510925ace043ea748cf4a53842b2e6203f75f165575e12140e1db84",
+      "bytes": 667,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "z3 5.3.1",
+    "[issue input 1 (truth: sat, y=2)] -> unknown",
+    "[issue input 2 (truth: sat, y=1/2)] -> unknown"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/z3_11179_cli.txt",
+      "sha256": "0dcec84fa56e8d91af8a28468958bcd711145b2173ebc53afb98c340e97f9baf",
+      "bytes": 397,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/out/z3_11179.txt",
+      "sha256": "e1feeea6a12202b5c0f9e2245633980befd380d1a43761d5d9ceb3fb6594c618",
+      "bytes": 489,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "cli": {
+      "5.3.1": [
+        "unknown",
+        "unknown"
+      ],
+      "5.3.0": [
+        "unsat",
+        "unsat"
+      ],
+      "5.1.0": [
+        "unsat",
+        "unknown"
+      ],
+      "4.15.4": [
+        "unsat",
+        "unknown"
+      ]
+    },
+    "api": {
+      "5.3.1": [
+        "unknown",
+        "unknown"
+      ],
+      "5.3.0": [
+        "unknown",
+        "unknown"
+      ],
+      "5.1.0": [
+        "unknown",
+        "unknown"
+      ],
+      "4.15.4": [
+        "unknown",
+        "unknown"
+      ]
+    }
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "cli-5.3.1",
+      "origin": "imported",
+      "purpose": "the issue's two SMT-LIB scripts through Z3's SMT-LIB2 command interpreter (Z3_eval_smtlib2_string), z3-solver 5.3.1",
+      "version": "5.3.1",
+      "verdict_lines": [
+        "z3 5.3.1",
+        "[issue input 1 (truth: sat, y=2)] -> unknown",
+        "[issue input 2 (truth: sat, y=1/2)] -> unknown"
+      ]
+    },
+    {
+      "id": "api-5.3.1",
+      "origin": "imported",
+      "purpose": "the same inputs through the Python API (Solver.from_string, timeout 10000 ms), z3-solver 5.3.1",
+      "version": "5.3.1",
+      "budget": {
+        "timeout_ms": 10000
+      },
+      "verdict_lines": [
+        "z3 5.3.1",
+        "[lower-bound (sat: y=2)] unknown unknown",
+        "[upper-bound (sat: y=1/2)] unknown unknown",
+        "[lower-bound + pin y=2] sat "
+      ]
+    },
+    {
+      "id": "cli-5.3.0",
+      "origin": "imported",
+      "purpose": "the issue's two SMT-LIB scripts through Z3's SMT-LIB2 command interpreter (Z3_eval_smtlib2_string), z3-solver 5.3.0",
+      "version": "5.3.0",
+      "verdict_lines": [
+        "z3 5.3.0",
+        "[issue input 1 (truth: sat, y=2)] -> unsat",
+        "[issue input 2 (truth: sat, y=1/2)] -> unsat"
+      ]
+    },
+    {
+      "id": "api-5.3.0",
+      "origin": "imported",
+      "purpose": "the same inputs through the Python API (Solver.from_string, timeout 10000 ms), z3-solver 5.3.0",
+      "version": "5.3.0",
+      "budget": {
+        "timeout_ms": 10000
+      },
+      "verdict_lines": [
+        "z3 5.3.0",
+        "[lower-bound (sat: y=2)] unknown unknown",
+        "[upper-bound (sat: y=1/2)] unknown unknown",
+        "[lower-bound + pin y=2] sat "
+      ]
+    },
+    {
+      "id": "cli-5.1.0",
+      "origin": "imported",
+      "purpose": "the issue's two SMT-LIB scripts through Z3's SMT-LIB2 command interpreter (Z3_eval_smtlib2_string), z3-solver 5.1.0",
+      "version": "5.1.0",
+      "verdict_lines": [
+        "z3 5.1.0",
+        "[issue input 1 (truth: sat, y=2)] -> unsat",
+        "[issue input 2 (truth: sat, y=1/2)] -> unknown"
+      ]
+    },
+    {
+      "id": "api-5.1.0",
+      "origin": "imported",
+      "purpose": "the same inputs through the Python API (Solver.from_string, timeout 10000 ms), z3-solver 5.1.0",
+      "version": "5.1.0",
+      "budget": {
+        "timeout_ms": 10000
+      },
+      "verdict_lines": [
+        "z3 5.1.0",
+        "[lower-bound (sat: y=2)] unknown unknown",
+        "[upper-bound (sat: y=1/2)] unknown unknown",
+        "[lower-bound + pin y=2] sat "
+      ]
+    },
+    {
+      "id": "cli-4.15.4",
+      "origin": "imported",
+      "purpose": "the issue's two SMT-LIB scripts through Z3's SMT-LIB2 command interpreter (Z3_eval_smtlib2_string), z3-solver 4.15.4",
+      "version": "4.15.4",
+      "verdict_lines": [
+        "z3 4.15.4",
+        "[issue input 1 (truth: sat, y=2)] -> unsat",
+        "[issue input 2 (truth: sat, y=1/2)] -> unknown"
+      ]
+    },
+    {
+      "id": "api-4.15.4",
+      "origin": "imported",
+      "purpose": "the same inputs through the Python API (Solver.from_string, timeout 10000 ms), z3-solver 4.15.4",
+      "version": "4.15.4",
+      "budget": {
+        "timeout_ms": 10000
+      },
+      "verdict_lines": [
+        "z3 4.15.4",
+        "[lower-bound (sat: y=2)] unknown unknown",
+        "[upper-bound (sat: y=1/2)] unknown unknown",
+        "[lower-bound + pin y=2] sat "
+      ]
+    }
+  ],
+  "primary_config": "cli-5.3.1",
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "uv did not log the wheels it installed"
+    },
+    {
+      "field": "image",
+      "reason": "no container is recorded: the script's usage line runs it under uv on the host"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated; RESULTS.md, dated 2026-10-20, records the starter from an earlier execution"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the logs hold the output; the scripts give no usage line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/out/z3_11179_cli.txt, z3_11179.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "\"Through the command line\" in the spine means the SMT-LIB2 command interpreter called through the API (Z3_eval_smtlib2_string), as z3_11179_cli.py does, not the z3 executable."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "statespace/goal-strip-spike@0",
+  "id": "Ledger.transfer_conserves",
+  "theorem": "transfer_conserves",
+  "source": {
+    "file": "Ledger.lean",
+    "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb"
+  },
+  "request": "$/lean/plainGoal",
+  "tactics": [
+    "unfold transfer total",
+    "split",
+    "simp",
+    "omega"
+  ],
+  "states": [
+    {
+      "when": "before",
+      "index": 0,
+      "line": 14,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "⊢ total (transfer s n) = total s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 1,
+      "line": 15,
+      "character": 2,
+      "goals": [
+        [
+          "s : Ledger",
+          "n : Int",
+          "⊢ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) +",
+          "      Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) =",
+          "    Ledger.a s + Ledger.b s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 2,
+      "line": 15,
+      "character": 12,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "h✝ : 0 ≤ n ∧ n ≤ Ledger.a s",
+          "⊢ Ledger.a { a := Ledger.a s - n, b := Ledger.b s + n } + Ledger.b { a := Ledger.a s - n, b := Ledger.b s + n } =",
+          "    Ledger.a s + Ledger.b s"
+        ],
+        [
+          "case isFalse",
+          "s : Ledger",
+          "n : Int",
+          "h✝ : ¬(0 ≤ n ∧ n ≤ Ledger.a s)",
+          "⊢ Ledger.a s + Ledger.b s = Ledger.a s + Ledger.b s"
+        ]
+      ]
+    },
+    {
+      "when": "before",
+      "index": 3,
+      "line": 15,
+      "character": 21,
+      "goals": [
+        [
+          "case isTrue",
+          "s : Ledger",
+          "n : Int",
+          "h✝ : 0 ≤ n ∧ n ≤ Ledger.a s",
+          "⊢ Ledger.a s - n + (Ledger.b s + n) = Ledger.a s + Ledger.b s"
+        ]
+      ]
+    },
+    {
+      "when": "end",
+      "index": 4,
+      "line": 15,
+      "character": 26,
+      "goals": []
+    }
+  ]
+}

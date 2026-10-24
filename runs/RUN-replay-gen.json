@@ -1,0 +1,1122 @@
+{
+  "id": "RUN-replay-gen",
+  "title": "Goal Replay strips generated through $/lean/plainGoal: identical across runs, and a simulated toolchain bump produces a diff (W0-S10)",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "binary": "bin/lean of the 4.35.0 toolchain inside the image (the elan proxy at /opt/elan/bin/lean resolves to it)",
+  "image": "ss-lean:4.35.0",
+  "recorded_at": "2026-10-24T12:55:41.091Z",
+  "started_at": "2026-10-24T12:55:20.654Z",
+  "argv": [
+    "node",
+    "scripts/spikes/W0-S10/run-spike.mjs",
+    "record",
+    "--bump-toolchain-dir",
+    "<toolchain-dir:4.34.1>",
+    "--bump-toolchain-dir",
+    "<toolchain-dir:4.36.0-rc1>",
+    "--soak",
+    "3"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S10/corpus/Fallback.lean",
+      "sha256": "3ec7bd8e351f1ddbdbceb54316f7cf7c9a365762483a2371591cf87e884a636b",
+      "role": "corpus"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/corpus/Ledger.lean",
+      "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+      "role": "corpus"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/corpus/Shapes.lean",
+      "sha256": "a2a32de8bd322801c4d7fd319b92a9b3fc5f2e23a259d2697d900f4395dcb4a3",
+      "role": "corpus"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/corpus/strips.json",
+      "sha256": "24e927d5688fa2c544b92b042e9b5efc8f1f201a878ce76f2541f23d8b5a117f",
+      "role": "spec"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/diff-strips.mjs",
+      "sha256": "cbbdc22aa88122aba05e5f2818957a4634e40745848a150f54af693bd587afad",
+      "role": "script"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/gen-strips.mjs",
+      "sha256": "07121d002f1d33bc53eeffbf0ca17fd6da7ee4ca600ab1fbbb04499f2224a2ce",
+      "role": "script"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/run-spike.mjs",
+      "sha256": "17da0fdcc4dca5fa905b8d487e5d8301ef54eb681ca32b79f954f18c151883f7",
+      "role": "script"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/scan-positions.mjs",
+      "sha256": "b1e32220895eeaa4b34ce0b18128bbe4643289088ff0709d12e8dc4d57d3aeeb",
+      "role": "script"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/lib/lean-server.mjs",
+      "sha256": "63bfaa68c1ff6a4078b95f769a9dd68d0d0fbccc0b4862e847eeba998367e158",
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 300,
+    "request_timeout_s": 120,
+    "cpuset_cpus": "all, except 0 in the one-CPU configuration",
+    "lean_options": "Lean defaults; the only option changed is the -D flag a configuration lists"
+  },
+  "exit_code": 0,
+  "duration_s": 20.437,
+  "verdict_lines": [
+    "RESULT identical-strips-across-two-runs: PASS (IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9)",
+    "RESULT identical-strips-under-one-cpu-and-further-runs: PASS (one run pinned to CPU 0 and 3 further cold runs, each byte-equal to run 1)",
+    "RESULT simulated-bump-produces-a-diff: PASS (DIFF: 9 strips compared, 3 differ; 8 of 33 states changed; 30 goal lines added, 29 removed)",
+    "RESULT probe-release-4.34.1: INFO (generation exit 0; DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed)",
+    "RESULT probe-release-4.36.0-rc1: INFO (generation exit 0; DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed)",
+    "RESULT layout-probe-format.width=40: INFO (DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed)",
+    "RESULT position-scan: INFO (scan: 9 strips, 1173 positions)",
+    "RESULT scale-probe-100-theorems: INFO (gen: 100 strips, 500 states, 1 sources, 5 non-ASCII code points, 1.8 s)",
+    "RESULT fail-closed: PASS (4 of 4 corpus variants refused with exit 1 and no output written)",
+    "RESULT server-needs-localtime: PASS (without the file the server exits 1 with: Watchdog error: no such file or directory (error code: 2)   file: /etc/localtime)",
+    "RESULT fallback-guard-msgs: PASS (pinned: exit 0, no output; simulated bump: exit 1, docstring mismatch reported)",
+    "RESULT acceptance (identical strips across two runs; a simulated bump produces a diff): PASS"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.run_conserves.strip.json",
+      "sha256": "056cd89077cded81d0573a3007f95c10bffbaf1a401f1e8e744abf11f3db9a53",
+      "bytes": 1324,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.run_conserves.strip.txt",
+      "sha256": "53b6f67cd97ead03d6e8ba797960fd2cb5ad3ca2961e4abcd54d8d6997a2bdf8",
+      "bytes": 685,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.transfer_conserves.strip.json",
+      "sha256": "5934e6fc19858875e7359ed50696c34af78007ae74f00f93840a7da2a1026723",
+      "bytes": 2168,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.transfer_conserves.strip.txt",
+      "sha256": "947b68eb6c2bee1f1937967472c683d91534987d0b0938483b7ff2326d741e05",
+      "bytes": 1348,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.transfer_nonneg.strip.json",
+      "sha256": "5c5bfef382fdeef7296829e91f04acd4a09aa8beccc3eba7c7027236e45f3fe1",
+      "bytes": 2432,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Ledger.transfer_nonneg.strip.txt",
+      "sha256": "15681ed5a67f963646cc47acd7a7c7e3350b2f1fb29959a81a3daa366dc1ec22",
+      "bytes": 1546,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.add_comm_example.strip.json",
+      "sha256": "de262feaa4f23c705e2dfb349c9650d4881a0b97265517725d29679c016639ce",
+      "bytes": 642,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.add_comm_example.strip.txt",
+      "sha256": "5e8b339501dad361c1c6c80ef5842b365b71af2562a465565b8a3dd8cb80c7a8",
+      "bytes": 307,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.and_intro_example.strip.json",
+      "sha256": "1ec7f12ec487d559dbae817f8d5fde2b289233217b8120c404c8a5f0e025eb32",
+      "bytes": 673,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.and_intro_example.strip.txt",
+      "sha256": "2c1a1dcad6a0f2fd310d4381021c40bd3d399bcbb6451956010f9b1e2bed2b16",
+      "bytes": 320,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.and_swap_example.strip.json",
+      "sha256": "7b47bfa50518dfdcf4cc9ab471292e7f64231afabd2a540a47425b57c5dfddfb",
+      "bytes": 1576,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.and_swap_example.strip.txt",
+      "sha256": "4f296bb7502411eb0bec793a25530e0755f55e6e2f1cf3da2a50cedb17c0cb58",
+      "bytes": 754,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.guard_leaves_funds.strip.json",
+      "sha256": "4f261dfdbe42893d542a763cd08e78323b7f9ac6d69348b83f2806dfe0a22271",
+      "bytes": 943,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.guard_leaves_funds.strip.txt",
+      "sha256": "051f9cc2244dae51f1727066e3e1edbd823e6f049a458eacb526d632c13b328a",
+      "bytes": 456,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.net_append.strip.json",
+      "sha256": "f20fe155dba7fb0d60ceb930480c4964cc24d0778374e44eab5abf91ff2cf679",
+      "bytes": 1646,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.net_append.strip.txt",
+      "sha256": "76c58f7b022387b973ebbaf2a0aef24b4be0633add923d70d7c3e66248ad3ad7",
+      "bytes": 855,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.std_empty_size.strip.json",
+      "sha256": "c40198fbbb7b48dc86be991dbeb04ab2ec57cfe4e27992d74f97869c03077345",
+      "bytes": 638,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/Shapes.std_empty_size.strip.txt",
+      "sha256": "189336f275833035720331d08ecfeb829ca56de510900ca7b81c1fa79c717536",
+      "bytes": 312,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated/manifest.json",
+      "sha256": "46abf29b5bb78608c5a7b9292289d7587e0622bcc1a76b53bd07fbb34617d4b5",
+      "bytes": 3624,
+      "kind": "strips regenerated under the simulated bump",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/bump-simulated.diff.txt",
+      "sha256": "0a7abd19b91df969adcfbb83f4982584b9520d16fef40599fabbd8cf630a885e",
+      "bytes": 3948,
+      "kind": "reviewable diff against the baseline",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/position-scan.txt",
+      "sha256": "3bc591849b953c57e91a240d369210fbb927c2e0e71a831362c8b83154b6d641",
+      "bytes": 5504,
+      "kind": "the state plainGoal reports at each character of each proof",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/probe-4.34.1/manifest.json",
+      "sha256": "b7c53868b3cb01859e79f3195297fc25208e9da26defd237e0bd605675e001b8",
+      "bytes": 3591,
+      "kind": "manifest of a probe regeneration (its strips equal the baseline)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/probe-4.34.1.diff.txt",
+      "sha256": "cb0b1248d71dc14d58dc2fd4b789dd9953b58021608a2f9509f2e9328664edeb",
+      "bytes": 583,
+      "kind": "reviewable diff against the baseline",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/probe-4.36.0-rc1/manifest.json",
+      "sha256": "b5d5f27a7fe34f859f7f588bddebfcbf84e286479366ec4f55c97f41db7494c2",
+      "bytes": 3595,
+      "kind": "manifest of a probe regeneration (its strips equal the baseline)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/probe-4.36.0-rc1.diff.txt",
+      "sha256": "071831868ed8fd6852498e8d0a2db91b1f2f19b8516bbc03c4995ff82bda838e",
+      "bytes": 587,
+      "kind": "reviewable diff against the baseline",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.run_conserves.strip.json",
+      "sha256": "056cd89077cded81d0573a3007f95c10bffbaf1a401f1e8e744abf11f3db9a53",
+      "bytes": 1324,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.run_conserves.strip.txt",
+      "sha256": "53b6f67cd97ead03d6e8ba797960fd2cb5ad3ca2961e4abcd54d8d6997a2bdf8",
+      "bytes": 685,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.transfer_conserves.strip.json",
+      "sha256": "aba42efdec56156d04de1517f29513fa022567e609ab3beea9ed7149434c664f",
+      "bytes": 1948,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.transfer_conserves.strip.txt",
+      "sha256": "df5cfb3eeaddf8a4d444ffa49580feb0dd0f5c0bdab6f1d7cfad05f2ad703be8",
+      "bytes": 1135,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.transfer_nonneg.strip.json",
+      "sha256": "f960717dea64a205565d8838cec7de2885b374d20dbe8a73e53de001dd4a5fe0",
+      "bytes": 2208,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Ledger.transfer_nonneg.strip.txt",
+      "sha256": "698427a512dbce15a663c7beaac8c797c3dc609f64bcc1d17abadef6a0a48927",
+      "bytes": 1322,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.add_comm_example.strip.json",
+      "sha256": "de262feaa4f23c705e2dfb349c9650d4881a0b97265517725d29679c016639ce",
+      "bytes": 642,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.add_comm_example.strip.txt",
+      "sha256": "5e8b339501dad361c1c6c80ef5842b365b71af2562a465565b8a3dd8cb80c7a8",
+      "bytes": 307,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.and_intro_example.strip.json",
+      "sha256": "1ec7f12ec487d559dbae817f8d5fde2b289233217b8120c404c8a5f0e025eb32",
+      "bytes": 673,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.and_intro_example.strip.txt",
+      "sha256": "2c1a1dcad6a0f2fd310d4381021c40bd3d399bcbb6451956010f9b1e2bed2b16",
+      "bytes": 320,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.and_swap_example.strip.json",
+      "sha256": "7b47bfa50518dfdcf4cc9ab471292e7f64231afabd2a540a47425b57c5dfddfb",
+      "bytes": 1576,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.and_swap_example.strip.txt",
+      "sha256": "4f296bb7502411eb0bec793a25530e0755f55e6e2f1cf3da2a50cedb17c0cb58",
+      "bytes": 754,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.guard_leaves_funds.strip.json",
+      "sha256": "4f261dfdbe42893d542a763cd08e78323b7f9ac6d69348b83f2806dfe0a22271",
+      "bytes": 943,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.guard_leaves_funds.strip.txt",
+      "sha256": "051f9cc2244dae51f1727066e3e1edbd823e6f049a458eacb526d632c13b328a",
+      "bytes": 456,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.net_append.strip.json",
+      "sha256": "f20fe155dba7fb0d60ceb930480c4964cc24d0778374e44eab5abf91ff2cf679",
+      "bytes": 1646,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.net_append.strip.txt",
+      "sha256": "76c58f7b022387b973ebbaf2a0aef24b4be0633add923d70d7c3e66248ad3ad7",
+      "bytes": 855,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.std_empty_size.strip.json",
+      "sha256": "966523902ef2c892f8133a9baeb04e79339c0b4a19f79bf93fdfc999a061b0cc",
+      "bytes": 626,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/Shapes.std_empty_size.strip.txt",
+      "sha256": "b546b4341f59dc1c44cc0be9d2555d6529db8fc732835f40dee18b09a13af8ec",
+      "bytes": 300,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    },
+    {
+      "path": "runs/RUN-replay-gen/strips/manifest.json",
+      "sha256": "e1055d7e9527aca561a215c9f51e869b431b6aaad6af3a79737947f3ea8f7aad",
+      "bytes": 3591,
+      "kind": "committed baseline strips (run 1)",
+      "compare": "byte-equal on re-run (verify mode)"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "ss-lean:4.35.0",
+      "id": "sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "digest": null,
+      "os": "Ubuntu 24.04.5 LTS",
+      "run_flags": [
+        "--rm",
+        "--network none",
+        "--memory=6g",
+        "-v <corpus>:/w:ro",
+        "-v <utc-localtime>:/etc/localtime:ro",
+        "-w /w"
+      ]
+    },
+    "host_tools": {
+      "node": "v22.22.2"
+    },
+    "emulated": true,
+    "emulation": "the toolchain bump in the bump-simulated configurations is emulated by flipping a pretty-printer option on the pinned toolchain; the probe-releases configurations run actual other releases"
+  },
+  "notes": [
+    "Simulated bump: Lean 4.35.0 with the pretty-printer option pp.fieldNotation set to false through `lean --server -D`. It is the same toolchain, not a different release.",
+    "The image is built locally and has no registry digest; environment.container.id is its content id and digest is null.",
+    "Strips were generated and compared on this image only (Linux x86_64). No other platform was run.",
+    "The one-CPU configuration pins the container with --cpuset-cpus=0.",
+    "The probe-releases configurations are reported, not asserted: they use other releases (one a pre-release) installed with elan into directories outside the repository and mounted read-only, and are not pins.",
+    "Positions in strips are 0-based LSP lines and UTF-16 characters.",
+    "This record was not validated against run@1: schemas/run.schema.json did not exist when it was recorded (W0-S11 owns it). Field names follow the task rules for run records."
+  ],
+  "configs": [
+    {
+      "id": "generate-1",
+      "group": "identical-runs",
+      "purpose": "first cold run of the generator; its output is the committed baseline",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/pass-1"
+      ],
+      "started_at": "2026-10-24T12:55:20.833Z",
+      "duration_s": 1.802,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.8 s"
+      ]
+    },
+    {
+      "id": "generate-2",
+      "group": "identical-runs",
+      "purpose": "second cold run, a new container",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/pass-2"
+      ],
+      "started_at": "2026-10-24T12:55:22.635Z",
+      "duration_s": 1.07,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.0 s"
+      ]
+    },
+    {
+      "id": "compare-1-2",
+      "group": "identical-runs",
+      "purpose": "diff-strips on the two output directories: byte equality of every file",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/pass-2"
+      ],
+      "started_at": "2026-10-24T12:55:23.705Z",
+      "duration_s": 0.038,
+      "exit_code": 0,
+      "verdict_lines": [
+        "IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9"
+      ]
+    },
+    {
+      "id": "generate-1cpu",
+      "group": "identical-under-other-scheduling",
+      "purpose": "the container pinned to CPU 0",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/pass-1cpu",
+        "--cpuset-cpus",
+        "0"
+      ],
+      "started_at": "2026-10-24T12:55:23.745Z",
+      "duration_s": 1.752,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g --cpuset-cpus=0 -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.7 s"
+      ]
+    },
+    {
+      "id": "compare-1-1cpu",
+      "group": "identical-under-other-scheduling",
+      "purpose": "diff-strips against run 1",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/pass-1cpu"
+      ],
+      "started_at": "2026-10-24T12:55:25.497Z",
+      "duration_s": 0.04,
+      "exit_code": 0,
+      "verdict_lines": [
+        "IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9"
+      ]
+    },
+    {
+      "id": "generate-soak-1",
+      "group": "identical-under-other-scheduling",
+      "purpose": "a further cold run",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/soak-1"
+      ],
+      "started_at": "2026-10-24T12:55:25.537Z",
+      "duration_s": 1.143,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.1 s"
+      ]
+    },
+    {
+      "id": "compare-1-soak-1",
+      "group": "identical-under-other-scheduling",
+      "purpose": "diff-strips against run 1",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/soak-1"
+      ],
+      "started_at": "2026-10-24T12:55:26.680Z",
+      "duration_s": 0.031,
+      "exit_code": 0,
+      "verdict_lines": [
+        "IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9"
+      ]
+    },
+    {
+      "id": "generate-soak-2",
+      "group": "identical-under-other-scheduling",
+      "purpose": "a further cold run",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/soak-2"
+      ],
+      "started_at": "2026-10-24T12:55:26.712Z",
+      "duration_s": 1.044,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.0 s"
+      ]
+    },
+    {
+      "id": "compare-1-soak-2",
+      "group": "identical-under-other-scheduling",
+      "purpose": "diff-strips against run 1",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/soak-2"
+      ],
+      "started_at": "2026-10-24T12:55:27.755Z",
+      "duration_s": 0.034,
+      "exit_code": 0,
+      "verdict_lines": [
+        "IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9"
+      ]
+    },
+    {
+      "id": "generate-soak-3",
+      "group": "identical-under-other-scheduling",
+      "purpose": "a further cold run",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/soak-3"
+      ],
+      "started_at": "2026-10-24T12:55:27.789Z",
+      "duration_s": 0.955,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 0.9 s"
+      ]
+    },
+    {
+      "id": "compare-1-soak-3",
+      "group": "identical-under-other-scheduling",
+      "purpose": "diff-strips against run 1",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/soak-3"
+      ],
+      "started_at": "2026-10-24T12:55:28.744Z",
+      "duration_s": 0.025,
+      "exit_code": 0,
+      "verdict_lines": [
+        "IDENTICAL: 19 files, 9 strips, 33 states, set sha256 9b3f1849f99c1fe479b274cc30480bdca20dfbf932714865eb2036ee257a22e9"
+      ]
+    },
+    {
+      "id": "generate-bump-simulated",
+      "group": "bump-simulated",
+      "purpose": "simulated bump: the same Lean 4.35.0 with the pretty-printer option pp.fieldNotation=false passed to the server (emulated: not a different toolchain)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/bump-simulated",
+        "--lean-opt",
+        "pp.fieldNotation=false"
+      ],
+      "started_at": "2026-10-24T12:55:28.769Z",
+      "duration_s": 0.953,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server -Dpp.fieldNotation=false",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 0.9 s"
+      ]
+    },
+    {
+      "id": "compare-baseline-bump-simulated",
+      "group": "bump-simulated",
+      "purpose": "the reviewable diff against run 1, saved in full as bump-simulated.diff.txt",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/bump-simulated"
+      ],
+      "started_at": "2026-10-24T12:55:29.723Z",
+      "duration_s": 0.024,
+      "exit_code": 1,
+      "verdict_lines": [
+        "DIFF: 9 strips compared, 3 differ; 8 of 33 states changed; 30 goal lines added, 29 removed"
+      ],
+      "stdout_file": "runs/RUN-replay-gen/bump-simulated.diff.txt"
+    },
+    {
+      "id": "generate-probe-4.34.1",
+      "group": "probe-releases",
+      "purpose": "real probe: Lean 4.34.1 (installed with elan into a directory mounted read-only), not the pinned toolchain",
+      "engine": "lean",
+      "version": "4.34.1",
+      "version_string": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+      "binary_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/probe-4.34.1",
+        "--mount",
+        "<toolchain-dir:4.34.1>:/elanx",
+        "--lean-bin",
+        "/elanx/toolchains/leanprover--lean4---v4.34.1/bin/lean"
+      ],
+      "started_at": "2026-10-24T12:55:29.747Z",
+      "duration_s": 2.137,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+        "gen: toolchain bin/lean sha256 e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -v <mount-host>:/elanx:ro -w /w ss-lean:4.35.0 /elanx/toolchains/leanprover--lean4---v4.34.1/bin/lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 2.1 s"
+      ]
+    },
+    {
+      "id": "compare-baseline-probe-4.34.1",
+      "group": "probe-releases",
+      "purpose": "diff against run 1, saved in full",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/probe-4.34.1"
+      ],
+      "started_at": "2026-10-24T12:55:31.883Z",
+      "duration_s": 0.025,
+      "exit_code": 1,
+      "verdict_lines": [
+        "DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed"
+      ],
+      "stdout_file": "runs/RUN-replay-gen/probe-4.34.1.diff.txt"
+    },
+    {
+      "id": "generate-probe-4.36.0-rc1",
+      "group": "probe-releases",
+      "purpose": "real probe: Lean 4.36.0-rc1 (installed with elan into a directory mounted read-only), not the pinned toolchain",
+      "engine": "lean",
+      "version": "4.36.0-rc1",
+      "version_string": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/probe-4.36.0-rc1",
+        "--mount",
+        "<toolchain-dir:4.36.0-rc1>:/elanx",
+        "--lean-bin",
+        "/elanx/toolchains/leanprover--lean4---v4.36.0-rc1/bin/lean"
+      ],
+      "started_at": "2026-10-24T12:55:31.908Z",
+      "duration_s": 2.266,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+        "gen: toolchain bin/lean sha256 db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -v <mount-host>:/elanx:ro -w /w ss-lean:4.35.0 /elanx/toolchains/leanprover--lean4---v4.36.0-rc1/bin/lean --server",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 2.2 s"
+      ]
+    },
+    {
+      "id": "compare-baseline-probe-4.36.0-rc1",
+      "group": "probe-releases",
+      "purpose": "diff against run 1, saved in full",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/probe-4.36.0-rc1"
+      ],
+      "started_at": "2026-10-24T12:55:34.175Z",
+      "duration_s": 0.029,
+      "exit_code": 1,
+      "verdict_lines": [
+        "DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed"
+      ],
+      "stdout_file": "runs/RUN-replay-gen/probe-4.36.0-rc1.diff.txt"
+    },
+    {
+      "id": "generate-width-40",
+      "group": "layout-and-positions",
+      "purpose": "layout probe: the option format.width=40 passed to the server",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/width",
+        "--lean-opt",
+        "format.width=40"
+      ],
+      "started_at": "2026-10-24T12:55:34.203Z",
+      "duration_s": 1.051,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server -Dformat.width=40",
+        "gen: 9 strips, 33 states, 2 sources, 9 non-ASCII code points, 1.0 s"
+      ]
+    },
+    {
+      "id": "compare-baseline-width-40",
+      "group": "layout-and-positions",
+      "purpose": "diff against run 1",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/diff-strips.mjs",
+        "<work>/pass-1",
+        "<work>/width"
+      ],
+      "started_at": "2026-10-24T12:55:35.254Z",
+      "duration_s": 0.025,
+      "exit_code": 1,
+      "verdict_lines": [
+        "files that differ: 1 of 19",
+        "manifest leanOptions: [] -> [\"format.width=40\"]",
+        "DIFF (every strip identical; only the manifest differs): 9 strips compared, 0 differ; 0 of 33 states changed; 0 goal lines added, 0 removed"
+      ]
+    },
+    {
+      "id": "scan-positions",
+      "group": "layout-and-positions",
+      "purpose": "the state plainGoal reports at every character of every proof, saved in full as position-scan.txt",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/scan-positions.mjs",
+        "--strips",
+        "<work>/pass-1"
+      ],
+      "started_at": "2026-10-24T12:55:35.279Z",
+      "duration_s": 1.631,
+      "exit_code": 0,
+      "verdict_lines": [
+        "scan: 9 strips, 1173 positions"
+      ],
+      "stdout_file": "runs/RUN-replay-gen/position-scan.txt"
+    },
+    {
+      "id": "generate-scale-100",
+      "group": "scale",
+      "purpose": "scale probe: one source with 100 copies of the transfer_conserves proof under different names, four tactics each",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/scale-out",
+        "--corpus",
+        "<work>/scale",
+        "--spec",
+        "<work>/scale/strips.json"
+      ],
+      "started_at": "2026-10-24T12:55:36.910Z",
+      "duration_s": 1.817,
+      "exit_code": 0,
+      "verdict_lines": [
+        "gen: toolchain Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+        "gen: toolchain bin/lean sha256 bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "gen: server argv docker run -i --name <container> --rm --network none --memory=6g -v <corpus>:/w:ro -v <utc-localtime>:/etc/localtime:ro -w /w ss-lean:4.35.0 lean --server",
+        "gen: 100 strips, 500 states, 1 sources, 5 non-ASCII code points, 1.8 s"
+      ]
+    },
+    {
+      "id": "fail-closed-drifted-tactic",
+      "group": "fail-closed",
+      "purpose": "the spec names a tactic the source does not contain",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/neg-out-drifted-tactic",
+        "--corpus",
+        "<work>/neg-drifted-tactic",
+        "--spec",
+        "<work>/neg-drifted-tactic/strips.json"
+      ],
+      "started_at": "2026-10-24T12:55:38.728Z",
+      "duration_s": 0.033,
+      "exit_code": 1,
+      "verdict_lines": [
+        "gen: FAILED: Ledger.lean:transfer_conserves: tactic \"linarith\" not found after the previous one"
+      ],
+      "stderr": [
+        "gen: FAILED: Ledger.lean:transfer_conserves: tactic \"linarith\" not found after the previous one"
+      ],
+      "expected_exit_code": 1,
+      "passed": true
+    },
+    {
+      "id": "fail-closed-broken-proof",
+      "group": "fail-closed",
+      "purpose": "a theorem statement edited so the proof no longer elaborates",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/neg-out-broken-proof",
+        "--corpus",
+        "<work>/neg-broken-proof",
+        "--spec",
+        "<work>/neg-broken-proof/strips.json"
+      ],
+      "started_at": "2026-10-24T12:55:38.761Z",
+      "duration_s": 0.622,
+      "exit_code": 1,
+      "verdict_lines": [
+        "gen: FAILED: Ledger.lean does not elaborate cleanly (3 error or warning diagnostics); no strips from a broken file:",
+        "  Ledger.lean:13:8: error: (kernel) declaration has metavariables 'transfer_conserves'",
+        "  Ledger.lean:15:12: error: `simp` made no progress",
+        "  Ledger.lean:34:17: error: unsolved goals"
+      ],
+      "stderr": [
+        "gen: FAILED: Ledger.lean does not elaborate cleanly (3 error or warning diagnostics); no strips from a broken file:",
+        "  Ledger.lean:13:8: error: (kernel) declaration has metavariables 'transfer_conserves'",
+        "  Ledger.lean:15:12: error: `simp` made no progress",
+        "  Ledger.lean:34:17: error: unsolved goals"
+      ],
+      "expected_exit_code": 1,
+      "passed": true
+    },
+    {
+      "id": "fail-closed-sorry",
+      "group": "fail-closed",
+      "purpose": "a declaration that uses sorry elsewhere in a source file",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/neg-out-sorry",
+        "--corpus",
+        "<work>/neg-sorry",
+        "--spec",
+        "<work>/neg-sorry/strips.json"
+      ],
+      "started_at": "2026-10-24T12:55:39.383Z",
+      "duration_s": 0.911,
+      "exit_code": 1,
+      "verdict_lines": [
+        "gen: FAILED: Shapes.lean does not elaborate cleanly (1 error or warning diagnostics); no strips from a broken file:",
+        "  Shapes.lean:37:8: warning: declaration uses `sorry`"
+      ],
+      "stderr": [
+        "gen: FAILED: Shapes.lean does not elaborate cleanly (1 error or warning diagnostics); no strips from a broken file:",
+        "  Shapes.lean:37:8: warning: declaration uses `sorry`"
+      ],
+      "expected_exit_code": 1,
+      "passed": true
+    },
+    {
+      "id": "fail-closed-crlf-source",
+      "group": "fail-closed",
+      "purpose": "a source file with CRLF line endings",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-S10/gen-strips.mjs",
+        "--out",
+        "<work>/neg-out-crlf-source",
+        "--corpus",
+        "<work>/neg-crlf-source",
+        "--spec",
+        "<work>/neg-crlf-source/strips.json"
+      ],
+      "started_at": "2026-10-24T12:55:40.295Z",
+      "duration_s": 0.029,
+      "exit_code": 1,
+      "verdict_lines": [
+        "gen: FAILED: Shapes.lean: carriage return found; sources must use LF so positions and hashes agree across platforms"
+      ],
+      "stderr": [
+        "gen: FAILED: Shapes.lean: carriage return found; sources must use LF so positions and hashes agree across platforms"
+      ],
+      "expected_exit_code": 1,
+      "passed": true
+    },
+    {
+      "id": "server-without-localtime",
+      "group": "server-start-up",
+      "purpose": "the server started without a /etc/localtime file, given initialize, initialized and didOpen on stdin; the generator mounts a UTC file so this does not happen",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "none",
+        "--memory=6g",
+        "-v",
+        "<corpus>:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0",
+        "lean",
+        "--server"
+      ],
+      "started_at": "2026-10-24T12:55:40.324Z",
+      "duration_s": 0.17,
+      "exit_code": 1,
+      "verdict_lines": [
+        "Watchdog error: no such file or directory (error code: 2)",
+        "  file: /etc/localtime"
+      ],
+      "stderr": [
+        "Watchdog error: no such file or directory (error code: 2)",
+        "  file: /etc/localtime"
+      ],
+      "expected_exit_code": 1,
+      "passed": true
+    },
+    {
+      "id": "fallback-pinned",
+      "group": "fallback-guard-msgs",
+      "purpose": "the fallback: the goal recorded as a #guard_msgs docstring (trace_state) and checked by lean itself, on the pinned toolchain; must exit 0 and print nothing",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory=6g",
+        "-v",
+        "<corpus>:/w:ro",
+        "-v",
+        "<utc-localtime>:/etc/localtime:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0",
+        "lean",
+        "Fallback.lean"
+      ],
+      "started_at": "2026-10-24T12:55:40.495Z",
+      "duration_s": 0.284,
+      "exit_code": 0,
+      "verdict_lines": []
+    },
+    {
+      "id": "fallback-simulated-bump",
+      "group": "fallback-guard-msgs",
+      "purpose": "the same file under the simulated bump (-Dpp.fieldNotation=false); must exit 1 with a docstring mismatch",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--network",
+        "none",
+        "--memory=6g",
+        "-v",
+        "<corpus>:/w:ro",
+        "-v",
+        "<utc-localtime>:/etc/localtime:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0",
+        "lean",
+        "-Dpp.fieldNotation=false",
+        "Fallback.lean"
+      ],
+      "started_at": "2026-10-24T12:55:40.779Z",
+      "duration_s": 0.308,
+      "exit_code": 1,
+      "verdict_lines": [
+        "s : Ledger",
+        "n : Int",
+        "⊢ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) +",
+        "      Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) =",
+        "    Ledger.a s + Ledger.b s",
+        "Fallback.lean:19:0: error: ❌️ Docstring on `#guard_msgs` does not match generated message:",
+        "",
+        "  trace: s : Ledger",
+        "  n : Int",
+        "- ⊢ (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).a +",
+        "-       (if 0 ≤ n ∧ n ≤ s.a then { a := s.a - n, b := s.b + n } else s).b =",
+        "-     s.a + s.b",
+        "+ ⊢ Ledger.a (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) +",
+        "+       Ledger.b (if 0 ≤ n ∧ n ≤ Ledger.a s then { a := Ledger.a s - n, b := Ledger.b s + n } else s) =",
+        "+     Ledger.a s + Ledger.b s"
+      ]
+    }
+  ]
+}

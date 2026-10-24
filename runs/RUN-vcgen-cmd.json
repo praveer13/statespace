@@ -1,0 +1,2973 @@
+{
+  "id": "RUN-vcgen-cmd",
+  "title": "Lean's experimental vcgen on a Mini-Plinth-style command type (W0-S07)",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "binary": "bin/lean of the 4.35.0 toolchain; libleanshared.so and the other toolchains are hashed under toolchains[].binaries",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-24T12:51:50.597Z",
+  "started_at": "2026-10-24T12:51:24.137Z",
+  "argv": [
+    "node",
+    "scripts/spikes/W0-S07/record.mjs",
+    "--cache",
+    "<cache>"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07.lean",
+      "sha256": "619f41898d3072c573aba57a04c3688818b24790f1c86d92a1ec2f59ebcda9de"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+      "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/ContractFail.lean",
+      "sha256": "8421590a7b02a4b743855310c7c3fb8b4e02b651054281f4ca3a102448b83726"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/ContractOk.lean",
+      "sha256": "41f6f88fbec8725b376051fd3ea597ccefe1135157df107b4defa75b3f9a11a8"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrows.lean",
+      "sha256": "4d4228e55fda8ffdebf1217a15b9997c6b68c82334e170e288122e8273dcb3e2"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrowsBare.lean",
+      "sha256": "23c431ef3f874048f6a61173826855b757302faa221fe7bd869a1505a7a49b09"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/Interface.lean",
+      "sha256": "c5461149376817ac7e32fadd6218b6b9d92999131cca6553379649bdb6b552f6"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/Proved.lean",
+      "sha256": "f3685070efcaab2f38a3efa95d488766d257bf59a9cfc8923b033809f771da5a"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/Residual.lean",
+      "sha256": "c7a765f8becdee79ebc839868bb2e3ce75fc0571178c59808e237fdb1df24fe6"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/W0S07/StyleIf.lean",
+      "sha256": "8ba7be2a8d96d0fd855e292d9b5996b01b907dd6b26c7ff22a9230cab9b63e0b"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/lakefile.toml",
+      "sha256": "acafba062fb815eac6efb3e075a7745f2f13a56300faa21a649a9937afe83087"
+    },
+    {
+      "path": "scripts/spikes/W0-S07/lean/lean-toolchain",
+      "sha256": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c"
+    }
+  ],
+  "input_sha256": "4fdd3365482bdc80f4ca8d074a8d9ea42ccdca3583184899b2be37036095c5c6",
+  "input_sha256_method": "SHA-256 of the sha256sum-style manifest of inputs[], one \"<sha256>  <path>\\n\" line per file, sorted by path",
+  "recipe": {
+    "path": "scripts/spikes/W0-S07/record.mjs",
+    "sha256": "10415136de6aaf345cdebfc56f6fca763a76adfbdce54d0ebe84803adc6523b2"
+  },
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600,
+    "max_heartbeats": 200000,
+    "max_heartbeats_note": "the Lean default, printed by Interface.lean; no probe overrides it",
+    "steps": "one docker run at a time"
+  },
+  "exit_code": 0,
+  "exit_code_note": "0 when every step exited with its expected code; each step's own code is in configs[]",
+  "duration_s": 26.46,
+  "verdict_lines": [
+    "v4.35.0/build: exit 0 (expected 0)",
+    "v4.35.0/Proved: exit 0 (expected 0)",
+    "v4.35.0/Residual: exit 1 (expected 1)",
+    "v4.35.0/StyleIf: exit 0 (expected 0)",
+    "v4.35.0/ContractOk: exit 0 (expected 0)",
+    "v4.35.0/ContractFail: exit 1 (expected 1)",
+    "v4.35.0/ContractThrows: exit 1 (expected 1)",
+    "v4.35.0/ContractThrowsBare: exit 1 (expected 1)",
+    "v4.35.0/Interface: exit 0 (expected 0)",
+    "v4.36.0-rc1/build: exit 0 (expected 0)",
+    "v4.36.0-rc1/Proved: exit 0 (expected 0); output identical to 4.35.0",
+    "v4.36.0-rc1/Residual: exit 1 (expected 1); output identical to 4.35.0",
+    "v4.36.0-rc1/StyleIf: exit 0 (expected 0); output identical to 4.35.0",
+    "v4.36.0-rc1/ContractOk: exit 0 (expected 0); output identical to 4.35.0",
+    "v4.36.0-rc1/ContractFail: exit 1 (expected 1); output identical to 4.35.0",
+    "v4.36.0-rc1/ContractThrows: exit 0 (expected 0); output differs from 4.35.0",
+    "v4.36.0-rc1/ContractThrowsBare: exit 1 (expected 1); output differs from 4.35.0",
+    "v4.36.0-rc1/Interface: exit 0 (expected 0); output differs from 4.35.0",
+    "nightly-2026-10-24/build: exit 0 (expected 0)",
+    "nightly-2026-10-24/Proved: exit 0 (expected 0); output identical to 4.35.0",
+    "nightly-2026-10-24/Residual: exit 1 (expected 1); output identical to 4.35.0",
+    "nightly-2026-10-24/StyleIf: exit 0 (expected 0); output identical to 4.35.0",
+    "nightly-2026-10-24/ContractOk: exit 0 (expected 0); output identical to 4.35.0",
+    "nightly-2026-10-24/ContractFail: exit 1 (expected 1); output identical to 4.35.0",
+    "nightly-2026-10-24/ContractThrows: exit 0 (expected 0); output differs from 4.35.0",
+    "nightly-2026-10-24/ContractThrowsBare: exit 1 (expected 1); output differs from 4.35.0",
+    "nightly-2026-10-24/Interface: exit 0 (expected 0); output differs from 4.35.0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/build.out",
+      "sha256": "0116e02cb8f401a2abbc94650001af1dbb2db3c2e18487df0fb7fd6903f15145",
+      "bytes": 211,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/Proved.out",
+      "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+      "bytes": 3563,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/Residual.out",
+      "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+      "bytes": 1510,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/StyleIf.out",
+      "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+      "bytes": 1186,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractOk.out",
+      "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+      "bytes": 264,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractFail.out",
+      "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+      "bytes": 1118,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractThrows.out",
+      "sha256": "596a8ce96476e333b298ae69dad0a2700cefac1258e7ba2a19b290f64f4399f5",
+      "bytes": 551,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractThrowsBare.out",
+      "sha256": "456a6699963cb8de0797a844ac6d9a9c4ae0e1bc512863f85c31907b35bbe2db",
+      "bytes": 430,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.35.0/Interface.out",
+      "sha256": "4200de63bcdeb791975733919f39358858b097a63b5dd7fb6b6073531cf7e6a9",
+      "bytes": 4541,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/build.out",
+      "sha256": "5259f6308a93b615576784860560fcece73719bc56b68c1befbab2d0aaa9ee5f",
+      "bytes": 211,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Proved.out",
+      "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+      "bytes": 3563,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Residual.out",
+      "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+      "bytes": 1510,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/StyleIf.out",
+      "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+      "bytes": 1186,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractOk.out",
+      "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+      "bytes": 264,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractFail.out",
+      "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+      "bytes": 1118,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractThrows.out",
+      "sha256": "5843d5e75f6e42519ca4507419fb0e2232f84aa22154f2317f10b21fe6f16a3d",
+      "bytes": 181,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractThrowsBare.out",
+      "sha256": "5ee6fbcf4676a48fab06e1f42283532ef41674cc4a17cee51f9984e3c54bd9a7",
+      "bytes": 4888,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Interface.out",
+      "sha256": "021e2d4dd22f22a97e13181c065ddcbcc11bc3c22d920e806827cce357eb151a",
+      "bytes": 4774,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/build.out",
+      "sha256": "5e13daa861ca73430b15142f2bd312f7c65a07e40a8fb935d5a5f60702ea681f",
+      "bytes": 212,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Proved.out",
+      "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+      "bytes": 3563,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Residual.out",
+      "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+      "bytes": 1510,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/StyleIf.out",
+      "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+      "bytes": 1186,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractOk.out",
+      "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+      "bytes": 264,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractFail.out",
+      "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+      "bytes": 1118,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractThrows.out",
+      "sha256": "5843d5e75f6e42519ca4507419fb0e2232f84aa22154f2317f10b21fe6f16a3d",
+      "bytes": 181,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractThrowsBare.out",
+      "sha256": "90629562a90d3eae8bc59d4926d5eaa716aba8ac48f6ac42e9d90be4504368eb",
+      "bytes": 590,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    },
+    {
+      "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Interface.out",
+      "sha256": "021e2d4dd22f22a97e13181c065ddcbcc11bc3c22d920e806827cce357eb151a",
+      "bytes": 4774,
+      "kind": "lean and lake stdout and stderr, paths normalized"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "ss-lean:4.35.0",
+      "digest": "sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "digest_note": "a locally built image with no registry digest: this is its image id",
+      "os": "Ubuntu 24.04.5 LTS",
+      "run_flags": [
+        "--rm",
+        "--memory=6g",
+        "--network=none",
+        "--user <uid>:<gid>",
+        "-e HOME=/tmp",
+        "-v <sandbox>:/work",
+        "-w /work",
+        "archives only: -e PATH=/tc/bin:/usr/bin:/bin -v <cache>/<toolchain>:/tc:ro"
+      ]
+    },
+    "host_tools": {
+      "node": "v22.22.2"
+    },
+    "emulated": false
+  },
+  "toolchains": [
+    {
+      "id": "v4.35.0",
+      "role": "pinned (edition 1)",
+      "toolchain_file": "leanprover/lean4:v4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lake_version_string": "Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)",
+      "source": "installed by elan in ss-lean:4.35.0 at /opt/elan/toolchains/leanprover--lean4---v4.35.0; the release asset digest below is GitHub's, not re-hashed here",
+      "release_asset": {
+        "name": "lean-4.35.0-linux.tar.zst",
+        "url": "https://github.com/leanprover/lean4/releases/download/v4.35.0/lean-4.35.0-linux.tar.zst",
+        "bytes": 594481375,
+        "sha256": "7289597a44543246c9227b8cae501767e095ce17f6d448b95fc4a8dc97268f6d",
+        "published_at": "2026-10-12T18:13:12Z",
+        "verified_here": false
+      },
+      "binaries": {
+        "bin/lean": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+        "bin/lake": "8ba83c98f76562d03b8dbc33f1057151ba6cbb121679dde76b2260ccc90495e1",
+        "lib/lean/libleanshared.so": "efef27df56f2197139afe12f1a2b63913a05f1aba81ce88824c44100431ed8c4",
+        "lib/lean/libLake_shared.so": "d68867df340056b40726fde3939a9d2021901cc6944f971dd6a6a778bd9ea25b"
+      },
+      "container": {
+        "os": "Ubuntu 24.04.5 LTS",
+        "arch": "x86_64",
+        "cpu_count": 20
+      }
+    },
+    {
+      "id": "v4.36.0-rc1",
+      "role": "next release candidate",
+      "toolchain_file": "leanprover/lean4:v4.36.0-rc1",
+      "version_string": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "lake_version_string": "Lake version 5.0.0-src+c9afcdd (Lean version 4.36.0-rc1)",
+      "source": "release archive downloaded, hashed and matched against the published digest, mounted read-only at /tc",
+      "release_asset": {
+        "name": "lean-4.36.0-rc1-linux.tar.zst",
+        "url": "https://github.com/leanprover/lean4/releases/download/v4.36.0-rc1/lean-4.36.0-rc1-linux.tar.zst",
+        "bytes": 605563669,
+        "sha256": "26b3cea1a006ad419215520b8668dcd3f6a9eeba1a123756563a739f9c6274b2",
+        "published_at": "2026-10-14T18:30:03Z",
+        "verified_here": true
+      },
+      "binaries": {
+        "bin/lean": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+        "bin/lake": "42678ccbc2605e2f892540dc7236e009fdd1224e823d104dfd72725d2f1a52d2",
+        "lib/lean/libleanshared.so": "593af26b21d188f3f256f03de4da380c1288816202eef941652200eaab265990",
+        "lib/lean/libLake_shared.so": "27718458b7640484c9839e05675f8688e6d224d15409874761b3d10abca6957e"
+      },
+      "container": {
+        "os": "Ubuntu 24.04.5 LTS",
+        "arch": "x86_64",
+        "cpu_count": 20
+      }
+    },
+    {
+      "id": "nightly-2026-10-24",
+      "role": "newest nightly on the recording date (4.37.0 development)",
+      "toolchain_file": "leanprover/lean4-nightly:nightly-2026-10-24",
+      "version_string": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "lake_version_string": "Lake version 5.0.0-src (Lean version 4.37.0-nightly-2026-10-24)",
+      "source": "release archive downloaded, hashed and matched against the published digest, mounted read-only at /tc",
+      "release_asset": {
+        "name": "lean-4.37.0-nightly-2026-10-24-linux.tar.zst",
+        "url": "https://github.com/leanprover/lean4-nightly/releases/download/nightly-2026-10-24/lean-4.37.0-nightly-2026-10-24-linux.tar.zst",
+        "bytes": 621866598,
+        "sha256": "b134449abef8c25ec1f1654216267b8e4af054fb43488cd25c822bfa10ab89f0",
+        "published_at": "2026-10-24T10:36:11Z",
+        "verified_here": true
+      },
+      "binaries": {
+        "bin/lean": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+        "bin/lake": "5a1ec94f6308ee5102021e352212675a9f20c886e4819c8f643e35dafab5c81e",
+        "lib/lean/libleanshared.so": "632b2a7ddf8a94e019a6a91a5b575d7625cf8cdf3c5fa12d172b835959eacadc",
+        "lib/lean/libLake_shared.so": "282cfe0719490849fdc6f7104722c744616515d22d4679bfbecdd6616430d30e"
+      },
+      "container": {
+        "os": "Ubuntu 24.04.5 LTS",
+        "arch": "x86_64",
+        "cpu_count": 20
+      }
+    }
+  ],
+  "summary": [
+    {
+      "id": "v4.35.0/build",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 1.85
+    },
+    {
+      "id": "v4.35.0/Proved",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 1.13
+    },
+    {
+      "id": "v4.35.0/Residual",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.65
+    },
+    {
+      "id": "v4.35.0/StyleIf",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.86
+    },
+    {
+      "id": "v4.35.0/ContractOk",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.7
+    },
+    {
+      "id": "v4.35.0/ContractFail",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.63
+    },
+    {
+      "id": "v4.35.0/ContractThrows",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.54
+    },
+    {
+      "id": "v4.35.0/ContractThrowsBare",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 0.54
+    },
+    {
+      "id": "v4.35.0/Interface",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 1.17
+    },
+    {
+      "id": "v4.36.0-rc1/build",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 1.63
+    },
+    {
+      "id": "v4.36.0-rc1/Proved",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.96
+    },
+    {
+      "id": "v4.36.0-rc1/Residual",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.67
+    },
+    {
+      "id": "v4.36.0-rc1/StyleIf",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.85
+    },
+    {
+      "id": "v4.36.0-rc1/ContractOk",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.81
+    },
+    {
+      "id": "v4.36.0-rc1/ContractFail",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.75
+    },
+    {
+      "id": "v4.36.0-rc1/ContractThrows",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 0.69
+    },
+    {
+      "id": "v4.36.0-rc1/ContractThrowsBare",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 0.72
+    },
+    {
+      "id": "v4.36.0-rc1/Interface",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 1.22
+    },
+    {
+      "id": "nightly-2026-10-24/build",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "duration_s": 1.23
+    },
+    {
+      "id": "nightly-2026-10-24/Proved",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.81
+    },
+    {
+      "id": "nightly-2026-10-24/Residual",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.53
+    },
+    {
+      "id": "nightly-2026-10-24/StyleIf",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.76
+    },
+    {
+      "id": "nightly-2026-10-24/ContractOk",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.64
+    },
+    {
+      "id": "nightly-2026-10-24/ContractFail",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "duration_s": 0.64
+    },
+    {
+      "id": "nightly-2026-10-24/ContractThrows",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 0.54
+    },
+    {
+      "id": "nightly-2026-10-24/ContractThrowsBare",
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 0.8
+    },
+    {
+      "id": "nightly-2026-10-24/Interface",
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "duration_s": 1.16
+    }
+  ],
+  "values": {
+    "transfer_vc": "case vc1\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"amount\" ∧ NonNeg s✝\na✝ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s✝¹ s✝\n⊢ NonNeg\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n      (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))",
+    "fee_transfer_vcs": [
+      "case vc1\ns✝¹ : Env\ns✝ : State\na✝² : 0 < s✝¹.num \"amount\" ∧ 0 < s✝¹.num \"fee\" ∧ NonNeg s✝\na✝¹ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) ((Expr.var \"amount\").add (Expr.var \"fee\"))) s✝¹ s✝\na✝ :\n  holds (BExpr.ge (Expr.var \"amount\") (Expr.lit 100)) s✝¹\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n      (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n⊢ NonNeg\n    ((post\n          (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n            (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n          (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.lit \"sink\"))\n          (Expr.eval s✝¹\n            (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n              (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n            (Expr.var \"fee\"))).setFld\n      \"transfers\" (AExpr.eval s✝¹ (AExpr.var \"from\"))\n      (Expr.eval s✝¹\n        (post\n          (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n            (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n          (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.lit \"sink\"))\n          (Expr.eval s✝¹\n            (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n              (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n            (Expr.var \"fee\")))\n        ((Expr.field \"transfers\" (AExpr.var \"from\")).add (Expr.lit 1))))",
+      "case vc2\ns✝¹ : Env\ns✝ : State\na✝² : 0 < s✝¹.num \"amount\" ∧ 0 < s✝¹.num \"fee\" ∧ NonNeg s✝\na✝¹ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) ((Expr.var \"amount\").add (Expr.var \"fee\"))) s✝¹ s✝\na✝ :\n  fails (BExpr.ge (Expr.var \"amount\") (Expr.lit 100)) s✝¹\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n      (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n⊢ NonNeg\n    ((post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n          (Expr.eval s✝¹ s✝ (Expr.var \"amount\"))).setFld\n      \"transfers\" (AExpr.eval s✝¹ (AExpr.var \"from\"))\n      (Expr.eval s✝¹\n        (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n          (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))\n        ((Expr.field \"transfers\" (AExpr.var \"from\")).add (Expr.lit 1))))"
+    ],
+    "axioms": [
+      "'W0S07.transfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transfer_nonneg_auto' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transfer_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transfer_pair_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transfer_frame' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.feeTransfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transferWeakGuard_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.transferWeakGuard_nonneg_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "'W0S07.payTwo_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]"
+    ],
+    "weak_guard_residual": "case vc1\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"amount\" ∧ 0 ≤ s✝.bal (s✝¹.acct \"from\")\na✝ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.lit 0)) s✝¹ s✝\n⊢ 0 ≤\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n          (Expr.eval s✝¹ s✝ (Expr.var \"amount\"))).bal\n      (s✝¹.acct \"from\")",
+    "weak_guard_invariant_residual": "case vc1\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"amount\" ∧ NonNeg s✝\na✝ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.lit 0)) s✝¹ s✝\n⊢ NonNeg\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n      (Expr.eval s✝¹ s✝ (Expr.var \"amount\")))",
+    "pay_two_residual": "case vc1\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"n\" ∧ 0 < s✝¹.num \"m\" ∧ NonNeg s✝\na✝ :\n  holds\n    ((BExpr.ge (Expr.balance (AExpr.var \"x\")) (Expr.var \"n\")).and\n      (BExpr.ge (Expr.balance (AExpr.var \"y\")) (Expr.var \"m\")))\n    s✝¹ s✝\n⊢ NonNeg\n    (post (post s✝ (AExpr.eval s✝¹ (AExpr.var \"x\")) (AExpr.eval s✝¹ (AExpr.var \"z\")) (Expr.eval s✝¹ s✝ (Expr.var \"n\")))\n      (AExpr.eval s✝¹ (AExpr.var \"y\")) (AExpr.eval s✝¹ (AExpr.var \"z\"))\n      (Expr.eval s✝¹\n        (post s✝ (AExpr.eval s✝¹ (AExpr.var \"x\")) (AExpr.eval s✝¹ (AExpr.var \"z\")) (Expr.eval s✝¹ s✝ (Expr.var \"n\")))\n        (Expr.var \"m\")))",
+    "if_style_vc": "case vc1\ns✝¹ : Env\ns✝ : State\na✝ : 0 < s✝¹.num \"amount\" ∧ NonNeg s✝\n⊢ if BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true then\n    wp (Stmt.move (Expr.var \"amount\") (AExpr.var \"from\") (AExpr.var \"to\")) (fun x x_1 s => NonNeg s)\n      (fun e => e = Err.guardFailed \"Transfer\") s✝¹ s✝\n  else Err.guardFailed \"Transfer\" = Err.guardFailed \"Transfer\"",
+    "contract_spec": "transferContract.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ ρ.num \"amount\" ≤ s.bal (ρ.acct \"from\") ∧ NonNeg s ⦄\n  transferContract ⦃ fun x x_1 s => NonNeg s ⦄",
+    "contract_axioms": [
+      "'W0S07.transferContract.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+    ],
+    "weak_guard_contract_residual": "case vc1\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"amount\" ∧ 0 ≤ s✝.bal (s✝¹.acct \"from\")\na✝ : holds (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.lit 0)) s✝¹ s✝\n⊢ 0 ≤\n    (post s✝ (AExpr.eval s✝¹ (AExpr.var \"from\")) (AExpr.eval s✝¹ (AExpr.var \"to\"))\n          (Expr.eval s✝¹ s✝ (Expr.var \"amount\"))).bal\n      (s✝¹.acct \"from\")",
+    "rejection_contract_residual": "case vc2\ns✝¹ : Env\ns✝ : State\na✝¹ : 0 < s✝¹.num \"amount\" ∧ NonNeg s✝\na✝ : fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s✝¹ s✝\n⊢ ⊥ (Err.guardFailed \"Transfer\")",
+    "contract_failures": [
+      "W0S07/ContractFail.lean:22:0: error: unproved verification conditions for the contract of `transferWeakContract`; discharge them in a `where finally | spec => ...` section of the definition",
+      "W0S07/ContractFail.lean:31:0: error: unproved verification conditions for the contract of `transferContractRejects`; the `where finally | spec => ...` section does not discharge them",
+      "W0S07/ContractFail.lean:42:0: error: No spec found for program Transfer.",
+      "W0S07/ContractFail.lean:49:0: error: No spec found for program Transfer.exec ρ s."
+    ],
+    "throws_on_pinned": [
+      "W0S07/ContractThrows.lean:23:20: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+      "W0S07/ContractThrows.lean:22:21: error: Function expected at",
+      "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+      "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`"
+    ],
+    "throws_spec_on_later": [
+      {
+        "toolchain": "v4.36.0-rc1",
+        "spec": "transferContractThrows.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ NonNeg s ⦄ transferContractThrows ⦃ fun x x_1 s =>\n  NonNeg s; fun e => e = Err.guardFailed \"Transfer\" ⦄"
+      },
+      {
+        "toolchain": "nightly-2026-10-24",
+        "spec": "transferContractThrows.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ NonNeg s ⦄ transferContractThrows ⦃ fun x x_1 s =>\n  NonNeg s; fun e => e = Err.guardFailed \"Transfer\" ⦄"
+      }
+    ],
+    "throws_bare_errors": [
+      {
+        "toolchain": "v4.35.0",
+        "errors": [
+          "W0S07/ContractThrowsBare.lean:22:12: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+          "W0S07/ContractThrowsBare.lean:21:21: error: Function expected at"
+        ]
+      },
+      {
+        "toolchain": "v4.36.0-rc1",
+        "errors": [
+          "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+          "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed"
+        ]
+      },
+      {
+        "toolchain": "nightly-2026-10-24",
+        "errors": [
+          "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+          "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed"
+        ]
+      }
+    ],
+    "declaring_modules": [
+      {
+        "toolchain": "v4.35.0",
+        "lines": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.Tactic.Do.Syntax",
+          "Lean.Parser.Attr.spec is declared in module Std.Tactic.Do.Syntax",
+          "Std.WP.WP is declared in module Std.WP.Basic",
+          "Std.WP.Triple is declared in module Std.WP.Triple.Basic"
+        ]
+      },
+      {
+        "toolchain": "v4.36.0-rc1",
+        "lines": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.WP.Tactic",
+          "Lean.Parser.Attr.spec is declared in module Std.WP.Tactic",
+          "Std.WP.WP is declared in module Std.WP.Basic",
+          "Std.WP.Triple is declared in module Std.WP.Triple.Basic"
+        ]
+      },
+      {
+        "toolchain": "nightly-2026-10-24",
+        "lines": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.WP.Tactic",
+          "Lean.Parser.Attr.spec is declared in module Std.WP.Tactic",
+          "Std.WP.WP is declared in module Std.WP.Basic",
+          "Std.WP.Triple is declared in module Std.WP.Triple.Basic"
+        ]
+      }
+    ],
+    "interface": {
+      "vcgen_docstring_opening": "`vcgen` will break down a Hoare triple proof goal like `⦃P⦄ prog ⦃Q⦄` into verification conditions,\nprovided that all functions used in `prog` have specifications registered with `@[spec]`.\n\n`vcgen` is experimental and subject to change. `set_option experimental.vcgen true` acknowledges\nits experimental status and silences the warning that each call reports.\n\n### Program types\n\n`vcgen` works on any program type `Prog` that carries a `Std.WP.WP` interpretation. A monad\nis one such program type. An inductive type of commands is another, once its weakest precondition is\ndefined in terms of an operational semantics.",
+      "options": {
+        "experimental.vcgen": {
+          "default": "false",
+          "descr": "acknowledge that the `vcgen` tactic is experimental and subject to change; `true` silences the warning that each `vcgen` call reports"
+        },
+        "experimental.intrinsic": {
+          "default": "false",
+          "descr": "acknowledge that the intrinsic verification syntax (the contract clauses of a `def`, the `assert` element, and the `invariant` and `decreasing` clauses of a loop) is experimental and subject to change; `true` silences the warning that each of these forms reports"
+        },
+        "maxHeartbeats": {
+          "default": "200000",
+          "descr": null
+        }
+      },
+      "warnings_with_options_off": [
+        "The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.",
+        "The `ensures` clause is part of the experimental intrinsic verification syntax; `set_option experimental.intrinsic true` acknowledges its experimental status and silences this warning.",
+        "The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning."
+      ]
+    },
+    "cmd_module_lines": {
+      "file": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+      "total": 326,
+      "sections": [
+        {
+          "section": "(header and imports)",
+          "lines": 25
+        },
+        {
+          "section": "Syntax",
+          "lines": 55
+        },
+        {
+          "section": "Big-step semantics with an explicit error",
+          "lines": 44
+        },
+        {
+          "section": "State lemmas (the kind the LAB-3 template supplies with `State`)",
+          "lines": 20
+        },
+        {
+          "section": "Weakest preconditions from the semantics",
+          "lines": 34
+        },
+        {
+          "section": "`wp` equations, one per constructor, derived from `exec`",
+          "lines": 34
+        },
+        {
+          "section": "Registered specifications",
+          "lines": 16
+        },
+        {
+          "section": "The guard and `ite`, style 1: an `if` in the precondition",
+          "lines": 14
+        },
+        {
+          "section": "The guard and `ite`, style 2: the lattice connectives `⊓` and `⇨`",
+          "lines": 38
+        },
+        {
+          "section": "Commands",
+          "lines": 46
+        }
+      ]
+    }
+  },
+  "notes": [
+    "Local substitute, labeled: the pinned toolchain ran from ss-lean:4.35.0, a locally built image (Ubuntu 24.04, elan 4.2.4, Lean 4.35.0) with no registry digest; its image id stands in until the devcontainer digest exists (W0-T05).",
+    "The 4.36.0-rc1 and nightly toolchains ran in the same image with the release archive mounted read-only and its bin/ first on PATH; elan was not involved.",
+    "duration_s is the wall-clock time of one docker run, container start included; one step at a time; not a performance measurement.",
+    "The command type is a spike, not the course reference: balances are a function Acct -> Int, and move is the only resource operation modelled.",
+    "Expected exit codes are the outcomes each probe is designed to show (see each file header), informed by exploratory runs during the spike; as_expected compares them with the observed codes.",
+    "Field names follow the snake_case keys of the W0 task rules and the sibling W0 run records; spine section 9.5 writes the same fields in camelCase, which run@1 (W0-S11) will settle."
+  ],
+  "configs": [
+    {
+      "id": "v4.35.0/build",
+      "toolchain": "v4.35.0",
+      "step": "build",
+      "purpose": "builds W0S07.Cmd: the command type, its semantics, its WP instances and spec lemmas",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-build",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "build"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07.lean",
+          "sha256": "619f41898d3072c573aba57a04c3688818b24790f1c86d92a1ec2f59ebcda9de"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lakefile.toml",
+          "sha256": "acafba062fb815eac6efb3e075a7745f2f13a56300faa21a649a9937afe83087"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lean-toolchain",
+          "sha256": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:24.835Z",
+      "duration_s": 1.85,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "Build completed successfully (4 jobs)."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/build.out",
+          "sha256": "0116e02cb8f401a2abbc94650001af1dbb2db3c2e18487df0fb7fd6903f15145",
+          "bytes": 211,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/Proved",
+      "toolchain": "v4.35.0",
+      "step": "Proved",
+      "purpose": "P1-P5: the triples vcgen proves, the VCs it leaves (trace_state), three refutations, axioms",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-Proved",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Proved.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Proved.lean",
+          "sha256": "f3685070efcaab2f38a3efa95d488766d257bf59a9cfc8923b033809f771da5a"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:26.703Z",
+      "duration_s": 1.13,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "'W0S07.transfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_nonneg_auto' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_pair_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_frame' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.feeTransfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_nonneg_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.payTwo_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/Proved.out",
+          "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+          "bytes": 3563,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/Residual",
+      "toolchain": "v4.35.0",
+      "step": "Residual",
+      "purpose": "R1-R3: the obligations vcgen leaves on the weakened guard and on PayTwo (unsolved goals)",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-Residual",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Residual.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Residual.lean",
+          "sha256": "c7a765f8becdee79ebc839868bb2e3ce75fc0571178c59808e237fdb1df24fe6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:27.845Z",
+      "duration_s": 0.65,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/Residual.lean:26:65: error: unsolved goals",
+        "⊢ 0 ≤",
+        "W0S07/Residual.lean:33:71: error: unsolved goals",
+        "⊢ NonNeg",
+        "W0S07/Residual.lean:40:48: error: unsolved goals",
+        "⊢ NonNeg"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/Residual.out",
+          "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+          "bytes": 1510,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/StyleIf",
+      "toolchain": "v4.35.0",
+      "step": "StyleIf",
+      "purpose": "the upstream example's spec style (an if in the precondition): the VC keeps wp of the body",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-StyleIf",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/StyleIf.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/StyleIf.lean",
+          "sha256": "8ba7be2a8d96d0fd855e292d9b5996b01b907dd6b26c7ff22a9230cab9b63e0b"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:28.508Z",
+      "duration_s": 0.86,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ if BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true then",
+        "⊢ if"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/StyleIf.out",
+          "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+          "bytes": 1186,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/ContractOk",
+      "toolchain": "v4.35.0",
+      "step": "ContractOk",
+      "purpose": "a def ... requires ... ensures contract on a Cmd-valued definition",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-ContractOk",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractOk.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractOk.lean",
+          "sha256": "41f6f88fbec8725b376051fd3ea597ccefe1135157df107b4defa75b3f9a11a8"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:29.382Z",
+      "duration_s": 0.7,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "transferContract.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ ρ.num \"amount\" ≤ s.bal (ρ.acct \"from\") ∧ NonNeg s ⦄",
+        "'W0S07.transferContract.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractOk.out",
+          "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+          "bytes": 264,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/ContractFail",
+      "toolchain": "v4.35.0",
+      "step": "ContractFail",
+      "purpose": "F1-F4: where contracts stop (weakened guard, reachable rejection, a constant, a wrapper)",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-ContractFail",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractFail.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractFail.lean",
+          "sha256": "8421590a7b02a4b743855310c7c3fb8b4e02b651054281f4ca3a102448b83726"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:30.103Z",
+      "duration_s": 0.63,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/ContractFail.lean:22:0: error: unproved verification conditions for the contract of `transferWeakContract`; discharge them in a `where finally | spec => ...` section of the definition",
+        "⊢ 0 ≤",
+        "W0S07/ContractFail.lean:31:0: error: unproved verification conditions for the contract of `transferContractRejects`; the `where finally | spec => ...` section does not discharge them",
+        "⊢ ⊥ (Err.guardFailed \"Transfer\")",
+        "W0S07/ContractFail.lean:42:0: error: No spec found for program Transfer.",
+        "W0S07/ContractFail.lean:49:0: error: No spec found for program Transfer.exec ρ s."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractFail.out",
+          "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+          "bytes": 1118,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/ContractThrows",
+      "toolchain": "v4.35.0",
+      "step": "ContractThrows",
+      "purpose": "a throws (e : Err) => R clause: expected not to parse on 4.35.0, and to elaborate where contracts have throws",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-ContractThrows",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrows.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrows.lean",
+          "sha256": "4d4228e55fda8ffdebf1217a15b9997c6b68c82334e170e288122e8273dcb3e2"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:30.750Z",
+      "duration_s": 0.54,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/ContractThrows.lean:23:20: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+        "W0S07/ContractThrows.lean:22:21: error: Function expected at",
+        "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+        "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+        "transferContractThrows.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ NonNeg s ⦄ transferContractThrows ⦃ fun x x_1 s =>"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractThrows.out",
+          "sha256": "596a8ce96476e333b298ae69dad0a2700cefac1258e7ba2a19b290f64f4399f5",
+          "bytes": 551,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/ContractThrowsBare",
+      "toolchain": "v4.35.0",
+      "step": "ContractThrowsBare",
+      "purpose": "the same throws clause without the exception type ascribed: throws e => R",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-ContractThrowsBare",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrowsBare.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrowsBare.lean",
+          "sha256": "23c431ef3f874048f6a61173826855b757302faa221fe7bd869a1505a7a49b09"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:31.299Z",
+      "duration_s": 0.54,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/ContractThrowsBare.lean:22:12: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+        "W0S07/ContractThrowsBare.lean:21:21: error: Function expected at",
+        "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`",
+        "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/ContractThrowsBare.out",
+          "sha256": "456a6699963cb8de0797a844ac6d9a9c4ae0e1bc512863f85c31907b35bbe2db",
+          "bytes": 430,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.35.0/Interface",
+      "toolchain": "v4.35.0",
+      "step": "Interface",
+      "purpose": "the vcgen docstring, the experimental options and warnings, maxHeartbeats, declaring modules, WP/Triple signatures",
+      "engine": "lean",
+      "version": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.35.0-Interface",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Interface.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Interface.lean",
+          "sha256": "c5461149376817ac7e32fadd6218b6b9d92999131cca6553379649bdb6b552f6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:31.855Z",
+      "duration_s": 1.17,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "option experimental.vcgen: default false; acknowledge that the `vcgen` tactic is experimental and subject to change; `true` silences the warning that each `vcgen` call reports",
+        "option experimental.intrinsic: default false; acknowledge that the intrinsic verification syntax (the contract clauses of a `def`, the `assert` element, and the `invariant` and `decreasing` clauses of a loop) is experimental and subject to change; `true` silences the warning that each of these forms reports",
+        "option maxHeartbeats: default 200000",
+        "W0S07/Interface.lean:61:2: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:66:4: warning: The `ensures` clause is part of the experimental intrinsic verification syntax; `set_option experimental.intrinsic true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:65:0: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.35.0/Interface.out",
+          "sha256": "4200de63bcdeb791975733919f39358858b097a63b5dd7fb6b6073531cf7e6a9",
+          "bytes": 4541,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/build",
+      "toolchain": "v4.36.0-rc1",
+      "step": "build",
+      "purpose": "builds W0S07.Cmd: the command type, its semantics, its WP instances and spec lemmas",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-build",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "build"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07.lean",
+          "sha256": "619f41898d3072c573aba57a04c3688818b24790f1c86d92a1ec2f59ebcda9de"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lakefile.toml",
+          "sha256": "acafba062fb815eac6efb3e075a7745f2f13a56300faa21a649a9937afe83087"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lean-toolchain",
+          "sha256": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:34.027Z",
+      "duration_s": 1.63,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "Build completed successfully (6 jobs)."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/build.out",
+          "sha256": "5259f6308a93b615576784860560fcece73719bc56b68c1befbab2d0aaa9ee5f",
+          "bytes": 211,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/Proved",
+      "toolchain": "v4.36.0-rc1",
+      "step": "Proved",
+      "purpose": "P1-P5: the triples vcgen proves, the VCs it leaves (trace_state), three refutations, axioms",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-Proved",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Proved.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Proved.lean",
+          "sha256": "f3685070efcaab2f38a3efa95d488766d257bf59a9cfc8923b033809f771da5a"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:35.671Z",
+      "duration_s": 0.96,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "'W0S07.transfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_nonneg_auto' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_pair_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_frame' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.feeTransfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_nonneg_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.payTwo_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Proved.out",
+          "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+          "bytes": 3563,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/Residual",
+      "toolchain": "v4.36.0-rc1",
+      "step": "Residual",
+      "purpose": "R1-R3: the obligations vcgen leaves on the weakened guard and on PayTwo (unsolved goals)",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-Residual",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Residual.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Residual.lean",
+          "sha256": "c7a765f8becdee79ebc839868bb2e3ce75fc0571178c59808e237fdb1df24fe6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:36.645Z",
+      "duration_s": 0.67,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/Residual.lean:26:65: error: unsolved goals",
+        "⊢ 0 ≤",
+        "W0S07/Residual.lean:33:71: error: unsolved goals",
+        "⊢ NonNeg",
+        "W0S07/Residual.lean:40:48: error: unsolved goals",
+        "⊢ NonNeg"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Residual.out",
+          "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+          "bytes": 1510,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/StyleIf",
+      "toolchain": "v4.36.0-rc1",
+      "step": "StyleIf",
+      "purpose": "the upstream example's spec style (an if in the precondition): the VC keeps wp of the body",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-StyleIf",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/StyleIf.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/StyleIf.lean",
+          "sha256": "8ba7be2a8d96d0fd855e292d9b5996b01b907dd6b26c7ff22a9230cab9b63e0b"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:37.332Z",
+      "duration_s": 0.85,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ if BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true then",
+        "⊢ if"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/StyleIf.out",
+          "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+          "bytes": 1186,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/ContractOk",
+      "toolchain": "v4.36.0-rc1",
+      "step": "ContractOk",
+      "purpose": "a def ... requires ... ensures contract on a Cmd-valued definition",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-ContractOk",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractOk.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractOk.lean",
+          "sha256": "41f6f88fbec8725b376051fd3ea597ccefe1135157df107b4defa75b3f9a11a8"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:38.191Z",
+      "duration_s": 0.81,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "transferContract.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ ρ.num \"amount\" ≤ s.bal (ρ.acct \"from\") ∧ NonNeg s ⦄",
+        "'W0S07.transferContract.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractOk.out",
+          "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+          "bytes": 264,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/ContractFail",
+      "toolchain": "v4.36.0-rc1",
+      "step": "ContractFail",
+      "purpose": "F1-F4: where contracts stop (weakened guard, reachable rejection, a constant, a wrapper)",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-ContractFail",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractFail.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractFail.lean",
+          "sha256": "8421590a7b02a4b743855310c7c3fb8b4e02b651054281f4ca3a102448b83726"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:39.016Z",
+      "duration_s": 0.75,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/ContractFail.lean:22:0: error: unproved verification conditions for the contract of `transferWeakContract`; discharge them in a `where finally | spec => ...` section of the definition",
+        "⊢ 0 ≤",
+        "W0S07/ContractFail.lean:31:0: error: unproved verification conditions for the contract of `transferContractRejects`; the `where finally | spec => ...` section does not discharge them",
+        "⊢ ⊥ (Err.guardFailed \"Transfer\")",
+        "W0S07/ContractFail.lean:42:0: error: No spec found for program Transfer.",
+        "W0S07/ContractFail.lean:49:0: error: No spec found for program Transfer.exec ρ s."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractFail.out",
+          "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+          "bytes": 1118,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/ContractThrows",
+      "toolchain": "v4.36.0-rc1",
+      "step": "ContractThrows",
+      "purpose": "a throws (e : Err) => R clause: expected not to parse on 4.35.0, and to elaborate where contracts have throws",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-ContractThrows",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrows.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrows.lean",
+          "sha256": "4d4228e55fda8ffdebf1217a15b9997c6b68c82334e170e288122e8273dcb3e2"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:39.776Z",
+      "duration_s": 0.69,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "W0S07/ContractThrows.lean:23:20: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+          "W0S07/ContractThrows.lean:22:21: error: Function expected at",
+          "  NonNeg s",
+          "but this term has type",
+          "  Prop",
+          "Note: Expected a function because this term is being applied to the argument",
+          "  throws",
+          "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+          "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+          "  sorry ⦄"
+        ],
+        "onlyHere": [
+          "  NonNeg s; fun e => e = Err.guardFailed \"Transfer\" ⦄"
+        ]
+      },
+      "verdict_lines": [
+        "transferContractThrows.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ NonNeg s ⦄ transferContractThrows ⦃ fun x x_1 s =>"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractThrows.out",
+          "sha256": "5843d5e75f6e42519ca4507419fb0e2232f84aa22154f2317f10b21fe6f16a3d",
+          "bytes": 181,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/ContractThrowsBare",
+      "toolchain": "v4.36.0-rc1",
+      "step": "ContractThrowsBare",
+      "purpose": "the same throws clause without the exception type ascribed: throws e => R",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-ContractThrowsBare",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrowsBare.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrowsBare.lean",
+          "sha256": "23c431ef3f874048f6a61173826855b757302faa221fe7bd869a1505a7a49b09"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:40.481Z",
+      "duration_s": 0.72,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "W0S07/ContractThrowsBare.lean:22:12: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+          "W0S07/ContractThrowsBare.lean:21:21: error: Function expected at",
+          "  NonNeg s",
+          "but this term has type",
+          "  Prop",
+          "Note: Expected a function because this term is being applied to the argument",
+          "  throws",
+          "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`",
+          "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`"
+        ],
+        "onlyHere": [
+          "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+          "Hint: Using `Err.guardFailed would be unambiguous:",
+          "  [apply] `Err.guardFailed`",
+          "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed",
+          "case grind",
+          "s : Env",
+          "s_1 : State",
+          "h : 0 < s.num \"amount\" ∧ NonNeg s_1",
+          "h_1 : fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1",
+          "h_2 : ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed \"Transfer\")",
+          "⊢ False",
+          "[grind] Goal diagnostics",
+          "  [facts] Asserted facts",
+          "    [prop] -1 * s.num \"amount\" + 1 ≤ 0 ∧ NonNeg s_1",
+          "    [prop] fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1",
+          "    [prop] ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed \"Transfer\")",
+          "    [prop] fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1 =",
+          "          (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = false)",
+          "    [prop] NonNeg s_1 = ∀ (a : String), ¬a = \"mint\" → -1 * s_1.bal a ≤ 0",
+          "    [prop] (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true) =",
+          "          (-1 * Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) + Expr.eval s s_1 (Expr.var \"amount\") ≤ 0)",
+          "    [prop] Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) = s_1.bal (AExpr.eval s (AExpr.var \"from\"))",
+          "    [prop] Expr.eval s s_1 (Expr.var \"amount\") = s.num \"amount\"",
+          "    [prop] ¬AExpr.eval s (AExpr.var \"from\") = \"mint\" → -1 * s_1.bal (AExpr.eval s (AExpr.var \"from\")) ≤ 0",
+          "    [prop] AExpr.eval s (AExpr.var \"from\") = s.acct \"from\"",
+          "  [eqc] True propositions",
+          "    [prop] NonNeg s_1",
+          "    [prop] -1 * s.num \"amount\" + 1 ≤ 0 ∧ NonNeg s_1",
+          "    [prop] fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1",
+          "    [prop] -1 * s.num \"amount\" + 1 ≤ 0",
+          "    [prop] NonNeg s_1 = ∀ (a : String), ¬a = \"mint\" → -1 * s_1.bal a ≤ 0",
+          "    [prop] fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1 =",
+          "          (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = false)",
+          "    [prop] BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = false",
+          "    [prop] ∀ (a : String), ¬a = \"mint\" → -1 * s_1.bal a ≤ 0",
+          "    [prop] (BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true) =",
+          "          (-1 * Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) + Expr.eval s s_1 (Expr.var \"amount\") ≤ 0)",
+          "    [prop] ¬AExpr.eval s (AExpr.var \"from\") = \"mint\" → -1 * s_1.bal (AExpr.eval s (AExpr.var \"from\")) ≤ 0",
+          "  [eqc] False propositions",
+          "    [prop] EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed \"Transfer\")",
+          "    [prop] BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true",
+          "    [prop] -1 * Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) + Expr.eval s s_1 (Expr.var \"amount\") ≤ 0",
+          "  [eqc] Equivalence classes",
+          "    [eqc] {false, BExpr.eval s s_1 (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\"))}",
+          "    [eqc] {s.num \"amount\", Expr.eval s s_1 (Expr.var \"amount\")}",
+          "    [eqc] {Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")), s_1.bal (AExpr.eval s (AExpr.var \"from\"))}",
+          "    [eqc] {-1 * Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")), -1 * s_1.bal (AExpr.eval s (AExpr.var \"from\"))}",
+          "    [eqc] {AExpr.eval s (AExpr.var \"from\"), s.acct \"from\"}",
+          "  [ematch] E-matching patterns",
+          "    [thm] fails_apply: [fails #2 #1 #0]",
+          "    [thm] NonNeg.eq_1: [NonNeg #0]",
+          "    [thm] BExpr.eval.eq_1: [BExpr.eval #3 #2 (BExpr.ge #1 #0)]",
+          "    [thm] local_0: [@LE.le `[Int] `[Int.instLEInt] (@HMul.hMul `[Int] `[Int] `[Int] `[instHMul] `[-1] (State.bal `[s_1] #1)) `[0]]",
+          "    [thm] local_0: [State.bal `[s_1] #1]",
+          "    [thm] Expr.eval.eq_3: [Expr.eval #2 #1 (Expr.balance #0)]",
+          "    [thm] Expr.eval.eq_2: [Expr.eval #2 #1 (Expr.var #0)]",
+          "    [thm] AExpr.eval.eq_2: [AExpr.eval #1 (AExpr.var #0)]",
+          "  [cutsat] Assignment satisfying linear constraints",
+          "    [assign] s.num \"amount\" := 1",
+          "    [assign] Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) := 0",
+          "    [assign] Expr.eval s s_1 (Expr.var \"amount\") := 1",
+          "    [assign] s_1.bal (AExpr.eval s (AExpr.var \"from\")) := 0",
+          "  [ring] Ring `Int`",
+          "    [basis] Basis",
+          "      [_] s.num \"amount\" + -1 * Expr.eval s s_1 (Expr.var \"amount\") = 0",
+          "      [_] Expr.eval s s_1 (Expr.balance (AExpr.var \"from\")) + -1 * s_1.bal (AExpr.eval s (AExpr.var \"from\")) = 0",
+          "[grind] Issues",
+          "  [issue] failed to canonicalize instance",
+          "        ?m.27",
+          "      failed to synthesize",
+          "        EPostSlot (Err → Prop) ?m.32 Prop",
+          "[grind] Diagnostics",
+          "  [ematch] E-matching Diagnostics",
+          "    [thm] Theorem Instance Count",
+          "      [thm] local_0 ↦ 1",
+          "      [thm] fails_apply ↦ 1",
+          "      [thm] NonNeg.eq_1 ↦ 1",
+          "      [thm] AExpr.eval.eq_2 ↦ 1",
+          "      [thm] BExpr.eval.eq_1 ↦ 1",
+          "      [thm] Expr.eval.eq_2 ↦ 1",
+          "      [thm] Expr.eval.eq_3 ↦ 1"
+        ]
+      },
+      "verdict_lines": [
+        "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+        "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed",
+        "⊢ False"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/ContractThrowsBare.out",
+          "sha256": "5ee6fbcf4676a48fab06e1f42283532ef41674cc4a17cee51f9984e3c54bd9a7",
+          "bytes": 4888,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "v4.36.0-rc1/Interface",
+      "toolchain": "v4.36.0-rc1",
+      "step": "Interface",
+      "purpose": "the vcgen docstring, the experimental options and warnings, maxHeartbeats, declaring modules, WP/Triple signatures",
+      "engine": "lean",
+      "version": "Lean (version 4.36.0-rc1, x86_64-unknown-linux-gnu, commit c9afcddf514a6772bd4d649f7cfc04eff0b9f15e, Release)",
+      "binary_sha256": "db7f559d05795e7af52e42bc966c90240a39dcb9712161c54c97afa546e20c00",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-v4.36.0-rc1-Interface",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.36.0-rc1-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Interface.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Interface.lean",
+          "sha256": "c5461149376817ac7e32fadd6218b6b9d92999131cca6553379649bdb6b552f6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:41.214Z",
+      "duration_s": 1.22,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.Tactic.Do.Syntax",
+          "Lean.Parser.Attr.spec is declared in module Std.Tactic.Do.Syntax",
+          "      (EPred : outParam (Type u_4)) →",
+          "        [Std.WP.Assertion Pred] → [Std.WP.Assertion EPred] → Type (max (max (max u_1 u_2) u_3) u_4)",
+          "  (EPred : outParam (Type w')) [Std.WP.Assertion Pred] [Std.WP.Assertion EPred] : Type (max (max (max u v) w) w')",
+          "  Std.WP.WP.wpTrans : Prog → Order.PredTrans Pred EPred Value",
+          "  Std.WP.WP.wp_trans_monotone : ∀ (x : Prog), (Std.WP.WP.wpTrans x).monotone",
+          "    {EPred : outParam (Type w')} [Std.WP.Assertion Pred] [Std.WP.Assertion EPred]",
+          "    (wpTrans : Prog → Order.PredTrans Pred EPred Value) (wp_trans_monotone : ∀ (x : Prog), (wpTrans x).monotone) :",
+          "    Std.WP.WP Prog Value Pred EPred",
+          "  {EPred : Type u_4} →",
+          "          [inst_1 : Std.WP.Assertion EPred] →",
+          "            Prog → [Std.WP.WP Prog Value Pred EPred] → Pred → (Value → Pred) → EPred → Prop",
+          "@Std.WP.Triple.iff : ∀ {Pred : Type u_3} {EPred : Type u_4} {Prog : Type u_1} {Value : Type u_2}",
+          "  [inst : Std.WP.Assertion Pred] [inst_1 : Std.WP.Assertion EPred] [inst_2 : Std.WP.WP Prog Value Pred EPred] {x : Prog}",
+          "  {pre : Pred} {post : Value → Pred} {epost : EPred},",
+          "  ⦃ pre ⦄ x ⦃ post; epost ⦄ ↔ Order.PartialOrder.rel pre (Std.WP.wp x post epost)",
+          "  {EPred : Type u_2} → {α : Type u_3} → ((α → Pred) → EPred → Pred) → Order.PredTrans Pred EPred α"
+        ],
+        "onlyHere": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.WP.Tactic",
+          "Lean.Parser.Attr.spec is declared in module Std.WP.Tactic",
+          "      (EPosts : outParam (Type u_4)) →",
+          "        [Std.WP.Assertion Pred] → [Std.WP.Assertion EPosts] → Type (max (max (max u_1 u_2) u_3) u_4)",
+          "  (EPosts : outParam (Type w')) [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts] : Type (max (max (max u v) w) w')",
+          "  Std.WP.WP.trans : Prog → Order.PredTrans Pred EPosts Value :=",
+          "    Std.WP.WP.wpTrans",
+          "  Std.WP.WP.wpTrans : Prog → Order.PredTrans Pred EPosts Value :=",
+          "    Std.WP.WP.trans",
+          "  Std.WP.WP.trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=",
+          "    ⋯",
+          "  Std.WP.WP.wp_trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=",
+          "    ⋯",
+          "    {EPosts : outParam (Type w')} [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts]",
+          "    (trans wpTrans : Prog → Order.PredTrans Pred EPosts Value)",
+          "    (trans_monotone wp_trans_monotone : ∀ (x : Prog), (trans x).Monotone) : Std.WP.WP Prog Value Pred EPosts",
+          "  {EPosts : Type u_4} →",
+          "          [inst_1 : Std.WP.Assertion EPosts] →",
+          "            Prog → [Std.WP.WP Prog Value Pred EPosts] → Pred → (Value → Pred) → EPosts → Prop",
+          "@Std.WP.Triple.iff : ∀ {Pred : Type u_3} {EPosts : Type u_4} {Prog : Type u_1} {Value : Type u_2}",
+          "  [inst : Std.WP.Assertion Pred] [inst_1 : Std.WP.Assertion EPosts] [inst_2 : Std.WP.WP Prog Value Pred EPosts]",
+          "  {x : Prog} {pre : Pred} {post : Value → Pred} {eposts : EPosts},",
+          "  ⦃ pre ⦄ x ⦃ post; eposts ⦄ ↔ Order.PartialOrder.rel pre (Std.WP.wp x post eposts)",
+          "  {EPosts : Type u_2} → {α : Type u_3} → ((α → Pred) → EPosts → Pred) → Order.PredTrans Pred EPosts α"
+        ]
+      },
+      "verdict_lines": [
+        "option experimental.vcgen: default false; acknowledge that the `vcgen` tactic is experimental and subject to change; `true` silences the warning that each `vcgen` call reports",
+        "option experimental.intrinsic: default false; acknowledge that the intrinsic verification syntax (the contract clauses of a `def`, the `assert` element, and the `invariant` and `decreasing` clauses of a loop) is experimental and subject to change; `true` silences the warning that each of these forms reports",
+        "option maxHeartbeats: default 200000",
+        "W0S07/Interface.lean:61:2: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:66:4: warning: The `ensures` clause is part of the experimental intrinsic verification syntax; `set_option experimental.intrinsic true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:65:0: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/v4.36.0-rc1/Interface.out",
+          "sha256": "021e2d4dd22f22a97e13181c065ddcbcc11bc3c22d920e806827cce357eb151a",
+          "bytes": 4774,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/build",
+      "toolchain": "nightly-2026-10-24",
+      "step": "build",
+      "purpose": "builds W0S07.Cmd: the command type, its semantics, its WP instances and spec lemmas",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-build",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "build"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07.lean",
+          "sha256": "619f41898d3072c573aba57a04c3688818b24790f1c86d92a1ec2f59ebcda9de"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lakefile.toml",
+          "sha256": "acafba062fb815eac6efb3e075a7745f2f13a56300faa21a649a9937afe83087"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/lean-toolchain",
+          "sha256": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:43.374Z",
+      "duration_s": 1.23,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": null,
+      "changed_lines": null,
+      "verdict_lines": [
+        "Build completed successfully (6 jobs)."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/build.out",
+          "sha256": "5e13daa861ca73430b15142f2bd312f7c65a07e40a8fb935d5a5f60702ea681f",
+          "bytes": 212,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/Proved",
+      "toolchain": "nightly-2026-10-24",
+      "step": "Proved",
+      "purpose": "P1-P5: the triples vcgen proves, the VCs it leaves (trace_state), three refutations, axioms",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-Proved",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Proved.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Proved.lean",
+          "sha256": "f3685070efcaab2f38a3efa95d488766d257bf59a9cfc8923b033809f771da5a"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:44.617Z",
+      "duration_s": 0.81,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "⊢ NonNeg",
+        "'W0S07.transfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_nonneg_auto' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_rejects' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_pair_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transfer_frame' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.feeTransfer_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.transferWeakGuard_nonneg_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'W0S07.payTwo_refuted' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Proved.out",
+          "sha256": "dc3cdc106c22b4dffbf5755e924cb91d0a22b93bc6667fac208d6847c34e6f8a",
+          "bytes": 3563,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/Residual",
+      "toolchain": "nightly-2026-10-24",
+      "step": "Residual",
+      "purpose": "R1-R3: the obligations vcgen leaves on the weakened guard and on PayTwo (unsolved goals)",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-Residual",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Residual.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Residual.lean",
+          "sha256": "c7a765f8becdee79ebc839868bb2e3ce75fc0571178c59808e237fdb1df24fe6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:45.442Z",
+      "duration_s": 0.53,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/Residual.lean:26:65: error: unsolved goals",
+        "⊢ 0 ≤",
+        "W0S07/Residual.lean:33:71: error: unsolved goals",
+        "⊢ NonNeg",
+        "W0S07/Residual.lean:40:48: error: unsolved goals",
+        "⊢ NonNeg"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Residual.out",
+          "sha256": "b084fc9538490aea00dbbfd0d8225692d455e3b3a9261e30ab415fc3f39b8c71",
+          "bytes": 1510,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/StyleIf",
+      "toolchain": "nightly-2026-10-24",
+      "step": "StyleIf",
+      "purpose": "the upstream example's spec style (an if in the precondition): the VC keeps wp of the body",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-StyleIf",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/StyleIf.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/StyleIf.lean",
+          "sha256": "8ba7be2a8d96d0fd855e292d9b5996b01b907dd6b26c7ff22a9230cab9b63e0b"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:45.989Z",
+      "duration_s": 0.76,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "⊢ if BExpr.eval s✝¹ s✝ (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) = true then",
+        "⊢ if"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/StyleIf.out",
+          "sha256": "4c937df529177618b05218abede714065914aa9e7732682a6ef0612dd172cc27",
+          "bytes": 1186,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/ContractOk",
+      "toolchain": "nightly-2026-10-24",
+      "step": "ContractOk",
+      "purpose": "a def ... requires ... ensures contract on a Cmd-valued definition",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-ContractOk",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractOk.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractOk.lean",
+          "sha256": "41f6f88fbec8725b376051fd3ea597ccefe1135157df107b4defa75b3f9a11a8"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:46.758Z",
+      "duration_s": 0.64,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "transferContract.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ ρ.num \"amount\" ≤ s.bal (ρ.acct \"from\") ∧ NonNeg s ⦄",
+        "'W0S07.transferContract.spec' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractOk.out",
+          "sha256": "bad6519d361fb3c1265d314669c18b4fa2b6941e8035cf1900b8520eaa9374d0",
+          "bytes": 264,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/ContractFail",
+      "toolchain": "nightly-2026-10-24",
+      "step": "ContractFail",
+      "purpose": "F1-F4: where contracts stop (weakened guard, reachable rejection, a constant, a wrapper)",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-ContractFail",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractFail.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractFail.lean",
+          "sha256": "8421590a7b02a4b743855310c7c3fb8b4e02b651054281f4ca3a102448b83726"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:47.413Z",
+      "duration_s": 0.64,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": true,
+      "changed_lines": null,
+      "verdict_lines": [
+        "W0S07/ContractFail.lean:22:0: error: unproved verification conditions for the contract of `transferWeakContract`; discharge them in a `where finally | spec => ...` section of the definition",
+        "⊢ 0 ≤",
+        "W0S07/ContractFail.lean:31:0: error: unproved verification conditions for the contract of `transferContractRejects`; the `where finally | spec => ...` section does not discharge them",
+        "⊢ ⊥ (Err.guardFailed \"Transfer\")",
+        "W0S07/ContractFail.lean:42:0: error: No spec found for program Transfer.",
+        "W0S07/ContractFail.lean:49:0: error: No spec found for program Transfer.exec ρ s."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractFail.out",
+          "sha256": "252be635a2bfef9bd6f868d99ae25864698dea9b17af6abfcd8225cb76d623d2",
+          "bytes": 1118,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/ContractThrows",
+      "toolchain": "nightly-2026-10-24",
+      "step": "ContractThrows",
+      "purpose": "a throws (e : Err) => R clause: expected not to parse on 4.35.0, and to elaborate where contracts have throws",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-ContractThrows",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrows.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrows.lean",
+          "sha256": "4d4228e55fda8ffdebf1217a15b9997c6b68c82334e170e288122e8273dcb3e2"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:48.065Z",
+      "duration_s": 0.54,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "W0S07/ContractThrows.lean:23:20: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+          "W0S07/ContractThrows.lean:22:21: error: Function expected at",
+          "  NonNeg s",
+          "but this term has type",
+          "  Prop",
+          "Note: Expected a function because this term is being applied to the argument",
+          "  throws",
+          "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+          "W0S07/ContractThrows.lean:20:0: warning: declaration uses `sorry`",
+          "  sorry ⦄"
+        ],
+        "onlyHere": [
+          "  NonNeg s; fun e => e = Err.guardFailed \"Transfer\" ⦄"
+        ]
+      },
+      "verdict_lines": [
+        "transferContractThrows.spec : ⦃ fun ρ s => 0 < ρ.num \"amount\" ∧ NonNeg s ⦄ transferContractThrows ⦃ fun x x_1 s =>"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractThrows.out",
+          "sha256": "5843d5e75f6e42519ca4507419fb0e2232f84aa22154f2317f10b21fe6f16a3d",
+          "bytes": 181,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/ContractThrowsBare",
+      "toolchain": "nightly-2026-10-24",
+      "step": "ContractThrowsBare",
+      "purpose": "the same throws clause without the exception type ascribed: throws e => R",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-ContractThrowsBare",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/ContractThrowsBare.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/ContractThrowsBare.lean",
+          "sha256": "23c431ef3f874048f6a61173826855b757302faa221fe7bd869a1505a7a49b09"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:48.625Z",
+      "duration_s": 0.8,
+      "exit_code": 1,
+      "expect_exit": 1,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "W0S07/ContractThrowsBare.lean:22:12: error: unexpected token '=>'; expected ':=', 'where' or '|'",
+          "W0S07/ContractThrowsBare.lean:21:21: error: Function expected at",
+          "  NonNeg s",
+          "but this term has type",
+          "  Prop",
+          "Note: Expected a function because this term is being applied to the argument",
+          "  throws",
+          "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`",
+          "W0S07/ContractThrowsBare.lean:19:0: warning: declaration uses `sorry`"
+        ],
+        "onlyHere": [
+          "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+          "Hint: Using `Err.guardFailed would be unambiguous:",
+          "  [apply] `Err.guardFailed`",
+          "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed",
+          "case grind",
+          "s : Env",
+          "s_1 : State",
+          "h : 0 < s.num \"amount\" ∧ NonNeg s_1",
+          "h_1 : fails (BExpr.ge (Expr.balance (AExpr.var \"from\")) (Expr.var \"amount\")) s s_1",
+          "h_2 : ¬EPostSlot.set (fun e => e = ?m.30) ⊥ (Err.guardFailed \"Transfer\")",
+          "⊢ False",
+          "use `+verbose` to obtain diagnostic information"
+        ]
+      },
+      "verdict_lines": [
+        "W0S07/ContractThrowsBare.lean:22:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.guardFailed` could not be determined",
+        "W0S07/ContractThrowsBare.lean:27:22: error: `grind` failed",
+        "⊢ False"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/ContractThrowsBare.out",
+          "sha256": "90629562a90d3eae8bc59d4926d5eaa716aba8ac48f6ac42e9d90be4504368eb",
+          "bytes": 590,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    },
+    {
+      "id": "nightly-2026-10-24/Interface",
+      "toolchain": "nightly-2026-10-24",
+      "step": "Interface",
+      "purpose": "the vcgen docstring, the experimental options and warnings, maxHeartbeats, declaring modules, WP/Triple signatures",
+      "engine": "lean",
+      "version": "Lean (version 4.37.0-nightly-2026-10-24, x86_64-unknown-linux-gnu, commit f68d6e982657e2a8bb8c2280d886b2d36cb2180f, Release)",
+      "binary_sha256": "2d8daeb3d9aad67877230928e08b74c64c05645232988e0e6ba305011f0ebc5b",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w0s07-nightly-2026-10-24-Interface",
+        "--memory=6g",
+        "--network=none",
+        "--user",
+        "<uid>:<gid>",
+        "-e",
+        "HOME=/tmp",
+        "-e",
+        "PATH=/tc/bin:/usr/bin:/bin",
+        "-v",
+        "<cache>/lean-4.37.0-nightly-2026-10-24-linux:/tc:ro",
+        "-v",
+        "<sandbox>:/work",
+        "-w",
+        "/work",
+        "ss-lean:4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "W0S07/Interface.lean"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Interface.lean",
+          "sha256": "c5461149376817ac7e32fadd6218b6b9d92999131cca6553379649bdb6b552f6"
+        },
+        {
+          "path": "scripts/spikes/W0-S07/lean/W0S07/Cmd.lean",
+          "sha256": "372134691d5bb843a19eba822d08b6cfae3a5fd609d7c126a6c9672a1338b13e"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600,
+        "max_heartbeats": "Lean default, not overridden"
+      },
+      "started_at": "2026-10-24T12:51:49.436Z",
+      "duration_s": 1.16,
+      "exit_code": 0,
+      "expect_exit": 0,
+      "as_expected": true,
+      "same_output_as_pinned": false,
+      "changed_lines": {
+        "onlyOnPinned": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.Tactic.Do.Syntax",
+          "Lean.Parser.Attr.spec is declared in module Std.Tactic.Do.Syntax",
+          "      (EPred : outParam (Type u_4)) →",
+          "        [Std.WP.Assertion Pred] → [Std.WP.Assertion EPred] → Type (max (max (max u_1 u_2) u_3) u_4)",
+          "  (EPred : outParam (Type w')) [Std.WP.Assertion Pred] [Std.WP.Assertion EPred] : Type (max (max (max u v) w) w')",
+          "  Std.WP.WP.wpTrans : Prog → Order.PredTrans Pred EPred Value",
+          "  Std.WP.WP.wp_trans_monotone : ∀ (x : Prog), (Std.WP.WP.wpTrans x).monotone",
+          "    {EPred : outParam (Type w')} [Std.WP.Assertion Pred] [Std.WP.Assertion EPred]",
+          "    (wpTrans : Prog → Order.PredTrans Pred EPred Value) (wp_trans_monotone : ∀ (x : Prog), (wpTrans x).monotone) :",
+          "    Std.WP.WP Prog Value Pred EPred",
+          "  {EPred : Type u_4} →",
+          "          [inst_1 : Std.WP.Assertion EPred] →",
+          "            Prog → [Std.WP.WP Prog Value Pred EPred] → Pred → (Value → Pred) → EPred → Prop",
+          "@Std.WP.Triple.iff : ∀ {Pred : Type u_3} {EPred : Type u_4} {Prog : Type u_1} {Value : Type u_2}",
+          "  [inst : Std.WP.Assertion Pred] [inst_1 : Std.WP.Assertion EPred] [inst_2 : Std.WP.WP Prog Value Pred EPred] {x : Prog}",
+          "  {pre : Pred} {post : Value → Pred} {epost : EPred},",
+          "  ⦃ pre ⦄ x ⦃ post; epost ⦄ ↔ Order.PartialOrder.rel pre (Std.WP.wp x post epost)",
+          "  {EPred : Type u_2} → {α : Type u_3} → ((α → Pred) → EPred → Pred) → Order.PredTrans Pred EPred α"
+        ],
+        "onlyHere": [
+          "Lean.Parser.Tactic.vcgen is declared in module Std.WP.Tactic",
+          "Lean.Parser.Attr.spec is declared in module Std.WP.Tactic",
+          "      (EPosts : outParam (Type u_4)) →",
+          "        [Std.WP.Assertion Pred] → [Std.WP.Assertion EPosts] → Type (max (max (max u_1 u_2) u_3) u_4)",
+          "  (EPosts : outParam (Type w')) [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts] : Type (max (max (max u v) w) w')",
+          "  Std.WP.WP.trans : Prog → Order.PredTrans Pred EPosts Value :=",
+          "    Std.WP.WP.wpTrans",
+          "  Std.WP.WP.wpTrans : Prog → Order.PredTrans Pred EPosts Value :=",
+          "    Std.WP.WP.trans",
+          "  Std.WP.WP.trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=",
+          "    ⋯",
+          "  Std.WP.WP.wp_trans_monotone : ∀ (x : Prog), (Std.WP.WP.trans x).Monotone :=",
+          "    ⋯",
+          "    {EPosts : outParam (Type w')} [Std.WP.Assertion Pred] [Std.WP.Assertion EPosts]",
+          "    (trans wpTrans : Prog → Order.PredTrans Pred EPosts Value)",
+          "    (trans_monotone wp_trans_monotone : ∀ (x : Prog), (trans x).Monotone) : Std.WP.WP Prog Value Pred EPosts",
+          "  {EPosts : Type u_4} →",
+          "          [inst_1 : Std.WP.Assertion EPosts] →",
+          "            Prog → [Std.WP.WP Prog Value Pred EPosts] → Pred → (Value → Pred) → EPosts → Prop",
+          "@Std.WP.Triple.iff : ∀ {Pred : Type u_3} {EPosts : Type u_4} {Prog : Type u_1} {Value : Type u_2}",
+          "  [inst : Std.WP.Assertion Pred] [inst_1 : Std.WP.Assertion EPosts] [inst_2 : Std.WP.WP Prog Value Pred EPosts]",
+          "  {x : Prog} {pre : Pred} {post : Value → Pred} {eposts : EPosts},",
+          "  ⦃ pre ⦄ x ⦃ post; eposts ⦄ ↔ Order.PartialOrder.rel pre (Std.WP.wp x post eposts)",
+          "  {EPosts : Type u_2} → {α : Type u_3} → ((α → Pred) → EPosts → Pred) → Order.PredTrans Pred EPosts α"
+        ]
+      },
+      "verdict_lines": [
+        "option experimental.vcgen: default false; acknowledge that the `vcgen` tactic is experimental and subject to change; `true` silences the warning that each `vcgen` call reports",
+        "option experimental.intrinsic: default false; acknowledge that the intrinsic verification syntax (the contract clauses of a `def`, the `assert` element, and the `invariant` and `decreasing` clauses of a loop) is experimental and subject to change; `true` silences the warning that each of these forms reports",
+        "option maxHeartbeats: default 200000",
+        "W0S07/Interface.lean:61:2: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:66:4: warning: The `ensures` clause is part of the experimental intrinsic verification syntax; `set_option experimental.intrinsic true` acknowledges its experimental status and silences this warning.",
+        "W0S07/Interface.lean:65:0: warning: The `vcgen` tactic is an experimental drop-in replacement for `mvcgen` that will eventually replace it; `set_option experimental.vcgen true` acknowledges its experimental status and silences this warning."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-vcgen-cmd/nightly-2026-10-24/Interface.out",
+          "sha256": "021e2d4dd22f22a97e13181c065ddcbcc11bc3c22d920e806827cce357eb151a",
+          "bytes": 4774,
+          "kind": "lean and lake stdout and stderr, paths normalized"
+        }
+      ]
+    }
+  ]
+}

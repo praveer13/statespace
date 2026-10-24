@@ -1,0 +1,129 @@
+{
+  "schema": "statespace/receipt@1",
+  "lab": "LAB-2",
+  "stage": "LAB-2.2",
+  "lane": "reported",
+  "createdAt": "2026-10-24T14:10:00+01:00",
+  "cli": {
+    "name": "statespace",
+    "version": "0.0.0"
+  },
+  "environment": {
+    "devcontainer": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+    "os": {
+      "name": "Linux",
+      "arch": "x86_64"
+    },
+    "sandbox": "failed",
+    "sandboxDetail": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>."
+  },
+  "tools": [
+    {
+      "name": "lean",
+      "version": "4.35.0",
+      "sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "pinned": true
+    }
+  ],
+  "statements": [
+    {
+      "path": "Challenge.lean",
+      "kind": "lean-challenge",
+      "sha256": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446"
+    }
+  ],
+  "runs": [
+    {
+      "step": "build",
+      "engine": "lake",
+      "version": "5.0.0-src+eb6cafb",
+      "argv": [
+        "lake",
+        "build"
+      ],
+      "inputSha256": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446",
+      "budget": {},
+      "exitCode": 0,
+      "verdictLines": [
+        "Build completed successfully (5 jobs)."
+      ],
+      "verdict": "passed"
+    },
+    {
+      "step": "comparator",
+      "engine": "lake",
+      "version": "5.0.0-src+eb6cafb",
+      "argv": [
+        "lake",
+        "comparator",
+        "--inadvisably-no-sandbox"
+      ],
+      "inputSha256": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446",
+      "budget": {},
+      "exitCode": 0,
+      "verdictLines": [
+        "Lean default kernel accepts the solution",
+        "Your solution is okay!"
+      ],
+      "verdict": "accepted"
+    }
+  ],
+  "lean": {
+    "toolchain": "leanprover/lean4:v4.35.0",
+    "challengeSha": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446",
+    "permittedAxioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ],
+    "checkers": [
+      {
+        "name": "Lean default kernel",
+        "version": "4.35.0",
+        "verdict": "accepts"
+      },
+      {
+        "name": "nanoda",
+        "version": "4.35.0",
+        "verdict": "not-run"
+      }
+    ],
+    "nativeAxioms": [],
+    "sorryCount": 0,
+    "automation": {
+      "manualMode": false,
+      "grind": false,
+      "omega": true,
+      "decide": false
+    },
+    "statementCheck": "comparator",
+    "lints": []
+  },
+  "checks": [
+    {
+      "id": "LAB-2.c2",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "assisted": "explain",
+    "agent": true,
+    "guard": "on"
+  },
+  "claims": [
+    {
+      "template": "CL-2.1",
+      "id": "transfer-conserves"
+    }
+  ],
+  "tcb": [
+    {
+      "component": "the Lean 4.35.0 kernel",
+      "status": "trusted"
+    },
+    {
+      "component": "transfer_conserves",
+      "status": "proved"
+    }
+  ]
+}

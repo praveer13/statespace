@@ -1,0 +1,143 @@
+{
+  "id": "RUN-tlc-rtw3",
+  "title": "The read, check and write split: a 7-state, 6-action trace; 20 distinct states",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "read/check/write split: a 7-state, 6-action trace; 20 distinct states",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "the 1.8.0 tla2tools.jar; its SHA-256 is the one the same log prints at its end (sha256sum of dl/tla180/tla2tools.jar), the build its banner names",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/tla/rtw3/RTW3.tla",
+      "sha256": "4ac83e4e6196e9b3b28f65120a1836dcb77345174e9b02cd5305ab251bdb04e6",
+      "bytes": 927,
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/rtw3/RTW3.cfg",
+      "sha256": "b80b23050e23bed480acc998c107e6a7ca38c86e0c56ffeae88b4d9339dcb61c",
+      "bytes": 134,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "===== RTW3 stop-at-first-violation (TLC 1.8.0 build 2026.10.20.183001, -workers 1)",
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Error: Invariant NoOverspend is violated.",
+    "State 1: <Initial predicate>",
+    "State 2: <Read(w1) line 10, col 13 to line 11, col 75 of module RTW3>",
+    "State 3: <Check(w1) line 12, col 13 to line 14, col 45 of module RTW3>",
+    "State 4: <Read(w2) line 10, col 13 to line 11, col 75 of module RTW3>",
+    "State 5: <Write(w1) line 15, col 13 to line 16, col 64 of module RTW3>",
+    "State 6: <Check(w2) line 12, col 13 to line 14, col 45 of module RTW3>",
+    "State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>",
+    "26 states generated, 20 distinct states found, 2 states left on queue.",
+    "The depth of the complete state graph search is 7."
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/tlc_runs.txt",
+      "sha256": "d5a2ecb63876b51c885ee7b8b67b98067d60bde4b413beadac68df5e93df70b0",
+      "bytes": 23989,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/rtw3/RTW3.trace.json",
+      "sha256": "2d03b16a91cbc068929e4d0a9a5e091861c64cd69c5c830df169f48b0ec093ae",
+      "bytes": 2558,
+      "kind": "trace"
+    }
+  ],
+  "values": {
+    "result": "violated",
+    "invariant": "NoOverspend",
+    "trace_states": 7,
+    "trace_actions": 6,
+    "distinct_states": 20,
+    "states_generated": 26,
+    "depth": 7,
+    "continue_states_generated": 27
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "stop-at-first-violation",
+      "origin": "imported",
+      "purpose": "default stop at the first violation, -workers 1",
+      "budget": {
+        "workers": 1
+      },
+      "verdict_lines": [
+        "===== RTW3 stop-at-first-violation (TLC 1.8.0 build 2026.10.20.183001, -workers 1)",
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Invariant NoOverspend is violated.",
+        "State 1: <Initial predicate>",
+        "State 2: <Read(w1) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 3: <Check(w1) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 4: <Read(w2) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 5: <Write(w1) line 15, col 13 to line 16, col 64 of module RTW3>",
+        "State 6: <Check(w2) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>",
+        "26 states generated, 20 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 7."
+      ]
+    },
+    {
+      "id": "continue",
+      "origin": "imported",
+      "purpose": "-continue explores everything: the same 20 distinct states",
+      "budget": {
+        "workers": 1
+      },
+      "verdict_lines": [
+        "===== RTW3 -continue (TLC 1.8.0 build 2026.10.20.183001, -workers 1)",
+        "27 states generated, 20 distinct states found, 0 states left on queue."
+      ]
+    }
+  ],
+  "primary_config": "stop-at-first-violation",
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the log does not name the container image"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log's section headers name the flags (-workers 1, -continue), not the whole command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log is filtered to the verdicts"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log is filtered to the verdicts"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/out/tlc_runs.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

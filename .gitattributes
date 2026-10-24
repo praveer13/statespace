@@ -1,0 +1,10 @@
+# Line endings for files whose SHA-256 a gate or a run record checks: a checkout that converts line endings
+# (core.autocrlf) would change their bytes, and with them their hashes. vendor/kernelspace/ has its own rule.
+
+# The keep/kill rules: GATE-schema compares their SHA-256 with runs/RUN-keepkill-rules.json (W0-T07).
+content/governance/keepkill-rules.yaml -text
+
+# Lean sources and the Goal Replay strips generated from them: the generator refuses a carriage return and the
+# strips' manifests hash the sources (W0-S10).
+*.lean text eol=lf
+runs/RUN-replay-gen/** text eol=lf

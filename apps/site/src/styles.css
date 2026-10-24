@@ -1,0 +1,38 @@
+/* Scaffold styles only: system fonts, two themes by the system setting, no external requests. The drafting-table
+   design system (DESIGN.md) arrives with W1-T01. */
+:root {
+  color-scheme: light dark;
+  --ink: #1b1b1b;
+  --paper: #fafaf7;
+  --rule: #b8b8b0;
+  --link: #14507a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e8e4;
+    --paper: #1b1b1c;
+    --rule: #555;
+    --link: #9cc7e8;
+  }
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.6 system-ui, sans-serif;
+}
+a {
+  color: var(--link);
+  text-decoration: underline;
+}
+.shell-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.mark {
+  font-weight: 600;
+}
+.shell-main {
+  max-width: 680px;
+  padding: 16px;
+}

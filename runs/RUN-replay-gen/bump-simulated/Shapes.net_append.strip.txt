@@ -1,0 +1,30 @@
+Shapes.net_append   theorem net_append   source Shapes.lean (sha256 a2a32de8bd322801)
+$/lean/plainGoal; positions are 0-based line and character
+
+[0] before `induction xs with`   (line 10, character 2)
+    xs ys : List Int
+    ⊢ net (xs ++ ys) = net xs + net ys
+
+[1] before `simp [net]`   (line 11, character 11)
+    case nil
+    ys : List Int
+    ⊢ net ([] ++ ys) = net [] + net ys
+
+[2] before `simp [net, ih]`   (line 13, character 4)
+    case cons
+    ys : List Int
+    x : Int
+    xs : List Int
+    ih : net (xs ++ ys) = net xs + net ys
+    ⊢ net (x :: xs ++ ys) = net (x :: xs) + net ys
+
+[3] before `omega`   (line 14, character 4)
+    case cons
+    ys : List Int
+    x : Int
+    xs : List Int
+    ih : net (xs ++ ys) = net xs + net ys
+    ⊢ x + (net xs + net ys) = x + net xs + net ys
+
+[4] end of proof   (line 14, character 9)
+    no goals

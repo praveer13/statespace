@@ -1,0 +1,231 @@
+{
+  "id": "RUN-lean-comparator",
+  "title": "lake comparator accepts an honest solution and rejects a weakened statement and a redefined transfer; --paranoid runs six checkers",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "honest \"Your solution is okay!\" (exit 0); weakened statement \"theorem statement do not match\" and redefined `transfer` \"Const does not match\" (exit 1); `--paranoid` runs six checkers in about 3 s",
+  "engine": "lean",
+  "version": "4.35.0",
+  "binary": "lake comparator of the Lean 4.35.0 toolchain",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/comp/good/Challenge.lean",
+      "sha256": "97070e165cddcc721497a4a587265f37033c71ec5ab7ced23a367a26018fc446",
+      "bytes": 298,
+      "role": "challenge"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/good/Solution.lean",
+      "sha256": "f2ce2623b1e6f1e39121d3ad74b626ce0ef3c18955df538fa4dfdbd85c0d12f9",
+      "bytes": 346,
+      "role": "solution"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/good/comparator.json",
+      "sha256": "d281fc22fabecf1618d34421a27cffc2b0e2450037d63da6dd80418f0a2edf5e",
+      "bytes": 175,
+      "role": "config"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/weak/Solution.lean",
+      "sha256": "b18a690e144d11d0206c4fd8f9e4b52e144d9cb542c8ccf2291a2e136c985779",
+      "bytes": 356,
+      "role": "solution"
+    },
+    {
+      "path": "research/evidence/A5r3/comp/redef/Solution.lean",
+      "sha256": "bb0b9dd496c6ce0a458ea9094eb3a9480d12cfd10de95672fcd50f252f2c7df2",
+      "bytes": 318,
+      "role": "solution"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/Challenge.lean",
+      "sha256": "2bac22d5581d9fa38f81316ace705304ff2c901d6d35b5f6c6818b55e869de54",
+      "bytes": 215,
+      "role": "challenge"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/Solution.lean",
+      "sha256": "0b853b943ed97f92f8cb88df5fc7fb694e7e100364f8f7a2823519d4b99062f4",
+      "bytes": 251,
+      "role": "solution"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/comparator.json",
+      "sha256": "0fa74d260beb32acb63c91cc64dae40f730511490c938f212d1227272dcf4c29",
+      "bytes": 174,
+      "role": "config"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "== good comparator(no-sandbox) rc=0 :: Your solution is okay! ",
+    "== weak comparator(no-sandbox) rc=1 :: error: Challenge and solution theorem statement do not match: 'transfer_conserves' ",
+    "== redef comparator(no-sandbox) rc=1 :: error: Const does not match between challenge and target 'transfer' ",
+    "== good --paranoid rc=0 secs=3",
+    "Running Lean paranoid kernel on solution",
+    "Lean paranoid kernel accepts the solution",
+    "Running lean4lean kernel on solution",
+    "lean4lean kernel accepts the solution",
+    "Running nanoda kernel on solution",
+    "nanoda kernel accepts the solution",
+    "Running con-leche kernel on solution",
+    "con-leche: accepted 1274 declarations (--verified)",
+    "con-leche kernel accepts the solution",
+    "Running con-ron kernel on solution",
+    "con-ron: accepted 1274 declarations (--verified)",
+    "con-ron kernel accepts the solution",
+    "Running Lean default kernel on solution",
+    "Lean default kernel accepts the solution"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/comp-run2.log",
+      "sha256": "b5f35ed23f9a1e8f69f0487a150929208f2e6ae96f8a9de7ae1e7fb8c6ba2304",
+      "bytes": 658,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/A5r3/comp-run5.log",
+      "sha256": "e59c40869876ea3c674eb04c8b64467b9363c70030aa47a245b9403535f30e96",
+      "bytes": 862,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/cmp-honest.out",
+      "sha256": "59196d5e4db55a82db886a538e59f25a955da0c70dfe85184dac3af2a8338497",
+      "bytes": 1128,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/cmp-weak.out",
+      "sha256": "6bc55e04b40f7cdf9d5162e3e1a22c3e6cb9f515fa8bc89d79fc039cccac5f01",
+      "bytes": 1098,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/lean-measure/proj/judge/cmp-drift.out",
+      "sha256": "e8a5ac5b34f84002cf10b3c515af3a536a1576f7b5f9ba5cb80197d923701a5f",
+      "bytes": 1092,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "honest": {
+      "exit": 0,
+      "line": "Your solution is okay!"
+    },
+    "weakened": {
+      "exit": 1
+    },
+    "redefined": {
+      "exit": 1
+    },
+    "paranoid_checkers": 6,
+    "paranoid_seconds": 3
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "no-sandbox",
+      "origin": "imported",
+      "purpose": "good, weak and redef judged with the sandbox off (A5r3/comp-run2.log)",
+      "verdict_lines": [
+        "== good comparator(no-sandbox) rc=0 :: Your solution is okay! ",
+        "== weak comparator(no-sandbox) rc=1 :: error: Challenge and solution theorem statement do not match: 'transfer_conserves' ",
+        "== redef comparator(no-sandbox) rc=1 :: error: Const does not match between challenge and target 'transfer' "
+      ]
+    },
+    {
+      "id": "sandboxed",
+      "origin": "imported",
+      "purpose": "the same three inside bubblewrap, in a container with the relaxed options (A5r3/comp-run5.log)",
+      "verdict_lines": [
+        "== good sandboxed rc=0 secs=1 :: Your solution is okay! ",
+        "== weak sandboxed rc=1 secs=1 :: error: Challenge and solution theorem statement do not match: 'transfer_conserves' ",
+        "== redef sandboxed rc=1 secs=2 :: error: Const does not match between challenge and target 'transfer' "
+      ]
+    },
+    {
+      "id": "paranoid",
+      "origin": "imported",
+      "purpose": "the honest solution under --paranoid (A5r3/comp-run5.log)",
+      "exit_code": 0,
+      "verdict_lines": [
+        "== good --paranoid rc=0 secs=3",
+        "Running Lean paranoid kernel on solution",
+        "Lean paranoid kernel accepts the solution",
+        "Running lean4lean kernel on solution",
+        "lean4lean kernel accepts the solution",
+        "Running nanoda kernel on solution",
+        "nanoda kernel accepts the solution",
+        "Running con-leche kernel on solution",
+        "con-leche: accepted 1274 declarations (--verified)",
+        "con-leche kernel accepts the solution",
+        "Running con-ron kernel on solution",
+        "con-ron: accepted 1274 declarations (--verified)",
+        "con-ron kernel accepts the solution",
+        "Running Lean default kernel on solution",
+        "Lean default kernel accepts the solution"
+      ]
+    },
+    {
+      "id": "judge",
+      "origin": "imported",
+      "purpose": "honest, weakened and redefined judged on the lean-measure judge project with the sandbox off",
+      "verdict_lines": [
+        "Your solution is okay!",
+        "error: Challenge and solution theorem statement do not match: 'conserves'",
+        "error: Const does not match between challenge and target 'transfer'"
+      ]
+    }
+  ],
+  "primary_config": "no-sandbox",
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the logs do not hash the toolchain"
+    },
+    {
+      "field": "image",
+      "reason": "the logs do not name the container image"
+    },
+    {
+      "field": "started_at",
+      "reason": "the logs are undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the logs print a label and the exit code per case, not the command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "one exit code per case is in the configurations; there is no single one"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/comp-run2.log, comp-run5.log; lean-measure/proj/judge/*.out (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

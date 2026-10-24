@@ -1,0 +1,124 @@
+{
+  "id": "RUN-lean-refund-a21",
+  "title": "Lean renderings of AUD-2.1: the update chain does not elaborate, the shown proof fails in omega, the repaired proofs and a false statement under a value update",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "Lean renderings of AUD-2.1: as written, the `.update` chain does not elaborate, and with the syntax repaired the shown proof fails in `omega`; with the proof repaired, `refund_nonneg` (customer ≥ 0) is proved with `[propext, Quot.sound]` and `refund_breaks_inv` (the merchant can go negative) with `[propext]`; under a value update the statement is false (`refund_nonneg_false`, `[propext]`)",
+  "engine": "lean",
+  "version": "4.35.0",
+  "binary": "the Lean 4.35.0 toolchain",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/lean/AuditA.lean",
+      "sha256": "f7fbd279fe51099aa9746287f6e7290b6c49b999409577f278abb3d8a80c2ac2",
+      "bytes": 988,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/AuditB.lean",
+      "sha256": "1de338dcf81ec0bb7e3641ae6d03c5f5ea25f7975934bbd3c7346dbf254652ad",
+      "bytes": 929,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/AuditC.lean",
+      "sha256": "ada20cce617630f823c357d9745ad2bd16d59154f3bf9f1e3ba5265210b9305a",
+      "bytes": 931,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/AuditD.lean",
+      "sha256": "f6dba7cd219c46d1fc6ec3c6632f58e99fb5c07d6038cd0a929fbbc0ebe0c325",
+      "bytes": 1417,
+      "role": "source"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/AuditE.lean",
+      "sha256": "cc71d30e3421e98c7591219468635cec5c3f2023f8e46f505140122dff51cd14",
+      "bytes": 1275,
+      "role": "source"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "===== AuditA",
+    "/work/AuditA.lean:18:39: error: Application type mismatch: The argument",
+    "===== AuditC",
+    "/work/AuditC.lean:22:55: error: omega could not prove the goal:",
+    "===== AuditD",
+    "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+    "'refund_breaks_inv' depends on axioms: [propext]",
+    "===== AuditE",
+    "'refund_nonneg_false' depends on axioms: [propext]"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/a2r3/out/lean_audit.txt",
+      "sha256": "e40a0c0f947dbba4d5c02e6a76c4e27abf74b8441769132a29937f36ff1d166b",
+      "bytes": 1930,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "as_written": "does not elaborate",
+    "shown_proof": "omega fails",
+    "refund_nonneg_axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "refund_breaks_inv_axioms": [
+      "propext"
+    ],
+    "refund_nonneg_false_axioms": [
+      "propext"
+    ]
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the toolchain"
+    },
+    {
+      "field": "image",
+      "reason": "the /work paths show a container, not its image"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log is undated"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log holds the output; the /work paths show a container mount, not the command line"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from a2r3/out/lean_audit.txt; a2r3/lean/Audit*.lean (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

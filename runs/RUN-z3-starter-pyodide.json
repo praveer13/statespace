@@ -1,0 +1,81 @@
+{
+  "id": "RUN-z3-starter-pyodide",
+  "title": "The starter on Z3 5.3.1 in Pyodide 314.0.7 in three browser engines, without cross-origin isolation",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "the same starter on Pyodide 314.0.7 with the 5.3.1.0 wheel in Chromium 153, Firefox 155 and WebKit 26.6, not cross-origin isolated, ready in 1.46–1.71 s (the first-load size is recorded on real devices in {{run:RUN-phone-pyodide}})",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "z3_solver-5.3.1.0 pyemscripten wheel on Pyodide 314.0.7",
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "# Browser runs, 2026-10-21, docker mcr.microsoft.com/playwright:v1.63.0-noble, playwright-core 1.63.0",
+    "chromium 153.0.8010.12 {\"coi\":false,\"sab\":false,\"readyMs\":1461,\"result\":\"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\",\"totalMs\":1664} wall 1682 ms",
+    "firefox 155.0 {\"coi\":false,\"sab\":false,\"readyMs\":1714,\"result\":\"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\",\"totalMs\":1912} wall 1969 ms",
+    "webkit 26.6 {\"coi\":false,\"sab\":false,\"readyMs\":1551,\"result\":\"5.3.1 sat [b = 0, amount = 1, a = 0] unsat\",\"totalMs\":1756} wall 1766 ms"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/browser-runs.log",
+      "sha256": "b68f1261cabcb489b4e021f3f1d4ddb87144dcc05b3c229d77a6620b4153e119",
+      "bytes": 3574,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "ready_ms": {
+      "chromium": 1461,
+      "firefox": 1714,
+      "webkit": 1551
+    },
+    "cross_origin_isolated": false,
+    "browsers": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    },
+    "pyodide": "314.0.7"
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the wheel; PyPI publishes z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl with SHA-256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90 (research/evidence/A5v2/z3pypi.json)"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the harness (pw/test.mjs) and the site it served are not on disk; the log names them"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record the exit code"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log names the container image, not the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log names the container image, not the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from evidence/A5r3/browser-runs.log §1 (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "The image is named as the log names it; its digest was not recorded."
+  ]
+}

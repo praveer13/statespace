@@ -1,0 +1,1165 @@
+{
+ "native": {
+  "control-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ]
+   }
+  },
+  "explain-unused-relation": {
+   "outcome": "crashed",
+   "detail": "killed by signal 11"
+  },
+  "control-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ]
+   }
+  },
+  "explain-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "unsat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ]
+   }
+  },
+  "explain-fixture:toy@toy": {
+   "outcome": "crashed",
+   "detail": "killed by signal 11"
+  },
+  "explain-fixture:read-ref@w0": {
+   "outcome": "crashed",
+   "detail": "killed by signal 11"
+  },
+  "explain-fixture:read-ref@w0-overlap": {
+   "outcome": "returned",
+   "result": {
+    "error": {
+     "kind": "engine",
+     "message": "unexpected answer shape: Var(2) ==\nquery!40(#1,#0) :-  rel_inteam(#1,#0).(rel_inteam(#2,#1) :-  rel_member(#2,#1,#0).(rel_member(#x7,#x4,#x8).))"
+    }
+   }
+  },
+  "explain-fixture:closure@graph-cycle6": {
+   "outcome": "returned",
+   "result": {
+    "error": {
+     "kind": "engine",
+     "message": "unexpected answer shape: Var(2) ==\nquery!46(#1,#0) :-  rel_selfpair(#1,#0).(rel_selfpair(#0,#0) :-  rel_node(#0).(rel_node(#b000).))"
+    }
+   }
+  },
+  "budget:{}": {
+   "outcome": "returned",
+   "result": {
+    "params": {},
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 0.95
+   }
+  },
+  "budget:{\"rlimit\":1000}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1000
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 0.952
+   }
+  },
+  "budget:{\"rlimit\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'max. resource limit exceeded'",
+    "seconds": 0.001
+   }
+  },
+  "budget:{\"timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.008
+   }
+  },
+  "budget:{\"datalog.timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.008
+   }
+  },
+  "budget:{\"timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 0.978
+   }
+  },
+  "budget:{\"datalog.timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 0.989
+   }
+  },
+  "unsafe-head": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x, y) :- q(x).   with the fact q(1)",
+    "souffle": "rejects it: Ungrounded variable y",
+    "fixedpoint_verdict": "sat",
+    "fixedpoint_tuples": 16,
+    "domain_size": 16
+   }
+  },
+  "naive-wildcard-negation": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x) :- q(x), !r(x, _).   q = {a, b, c}, r = {(a, b), (b, c)}",
+    "souffle": "p = {c}: no tuple of r starts with c",
+    "fixedpoint_read_with_a_fresh_variable": [
+     "a",
+     "b",
+     "c"
+    ]
+   }
+  },
+  "unstratified": {
+   "outcome": "returned",
+   "result": {
+    "souffle": "rejects it: Unable to stratify relation(s) {p,r}",
+    "fixedpoint": "exception",
+    "message": "b'Negation is not stratified!'"
+   }
+  },
+  "defaults": {
+   "outcome": "returned",
+   "result": {
+    "z3": "5.3.1",
+    "parameters": {
+     "datalog.similarity_compressor": "datalog.similarity_compressor (bool) rules that differ only in values of constants will be merged into a single rule (default: true)",
+     "datalog.similarity_compressor_threshold": "datalog.similarity_compressor_threshold (unsigned int) if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged (default: 11)",
+     "datalog.generate_explanations": "datalog.generate_explanations (bool) produce explanations for produced facts when using the datalog engine (default: false)",
+     "datalog.default_relation": "datalog.default_relation (symbol) default relation implementation: external_relation, pentagon (default: pentagon)",
+     "datalog.timeout": "datalog.timeout (unsigned int) Time limit used for saturation (default: 0)",
+     "rlimit": "rlimit (unsigned int) deterministic resource limit (0 means no limit) (default: 0)",
+     "timeout": "timeout (unsigned int) (default: infty) timeout in milliseconds. (default: 4294967295)"
+    }
+   }
+  }
+ },
+ "pyodide-node22": {
+  "control-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 3
+   }
+  },
+  "explain-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 9
+   }
+  },
+  "control-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 3
+   }
+  },
+  "explain-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "unsat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 6
+   }
+  },
+  "explain-fixture:toy@toy": {
+   "outcome": "trapped",
+   "detail": "memory access out of bounds"
+  },
+  "explain-fixture:read-ref@w0": {
+   "outcome": "trapped",
+   "detail": "memory access out of bounds"
+  },
+  "explain-fixture:read-ref@w0-overlap": {
+   "outcome": "trapped",
+   "detail": "Traceback (most recent call last):"
+  },
+  "explain-fixture:closure@graph-cycle6": {
+   "outcome": "trapped",
+   "detail": "memory access out of bounds"
+  },
+  "budget:{}": {
+   "outcome": "returned",
+   "result": {
+    "params": {},
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.63,
+    "wall_ms": 1637
+   }
+  },
+  "budget:{\"rlimit\":1000}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1000
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.62,
+    "wall_ms": 1627
+   }
+  },
+  "budget:{\"rlimit\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'max. resource limit exceeded'",
+    "seconds": 0,
+    "wall_ms": 6
+   }
+  },
+  "budget:{\"timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.012,
+    "wall_ms": 19
+   }
+  },
+  "budget:{\"datalog.timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.016,
+    "wall_ms": 23
+   }
+  },
+  "budget:{\"timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.615,
+    "wall_ms": 1622
+   }
+  },
+  "budget:{\"datalog.timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.634,
+    "wall_ms": 1642
+   }
+  },
+  "unsafe-head": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x, y) :- q(x).   with the fact q(1)",
+    "souffle": "rejects it: Ungrounded variable y",
+    "fixedpoint_verdict": "sat",
+    "fixedpoint_tuples": 16,
+    "domain_size": 16,
+    "wall_ms": 3
+   }
+  },
+  "naive-wildcard-negation": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x) :- q(x), !r(x, _).   q = {a, b, c}, r = {(a, b), (b, c)}",
+    "souffle": "p = {c}: no tuple of r starts with c",
+    "fixedpoint_read_with_a_fresh_variable": [
+     "a",
+     "b",
+     "c"
+    ],
+    "wall_ms": 4
+   }
+  },
+  "unstratified": {
+   "outcome": "returned",
+   "result": {
+    "souffle": "rejects it: Unable to stratify relation(s) {p,r}",
+    "fixedpoint": "exception",
+    "message": "b'Negation is not stratified!'",
+    "wall_ms": 3
+   }
+  },
+  "defaults": {
+   "outcome": "returned",
+   "result": {
+    "z3": "5.3.1",
+    "parameters": {
+     "datalog.similarity_compressor": "datalog.similarity_compressor (bool) rules that differ only in values of constants will be merged into a single rule (default: true)",
+     "datalog.similarity_compressor_threshold": "datalog.similarity_compressor_threshold (unsigned int) if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged (default: 11)",
+     "datalog.generate_explanations": "datalog.generate_explanations (bool) produce explanations for produced facts when using the datalog engine (default: false)",
+     "datalog.default_relation": "datalog.default_relation (symbol) default relation implementation: external_relation, pentagon (default: pentagon)",
+     "datalog.timeout": "datalog.timeout (unsigned int) Time limit used for saturation (default: 0)",
+     "rlimit": "rlimit (unsigned int) deterministic resource limit (0 means no limit) (default: 0)",
+     "timeout": "timeout (unsigned int) (default: infty) timeout in milliseconds. (default: 4294967295)"
+    },
+    "wall_ms": 2
+   }
+  }
+ },
+ "chromium": {
+  "control-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 14
+   }
+  },
+  "explain-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 19
+   }
+  },
+  "control-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 21
+   }
+  },
+  "explain-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "unsat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 20
+   }
+  },
+  "explain-fixture:toy@toy": {
+   "outcome": "page crashed",
+   "detail": "Error: page.waitForFunction: Target crashed "
+  },
+  "explain-fixture:read-ref@w0": {
+   "outcome": "error",
+   "detail": "Traceback (most recent call last):"
+  },
+  "explain-fixture:read-ref@w0-overlap": {
+   "outcome": "page crashed",
+   "detail": "Error: page.waitForFunction: Target crashed "
+  },
+  "explain-fixture:closure@graph-cycle6": {
+   "outcome": "page crashed",
+   "detail": "Error: page.waitForFunction: Target crashed "
+  },
+  "budget:{}": {
+   "outcome": "returned",
+   "result": {
+    "params": {},
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.314,
+    "wall_ms": 1330
+   }
+  },
+  "budget:{\"rlimit\":1000}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1000
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.282,
+    "wall_ms": 1298
+   }
+  },
+  "budget:{\"rlimit\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'max. resource limit exceeded'",
+    "seconds": 0.001,
+    "wall_ms": 17
+   }
+  },
+  "budget:{\"timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'canceled'",
+    "seconds": 0.003,
+    "wall_ms": 18
+   }
+  },
+  "budget:{\"datalog.timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.018,
+    "wall_ms": 33
+   }
+  },
+  "budget:{\"timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.279,
+    "wall_ms": 1298
+   }
+  },
+  "budget:{\"datalog.timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.287,
+    "wall_ms": 1303
+   }
+  },
+  "unsafe-head": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x, y) :- q(x).   with the fact q(1)",
+    "souffle": "rejects it: Ungrounded variable y",
+    "fixedpoint_verdict": "sat",
+    "fixedpoint_tuples": 16,
+    "domain_size": 16,
+    "wall_ms": 15
+   }
+  },
+  "naive-wildcard-negation": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x) :- q(x), !r(x, _).   q = {a, b, c}, r = {(a, b), (b, c)}",
+    "souffle": "p = {c}: no tuple of r starts with c",
+    "fixedpoint_read_with_a_fresh_variable": [
+     "a",
+     "b",
+     "c"
+    ],
+    "wall_ms": 20
+   }
+  },
+  "unstratified": {
+   "outcome": "returned",
+   "result": {
+    "souffle": "rejects it: Unable to stratify relation(s) {p,r}",
+    "fixedpoint": "exception",
+    "message": "b'Negation is not stratified!'",
+    "wall_ms": 12
+   }
+  },
+  "defaults": {
+   "outcome": "returned",
+   "result": {
+    "z3": "5.3.1",
+    "parameters": {
+     "datalog.similarity_compressor": "datalog.similarity_compressor (bool) rules that differ only in values of constants will be merged into a single rule (default: true)",
+     "datalog.similarity_compressor_threshold": "datalog.similarity_compressor_threshold (unsigned int) if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged (default: 11)",
+     "datalog.generate_explanations": "datalog.generate_explanations (bool) produce explanations for produced facts when using the datalog engine (default: false)",
+     "datalog.default_relation": "datalog.default_relation (symbol) default relation implementation: external_relation, pentagon (default: pentagon)",
+     "datalog.timeout": "datalog.timeout (unsigned int) Time limit used for saturation (default: 0)",
+     "rlimit": "rlimit (unsigned int) deterministic resource limit (0 means no limit) (default: 0)",
+     "timeout": "timeout (unsigned int) (default: infty) timeout in milliseconds. (default: 4294967295)"
+    },
+    "wall_ms": 10
+   }
+  }
+ },
+ "firefox": {
+  "control-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 5
+   }
+  },
+  "explain-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 6
+   }
+  },
+  "control-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 6
+   }
+  },
+  "explain-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "unsat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 6
+   }
+  },
+  "explain-fixture:toy@toy": {
+   "outcome": "error",
+   "detail": "Traceback (most recent call last):"
+  },
+  "explain-fixture:read-ref@w0": {
+   "outcome": "error",
+   "detail": "index out of bounds"
+  },
+  "explain-fixture:read-ref@w0-overlap": {
+   "outcome": "error",
+   "detail": "index out of bounds"
+  },
+  "explain-fixture:closure@graph-cycle6": {
+   "outcome": "error",
+   "detail": "index out of bounds"
+  },
+  "budget:{}": {
+   "outcome": "returned",
+   "result": {
+    "params": {},
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.881,
+    "wall_ms": 1891
+   }
+  },
+  "budget:{\"rlimit\":1000}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1000
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.88,
+    "wall_ms": 1890
+   }
+  },
+  "budget:{\"rlimit\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'max. resource limit exceeded'",
+    "seconds": 0.001,
+    "wall_ms": 10
+   }
+  },
+  "budget:{\"timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.012,
+    "wall_ms": 23
+   }
+  },
+  "budget:{\"datalog.timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.011,
+    "wall_ms": 23
+   }
+  },
+  "budget:{\"timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.876,
+    "wall_ms": 1887
+   }
+  },
+  "budget:{\"datalog.timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.876,
+    "wall_ms": 1887
+   }
+  },
+  "unsafe-head": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x, y) :- q(x).   with the fact q(1)",
+    "souffle": "rejects it: Ungrounded variable y",
+    "fixedpoint_verdict": "sat",
+    "fixedpoint_tuples": 16,
+    "domain_size": 16,
+    "wall_ms": 5
+   }
+  },
+  "naive-wildcard-negation": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x) :- q(x), !r(x, _).   q = {a, b, c}, r = {(a, b), (b, c)}",
+    "souffle": "p = {c}: no tuple of r starts with c",
+    "fixedpoint_read_with_a_fresh_variable": [
+     "a",
+     "b",
+     "c"
+    ],
+    "wall_ms": 7
+   }
+  },
+  "unstratified": {
+   "outcome": "returned",
+   "result": {
+    "souffle": "rejects it: Unable to stratify relation(s) {p,r}",
+    "fixedpoint": "exception",
+    "message": "b'Negation is not stratified!'",
+    "wall_ms": 5
+   }
+  },
+  "defaults": {
+   "outcome": "returned",
+   "result": {
+    "z3": "5.3.1",
+    "parameters": {
+     "datalog.similarity_compressor": "datalog.similarity_compressor (bool) rules that differ only in values of constants will be merged into a single rule (default: true)",
+     "datalog.similarity_compressor_threshold": "datalog.similarity_compressor_threshold (unsigned int) if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged (default: 11)",
+     "datalog.generate_explanations": "datalog.generate_explanations (bool) produce explanations for produced facts when using the datalog engine (default: false)",
+     "datalog.default_relation": "datalog.default_relation (symbol) default relation implementation: external_relation, pentagon (default: pentagon)",
+     "datalog.timeout": "datalog.timeout (unsigned int) Time limit used for saturation (default: 0)",
+     "rlimit": "rlimit (unsigned int) deterministic resource limit (0 means no limit) (default: 0)",
+     "timeout": "timeout (unsigned int) (default: infty) timeout in milliseconds. (default: 4294967295)"
+    },
+    "wall_ms": 3
+   }
+  }
+ },
+ "webkit": {
+  "control-unused-relation": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 7
+   }
+  },
+  "explain-unused-relation": {
+   "outcome": "error",
+   "detail": "Out of bounds memory access (evaluating 'getWasmTableEntry(fn).apply(null,args)')"
+  },
+  "control-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "sat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 12
+   }
+  },
+  "explain-arity3": {
+   "outcome": "returned",
+   "result": {
+    "asked": [
+     "p(1..)",
+     "p(3..)"
+    ],
+    "got": [
+     "unsat",
+     "unsat"
+    ],
+    "expected": [
+     "sat",
+     "unsat"
+    ],
+    "wall_ms": 20
+   }
+  },
+  "explain-fixture:toy@toy": {
+   "outcome": "error",
+   "detail": "Out of bounds memory access (evaluating 'getWasmTableEntry(fn).apply(null,args)')"
+  },
+  "explain-fixture:read-ref@w0": {
+   "outcome": "error",
+   "detail": "Out of bounds memory access (evaluating 'getWasmTableEntry(fn).apply(null,args)')"
+  },
+  "explain-fixture:read-ref@w0-overlap": {
+   "outcome": "error",
+   "detail": "Out of bounds memory access (evaluating 'getWasmTableEntry(fn).apply(null,args)')"
+  },
+  "explain-fixture:closure@graph-cycle6": {
+   "outcome": "error",
+   "detail": "Traceback (most recent call last):"
+  },
+  "budget:{}": {
+   "outcome": "returned",
+   "result": {
+    "params": {},
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.497,
+    "wall_ms": 1518
+   }
+  },
+  "budget:{\"rlimit\":1000}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1000
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.524,
+    "wall_ms": 1535
+   }
+  },
+  "budget:{\"rlimit\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "rlimit": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'max. resource limit exceeded'",
+    "seconds": 0.001,
+    "wall_ms": 20
+   }
+  },
+  "budget:{\"timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "exception",
+    "exception": "b'canceled'",
+    "seconds": 0.002,
+    "wall_ms": 12
+   }
+  },
+  "budget:{\"datalog.timeout\":1}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 1
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "unknown",
+    "reason_unknown": "ok",
+    "seconds": 0.014,
+    "wall_ms": 34
+   }
+  },
+  "budget:{\"timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.481,
+    "wall_ms": 1492
+   }
+  },
+  "budget:{\"datalog.timeout\":50}": {
+   "outcome": "returned",
+   "result": {
+    "params": {
+     "datalog.timeout": 50
+    },
+    "domain": 50,
+    "full_size": 125000,
+    "verdict": "sat",
+    "tuples": 125000,
+    "reason_unknown": "ok",
+    "seconds": 1.441,
+    "wall_ms": 1454
+   }
+  },
+  "unsafe-head": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x, y) :- q(x).   with the fact q(1)",
+    "souffle": "rejects it: Ungrounded variable y",
+    "fixedpoint_verdict": "sat",
+    "fixedpoint_tuples": 16,
+    "domain_size": 16,
+    "wall_ms": 7
+   }
+  },
+  "naive-wildcard-negation": {
+   "outcome": "returned",
+   "result": {
+    "program": "p(x) :- q(x), !r(x, _).   q = {a, b, c}, r = {(a, b), (b, c)}",
+    "souffle": "p = {c}: no tuple of r starts with c",
+    "fixedpoint_read_with_a_fresh_variable": [
+     "a",
+     "b",
+     "c"
+    ],
+    "wall_ms": 9
+   }
+  },
+  "unstratified": {
+   "outcome": "returned",
+   "result": {
+    "souffle": "rejects it: Unable to stratify relation(s) {p,r}",
+    "fixedpoint": "exception",
+    "message": "b'Negation is not stratified!'",
+    "wall_ms": 7
+   }
+  },
+  "defaults": {
+   "outcome": "returned",
+   "result": {
+    "z3": "5.3.1",
+    "parameters": {
+     "datalog.similarity_compressor": "datalog.similarity_compressor (bool) rules that differ only in values of constants will be merged into a single rule (default: true)",
+     "datalog.similarity_compressor_threshold": "datalog.similarity_compressor_threshold (unsigned int) if similarity_compressor is on, this value determines how many similar rules there must be in order for them to be merged (default: 11)",
+     "datalog.generate_explanations": "datalog.generate_explanations (bool) produce explanations for produced facts when using the datalog engine (default: false)",
+     "datalog.default_relation": "datalog.default_relation (symbol) default relation implementation: external_relation, pentagon (default: pentagon)",
+     "datalog.timeout": "datalog.timeout (unsigned int) Time limit used for saturation (default: 0)",
+     "rlimit": "rlimit (unsigned int) deterministic resource limit (0 means no limit) (default: 0)",
+     "timeout": "timeout (unsigned int) (default: infty) timeout in milliseconds. (default: 4294967295)"
+    },
+    "wall_ms": 4
+   }
+  }
+ }
+}

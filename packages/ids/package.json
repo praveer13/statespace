@@ -1,0 +1,19 @@
+{
+  "name": "@statespace/ids",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The ID registry generated from docs/spine/SPINE.md, and the checks of GATE-links.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./registry.json": "./src/registry.json",
+    "./grammar": "./src/grammar.ts"
+  },
+  "scripts": {
+    "generate": "node ../../scripts/build-ids.mjs",
+    "verify": "node ../../scripts/verify-links.mjs",
+    "typecheck": "tsc -p . && tsc -p test",
+    "test": "node --test \"test/*.test.ts\""
+  }
+}

@@ -1,0 +1,37 @@
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #555; --line: #c9c9c9; --accent: #0b5cad; --accent-fg: #ffffff; --field: #f4f4f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121212; --fg: #ececec; --muted: #b0b0b0; --line: #3a3a3a; --accent: #6db3ff; --accent-fg: #0a0a0a; --field: #1e1e1e;
+  }
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 42rem; margin: 0 auto; padding: 16px; overflow-wrap: anywhere; }
+h1 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 12px; }
+h2 { font-size: 1.1rem; margin: 24px 0 8px; }
+p, ul { margin: 8px 0; }
+ul { padding-left: 1.25rem; }
+.note { color: var(--muted); }
+.field { margin: 10px 0; }
+.field label { display: block; margin-bottom: 4px; }
+.field.check label { display: inline; }
+input[type="text"], select, textarea {
+  width: 100%; font: inherit; color: var(--fg); background: var(--field); border: 1px solid var(--line); border-radius: 6px; padding: 10px;
+}
+button { font: inherit; color: var(--fg); background: var(--field); border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; min-height: 44px; }
+button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); font-weight: 600; width: 100%; }
+button:disabled { opacity: 0.55; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+#status { min-height: 1.5em; font-weight: 600; }
+.sessions { list-style: none; margin: 0; padding: 0; }
+.sessions li { border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0; }
+.sessions h3 { font-size: 1rem; margin: 0 0 4px; }
+.sessions dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; font-size: 0.9rem; }
+.sessions dt { color: var(--muted); }
+.sessions dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+pre { white-space: pre-wrap; word-break: break-word; background: var(--field); border: 1px solid var(--line); border-radius: 6px; padding: 10px; font-size: 0.8rem; max-height: 16rem; overflow: auto; }
+textarea { font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem; }
+code { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }

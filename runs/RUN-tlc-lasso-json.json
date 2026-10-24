@@ -1,0 +1,1807 @@
+{
+  "id": "RUN-tlc-lasso-json",
+  "title": "How TLC's JSON trace writes a liveness lasso, on the Hold spec and three more lasso shapes (W0-S05)",
+  "engine": "tlc",
+  "version": "1.8.0",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar of the 1.8.0 pre-release, run with java -jar in the container",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+  "recorded_at": "2026-10-24T12:58:45.919Z",
+  "started_at": "2026-10-24T12:58:26.815Z",
+  "primary_config": "hold-180",
+  "argv": [
+    "java",
+    "-XX:+UseParallelGC",
+    "-jar",
+    "/opt/tla2tools.jar",
+    "-workers",
+    "1",
+    "-config",
+    "Hold.cfg",
+    "-dumpTrace",
+    "json",
+    "Hold.trace.json",
+    "Hold.tla"
+  ],
+  "inputs": [
+    {
+      "path": "research/evidence/a2r3/tla/live/Hold.tla",
+      "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+      "role": "spec"
+    },
+    {
+      "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+      "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 120
+  },
+  "exit_code": 13,
+  "duration_s": 0.491,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Error: Temporal property EventuallyResolves was violated.",
+    "Error: The following behavior constitutes a counter-example:",
+    "State 1: <Initial predicate>",
+    "State 2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+    "State 3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+    "State 4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+    "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+    "\"CounterExample written: Hold.trace.json\"",
+    "9 states generated, 8 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 5."
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-lasso-json/hold-180/tlc.stdout.txt",
+      "sha256": "3d7d1daeb5f96ea1cbe0950cb7e82a89af33141990ab8e878a42255f0919e4dd",
+      "bytes": 3256,
+      "kind": "tlc stdout",
+      "compare": "informational: the banner carries a random seed and the run prints timestamps"
+    },
+    {
+      "path": "runs/RUN-tlc-lasso-json/hold-180/Hold.trace.json",
+      "sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+      "bytes": 835,
+      "kind": "json counterexample",
+      "compare": "bytes"
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "eclipse-temurin:21-jre",
+      "digest": "sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+      "java": "OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+      "run_flags": [
+        "--rm",
+        "--memory=6g",
+        "--network=none",
+        "--user <uid>:<gid>",
+        "-v <sandbox>:/work",
+        "-v <jar>:/opt/tla2tools.jar:ro",
+        "-w /work"
+      ]
+    },
+    "host_tools": {
+      "node": "v22.22.2",
+      "uv": "uv 0.10.2"
+    },
+    "emulated": false
+  },
+  "notes": [
+    "Question: how does the pinned 1.8.0 jar write a liveness lasso with -dumpTrace json? Answer on the Hold spec (config hold-180, byte-identical to the recorded Hold.trace.json): the file lists 4 states and 4 steps, and the last step goes from state 4 back to state 1. The file has no loop marker, property name or spec name. docs/spikes/W0-S05.md gives the reading rules.",
+    "hold-w4-180 (four workers, 3 runs): the same bytes as hold-180. The 1.7.4 configs cover the fallback text trace; the HoldStem and HoldNoFair configs are format probes for other lasso shapes, not course material.",
+    "Two equally valid lassos (stem-branches-sweep-180, -fp 0 to -fp 15): the first step was Open(0) for fp 0, 1, 2, 7, 10, 12, 14 and Open(1) for fp 3, 4, 5, 6, 8, 9, 11, 13, 15. With -fp 7 (stem-branches-fp-180): 1 distinct trace(s) in 6 runs. Without -fp, TLC picks the fingerprint function at random and prints it in the banner; the 3 runs of hold-w4-180 printed 2 different values.",
+    "Every run was in a container with no network on a Linux host. Nothing is emulated. A run takes about half a second, mostly container start-up, so duration_s says little.",
+    "Outputs marked informational hold a random seed, timestamps or a generated file name, so a re-run is compared on the JSON traces and verdict_lines only."
+  ],
+  "configs": [
+    {
+      "id": "hold-180",
+      "purpose": "the Hold spec of RUN-tlc-hold-lasso on the pinned 1.8.0 jar, one worker, JSON trace on",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "Hold.cfg",
+        "-dumpTrace",
+        "json",
+        "Hold.trace.json",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+          "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:26.815Z",
+      "duration_s": 0.491,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "State 3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "State 4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "\"CounterExample written: Hold.trace.json\"",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-180/tlc.stdout.txt",
+          "sha256": "3d7d1daeb5f96ea1cbe0950cb7e82a89af33141990ab8e878a42255f0919e4dd",
+          "bytes": 3256,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        },
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-180/Hold.trace.json",
+          "sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+          "bytes": 835,
+          "kind": "json counterexample",
+          "compare": "bytes"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": 1,
+        "lasso_end": 4
+      }
+    },
+    {
+      "id": "hold-nofair-180",
+      "purpose": "Hold without a fairness conjunct: the lasso is a stutter at state 1",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldNoFair.cfg",
+        "-dumpTrace",
+        "json",
+        "HoldNoFair.trace.json",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldNoFair.cfg",
+          "sha256": "31037e7cb8fce25e513325fb9beae3c56564877ad030c76f555be304a5a40142",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:27.309Z",
+      "duration_s": 0.434,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: Stuttering",
+        "\"CounterExample written: HoldNoFair.trace.json\"",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/tlc.stdout.txt",
+          "sha256": "158e4f9614342beb93a7ac5da07a6d6257748a482762af7d23fbdb18ac41cd4c",
+          "bytes": 2910,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        },
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-nofair-180/HoldNoFair.trace.json",
+          "sha256": "5a0d1be7f956ef35e68aefde4a74d70769434ff61e58c9b6ae81fbc819c41a62",
+          "bytes": 272,
+          "kind": "json counterexample",
+          "compare": "bytes"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": null,
+        "lasso_end": null
+      }
+    },
+    {
+      "id": "stem-cycle-180",
+      "purpose": "a stem of one state, then a cycle that closes on state 2; the stem action is parameterized and the fairness conjunct names an operator the step label does not",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldStemCycle.cfg",
+        "-dumpTrace",
+        "json",
+        "HoldStemCycle.trace.json",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemCycle.cfg",
+          "sha256": "47d018dfdcb045f34ee4cdaf0f14c7ea4ea22751647cca966a977b1e56ac9ba5",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:27.744Z",
+      "duration_s": 0.446,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open(0) line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "State 5: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "Back to state 2: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "\"CounterExample written: HoldStemCycle.trace.json\"",
+        "10 states generated, 9 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 6."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/tlc.stdout.txt",
+          "sha256": "6333ccb583eefa0ea938047a41406da1fd67f96040ef57c43221da1ac2813421",
+          "bytes": 3393,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        },
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-cycle-180/HoldStemCycle.trace.json",
+          "sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "bytes": 1091,
+          "kind": "json counterexample",
+          "compare": "bytes"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": 2,
+        "lasso_end": 5
+      }
+    },
+    {
+      "id": "stem-stutter-180",
+      "purpose": "a stem of two states, then a stutter at state 3",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldStemStutter.cfg",
+        "-dumpTrace",
+        "json",
+        "HoldStemStutter.trace.json",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemStutter.cfg",
+          "sha256": "e579e64cacd6a26f94ae2f7d4607a8327174b3dd1e0231d6685aca58dee6fb97",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:28.192Z",
+      "duration_s": 0.452,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open(0) line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: Stuttering",
+        "\"CounterExample written: HoldStemStutter.trace.json\"",
+        "5 states generated, 5 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 4."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/tlc.stdout.txt",
+          "sha256": "482c428d2a3eb60fad653bd8d9b4ec7f7937234167efd21a3b28c46c7f6af36d",
+          "bytes": 3134,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        },
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-stutter-180/HoldStemStutter.trace.json",
+          "sha256": "a62519b46e5e1f5bf79a0cfe4432371ac4c93d83852136b482a260c23e7e99c6",
+          "bytes": 695,
+          "kind": "json counterexample",
+          "compare": "bytes"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": null,
+        "lasso_end": null
+      }
+    },
+    {
+      "id": "hold-w4-180",
+      "purpose": "Hold with four workers, three times: does the worker count change the JSON trace?",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "4",
+        "-config",
+        "Hold.cfg",
+        "-dumpTrace",
+        "json",
+        "Hold.trace.json",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+          "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 4,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:28.645Z",
+      "duration_s": 0.456,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "State 3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "State 4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "\"CounterExample written: Hold.trace.json\"",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-w4-180/tlc.stdout.txt",
+          "sha256": "9d77821d9104f42eeb64b035e77fe8e103c013674ee5b750cb449916d1c21c58",
+          "bytes": 3240,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": 1,
+        "lasso_end": 4
+      },
+      "repeats": [
+        {
+          "started_at": "2026-10-24T12:58:28.645Z",
+          "duration_s": 0.456,
+          "exit_code": 13,
+          "fp": "112",
+          "trace_sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+          "first_step_context": null
+        },
+        {
+          "started_at": "2026-10-24T12:58:29.102Z",
+          "duration_s": 0.454,
+          "exit_code": 13,
+          "fp": "23",
+          "trace_sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+          "first_step_context": null
+        },
+        {
+          "started_at": "2026-10-24T12:58:29.557Z",
+          "duration_s": 0.492,
+          "exit_code": 13,
+          "fp": "112",
+          "trace_sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215",
+          "first_step_context": null
+        }
+      ],
+      "distinct_traces": 1,
+      "identical_to_hold_180": true
+    },
+    {
+      "id": "stem-branches-sweep-180",
+      "purpose": "the stem probe with two equally valid lassos (Open(0) and Open(1) first), run with -fp 0 to -fp 15: does the fingerprint function decide which one TLC reports?",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-fp",
+        "0",
+        "-config",
+        "HoldStemBranches.cfg",
+        "-dumpTrace",
+        "json",
+        "HoldStemBranches.trace.json",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemBranches.cfg",
+          "sha256": "c8e239f34f3ff407560312f0557bec6653f5c1c8d3be79c3fd698eb33cf73e11",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:30.050Z",
+      "duration_s": 0.471,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open(0) line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "State 5: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "Back to state 2: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "\"CounterExample written: HoldStemBranches.trace.json\"",
+        "11 states generated, 9 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 4."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-branches-sweep-180/tlc.stdout.txt",
+          "sha256": "d0f3d42df85451421cb4ac26872a9e334ce96e85ee3c7565e8d8dd73fb74c7aa",
+          "bytes": 3396,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": 2,
+        "lasso_end": 5
+      },
+      "argv_note": "repeat i runs with -fp i, for i from 0 to 15; the rest of argv is as shown",
+      "repeats": [
+        {
+          "started_at": "2026-10-24T12:58:30.050Z",
+          "duration_s": 0.471,
+          "exit_code": 13,
+          "fp": "0",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:30.523Z",
+          "duration_s": 0.42,
+          "exit_code": 13,
+          "fp": "1",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:30.944Z",
+          "duration_s": 0.429,
+          "exit_code": 13,
+          "fp": "2",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:31.374Z",
+          "duration_s": 0.475,
+          "exit_code": 13,
+          "fp": "3",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:31.850Z",
+          "duration_s": 0.492,
+          "exit_code": 13,
+          "fp": "4",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:32.342Z",
+          "duration_s": 0.437,
+          "exit_code": 13,
+          "fp": "5",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:32.780Z",
+          "duration_s": 0.459,
+          "exit_code": 13,
+          "fp": "6",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:33.240Z",
+          "duration_s": 0.456,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:33.697Z",
+          "duration_s": 0.439,
+          "exit_code": 13,
+          "fp": "8",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:34.136Z",
+          "duration_s": 0.437,
+          "exit_code": 13,
+          "fp": "9",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:34.574Z",
+          "duration_s": 0.442,
+          "exit_code": 13,
+          "fp": "10",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:35.016Z",
+          "duration_s": 0.444,
+          "exit_code": 13,
+          "fp": "11",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:35.461Z",
+          "duration_s": 0.46,
+          "exit_code": 13,
+          "fp": "12",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:35.922Z",
+          "duration_s": 0.474,
+          "exit_code": 13,
+          "fp": "13",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:36.397Z",
+          "duration_s": 0.503,
+          "exit_code": 13,
+          "fp": "14",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:36.901Z",
+          "duration_s": 0.476,
+          "exit_code": 13,
+          "fp": "15",
+          "trace_sha256": "a82963388892dedaadd1918270c1af36a3250f594f6f0766493f3a54d8487035",
+          "first_step_context": {
+            "t": 1
+          }
+        }
+      ],
+      "distinct_traces": 2
+    },
+    {
+      "id": "stem-branches-fp-180",
+      "purpose": "the same probe with -fp 7, six runs: does a fixed fingerprint function repeat the trace?",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-fp",
+        "7",
+        "-config",
+        "HoldStemBranches.cfg",
+        "-dumpTrace",
+        "json",
+        "HoldStemBranches.trace.json",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemBranches.cfg",
+          "sha256": "c8e239f34f3ff407560312f0557bec6653f5c1c8d3be79c3fd698eb33cf73e11",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:37.379Z",
+      "duration_s": 0.489,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open(0) line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "State 5: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "Back to state 2: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "\"CounterExample written: HoldStemBranches.trace.json\"",
+        "11 states generated, 9 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 4."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-branches-fp-180/tlc.stdout.txt",
+          "sha256": "205441f77718ad9f789c551e99b5c9c37c2235c9abfd8e45d0ca05b520ffdcf2",
+          "bytes": 3396,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ],
+      "trace_exploration_spec": {
+        "lasso_start": 2,
+        "lasso_end": 5
+      },
+      "repeats": [
+        {
+          "started_at": "2026-10-24T12:58:37.379Z",
+          "duration_s": 0.489,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:37.868Z",
+          "duration_s": 0.457,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:38.326Z",
+          "duration_s": 0.472,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:38.798Z",
+          "duration_s": 0.522,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:39.321Z",
+          "duration_s": 0.455,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        },
+        {
+          "started_at": "2026-10-24T12:58:39.776Z",
+          "duration_s": 0.521,
+          "exit_code": 13,
+          "fp": "7",
+          "trace_sha256": "f121f279faa344a46adfc5f7d6e53ee16af52ba402971d674c08e4f8daebe778",
+          "first_step_context": {
+            "t": 0
+          }
+        }
+      ],
+      "distinct_traces": 1
+    },
+    {
+      "id": "init-violation-180",
+      "purpose": "a finite counterexample of one state, from an invariant the initial state violates: what does the JSON hold when there are no steps?",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "InitBad.cfg",
+        "-dumpTrace",
+        "json",
+        "InitBad.trace.json",
+        "InitBad.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/InitBad.tla",
+          "sha256": "e54208433eff74b178c234734a2783002b6d4711ce6877ca8258825adcb54be7",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/InitBad.cfg",
+          "sha256": "62d3505d9b5d93adfd2e5d92fce6b1eaaed1f9215794e1a28603c847c318fb14",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:40.299Z",
+      "duration_s": 0.485,
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Error: Invariant Small is violated by the initial state:",
+        "\"CounterExample written: InitBad.trace.json\""
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/init-violation-180/tlc.stdout.txt",
+          "sha256": "ac1dd93b8416c5e17ac410254a1c39e1d83d8dc44e0562f0e8ee476ce7ecb4ef",
+          "bytes": 2166,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        },
+        {
+          "path": "runs/RUN-tlc-lasso-json/init-violation-180/InitBad.trace.json",
+          "sha256": "39bb1a6e19ca5332bda5d9fbf566372d4c5ccb2a0aed9cc1aac326df15106868",
+          "bytes": 67,
+          "kind": "json counterexample",
+          "compare": "bytes"
+        }
+      ]
+    },
+    {
+      "id": "hold-174",
+      "purpose": "the fallback: the older jar prints the lasso as text",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "Hold.cfg",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+          "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:40.786Z",
+      "duration_s": 0.826,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Temporal properties were violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "State 3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "State 4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "9 states generated, 8 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-174/tlc.stdout.txt",
+          "sha256": "8bd7d745190e67a7213f91c04db3d485dd82fab18df7d4363002f4f0eeef3e7c",
+          "bytes": 1576,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "hold-nofair-174",
+      "purpose": "the fallback on the stutter at state 1",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldNoFair.cfg",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldNoFair.cfg",
+          "sha256": "31037e7cb8fce25e513325fb9beae3c56564877ad030c76f555be304a5a40142",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:41.612Z",
+      "duration_s": 0.707,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Temporal properties were violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: Stuttering",
+        "9 states generated, 8 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-nofair-174/tlc.stdout.txt",
+          "sha256": "0537b0da14c01187454a9a71f6f44a6885ebe6b4999207dc0825c55251cbf5e6",
+          "bytes": 1224,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "stem-cycle-174",
+      "purpose": "the fallback on a stem and a cycle",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldStemCycle.cfg",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemCycle.cfg",
+          "sha256": "47d018dfdcb045f34ee4cdaf0f14c7ea4ea22751647cca966a977b1e56ac9ba5",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:42.321Z",
+      "duration_s": 0.778,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Temporal properties were violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "State 5: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "Back to state 2: <Busy line 15, col 12 to line 15, col 64 of module HoldStem>",
+        "10 states generated, 9 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-cycle-174/tlc.stdout.txt",
+          "sha256": "906d13df6e42cf5283714399a084b066c6b825e7d88da19993570c7b8b5236db",
+          "bytes": 1693,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "stem-stutter-174",
+      "purpose": "the fallback on a stem and a stutter",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "HoldStemStutter.cfg",
+        "HoldStem.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStem.tla",
+          "sha256": "f4e957febaacba7a15b95831d79e60ab56e17cd63f02c498ed540abbfc2e03db",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldStemStutter.cfg",
+          "sha256": "e579e64cacd6a26f94ae2f7d4607a8327174b3dd1e0231d6685aca58dee6fb97",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:43.100Z",
+      "duration_s": 0.815,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Temporal properties were violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Open line 13, col 12 to line 13, col 52 of module HoldStem>",
+        "State 3: <Try line 14, col 12 to line 14, col 73 of module HoldStem>",
+        "State 4: Stuttering",
+        "5 states generated, 5 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/stem-stutter-174/tlc.stdout.txt",
+          "sha256": "3b163aa665cc34e35dd6bd40140ed2569d59a87718da089cb55bac77b4f5ce1b",
+          "bytes": 1434,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "hold-tool-174",
+      "purpose": "the fallback in -tool mode: message codes frame each state and the back edge",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-tool",
+        "-config",
+        "Hold.cfg",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+          "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:43.916Z",
+      "duration_s": 0.741,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Temporal properties were violated.",
+        "1: <Initial predicate>",
+        "2: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "3: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "4: <Try line 7, col 12 to line 7, col 73 of module Hold>",
+        "1: Back to state: <Busy line 8, col 12 to line 8, col 64 of module Hold>",
+        "9 states generated, 8 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-tool-174/tlc.stdout.txt",
+          "sha256": "6f10577ad083f8cc238bd551d9dcce0c03e6403b2c17bb91e0950dbcb9cd545d",
+          "bytes": 2757,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "hold-nofair-tool-174",
+      "purpose": "the same for the stutter at state 1",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-tool",
+        "-config",
+        "HoldNoFair.cfg",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "scripts/spikes/W0-S05/probes/HoldNoFair.cfg",
+          "sha256": "31037e7cb8fce25e513325fb9beae3c56564877ad030c76f555be304a5a40142",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:44.658Z",
+      "duration_s": 0.776,
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Temporal properties were violated.",
+        "1: <Initial predicate>",
+        "2: Stuttering",
+        "9 states generated, 8 distinct states found, 0 states left on queue."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-nofair-tool-174/tlc.stdout.txt",
+          "sha256": "9049de09ba18b00007448c0884cb504be015fd3ef73c776bf82ffc922f158042",
+          "bytes": 2267,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    },
+    {
+      "id": "hold-dumptrace-174",
+      "purpose": "the older jar is asked for a JSON trace on the Hold spec",
+      "engine": "tlc",
+      "version": "1.7.4",
+      "version_string": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88",
+      "argv": [
+        "java",
+        "-XX:+UseParallelGC",
+        "-jar",
+        "/opt/tla2tools.jar",
+        "-workers",
+        "1",
+        "-config",
+        "Hold.cfg",
+        "-dumpTrace",
+        "json",
+        "Hold.trace.json",
+        "Hold.tla"
+      ],
+      "cwd": "/work",
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.tla",
+          "sha256": "b57a9145faeae73dc551a4d8cc72036d0c5e75f717c84c054457fcca1f8b3984",
+          "role": "spec"
+        },
+        {
+          "path": "research/evidence/a2r3/tla/live/Hold.cfg",
+          "sha256": "37b65ca124e123ddac3a6b7d891af2d7b929a76538b493b04995b3c14bc721cd",
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-24T12:58:45.435Z",
+      "duration_s": 0.274,
+      "exit_code": 1,
+      "verdict_lines": [
+        "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)",
+        "Error: Error: unrecognized option: -dumpTrace"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-lasso-json/hold-dumptrace-174/tlc.stdout.txt",
+          "sha256": "0375131167071962979f5086e4bc5873ccc597ce5d10ca6219c4cf3787d2c295",
+          "bytes": 138,
+          "kind": "tlc stdout",
+          "compare": "informational: the banner carries a random seed and the run prints timestamps"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "schema": {
+      "path": "schemas/drafts/lasso.schema.json",
+      "sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef"
+    },
+    "manifest": {
+      "path": "scripts/spikes/W0-S05/fixtures/manifest.json",
+      "sha256": "a24add05c0d657ee90813b729f79d750cbd6d6ab2eed19825822572ec0a0f79e"
+    },
+    "recorded_trace": {
+      "path": "research/evidence/a2r3/tla/live/Hold.trace.json",
+      "sha256": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215"
+    },
+    "tools": [
+      {
+        "engine": "ajv",
+        "version": "8.20.0",
+        "dialect": "2020-12",
+        "node": "v22.22.2",
+        "argv": [
+          "node",
+          "scripts/spikes/W0-S05/check.mjs",
+          "--json"
+        ],
+        "exit_code": 0,
+        "counts": {
+          "fixtures": 24,
+          "schemaValid": 14,
+          "schemaRejected": 10,
+          "lassos": 5,
+          "textTraces": 8
+        },
+        "recorded_hold_trace": "valid",
+        "output": {
+          "path": "runs/RUN-tlc-lasso-json/validation/ajv.json",
+          "sha256": "186183f70f8e0b7199f3f4118125a9f5b92f85e4f3b666b979f3723ab2adc50d",
+          "compare": "bytes"
+        },
+        "schema_sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef"
+      },
+      {
+        "engine": "jsonschema",
+        "version": "4.26.0",
+        "dialect": "2020-12",
+        "python": "3.13.12",
+        "argv": [
+          "uv",
+          "run",
+          "--no-project",
+          "--with",
+          "jsonschema==4.26.0",
+          "python",
+          "-I",
+          "scripts/spikes/W0-S05/check_schema.py",
+          "--json"
+        ],
+        "exit_code": 0,
+        "counts": {
+          "fixtures": 24,
+          "schemaValid": 14,
+          "schemaRejected": 10
+        },
+        "recorded_hold_trace": "valid",
+        "output": {
+          "path": "runs/RUN-tlc-lasso-json/validation/jsonschema.json",
+          "sha256": "48e8d6c241a3fe31fcccefb1dd199a223a9176de4c4077580d37f81439b0f5ed",
+          "compare": "bytes"
+        },
+        "schema_sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef"
+      }
+    ],
+    "scripts": [
+      {
+        "path": "scripts/spikes/W0-S05/record.mjs",
+        "sha256": "953dac3a7a02958d9b1c2d701c3e19947bbaf3e272f3b12596fa7eb54257a413"
+      },
+      {
+        "path": "scripts/spikes/W0-S05/check.mjs",
+        "sha256": "bf4c1c0e7a736dc6d2565c25b3671e1702b140252045763b10a93c14b98d5246"
+      },
+      {
+        "path": "scripts/spikes/W0-S05/lasso-read.mjs",
+        "sha256": "4b7631832dad204cdae57c7dbc69c0855fff53a4234ba92b5f83454e8285c286"
+      },
+      {
+        "path": "scripts/spikes/W0-S05/check_schema.py",
+        "sha256": "a555ab110019da978acb758335acf33e96a6cca7a9c9be26451262df2c9297a9"
+      },
+      {
+        "path": "scripts/spikes/W0-S05/package-lock.json",
+        "sha256": "9f85c7ac6bf0462243737de2bfb2f70d7a55a85ffd1e48195fd9911c9c6d9641"
+      }
+    ],
+    "subset_check": {
+      "available": true,
+      "module": "schemas/codegen/subset.mjs",
+      "module_sha256": "b2cdfd60865b0134557458c79093e34bb6278694fa57bf40b75b9d2b1243de7a",
+      "problems": [
+        "/$defs/indexedState: keyword \"prefixItems\" is outside the supported subset",
+        "/$defs/step: keyword \"prefixItems\" is outside the supported subset"
+      ],
+      "id": "urn:statespace:lasso@1",
+      "id_matches_published_pattern": true
+    }
+  },
+  "checks": [
+    {
+      "id": "hold-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "hold-180: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "hold-nofair-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "hold-nofair-180: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-nofair-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-nofair-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "stem-cycle-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "stem-cycle-180: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "stem-cycle-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-cycle-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "stem-stutter-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "stem-stutter-180: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "stem-stutter-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-stutter-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "hold-w4-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "hold-w4-180: exit code",
+      "pass": true,
+      "detail": "13,13,13"
+    },
+    {
+      "id": "hold-w4-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-w4-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "stem-branches-sweep-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "stem-branches-sweep-180: exit code",
+      "pass": true,
+      "detail": "13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13"
+    },
+    {
+      "id": "stem-branches-sweep-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-branches-sweep-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "stem-branches-fp-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "stem-branches-fp-180: exit code",
+      "pass": true,
+      "detail": "13,13,13,13,13,13"
+    },
+    {
+      "id": "stem-branches-fp-180: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-branches-fp-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "init-violation-180: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)"
+    },
+    {
+      "id": "init-violation-180: exit code",
+      "pass": true,
+      "detail": "12"
+    },
+    {
+      "id": "init-violation-180: expected verdict line",
+      "pass": true,
+      "detail": "Error: Invariant Small is violated by the initial state:"
+    },
+    {
+      "id": "init-violation-180: trace written",
+      "pass": true,
+      "detail": "file present"
+    },
+    {
+      "id": "hold-174: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)"
+    },
+    {
+      "id": "hold-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-nofair-174: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)"
+    },
+    {
+      "id": "hold-nofair-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-nofair-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-cycle-174: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)"
+    },
+    {
+      "id": "stem-cycle-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "stem-cycle-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "stem-stutter-174: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)"
+    },
+    {
+      "id": "stem-stutter-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "stem-stutter-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-tool-174: jar banner",
+      "pass": true,
+      "detail": "@!@!@STARTMSG 2262:0 @!@!@"
+    },
+    {
+      "id": "hold-tool-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-tool-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-tool-174: message codes frame the loop",
+      "pass": true,
+      "detail": "2217, 2122"
+    },
+    {
+      "id": "hold-nofair-tool-174: jar banner",
+      "pass": true,
+      "detail": "@!@!@STARTMSG 2262:0 @!@!@"
+    },
+    {
+      "id": "hold-nofair-tool-174: exit code",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "id": "hold-nofair-tool-174: liveness violation reported",
+      "pass": true,
+      "detail": "headline present"
+    },
+    {
+      "id": "hold-nofair-tool-174: message codes frame the loop",
+      "pass": true,
+      "detail": "2217, 2218"
+    },
+    {
+      "id": "hold-dumptrace-174: jar banner",
+      "pass": true,
+      "detail": "TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)"
+    },
+    {
+      "id": "hold-dumptrace-174: exit code",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "id": "hold-dumptrace-174: -dumpTrace rejected",
+      "pass": true,
+      "detail": "no trace file written"
+    },
+    {
+      "id": "hold-180: byte-identical to the recorded Hold.trace.json",
+      "pass": true,
+      "detail": "6caca740d934150ca01d84c9dafa8ee7e53db6557dad559000078b0f2dec4215"
+    },
+    {
+      "id": "sweep: -fp i was the fingerprint function of run i",
+      "pass": true,
+      "detail": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15"
+    },
+    {
+      "id": "sweep: both lassos appear",
+      "pass": true,
+      "detail": "Open(0) 7, Open(1) 9"
+    },
+    {
+      "id": "fixed -fp repeats the trace",
+      "pass": true,
+      "detail": "1 distinct"
+    },
+    {
+      "id": "ajv: every fixture behaves as the manifest says",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "id": "jsonschema: every fixture behaves as the manifest says",
+      "pass": true,
+      "detail": "exit 0"
+    },
+    {
+      "id": "hold-180: trace-exploration spec agrees with the JSON loop",
+      "pass": true,
+      "detail": "start 1, end 4; JSON k=1, n=4"
+    },
+    {
+      "id": "stem-cycle-180: trace-exploration spec agrees with the JSON loop",
+      "pass": true,
+      "detail": "start 2, end 5; JSON k=2, n=5"
+    },
+    {
+      "id": "hold-nofair-180: no loop constants in the trace-exploration spec for a stutter",
+      "pass": true,
+      "detail": "{\"lasso_start\":null,\"lasso_end\":null}"
+    },
+    {
+      "id": "stem-stutter-180: no loop constants in the trace-exploration spec for a stutter",
+      "pass": true,
+      "detail": "{\"lasso_start\":null,\"lasso_end\":null}"
+    },
+    {
+      "id": "outputs hold no private path or identifier",
+      "pass": true,
+      "detail": "clean"
+    }
+  ],
+  "pass": true
+}

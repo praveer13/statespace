@@ -1,0 +1,33 @@
+// The Bench devcontainer of the course repository (spine section 9.2; ARCHITECTURE.md section 11.1; W0-T05).
+//
+// It opens this repository in the Bench image with a PostgreSQL 18.6 service container beside it, and it is what a
+// Codespaces prebuild builds. `statespace doctor` runs when the container is created and says whether the tools
+// match their pins; green is the recorded run RUN-doctor-devcontainer.
+//
+// The lab template's devcontainer.json (W2) is this file with a compose file of its own, in which the Bench service
+// names the published image by digest in place of `build` (name@sha256:<64 hex digits>, the digest CI printed when it
+// pushed the image that bench/image/Dockerfile built) and sets STATESPACE_BENCH_IMAGE to the same reference, so that
+// receipts carry the digest. LAB-1 needs no devcontainer: it runs with `uv run`, or in the tab (spine section 12,
+// item 34).
+//
+// Lean's sandbox does not start in a default container, and `statespace doctor` reports that as `failed`. To opt in
+// to the profile that starts it, which relaxes the container's confinement, replace the `dockerComposeFile` line
+// below by
+//     "dockerComposeFile": ["docker-compose.yml", "docker-compose.sandbox.yml"],
+// after reading docker-compose.sandbox.yml. The options are in a compose file because this devcontainer is
+// compose-based: its container's runtime options belong to the compose service.
+//
+// A Codespaces prebuild is set up in the repository's settings (Codespaces, Prebuilds), not in a file: choose the
+// default branch, the trigger "on configuration change", and a machine type. It builds bench/image/Dockerfile through
+// docker-compose.yml, so a codespace then starts from the finished image.
+{
+  "name": "statespace Bench",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "bench",
+  "workspaceFolder": "/workspaces/statespace",
+  "remoteUser": "learner",
+  "shutdownAction": "stopCompose",
+  // Never fail the creation of a container on a red doctor: it prints what differs, and a failed command would put a
+  // codespace into recovery mode.
+  "postCreateCommand": "statespace doctor || true"
+}

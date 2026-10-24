@@ -1,0 +1,73 @@
+Parsed test spec with 2 sessions
+
+starting permutation: s1b_rc expr s1c
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step expr: SELECT 9223372036854775807::bigint + 1 AS next;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+
+starting permutation: s1b_rc credit s1c chk
+step s1b_rc: BEGIN ISOLATION LEVEL READ COMMITTED;
+step credit: UPDATE big SET bal = bal + 1 WHERE id = 1 RETURNING id, bal;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM big ORDER BY id; SELECT pg_typeof(sum(bal)) AS sum_type, sum(bal) AS total FROM big;
+id|                bal
+--+-------------------
+ 1|9223372036854775807
+ 2|                  5
+(2 rows)
+
+sum_type|              total
+--------+-------------------
+numeric |9223372036854775812
+(1 row)
+
+
+starting permutation: s1b_rr expr s1c
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step expr: SELECT 9223372036854775807::bigint + 1 AS next;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+
+starting permutation: s1b_rr credit s1c chk
+step s1b_rr: BEGIN ISOLATION LEVEL REPEATABLE READ;
+step credit: UPDATE big SET bal = bal + 1 WHERE id = 1 RETURNING id, bal;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM big ORDER BY id; SELECT pg_typeof(sum(bal)) AS sum_type, sum(bal) AS total FROM big;
+id|                bal
+--+-------------------
+ 1|9223372036854775807
+ 2|                  5
+(2 rows)
+
+sum_type|              total
+--------+-------------------
+numeric |9223372036854775812
+(1 row)
+
+
+starting permutation: s1b_ser expr s1c
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step expr: SELECT 9223372036854775807::bigint + 1 AS next;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+
+starting permutation: s1b_ser credit s1c chk
+step s1b_ser: BEGIN ISOLATION LEVEL SERIALIZABLE;
+step credit: UPDATE big SET bal = bal + 1 WHERE id = 1 RETURNING id, bal;
+ERROR:  bigint out of range
+step s1c: COMMIT;
+step chk: SELECT id, bal FROM big ORDER BY id; SELECT pg_typeof(sum(bal)) AS sum_type, sum(bal) AS total FROM big;
+id|                bal
+--+-------------------
+ 1|9223372036854775807
+ 2|                  5
+(2 rows)
+
+sum_type|              total
+--------+-------------------
+numeric |9223372036854775812
+(1 row)
+

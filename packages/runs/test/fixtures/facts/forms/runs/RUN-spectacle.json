@@ -1,0 +1,121 @@
+{
+  "id": "RUN-spectacle",
+  "title": "Spectacle at 5827c22 matches TLC's 11, 45, 191 and 813 distinct states in three engines at 524 to 1,125 states/s",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "Spectacle at 5827c22 matches TLC's 11/45/191/813 in three engines at 524–1,125 states/s",
+  "engine": "spectacle",
+  "version": "5827c22",
+  "binary": "Spectacle at commit 5827c22, served from research/evidence/A5v2/spectacle-run/site",
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble",
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/spec/test.mjs",
+      "sha256": "767ec67e6e2723471aef17670b6e2661d35536076056146ab13417db5b0ee439",
+      "bytes": 463,
+      "role": "harness"
+    },
+    {
+      "path": "research/evidence/A5r3/spec/server.mjs",
+      "sha256": "9f9bc330853889609206336fcbc57e061a99b34e5c11902c2c775359d67799ef",
+      "bytes": 657,
+      "role": "server"
+    },
+    {
+      "path": "research/evidence/A5v2/spectacle-run/site/spectacle/js/eval.js",
+      "sha256": "40bc82440fe7e398662faeda767aaec6be68d8b1ba17da862aa24ef5990b609b",
+      "bytes": 220579,
+      "role": "engine"
+    },
+    {
+      "path": "research/evidence/A5v2/spectacle-run/site/spectacle/js/worker.js",
+      "sha256": "1a20a3f3305265baa7ad55ac5d47366eb3c29b6b7289c4a9385a1dd72d5fadc5",
+      "bytes": 13462,
+      "role": "engine"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "## 4. Spectacle @ 5827c22 (MIT) headless, unsafe double-spend with 2..5 workers (harness: spec/test.mjs; site: ../A5v2/spectacle-run/site)",
+    "chromium {\"w2\":{\"distinct\":11,\"fullMs\":20,\"statesPerSec\":550,\"traceLen\":5},\"w3\":{\"distinct\":45,\"fullMs\":40,\"statesPerSec\":1125},\"w4\":{\"distinct\":191,\"fullMs\":181,\"statesPerSec\":1055},\"w5\":{\"distinct\":813,\"fullMs\":901,\"statesPerSec\":902}}",
+    "firefox  {\"w2\":{\"distinct\":11,\"fullMs\":21,\"statesPerSec\":524,\"traceLen\":5},\"w3\":{\"distinct\":45,\"fullMs\":59,\"statesPerSec\":763},\"w4\":{\"distinct\":191,\"fullMs\":252,\"statesPerSec\":758},\"w5\":{\"distinct\":813,\"fullMs\":1251,\"statesPerSec\":650}}",
+    "webkit   {\"w2\":{\"distinct\":11,\"fullMs\":21,\"statesPerSec\":524,\"traceLen\":5},\"w3\":{\"distinct\":45,\"fullMs\":44,\"statesPerSec\":1023},\"w4\":{\"distinct\":191,\"fullMs\":189,\"statesPerSec\":1011},\"w5\":{\"distinct\":813,\"fullMs\":859,\"statesPerSec\":946}}",
+    "# TLC 1.7.4 full reachable (tla/run-full.log): 3 workers 45 distinct (depth 7), 4 workers 191 (depth 9), 5 workers 813 (depth 11) -> identical counts"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/browser-runs.log",
+      "sha256": "b68f1261cabcb489b4e021f3f1d4ddb87144dcc05b3c229d77a6620b4153e119",
+      "bytes": 3574,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "distinct_states": {
+      "w2": 11,
+      "w3": 45,
+      "w4": 191,
+      "w5": 813
+    },
+    "states_per_s": {
+      "chromium": [
+        550,
+        1125,
+        1055,
+        902
+      ],
+      "firefox": [
+        524,
+        763,
+        758,
+        650
+      ],
+      "webkit": [
+        524,
+        1023,
+        1011,
+        946
+      ]
+    },
+    "trace_length_w2": 5
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the Spectacle files"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log times each exploration, not the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the log names the harness (spec/test.mjs) and the site; the command line is not recorded"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log names the container image, not the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log names the container image, not the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/browser-runs.log §4 (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

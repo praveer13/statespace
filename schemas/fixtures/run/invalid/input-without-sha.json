@@ -1,0 +1,138 @@
+{
+  "id": "RUN-tlc-doublespend-fixture",
+  "title": "DoubleSpend with default flags and with -deadlock, on the 1.8.0 jar",
+  "task": "W0-S11",
+  "origin": "recorded",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar of the 1.8.0 pre-release",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+  "recorded_at": "2026-10-24T14:00:05.120Z",
+  "started_at": "2026-10-24T14:00:00.000Z",
+  "duration_s": 2.5,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "eclipse-temurin:21-jre@sha256:227118764cccd3c3294617061aaa93a08309c63a395eefa83e6b35032992ea99",
+    "java",
+    "-jar",
+    "/t/tla2tools.jar",
+    "-workers",
+    "1",
+    "-config",
+    "DoubleSpend.cfg",
+    "DoubleSpend.tla"
+  ],
+  "inputs": [
+    {
+      "path": "research/spikes/tla/DoubleSpend.tla",
+      "bytes": 1105,
+      "role": "spec"
+    },
+    {
+      "path": "research/spikes/tla/DoubleSpend.cfg",
+      "sha256": "8f509a37e9582f12b8097df139697600c35b7ddab2a904990bb5c166b4babc69",
+      "bytes": 97,
+      "role": "config"
+    },
+    {
+      "url": "https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar",
+      "file": "tla2tools.jar",
+      "sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 11,
+  "verdict_lines": [
+    "Error: Deadlock reached.",
+    "11 states generated, 10 distinct states found, 3 states left on queue.",
+    "The depth of the complete state graph search is 4."
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-doublespend-fixture/default.log",
+      "sha256": "c0b5b1a6d5a3a0a8f4b3a7d76c1d0b6a2b0e8c5f9e1d2c3b4a5968778695a4b3",
+      "bytes": 1581,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "distinct_states": 10,
+    "depth": 4
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "cpu_architecture": "x86_64",
+    "container": {
+      "memory": "6g"
+    }
+  },
+  "primary_config": "default",
+  "configs": [
+    {
+      "id": "default",
+      "purpose": "default flags: deadlock checking on",
+      "argv": [
+        "-workers",
+        "1"
+      ],
+      "exit_code": 11,
+      "verdict_lines": [
+        "Error: Deadlock reached."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-doublespend-fixture/default.log"
+      ]
+    },
+    {
+      "id": "deadlock-off",
+      "purpose": "-deadlock turns deadlock checking off",
+      "argv": [
+        "-workers",
+        "1",
+        "-deadlock"
+      ],
+      "exit_code": 12,
+      "started_at": "2026-10-24T14:00:02.000Z",
+      "duration_s": 1.1,
+      "verdict_lines": [
+        "Error: Invariant NoOverspend is violated."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-tlc-doublespend-fixture/deadlock-off.log",
+          "sha256": "c0b5b1a6d5a3a0a8f4b3a7d76c1d0b6a2b0e8c5f9e1d2c3b4a5968778695a4b3",
+          "bytes": 1786
+        }
+      ]
+    },
+    {
+      "id": "jar-1.7.4-hashed",
+      "purpose": "the fallback jar, hashed and not run",
+      "argv": [],
+      "binary_sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88"
+    }
+  ],
+  "checks": [
+    {
+      "id": "counts-match-1.7.4",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "A fixture in the shape of a recorded run; its counts follow RUN-tlc-doublespend and its exit codes RUN-tlc-atomic and RUN-tlc-unsafe-3w (11 at a deadlock, 12 at a violated invariant)."
+  ]
+}

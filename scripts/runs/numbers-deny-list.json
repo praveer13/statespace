@@ -1,0 +1,48 @@
+{
+  "description": "GATE-numbers' deny-list: sentences that executed runs showed to be false (BRIEF section 2.2, 'never write the left column'). A unit that matches an entry fails whatever tag it carries. This file is the gate's own fixture and is never shipped. Patterns are ECMAScript regular expressions, matched case-insensitively against the unit's text with code-span backticks and emphasis removed.",
+  "source": "research/synthesis/BRIEF.md section 2.2",
+  "entries": [
+    {
+      "id": "rc-lost-update",
+      "wrong": "Concurrent transfers lose updates at READ COMMITTED",
+      "pattern": "\\bconcurrent (?:transfers|updates|withdrawals)\\b[^.]{0,40}\\blose (?:an )?updates?\\b[^.]{0,30}\\bread committed\\b",
+      "right": "only app-level read-modify-write does: it spends 160 out of 100; a conditional UPDATE ... WHERE bal >= $1 re-evaluates its WHERE clause and loses nothing [X RUN-pg-anomalies]",
+      "source": "BRIEF section 2.2"
+    },
+    {
+      "id": "bigint-wraps",
+      "wrong": "bigint wraps at 2^63-1",
+      "pattern": "\\bbigint\\b[^.]{0,30}\\bwraps?(?: around)?\\b",
+      "right": "PostgreSQL raises 22003; the model takes a step the database refuses: a refinement failure with an availability effect [X RUN-pg-anomalies]",
+      "source": "BRIEF section 2.2"
+    },
+    {
+      "id": "212-states",
+      "wrong": "212 distinct states; TLC shortest 4",
+      "pattern": "\\b212 (?:distinct )?states\\b|\\bTLC shortest:? 4\\b",
+      "right": "11 distinct states with -deadlock; the trace has 5 states and 4 actions; default flags stop at Deadlock reached after 10 distinct states [X RUN-tlc-doublespend]",
+      "source": "BRIEF section 2.2"
+    },
+    {
+      "id": "lean-200-mb",
+      "wrong": "The Lean toolchain is about 200 MB",
+      "pattern": "\\btoolchain\\b[^.]{0,30}\\b(?:about|around|roughly|only|~) ?200 ?MB\\b|\\b200 ?MB\\b[^.]{0,20}\\b(?:Lean )?toolchain\\b",
+      "right": "a 594.5 MB download, 3.0 GB unpacked [X RUN-lean-toolchain]",
+      "source": "BRIEF section 2.2"
+    },
+    {
+      "id": "stable-tlc-json",
+      "wrong": "Stable TLC writes JSON traces",
+      "pattern": "\\bstable TLC\\b[^.]{0,30}\\b(?:writes|emits|dumps|produces) JSON\\b|\\b(?:TLC |tla2tools )?(?:v)?1\\.7\\.4\\b[^.]{0,30}\\b(?:writes|emits|dumps|produces) JSON\\b",
+      "right": "v1.7.4 rejects -dumpTrace; v1.8.0 writes JSON [X RUN-tlc-doublespend]",
+      "source": "BRIEF section 2.2"
+    },
+    {
+      "id": "paranoid-independent",
+      "wrong": "--paranoid runs six independent kernels",
+      "pattern": "\\bsix independent (?:kernels|checkers)\\b|\\bparanoid\\b[^.]{0,40}\\bindependent kernels\\b",
+      "right": "six checkers, which can share a flaw: lean4lean ports the reference logic for inductives [X RUN-lean-comparator]",
+      "source": "BRIEF section 2.2"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "tool": {
+    "engine": "jsonschema",
+    "version": "4.26.0",
+    "dialect": "2020-12",
+    "python": "3.13.12"
+  },
+  "schema": {
+    "path": "schemas/drafts/lasso.schema.json",
+    "sha256": "4721ca9c7633208e8c386bb3c9bbeb1f9ff9d9f5418b8c93f2a52b0f264ffbef"
+  },
+  "counts": {
+    "fixtures": 24,
+    "schemaValid": 14,
+    "schemaRejected": 10
+  },
+  "pass": true,
+  "fixtures": [
+    {
+      "id": "hold-recorded",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "hold-180",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "hold-nofair-180",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "stem-cycle-180",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "stem-stutter-180",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "doublespend-finite",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "rtw3-finite",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "deadlock-finite",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "one-state-finite",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/action [] should be non-empty"
+      ]
+    },
+    {
+      "id": "tampered-consistent",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "tampered-partial",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "closing-target-out-of-range",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "closing-target-values-differ",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "step-chain-broken",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "too-many-steps",
+      "schemaValid": true,
+      "expected": true,
+      "pass": true,
+      "schemaErrors": []
+    },
+    {
+      "id": "no-vars",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/ 'vars' is a required property"
+      ]
+    },
+    {
+      "id": "extra-top-level-key",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/ Additional properties are not allowed ('loop' was unexpected)"
+      ]
+    },
+    {
+      "id": "state-index-zero",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/state/0/0 0 is less than the minimum of 1"
+      ]
+    },
+    {
+      "id": "state-index-string",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/state/0/0 '1' is not of type 'integer'"
+      ]
+    },
+    {
+      "id": "state-values-array",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/state/0/1 [0, 'held'] is not of type 'object'"
+      ]
+    },
+    {
+      "id": "step-missing-target",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/action/0 [[1, {'tries': 0, 'st': 'held'}], {'name': 'Try', 'location': {'beginLine': 7, 'beginColumn': 12, 'e"
+      ]
+    },
+    {
+      "id": "action-missing-location",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/action/0/1 'location' is a required property"
+      ]
+    },
+    {
+      "id": "location-missing-module",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/action/0/1/location 'module' is a required property"
+      ]
+    },
+    {
+      "id": "empty-action-list",
+      "schemaValid": false,
+      "expected": false,
+      "pass": true,
+      "schemaErrors": [
+        "/counterexample/action [] should be non-empty"
+      ]
+    }
+  ]
+}

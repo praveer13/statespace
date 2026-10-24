@@ -1,0 +1,132 @@
+{
+  "id": "RUN-pglite",
+  "title": "Under Node, PGlite 0.5.10 reports PostgreSQL 18.6; overflow is 22003; a NULL-amount update affects 0 rows; two workers serialize",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "under Node, PGlite 0.5.10 reports PostgreSQL 18.6; overflow 22003; NULL-amount update affects 0 rows; two workers serialize",
+  "engine": "pglite",
+  "version": "0.5.10",
+  "version_string": "PostgreSQL 18.6 (PGlite 0.5.10) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 6.0.5 (1db513782be24469589d7cb8a1f1834e9a33f271), 32-bit",
+  "binary": "@electric-sql/pglite 0.5.10 from npm",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": "2026-10-21T16:13:09Z",
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/A5r3/scripts/pglite.mjs",
+      "sha256": "66252d3f1b088579941b73f688d5f05e8400dd3791ad634313fb74effadc0c67",
+      "bytes": 1121,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/A5r3/scripts/pglite-tx.mjs",
+      "sha256": "f75c250429790fa274f15c27245b7df376ad68a0007e88bb356680b63a6cf02e",
+      "bytes": 1122,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/a2r3/scripts/pglite_check.mjs",
+      "sha256": "9b634ff1654730cea7b41ea6ca99853022672f10363ec8245db9a790a012fd6c",
+      "bytes": 1689,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/a2r3/node/pglite/package.json",
+      "sha256": "ceb9f4f1b606f264bdad90cf3a9e102cce947868a4ce5b38a0f11efae2e2e915",
+      "bytes": 283,
+      "role": "manifest"
+    },
+    {
+      "path": "research/evidence/a2r3/node/pglite/package-lock.json",
+      "sha256": "f5cd0284f624779a52492e92676eaf8878904b5028fe1e777ff9fe78915678fe",
+      "bytes": 588,
+      "role": "lockfile"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "# pglite 0.5.10 under node, 2026-10-21T16:13:09Z",
+    "1003ms PostgreSQL 18.6 (PGlite 0.5.10) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 6.0.5 (1db513782be24469589d7cb8a1f1834e9a33f271), 32-bit",
+    "overflow error 22003 bigint out of range",
+    "NULL-amount guarded update rowCount 0 rows []",
+    "default isolation read committed",
+    "1ms W1 read 100",
+    "303ms W1 wrote 20",
+    "304ms W2 read 20",
+    "306ms final bal 20"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/A5r3/pglite.log",
+      "sha256": "00e7fe0ae6a39d515f3d4090b1f03d7aec79c14caa273a58e3e5ae0f91777edc",
+      "bytes": 448,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/a2r3/out/pglite.txt",
+      "sha256": "d933e24a5a813e83364c4164059b20dd0e9e6e04b87401718ce2548964ab1d50",
+      "bytes": 357,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server_version": "PostgreSQL 18.6",
+    "overflow_sqlstate": "22003",
+    "null_amount_rows": 0,
+    "default_isolation": "read committed",
+    "serialized_final_bal": 20
+  },
+  "environment": {
+    "os": null,
+    "cpu_count": null
+  },
+  "configs": [
+    {
+      "id": "a2r3-check",
+      "origin": "imported",
+      "purpose": "pglite_check.mjs: a second transaction issued while the first is open only starts after it",
+      "verdict_lines": [
+        "T1 begin | T1 read 100 | (T2 started while T1 open? false) | T1 write | T2 begin | T2 read 20 | T2 write",
+        "final bal -60",
+        "overflow: 22003 bigint out of range"
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the package"
+    },
+    {
+      "field": "image",
+      "reason": "the log names Node, not a container"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log does not time the run"
+    },
+    {
+      "field": "argv",
+      "reason": "the logs hold the output; the scripts give usage lines with a package directory argument"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the log does not record it"
+    },
+    {
+      "field": "environment.os",
+      "reason": "the log does not describe the host"
+    },
+    {
+      "field": "environment.cpu_count",
+      "reason": "the log does not describe the host"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from A5r3/pglite.log; a2r3/out/pglite.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
+  ]
+}

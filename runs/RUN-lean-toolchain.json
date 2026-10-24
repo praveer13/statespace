@@ -1,0 +1,109 @@
+{
+  "id": "RUN-lean-toolchain",
+  "title": "The Lean 4.35.0 toolchain unpacks to 3.0 GB and bundles the extra checkers; lake check and lake comparator help texts; lake check fails at the sandbox on the measuring host",
+  "task": "W0-S11",
+  "origin": "imported",
+  "records": "the 4.35.0 toolchain unpacks to 3.0 GB and bundles the extra checkers; the `lake check` and `lake comparator` help texts (exit codes 0, 1 and 2; `bubblewrap` required; `lake check` errors on any non-standard axiom in the default targets; `permitted_axioms` \"deliberately not defaulted\"); `lake check` and `lake check --paranoid` fail at the sandbox on the measuring host",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "leanprover/lean4:v4.35.0, installed by elan 4.2.4 from releases.lean-lang.org",
+  "binary_sha256": null,
+  "image": null,
+  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "started_at": null,
+  "duration_s": null,
+  "argv": null,
+  "inputs": [
+    {
+      "path": "research/evidence/lean-measure/scripts/measure-local.sh",
+      "sha256": "eafe46fb1148c80917f54a59ac5fe0818420f58c30258fd6bcea4367eb25e67a",
+      "bytes": 4356,
+      "role": "script"
+    }
+  ],
+  "budget": {},
+  "exit_code": null,
+  "verdict_lines": [
+    "[01:23:08] host: 20 cpus; 31 GiB RAM; Linux 6.12.63",
+    "[01:23:08] elan v4.2.4 install: 0.8 s",
+    "[01:23:23] toolchain v4.35.0 download+unpack: 15.0 s",
+    "3.0G\t<sandbox>/lean-measure/elan-home/toolchains/leanprover--lean4---v4.35.0",
+    "[01:23:23] lake --version: Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)",
+    "[01:23:23] lean --version: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "[01:23:24] lake check (clean) rc=1: 0.1 s",
+    "[01:23:25] lake check --paranoid (clean) rc=1: 0.1 s",
+    "244K\t.lake",
+    "info: downloading https://releases.lean-lang.org/lean4/v4.35.0/lean-4.35.0-linux.tar.zst",
+    "EXIT CODES:",
+    "  0                     every selected checker accepts the project and it uses",
+    "                        only the permitted axioms",
+    "  1                     a checker rejects it, an axiom is not permitted, or a",
+    "                        build did not succeed",
+    "  2                     could not start: `bwrap` is missing, the project has"
+  ],
+  "outputs": [
+    {
+      "path": "research/evidence/lean-measure/run.out",
+      "sha256": "2a07bd09ca3b338dfdc1b8c648663fb2139db4f2fc7a250d1584f2aca39e1c2d",
+      "bytes": 1969,
+      "kind": "log"
+    },
+    {
+      "path": "research/evidence/lean-measure/measure.log",
+      "sha256": "86a8e366af6c5dbe73305b21b0ae095472d20dcc32dfaf21a305a723e03a4ed4",
+      "bytes": 16219,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "unpacked": "3.0G",
+    "elan_install_s": 0.8,
+    "toolchain_install_s": 15,
+    "lake_version": "5.0.0-src+eb6cafb",
+    "project_lake_dir": "244K",
+    "checkers_bundled": [
+      "leanchecker",
+      "leanchecker-paranoid",
+      "lean4lean",
+      "nanoda_bin",
+      "con-leche",
+      "con-ron"
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31
+  },
+  "unrecorded": [
+    {
+      "field": "binary_sha256",
+      "reason": "the log does not hash the toolchain archive; its release-asset hash and byte count are RUN-lean-asset (W0-S11)"
+    },
+    {
+      "field": "image",
+      "reason": "measure-local.sh ran on the host, with ELAN_HOME redirected into its own directory"
+    },
+    {
+      "field": "started_at",
+      "reason": "the log stamps times of day (UTC, by the script) without a date"
+    },
+    {
+      "field": "duration_s",
+      "reason": "the log times each step, not the whole script"
+    },
+    {
+      "field": "argv",
+      "reason": "the log is written by measure-local.sh (its lines have the script's format, and the script's commands are in it), but the invocation of the script is not recorded"
+    },
+    {
+      "field": "exit_code",
+      "reason": "the script does not record its own exit code"
+    }
+  ],
+  "notes": [
+    "Imported by W0-S11 from lean-measure/run.out; lean-measure/measure.log (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "lake check fails at the sandbox here (a nix-ld panic inside bubblewrap, exit 134 in the child), so its exit code 1 is not a verdict on the project."
+  ]
+}

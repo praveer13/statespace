@@ -1,0 +1,32 @@
+// S7 reference read policy: the nesting rule, rules 1 to 3 and the write rule
+// (curriculum/S07-secrecy.md section 1; Souffle comments are // and /* */, not %).
+.decl tenant_of_user(u: symbol, a: symbol)
+.decl tenant_of_team(t: symbol, a: symbol)
+.decl member(u: symbol, t: symbol, r: symbol)
+.decl owns(t: symbol, d: symbol)
+.decl subteam(s: symbol, t: symbol)
+.decl share_user(d: symbol, u: symbol)
+.decl share_team(d: symbol, t: symbol)
+.decl revoked(d: symbol, u: symbol)
+.input tenant_of_user
+.input tenant_of_team
+.input member
+.input owns
+.input subteam
+.input share_user
+.input share_team
+.input revoked
+
+.decl inteam(u: symbol, t: symbol)
+.decl canread(u: symbol, d: symbol)
+.decl canedit(u: symbol, d: symbol)
+.output inteam
+.output canread
+.output canedit
+
+inteam(u, t)  :- member(u, t, _).
+inteam(u, t)  :- inteam(u, s), subteam(s, t).
+canread(u, d) :- inteam(u, t), owns(t, d).             // rule 1: a member of the owning team
+canread(u, d) :- share_user(d, u), !revoked(d, u).     // rule 2: shared with the user, not revoked
+canread(u, d) :- inteam(u, t), share_team(d, t).       // rule 3: shared with one of the user's teams
+canedit(u, d) :- member(u, t, r), owns(t, d), r != "viewer".
