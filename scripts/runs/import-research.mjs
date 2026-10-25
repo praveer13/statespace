@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Import the executed runs of spine section 9.5 ("Executed (37)") from research/ into runs/ (W0-S11).
+// Import the executed runs of spine section 9.5 whose source is in research/ (the 37 W0-S11 imported) into runs/
+// (W0-S11). A row whose only source is its own runs/ record was recorded by a W0 task, not imported, and is skipped.
 //
 //   node scripts/runs/import-research.mjs            write runs/RUN-<id>.json for every imported run
 //   node scripts/runs/import-research.mjs --check    write nothing; fail if a record on disk differs from a
@@ -875,7 +876,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const check = args.includes('--check');
   const only = new Set(args.filter((a) => a.startsWith('RUN-')));
   const spine = spineRecords();
-  const executed = [...spine.keys()];
+  const recordedInRuns = (id) => spine.get(id).source.replace(/`/g, '').trim() === `runs/${id}.json`;
+  const executed = [...spine.keys()].filter((id) => !recordedInRuns(id));
   const missing = executed.filter((id) => !SPECS.some((s) => s.id === id));
   if (missing.length > 0) {
     console.error(`no import spec for ${missing.join(', ')}`);
@@ -904,5 +906,5 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     console.log(differ === 0 ? 'import-research: every imported record equals a fresh import' : `import-research: ${differ} records differ`);
     process.exit(differ === 0 ? 0 : 1);
   }
-  console.log(`import-research: wrote ${written} records (${executed.length} executed runs in the spine; ${RERUN_IDS.size} written by the re-run scripts); host ${JSON.stringify(hostEnvironment())}`);
+  console.log(`import-research: wrote ${written} records (${executed.length} executed runs in the spine come from research/; ${RERUN_IDS.size} written by the re-run scripts); host ${JSON.stringify(hostEnvironment())}`);
 }

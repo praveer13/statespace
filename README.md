@@ -108,7 +108,7 @@ A stage is signed off through the Defence, a four-part assessment taken untimed 
 | C. Audit | four cases, at least one of them sound, each with typed evidence | the Audit Desk's keys |
 | D. Explain-back | a two-minute spoken explanation and a three-idea self-check | required, never credited |
 
-Signed off means at least 75% across Parts A–C and at least 60% in each (or at most one miss in a part of five or fewer items), shown with a Wilson interval, plus fresh items answered correctly in at least three spaced sessions. Settled means a fresh probe answered correctly at least 30 days later. A failed part is retaken on fresh seeds after at least three days, and nothing locks in the meantime. Nobody grades their own work, and no language model grades anyone's. The course stamps its own assessment too: a passed Defence is [T] (n unseen items), never PROVED competence.
+Signed off means at least 75% across Parts A–C and each part at least 60%, every part with at least four items, shown with a Wilson interval, plus fresh items answered correctly in at least three spaced sessions. Settled means a fresh probe answered correctly at least 30 days later. A failed part is retaken on fresh seeds after at least three days, and nothing locks in the meantime. Nobody grades their own work, and no language model grades anyone's. The course stamps its own assessment too: a passed Defence is [T] (n unseen items), never PROVED competence.
 
 ### Nothing locks
 
@@ -116,9 +116,9 @@ Lessons, labs, drawers and audit cases are always open. Status is computed from 
 
 ### Zero servers
 
-The site is static: no accounts, no telemetry and no grading server. Real engines run in the browser, on a separate instrument origin with its own subdomain. The spikes already ran Z3 on Pyodide without cross-origin isolation in Chromium, Firefox and WebKit, including from a separate origin that cannot read the main site's storage [X RUN-z3-starter-pyodide, RUN-browser-origin]. Spectacle, for TLA+, matched TLC's state counts on the double-spend models in the same three engines [X RUN-spectacle]. PGlite, a WebAssembly build that reports PostgreSQL 18.6, runs its sessions one at a time on a single connection [X RUN-pglite], so concurrency is replayed from histories recorded on the Bench. Downloads above 5 MB ask first. The authoritative tools run on your own machine, the Bench, and return receipts that the browser imports: Lean 4.35.0 [X RUN-lean-ledger], TLC from `tla2tools` 1.8.0 [X RUN-tlc-jars], and PostgreSQL 18.6 with real concurrent sessions [X RUN-pg-anomalies]. Every stamp says whether it was re-checked here, reported from your machine, or self-assessed.
+The site is static: no accounts, no telemetry and no grading server. Real engines run in the browser, on a separate instrument origin with its own subdomain. The spikes already ran Z3 on Pyodide without cross-origin isolation in Chromium, Firefox and WebKit, including from a separate origin that cannot read the main site's storage [X RUN-z3-starter-pyodide, RUN-browser-origin]. Spectacle, for TLA+, matched TLC's state counts on the double-spend models in the same three engines [X RUN-spectacle]. PGlite, a WebAssembly build that reports PostgreSQL 18.6, runs its sessions one at a time on a single connection [X RUN-pglite], so concurrency is replayed from histories recorded on the Bench. Nothing asks before an engine downloads; the loader shows its size (OD-6). The authoritative tools run on your own machine, the Bench, and return receipts that the browser imports: Lean 4.35.0 [X RUN-lean-ledger], TLC from `tla2tools` 1.8.0 [X RUN-tlc-jars], and PostgreSQL 18.6 with real concurrent sessions [X RUN-pg-anomalies]. Every stamp says whether it was re-checked here, reported from your machine, or self-assessed.
 
-The browser keeps only practice events, with export and a backup reminder. Claims, specimens and receipts live in your lab repository. Your own agent can tutor you through `llms.txt`, per-lesson Markdown and the agent kit in every lab zip, and the site sees nothing. An optional private overlay re-checks your system's guarantees locally; nothing from it leaves your machine or enters a repository.
+The browser's only record is practice events, beside a disposable, read-only copy of your lab repository, with export and a backup reminder. Claims, specimens and receipts live in your lab repository. Your own agent can tutor you through `llms.txt`, per-lesson Markdown and the agent kit in every lab zip, and the site sees nothing. An optional private overlay re-checks your system's guarantees locally; nothing from it leaves your machine or enters a repository.
 
 ### What it does not promise
 
@@ -142,11 +142,11 @@ The course's own measurements describe one learner (n = 1) and support no causal
 | [S4 Obligations](curriculum/S04-obligations.md) | Build a verification-condition generator | — | 9 (3 + 6) | LAB-4, `miniplinth check` | 3–6 weeks | 8.8–15.6 |
 | [S5 Time](curriculum/S05-time.md) | Explore concurrency and liveness | TLA+ with TLC: `tla2tools` 1.8.0, a pre-release pinned by SHA-256 [X RUN-tlc-jars] | 9 (3 + 6) | LAB-5, the holds spec | 3–6 weeks | 10.5–17.6 |
 | [S6 Correspondence](curriculum/S06-correspondence.md) | Connect semantics to PostgreSQL | PostgreSQL 18.6 [X RUN-pg-anomalies] | 9 (3 + 6) | LAB-6, pg-refinement | 4–8 weeks | 9.2–15.9 |
-| [S7 Secrecy](curriculum/S07-secrecy.md) | Prove access-control and information-flow claims | Soufflé {{run:RUN-souffle-version}} | 8 (3 + 5) | LAB-7, authz-flow | 4–8 weeks | 9.7–17.0 |
+| [S7 Secrecy](curriculum/S07-secrecy.md) | Prove access-control and information-flow claims | Soufflé 2.5 [X RUN-souffle-version] | 8 (3 + 5) | LAB-7, authz-flow | 4–8 weeks | 9.7–17.0 |
 | [S8 Effects](curriculum/S08-effects.md) | Model external effects and crash recovery | — | 7 (2 + 5) | LAB-8, effects-sim | 3–6 weeks | 7.4–13.2 |
 | [S9 Preservation](curriculum/S09-preservation.md) | Verify a compiler transformation | — | 9 (3 + 6) | LAB-9, compiler, preservation proof and SQL validator | 6–10 weeks | 15.3–33.0 |
 | [S10 Assembly](curriculum/S10-assembly.md) | Assemble the Core | — | 7 capstone steps, 5 of them built in earlier labs | LAB-10, Core assembly | open; final assembly at most 6 weeks | 11.4–19.7 |
-| **All ten** | | 5 new tools, at most one per stage | 76 (26 + 50) plus Boot | 10 labs: 83 planned stages plus 8 optional (OD-15, proposed) | 9–18 months | 105–194 |
+| **All ten** | | 5 new tools, at most one per stage | 76 (26 + 50) plus Boot | 10 labs: 83 planned stages plus 8 optional (OD-15) | 9–18 months | 105–194 |
 
 Planned hours cover stage work: reading, lessons, lab stages, writing and the Defence. The weekly Keep block is planned separately. Core lessons are fully authored, with 2–4 segments of 12–15 minutes, each built around one instrument run and ending in a graded item. Bridge lessons run to at most 1,000 words, with instrument cells, a graded item and a dated pointer into the roadmap's reading. Lab stages take at most 25 minutes on weekdays and 45 at weekends, starting with a 2-minute win, and every check has a hint ladder behind an explanation gate.
 
@@ -164,7 +164,7 @@ Roadmap order is the default. An optional builder's path takes concurrency first
 
 ## Status
 
-**Design complete; implementation starts at W0.** A first design, v1, went through two adversarial review rounds, eight lenses in all, which filed 170 findings: its thesis survived and its machinery did not. The v2 design rebuilds that machinery through a redesign brief, four digests, a spine that took two critic passes of its own, and the companion documents listed below. Owner decisions OD-1–OD-14 are adopted as defaults awaiting the owner's review; OD-15, the lab shape, is proposed. Edition 1 pins Lean 4.35.x [X RUN-lean-ledger] and PostgreSQL 18.6 [X RUN-pg-anomalies] (OD-12).
+**Design complete; implementation starts at W0.** A first design, v1, went through two adversarial review rounds, eight lenses in all, which filed 170 findings: its thesis survived and its machinery did not. The v2 design rebuilds that machinery through a redesign brief, four digests, a spine that took two critic passes of its own, and the companion documents listed below. The owner reviewed the owner decisions on 2026-10-25: OD-6 and OD-10 changed, OD-16 decided, and the rest accepted, OD-15, the lab shape, among them (docs/DECISIONS.md). Edition 1 pins Lean 4.35.x [X RUN-lean-ledger] and PostgreSQL 18.6 [X RUN-pg-anomalies] (OD-12).
 
 Nothing is built yet: there is no site, no runnable lab and no runs registry. What exists is the design and the research behind it, including the logs of the runs executed so far.
 
@@ -178,7 +178,7 @@ Nothing is built yet: there is no site, no runnable lab and no runs registry. Wh
 | W5 Effects, Preservation and Assembly | S8–S10, the report export, the assurance page, the release gate | learner-zero publishes a report; GATE-release is green |
 | W6 Launch hardening | accessibility, performance, docs, a final adversarial review | edition 1, with GATE-release green from a clean clone |
 
-The waves hold 108 tasks. Owner review hours, not agent time, set the calendar: about 189 hours, or about 17–20 months from the start of W0 [D]. There is no contribution process yet; CONTRIBUTING arrives with W6-T05.
+The waves hold 109 tasks. Owner review hours, not agent time, set the calendar: about 193 hours, or about 18–21 months from the start of W0 [D]. There is no contribution process yet; CONTRIBUTING arrives with W6-T05.
 
 **Read next.**
 
@@ -200,7 +200,7 @@ curriculum/            one authoring spec per stage, S01-counterexample.md to S1
 docs/
   spine/SPINE.md       the canonical index: every ID, catalog and count
   PLAN.md              the master plan
-  TRACKER.md           the task checklist: spine §13's 108 tasks, refined and extended
+  TRACKER.md           the task checklist: spine §13's 109 tasks, refined and extended
   ASSESSMENT.md        evidence, provenance, generators, calls, the Defence, stamps
   AUDIT-DESK.md        the gap classes, cases, variants and scoring
   WORLD.md             the Clearinghouse, its plug-ins and its incidents
@@ -296,7 +296,7 @@ The release gate follows [Cedar's practice](https://aws.amazon.com/blogs/opensou
 
 ### Who decides
 
-The owner decides; agents draft. Owner decisions OD-1–OD-15 are recorded with their reasons in [docs/DECISIONS.md](docs/DECISIONS.md). A wave starts only when the previous wave's gates are green and the owner's review queue is under 10 hours (OD-7), and every task's acceptance is a CI gate or a recorded run. The owner also studies each stage as its first learner, learner-zero, while agents draft the next one; unreviewed material is labeled "draft: first-learner pass pending". When review time runs short, the cut order in spine §14 applies before the queue gate is relaxed.
+The owner decides; agents draft. Owner decisions OD-1–OD-16 are recorded with their reasons in [docs/DECISIONS.md](docs/DECISIONS.md). A wave starts only when the previous wave's gates are green and the owner's review queue is under 10 hours (OD-7), and every task's acceptance is a CI gate or a recorded run. The owner also studies each stage as its first learner, learner-zero, while agents draft the next one; unreviewed material is labeled "draft: first-learner pass pending". When review time runs short, the cut order in spine §14 applies before the queue gate is relaxed.
 
 ## Credits
 
@@ -316,4 +316,4 @@ statespace is built by one person, the owner, working with coding agents.
 - **Course content** is under [Creative Commons Attribution 4.0 International](LICENSE-CONTENT) (CC BY 4.0): the stage and lesson text, exercises, items, audit cases, figures, the docs, the curriculum and the research write-ups. Where a file holds both, as lesson data written as code does, its prose and figures are content and the rest is code.
 - The owner chose both licenses for statespace and for kernelspace (OD-16).
 
-Third-party material keeps its own terms, and every vendored directory carries its license file, which GATE-privacy checks: `vendor/kernelspace/` (MIT, with the ts-fsrs notice beside it), the TLA+ tools in `bench/image/tla2tools/` (MIT) and Docker's seccomp profiles in `.devcontainer/seccomp/` and `runs/RUN-bwrap-lanes/profiles/` (Apache-2.0). The upstream copies the research spikes ran against are not committed; [research/evidence/THIRD-PARTY.md](research/evidence/THIRD-PARTY.md) lists them with their licenses. If the self-explanation unit in S2.L0 adapts the CC BY-SA self-explanation booklet, the adaptation lives in its own directory under that license (OD-10). The reviewers' raw JSON files stay out of the repository (OD-11); the digests summarize them.
+Third-party material keeps its own terms, and every vendored directory carries its license file, which GATE-privacy checks: `vendor/kernelspace/` (MIT, with the ts-fsrs notice beside it), the TLA+ tools in `bench/image/tla2tools/` (MIT) and Docker's seccomp profiles in `.devcontainer/seccomp/` and `runs/RUN-bwrap-lanes/profiles/` (Apache-2.0). The upstream copies the research spikes ran against are not committed; [research/evidence/THIRD-PARTY.md](research/evidence/THIRD-PARTY.md) lists them with their licenses. The self-explanation unit in S2.L0 adapts the self-explanation booklet's text, not its images, under the CC BY-SA 4.0 its PDF states, with credit and a change note; the adaptation lives in its own directory under that license (OD-10). The reviewers' raw JSON files stay out of the repository (OD-11); the digests summarize them.

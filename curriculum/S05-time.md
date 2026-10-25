@@ -79,7 +79,7 @@
 |---|---|---|
 | M1 DoubleSpend | `spikes/tla/DoubleSpend.tla`: `Read(w)` records `seen[w]` and branches on `bal >= Amount`; `Write(w)` sets `bal` to `seen[w] - Amount`; `NoOverspend == spent <= Init`; Init 100, Amount 80, workers {w1, w2} | [X RUN-tlc-doublespend] |
 | M2 DoubleSpendAtomic | the guard and the write in one action, `Spend(w)` | [X RUN-tlc-atomic] (argv caveat, §12 issue 2) |
-| M3 RTW3 | read, check and write as three actions | [X RUN-tlc-rtw3] |
+| M3 RTW3 | read, check and write as three actions; `TypeOK` uses `bal \in 0..Init`, because Spectacle cannot evaluate the recorded `bal \in Nat` (or `TypeOK` is checked on the Bench) [X RUN-spectacle-s5s8] | [X RUN-tlc-rtw3] |
 | M4 Hold | `st` in {held, pending, captured, released}, `tries` toggled mod 2; `Try` held → pending, `Busy` pending → held, `Capture` pending → captured, `Timeout` held → released; `Fair == WF_vars(Try) /\ WF_vars(Busy)` | [X RUN-tlc-hold-lasso] |
 | M5 Holds | the lab's safety model: the lifecycle plus the environment (table below) | {{run:RUN-tlc-lifecycle}}, {{run:RUN-tlc-resolved-twice}}, {{run:RUN-tlc-never-twice}} |
 | M6 GiftCard | the 2015 gift-card race as a toy model | {{run:RUN-tlc-starbucks15}} |
@@ -143,7 +143,7 @@ Reveal. Copy: "`-deadlock` turns the deadlock check off." TLC 1.8.0's own help r
 Version notes (copy): 1.7.4 rejects `-dumpTrace` ("unrecognized option"), 1.8.0 writes JSON; 1.7.4 labels the step `Read`, 1.8.0 `Read(w1)` [X RUN-tlc-doublespend]. Receipts keep the version line verbatim.
 
 **Graded item.** GEN-call-it template 2 (trace length as an interval) on a seeded M1 variant (two or three workers; Init and Amount drawn so that a violation exists); key: the shortest violation in actions from Spectacle's breadth-first search at grade time (Spectacle = TLC at one worker, GATE-conformance).
-**Exit item.** GEN-call-it template 1 (three-way verdict): for a seeded spec and flag set, which comes first: invariant violated, deadlock reached, or no error. Keys: TLC outcomes recorded in CI per seed, until W0-S04 shows whether Spectacle reports deadlocks {{run:RUN-spectacle-s5s8}}.
+**Exit item.** GEN-call-it template 1 (three-way verdict): for a seeded spec and flag set, which comes first: invariant violated, deadlock reached, or no error. Keys: from Spectacle at grade time through the adapter's deadlock check (Spectacle's own checker has none), gated by GATE-conformance [X RUN-spectacle-s5s8].
 
 **Today cards created.** Templates 1 and 2; a re-find of SP-5.2 at 7 days or more. **Twin.** None. **Sibling bridge.** None.
 **Reading:** Learn TLA+ (read 2026-10-23), Core › Writing Specifications (`core/pluscal.html`); Core › Concurrency §"Processes" and §"await" (`core/concurrency.html#processes`, `#await`), including the `Terminating` note.
@@ -200,7 +200,7 @@ Accounting for the counts (copy; the per-depth split is derived by hand [D], the
 
 **Prequestion** (k = 3, chance 1/3). Copy: "Which formula says 'a hold never resolves twice'?" A "`res <= 1` as an invariant, where every Capture or Release adds 1 to `res`." · B "`<>(hst \in {"captured", "released"})`" · C "`~(hst = "captured" /\ hst = "released")`" **Key:** A. **Why** A: a history variable makes past events visible to a state predicate (Learn TLA+, Topics › Auxiliary Variables §"History Variables" [V]). B: that is "eventually resolves", a different kind of property (dp:C5). C: true of every state, because one state holds one value; it cannot remember two events (dp:T11).
 
-**Segment · One hold** (12–15 min). The learner writes the lifecycle in INS-spectacle; the minimap shows the whole graph. Also shown: the action property `[][hst \in {"captured", "released"} => hst' = hst]_hst`, "a resolved hold stays resolved", a box action formula TLC can check (Learn TLA+, Core › Action Properties [V]).
+**Segment · One hold** (12–15 min). The learner writes the lifecycle in INS-spectacle; the minimap shows the whole graph. Also shown: the action property `[][(hst \in {"captured", "released"}) => hst' = hst]_hst`, "a resolved hold stays resolved", a box action formula TLC can check (Learn TLA+, Core › Action Properties [V]). The implication is parenthesized because SANY rejects the unparenthesized form, which Spectacle's parser accepts [X RUN-spectacle-s5s8].
 
 **Call It** (k = 3, chance 1/3). Copy: "Can `res` reach 2 in this lifecycle?" A "No." · B "Yes: Capture and Release are both enabled in held, so both fire." · C "It depends on the scheduler." **Key:** A {{run:RUN-tlc-lifecycle}}. **Why** A: each resolution requires `hst = "held"` and leaves it, so after one neither is enabled. B: one step takes one action (dp:T16). C: the model covers every schedule (dp:C4). **Surprise forecast:** no.
 
@@ -288,7 +288,7 @@ Then (copy): `INVARIANT Inv` means `[]Inv`; a PROPERTY writes `[]`, `<>` or `~>`
 
 **Worked example and fading (F5).** L0, correct and complete: M4 with Timeout widened to `st \in {"held", "pending"}` and `Fair == WF_vars(Timeout)`. Steps: (1) the action and its enabling condition; (2) the safety invariant still holds, since every resolution requires an unresolved state; (3) the fairness conjunct, on a system action only; (4) the property `EventuallyResolves`; (5) the configuration (`SPECIFICATION Spec`, `PROPERTY EventuallyResolves`, no SYMMETRY, no CONSTRAINT) and the stamp "[M] · constants; fairness as [A]". L1–L3 fade backward: blank step 3, then steps 3–4, then step 1's enabling condition; no prompt on any blank, one principle prompt per revealed step (copy: "Fairness is a promise. Whose?"). L4, transfer: a fresh spec (a cancel path, or S8's worker). Staircase 3-up, 1-down per KC (A/B [dp rows 10–12]).
 
-**Segment 1 · Read a cycle** (15 min). *Worked example first* (F5 rung L0, about 3 min, read-only): the L0 example's five steps, shown complete and correct, before the first call. INS-lasso imports M4's TLC JSON trace [X RUN-tlc-hold-lasso], whose last action targets state 1, closing the loop [X evidence: a2r3/tla/live/Hold.trace.json; format documented by W0-S05, {{run:RUN-tlc-lasso-json}}].
+**Segment 1 · Read a cycle** (15 min). *Worked example first* (F5 rung L0, about 3 min, read-only): the L0 example's five steps, shown complete and correct, before the first call. INS-lasso imports M4's TLC JSON trace [X RUN-tlc-hold-lasso], whose last action targets state 1, closing the loop [X evidence: a2r3/tla/live/Hold.trace.json], in the format that W0-S05 documents [X RUN-tlc-lasso-json].
 
 **Call It** (k = 3, chance 1/3). Copy: "`Fair == WF_vars(Try) /\ WF_vars(Busy)`. Does M4 satisfy `EventuallyResolves`?" A "Yes." · B "No." · C "No, but only if the provider acts maliciously." **Key:** B [X RUN-tlc-hold-lasso]: held → Try → pending → Busy → held → Try → pending → Busy → back to state 1; 9 states generated, 8 distinct. **Why** A: WF on Try and Busy is satisfied by this cycle (dp:T14). B: no conjunct forces Capture or Timeout. C: answering "busy" is a legal provider behavior (dp:T15). **Surprise forecast:** moderate.
 
@@ -352,11 +352,11 @@ Scope facts (copy): M1 at Amount 80 has 11, 45, 191 and 813 distinct states at t
 
 **Prequestion** (k = 3, chance 1/3). Copy: "TLC's inductive check passes at three workers. Which stamp?" A "[M] · three workers · inductive at N = 3" · B "[P] for every N" · C "[T] · 1 instance" **Key:** A. **Why** A: only the enumerated states were checked. B: AUD-5.3's G5 variant, a bounded check stamped as proof (dp:X1). C: an exhaustive check of one configuration is not one sampled test (dp:X1).
 
-**Segment · Lift it** (12–15 min). INS-bench-tlc on the `ISpec` configuration {{run:RUN-tlc-inductive}}; then INS-z3 in the tab, or INS-bench-smt, on the parametric query {{run:RUN-z3-inductive-param}}; Apalache optional, also [M] (D-18; {{run:RUN-apalache-version}}). Worked example first, correct only, each conjunct annotated (`Init ⇒ Inv`; both branches of the guard; the `store` frame for `pc`; `¬Inv′`); fading family F4's staircase carries over from S4.L6 at rungs L3–L4.
+**Segment · Lift it** (12–15 min). INS-bench-tlc on the `ISpec` configuration {{run:RUN-tlc-inductive}}; then INS-z3 in the tab, or INS-bench-smt, on the parametric query {{run:RUN-z3-inductive-param}}; Apalache optional, also [M] (D-18; its run records the version and a bounded smoke check only [X RUN-apalache-version]). Worked example first, correct only, each conjunct annotated (`Init ⇒ Inv`; both branches of the guard; the `store` frame for `pc`; `¬Inv′`); fading family F4's staircase carries over from S4.L6 at rungs L3–L4.
 
 **Call It** (k = 3, chance 1/3). Copy: "With workers as an uninterpreted sort, is `Inv ∧ Step ∧ ¬Inv′` satisfiable?" A "unsat" · B "sat: there is a CTI" · C "unknown: the sort is infinite" **Key:** A {{run:RUN-z3-inductive-param}}; the premise witness `Inv ∧ Step` is `sat`. **Why** A: the strengthened invariant is preserved by every Spend, whatever the number of workers. B: a CTI exists for `NoOverspend` alone, not for the strengthened `Inv` (dp:O3). C: this fragment (arrays, uninterpreted functions, linear integers, no quantifiers) is decided (dp:Z2). **Surprise forecast:** moderate.
 
-**Graded item.** GEN-cti-or-bug (templates: inductive, CTI, reachable) on seeded invariants over M1 and M2: Z3 decides `Init ⇒ Inv`, `Inv ∧ Next ⇒ Inv′` and `Inv ⇒ Safe`; Spectacle's bounded reachability tells a CTI from a reachable violation, with the bound printed. These count toward the four or more CTI items interleaved through S9.
+**Graded item.** GEN-cti-or-bug (templates: inductive, CTI, reachable) on seeded invariants over M1 and M2: Z3 decides `Init ⇒ Inv`, `Inv ∧ Next ⇒ Inv′` and `Inv ⇒ Safe`; Spectacle's bounded reachability tells a CTI from a reachable violation, with the bound printed, and its state-pair check (is (s, t) a step of the spec?) may key a CTI item from an unreachable state, such as bal 100, spent 50 [X RUN-spectacle-s5s8]. These count toward the four or more CTI items interleaved through S9.
 **Exit item.** GEN-which-stamp template 1 on two raw outputs: the TLC inductive pass at N = 3, and the Z3 `unsat` with the uninterpreted sort.
 **Today cards created.** Both; GEN-cti-or-bug joins the S9 interleave. **Twin.** None. **Sibling bridge.** None.
 **Reading:** Lamport, "Using TLC to Check Inductive Invariance" (2018-08-23), §1 "Inductive Invariance" and §2 "How to Do it Yourself" [lamportii, V]; Apalache documentation, "Checking an inductive invariant" (`running.md` §1.5; R3 F6), through D-18.
@@ -371,7 +371,7 @@ Seventeen authored calls (prequestions and generated items excluded). Keys: "hol
 
 ## 3. LAB-5 · The holds spec
 
-**Lane.** Lane B: TLC runs on the Bench and receipts are imported ("reported from your machine"). INS-spectacle re-runs safety checks c2–c4 from the receipt's spec text when the reachable set is at most about 5k states and its operators are covered (W0-S04, {{run:RUN-spectacle-s5s8}}): badge "re-checked here"; INS-lasso does the same for c5's starving lasso. Liveness verdicts stay "reported from your machine". No Lane A (no learner Rust in S5). Phones: predict, see the recorded run, queue the stage.
+**Lane.** Lane B: TLC runs on the Bench and receipts are imported ("reported from your machine"). INS-spectacle re-runs safety checks c2–c4 from the receipt's spec text when the complete exploration fits INS-spectacle's 10 s wall-clock budget [D] (spine §9.1) and its operators are covered (W0-S04 [X RUN-spectacle-s5s8]): badge "re-checked here"; INS-lasso does the same for c5's starving lasso. Liveness verdicts stay "reported from your machine". No Lane A (no learner Rust in S5). Phones: predict, see the recorded run, queue the stage.
 **Template supplies** M1 and its config, `HoldsEnv.tla` (read-only), `claims/s5-props.tla` stubs, `broken/`, `fixed/` and `statespace check lab5`.
 
 | Stage | Title | Min | Check |
@@ -531,15 +531,17 @@ GATE-budget passes: the high estimate is under 28.5 h and over half the lower bo
 
 ## 12. Spine issues
 
-1. **KC-5.lasso-reading requires KC-5.fairness**, yet S5.L6 asks for lassos first. This spec tags S5.L6's lasso items KC-5.safety-vs-liveness; proposed: KC-5.lasso-reading requires KC-5.safety-vs-liveness and starts in S5.L6.
-2. **RUN-tlc-atomic and RUN-tlc-unsafe-3w** (and RUN-tlc-full's two-worker figure) rest on `RESULTS.md` prose, with no log or argv on disk, against §9.5's own listing rule. M2's "no error" implies deadlock checking was off (its final state enables no action). W0-S11 should re-run them with argv before S5 copy cites them.
-3. **Runs this spec needs** (W3-T07; its fifteen runs become nineteen): RUN-tlc-lifecycle; RUN-tlc-hold-fairness, rows r1 (no fairness; r2 is RUN-tlc-hold-lasso), r3 (+WF Capture), r4 (+SF Capture), r5 (WF Try, SF Timeout held-only), r6 (Timeout widened, WF Timeout only); RUN-tlc-bare-property; RUN-pcal-doublespend. Spine §9.5 now names these four under W3-T07, and lists as executed, from evidence on disk, the two runs the copy cites: RUN-tlc-help (`a2r3/out/tlc-help-tla180.txt`, `-174.txt`) and RUN-tlc-sym-liveness (`a2r3/out/tlc_runs.txt`, "Sym").
-4. **INS-lasso's "lasso JSON shape awaits W0-S05"** is partly answered: 1.8.0's JSON closes the loop with a last action targeting state 1 (`a2r3/tla/live/Hold.trace.json`; A2-F10); W0-S05 can narrow to documenting it.
-5. **D-15 lists S2 and S6 only**, but on the builder's path S5 is the first Bench work needing Java 21 and the pinned jar; add S5 there, or let `statespace doctor` set up the TLC lane alone.
-6. **§8.8 lacks rows** for TLC `-simulate` and Lamport's random-subset inductive check; proposed: "[T] · n traces (or n sampled states) · constants".
-7. **S5.L2's objective** pairs PlusCal with the deadlock lesson, but the translation adds `Terminating`, so SP-5.2 holds only for hand-written TLA+; proposed: "write it in TLA+, its PlusCal form shown beside".
-8. **The misconception catalog** lacks tags for ten S5 distractors; dp:T7–dp:T16 (§1) are proposed, each "—".
-9. **Lesson rows** omit GEN-call-it (an all-stages family) that S5.L3, S5.L5 and S5.L7 use; add it so the rows and GATE-lessons agree.
-10. **LAB-5.c4 and LAB-5.c5 omit crash settings:** safety keeps crashes on (A1-F16); SEAM-8 needs liveness checked with crashes off, stated as [A]. The spine rows should say so, as the checks here do.
-11. **SP-5.6's status** omits its executed three-worker half [X RUN-tlc-unsafe-3w].
-12. **SP-5.7's label**, "a double redemption", misdescribes the source: one staged transfer confirmed twice. Proposed: "a transfer confirmed twice".
+This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.
+
+1. **KC-5.lasso-reading requires KC-5.fairness**, yet S5.L6 asks for lassos first. This spec tags S5.L6's lasso items KC-5.safety-vs-liveness; proposed: KC-5.lasso-reading requires KC-5.safety-vs-liveness and starts in S5.L6. *Revision 3: already resolved (§4 KC-5.lasso-reading; §3.5 S5.L6).*
+2. **RUN-tlc-atomic and RUN-tlc-unsafe-3w** (and RUN-tlc-full's two-worker figure) rest on `RESULTS.md` prose, with no log or argv on disk, against §9.5's own listing rule. M2's "no error" implies deadlock checking was off (its final state enables no action). W0-S11 should re-run them with argv before S5 copy cites them. *Revision 3: applied (§9.5 executed paragraph).*
+3. **Runs this spec needs** (W3-T07; its fifteen runs become nineteen): RUN-tlc-lifecycle; RUN-tlc-hold-fairness, rows r1 (no fairness; r2 is RUN-tlc-hold-lasso), r3 (+WF Capture), r4 (+SF Capture), r5 (WF Try, SF Timeout held-only), r6 (Timeout widened, WF Timeout only); RUN-tlc-bare-property; RUN-pcal-doublespend. Spine §9.5 now names these four under W3-T07, and lists as executed, from evidence on disk, the two runs the copy cites: RUN-tlc-help (`a2r3/out/tlc-help-tla180.txt`, `-174.txt`) and RUN-tlc-sym-liveness (`a2r3/out/tlc_runs.txt`, "Sym"). *Revision 3: already resolved (§9.5).*
+4. **INS-lasso's "lasso JSON shape awaits W0-S05"** is partly answered: 1.8.0's JSON closes the loop with a last action targeting state 1 (`a2r3/tla/live/Hold.trace.json`; A2-F10); W0-S05 can narrow to documenting it. *Revision 3: already resolved (§9.1 INS-lasso, §13 W0-S05).*
+5. **D-15 lists S2 and S6 only**, but on the builder's path S5 is the first Bench work needing Java 21 and the pinned jar; add S5 there, or let `statespace doctor` set up the TLC lane alone. *Revision 3: already resolved (§3.12 D-15).*
+6. **§8.8 lacks rows** for TLC `-simulate` and Lamport's random-subset inductive check; proposed: "[T] · n traces (or n sampled states) · constants". *Revision 3: already resolved (§8.8).*
+7. **S5.L2's objective** pairs PlusCal with the deadlock lesson, but the translation adds `Terminating`, so SP-5.2 holds only for hand-written TLA+; proposed: "write it in TLA+, its PlusCal form shown beside". *Revision 3: already resolved (§3.5 S5.L2).*
+8. **The misconception catalog** lacks tags for ten S5 distractors; dp:T7–dp:T16 (§1) are proposed, each "—". *Revision 3: already resolved (EVIDENCE.md §6.11).*
+9. **Lesson rows** omit GEN-call-it (an all-stages family) that S5.L3, S5.L5 and S5.L7 use; add it so the rows and GATE-lessons agree. *Revision 3: already resolved (§3.5).*
+10. **LAB-5.c4 and LAB-5.c5 omit crash settings:** safety keeps crashes on (A1-F16); SEAM-8 needs liveness checked with crashes off, stated as [A]. The spine rows should say so, as the checks here do. *Revision 3: already resolved (§3.5 LAB-5).*
+11. **SP-5.6's status** omits its executed three-worker half [X RUN-tlc-unsafe-3w]. *Revision 3: already resolved (§5.1 SP-5.6).*
+12. **SP-5.7's label**, "a double redemption", misdescribes the source: one staged transfer confirmed twice. Proposed: "a transfer confirmed twice". *Revision 3: already resolved (§5.1 SP-5.7).*

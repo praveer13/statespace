@@ -1,6 +1,6 @@
 # statespace: the master plan
 
-**Status:** the master plan for v2, written from the spine. Every ID in this file comes from [the spine](spine/SPINE.md); where this plan and the spine differ, the spine wins, and the difference is listed under "Spine issues" at the end. **Date:** 2026-10-23. **Review:** owner decisions OD-1–OD-14 are adopted as defaults and await owner review; OD-15 is proposed by the spine and also awaits review.
+**Status:** the master plan for v2, written from the spine. Every ID in this file comes from [the spine](spine/SPINE.md); where this plan and the spine differ, the spine wins, and the difference is listed under "Spine issues" at the end. **Date:** 2026-10-23. **Review:** the owner reviewed the owner decisions on 2026-10-25: OD-6 and OD-10 changed, OD-16 decided, the rest accepted, OD-15 among them (DECISIONS.md, section 1).
 
 **What this file is for.** The spine is the index: it names every stage, lesson, KC, specimen, gate and task. This plan explains why the course has that shape, how its parts work together, how it gets built and reviewed, and how anyone can tell whether it works. The task-level list lives in [TRACKER.md](TRACKER.md) and [tracker/tasks.yaml](../tracker/tasks.yaml).
 
@@ -17,26 +17,26 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | repository layout, origins, data homes, schemas, gates |
 | [EVIDENCE.md](EVIDENCE.md) | the learning-science basis: graded evidence, doses, misconceptions, the keep/kill rules |
 | [LANDSCAPE.md](LANDSCAPE.md) | the landscape and version pins: the dated state of the field, the tab and the Bench, volatility rules |
-| [TRACKER.md](TRACKER.md), [tracker/tasks.yaml](../tracker/tasks.yaml) | the 108 tasks of spine §13, refined and extended into agent-sized tasks, with sizes, dependencies, acceptance and review hours |
+| [TRACKER.md](TRACKER.md), [tracker/tasks.yaml](../tracker/tasks.yaml) | the 109 tasks of spine §13, refined and extended into agent-sized tasks, with sizes, dependencies, acceptance and review hours |
 | [DECISIONS.md](DECISIONS.md) | owner decisions and the decision log |
 
 **Precedence of sources.** (1) The roadmap, [research/context/roadmap.md](../research/context/roadmap.md), sets scope. (2) Executed runs, [research/spikes/RESULTS.md](../research/spikes/RESULTS.md) and `research/evidence/`, beat any report. (3) The v2 redesign brief, [research/synthesis/BRIEF.md](../research/synthesis/BRIEF.md). (4) The four digests in `research/synthesis/`. (5) The research reports and adversarial reviews. (6) kernelspace, the predecessor, for its learning engine only. (7) The v1 design in [docs/history/v1/](history/v1/PLAN-v1.md), for history only.
 
-**Tags.** `[X RUN-id]` marks an executed run whose output log is on disk; `{{run:RUN-id}}` marks a run that must be recorded before the sentence ships; `[D]` marks design rationale, an estimate or a derived figure; `[V]` marks a fact re-checked against a primary source on 2026-10-23. Evidence grades follow the pedagogy digest: **A** a meta-analysis or several consistent RCTs; **B** one good experiment on a similar task; **C** a small, correlational or preprint study; **D** theory, consensus or design rationale. Citation keys in brackets, such as [kraft20], resolve in BRIEF §9, except [bangertdrowns04], which BRIEF §9 lacks: Bangert-Drowns, Hurley & Wilkinson 2004, https://doi.org/10.3102/00346543074001029. Learner-facing copy refers to the learner's own product only as "your system".
+**Tags.** `[X RUN-id]` marks an executed run whose output log is on disk; `{{run:RUN-id}}` marks a run that must be recorded before the sentence ships; `[D]` marks design rationale, an estimate or a derived figure; `[V]` marks a fact re-checked against a primary source on the date its sentence or row states, or on 2026-10-23 where none is stated. Evidence grades follow the pedagogy digest: **A** a meta-analysis or several consistent RCTs; **B** one good experiment on a similar task; **C** a small, correlational or preprint study; **D** theory, consensus or design rationale. Citation keys in brackets, such as [kraft20], resolve in BRIEF §9, except [bangertdrowns04], which BRIEF §9 lacks: Bangert-Drowns, Hurley & Wilkinson 2004, https://doi.org/10.3102/00346543074001029. Learner-facing copy refers to the learner's own product only as "your system".
 
 ---
 
 ## In plain words
 
 - **What it is.** statespace is an interactive, zero-server course that teaches formal methods the way the roadmap asks: by building Mini-Plinth, a tiny checked application language, through ten stages that run from Z3 counterexamples to a verified compiler step. It ends with a published report that separates what was proved, model-checked, tested, enforced, configured, assumed and not covered.
-- **Who it is for.** A working backend engineer, fluent in Rust and new to formal notation, studying alone for 6–10 hours a week while building their own system with coding agents. The plan is 105–194 hours of stage work, which projects to about 42–78 weeks at 6 hours a week [D]. The course shows that as a range and never says "behind".
+- **Who it is for.** A working backend engineer, fluent in Rust and new to formal notation, studying alone for 6–10 hours a week while building their own system with coding agents. The plan is 107–197 hours of stage work, which projects to about 43–80 weeks at 6 hours a week [D]. The course shows that as a range and never says "behind".
 - **The one skill.** Deciding which claims are justified before trusting agent-written code, the roadmap's end-state (g). Every result is a six-part claim with a stamp that says exactly what a check established: PROVED [P] names its checker and version, MODEL-CHECKED [M] its constants, TESTED [T] its n.
 - **What changed from v1.** v1's thesis survived two adversarial review rounds: eight lenses and 170 findings. Its machinery did not. v1 would have stamped work it could not check, signed learners off on self-graded vivas, and printed tool numbers that no tool had produced. v2 keeps the thesis, rebuilds the machinery on kernelspace's learning engine, and makes every tool number a recorded run that anyone can re-execute.
 - **The loop.** Predict → Play → Build → Defend → Keep. The learner calls a verdict before a first run, plays the idea by hand on a real engine in the browser, builds it on their own machine, defends it in a checker-graded Defence, and keeps it through a 10–12-minute Today session that serves fresh seeds. Nothing locks, and nothing pays for clicks.
 - **Checkers decide.** Z3, Lean's comparator, TLC, the reference interpreter and cargo grade the learner, with keys computed at grade time. No language model grades work or writes items at run time. Agents may prove, but the learner states. An agent's claim appears as quoted, unreviewed text and is never stamped.
 - **Real tools, honestly split.** The tab runs real engines: Z3 on Pyodide, Spectacle for TLA+, PGlite for SQL. The Bench, the learner's own machine, runs the authoritative ones: Lean 4.35.0 [X RUN-lean-ledger], TLC, and multi-session PostgreSQL 18.6 [X RUN-pg-anomalies]. Every stamp says whether it was re-checked here, reported from your machine, or self-assessed.
 - **The course holds itself to its own rules.** A runs registry, 28 CI gates and a Cedar-style release gate enforce them. When a tool changes, the course re-runs everything, and the resulting erosions appear on a public assurance page.
-- **How it gets built.** Seven waves, from W0 (spikes) to W6 (launch hardening), 108 tasks in all. Agents draft; the owner reviews in a 2–3-hour weekly envelope and studies each stage as learner-zero. Review hours, about 189 in all, set the calendar: about 17–20 months from the start of W0 [D].
+- **How it gets built.** Seven waves, from W0 (spikes) to W6 (launch hardening), 109 tasks in all. Agents draft; the owner reviews in a 2–3-hour weekly envelope and studies each stage as learner-zero. Review hours, about 193 in all, set the calendar: about 18–21 months from the start of W0 [D].
 - **How we will know.** The north star is VRK₃₀: knowledge components answered correctly, unassisted, on unseen seeds, at least 30 days after first learning, counted on the learner's own device. One learner supports no causal claim, so every keep-or-kill decision follows rules that are fixed and hashed before the first learner event.
 
 ---
@@ -53,7 +53,7 @@ In formal methods the dangerous failure is not a slow system. It is a true theor
 
 **The promise, in one line** (spine §0): learn formal methods by building a tiny checked application language, and learn to say exactly what each proof, model check and test establishes.
 
-**Successor framing.** statespace inherits kernelspace's learning engine and nothing of its look. It keeps evidence-not-clicks, an append-only event log with provenance weights, a KC graph, seeded generators, the Today session, *Set your week*, VRK₃₀, staged labs, hint ladders, agent guardrails, a claims registry with errata, validity CI and production twins. It changes the currency from performance under a service-level objective to the justified claim, and it changes the look from a terminal to a drafting table (spine §0).
+**Successor framing.** statespace inherits kernelspace's learning engine and nothing of its look. It keeps evidence-not-clicks, an append-only event log with provenance weights, a KC graph, seeded generators, the Today session, *Set your week*, VRK₃₀, staged labs, hint ladders, agent guardrails, a facts registry with errata, validity CI and production twins. It changes the currency from performance under a service-level objective to the justified claim, and it changes the look from a terminal to a drafting table (spine §0).
 
 ### 1.2 What v1 got right, and v2 keeps
 
@@ -79,10 +79,10 @@ Both rounds reached the same verdict independently: keep the thesis, because v1'
 | **Sign-off by a self-graded or LLM-graded viva** | Low performers inflate self-grades [hacker00]; LLM proof scores inflated up to about 20× [petrov25] | The Defence: four parts, untimed, checker-graded; explain-back required and uncredited | V2-02 (I1) |
 | **An Audit Desk that rewards rejecting everything** | With 4 sound cases in 32, "reject everything" scores 87.5% precision and 100% recall, beating v1's own mock learner (71% and 64%) [D, review computation] | Matched sound and flawed pairs; a seeded 30–60% sound share per session; typed evidence; a blind-strategy gate in CI | V2-04 |
 | **Invented and false tool numbers** | Mock-ups printed state counts no tool had produced; TLC finds 11 distinct states with `-deadlock` [X RUN-tlc-doublespend]. The flagship concurrency specimen stamped REFUTED without naming its compilation pattern; only application read-modify-write loses an update at READ COMMITTED [X RUN-pg-anomalies]. A narrated overflow is refused by PostgreSQL with SQLSTATE 22003 [X RUN-pg-anomalies] | A runs registry (`runs/`); every tool number, verdict, flag and version cites a run; GATE-numbers, GATE-facts and GATE-runs; the corrected specimens SP-5.1, SP-6.2, SP-6.4 and SP-6.6 | V2-03, V2-07, V2-08 (I4) |
-| **Calibration that could not measure judgment** | The lesson rail leaked answers; a 55/75/95 scale forced overconfidence on three-way verdicts; a headline built on about 12 calls per bucket has a 95% interval of 0.32–0.81 [D] | Certainty-based bands with the chance level printed; only the first call counts; bias and hit rate per band, with nothing diagnosed below about 20–30 calls per band; the rail shows segment titles only | V2-05 |
-| **No learning loop, and locks** | No KC graph, no generator and no review; drawers and audits unlocked by performance | 104 KCs, 14 generator families with 47 templates, FSRS-scheduled Today, re-find, VRK₃₀; nothing locks | V2-06, V2-20 (I5) |
+| **Calibration that could not measure judgment** | The lesson rail leaked answers; a 55/75/95 scale forced overconfidence on three-way verdicts; a headline built on about 12 calls per bucket has a 95% interval of 0.32–0.81 [D] | Certainty-based bands with the chance level printed; only the first call counts; bias and hit rate per band, diagnosing a band only once it holds at least 20 calls and its interval lies wholly outside the printed band (spine §8.5); the rail shows segment titles only | V2-05 |
+| **No learning loop, and locks** | No KC graph, no generator and no review; drawers and audits unlocked by performance | 105 KCs, 14 generator families with 47 templates, FSRS-scheduled Today, re-find, VRK₃₀; nothing locks | V2-06, V2-20 (I5) |
 | **No plan against one person's week** | v1's 80 lessons come to about 133k words at kernelspace density; its 31.5–61 weeks become about 12–23 months at Buehler's ×1.64 [buehler94]; the feasibility lens's own ≈250–345 h estimate would take 83–173 weeks at a 2–3-hour review cap [D] | Tiered lessons (26 core, 50 bridge), a budget gate that governs every addition, a computed Keep block, and review hours that set the calendar | V2-09 |
-| **Tools on their hardest lanes** | npm Z3 needs cross-origin isolation [X RESULTS.md]; a home-made TLA+ explorer; hand-authored goal slides | Z3Py on Pyodide without isolation in three browser engines [X RUN-z3-starter-pyodide]; Spectacle, whose counts equal TLC's [X RUN-spectacle]; Goal Replay generated from real elaboration {{run:RUN-lean-plaingoal}} | V2-12, V2-13, V2-14 |
+| **Tools on their hardest lanes** | npm Z3 needs cross-origin isolation [X RESULTS.md]; a home-made TLA+ explorer; hand-authored goal slides | Z3Py on Pyodide without isolation in three browser engines [X RUN-z3-starter-pyodide]; Spectacle, whose counts equal TLC's [X RUN-spectacle]; Goal Replay generated from real elaboration [X RUN-lean-plaingoal] | V2-12, V2-13, V2-14 |
 | **Stamps that collided with their subject** | CHECKED collided with PostgreSQL's CHECK; logic glyphs collided with Lean and TLA+ notation | Words plus bracketed codes; MODEL-CHECKED; CONFIGURED and NOT COVERED added; shapes separable in grayscale; GATE-stamps derives each stamp from a receipt | V2-10 |
 
 ### 1.5 What the spine's own critic passes changed
@@ -151,7 +151,7 @@ Every task, review and gate is held to the ten invariants of BRIEF §7.10, resta
 | I3 | Generators are pure and deterministic, with keys from checkers | Stored keys; seeds that render differently across browsers | GATE-generators, GATE-calls |
 | I4 | Every tool number is a run reference | An untagged tool number, verdict, flag or version anywhere in copy, keys or artboards | GATE-numbers, GATE-facts, GATE-runs |
 | I5 | Nothing locks | Lock copy; gated drawers, cases, lessons or labs; Call It beyond first runs and generated items | GATE-lessons; the review checklist |
-| I6 | Zero servers; untrusted input only on the instrument origin | Parsing a URL-fragment spec, a receipt or learner wasm on the main origin | GATE-bundle; the W0-S01 decision record |
+| I6 | Zero servers; untrusted input only on the instrument origin | Parsing any byte from outside the page on the main origin | GATE-bundle; the W0-S01 decision record |
 | I7 | Statements are pinned and hashed | Grading against a statement the learner (or an agent) can edit; a changed hash that keeps its stamp | GATE-claims; the receipt schema |
 | I8 | Agent claims are never stamped | Any stamp on an agent's assertion | GATE-stamps |
 | I9 | No private-design content | Anything from a non-public document in course copy; personal identifiers | GATE-privacy |
@@ -164,7 +164,7 @@ The repository is public. Four rules follow (BRIEF §1.5; OD-11).
 1. **No private content.** Course copy contains nothing from any non-public document and no personal identifiers. Where the learner's own product appears, copy says "your system". GATE-privacy keeps any category-level deny-list in its own fixture file outside the repo. The optional private overlay (M-overlay) re-stamps the learner's own guarantees locally, and nothing from it leaves the device or enters the repo.
 2. **Review JSONs stay out.** The merged review JSONs quote a non-public document, so they are excluded; the digests and the brief, which are generic, are committed instead.
 3. **No identifiers.** No personal domains, account names, emails or private paths in copy or tooling output. `statespace stuck` strips private paths from its forum-ready example.
-4. **Licenses travel with vendored code.** Every vendored directory carries its license (GATE-privacy's license lint, W6-T04). The CC BY-SA self-explanation booklet is adapted only after its authors confirm, and then lives in its own directory under its license (OD-10).
+4. **Licenses travel with vendored code.** Every vendored directory carries its license (GATE-privacy's license lint, W6-T04). The self-explanation booklet's text, not its three rights-reserved images, is adapted under the CC BY-SA 4.0 its PDF states, with credit and a change note, and lives in its own directory under that license; no request goes to its authors (OD-10).
 
 ### 2.5 Facts and evidence
 
@@ -231,13 +231,15 @@ The roadmap's end-state (a)–(g) becomes seven outcome families (spine §2.2). 
 
 | Outcome (roadmap) | Target, per learner | Measured by | How it is measured on the device | Trained in |
 |---|---|---|---|---|
-| (a) State a property precisely | ≥75% on ≥12 unseen items across ≥2 sessions, then a fresh probe correct at ≥30 days | GEN-negate-it and GEN-spec-it, graded by Z3 equivalence in both directions (P⇒R and R⇒P) with a distinguishing state and a mandatory non-vacuity witness | `item` and `probe` events with provenance `own · unseen`, each carrying `engine@version`, seed and verdict; the proportion with a Wilson interval; the 30-day probe also feeds VRK₃₀ | S1, S4, S7 |
+| (a) State a property precisely | ≥75% on ≥12 fresh items across ≥2 sessions, then a fresh probe correct at ≥30 days | GEN-negate-it and GEN-spec-it, graded by Z3 equivalence in both directions (P⇒R and R⇒P) with a distinguishing state and a mandatory non-vacuity witness | `item` and `probe` events with provenance `own · unseen`, each carrying `engine@version`, seed and verdict; the proportion with a Wilson interval; the 30-day probe also feeds VRK₃₀ | S1, S4, S7 |
 | (b) Distinguish safety, liveness and information flow | Same rule; interleaved only within confusable set B | GEN-call-it (property kind), GEN-lasso-or-not, GEN-leaks-to-observer | The same events; the lasso validator and the paired-state evaluator compute keys at grade time | S5, S7, S8 |
 | (c) Derive and audit proof obligations | Same rule; plus per-class audit recall once n ≥ 10 | GEN-wp-it, GEN-cti-or-bug, Derivation Board items; Audit Desk classes G1, G2, G4, G13 | `item`, `probe` and `audit` events; each Derivation Board step is one Z3 validity query; audit recall per class with a Wilson interval | S4, S5, S9 |
 | (d) Understand proofs over language semantics | Same rule | GEN-proof-structure on goals generated from real elaboration (S3, S9); statement-reading items on CL-3.3 and CL-9.2 | `item` and `probe` events; goal strips regenerated on every toolchain bump (GATE-replay) | S2, S3, S9 |
 | (e) Model adversarial concurrent executions | Same rule | GEN-find-the-witness (traces), GEN-trace-allowed, GEN-anomaly-id | Witnesses graded by the engine, never by matching a stored model; histories replayed from Bench recordings | S5, S6, S8 |
-| (f) Establish or test a refinement to PostgreSQL | Same rule; plus LAB-6.c7 passing on the learner's own R(S, D) | R(S, D) items, GEN-anomaly-id, history classification on Bench-recorded histories | `item` and `probe` events; the LAB-6.c7 check arrives as a `receipt-import` event that mints CL-6.3 | S6, S9 |
-| (g) Decide which claims are justified before trusting agent-written code | Balanced accuracy with an interval; per-class precision and recall once n ≥ 10; the demonstration recorded end to end (CL-10.1) | Audit Desk cases, GEN-spot-the-gap, GEN-which-stamp, the demonstration | `audit` events scored as balanced accuracy over `own · unseen` cases (internally "Judgment", in learner copy "audit accuracy"); the demonstration is recorded with run ids and statement hashes (LAB-10.c7) | all stages; S10 |
+| (f) Establish or test a refinement to PostgreSQL | Same rule | R(S, D) items, GEN-anomaly-id, history classification on Bench-recorded histories | `item` and `probe` events | S6, S9 |
+| (g) Decide which claims are justified before trusting agent-written code | Balanced accuracy with an interval assembled from the two class rates' 97.5% Wilson intervals (spine §6); per-class precision and recall once n ≥ 10 | Audit Desk cases, GEN-spot-the-gap, GEN-which-stamp | `audit` events scored as balanced accuracy over `own · unseen` cases (internally "Judgment", in learner copy "audit accuracy") | all stages; S10 |
+
+**Artifact lines.** Two outcomes also carry an artifact line, beside the criterion and outside it (spine §2.2). For (f), LAB-6.c7 passes on the learner's own R(S, D); the check arrives as a `receipt-import` event that mints CL-6.3. For (g), the demonstration is recorded end to end (CL-10.1), with run ids and statement hashes (LAB-10.c7). Neither line is part of a criterion.
 
 ### 3.4 Operating targets
 
@@ -249,12 +251,12 @@ These targets govern the course's own behavior for each learner. Every one is co
 | Today | 10–12 minutes, 3–5 times a week | [dp] (D) | Session length summed from event `ms`; learner-zero's median, descriptive (RUN-lz-today-w1) | M-today; W1 exit |
 | Per-KC dose | In the lesson: a prequestion, 1–2 calls and an exit item. Then ≥8 graded opportunities in the first 60 days, at about 1–3, 7, 21 and 45–60 days | [koedinger23], an analogy (B/D) | Attempts per KC from events | GATE-kc; the scheduler's property test on a simulated 60-day calendar (W1-T08) |
 | Maintenance | FSRS at 0.85–0.90 target retention | [latimier21][cepeda08] (A) | 30-day fresh-probe accuracy against the scheduler's predicted recall [D] | M-today |
-| Signed off | Defence Parts A–C ≥75% overall and each part ≥60% (at most one miss when a part has five or fewer items), plus fresh items correct in ≥3 spaced sessions | [higham22] (B) | Derived from `probe`, `prove-it` and `audit` events; the Wilson interval shown | §8.6 of the spine; ledger property tests |
-| Settled | One fresh probe per KC correct ≥30 days later | [higham22] (B) | `probe` events | Feeds VRK₃₀ |
+| Signed off | Defence Parts A–C ≥75% overall and each part ≥60%, every credited part with at least four items, plus fresh items correct in ≥3 spaced sessions | [higham22] (B) | Derived from `probe`, `prove-it` and `audit` events; the Wilson interval shown | §8.6 of the spine; ledger property tests |
+| Settled | One fresh probe per KC correct ≥30 days after the stage's sign-off | [higham22] (B) | `probe` events | Feeds VRK₃₀ |
 | Claim cadence | Two claims by about week 4; never more than two weeks without a new claim or specimen | [dp] (C/D) | Claim and specimen dates in the lab repo, read from imported receipts | GATE-budget, on both published paths at 6 h/week |
 | Audit dose | 2–3 cases a week; ≥6 exemplars per gap class | (D) | `audit` events, 0–1 per Today session | The Keep block; GATE-audit |
 | Interleaving | After the exit item; ≤50% of a session; confusable sets only | [brunmair19] (A) | Session composition from events | M-which-is-it; GATE-items |
-| Calibration display | Bias and hit rate per confidence band; nothing diagnosed below about 20–30 calls per band | [stone00] (B/C) | Post-instruction, unassisted `call` events only | M-mirror |
+| Calibration display | Bias and hit rate per confidence band; a band is diagnosed only when it holds at least 20 calls and its interval lies wholly outside the printed band (spine §8.5); bias's interval is accuracy's Wilson interval with the imputed confidence held constant | [stone00] (B/C) | Post-instruction, unassisted `call` events only | M-mirror |
 | Weekly rhythm | The learner's own weekly target met in ≥8 of the last 12 weeks, with 7-day repair and two reserve weeks in every 12 | [silverman23] (B); [buehler94] (B) | Week records in settings and graded or Bench events | M-set-your-week |
 | Writing | A 600–1,000-word note after S2, S5, S7 and S9 | [bangertdrowns04] (A, small) | Note exports in the lab repo | M-notes |
 | Lean keep-alive | 20–30 minutes every 2–3 weeks while Lean is idle, once S2 is signed off | [tatel25] (A for decay; D for the dose) | Keep-alive session events | M-lean-keep-alive; W3-T13 |
@@ -280,10 +282,10 @@ These targets govern the course's own behavior for each learner. Every one is co
 | Stages | 10 (S1–S10) | spine §3 |
 | Lessons | 76 (26 core, 50 bridge), plus Boot (S1.L0) | spine §3.11 |
 | Capstone steps | 7 (S10.L1–S10.L7, tier `[step]`, outside every lesson count) | spine §3.10 |
-| Labs | 10 (LAB-1–LAB-10) with 91 stages: 83 planned and 8 `[stretch]` (OD-15, proposed) | spine §3.11 |
-| Knowledge components | 104, of which 26 are threshold KCs that spiral | spine §4 |
+| Labs | 10 (LAB-1–LAB-10) with 91 stages: 83 planned and 8 `[stretch]` (OD-15) | spine §3.11 |
+| Knowledge components | 105, of which 26 are threshold KCs that spiral | spine §4 |
 | Generator families | 14, with 47 templates | spine §8.3 |
-| Specimens · claim templates | 68 · 43 | spine §5.1, §5.2 |
+| Specimens · claim templates | 69 · 43 | spine §5.1, §5.2 |
 | Seams · erosion events | 15 (three of them held) · 12 | spine §5.3, §5.4 |
 | Audit anchors · gap classes | 25 · 13 (G1–G13, with subclasses) | spine §6 |
 | Drawers | 34: 23 just in time (D-01–D-23) and 11 deferred (D-30–D-40) | spine §3.12 |
@@ -302,11 +304,11 @@ Planned hours are stage work only, excluding the Keep block (§4.4). Weeks assum
 | S4 Obligations | `miniplinth check` | — | 9 (3 + 6) | LAB-4: 8 + 1 | S10.L3 | 8.8–15.6 | 1.9–3.3 | 3–6 weeks | [S4](../curriculum/S04-obligations.md) |
 | S5 Time | The holds spec | TLA+, `tla2tools` 1.8.0, pre-release [X RUN-tlc-jars] | 9 (3 + 6) | LAB-5: 6 + 1 | — | 10.5–17.6 | 2.2–3.7 | 3–6 weeks | [S5](../curriculum/S05-time.md) |
 | S6 Correspondence | pg-refinement | PostgreSQL 18.6 [X RUN-pg-anomalies] | 9 (3 + 6) | LAB-6: 9 + 0 | S10.L4 | 9.2–15.9 | 1.9–3.3 | 4–8 weeks | [S6](../curriculum/S06-correspondence.md) |
-| S7 Secrecy | authz-flow | Soufflé {{run:RUN-souffle-version}} | 8 (3 + 5) | LAB-7: 7 + 1 | — | 9.7–17.0 | 2.0–3.6 | 4–8 weeks | [S7](../curriculum/S07-secrecy.md) |
+| S7 Secrecy | authz-flow | Soufflé 2.5 [X RUN-souffle-version] | 8 (3 + 5) | LAB-7: 7 + 1 | — | 9.7–17.0 | 2.0–3.6 | 4–8 weeks | [S7](../curriculum/S07-secrecy.md) |
 | S8 Effects | effects-sim | — | 7 (2 + 5) | LAB-8: 8 + 1 | S10.L5 | 7.4–13.2 | 1.6–2.8 | 3–6 weeks | [S8](../curriculum/S08-effects.md) |
-| S9 Preservation | Compiler, preservation proof and SQL validator | — | 9 (3 + 6) | LAB-9: 12 + 0 | — | 15.3–33.0 | 3.2–6.9 | 6–10 weeks | [S9](../curriculum/S09-preservation.md) |
-| S10 Assembly | The Core | — | 7 capstone steps | LAB-10: 9 + 1 | S10.L6, S10.L7 | 11.4–19.7 | 2.4–4.1 | open; final assembly ≤6 weeks | [S10](../curriculum/S10-assembly.md) |
-| **Total** | | 5 new tools, at most one per stage | 76 (26 + 50) + Boot | 83 + 8 | 7 | **105–194** | **22–41** | 9–18 months | |
+| S9 Preservation | Compiler, preservation proof and SQL validator | — | 9 (3 + 6) | LAB-9: 12 + 0 | — | 16.1–33.8 | 3.4–7.1 | 6–10 weeks | [S9](../curriculum/S09-preservation.md) |
+| S10 Assembly | The Core | — | 7 capstone steps | LAB-10: 9 + 1 | S10.L6, S10.L7 | 12.2–22.7 | 2.6–4.8 | open; final assembly ≤6 weeks | [S10](../curriculum/S10-assembly.md) |
+| **Total** | | 5 new tools, at most one per stage | 76 (26 + 50) + Boot | 83 + 8 | 7 | **107–197** | **22.5–41.5** | 9–18 months | |
 
 **One new tool per stage, met first in the browser.** The dose comes from kernelspace's drop-off data, where a first install was the top risk [ks100x] (D). S1's Z3Py runs with `uv run` or entirely in the tab, with no devcontainer; the devcontainer arrives at S2 (D-15). Lean is met first as generated Goal Replay; TLA+ first in the Theater and Spectacle; PostgreSQL first in PGlite; Datalog first in the tab engine that W0-S03 selects.
 
@@ -344,11 +346,11 @@ The tiers put authoring effort where the roadmap's projects are (spine §3.0; BR
 
 **The budget method** [D] (spine §3.0). Planned hours are reading, plus lessons (core 40–60 minutes, bridge 15–25, Boot 8), plus building (lab stages at nominal minutes, up to 3× for Lean proof stages and 2× for others), plus writing (write stages, claim cards and the technical notes), plus the Defence. Weekday stages are at most 25 minutes and weekend stages at most 45; every Lean stage that proves a whole theorem is a weekend stage.
 
-**The Keep block comes off the top, and it is computed.** It is introduced KCs × about 10 graded reviews × the logged seconds per item, plus 2–3 audit cases, 1–3 Clearinghouse incidents, the 5-minute weekly review, the monthly retro and, while Lean is idle, the keep-alive session. At about 2 minutes per review, 104 KCs × 10 × 2 minutes is about 35 hours over the arc. The plan sets the Keep block at 45–75 minutes a week at 6 h/week and 60–105 minutes at 10 h/week, so a 6-hour week leaves at least 4.75 hours of stage work and a 10-hour week at least 8.25. The brief's figure was 30–40 minutes; the spine's larger figure follows the brief's own basis once audits, incidents and reviews are included (decision 25). At 6 h/week the plan assumes three Today sessions and one Clearinghouse incident a week (about 56–75 minutes with the review, the retro's share and the keep-alive's share). SCR-week computes the Keep block from the learner's chosen counts and, when it exceeds the planned upper figure (75 minutes at 6 h/week, 105 at 10 h/week), lowers the week's stage-work figure instead of the Keep block.
+**The Keep block comes off the top, and it is computed.** It is introduced KCs × about 10 graded reviews × the logged seconds per item, plus 2–3 audit cases, 1–3 Clearinghouse incidents, the 5-minute weekly review, the monthly retro and, while Lean is idle, the keep-alive session. At about 2 minutes per review, 105 KCs × 10 × 2 minutes is about 35 hours over the arc. The plan sets the Keep block at 45–75 minutes a week at 6 h/week and 60–105 minutes at 10 h/week, so a 6-hour week leaves at least 4.75 hours of stage work and a 10-hour week at least 8.25. The brief's figure was 30–40 minutes; the spine's larger figure follows the brief's own basis once audits, incidents and reviews are included (decision 25). At 6 h/week the plan assumes three Today sessions and one Clearinghouse incident a week (about 56–75 minutes with the review, the retro's share and the keep-alive's share). SCR-week computes the Keep block from the learner's chosen counts and, when it exceeds the planned upper figure (75 minutes at 6 h/week, 105 at 10 h/week), lowers the week's stage-work figure instead of the Keep block.
 
-**The arc.** 105–194 hours of stage work is 22–41 weeks at 6 h/week and 13–23 weeks at 10 h/week. Students study 5–8 hours a week less than they plan [oreo19], and only 48.7% finish by their pessimistic estimate [buehler94] (grade B), so the projection applies a 1.6 planning factor and two reserve weeks in every twelve: about 42–78 weeks at 6 h/week (roughly 10–18 months, inside the roadmap's 9–18) and about 25–45 weeks at 10 h/week. SCR-week shows each stage's planned range beside the roadmap's range, and never says "behind".
+**The arc.** 107–197 hours of stage work is 22.5–41.5 weeks at 6 h/week and 12.9–23.9 weeks at 10 h/week. Students study 5–8 hours a week less than they plan [oreo19], and only 48.7% finish by their pessimistic estimate [buehler94] (grade B), so the projection applies a 1.6 planning factor and two reserve weeks in every twelve: about 43–80 weeks at 6 h/week (roughly 10–18.4 months, so the high end runs just past the roadmap's 9–18) and about 25–46 weeks at 10 h/week. SCR-week shows each stage's planned range beside the roadmap's range, and never says "behind".
 
-**The ratio.** Reading is about 15% of planned hours and writing about 14–15%. Lessons (instrument-driven, each segment ending in a graded item), building and the Defence together are about 70%. That is close to the roadmap's 20/65/15 only when graded lesson work counts as building and proving; counted as reading, reading would be about 40–44%.
+**The ratio.** Reading is about 15% of planned hours and writing about 14%. Lessons (instrument-driven, each segment ending in a graded item), building and the Defence together are about 71%. That is close to the roadmap's 20/65/15 only when graded lesson work counts as building and proving; counted as reading, reading would be about 40–44%.
 
 **The largest estimating risk.** Every stage plans below the roadmap's upper bound. S6, S7 and S8 plan wholly below its lower bound, as do the low estimates of S3–S9. No stage falls below half the lower bound, so GATE-budget raises no warning, but these are the figures most likely to move. Learner-zero's logged item and stage times replace them after each wave.
 
@@ -392,11 +394,11 @@ ER-7 is deliberately long-range: a seam planted in the first week cracks in S4.L
 
 ### 4.7 Drawers and siblings
 
-**Drawers are always open** (I5). Opening one is logged, never required. The 23 just-in-time drawers replace v1's on-ramp course: D-01–D-06 hold the ground skills (a proof is not a test; implication and vacuity; quantifiers and negation; state as functions; induction, informally; the six fields of a guarantee), and the rest support single lessons, such as D-07 (the Lean error museum), D-08 (a pinned fallback for the Natural Number Game), D-13 (SMT-LIB in one page) and D-15 (the devcontainer and `statespace doctor`). The 11 deferred drawers, D-30–D-40, hold the roadmap's deferred topics. Each shows what the topic is, why the roadmap defers it, and what surfaces it: D-30 (Kani) at ER-1, D-32 (proof certificates) at ER-7, D-31 (Verus and Aeneas) when a correspondence field names Rust code to verify directly (V2-30).
+**Drawers are always open** (I5). Opening one is logged, never required. The 23 just-in-time drawers replace v1's on-ramp course: D-01–D-06 hold the ground skills (a proof is not a test; implication and vacuity; quantifiers and negation; state as functions; induction, informally; the six fields of a guarantee), and the rest support single lessons, such as D-07 (the Lean error museum), D-08 (a pinned fallback for the Natural Number Game), D-13 (SMT-LIB in one page) and D-15 (the devcontainer and `statespace doctor`). The 11 deferred drawers, D-30–D-40, hold the roadmap's deferred topics. Each shows what the topic is, why the roadmap defers it, and what surfaces it: D-30 (Kani) at ER-1, D-32 (proof certificates) at ER-7, and D-31 (Verus and Aeneas) once, at the first claim whose structured correspondence reference names Rust code (V2-30; S9.L9 links it as well). D-33–D-40 surface when a claim or a parked goal carries their topic (spine §3.12).
 
 **Siblings are linked, not re-taught** (V2-31). tablespace T4 bridges at S6.L5–S6.L7 with prerequisite card D-11; tablespace T3 at S8.L3 with D-12; byzantine at S7.L8 and S8.L6 with D-21; a light kernelspace strand at S6.L9 re-stamps kernelspace pool conformance as [T] (n). Because the siblings are unfinished, every bridge carries a self-contained prerequisite card, and a sibling completion counts as test-out evidence (M-sibling-bridge).
 
-**Production twins** are upstream systems that met the same problem, shown after the learner's own attempt: TigerBeetle's two-phase transfers for holds, `lake comparator` for statement pinning, Lean's experimental `vcgen` after the learner's own VC generator {{run:RUN-lean-vcgen}}, Cedar for semantics, enforcement and differential testing, CCF's trace validation, CompCert's preservation theorem. Every twin's SHA is recorded in {{run:RUN-twin-pins}} with a 60-day time to live; none is written into copy by hand (M-production-twin).
+**Production twins** are upstream systems that met the same problem, shown after the learner's own attempt: TigerBeetle's two-phase transfers for holds, `lake comparator` for statement pinning, Lean's experimental `vcgen` after the learner's own VC generator [X RUN-lean-vcgen], Cedar for semantics, enforcement and differential testing, CCF's trace validation, CompCert's preservation theorem. Every twin's SHA is recorded in {{run:RUN-twin-pins}} with a 60-day time to live; none is written into copy by hand (M-production-twin).
 
 ### 4.8 The capstone, grown as you go
 
@@ -424,7 +426,7 @@ Every KC runs the same loop. It is kernelspace's loop with one rename: "Prove" b
 
 | Step | What the learner does | Mechanics (evidence) | What is recorded | What it can move |
 |---|---|---|---|---|
-| **Predict** | Answers 1–2 prequestions before a segment; calls the verdict and a confidence before every first run of an authored cell; taps "so P holds", "so P is violated" or "can't tell" before a stamp appears (S1–S2, fading); forecasts which segment an erosion will crack | M-prequestion (A, Ev [sthilaire23]); M-call-it (A for retrieval; C for certainty-based marking as feedback); M-erosion-forecast (D, Prec) | `call` events; only the first call counts, and it cannot be edited | Scheduling and the Mirror's calibration; Boot's pre-instruction call counts toward no KC state |
+| **Predict** | Answers 1–2 prequestions before a segment; calls the verdict and a confidence before every first run of an authored cell; taps "so P holds", "so P is violated" or "can't tell" before a stamp appears (S1–S2, fading); forecasts which segment an erosion will crack | M-prequestion (A for prequestions; C for the per-segment placement, Ev [sthilaire23]); M-call-it (A for retrieval; C for certainty-based marking as feedback); M-erosion-forecast (D, Prec) | `call` events; only the first call counts, and it cannot be edited | Scheduling and the Mirror's calibration; Boot's pre-instruction call counts toward no KC state |
 | **Play** | Runs the idea by hand on a real engine in the tab: Z3, Goal Replay, the Theater and Spectacle, the Derivation Board, PGlite | M-goal-replay-fading (A/B [barbieri23][renkl02]); M-twins (A [alfieri13]); M-class-hint (B/C [dantoni15]); M-layered-feedback (A [vdkleij15]); M-proof-blocks after reading (B [poulsen23]) | Practice `item` events, provenance `own · seen` (weight 0.3) | Scheduling only |
 | **Build** | Works staged lab stages on the Bench or in Lane A; reads per-check results; climbs a hint ladder only after explaining the stuck point; mounts specimens; writes claim cards that fade from prefilled to learner-written | M-hint-ladder (A−/C [bastani25][sankar26]); M-manual-mode (C [keenan26]); M-stuck-protocol (D, Prec); M-specimen-cabinet (A/B [keith08]); M-claim-card (D, Prec) | `lab-check` and `receipt-import` events; claims, specimens and receipts in the lab repo | Claims and specimens, never sign-off |
 | **Defend** | Predicts the outcome of seeded mutations of their own artifact (Prove-it); takes the four-part Defence; judges audit cases with typed evidence | M-prove-it (C/D, Prec); M-defence (B−); M-audit-desk (A small [alemdag25]); M-explain-back (A/B small, uncredited) | `prove-it`, `probe`, `audit` and `explain-back` events | Sign-off |
@@ -434,11 +436,13 @@ Every KC runs the same loop. It is kernelspace's loop with one rename: "Prove" b
 
 | Provenance and exposure | Weight | Counts toward |
 |---|---|---|
-| own · unseen | 1.0 | sign-off, settled, VRK₃₀, audit accuracy |
+| own · unseen · generated (fresh) | 1.0 | sign-off, settled, VRK₃₀, audit accuracy |
+| own · unseen, authored (a first exposure to a fixed cell or anchor) | 1.0 | audit accuracy; scheduling |
 | own · seen (practice) | 0.3 | scheduling only |
 | assisted (past hint rung R2, or a context packet used) | 0.3 | scheduling only, until an unseen variant passes unassisted |
-| automated (a tactic closed a step taught in manual mode) | 0 for that KC | flagged on the receipt |
 | agent | 0 | may produce claims; never evidence |
+
+The flag `automated` (a tactic closed a step taught in manual mode) belongs to receipts and claims only. It is never an event provenance, and it weighs no evidence event (spine §8.2).
 
 Provenance is self-declared. Nothing local can verify "unassisted", so it calibrates rather than polices, and the assurance page says so in plain words (OD-8).
 
@@ -500,7 +504,7 @@ The spine lists 46 mechanics (spine §7), each tagged "Ev" when its principle ha
 
 | Family | Mechanics | Strongest evidence |
 |---|---|---|
-| Prediction and retrieval | M-prequestion, M-call-it, M-which-is-it, M-today, M-re-find, M-sure-wrong-returns, M-refutation-card, M-test-out | A: retrieval with application items, spacing, prequestions, interleaving of confusables |
+| Prediction and retrieval | M-prequestion, M-call-it, M-which-is-it, M-today, M-re-find, M-sure-wrong-returns, M-refutation-card, M-test-out | A: retrieval with application items, spacing, prequestions, interleaving of confusables; C: the per-segment placement of prequestions |
 | Examples and explanation | M-goal-replay-fading, M-self-explanation, M-proof-blocks, M-twins, M-explain-back, M-notes, M-feels-harder | A: worked examples first, contrasting cases; B: backward fading, Proof Blocks |
 | Feedback and help | M-layered-feedback, M-class-hint, M-hint-ladder, M-manual-mode, M-stuck-protocol | A: elaborated feedback; A−/C: gated help; C: manual mode; D: the stuck protocol |
 | Assessment | M-prove-it, M-defence, M-audit-desk, M-spec-duel, M-mirror | B−: the Defence's parts; A small: erroneous examples |
@@ -549,7 +553,7 @@ Outcome evidence for formal-methods courseware itself is thin; the best is a nov
 | C. Audit | 4 cases, at least one sound, with typed evidence | the audit evaluator and keys | 20 min |
 | D. Explain-back | a 2-minute oral and a 3-idea self-check compared with Part A; required and uncredited | — | 10 min |
 
-Signed off means Parts A–C at least 75% overall and each part at least 60%, or at most one miss when a part has five or fewer items, with the interval shown (10 of 12 gives 0.55–0.95 [D]); plus fresh items on the stage's KCs correct in at least three spaced sessions [higham22]. A failed part is retaken on fresh seeds at least 3 days later; only the failed part is re-sampled, nothing locks in the meantime, and every attempt stays in the log. The Defence's overall grade is B−: retrieval, case sampling and explanation support Parts A, C and D; Part B has face validity only. S9 runs two mini-Defences, one per half.
+Signed off means Parts A–C at least 75% overall and each part at least 60%, every credited part with at least four items, with the interval shown (10 of 12 gives 0.55–0.95 [D]); plus fresh items on the stage's KCs correct in at least three spaced sessions [higham22]. A failed part is retaken on fresh seeds at least 3 days later; only the failed part is re-sampled, nothing locks in the meantime, and every attempt stays in the log. The Defence's overall grade is B−: retrieval, case sampling and explanation support Parts A, C and D; Part B has face validity only. S9 runs two mini-Defences, one per half.
 
 **Stamps and the verdict → stamp table** (spine §8.7–§8.8). Each stamp is a word plus a bracketed code plus a required qualifier, rendered with a shape that survives grayscale. A few rows show the discipline:
 
@@ -574,7 +578,7 @@ The Audit Desk trains outcome (g) on erroneous examples, which help once learner
 
 - **The pool.** Matched sound and flawed pairs, about half sound across the pool, and each session draws its sound share from a seed in the 30–60% range, so the rate cannot be learned. Twenty-five anchors, at least two per stage, cover all thirteen classes; seeded mutation operators grow each class to at least six exemplars, and every key is set by a real tool run (GATE-audit). Each case carries a "based on" card citing a dated incident and its source, and never exploit code.
 - **The flow, in five steps.** Call the statement alone; reveal the diff; write "This proves: ___"; pick a gap class with no default ("none: sound" is an option); anchor typed evidence to lines: a witness or trace, the offending declaration, the mismatched identifiers, paired states, or a scenario the theorem permits and the requirement forbids. Agent claims render as quoted UNREVIEWED text. Scores appear afterwards, as counts.
-- **Scoring.** Per-class precision and recall with Wilson intervals, shown only once a class has n ≥ 10, plus balanced accuracy with an interval. GATE-audit-blind fails CI if always-reject, always-accept, last-is-sound or topic-is-class beats chance by more than 2 SD.
+- **Scoring.** Per-class precision and recall with Wilson intervals, shown only once a class has n ≥ 10, plus balanced accuracy with an interval assembled from the two class rates' 97.5% Wilson intervals (spine §6). GATE-audit-blind fails CI if always-reject, always-accept, last-is-sound or topic-is-class beats chance by more than 2 SD.
 - **The taxonomy.** Thirteen classes in three kinds. Rebutting: G1 statement too weak, G2 vacuous premise, G3 wrong property kind, G12 requirement mismatch. Undermining: G4 encoding and type-semantics slip, G5 bounded or inconclusive presented as proof, G6 hidden trust, G7 unstated environment assumption, G11 test presented as proof. Undercutting: G8 model–implementation drift, G9 granularity, G10 observer too weak, G13 induction failure confused with a bug.
 - **Late stages harvest your own repo.** `statespace audit` mutates the learner's lab repo with gap-class operators and harvests agent commits that touched statements, computing keys locally (W5-T11). S10's Defence includes one case harvested this way.
 - **Scheduling.** Cases are always browsable and never locked; each is scheduled after its lab and re-checked a week later. The five W1 anchors from later stages (AUD-2.1–AUD-2.4, AUD-5.3) ship keyed by executed runs and are scheduled after LAB-2 and LAB-5, because erroneous examples need prior knowledge.
@@ -606,23 +610,23 @@ Every lab follows one shape (spine §3.0): predict, then run the reference; 3–
 | LAB-4 | `miniplinth check` | Lane A + Bench (cvc5) | The reference checker proves the guarded Transfer for the fragment, with a premise witness {{run:RUN-check-fragment}} | S10.L3 |
 | LAB-5 | The holds spec | Bench (TLC) | The provided double-spend configuration reports its violation and 4-action trace [X RUN-tlc-doublespend] | — |
 | LAB-6 | pg-refinement | Bench (`isorun`) + Lane A on PGlite | Replay the read-modify-write history on PostgreSQL 18.6 [X RUN-pg-anomalies] | S10.L4 |
-| LAB-7 | authz-flow | Bench (Soufflé, row-level security) + the tab | The reference policy gives equal relations in both engines {{run:RUN-fixedpoint-equal}} | — |
+| LAB-7 | authz-flow | Bench (Soufflé, row-level security) + the tab | The reference policy gives equal relations in both engines [X RUN-fixedpoint-equal] | — |
 | LAB-8 | effects-sim | Lane A + Bench (TLC trace validation) | The reference simulator's seed-1 trace is accepted {{run:RUN-tlc-trace-validation}} | S10.L5 |
 | LAB-9 | Compiler, preservation proof and SQL validator | Bench (Lean) + Lane A | The reference translation validator accepts an honest output and rejects a wrong-account write {{run:RUN-tv-reference}} | — |
 | LAB-10 | Core assembly | all | The reference pipeline reproduces the report skeleton {{run:RUN-core-demo}} | S10.L6, S10.L7 |
 
-**The proposed lab shape is OD-15.** The brief sketched 9 labs and about 45 stages; the spine proposes 10 labs with 83 planned stages, because stages are pinned per lemma, whole-theorem Lean proofs are 45-minute weekend stages, three roadmap acts that were lesson-only now have stages (LAB-3.6, LAB-4.7, LAB-7.6), S8's progress guarantees have a liveness stage (LAB-8.3), and capstone steps add seven (decision 4). GATE-budget confirms the total fits.
+**The lab shape is OD-15,** accepted on 2026-10-25. The brief sketched 9 labs and about 45 stages; the spine proposed 10 labs with 83 planned stages, because stages are pinned per lemma, whole-theorem Lean proofs are 45-minute weekend stages, three roadmap acts that were lesson-only now have stages (LAB-3.6, LAB-4.7, LAB-7.6), S8's progress guarantees have a liveness stage (LAB-8.3), and capstone steps add seven (decision 4). GATE-budget confirms the total fits.
 
 ### 7.3 Two grading lanes
 
-- **Lane A:** the learner's Rust compiled to wasm and graded in the tab, on seeds drawn at grade time, inside a fresh worker per check (INS-lane-a). One JSON IR, emitted by `lake exe`, links S3, S6 and S9. Mismatches are triaged as spec, implementation, tool or proof errors. Reference modules earn nothing.
+- **Lane A:** the learner's Rust compiled to wasm and graded in the tab, on seeds drawn at grade time; each check runs in a fresh instance of your module, and the worker is replaced only after a timeout (INS-lane-a). One JSON IR, emitted by `lake exe`, links S3, S6 and S9. Mismatches are triaged as spec, implementation, tool or proof errors. Reference modules earn nothing.
 - **Lane B:** receipts from Lean, TLC and multi-session PostgreSQL, run on the Bench and imported into the tab.
 
 Learners never see "Lane A" or "Lane B". Every stamp instead names where its verdict came from, in one of three badge words: *re-checked here*, *reported from your machine*, or *self-assessed*.
 
 ### 7.4 The Bench
 
-The Bench is the learner's own machine with the real tools, in a digest-pinned devcontainer from S2 onward, with a Codespaces prebuild and `statespace doctor` (V2-22; W0-T05). It pins Lean 4.35.0 with core and Std only and `autoImplicit false` [X RUN-lean-ledger]; `tla2tools` 1.8.0 pinned by SHA-256 with 1.7.4 as the text-trace fallback [X RUN-tlc-jars]; PostgreSQL 18.6 [X RUN-pg-anomalies]; Z3 5.3.1 [X RUN-z3-starter] and cvc5, whose Bench binary is recorded in {{run:RUN-scaffold}}; Soufflé {{run:RUN-souffle-version}}; the Rust toolchain {{run:RUN-scaffold}}; and, optionally, Apalache {{run:RUN-apalache-version}} and Alloy {{run:RUN-alloy-version}}. No Mathlib: a Mathlib `Finmap` project's packages take 7.3 GB [X RUN-lean-mathlib], while core Lean proves the ledger. Lean's sandbox is Linux-only and is recorded as on, off or failed, never required, because under default Docker it fails with the same exit code as a rejection [X RUN-lean-bwrap-docker].
+The Bench is the learner's own machine with the real tools, in a digest-pinned devcontainer from S2 onward, with a Codespaces prebuild and `statespace doctor` (V2-22; W0-T05). It pins Lean 4.35.0 with core and Std only and `autoImplicit false` [X RUN-lean-ledger]; `tla2tools` 1.8.0 pinned by SHA-256 with 1.7.4 as the text-trace fallback [X RUN-tlc-jars]; PostgreSQL 18.6 [X RUN-pg-anomalies]; Z3 5.3.1 [X RUN-z3-starter] and cvc5 1.4.2, the Bench binary [X RUN-scaffold]; Soufflé 2.5 [X RUN-souffle-version]; the Rust toolchain [X RUN-scaffold]; and, optionally, Apalache 0.62.4 [X RUN-apalache-version] and Alloy 6.2.0 [X RUN-alloy-version]. No Mathlib: a Mathlib `Finmap` project's packages take 7.3 GB [X RUN-lean-mathlib], while core Lean proves the ledger. Lean's sandbox is Linux-only and is recorded as on, off or failed, never required, because under default Docker it fails with the same exit code as a rejection [X RUN-lean-bwrap-docker].
 
 **The CLI** is Python, managed by `uv`, shipped in `statespace-lab`, and keeps the course's name (spine §9.6).
 
@@ -647,7 +651,7 @@ Three rules make receipts trustworthy. **A receipt never trusts an exit code alo
 
 ### 7.6 The lab repository is the record
 
-Claims, specimens and receipts live in the learner's lab repository, not in the browser (V2-17): `claims/*.yaml`, `specimens/`, `receipts/`, and `broken/` beside `fixed/` (roadmap rule 2). The browser keeps practice events only, in an append-only IndexedDB log with export bundles, merge-import with undo, and a 7-day backup nudge, because WebKit may clear script-written storage after seven days without interaction [webkit7d]. The repo doubles as the Stage 10 publication.
+Claims, specimens and receipts live in the learner's lab repository, not in the browser (V2-17): `claims/*.yaml`, `specimens/`, `receipts/`, and `broken/` beside `fixed/` (roadmap rule 2). The browser's only record is practice events, beside a disposable, read-only copy of your lab repository; the events sit in an append-only IndexedDB log with export bundles, merge-import with undo, and a 7-day backup nudge, because WebKit may clear script-written storage after seven days without interaction [webkit7d]. The repo doubles as the Stage 10 publication.
 
 ### 7.7 Agents
 
@@ -673,12 +677,12 @@ All run on the instrument origin unless noted. "Honest limit" is what the learne
 
 | Instrument | Engine and pin | Honest limit |
 |---|---|---|
-| INS-z3 | Z3 5.3.1 via the `z3_solver` wheel on Pyodide 314.0.7, in a module worker; no cross-origin isolation needed [X RUN-z3-starter-pyodide, RUN-browser-origin] | Budgets are `rlimit`, because `timeout` never returned while `rlimit` stopped with `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide]; `worker.terminate()` is the hard stop; witnesses differ from native Z3; the first load asks for consent |
-| INS-goal-replay | Goal strips generated at build time from real Lean 4.35.0 elaboration {{run:RUN-lean-plaingoal}} | Not live Lean; regenerated on every toolchain bump (GATE-replay) |
+| INS-z3 | Z3 5.3.1 via the `z3_solver` wheel on Pyodide 314.0.7, in a module worker; no cross-origin isolation needed [X RUN-z3-starter-pyodide, RUN-browser-origin] | Budgets are `rlimit`, because `timeout` never returned while `rlimit` stopped with `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide]; `worker.terminate()` is the hard stop; witnesses differ from native Z3; the loader shows the first load's size while it downloads, and nothing asks first (OD-6) |
+| INS-goal-replay | Goal strips generated at build time from real Lean 4.35.0 elaboration [X RUN-lean-plaingoal] | Not live Lean; regenerated on every toolchain bump (GATE-replay) |
 | INS-interp | The Mini-Plinth reference interpreter, a TypeScript port | A port: the Lean semantics is the reference; [T] against kernel-checked goldens (GATE-interp; held seam SEAM-13) |
 | INS-derivation | The Derivation Board; each step is one Z3 validity query | The supported fragment only |
 | INS-theater | Authored scenes exported from TLC state graphs, with enabled-action controls and branching history | Monitors report observations, not stamps; only TLC or Spectacle results earn [M] |
-| INS-spectacle | Spectacle at commit 5827c22, vendored; its counts equal TLC's 11, 45, 191 and 813 distinct states for 2–5 workers [X RUN-spectacle, RUN-tlc-full] | Learner edits capped at about 5k states [D]; no PlusCal and no fairness or liveness; a conformance gate guards every bump |
+| INS-spectacle | Spectacle at commit 5827c22, vendored; its counts equal TLC's 11, 45, 191 and 813 distinct states for 2–5 workers [X RUN-spectacle, RUN-tlc-full] | Learner edits run under a 10 s wall-clock budget [D], with no separate state cap; no PlusCal and no fairness or liveness; a conformance gate guards every bump |
 | INS-lasso | A lasso validator over TLC graphs and imported traces | Exact on finite graphs; its input format awaits W0-S05 |
 | INS-pglite | PGlite reporting PostgreSQL 18.6, one connection [X RUN-pglite] | Two "concurrent" sessions serialize [X RUN-pglite], so concurrency is replayed from Bench histories; row-level security awaits W0-S08 |
 | INS-history | Viewer and replayer for Bench-recorded histories, plus the abstract-serializability checker | Bounded search over a few transactions, so results are [T]; it shows anomalies present, never absent |
@@ -697,20 +701,20 @@ The eight Bench engines (INS-bench-lean, INS-bench-tlc, INS-bench-pg, INS-bench-
 |---|---|---|---|
 | SMT | Z3Py on Pyodide; pocket checkers for offline witnesses | Z3 and cvc5; every authored `unsat` cross-checked | Recorded runs with ids; pocket checkers |
 | Lean | Generated Goal Replay; recorded `#guard_msgs` outputs | `lake check`, `lake comparator`, `--paranoid` [X RUN-lean-comparator] | Goal Replay reading and next-goal items |
-| TLA+ safety | Spectacle up to about 5k states; Theater scenes from TLC graphs | TLC, argv on every receipt | Predict-then-reveal Theater, vertical lanes |
+| TLA+ safety | Spectacle within its 10 s wall-clock budget [D]; Theater scenes from TLC graphs | TLC, argv on every receipt | Predict-then-reveal Theater, vertical lanes |
 | TLA+ liveness | The lasso validator over imported TLC traces | TLC with stated fairness | Lasso reading |
 | SQL | PGlite on one connection [X RUN-pglite]; replayed Bench histories | PostgreSQL 18.6, multi-session through `isorun` [X RUN-pg-anomalies] | Recorded histories |
 | Datalog | Z3 `Fixedpoint` or the TypeScript fallback | Soufflé | Recorded derivations |
 | Simulation | The learner's wasm machine on recorded seeds | The learner's simulator plus TLC trace validation | Recorded traces |
-| The learner's Rust | Lane A in a fresh worker per check | cargo, with Lane A crates built here first | Queued for the laptop |
+| The learner's Rust | Lane A: each check in a fresh instance of your module, the worker replaced only after a timeout | cargo, with Lane A crates built here first | Queued for the laptop |
 
 ### 8.4 What is linked out, and what is not embedded
 
-Five third-party tools are disclosed, uncredited link-outs (OD-4): live.lean-lang.org, the Natural Number Game, TLA+ By Example (which runs TLC through a vendor CDN), Alloy4Fun and TigerBeetle's simulator. A link-out never earns credit, and the copy says it leaves the course's zero-server boundary. Three things are deliberately not embedded: CheerpJ (self-hosting needs a commercial license, and the vendor-CDN lane breaks zero servers); in-browser WASM Lean (its size and isolation needs are {{run:RUN-lean-wasm}}, and it lags the pinned toolchain); and the npm Z3 build, which needs cross-origin isolation [X RESULTS.md].
+Five third-party tools are disclosed, uncredited link-outs (OD-4): live.lean-lang.org, the Natural Number Game, TLA+ By Example (which runs TLC through a vendor CDN), Alloy4Fun and TigerBeetle's simulator. A link-out never earns credit, and the copy says it leaves the course's zero-server boundary. Three things are deliberately not embedded: CheerpJ (self-hosting needs a commercial license, and the vendor-CDN lane breaks zero servers); in-browser WASM Lean (it downloads 137,362,599 B decoded and needs cross-origin isolation [X RUN-lean-wasm], and it lags the pinned toolchain); and the npm Z3 build, which needs cross-origin isolation [X RESULTS.md].
 
-### 8.5 The instrument origin and consent
+### 8.5 The instrument origin and downloads
 
-The instruments live on a separate origin on its own custom subdomain (OD-5), because a same-origin worker can still reach the main origin's IndexedDB, and an opaque-origin sandbox fails for Pyodide in Chromium, while a separate origin runs Z3 in three engines and cannot read the parent's storage [X RUN-browser-origin]. Project sites on a shared hosting account share one origin, so the subdomain is required, and W0-S01 records it as RUN-origin-subdomain. The two origins talk through one message-only bus: `{engine, version, input, budget} → {verdict, witness, stats, provenance}`. Only the instrument origin parses URL-fragment specs, receipts and learner wasm (I6). Any download above 5 MB asks first, assets use content-hashed caching, and the service worker has a kill switch (OD-6, M-consent); the first-load size on real phones is {{run:RUN-phone-pyodide}}.
+The instruments live on a separate origin on its own custom subdomain (OD-5), because a same-origin worker can still reach the main origin's IndexedDB, and an opaque-origin sandbox fails for Pyodide in Chromium, while a separate origin runs Z3 in three engines and cannot read the parent's storage [X RUN-browser-origin]. Project sites on a shared hosting account share one origin, so the subdomain is required, and W0-S01 records it as RUN-origin-subdomain. The two origins talk through one message-only bus: `{engine, version, input, budget} → {verdict, witness, stats, provenance}`. Only the instrument origin parses any byte from outside the page (I6). No download asks first or warns, and while an engine downloads the loader shows its size; assets use content-hashed caching, and the service worker has a kill switch (OD-6, M-consent); the first-load size on real phones is {{run:RUN-phone-pyodide}}.
 
 ---
 
@@ -733,7 +737,7 @@ The full specification is [DESIGN.md](DESIGN.md); the screen catalog is spine §
 
 **Words.** Learner copy uses at most 25 coined terms plus plain English, and Boot introduces at most five (OD-14; spine §0). Internal names stay out of learner copy, and GATE-lessons lints for them: learners see the badge words rather than "lanes", a "dated incidents" filter rather than a "Hall of Records", "parked goal" rather than "proof debt", and "audit accuracy" rather than "Judgment".
 
-**Access.** WCAG 2.2 AA at 360, 320 and 1280 px (GATE-a11y); native radios for Call It; a keyboard-first Derivation Board stepper (success criterion 2.5.7); traces as real tables with narration; 44-px targets; JuliaMono for code and logic {{run:RUN-juliamono-glyphs}}; ASCII TLA+ by default with a speech map (GATE-glyphs); and a manual screen-reader pass at every wave exit from W1 to W5, with full NVDA and VoiceOver passes in W6.
+**Access.** WCAG 2.2 AA at 360, 320 and 1280 px (GATE-a11y); native radios for Call It; a keyboard-first Derivation Board stepper (success criterion 2.5.7); traces as real tables with narration; 44-px targets; JuliaMono v0.63.2 for code and logic [X RUN-juliamono-glyphs]; ASCII TLA+ by default with a speech map (GATE-glyphs); and a manual screen-reader pass at every wave exit from W1 to W5, with full NVDA and VoiceOver passes in W6.
 
 ---
 
@@ -743,9 +747,9 @@ The full specification is [ARCHITECTURE.md](ARCHITECTURE.md); the repository lay
 
 **Two static origins, no server.** `apps/site/` is the React static site on the main origin; `apps/instruments/` is the instrument origin with the Pyodide-Z3 worker, Spectacle, PGlite, the Datalog engine, the lasso validator and the Lane A host. Content lives in `content/stages/`; the runs registry in `runs/`; one JSON Schema source for `receipt@1`, `claim@1`, `run@1`, `event@1` and `IR@1` in `schemas/`, generating TypeScript and Python types; the `statespace-lab` template with its agent kit in `labs/` (never solutions; `labs/_solutions/` is ignored); the Python CLI in `bench/`; gate scripts in `scripts/verify-*`.
 
-**Three homes for data.** The browser keeps practice events only, in an append-only log; the learner's lab repo keeps claims, specimens and receipts; the course repo keeps content, runs and schemas. Nothing is stored that can be derived (I2).
+**Three homes for data.** The browser's only record is practice events, in an append-only log, beside a disposable, read-only copy of your lab repository; the learner's lab repo keeps claims, specimens and receipts; the course repo keeps content, runs and schemas. Nothing is stored that can be derived (I2).
 
-**The stack** is React 19, Vite 7, TypeScript 5.9, Playwright and axe, pinned in W0-S12 {{run:RUN-scaffold}}. **Vendored from kernelspace** at a pinned SHA: the verify-script framework and item lints, the accessibility harness, the agent kit with its fail-closed hook, the service worker with its kill switch, the FSRS scheduler, the seeded RNG, the zero-import wasm ABI host and the lab packer. Not vendored: the ledger engine (only its envelope ideas), kernelspace's persistent world, and its look.
+**The stack** is React 19.3.1, Vite 7.3.7, TypeScript 5.9.3, Playwright and axe, pinned in W0-S12 [X RUN-scaffold]. **Vendored from kernelspace** at a pinned SHA: the verify-script framework and item lints, the accessibility harness, the agent kit with its fail-closed hook, the service worker with its kill switch, the FSRS scheduler, the seeded RNG, the zero-import wasm ABI host and the lab packer. Not vendored: the ledger engine (only its envelope ideas), kernelspace's persistent world, and its look.
 
 **Gates.** 28 gates in three lanes (spine §11.2). The fast lane runs in under 5 minutes and blocks merges. The nightly lane blocks releases, and a red night downgrades the claims it touches to "unverified since <date>". The release lane is the Cedar-style gate: no release unless models, proofs, differential tests and runs are up to date [cedarblog].
 
@@ -784,7 +788,7 @@ The owner is the course's first learner. Agents draft stage N+1 while the owner 
 
 ### 11.3 Agents draft, the owner reviews
 
-**Model assignment** (decision 24). Opus drafts architecture, hard content, proofs, correctness-critical checkers and adversarial reviews; Sonnet drafts scaffolding, well-specified UI, transforms and tests from specs. Every grader, untrusted-input parser, stamp deriver, verdict parser, reference checker and release gate is an Opus task. Of the 108 tasks, 63 are Opus and 45 Sonnet.
+**Model assignment** (decision 24). Opus drafts architecture, hard content, proofs, correctness-critical checkers and adversarial reviews; Sonnet drafts scaffolding, well-specified UI, transforms and tests from specs. Every grader, untrusted-input parser, stamp deriver, verdict parser, reference checker and release gate is an Opus task. Of the 109 tasks, 65 are Opus and 44 Sonnet.
 
 **Review is the scarce resource.** Every task carries an estimate of owner review hours [D]: about 1.5 h per core lesson, 0.5 h per bridge, 2–3 h per lab, 0.3 h per audit anchor, 0.25 h per drawer, and 0.5–1.5 h per spike or infrastructure decision. Logged review time replaces the rubric after each wave.
 
@@ -794,7 +798,7 @@ The owner is the course's first learner. Agents draft stage N+1 while the owner 
 
 A tool fact moves through five steps (spine §9.5):
 
-1. **Record.** A task runs the tool and writes `runs/<RUN-id>.json` with engine, version, binary SHA-256, image, argv, input, input SHA-256, budget, outputs and the recording time. W0-S11 imports the 37 executed runs from `research/`; 120 run IDs are still to record, each owned by a named task (for example W1-T12 for S1, W2-T10 for S2–S3).
+1. **Record.** A task runs the tool and writes `runs/<RUN-id>.json` with engine, version, binary SHA-256, image, argv, input, input SHA-256, budget, outputs and the recording time. W0-S11 imported 37 executed runs from `research/`, and the W0 tasks and the W0 integration recorded 37 more; 101 run IDs remain to record, one of them superseded, and each of the others is owned by a named task (for example W1-T12 for S1, W2-T10 for S2–S3).
 2. **Cite.** Copy, keys and artboards cite `{{run:RUN-id}}`. GATE-numbers fails on any untagged tool number, verdict, flag or version.
 3. **Resolve.** GATE-runs fails a release, and fails the fast lane for any content not labeled draft, on a reference that does not resolve. Every content task depends on the task that records its runs.
 4. **Re-run.** A tool bump re-runs everything and opens a reviewable diff.
@@ -814,7 +818,7 @@ An edition pins its toolchains: edition 1 pins Lean 4.35.x [X RUN-lean-ledger] a
 
 ## 12. Waves W0–W6
 
-The task-level list, with sizes, models, dependencies, acceptance and review hours, lives in [TRACKER.md](TRACKER.md) and [tracker/tasks.yaml](../tracker/tasks.yaml). Spine §13 is its source: the tracker keeps all 108 tasks under their IDs, splits the largest into agent-sized children, adds the work no §13 task owns, and reconciles its review hours with §13's. This section gives each wave's goal, scope, deliverables, exit criteria, risks and owner review load.
+The task-level list, with sizes, models, dependencies, acceptance and review hours, lives in [TRACKER.md](TRACKER.md) and [tracker/tasks.yaml](../tracker/tasks.yaml). Spine §13 is its source: the tracker keeps all 109 tasks under their IDs, splits the largest into agent-sized children, adds the work no §13 task owns, and reconciles its review hours with §13's. This section gives each wave's goal, scope, deliverables, exit criteria, risks and owner review load.
 
 **Rules for every wave** (spine §13).
 
@@ -828,12 +832,12 @@ The task-level list, with sizes, models, dependencies, acceptance and review hou
 
 | Wave | Goal | Tasks (S/M/L · opus/sonnet) | Owner review | Weeks at 2.5 h/week | Learner-zero study the exit needs | Erosions shipped |
 |---|---|---|---|---|---|---|
-| W0 | Spikes and foundations | 19 (12/7/0 · 6/13) | 13.25 h | 5.3 | none | — |
+| W0 | Spikes and foundations | 20 (13/7/0 · 7/13) | 13.75 h | 5.5 | none | — |
 | W1 | Project 00 slice | 20 (1/16/3 · 12/8) | 29.75 h | 11.9 | S1: 5.3–9.4 h | — |
-| W2 | Proof | 18 (5/9/4 · 10/8) | 38.5 h | 15.4 | S1–S2 signed off: 20.9–37.8 h | ER-6 |
-| W3 | Obligations and Time | 15 (2/9/4 · 10/5) | 32.5 h | 13.0 | none at the exit (S3–S4 studied meanwhile) | ER-2, ER-7 |
-| W4 | Correspondence and Secrecy | 15 (1/9/5 · 11/4) | 31.5 h | 12.6 | none at the exit | ER-1, ER-3, ER-9 |
-| W5 | Effects, Preservation and Assembly | 13 (1/7/5 · 11/2) | 33.5 h | 13.4 | the whole arc through S10 | ER-4, ER-5, ER-8, ER-10, ER-11, ER-12 |
+| W2 | Proof | 18 (5/9/4 · 11/7) | 39.75 h | 15.9 | S1–S2 signed off: 20.9–37.8 h | ER-6 |
+| W3 | Obligations and Time | 15 (2/9/4 · 10/5) | 33.25 h | 13.3 | none at the exit (S3–S4 studied meanwhile) | ER-2, ER-7 |
+| W4 | Correspondence and Secrecy | 15 (1/9/5 · 11/4) | 32.25 h | 12.9 | none at the exit | ER-1, ER-3, ER-9 |
+| W5 | Effects, Preservation and Assembly | 13 (1/7/5 · 11/2) | 34 h | 13.6 | the whole arc through S10 | ER-4, ER-5, ER-8, ER-10, ER-11, ER-12 |
 | W6 | Launch hardening | 8 (2/6/0 · 3/5) | 10 h | 4.0 | none | — |
 
 Review hours include about 1 hour per wave for the screen-reader pass in W1–W5.
@@ -842,7 +846,7 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 
 **Goal.** Retire the tool risks, lay the evidence substrate, and fix the keep/kill rules before any learner data exists.
 
-**Scope.** Twelve spikes and seven foundation tasks. No learner-facing content.
+**Scope.** Thirteen spikes and seven foundation tasks. No learner-facing content.
 
 **Deliverables.**
 
@@ -854,10 +858,11 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 | W0-S04 | Does Spectacle cover the S5 and S8 specs, local `EXTENDS` and state pairs, fast enough? | RUN-spectacle-s5s8 | Authored TLC graphs in the Theater carry any spec Spectacle cannot [D] |
 | W0-S05 | How does TLC's JSON represent a liveness lasso? | RUN-tlc-lasso-json | Import from TLC's text trace, the 1.7.4 path [X RUN-tlc-doublespend] [D] |
 | W0-S06 | What do the sandbox and `--paranoid` do on CI runners, Docker Desktop and Codespaces? | RUN-bwrap-lanes | The sandbox is recorded as on, off or failed and never required; macOS and Windows learners use the devcontainer |
-| W0-S07 | Does Lean's experimental `vcgen` work on a custom `Cmd`? | RUN-vcgen-cmd | The production twin stays dated and experimental, shown on the transfer contract {{run:RUN-lean-vcgen}} |
+| W0-S07 | Does Lean's experimental `vcgen` work on a custom `Cmd`? | RUN-vcgen-cmd | The production twin stays dated and experimental, shown on the transfer contract [X RUN-lean-vcgen] |
 | W0-S08 | Does row-level security work in PGlite, and how large is the first load? | RUN-pglite-rls, RUN-pglite-0511 | S7.L4's row-level security runs on PostgreSQL 18.6 [X RUN-pg-anomalies] on the Bench only |
-| W0-S09 | Which isolation-catalog rows still need PostgreSQL 18.6 runs? | RUN-pg-catalog | Unrun rows stay out of copy; the 23505 and 23P01 retry rule stays a [D] policy {{run:RUN-pg-catalog}} |
+| W0-S09 | Which isolation-catalog rows still need PostgreSQL 18.6 runs? | RUN-pg-catalog | Unrun rows stay out of copy; the 23505 and 23P01 retry rule stays a [D] policy [X RUN-pg-catalog] |
 | W0-S10 | Can Goal Replay be generated deterministically from `$/lean/plainGoal`, with a diff on a simulated bump? | RUN-replay-gen | Strips limited to recorded `#guard_msgs` outputs, still regenerated by GATE-replay [D] |
+| W0-S13 | Does TLC's trace-module method validate an implementation's NDJSON trace on the pinned 1.8.0 jar's own modules, and what does it report for an accepted, a rejected and a partial trace? | RUN-tlc-tracemodule | If a piece of the rolling build breaks: the highest line counter from TLC's state listing, or a pinned CommunityModules jar for `Json` [D] |
 
 - **The evidence substrate:** W0-S11 publishes `receipt@1`, creates `runs/`, imports the 37 executed runs, and re-runs RUN-lean-wasm, RUN-lean-plaingoal, RUN-lean-bv-decide and RUN-lean-vcgen with their outputs committed; W0-T02 creates the single JSON Schema with TypeScript and Python generation; W0-T03 generates the ID registry from the spine for GATE-links.
 - **The platform:** W0-S12 vendors kernelspace's infrastructure at a pinned SHA and scaffolds the site, recording RUN-scaffold and the tool-version runs; W0-T04 sets up the fast, nightly and release lanes (RUN-ci-fastlane); W0-T05 ships the devcontainer, `statespace doctor` and a Codespaces prebuild (RUN-doctor-devcontainer).
@@ -867,22 +872,22 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 
 **Risks.** A spike fails with no fallback that keeps an invariant: the invariant wins and the feature waits. W0 drifts into content: nothing learner-facing ships in W0. The keep/kill rules slip: W1 cannot record learner-zero events until the hash exists.
 
-**Owner review.** 13.25 h, about 5 weeks at 2.5 h/week. Spike and infrastructure decisions are the heaviest items (W0-S04, W0-S06, W0-S09 and W0-S12 at 1 h; W0-S11 and W0-T07 at 1.5 h).
+**Owner review.** 13.75 h, about 5.5 weeks at 2.5 h/week. Spike and infrastructure decisions are the heaviest items (W0-S04, W0-S06, W0-S09 and W0-S12 at 1 h; W0-S11 and W0-T07 at 1.5 h).
 
 ### W1 — Project 00 slice
 
 **Goal.** Boot, S1 and LAB-1 on the full loop, so that the first weekend works end to end.
 
-**Scope.** Boot; S1.L1–S1.L5; LAB-1 with `uv run` and no devcontainer; the grader core (GEN-negate-it, GEN-find-the-witness, GEN-call-it, GEN-spot-the-gap, GEN-which-stamp); KC graph v0 with all 104 KCs; Today, the Keep block and *Set your week*; the event log; settings and export; claims, stamps and specimens; pocket checkers; eight audit anchors with twins; the agent kit, `llms.txt` and phone layouts.
+**Scope.** Boot; S1.L1–S1.L5; LAB-1 with `uv run` and no devcontainer; the grader core (GEN-negate-it, GEN-find-the-witness, GEN-call-it, GEN-spot-the-gap, GEN-which-stamp); KC graph v0 with all 105 KCs; Today, the Keep block and *Set your week*; the event log; settings and export; claims, stamps and specimens; pocket checkers; eight audit anchors with twins; the agent kit, `llms.txt` and phone layouts.
 
 **Deliverables.**
 
 - **Learner surfaces:** the app shell, navigation and service worker (W1-T02); Boot (W1-T09); the S1 lessons (W1-T10); drawers D-01–D-06 and D-13 (W1-T11); Today, the Keep block and *Set your week* (W1-T08); Call It and Mirror v0 (W1-T07); settings with export, merge-import and undo (W1-T20).
-- **Grading:** the KC graph (W1-T04); the generator framework and first five families, with every authored `unsat` cross-checked by cvc5 (W1-T05); the INS-z3 cell with consent and a recorded fallback (W1-T06); pocket checkers (W1-T19).
+- **Grading:** the KC graph (W1-T04); the generator framework and first five families, with every authored `unsat` cross-checked by cvc5 (W1-T05); the INS-z3 cell with the download loader and a recorded fallback (W1-T06); pocket checkers (W1-T19).
 - **Evidence and claims:** stamps, strip and tokens (W1-T01); the event log and provenance (W1-T03); receipt import and claim minting (W1-T14); claim cards and GATE-claims (W1-T15); the specimen cabinet (W1-T16); the eleven S1 runs (W1-T12).
 - **Labs, agents and judgment:** LAB-1 and `statespace check` for Z3 (W1-T13); the agent kit, `llms.txt` and phone layouts (W1-T18); Audit Desk v1 with AUD-1.1–AUD-1.3 and variants, plus AUD-2.1–AUD-2.4 and AUD-5.3 keyed only by executed runs (W1-T17).
 
-**Exit.** Learner-zero finishes Project 00 with at least two claims and two kept specimens. The Boot timing gate passes, and learner-zero's Boot time is recorded as descriptive (RUN-lz-boot-w1). Blind strategies stay within chance + 2 SD. Learner-zero's median Today is at most 12 minutes (RUN-lz-today-w1, descriptive). Axe shows 0 serious issues and the screen-reader pass is filed. Every S1 tool number is a run reference that resolves. Every S1 authored `unsat` is cross-checked with cvc5. The hook blocks a scripted agent edit.
+**Exit.** Learner-zero finishes Project 00, without the hint ladders and Prove-it, which ship in W2 (W2-T06, W2-T11), with at least two claims and two kept specimens. The Boot timing gate passes, and learner-zero's Boot time is recorded as descriptive (RUN-lz-boot-w1). Blind strategies stay within chance + 2 SD. Learner-zero's median Today is at most 12 minutes (RUN-lz-today-w1, descriptive). Axe shows 0 serious issues and the screen-reader pass is filed. Every S1 tool number is a run reference that resolves. Every S1 authored `unsat` is cross-checked with cvc5. The hook blocks a scripted agent edit.
 
 **Risks.**
 - The grader core is the most correctness-critical code in the course. All graders are Opus tasks, and GATE-calls compares native and Pyodide Z3 on every authored call.
@@ -902,7 +907,7 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 
 - **The Lean lane:** `statespace check` for Lean, reproducing the SP-2.4–SP-2.8 verdicts (W2-T01); the LAB-2 challenge pack and template (W2-T02); the Goal Replay generator and UI (W2-T03); the stuck protocol and parked goals (W2-T14).
 - **Semantics:** the Mini-Plinth reference semantics with kernel-checked goldens (W2-T07); the IR schema, TypeScript interpreter and Lane A host (W2-T08).
-- **Content:** the S2 lessons (W2-T04); the self-explanation unit, after the authors reply or, after 4 weeks without one, an original unit (W2-T05, OD-10); the S3 lessons and LAB-3 with its capstone stages, shipping ER-6 (W2-T09); the eighteen S2–S3 runs (W2-T10); anchors AUD-3.1–AUD-3.2 and variants of AUD-2.1–AUD-2.4 (W2-T13).
+- **Content:** the S2 lessons (W2-T04); the self-explanation unit, adapted from the booklet's text without a request to its authors (W2-T05, OD-10); the S3 lessons and LAB-3 with its capstone stages, shipping ER-6 (W2-T09); the eighteen S2–S3 runs (W2-T10); anchors AUD-3.1–AUD-3.2 and variants of AUD-2.1–AUD-2.4 (W2-T13).
 - **The learning engine:** hint ladders on every check of LAB-1–LAB-3 (W2-T06); three generator families and Prove-it (W2-T11); the Defence engine, sign-off and retake (W2-T12); the notes composer and learner-zero's sign-off record (W2-T15); welcome-back, re-entry, test-out and placement (W2-T16); refutation cards and sure-and-wrong returns (W2-T17); Proof Blocks (W2-T18).
 
 **Exit.** CI shows comparator rejecting a weakened statement and a redefined function, and kernel replay rejecting `skipKernelTC`. GATE-replay passes on a toolchain bump. Learner-zero signs off S1–S2 (RUN-lz-signoff-w2). ER-6 ships (GATE-erosions). The screen-reader pass is filed.
@@ -911,9 +916,9 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 - **The Lean valley.** The exit needs learner-zero's S2 sign-off: 20.9–37.8 hours of S1–S2 study, plus three spaced sessions. Order the wave so S2's content (W2-T01–W2-T04, W2-T10–W2-T12) lands first [D].
 - A Lean release mid-wave. The edition pin holds; GATE-replay and the monthly newest-stable run turn the change into a reviewed diff.
 - Learner-owned semantics that cannot be checked by kernel-checked goldens fall back to a statement check stamped "statement check: weak" (BRIEF §4.3).
-- This is the heaviest review wave, at 38.5 h.
+- This is the heaviest review wave, at 39.75 h.
 
-**Owner review.** 38.5 h, about 15 weeks. The S2 lessons (9.5 h) and the S3 lessons with LAB-3 (10 h) are over half of it.
+**Owner review.** 39.75 h, about 16 weeks. The S2 lessons (10.25 h) and the S3 lessons with LAB-3 (10.5 h) are over half of it.
 
 ### W3 — Obligations and Time
 
@@ -935,7 +940,7 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 - CTI-versus-bug items are the subtlest graded content: Opus authors them, and GATE-items requires at least four CTI items interleaved through S9.
 - The world must stay thin; [WORLD.md](WORLD.md) fixes its scope before W3-T14 starts.
 
-**Owner review.** 32.5 h, about 13 weeks. Learner-zero studies S3 and S4 during the wave.
+**Owner review.** 33.25 h, about 13 weeks. Learner-zero studies S3 and S4 during the wave.
 
 ### W4 — Correspondence and Secrecy
 
@@ -957,7 +962,7 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 - PGlite's row-level security (W0-S08) decides S7.L4's lane; the Bench path works either way.
 - Spec duels take untrusted input through URL fragments: only the instrument origin parses them, and the fragment never leaves the device (GATE-bundle).
 
-**Owner review.** 31.5 h, about 13 weeks. The S6 lessons (8 h) and the S7 lessons with LAB-7 (9.5 h) dominate.
+**Owner review.** 32.25 h, about 13 weeks. The S6 lessons (8.25 h) and the S7 lessons with LAB-7 (10 h) dominate.
 
 ### W5 — Effects, Preservation and Assembly
 
@@ -976,11 +981,11 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 
 **Risks.**
 - **S9 is the second Lean valley:** six weekend proof stages. Mitigations are per-lemma stages, ladders, parked goals, and CL-9.2 minted after LAB-9.6 as "PROVED modulo the remaining cases", so claims keep flowing.
-- **The exit waits for learner-zero's whole arc.** Review alone needs about 13 weeks, but the exit lands about 66–78 weeks after W1 starts (§13).
+- **The exit waits for learner-zero's whole arc.** Review alone needs about 14 weeks, but the exit lands about 69–80 weeks after W1 starts (§13).
 - The private overlay must leak nothing; GATE-privacy checks that nothing from it reaches the repo.
 - ER-12 depends on the oldest-open-seam rule across both paths; W5-T13's acceptance replays both.
 
-**Owner review.** 33.5 h, about 13 weeks. The S9 lessons with LAB-9 (10.5 h) and the S8 lessons with LAB-8 (8 h) dominate.
+**Owner review.** 34 h, about 14 weeks. The S9 lessons with LAB-9 (10.5 h) and the S8 lessons with LAB-8 (8.5 h) dominate.
 
 ### W6 — Launch hardening
 
@@ -1000,18 +1005,18 @@ Review hours include about 1 hour per wave for the screen-reader pass in W1–W5
 
 ### 13.1 Two clocks
 
-The owner's week holds 6–10 hours of study as learner-zero plus 2–3 hours of review (OD-7). The course therefore runs on two clocks. The **review clock** paces the build: about 189 hours of owner review at 2.5 hours a week. The **study clock** paces the exits that need a learner: W1 needs S1 studied, W2 needs S1–S2 signed off, and W5 needs the whole arc. Agent time is not the constraint: 108 tasks (24 S, 63 M, 21 L) can be drafted far faster than they can be reviewed or studied (BRIEF §1.2).
+The owner's week holds 6–10 hours of study as learner-zero plus 2–3 hours of review (OD-7). The course therefore runs on two clocks. The **review clock** paces the build: about 193 hours of owner review at 2.5 hours a week. The **study clock** paces the exits that need a learner: W1 needs S1 studied, W2 needs S1–S2 signed off, and W5 needs the whole arc. Agent time is not the constraint: 109 tasks (25 S, 63 M, 21 L) can be drafted far faster than they can be reviewed or studied (BRIEF §1.2).
 
 | Wave | Owner review (h) | Weeks at 2.5 h/week | Learner-zero study the exit needs | Implied duration [D] |
 |---|---|---|---|---|
-| W0 | 13.25 | 5.3 | none | about 5 weeks |
+| W0 | 13.75 | 5.5 | none | about 5.5 weeks |
 | W1 | 29.75 | 11.9 | S1: 5.3–9.4 h (1.1–2.0 weeks) | about 12 weeks |
-| W2 | 38.5 | 15.4 | S1–S2 signed off: 20.9–37.8 h (4.4–8.0 weeks) | about 15 weeks |
-| W3 | 32.5 | 13.0 | none at the exit | about 13 weeks |
-| W4 | 31.5 | 12.6 | none at the exit | about 13 weeks |
-| W5 | 33.5 | 13.4 | the arc through S10: 105–194 h, about 42–78 weeks from W1's start at 6 h/week | review needs about 13 weeks; the exit waits for learner-zero, about 66–78 weeks after W1 starts |
+| W2 | 39.75 | 15.9 | S1–S2 signed off: 20.9–37.8 h (4.4–8.0 weeks) | about 16 weeks |
+| W3 | 33.25 | 13.3 | none at the exit | about 13 weeks |
+| W4 | 32.25 | 12.9 | none at the exit | about 13 weeks |
+| W5 | 34 | 13.6 | the arc through S10: 107–197 h, about 43–80 weeks from W1's start at 6 h/week | review needs about 14 weeks; the exit waits for learner-zero, about 69–80 weeks after W1 starts |
 | W6 | 10 | 4.0 | none | about 4 weeks |
-| **Total** | **about 189** | **about 76** | | **about 17–20 months from W0's start** |
+| **Total** | **about 193** | **about 77** | | **about 18–21 months from W0's start** |
 
 ### 13.2 The queue gate and overruns
 
@@ -1030,7 +1035,7 @@ When scope must give, it gives in this order (BRIEF §7.10; spine §14):
 7. Erosions lacking both endpoints.
 8. Audit anchors beyond two per stage.
 
-**Cut eligibility** (spine §14; decision 31). A bridge may be folded only if it carries no threshold KC; is not a seam's planting lesson or an erosion's cashing lesson; carries no outcome-core KC; is not the only lesson of a roadmap completion test or of a mechanic; and every KC and claim template it carries moves, with one added graded item, to a named receiving lesson that is itself not cut. Twenty-one bridges qualify. The fold order is S4.L5, S2.L1, S5.L9, S5.L2, S3.L8, S9.L3, S5.L1, S4.L1, S8.L2, S5.L4, S2.L3, S7.L2, S2.L6, S3.L3, S2.L8, S8.L4, S6.L5, S2.L4, S9.L1, S9.L2, with S7.L1 as the spare; the receiving lessons are listed in spine §14.
+**Cut eligibility** (spine §14; decision 31). A bridge may be folded only if it carries no threshold KC; is not a seam's planting lesson or an erosion's cashing lesson; carries no outcome-core KC; is not the only lesson of a roadmap completion test or of a mechanic; and every KC and claim template it carries moves, with one added graded item, to a named receiving lesson that is itself not cut. Twenty-one bridges qualify. The fold order is S4.L5, S2.L1, S7.L1, S5.L2, S3.L8, S9.L3, S5.L1, S4.L1, S8.L2, S5.L4, S2.L3, S7.L2, S2.L6, S3.L3, S2.L8, S8.L4, S6.L5, S2.L4, S9.L1, S9.L2, with S5.L9 as the spare; the receiving lessons are listed in spine §14.
 
 **Never cut:** any invariant I1–I10; a core lesson; a threshold KC's teaching; a seam or erosion endpoint that has its partner; the only lesson of a completion test; the Defence; the runs registry and its gates.
 
@@ -1042,14 +1047,14 @@ When scope must give, it gives in this order (BRIEF §7.10; spine §14):
 
 Everything is measured on the learner's device and derived at read time from the event log and the lab repo (I2). Nothing is sent anywhere unless the learner exports it.
 
-- **Learning:** VRK₃₀, with its rate per active study-month; signed-off and settled KCs; each outcome family's criterion status (§3.3); audit accuracy, with per-class precision and recall once n ≥ 10; calibration bias and hit rate per band.
+- **Learning:** VRK₃₀, with its rate per active study-month; signed-off and settled KCs; each outcome family's criterion status (§3.3); audit accuracy, with per-class precision and recall once n ≥ 10; calibration bias and hit rate per band, with bias's interval taken from accuracy's Wilson interval with the imputed confidence held constant (spine §8.5).
 - **Dose and rhythm:** graded opportunities per KC against the ≥8-in-60-days target; Today session lengths; the Keep block's actual minutes against the plan; "met in k of the last 12 weeks".
 - **Effort and friction:** logged seconds per item and minutes per lab stage; stuck-protocol fires and parked goals; the share of work credited as assisted; hint rungs used.
 - **Production:** claims and specimens per week from the lab repo, against the cadence target.
 
 ### 14.2 How results are reported
 
-Proportions carry Wilson intervals; balanced accuracy carries an interval; nothing is diagnosed below its minimum n (about 20–30 calls per confidence band; n ≥ 10 per audit class). There is no Brier headline, no population figure and no comparison across learners. Learner-zero's figures are labeled "descriptive, learner-zero only". Boot's first-success time for first-time learners comes from at least five naive testers who export their event logs voluntarily (RUN-boot-firstsuccess); design partners are optional and gate only an "external learners" label (OD-9). The assurance page states that the measurements describe one learner and support no causal claim.
+Proportions carry Wilson intervals; balanced accuracy carries an interval assembled from the two class rates' 97.5% Wilson intervals (spine §6); nothing is diagnosed below its minimum n: at least 20 calls in a band, with an interval wholly outside the printed band (spine §8.5), and n ≥ 10 per audit class. There is no Brier headline, no population figure and no comparison across learners. Learner-zero's figures are labeled "descriptive, learner-zero only". Boot's first-success time for first-time learners comes from at least five naive testers who export their event logs voluntarily (RUN-boot-firstsuccess); design partners are optional and gate only an "external learners" label (OD-9). The assurance page states that the measurements describe one learner and support no causal claim.
 
 ### 14.3 What the course measures about itself
 
@@ -1098,27 +1103,28 @@ After each wave: logged item and stage times replace the budget estimates, and G
 
 ## 16. Decisions
 
-The owner decisions and the spine's decision log are kept in [DECISIONS.md](DECISIONS.md). The brief's recommendations are adopted as defaults and await owner review.
+The owner decisions and the spine's decision log are kept in [DECISIONS.md](DECISIONS.md). The brief's recommendations were adopted as defaults, and the owner reviewed them on 2026-10-25.
 
-| # | Decision (adopted default) | Where it lands |
+| # | Decision | Where it lands |
 |---|---|---|
 | OD-1 | The course is named statespace | §0 of the spine |
 | OD-2 | Keep "Mini-Plinth" and `miniplinth check`; the lab template is `statespace-lab` | S3, S4; the Bench CLI |
 | OD-3 | Roadmap order by default; an optional, topologically repaired builder's path | §4.5 |
 | OD-4 | Third-party tools only as disclosed, uncredited link-outs; no embedded CheerpJ | §8.4 |
 | OD-5 | A separate instrument origin on its own custom subdomain | §8.5; W0-S01 |
-| OD-6 | Consent before any download above 5 MB | M-consent; GATE-bundle |
+| OD-6 | No download asks first or warns; the loader shows each engine's size (changed 2026-10-25) | M-consent; GATE-bundle |
 | OD-7 | Owner review envelope of 2–3 h/week; a wave starts only when the queue is under 10 h | §12, §13 |
 | OD-8 | Honor-system provenance, stated openly on the assurance page | §5.1; SCR-assurance |
 | OD-9 | An optional human reviewer; design partners gate only an "external learners" label | §5.4, §14.2 |
-| OD-10 | Ask the authors before adapting the CC BY-SA self-explanation booklet | S2.L0; W2-T05 |
+| OD-10 | Adapt the booklet's text under the CC BY-SA 4.0 its PDF states, without asking its authors (changed 2026-10-25) | S2.L0; W2-T05 |
 | OD-11 | No private-design content; the review JSONs are excluded | §2.4; GATE-privacy |
 | OD-12 | Edition 1 pins Lean 4.35.x [X RUN-lean-ledger] and PostgreSQL 18.6 [X RUN-pg-anomalies]; re-record after PostgreSQL 19 is generally available | §11.6; W6-T07 |
 | OD-13 | Sigstore attestations off by default | §7.5 |
 | OD-14 | The world's working name is "the Clearinghouse"; prefer fewer nouns | §6.4, §9 |
-| OD-15 | *Proposed by the spine:* 10 labs with 83 planned and 8 stretch stages | §7.2 |
+| OD-15 | 10 labs with 83 planned and 8 stretch stages (proposed by the spine; accepted 2026-10-25) | §7.2 |
+| OD-16 | Code under MIT and content under CC BY 4.0, for statespace and kernelspace (decided 2026-10-25) | §2.4; GATE-privacy |
 
-**The spine's decisions that shape this plan most** (spine §12): lessons numbered as the brief numbers them, with S1.L1 and S1.L2 swapped to follow the `requires` DAG (items 1, 33); capstone steps as `[step]` IDs outside lesson counts (2); three tier swaps that keep 26 core and 50 bridge while putting authoring effort on the roadmap's projects (3); the computed Keep block (25) and the keep-alive outside Today (26); the Defence's four-case Part C and its small-part rule (27); inductive invariants as [M] unless a parametric proof earns [P] (29); explicit cut eligibility (31); fewer nouns (32); LAB-1 without the devcontainer (34); learner-zero numbers as descriptive (35); and owner time planned per task (36).
+**The spine's decisions that shape this plan most** (spine §12): lessons numbered as the brief numbers them, with S1.L1 and S1.L2 swapped to follow the `requires` DAG (items 1, 33); capstone steps as `[step]` IDs outside lesson counts (2); three tier swaps that keep 26 core and 50 bridge while putting authoring effort on the roadmap's projects (3); the computed Keep block (25) and the keep-alive outside Today (26); the Defence's four-case Part C and its minimum part size, each part at least 60% with at least four items in every credited part (27); inductive invariants as [M] unless a parametric proof earns [P] (29); explicit cut eligibility (31); fewer nouns (32); LAB-1 without the devcontainer (34); learner-zero numbers as descriptive (35); and owner time planned per task (36).
 
 ---
 
@@ -1146,7 +1152,7 @@ Severity follows BRIEF §5: C critical, M major, m minor. "Spine" names sections
 | V2-16 Resource operations in the AST | M | The roadmap's move, hold, capture and release as typed operations | S3.L2; KC-3.resource-postings; LAB-3.2 | W2-T09 | curriculum S3 |
 | V2-17 One home for evidence | M | The lab repo is the record | §11.1; SCR-settings | W1-T20 | §7.6; ARCHITECTURE.md |
 | V2-18 Gate pipeline; at most six block types at first | M | Fast, nightly and release lanes; vendoring | §11.2; GATE-conformance; GATE-lessons | W0-S12, W0-T04 | §10 |
-| V2-19 Isolation and phones | M | Instrument origin; consent; phone flow | OD-5; I6; M-consent; §9.3 | W0-S01, W0-S02 | §5.6, §8.5 |
+| V2-19 Isolation and phones | M | Instrument origin; downloads; phone flow | OD-5; I6; M-consent; §9.3 | W0-S01, W0-S02 | §5.6, §8.5 |
 | V2-20 Project 00 first; nothing locks | M | Boot; drawers; test-out; navigation | S1.L0; D-01–D-06; M-test-out | W1-T09, W1-T11, W2-T16 | §3.1, §5.2 |
 | V2-21 Accessibility and notation | M | WCAG gate; keyboard board; JuliaMono | §10.2; GATE-a11y, GATE-glyphs; SCR-derivation | W3-T01, W6-T01, W6-T03 | §9; DESIGN.md |
 | V2-22 The Bench as the roadmap names it | M | Devcontainer; `statespace doctor`; Rocq notation named | §9.2; D-15, D-10 | W0-T05 | §7.4 |
@@ -1166,17 +1172,19 @@ Severity follows BRIEF §5: C critical, M major, m minor. "Spine" names sections
 
 ## Spine issues
 
+*This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item below ends with its outcome.*
+
 Things in [the spine](spine/SPINE.md) that this plan believes are wrong or underspecified. The plan follows the spine where they conflict; each item needs a spine revision or an owner call.
 
-1. **Revision-log count.** §15 says the first critic pass had "21 findings: C1, M1–M9, m1–m15", but those IDs number 25 (1 + 9 + 15), and the table that follows has 25 rows for that pass.
-2. **Rounding in §3.11.** The Write column's low total reads 16, but the stage rows sum to 15.45, so the printed column totals (16 + 30 + 33 + 16 + 11 = 106) no longer add up to the printed total of 105. Cosmetic, but GATE-budget recomputes these figures and should match the table.
-3. **Boot's tier is undeclared.** §3.1 gives S1.L0 the tier "boot", while the ID conventions list only `[core]`, `[bridge]` and `[step]`. GATE-lessons and GATE-links need "boot" declared, or Boot needs one of the declared tiers with an exclusion like `[step]`'s.
-4. **An untagged cvc5 version.** GATE-calls, W1-T05 and CL-4.2's qualifier state "cvc5 1.4.2" as a fact, while §9.2 records that the executed run's wheel reported `1.4.2-modified` and that the Bench binary is {{run:RUN-scaffold}}. By the spine's own tag rule, those mentions should cite {{run:RUN-scaffold}}.
-5. **Intervals for balanced accuracy and bias.** §2.2 and §6 attach "Wilson intervals" to balanced accuracy, and §8.5 and M-mirror can be read as attaching them to bias too. A Wilson interval is defined for one binomial proportion; balanced accuracy averages two rates, and bias is a difference. The spine should name the interval method for both (per-class precision, recall and hit rates can keep Wilson intervals). This plan writes "an interval" for both.
-6. **One keep/kill comparison collides with an anti-pattern.** W0-T07 takes BRIEF §3.5's "counterexample vs class hint". If one arm is counterexample-only feedback, it is an anti-pattern under BRIEF §3.3 and contradicts M-class-hint. W0-T07 should define both arms so that neither is counterexample-only; §14.4 states that constraint.
-7. **The 6 h/week Keep block versus its contents.** Today alone at 3–5 sessions of 10–12 minutes is 30–60 minutes; with 1–3 Clearinghouse incidents, the weekly review, the retro's share and the keep-alive's share, the upper ends exceed the planned 45–75 minutes. The figure implicitly assumes about three Today sessions and one incident a week at 6 h/week; the spine should state the assumed counts, or let SCR-week compute them from the learner's settings. **Resolved:** this plan's §4.4 now states the assumed counts, and SCR-week computes the Keep block from the learner's chosen counts, lowering the week's stage-work figure instead of the Keep block when it runs over.
-8. **Drawers without owners.** Twenty-three drawers (D-07–D-10, D-12, D-14, D-15, D-17–D-20, D-22, D-23 and D-31–D-40) are named by no task in §13, so their review time, about 0.25 h each and roughly 5.75 h in all, sits outside the wave totals. GATE-links' ownership rule covers §7, §9.1 and §10.1 only; it should cover §3.12 too, or each stage's lesson task should list its drawers.
-9. **Layout and file names.** Resolved on 2026-10-24. §11.1's layout lacked `curriculum/` and `tracker/`, which this documentation set uses; it now names both, with the zero-padded per-stage file names this plan links, `curriculum/S{nn}-{name}.md` (for example `curriculum/S01-counterexample.md`).
-10. **"Settled" needs an anchor date.** §8.6 defines settled as a fresh probe correct "at least 30 days later" without saying later than what. VRK₃₀ (spine §2.3) anchors to first learning; the settled derivation should name its anchor (sign-off or first learning) so that the read-time derivation is deterministic.
-11. **M-notes cites the wrong study.** §4.1's writing row and §7's M-notes row cite [kobayashi19], which measures learning by teaching (preparing g = 0.35, teaching after preparing g = 0.56) and supports M-explain-back. The writing-to-learn evidence is [bangertdrowns04]: 0.22 in a random-effects re-analysis, larger with metacognitive prompts (EVIDENCE.md, row 47 and its spine issue 3). This plan cites [bangertdrowns04] in its own §3.4 and §5.4 and keeps the grade, A (small); the spine should change the key.
+1. **Revision-log count.** §15 says the first critic pass had "21 findings: C1, M1–M9, m1–m15", but those IDs number 25 (1 + 9 + 15), and the table that follows has 25 rows for that pass. *Revision 3: already resolved in revision 2 (§15 revision 2 paragraph).*
+2. **Rounding in §3.11.** The Write column's low total reads 16, but the stage rows sum to 15.45, so the printed column totals (16 + 30 + 33 + 16 + 11 = 106) no longer add up to the printed total of 105. Cosmetic, but GATE-budget recomputes these figures and should match the table. *Revision 3: already resolved (§3.11; GATE-budget); this plan's totals are refreshed from §3.11 and §13.*
+3. **Boot's tier is undeclared.** §3.1 gives S1.L0 the tier "boot", while the ID conventions list only `[core]`, `[bridge]` and `[step]`. GATE-lessons and GATE-links need "boot" declared, or Boot needs one of the declared tiers with an exclusion like `[step]`'s. *Revision 3: already resolved (ID conventions, Lesson row).*
+4. **An untagged cvc5 version.** GATE-calls, W1-T05 and CL-4.2's qualifier state "cvc5 1.4.2" as a fact, while §9.2 records that the executed run's wheel reported `1.4.2-modified` and that the Bench binary is recorded in [X RUN-scaffold]. By the spine's own tag rule, those mentions should cite [X RUN-scaffold]. *Revision 3: applied (§5.2 CL-4.2, §9.2 INS-bench-smt, §11.2 GATE-calls, §13 W1-T05).*
+5. **Intervals for balanced accuracy and bias.** §2.2 and §6 attach "Wilson intervals" to balanced accuracy, and §8.5 and M-mirror can be read as attaching them to bias too. A Wilson interval is defined for one binomial proportion; balanced accuracy averages two rates, and bias is a difference. The spine should name the interval method for both (per-class precision, recall and hit rates can keep Wilson intervals). This plan wrote "an interval" for both. *Revision 3: already resolved (§2.2, §6 Scoring, §8.5, M-mirror); this plan now takes the spine's wording.*
+6. **One keep/kill comparison collides with an anti-pattern.** W0-T07 takes BRIEF §3.5's "counterexample vs class hint". If one arm is counterexample-only feedback, it is an anti-pattern under BRIEF §3.3 and contradicts M-class-hint. W0-T07 should define both arms so that neither is counterexample-only; §14.4 states that constraint. *Revision 3: already resolved (§13 W0-T07; `content/governance/keepkill-rules.yaml`).*
+7. **The 6 h/week Keep block versus its contents.** Today alone at 3–5 sessions of 10–12 minutes is 30–60 minutes; with 1–3 Clearinghouse incidents, the weekly review, the retro's share and the keep-alive's share, the upper ends exceed the planned 45–75 minutes. The figure implicitly assumes about three Today sessions and one incident a week at 6 h/week; the spine should state the assumed counts, or let SCR-week compute them from the learner's settings. This plan's §4.4 states the assumed counts, and SCR-week computes the Keep block from the learner's chosen counts, lowering the week's stage-work figure instead of the Keep block when it runs over. *Revision 3: applied (§3.0 Budget method).*
+8. **Drawers without owners.** Twenty-three drawers (D-07–D-10, D-12, D-14, D-15, D-17–D-20, D-22, D-23 and D-31–D-40) are named by no task in §13, so their review time, about 0.25 h each and roughly 5.75 h in all, sits outside the wave totals. GATE-links' ownership rule covers §7, §9.1 and §10.1 only; it should cover §3.12 too, or each stage's lesson task should list its drawers. *Revision 3: applied (§13 rules, W4-T09, W4-T12, W4-T13).*
+9. **Layout and file names.** §11.1's layout lacked `curriculum/` and `tracker/`, which this documentation set uses; it now names both, with the zero-padded per-stage file names this plan links, `curriculum/S{nn}-{name}.md` (for example `curriculum/S01-counterexample.md`). *Revision 3: applied (§11.1 layout).*
+10. **"Settled" needs an anchor date.** §8.6 defines settled as a fresh probe correct "at least 30 days later" without saying later than what. VRK₃₀ (spine §2.3) anchors to first learning; the settled derivation should name its anchor (sign-off or first learning) so that the read-time derivation is deterministic. *Revision 3: already resolved (§8.6, §4.1, §0 term 15, §12 item 47); this plan now takes the wording.*
+11. **M-notes cites the wrong study.** §4.1's writing row and §7's M-notes row cite [kobayashi19], which measures learning by teaching (preparing g = 0.35, teaching after preparing g = 0.56) and supports M-explain-back. The writing-to-learn evidence is [bangertdrowns04]: 0.22 in a random-effects re-analysis, larger with metacognitive prompts (EVIDENCE.md, row 47 and its spine issue 3). This plan cites [bangertdrowns04] in its own §3.4 and §5.4 and keeps the grade, A (small); the spine should change the key. *Revision 3: already resolved (§4.1 Writing row, §7 M-notes).*
 

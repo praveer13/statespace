@@ -1,8 +1,8 @@
 # Drawers D-01–D-23 and D-30–D-40, placement and test-out: curriculum spec
 
-**Status:** authoring spec for the just-in-time drawers D-01–D-23, the deferred drawers D-30–D-40, the placement check and the per-stage test-out. W1-T11 ships D-01–D-06 and D-13; W2-T16 ships the test-out and the "From kernelspace" placement; owners for everything else are proposed in §8. Draft: first-learner pass pending. **Date:** 2026-10-24 (machine clock). **IDs:** every ID comes from `docs/spine/SPINE.md`; anything the spine lacks is listed in §10 rather than invented silently.
+**Status:** authoring spec for the just-in-time drawers D-01–D-23, the deferred drawers D-30–D-40, the placement check and the per-stage test-out. W1-T11 ships D-01–D-06 and D-13; W2-T16 ships the test-out and the "From kernelspace" placement; spine §13 names the owner of every other drawer (§8.1). Draft: first-learner pass pending. **Date:** 2026-10-24 (machine clock). **IDs:** every ID comes from `docs/spine/SPINE.md`; anything the spine lacks is listed in §10 rather than invented silently.
 
-**Sources, in precedence order:** the roadmap (learning rules 1–3, Stage 1–2 theory, the first weekend, "What not to study prematurely"); executed runs (`research/spikes/RESULTS.md`; `research/evidence/a2r3/out/`, `lean-measure/proj/`, `A5r3/`); the brief (V2-20, V2-30, V2-31, the corrections ledger §2.2, the anti-patterns §3.3); the pedagogy digest (§1 rows 5, 9, 20, 21, 26; the §2 misconception catalog), the landscape digest (§2 "Course 00: Ground") and the review digests (D13, B9, B11); report R2 (I9, the PutnamBench cases); reviews A1 (F13), A3 (M1, M11), A4 (A4-04, A4-19), A6 (F15, F16) and A8 (F8, F11); kernelspace, for its learning engine only: the placement walk and test-out (wave-1 spec §7), the per-check wasm ABI (wave-1 §12.1), the Error Museum (wave-2 §15.6) and the Evidence Pack (wave-2 §21.2); the v1 design's Course 00, for history only; the spine; and the sibling stage specs S01–S10, whose drawer references this file follows and marks with †.
+**Sources, in precedence order:** the roadmap (learning rules 1–3, Stage 1–2 theory, the first weekend, "What not to study prematurely"); executed runs (`research/spikes/RESULTS.md`; `research/evidence/a2r3/out/`, `lean-measure/proj/`, `A5r3/`); the brief (V2-20, V2-30, V2-31, the corrections ledger §2.2, the anti-patterns §3.3); the pedagogy digest (§1 rows 5, 9, 20, 21, 26; the §2 misconception catalog), the landscape digest (§2 "Course 00: Ground") and the review digests (D13, B9, B11); report R2 (I9, the PutnamBench cases); reviews A1 (F13), A3 (M1, M11), A4 (A4-04, A4-19), A6 (F15, F16) and A8 (F8, F11); kernelspace, for its learning engine only: the placement walk and test-out (wave-1 spec §7), the per-check wasm ABI (wave-1 §12.1), the Error Museum (wave-2 §15.6) and the Evidence Pack (wave-2 §21.2); the v1 design's Course 00, for history only; the spine; and the sibling stage specs S01–S10, whose drawer references this file follows.
 
 **Tags.** As in the spine: `[X RUN-id]` an executed run on disk; `{{run:RUN-id}}` a run to record before the sentence ships; `[D]` design rationale or estimate; grades A–D follow the pedagogy digest. `[V]` marks a documentation detail re-checked against a primary source on 2026-10-23 by the digest or sibling spec named beside it; this file re-checked nothing itself (its one attempt, PLF's Hoare chapter, failed to load). `[U]` marks a documentation detail no source re-checked; the owning task verifies it before copy ships. Learner copy appears in quotation marks after "Copy:"; everything else is for authors.
 
@@ -14,33 +14,33 @@ Drawers are side material, always open; opening one is logged and never required
 
 ### 0.1 The just-in-time drawers
 
-"Opens at" gives the trigger and its default presentation (§1.2); † marks a trigger a sibling spec adds beyond spine §3.12 (§10, issue 4). Minutes are the body's reading time [D]; items are counted separately (§1.3). "Ships" names the spine's task, or a proposed owner (§8).
+"Opens at" gives the trigger and its default presentation (§1.2); the triggers are those of spine §3.12. Minutes are the body's reading time [D]; items are counted separately (§1.3). "Ships" names the task that owns the drawer in spine §13 (§8.1).
 
 | ID | Drawer | Opens at (default) | Main KCs (each drawer lists its previews and spirals) | Body min | Items | Ships |
 |---|---|---|---|---|---|---|
-| D-01 | A proof is not a test | Boot's close card (link); S1.L1 before segment 2 (inline) | KC-1.violation-as-sat (threshold), KC-1.witness-class | 6–8 | 4 | W1-T11 |
-| D-02 | Propositions, implication and vacuity | S1.L3 (inline); S2.L2† and S4.L8† (link) | KC-1.implication-vacuity (threshold), KC-1.non-vacuity-check | 6–8 | 4 | W1-T11 |
+| D-01 | A proof is not a test; reading a counterexample | Boot's close card (link); S1.L1 before segment 2 (inline) | KC-1.violation-as-sat (threshold), KC-1.witness-class | 6–8 | 4 | W1-T11 |
+| D-02 | Propositions, implication and vacuity | S1.L3 (inline); S2.L2 and S4.L8 (link) | KC-1.implication-vacuity (threshold), KC-1.non-vacuity-check | 6–8 | 4 | W1-T11 |
 | D-03 | Quantifiers and negation | S1.L1 before segment 1 (inline) | KC-1.quantifier-negation, KC-1.only-if-direction | 6–8 | 4 | W1-T11 |
-| D-04 | State as functions, steps as relations | S1.L4 (inline); S2.L8† and S4.L4† (link) | KC-1.two-state-property | 6–8 | 4 | W1-T11 |
+| D-04 | State as functions, steps as relations | S1.L4 (inline); S2.L8 and S4.L4 (link) | KC-1.two-state-property | 6–8 | 4 | W1-T11 |
 | D-05 | Induction, informally | S2.L1 and S2.L4 (inline) | KC-2.induction-principle | 7–9 | 4 | W1-T11; two items with W2-T11 |
-| D-06 | The anatomy of a guarantee: the six fields | S1.L3 (inline); LAB-1.6 (link); S2.L10†, LAB-4.8†, LAB-10.8† (link) | none of its own (§10, issue 3); items carry KC-1.three-answers, KC-1.violation-as-sat, KC-1.non-vacuity-check | 6–8 | 4 | W1-T11 |
-| D-07 | The Lean error museum | S2.L3†, S2.L6†, S2.L7†, S2.L9†; LAB-3.c4–c5's R1 rungs† (link; exhibit links beside matching messages) | KC-2.goal-state-reading, KC-2.automation-scope, KC-2.axioms-and-trust | 6–10 | 4 | W2-T04 (proposed) |
-| D-08 | The Natural Number Game, pinned fallback | S2.L1 (link) | KC-2.induction-principle | 5–7 | 3 | W2-T04 (proposed) |
-| D-09 | PlusCal beside its TLA+ translation | S5.L2 (inline); S8.L2† (link) | KC-5.tlc-flags-matter, KC-5.interleaving-granularity | 6–8 | 4 | W3-T11 (proposed) |
-| D-10 | Reading PLF's Rocq notation | S4.L1, S4.L3† (link); S7† (link) | KC-4.hoare-triple, KC-4.wp-assignment | 5–7 | 3 | W3-T03 (proposed) |
+| D-06 | The anatomy of a guarantee: the six fields | S1.L3 (inline); LAB-1.6 (link); S2.L10, LAB-4.8, LAB-10.8 (link) | KC-1.claim-anatomy; its items also carry KC-1.three-answers, KC-1.violation-as-sat, KC-1.non-vacuity-check | 6–8 | 4 | W1-T11 |
+| D-07 | The Lean error museum | S2.L3, S2.L6, S2.L7, S2.L9; LAB-3.c4–c5's R1 rungs (link; exhibit links beside matching messages) | KC-2.goal-state-reading, KC-2.automation-scope, KC-2.axioms-and-trust | 6–10 | 4 | W2-T04 |
+| D-08 | The Natural Number Game, pinned fallback | S2.L1 (link) | KC-2.induction-principle | 5–7 | 3 | W2-T04 |
+| D-09 | PlusCal beside its TLA+ translation | S5.L2 (inline); S8.L2 (link) | KC-5.tlc-flags-matter, KC-5.interleaving-granularity | 6–8 | 4 | W3-T11 |
+| D-10 | Reading PLF's Rocq notation | S4.L1, S4.L3 (link); S7 (link) | KC-4.hoare-triple, KC-4.wp-assignment | 5–7 | 3 | W3-T03 |
 | D-11 | MVCC in one page (tablespace T4 card) | S6.L5–S6.L7 (link) | KC-6.anomaly-isolation (threshold), KC-6.compilation-pattern, KC-6.serializable-retries | 6–8 | 4 | W4-T13 |
-| D-12 | Durability and the write-ahead log in one page (tablespace T3 card) | S8.L3 (link) | KC-8.crash-windows, KC-8.at-least-once (threshold), KC-8.commit-not-send (threshold) | 6–8 | 3 | W5-T02 (proposed) |
-| D-13 | SMT-LIB in one page | S1.L2† and LAB-1.6† (link); S4.L5 (inline); LAB-4.2 onward† (link) | KC-1.three-answers (threshold), KC-1.unknown-fails-closed; KC-4.frame-condition | 6–8 | 4 | W1-T11; item 4 with W3-T03 |
-| D-14 | The Lane A wasm ABI | the first Lane A stage (inline): LAB-3.8, or LAB-8.4 on the builder's path; LAB-4†, LAB-6†, LAB-9.11†, LAB-10.2–10.3† (link) | the opening lab's correspondence KC (§3) | 6–8 | 3 | W2-T08 (proposed) |
-| D-15 | The devcontainer and `statespace doctor` | the first Bench stage (inline): LAB-2.1, or LAB-5.1 on the builder's path (S5.L2†); LAB-6.1†, LAB-10.2–10.3† (link) | KC-2.axioms-and-trust (threshold), KC-2.statement-pinning (both first contact here) | 5–7 | 3 | W2-T04 (proposed) |
-| D-16 | Alloy: scopes and instances | S7.L3† (link); LAB-7.8 | KC-7.small-scope, KC-7.policy-checking | 6–8 | 4 | W4-T09 |
-| D-17 | Query containment | S7.L4† (link); LAB-7.8; S9.L8† (link) | KC-9.sql-equivalence, KC-6.differential-testing (threshold), KC-6.sql-not-algebra | 6–8 | 3 | W4-T09 (proposed) |
-| D-18 | Apalache for inductive invariants | S4.L6† (link, optional); S5.L9 (link) | KC-4.invariant-vs-inductive (threshold), KC-5.inductive-invariant-tla, KC-5.bounded-scope (threshold) | 6–8 | 3 | W3-T11 (proposed) |
-| D-19 | Scheduled work and timers | S8.L4† (link) | KC-8.crash-windows, KC-8.at-least-once (threshold), KC-5.fairness (threshold) | 5–7 | 3 | W5-T02 (proposed) |
-| D-20 | Sensitivity in caches, without vendor specifics | S7.L7† (link) | KC-7.observer-equivalence (threshold), KC-7.side-channels, KC-7.hyperproperty | 5–7 | 3 | W4-T09 (proposed) |
-| D-21 | byzantine in one page: consistency and the deterministic harness | S7.L8 and S8.L6 (link); S6.L8† (optional link) | KC-7.revocation-past, KC-8.deterministic-simulation | 6–8 | 3 | W4-T13 |
-| D-22 | Lean 4 metaprogramming | a Today card once a LAB-3 or LAB-9 module uses `declare_syntax_cat` | KC-3.abstract-syntax, KC-2.axioms-and-trust | 5–7 | 3 | W2-T09 (proposed) |
-| D-23 | Explicit error outcomes in one page | S6.L2 on the builder's path (inline) | KC-3.big-step-errors, KC-6.rowcount-as-guard | 5–7 | 3 | W2-T09 (proposed) |
+| D-12 | Durability and the write-ahead log in one page (tablespace T3 card) | S8.L3 (link) | KC-8.crash-windows, KC-8.at-least-once (threshold), KC-8.commit-not-send (threshold) | 6–8 | 3 | W5-T02 |
+| D-13 | SMT-LIB in one page | S1.L2 and LAB-1.6 (link); S4.L5 (inline); LAB-4.2 onward (link) | KC-1.three-answers (threshold), KC-1.unknown-fails-closed; KC-4.frame-condition | 6–8 | 4 | W1-T11; item 4 with W3-T03 |
+| D-14 | The Lane A wasm ABI | the first Lane A stage (inline): LAB-3.8, or LAB-8.4 on the builder's path; LAB-4, LAB-6, LAB-9.11, LAB-10.2–10.3 (link) | the opening lab's correspondence KC (§3) | 6–8 | 3 | W2-T09 |
+| D-15 | The devcontainer and `statespace doctor` | the first Bench stage (inline): LAB-2.1, or LAB-5.1 on the builder's path (S5.L2); LAB-6.1, LAB-10.2–10.3 (link) | KC-2.axioms-and-trust (threshold), KC-2.statement-pinning (both first contact here) | 5–7 | 3 | W2-T04 |
+| D-16 | Alloy: scopes and instances | S7.L3 (link); LAB-7.8 | KC-7.small-scope, KC-7.policy-checking | 6–8 | 4 | W4-T09 |
+| D-17 | Query containment | S7.L4 (link); LAB-7.8; S9.L8 (link) | KC-9.sql-equivalence, KC-6.differential-testing (threshold), KC-6.sql-not-algebra | 6–8 | 3 | W4-T09 |
+| D-18 | Apalache for inductive invariants | S4.L6 (link, optional); S5.L9 (link) | KC-4.invariant-vs-inductive (threshold), KC-5.inductive-invariant-tla, KC-5.bounded-scope (threshold) | 6–8 | 3 | W3-T03 |
+| D-19 | Scheduled work and timers | S8.L4 (link) | KC-8.crash-windows, KC-8.at-least-once (threshold), KC-5.fairness (threshold) | 5–7 | 3 | W5-T02 |
+| D-20 | Sensitivity in caches, without vendor specifics | S7.L7 (link) | KC-7.observer-equivalence (threshold), KC-7.side-channels, KC-7.hyperproperty | 5–7 | 3 | W4-T09 |
+| D-21 | byzantine in one page: consistency and the deterministic harness | S7.L8 and S8.L6 (link); S6.L8 (optional link) | KC-7.revocation-past, KC-8.deterministic-simulation | 6–8 | 3 | W4-T13 |
+| D-22 | Lean 4 metaprogramming | a Today card once a LAB-3 or LAB-9 module uses `declare_syntax_cat` | KC-3.abstract-syntax, KC-2.axioms-and-trust | 5–7 | 3 | W2-T09 |
+| D-23 | Explicit error outcomes in one page | S6.L2 on the builder's path (inline) | KC-3.big-step-errors, KC-6.rowcount-as-guard | 5–7 | 3 | W4-T05 |
 
 Twenty-three drawers and 80 items, all from the fourteen generator families of spine §8.3; none uses GEN-defend, which belongs to the learner's own artifact. The ground drawers D-01–D-06 hold 24 items. The deferred drawers D-30–D-40 are §4.
 
@@ -67,9 +67,9 @@ v1 opened its theory drawers "only when a Call It is missed twice" (v1 plan §2.
 | Quantifiers and negation | D-03 | KC-1.quantifier-negation, KC-1.only-if-direction |
 | Sets, relations and functions as state and steps | D-04 | KC-1.two-state-property; previews KC-2.finite-map-update, KC-4.frame-condition |
 | Informal induction and invariants | D-05 | KC-2.induction-principle; previews KC-4.invariant-vs-inductive, KC-2.generalized-ih |
-| The anatomy of a six-field guarantee | D-06 | none of its own (§10, issue 3) |
-| Reading a counterexample | D-01 §C (replay, cause, minimize, generalize, fix the class); D-04 §E (two-state pairs); D-09 §D (TLC traces); D-21 §C (seeded fault schedules) | KC-1.witness-class, KC-1.violation-as-sat, KC-1.two-state-property (§10, issue 2) |
-| A proof is not a test | D-01 | KC-1.violation-as-sat (threshold), KC-1.witness-class |
+| The anatomy of a six-field guarantee | D-06 | KC-1.claim-anatomy |
+| Reading a counterexample | D-01 §C (replay, cause, minimize, generalize, fix the class), continued in D-04 §E (two-state pairs), D-09 §D (TLC traces) and D-21 §C (seeded fault schedules) | KC-1.witness-class, KC-1.violation-as-sat, KC-1.two-state-property (§10, issue 2) |
+| A proof is not a test; reading a counterexample | D-01 | KC-1.violation-as-sat (threshold), KC-1.witness-class |
 
 ### 0.4 Why drawers, and how much to expect
 
@@ -83,7 +83,7 @@ Supportive information just before a task cluster, and procedural information du
 
 Each just-in-time drawer gives: **Opens at** (the triggering lessons and segments, and the default presentation of §1.2); **Objective** (observable, resolved to the graded forms that measure it, spine §3.0); **KCs** (the KCs its items carry, split into those it teaches and those it previews, §1.5); **Misconceptions** (`dp:` tags, §1.4); **Body** (5–10 minutes, in lettered sections with minutes); **Items** (3–5, each with family, template and mode, what the learner produces, the key and its grader, and the tag on every distractor or wrong-attempt class); **Placement and test-out**; and **Runs**.
 
-Bodies use only the six W1–W2 content block types (V2-18): prose, prequestion, instrument cell, graded item, card and table. They show recorded results with their run ids rather than live authored cells, so a drawer adds no Call It beyond its items; a recorded result opens as a free run, ungated (spine §8.5). Rust cards, written for the reference learner (Rust-fluent, new to formal notation, spine §2.1), give one isomorphism and say where it breaks (A1 F13).
+Bodies use only the six W1–W2 content block types (V2-18; spine §12 item 48): prose, instrument, item, claim, specimen and card. A prequestion and a graded item are items, and a table is prose. They show recorded results with their run ids rather than live authored cells, so a drawer adds no Call It beyond its items; a recorded result opens as a free run, ungated (spine §8.5). Rust cards, written for the reference learner (Rust-fluent, new to formal notation, spine §2.1), give one isomorphism and say where it breaks (A1 F13).
 
 ### 1.2 Presentation: link, inline, summary first, Today
 
@@ -98,7 +98,7 @@ A drawer's presentation is derived per learner at read time from the event log (
 
 **Precedence.** A miss signal beats summary first, and summary first beats the default, because the most recent evidence wins. **Defaults** follow the scaffolding rule of spine §2.1: the ground drawers default to inline because the reference learner is new to formal notation; drawers in expert-treated domains (Rust, Postgres practice, concurrency failures) default to link; the rest say so per drawer.
 
-Copy (inline card): "Before this segment: Quantifiers and negation, about 7 minutes. Open it now or carry on; it stays here." Copy (summary first): "You have shown this. Here is the one-screen summary; the full page is one tap away." Opening a drawer is logged as help-seeking and never penalized (A3 M1); the log moves no status (I1) and needs an event kind the spine lacks (§10, issue 8).
+Copy (inline card): "Before this segment: Quantifiers and negation, about 7 minutes. Open it now or carry on; it stays here." Copy (summary first): "You have shown this. Here is the one-screen summary; the full page is one tap away." Opening a drawer is logged as help-seeking and never penalized (A3 M1); the log moves no status (I1) and is the spine's uncredited `view` kind (§8.2).
 
 ### 1.3 Items in drawers
 
@@ -110,7 +110,7 @@ Copy (inline card): "Before this segment: Quantifiers and negation, about 7 minu
 - **Today.** Each item's KC joins Today at its first window (about 1–3 days) if it is not scheduled already, toward the ≥ 8 graded opportunities in 60 days of spine §4.1.
 - **Mirror.** A call counts toward the Mirror only if the KC's first lesson segment or the drawer's body was opened before it (the post-instruction rule, spine §8.5). Try-first calls on an unopened topic, placement calls and test-out calls on unopened KCs are excluded.
 - **Shares.** Seeds draw keys in seeded shares, so no verdict exceeds 60% of a drawer's calls, and items whose answer may be "none" draw it in a seeded 30–60% share.
-- **Phones.** Items keyed by Z3 need INS-z3, whose first load asks consent (OD-6). Without it a drawer serves the items INS-pocket can key offline (witness replays, five-statement items over finite tables) and queues the rest for the laptop. Lean items are recorded outputs and work offline.
+- **Phones.** Items keyed by Z3 need INS-z3, which downloads without asking while the loader shows its size (OD-6). Until it is ready, or offline before it is cached, a drawer serves the items INS-pocket can key offline (witness replays, five-statement items over finite tables) and queues the rest for the laptop. Lean items are recorded outputs and work offline.
 - **Formalize mode.** GEN-negate-it and GEN-spec-it items are served in the learner's current mode for the KC: pick, then fix, then write (spine §8.4).
 
 ### 1.4 Misconception tags
@@ -170,7 +170,7 @@ Drawer, placement and test-out items are ordinary generated items under GATE-ite
 
 ### 1.8 Shipping and generator availability
 
-W1-T11 ships D-01–D-06 and D-13 with items from the W1 families only: GEN-negate-it, GEN-find-the-witness, GEN-call-it, GEN-spot-the-gap and GEN-which-stamp. D-05's two GEN-proof-structure items go live with W2-T11, and D-13's item 4 with LAB-4's SMT-LIB vocabulary (W3-T03). Every other drawer ships with the task §8 proposes. A drawer appears in lessons only once it ships, so no learner meets a link to unwritten content; GATE-links checks that every drawer reference in shipped content resolves.
+W1-T11 ships D-01–D-06 and D-13 with items from the W1 families only: GEN-negate-it, GEN-find-the-witness, GEN-call-it, GEN-spot-the-gap and GEN-which-stamp. D-05's two GEN-proof-structure items go live with W2-T11, and D-13's item 4 with LAB-4's SMT-LIB vocabulary (W3-T03). Every other drawer ships with the task that spine §13 names for it (§8.1). A drawer appears in lessons only once it ships, so no learner meets a link to unwritten content; GATE-links checks that every drawer reference in shipped content resolves.
 
 ---
 
@@ -178,7 +178,7 @@ W1-T11 ships D-01–D-06 and D-13 with items from the W1 families only: GEN-nega
 
 These six hold what Course 00 taught, each beside the S1 or S2 segment that first needs it. They default to inline for the reference learner and fall back to summaries as soon as the learner shows the ideas (§1.2, §5).
 
-### D-01 · A proof is not a test
+### D-01 · A proof is not a test; reading a counterexample
 
 **Opens at.** Boot's close card (link, by title only: Boot is held to 8 minutes, and "drawer" is not yet a term); S1.L1 before segment 2, the violation query (inline by default), and beside segment 3, one witness and one class (link). **Objective.** For a transfer, a test suite's result and a solver's result, stamp each and judge what each establishes (GEN-which-stamp t1; GEN-call-it t4); produce a second witness that differs from a given one in every variable and choose its class (GEN-find-the-witness t1 with class naming). **KCs.** Teaches KC-1.violation-as-sat (threshold) and KC-1.witness-class, both first taught in S1.L1; previews KC-1.three-answers (S1.L2). **Misconceptions.** dp:G7, dp:G8, dp:Z1, dp:Z3, dp:A3, dp:X1, dp:X3; dp:Z6 (proposed by S01).
 
@@ -221,11 +221,11 @@ Two-state witnesses continue in D-04 §E, TLC traces in D-09 §D and seeded faul
 
 **Runs.** Executed: RUN-z3-starter, RUN-z3-optimize-min, RUN-z3-bv64. None new.
 
-Copy (Boot's close card): "A proof is not a test (6 minutes): why 200 green tests missed this."
+Copy (Boot's close card): "A proof is not a test; reading a counterexample (6 minutes): why 200 green tests missed this."
 
 ### D-02 · Propositions, implication and vacuity
 
-**Opens at.** S1.L3 before cell 2, the configuration cell (inline by default; S01 places the truth table here); S2.L2† (link: in Lean a proof of P → Q is a function, S02); S4.L8† (link: the vacuity trap SP-4.4, where S04 recalls KC-1.implication-vacuity). **Objective.** Judge whether cases satisfy an implication stated in English (GEN-call-it t4), predict a premise query's verdict (GEN-call-it t1), and repair a violation query whose premises contradict, writing its premise query (GEN-negate-it t1, fix). **KCs.** Teaches KC-1.implication-vacuity (threshold) and KC-1.non-vacuity-check, both first taught in S1.L3; KC-1.only-if-direction and KC-1.violation-as-sat return as spirals. **Misconceptions.** dp:G1, dp:G3, dp:G4, dp:G7, dp:Z1; dp:G10 (proposed); dp:Z6 (proposed by S01).
+**Opens at.** S1.L3 before cell 2, the configuration cell (inline by default; S01 places the truth table here); S2.L2 (link: in Lean a proof of P → Q is a function, S02); S4.L8 (link: the vacuity trap SP-4.4, where S04 recalls KC-1.implication-vacuity). **Objective.** Judge whether cases satisfy an implication stated in English (GEN-call-it t4), predict a premise query's verdict (GEN-call-it t1), and repair a violation query whose premises contradict, writing its premise query (GEN-negate-it t1, fix). **KCs.** Teaches KC-1.implication-vacuity (threshold) and KC-1.non-vacuity-check, both first taught in S1.L3; KC-1.only-if-direction and KC-1.violation-as-sat return as spirals. **Misconceptions.** dp:G1, dp:G3, dp:G4, dp:G7, dp:Z1; dp:G10 (proposed); dp:Z6 (proposed by S01).
 
 **Body** (6–8 min)
 
@@ -300,11 +300,11 @@ The course reads "P unless Q" as "if not Q, then P"; where a requirement means "
 
 **Placement and test-out.** The walk starts here: KC-1.quantifier-negation is step 1 and KC-1.only-if-direction step 2 (§5.3), because neither requires anything. D-03 opens summary first when both are shown or tested out, or item 1 and one further fresh item on the same KC are both answered right.
 
-**Runs.** Executed: RUN-z3-unknown-pow (the `∀k. k·k ≠ y` line of its log; §10, issue 16). Proposed by S01, to record in W1-T12: RUN-z3-demorgan.
+**Runs.** Executed: RUN-z3-unknown-pow (the `∀k. k·k ≠ y` line of its log; §10, issue 16). To record: RUN-z3-demorgan (W1-T12).
 
 ### D-04 · State as functions, steps as relations
 
-**Opens at.** S1.L4 before "The model" (inline by default); S2.L8† (link: pointwise update and the self-transfer mint, S02); S4.L4† (link: from commands to obligations, S04). **Objective.** Write a step as a relation over S and S′ with primed variables, including what stays unchanged (GEN-negate-it t2); tell a property of one state from a property of a step (GEN-call-it t4); read a two-state counterexample and name its class (GEN-find-the-witness t1). **KCs.** Teaches KC-1.two-state-property (first taught in S1.L4); KC-1.witness-class returns as a spiral; previews KC-2.finite-map-update (S2.L8) and KC-4.frame-condition (S4.L5). **Misconceptions.** dp:G6, dp:G9, dp:L7, dp:S1, dp:O2, dp:O4, dp:Z3, dp:Z5; dp:Z6 (proposed by S01).
+**Opens at.** S1.L4 before "The model" (inline by default); S2.L8 (link: pointwise update and the self-transfer mint, S02); S4.L4 (link: from commands to obligations, S04). **Objective.** Write a step as a relation over S and S′ with primed variables, including what stays unchanged (GEN-negate-it t2); tell a property of one state from a property of a step (GEN-call-it t4); read a two-state counterexample and name its class (GEN-find-the-witness t1). **KCs.** Teaches KC-1.two-state-property (first taught in S1.L4); KC-1.witness-class returns as a spiral; previews KC-2.finite-map-update (S2.L8) and KC-4.frame-condition (S4.L5). **Misconceptions.** dp:G6, dp:G9, dp:L7, dp:S1, dp:O2, dp:O4, dp:Z3, dp:Z5; dp:Z6 (proposed by S01).
 
 **Body** (6–8 min)
 
@@ -364,11 +364,11 @@ The course reads "P unless Q" as "if not Q, then P"; where a requirement means "
 
 **Placement and test-out.** The walk does not probe KC-2.induction-principle: it requires KC-2.proof-reading, which S2.L0 teaches, so it waits for S2's test-out (§6.6), where fresh items can show it. The "From kernelspace" placement never pre-credits it (V2-20; §5.7). D-05 opens summary first when the KC is tested out, or item 1 (item 3 before W2-T11) and one further fresh item on the same KC are both answered right.
 
-**Runs.** Executed: RUN-lean-ledger. To record: RUN-lean-ih-ungeneralised (W2-T10). Proposed by S02: RUN-lean-s2-cells.
+**Runs.** Executed: RUN-lean-ledger. To record: RUN-lean-ih-ungeneralised and RUN-lean-s2-cells (W2-T10).
 
 ### D-06 · The anatomy of a guarantee: the six fields
 
-**Opens at.** S1.L3, where CL-1.1 is minted (inline for every learner the first time: the card is this course's own format, so nobody arrives knowing it); LAB-1.6, the README and two cards (link); S2.L10† (link: the requirement row against kernel acceptance, S02); LAB-4.8† and LAB-10.8† (link: claim cards and the report, S04, S10). **Objective.** Place a fact about a claim in its strip segment (GEN-which-stamp t3), complete a stamp's qualifier (GEN-which-stamp t2), produce the "if weakened" witness for a named assumption (GEN-find-the-witness t1) and judge what a claim covers (GEN-call-it t4). **KCs.** None of its own (§10, issue 3). Its items carry KC-1.three-answers (S1.L2), KC-1.violation-as-sat and KC-1.non-vacuity-check, all taught by S1.L3, and preview KC-1.encoding-is-the-claim (S1.L5) and KC-2.kernel-not-requirement (S2.L10). **Misconceptions.** dp:G4, dp:G6, dp:G8, dp:L3, dp:L4, dp:X1, dp:Z4; dp:X9 (proposed by S10).
+**Opens at.** S1.L3, where CL-1.1 is minted (inline for every learner the first time: the card is this course's own format, so nobody arrives knowing it); LAB-1.6, the README and two cards (link); S2.L10 (link: the requirement row against kernel acceptance, S02); LAB-4.8 and LAB-10.8 (link: claim cards and the report, S04, S10). **Objective.** Place a fact about a claim in its strip segment (GEN-which-stamp t3), complete a stamp's qualifier (GEN-which-stamp t2), produce the "if weakened" witness for a named assumption (GEN-find-the-witness t1) and judge what a claim covers (GEN-call-it t4). **KCs.** Teaches KC-1.claim-anatomy, first taught in S1.L3. Its items also carry KC-1.three-answers (S1.L2), KC-1.violation-as-sat and KC-1.non-vacuity-check, all taught by S1.L3, and preview KC-1.encoding-is-the-claim (S1.L5) and KC-2.kernel-not-requirement (S2.L10). **Misconceptions.** dp:G4, dp:G6, dp:G8, dp:L3, dp:L4, dp:X1, dp:Z4; dp:X9 (proposed by S10).
 
 **Body** (6–8 min)
 
@@ -397,12 +397,12 @@ Below the six fields sits the requirement row: "no transfer leaves the paying ac
 
 | # | Family · template · mode | Learner produces | Key and grader | Distractors (tag) | KCs |
 |---|---|---|---|---|---|
-| 1 (try first) | GEN-which-stamp t3 (which strip segment), probe | the segment a seeded fact supports, for facts such as "Z3 5.3.1 returns `unsat` on the violation query" [X RUN-z3-starter], "the code stores balances as 64-bit integers", "the product owner wants the recipient protected" or "200 unit tests pass on the Rust function" | the scenario's construction and the verdict → stamp table | a solver result placed under requirement-fit (dp:L3); "proved, so it is what we wanted" (dp:G8); a test of the code placed under proposition-of-model (dp:X1); an encoding fact placed under proposition-of-model (dp:Z4) | KC-1.three-answers; KC-1.encoding-is-the-claim, KC-2.kernel-not-requirement (previews) |
-| 2 | GEN-which-stamp t2 (complete the qualifier), probe | the missing parts of a qualifier for a seeded raw line (solver, version, verdict, `rlimit`; or a test count) | spine §8.7's required qualifiers and §8.8's table | "uncertified" dropped (dp:G8); the `rlimit` or n left out, so the result cannot be re-run (dp:X9) | KC-1.three-answers |
-| 3 | GEN-find-the-witness t1 (model), probe: the "if weakened" witness | for a seeded claim with one assumption struck (the guard, `amount > 0`, distinct accounts under a map encoding), a witness that refutes the claim's own proposition | the witness replays (INS-pocket; Z3) and must satisfy every remaining premise while violating the conclusion, claim@1's rule | wrong-attempt classes: a witness that violates a premise (dp:G4); a witness that violates some other property (dp:G6) | KC-1.violation-as-sat, KC-1.non-vacuity-check |
-| 4 | GEN-call-it t4 (five statements), probe | true or false for what a seeded S1 claim establishes | the scenario's construction and recorded runs [X RUN-z3-starter, RUN-z3-bv64] | "it covers the recipient" (dp:L4); "it covers 64-bit code" (dp:Z4); "the requirement row is PROVED" (dp:L3) | KC-1.non-vacuity-check; KC-1.encoding-is-the-claim (preview) |
+| 1 (try first) | GEN-which-stamp t3 (which strip segment), probe | the segment a seeded fact supports, for facts such as "Z3 5.3.1 returns `unsat` on the violation query" [X RUN-z3-starter], "the code stores balances as 64-bit integers", "the product owner wants the recipient protected" or "200 unit tests pass on the Rust function" | the scenario's construction and the verdict → stamp table | a solver result placed under requirement-fit (dp:L3); "proved, so it is what we wanted" (dp:G8); a test of the code placed under proposition-of-model (dp:X1); an encoding fact placed under proposition-of-model (dp:Z4) | KC-1.claim-anatomy, KC-1.three-answers; KC-1.encoding-is-the-claim, KC-2.kernel-not-requirement (previews) |
+| 2 | GEN-which-stamp t2 (complete the qualifier), probe | the missing parts of a qualifier for a seeded raw line (solver, version, verdict, `rlimit`; or a test count) | spine §8.7's required qualifiers and §8.8's table | "uncertified" dropped (dp:G8); the `rlimit` or n left out, so the result cannot be re-run (dp:X9) | KC-1.claim-anatomy, KC-1.three-answers |
+| 3 | GEN-find-the-witness t1 (model), probe: the "if weakened" witness | for a seeded claim with one assumption struck (the guard, `amount > 0`, distinct accounts under a map encoding), a witness that refutes the claim's own proposition | the witness replays (INS-pocket; Z3) and must satisfy every remaining premise while violating the conclusion, claim@1's rule | wrong-attempt classes: a witness that violates a premise (dp:G4); a witness that violates some other property (dp:G6) | KC-1.claim-anatomy, KC-1.violation-as-sat, KC-1.non-vacuity-check |
+| 4 | GEN-call-it t4 (five statements), probe | true or false for what a seeded S1 claim establishes | the scenario's construction and recorded runs [X RUN-z3-starter, RUN-z3-bv64] | "it covers the recipient" (dp:L4); "it covers 64-bit code" (dp:Z4); "the requirement row is PROVED" (dp:L3) | KC-1.claim-anatomy, KC-1.non-vacuity-check; KC-1.encoding-is-the-claim (preview) |
 
-**Placement and test-out.** None: placement and test-out show prior knowledge, and the card is new to everyone. D-06 opens summary first once LAB-1.c6 passes (both cards valid under claim@1), or item 1 and one further fresh item on the same KC are both answered right.
+**Placement and test-out.** The walk leaves KC-1.claim-anatomy out (§5.3): the card is this course's own format, so nobody arrives knowing it. S1's test-out (§6.6) still offers it on fresh items. D-06 opens summary first once LAB-1.c6 passes (both cards valid under claim@1), or item 1 and one further fresh item on the same KC are both answered right.
 
 **Runs.** Executed: RUN-z3-starter, RUN-z3-bv64. To record: RUN-z3-vacuous-unsat (W1-T12).
 
@@ -414,7 +414,7 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 ### D-07 · The Lean error museum
 
-**Opens at.** S2.L3†, S2.L6†, S2.L7† and S2.L9† (link, S02) and LAB-3.c4–c5's R1 rungs† (link, S03); beside any recorded output or imported receipt line that matches an exhibit, a link to that exhibit (spine: S2). A miss signal on dp:L9 opens it inline. **Objective.** For a recorded Lean message, judge what it means and pick a first move (GEN-call-it t1, t4), read the goal it leaves (GEN-proof-structure t1), and stamp an axiom list (GEN-which-stamp t1). **KCs.** Teaches KC-2.goal-state-reading (S2.L3), KC-2.automation-scope (S2.L6) and KC-2.axioms-and-trust (threshold, S2.L9); previews KC-2.statement-pinning (S2.L10). **Misconceptions.** dp:G8, dp:L1, dp:L2, dp:L4, dp:L8; dp:L9 (proposed by S02).
+**Opens at.** S2.L3, S2.L6, S2.L7 and S2.L9 (link, S02) and LAB-3.c4–c5's R1 rungs (link, S03); beside any recorded output or imported receipt line that matches an exhibit, a link to that exhibit (spine: S2). A miss signal on dp:L9 opens it inline. **Objective.** For a recorded Lean message, judge what it means and pick a first move (GEN-call-it t1, t4), read the goal it leaves (GEN-proof-structure t1), and stamp an axiom list (GEN-which-stamp t1). **KCs.** Teaches KC-2.goal-state-reading (S2.L3), KC-2.automation-scope (S2.L6) and KC-2.axioms-and-trust (threshold, S2.L9); previews KC-2.statement-pinning (S2.L10). **Misconceptions.** dp:G8, dp:L1, dp:L2, dp:L4, dp:L8; dp:L9 (proposed by S02).
 
 **Body** (6–10 min; a reference page whose first eight exhibits form the summary). Each exhibit follows kernelspace's Error Museum (wave-2 spec §15.6): the message as recorded, what it means and its usual cause, a first move, the tempting wrong move and why not, and the lesson that teaches it, with "practice this", which serves the items below on that exhibit.
 
@@ -444,7 +444,7 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 **Placement and test-out.** Not probed by the walk; S2's test-out covers its KCs (§6.6). A reference page opens on its summary once the KCs it teaches are tested out.
 
-**Runs.** Executed: RUN-lean-axioms, RUN-lean-comparator, RUN-lean-bwrap-docker, RUN-lean-skipkernel, RUN-lean-mathlib, RUN-lean-ledger. To record: RUN-lean-ih-ungeneralised and RUN-lean-noguard (W2-T10). Proposed by S02: RUN-lean-s2-cells.
+**Runs.** Executed: RUN-lean-axioms, RUN-lean-comparator, RUN-lean-bwrap-docker, RUN-lean-skipkernel, RUN-lean-mathlib, RUN-lean-ledger. To record: RUN-lean-ih-ungeneralised, RUN-lean-noguard and RUN-lean-s2-cells (W2-T10).
 
 ### D-08 · The Natural Number Game, pinned fallback
 
@@ -456,7 +456,7 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 **B · When it does not load** (0.5 min). Its host did not always answer while the course was planned (landscape digest §2, Stage 2; A4-05), hence this drawer.
 
-**C · Three fallbacks** (2 min). (1) The community's in-browser port at lean.cau.li/game, also a disclosed, uncredited link-out; it is a large download, so it asks consent first (OD-6), with its size in {{run:RUN-lean-wasm}}. (2) The game from its repository at a pinned commit, built in the devcontainer (D-15); it brings its own Lean toolchain. (3) Original induction warm-ups in the LAB-2 template, on the course's Lean 4.35.0 [X RUN-lean-ledger]: k deposits of 2, doubling, one fee per step, from S2.L1's bank {{run:RUN-lean-s2-cells}}.
+**C · Three fallbacks** (2 min). (1) The community's in-browser port at lean.cau.li/game, also a disclosed, uncredited link-out; it is a large download, and the card shows its size, [X RUN-lean-wasm]; nothing asks first (OD-6). (2) The game from its repository at a pinned commit, built in the devcontainer (D-15); it brings its own Lean toolchain. (3) Original induction warm-ups in the LAB-2 template, on the course's Lean 4.35.0 [X RUN-lean-ledger]: k deposits of 2, doubling, one fee per step, from S2.L1's bank {{run:RUN-lean-s2-cells}}.
 
 **D · What to carry back** (1 min). The base case and the step; the hypothesis the step may use (D-05 §B); and the habit of predicting each goal before you run a tactic (S2.L3).
 
@@ -470,11 +470,11 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 **Placement and test-out.** As D-05: S2's test-out, never a kernelspace pre-credit (V2-20).
 
-**Runs.** Executed: RUN-lean-ledger. To record: RUN-lean-wasm (W0-S11). Proposed by S02: RUN-lean-s2-cells.
+**Runs.** Executed: RUN-lean-ledger, RUN-lean-wasm. To record: RUN-lean-s2-cells (W2-T10).
 
 ### D-09 · PlusCal beside its TLA+ translation
 
-**Opens at.** S5.L2, where the learner writes M1 with its PlusCal form beside it (inline by default: temporal notation is novice-treated, spine §2.1); S8.L2† (link, for PlusCal beside the outbox spec, S08). **Objective.** Map PlusCal labels to TLA+ actions; predict which actions are enabled and how long the shortest violation is, in actions (GEN-trace-allowed t2; GEN-call-it t2); predict which TLC message comes first under given flags (GEN-call-it t1). **KCs.** Teaches KC-5.tlc-flags-matter (S5.L2); previews KC-5.interleaving-granularity (S5.L3); KC-5.behaviors-stuttering (S5.L1) returns as a spiral. **Misconceptions.** dp:C1, dp:C2, dp:T5, dp:T6; dp:T9, dp:T16 (proposed by S05).
+**Opens at.** S5.L2, where the learner writes M1 with its PlusCal form beside it (inline by default: temporal notation is novice-treated, spine §2.1); S8.L2 (link, for PlusCal beside the outbox spec, S08). **Objective.** Map PlusCal labels to TLA+ actions; predict which actions are enabled and how long the shortest violation is, in actions (GEN-trace-allowed t2; GEN-call-it t2); predict which TLC message comes first under given flags (GEN-call-it t1). **KCs.** Teaches KC-5.tlc-flags-matter (S5.L2); previews KC-5.interleaving-granularity (S5.L3); KC-5.behaviors-stuttering (S5.L1) returns as a spiral. **Misconceptions.** dp:C1, dp:C2, dp:T5, dp:T6; dp:T9, dp:T16 (proposed by S05).
 
 **Body** (6–8 min)
 
@@ -482,7 +482,7 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 **B · M1 both ways** (1.5 min). M1's worker has a read label and a write label, so two actions per worker; merging them under one label makes the critical step atomic, which is S5.L3's fix. The course's own translation of M1 and its default-flags verdict are {{run:RUN-pcal-doublespend}}.
 
-**C · Finishing and deadlock** (1.5 min). For hand-written TLA+, default flags make TLC report "Deadlock reached" when no action of Next is enabled; on DoubleSpend that message comes before the invariant violation, and with `-deadlock` TLC reports `Invariant NoOverspend is violated` instead [X RUN-tlc-doublespend]. TLC's help says of `-deadlock`: "if specified DO NOT CHECK FOR DEADLOCK" (`research/evidence/a2r3/out/tlc-help-tla180.txt`, which S05 proposes to register as RUN-tlc-help). The PlusCal translator adds a terminating step when every process is done, so finishing is not reported as a deadlock (Learn TLA+, Core › Concurrency; read 2026-10-23 [V] by S05). That is why SP-5.2 belongs to hand-written specs.
+**C · Finishing and deadlock** (1.5 min). For hand-written TLA+, default flags make TLC report "Deadlock reached" when no action of Next is enabled; on DoubleSpend that message comes before the invariant violation, and with `-deadlock` TLC reports `Invariant NoOverspend is violated` instead [X RUN-tlc-doublespend]. TLC's help says of `-deadlock`: "if specified DO NOT CHECK FOR DEADLOCK" (`research/evidence/a2r3/out/tlc-help-tla180.txt` [X RUN-tlc-help]). The PlusCal translator adds a terminating step when every process is done, so finishing is not reported as a deadlock (Learn TLA+, Core › Concurrency; read 2026-10-23 [V] by S05). That is why SP-5.2 belongs to hand-written specs.
 
 **D · Reading a TLC trace** (1 min). A trace lists states; each step between two states is one action. The DoubleSpend counterexample has 5 states and 4 actions: Read(w1), Read(w2), Write(w1), Write(w2) [X RUN-tlc-doublespend]. Count length in actions, and say which unit you used (dp:T6).
 
@@ -494,18 +494,18 @@ Tool, notation and sibling cards for S2–S9. Each is shorter than a ground draw
 
 | # | Family · template · mode | Learner produces | Key and grader | Distractors (tag) | KCs |
 |---|---|---|---|---|---|
-| 1 (try first) | GEN-call-it t1 (three-way verdict), probe | which comes first for a seeded spec and flag set: "invariant violated", "deadlock reached" or "no error" | TLC outcomes recorded in CI per seed (S05's approach), until W0-S04 shows whether Spectacle reports deadlocks {{run:RUN-spectacle-s5s8}} | "deadlock reached" read as two workers waiting on a lock, or `-deadlock` read as turning the check on (dp:T9); "no error, because TLC finished" (dp:T5) | KC-5.tlc-flags-matter |
+| 1 (try first) | GEN-call-it t1 (three-way verdict), probe | which comes first for a seeded spec and flag set: "invariant violated", "deadlock reached" or "no error" | the adapter's search over Spectacle's successors at grade time, with its own deadlock check, whose verdict on which comes first matched TLC's on M1 and on its PlusCal translation with the check on (Spectacle's own checker has no deadlock check), gated by GATE-conformance [X RUN-spectacle-s5s8]; TLC outcomes recorded in CI per seed for a spec outside Spectacle's scope | "deadlock reached" read as two workers waiting on a lock, or `-deadlock` read as turning the check on (dp:T9); "no error, because TLC finished" (dp:T5) | KC-5.tlc-flags-matter |
 | 2 | GEN-trace-allowed t2 (enabled actions), probe | the actions enabled in a given state of a seeded PlusCal fragment's translation | the TLC state graph | both labels of one process enabled at once (dp:T16); "a lock serializes the whole function" (dp:C2) | KC-5.behaviors-stuttering; KC-5.interleaving-granularity (preview) |
 | 3 | GEN-call-it t2 (trace length as an interval), probe | the shortest violation of a seeded M1 variant, with labels split or merged, as an interval in actions | Spectacle's breadth-first search at grade time (Spectacle = TLC at one worker, GATE-conformance) | states counted as steps (dp:T6); "the writes need no reads first" (dp:C1) | KC-5.tlc-flags-matter |
 | 4 | GEN-call-it t4 (five statements), probe | true or false for statements about labels, atomicity and flags | the scenario's construction and recorded runs [X RUN-tlc-doublespend] | "adding a label never changes the reachable states" (dp:C1); "`-deadlock` turns deadlock checking on" (dp:T9); "a trace of 5 states has 5 steps" (dp:T6) | KC-5.tlc-flags-matter; KC-5.interleaving-granularity (preview) |
 
 **Placement and test-out.** S5's test-out (§6.6); never pre-credited from kernelspace, which never credits TLA+ (V2-20).
 
-**Runs.** Executed: RUN-tlc-doublespend; the TLC help text as evidence on disk. To record: RUN-spectacle-s5s8 (W0-S04). Proposed by S05: RUN-pcal-doublespend.
+**Runs.** Executed: RUN-tlc-doublespend, RUN-tlc-help, RUN-spectacle-s5s8. To record: RUN-pcal-doublespend (W3-T07).
 
 ### D-10 · Reading PLF's Rocq notation
 
-**Opens at.** S4.L1's reading pointer and S4.L3† (link, S04); S7† (link, for *Security Foundations*, also written in Rocq; S07 SI-15). PLF is optional reading, and the course installs no Rocq. **Objective.** Translate PLF's triples, substitutions and assertion implications into the course's notation (GEN-call-it t4), judge a PLF-style triple valid, invalid or valid only as partial correctness (GEN-call-it t1), and write the weakest precondition of an assignment given in PLF's notation (GEN-wp-it t1). **KCs.** Teaches KC-4.hoare-triple (S4.L1) and, from S4.L3, KC-4.wp-assignment (threshold; first taught in S4.L2). **Misconceptions.** dp:G3, dp:O4, dp:O5.
+**Opens at.** S4.L1's reading pointer and S4.L3 (link, S04); S7 (link, for *Security Foundations*, also written in Rocq; S07 SI-15). PLF is optional reading, and the course installs no Rocq. **Objective.** Translate PLF's triples, substitutions and assertion implications into the course's notation (GEN-call-it t4), judge a PLF-style triple valid, invalid or valid only as partial correctness (GEN-call-it t1), and write the weakest precondition of an assignment given in PLF's notation (GEN-wp-it t1). **KCs.** Teaches KC-4.hoare-triple (S4.L1) and, from S4.L3, KC-4.wp-assignment (threshold; first taught in S4.L2). **Misconceptions.** dp:G3, dp:O4, dp:O5.
 
 **Body** (5–7 min)
 
@@ -552,10 +552,10 @@ The two substitution notations run in opposite directions on the page: read `[X 
 
 | Pattern | READ COMMITTED | REPEATABLE READ | SERIALIZABLE |
 |---|---|---|---|
-| application read-modify-write: two debits of 80 from 100, each writing a balance computed from its own read | both commit; 160 spent from 100 [X RUN-pg-anomalies] | the second writer gets 40001 [X RUN-pg-anomalies] | {{run:RUN-pg-catalog}} |
+| application read-modify-write: two debits of 80 from 100, each writing a balance computed from its own read | both commit; 160 spent from 100 [X RUN-pg-anomalies] | the second writer gets 40001 [X RUN-pg-anomalies] | the second writer gets 40001, row H01 [X RUN-pg-catalog] |
 | conditional UPDATE `… WHERE bal >= 80` | the second re-evaluates its WHERE clause, updates 0 rows and loses nothing [X RUN-pg-anomalies] | the second writer waits, then gets 40001 [X RUN-pg-claims] | the second writer waits, then gets 40001 [X RUN-pg-claims] |
 | predicate read, then insert, over holds | commits: 160 held against 100 [X RUN-pg-claims] | commits: 160 held against 100 [X RUN-pg-claims] | 40001 [X RUN-pg-claims] |
-| write skew: each checks a team total, then debits a different account | {{run:RUN-pg-catalog}} | both commit; the team total ends at −100 [X RUN-pg-anomalies] | one gets 40001; the total ends at 50 [X RUN-pg-anomalies] |
+| write skew: each checks a team total, then debits a different account | both commit; the team total ends at −100, row H05 [X RUN-pg-catalog] | both commit; the team total ends at −100 [X RUN-pg-anomalies] | one gets 40001; the total ends at 50 [X RUN-pg-anomalies] |
 
 Two transfers that lock the same rows in opposite order end with one transaction getting 40P01 [X RUN-pg-claims].
 
@@ -569,14 +569,14 @@ Two transfers that lock the same rows in opposite order end with one transaction
 
 | # | Family · template · mode | Learner produces | Key and grader | Distractors (tag) | KCs |
 |---|---|---|---|---|---|
-| 1 (try first) | GEN-call-it t3 (which anomaly), probe | for a seeded pattern and level: lost update, write skew, 40001, 40P01 or none | the recorded PostgreSQL 18.6 outcome for that cell, replayed by INS-history ([X RUN-pg-anomalies, RUN-pg-claims] where §B records it; otherwise {{run:RUN-pg-catalog}}) | "lost update" for the conditional UPDATE at READ COMMITTED (dp:Q4); "none" for write skew at REPEATABLE READ (dp:Q5); "it depends on timing" (dp:Q11) | KC-6.compilation-pattern, KC-6.anomaly-isolation |
+| 1 (try first) | GEN-call-it t3 (which anomaly), probe | for a seeded pattern and level: lost update, write skew, 40001, 40P01 or none | the recorded PostgreSQL 18.6 outcome for that cell, replayed by INS-history [X RUN-pg-anomalies, RUN-pg-claims, RUN-pg-catalog] | "lost update" for the conditional UPDATE at READ COMMITTED (dp:Q4); "none" for write skew at REPEATABLE READ (dp:Q5); "it depends on timing" (dp:Q11) | KC-6.compilation-pattern, KC-6.anomaly-isolation |
 | 2 | GEN-anomaly-id t1 or t2 (read-modify-write, write skew), probe | the class of a recorded two-session history | the history checker on Bench-recorded PostgreSQL 18.6 histories [X RUN-pg-anomalies, RUN-pg-claims] | lost update read as write skew and back (dp:Q5); "each transaction saw the other's write" (dp:C1) | KC-6.anomaly-isolation |
 | 3 | GEN-anomaly-id t4 (serialization failure or deadlock), probe | the SQLSTATE a recorded history ends with, and what it means | the recorded history [X RUN-pg-anomalies, RUN-pg-claims] | "40001 means the application has a bug" (dp:Q12); "40P01 is a slow query" (dp:Q11) | KC-6.anomaly-isolation, KC-6.serializable-retries |
 | 4 | GEN-call-it t4 (five statements), probe | true or false for statements about retries and isolation | recorded runs and spine §3.6 | "retry the statement that failed" (dp:Q12); "retries always terminate" (dp:Q7); "REPEATABLE READ prevents write skew" (dp:Q5) | KC-6.serializable-retries, KC-6.anomaly-isolation |
 
 **Placement and test-out.** S6's test-out (§6.6). A tablespace T4 completion stands in for KC-6.anomaly-isolation's three items, confirmed by one fresh item after 7 days (§5.7); kernelspace evidence never credits isolation (V2-20).
 
-**Runs.** Executed: RUN-pg-anomalies, RUN-pg-claims. To record: RUN-pg-catalog (W0-S09), RUN-pg-mixed-levels (W4-T10).
+**Runs.** Executed: RUN-pg-anomalies, RUN-pg-claims, RUN-pg-catalog. To record: RUN-pg-mixed-levels (W4-T10).
 
 ### D-12 · Durability and the write-ahead log in one page (tablespace T3 prerequisite card)
 
@@ -608,7 +608,7 @@ Two transfers that lock the same rows in opposite order end with one transaction
 
 ### D-13 · SMT-LIB in one page
 
-**Opens at.** S1.L2† and LAB-1.6† (link: raw verdict lines, and the `.smt2` statement files your receipt hashes, S01); S4.L5, encoding to SMT (inline by default); LAB-4.2 onward† (link: your checker emits SMT-LIB, S04). **Objective.** Read a short SMT-LIB query and judge what each verdict line establishes (GEN-call-it t1, t4; GEN-which-stamp t1); from S4.L5, write an obligation in SMT-LIB with post-state constants and frame conditions (GEN-negate-it t2, write). **KCs.** Teaches KC-1.three-answers (threshold) and KC-1.unknown-fails-closed (S1.L2); from S4.L5, KC-4.frame-condition. **Misconceptions.** dp:G8, dp:O4, dp:Z1, dp:Z2; dp:G10 (proposed); dp:Z6 (proposed by S01).
+**Opens at.** S1.L2 and LAB-1.6 (link: raw verdict lines, and the `.smt2` statement files your receipt hashes, S01); S4.L5, encoding to SMT (inline by default); LAB-4.2 onward (link: your checker emits SMT-LIB, S04). **Objective.** Read a short SMT-LIB query and judge what each verdict line establishes (GEN-call-it t1, t4; GEN-which-stamp t1); from S4.L5, write an obligation in SMT-LIB with post-state constants and frame conditions (GEN-negate-it t2, write). **KCs.** Teaches KC-1.three-answers (threshold) and KC-1.unknown-fails-closed (S1.L2); from S4.L5, KC-4.frame-condition. **Misconceptions.** dp:G8, dp:O4, dp:Z1, dp:Z2; dp:G10 (proposed); dp:Z6 (proposed by S01).
 
 **Body** (6–8 min)
 
@@ -654,15 +654,15 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **Placement and test-out.** The walk probes KC-1.three-answers (step 7) and KC-1.unknown-fails-closed (step 8). D-13 opens summary first when both are shown or tested out; at S4.L5 it opens inline unless KC-4.frame-condition is tested out.
 
-**Runs.** Executed: RUN-z3-starter, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-cvc5-alethe, RUN-z3-11179. To record: RUN-z3-missing-frame (W3-T07). New here: RUN-z3-smtlib-tour (§10, issue 16).
+**Runs.** Executed: RUN-z3-starter, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-cvc5-alethe, RUN-z3-11179. To record: RUN-z3-missing-frame (W3-T07) and RUN-z3-smtlib-tour (W1-T12; §10, issue 16).
 
 ### D-14 · The Lane A wasm ABI
 
-**Opens at.** The learner's first Lane A stage, inline: LAB-3.8 on the default path, LAB-8.4 on the builder's path (spine §3.0); then link at LAB-4.2 onward†, LAB-6.2 onward†, LAB-9.11† and LAB-10.2–LAB-10.3† (S04, S06, S09, S10). A learner who imported a kernelspace Evidence Pack sees the summary first, because the ABI is the family's own (§5.7). **Objective.** Build a lab crate to a zero-import wasm module, list its checks, run one check on a seed and read the per-check result (GEN-call-it t1, t4), then stamp a Lane A result (GEN-which-stamp t1). **KCs.** None of its own. Its items carry the correspondence KC of the lab that opened it: LAB-3, KC-3.goldens-as-theorems; LAB-4, KC-4.trust-stack; LAB-6, KC-6.differential-testing; LAB-8, KC-8.deterministic-simulation; LAB-9, KC-9.translation-validation; LAB-10, KC-10.agent-proposal-triage. Under §1.5 each counts only once taught. **Misconceptions.** dp:T5, dp:X1, dp:X3, dp:Z2; dp:L9 (proposed by S02).
+**Opens at.** The learner's first Lane A stage, inline: LAB-3.8 on the default path, LAB-8.4 on the builder's path (spine §3.0); then link at LAB-4.2 onward, LAB-6.2 onward, LAB-9.11 and LAB-10.2–LAB-10.3 (S04, S06, S09, S10). A learner who imported a kernelspace Evidence Pack sees the summary first, because the ABI is the family's own (§5.7). **Objective.** Build a lab crate to a zero-import wasm module, list its checks, run one check on a seed and read the per-check result (GEN-call-it t1, t4), then stamp a Lane A result (GEN-which-stamp t1). **KCs.** None of its own. Its items carry the correspondence KC of the lab that opened it: LAB-3, KC-3.goldens-as-theorems; LAB-4, KC-4.trust-stack; LAB-6, KC-6.differential-testing; LAB-8, KC-8.deterministic-simulation; LAB-9, KC-9.translation-validation; LAB-10, KC-10.agent-proposal-triage. Under §1.5 each counts only once taught. **Misconceptions.** dp:T5, dp:X1, dp:X3, dp:Z2; dp:L9 (proposed by S02).
 
 **Body** (6–8 min)
 
-**A · What runs where** (1.5 min). Your Rust compiles to a wasm module that imports nothing. The instrument origin runs each check in a fresh worker, on seeds drawn at grade time and under a time limit, and the result's badge reads *re-checked here*. A reference module earns nothing and says so.
+**A · What runs where** (1.5 min). Your Rust compiles to a wasm module that imports nothing. The instrument origin runs each check in a fresh instance of your module (the worker is replaced only after a timeout), on seeds drawn at grade time and under a time limit, and the result's badge reads *re-checked here*. A reference module earns nothing and says so.
 
 **B · The protocol** (2 min). The family's ABI is vendored from kernelspace at a pinned SHA (spine §11.1). In kernelspace's design (wave-1 spec §12.1) the module exports its memory, an ABI version, allocation functions and one run entry that reads text lines (`list`, `only <id>`, `seed <n>`) and returns JSON. `list` names the checks and runs no learner code; `only <id>` returns the check's id, label, pass flag, message and seed; after a trap the module reports the panic message; empty input runs every check on default seeds, so `cargo test` keeps working. W2-T08 fixes statespace's names and version [D].
 
@@ -686,17 +686,30 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 ### D-15 · The devcontainer and `statespace doctor`
 
-**Opens at.** The learner's first Bench stage, inline: LAB-2.1 on the default path (S2.L0's "Build this" asks for the install), LAB-5.1 on the builder's path (S5.L2†; S05 §12 issue 5); then link at LAB-6.1† (S06) and LAB-10.2–LAB-10.3† (S10). LAB-1 needs no devcontainer (spine §12 item 34). **Objective.** Open the devcontainer, run `statespace doctor` to green, and read the environment block a receipt records (GEN-call-it t1, t4; GEN-which-stamp t1). **KCs.** Previews KC-2.axioms-and-trust (threshold, S2.L9) and KC-2.statement-pinning (S2.L10); this drawer is the first contact with both. **Misconceptions.** dp:G8, dp:L4, dp:X3; dp:L9 (proposed by S02).
+**Opens at.** The learner's first Bench stage, inline: LAB-2.1 on the default path (S2.L0's "Build this" asks for the install), LAB-5.1 on the builder's path (S5.L2; S05 §12 issue 5); then link at LAB-6.1 (S06) and LAB-10.2–LAB-10.3 (S10). LAB-1 needs no devcontainer (spine §12 item 34). **Objective.** Open the devcontainer, run `statespace doctor` to green, and read the environment block a receipt records (GEN-call-it t1, t4; GEN-which-stamp t1). **KCs.** Previews KC-2.axioms-and-trust (threshold, S2.L9) and KC-2.statement-pinning (S2.L10); this drawer is the first contact with both. **Misconceptions.** dp:G8, dp:L4, dp:X3; dp:L9 (proposed by S02).
 
 **Body** (5–7 min)
 
-**A · One pinned environment** (1 min). The devcontainer pins Lean 4.35.0 [X RUN-lean-ledger], `tla2tools` 1.8.0 by SHA-256 with Java 21 [X RUN-tlc-jars], PostgreSQL 18.6 [X RUN-pg-anomalies], Z3 5.3.1 [X RUN-z3-starter], cvc5 and the Rust crates, with their binaries recorded in {{run:RUN-scaffold}}. Each tool is met first in the tab; the container is for the labs.
+**A · One pinned environment** (1 min). The devcontainer pins Lean 4.35.0 [X RUN-lean-ledger], `tla2tools` 1.8.0 by SHA-256 with Java 21 [X RUN-tlc-jars], PostgreSQL 18.6 [X RUN-pg-anomalies], Z3 5.3.1 [X RUN-z3-starter], cvc5 and the Rust crates, with their binaries recorded in [X RUN-scaffold]. Each tool is met first in the tab; the container is for the labs.
 
 **B · Sizes, before you start** (1 min). The Lean toolchain unpacks to 3.0 GB [X RUN-lean-toolchain]. The course uses no Mathlib; a Mathlib `Finmap` project's packages take 7.3 GB [X RUN-lean-mathlib]. A Codespaces prebuild is the zero-install route (W0-T05).
 
-**C · `statespace doctor`** (1 min). It checks the pins and the sandbox and prints a receipt-ready environment block (spine §9.6) {{run:RUN-doctor-devcontainer}}. Green means the environment matches the pins; it checks no proof.
+**C · `statespace doctor`** (1 min). It checks the pins and the sandbox and prints a receipt-ready environment block (spine §9.6) [X RUN-doctor-devcontainer]. Green means the environment matches the pins; it checks no proof, and a failed sandbox does not turn it red: that is recorded, never required (§D).
 
-**D · The sandbox** (1.5 min). Lean builds run in a bubblewrap sandbox on Linux only, and the receipt records it as on, off or failed, never required, because the threat is self-deception, not attack (BRIEF §5.1). Without bubblewrap comparator exits 2; under default Docker bubblewrap cannot start, and comparator exits 1, the code of a rejection [X RUN-lean-bwrap-docker]. With the sandbox disabled, `lake check` prints "WARNING: Sandbox disabled, this run is not trustworthy." [X RUN-lean-axioms]. So receipts parse verdict lines and never trust an exit code alone (SP-2.8). macOS and Windows learners use the devcontainer (spine §9.2).
+**D · The sandbox** (2.5 min). Lean builds run in a bubblewrap sandbox on Linux only, and the receipt records it as on, off or failed, never required, because the threat is self-deception, not attack (BRIEF §5.1). Without bubblewrap comparator exits 2; under default Docker bubblewrap cannot start, and comparator exits 1, the code of a rejection [X RUN-lean-bwrap-docker]; a checker killed for memory exits like a rejection too [X RUN-bwrap-lanes]. With the sandbox disabled, `lake check` prints "WARNING: Sandbox disabled, this run is not trustworthy." [X RUN-lean-axioms]. So receipts parse verdict lines and never trust an exit code alone (SP-2.8): a failed sandbox is told from a rejection by a `bwrap:` line. The first `bwrap:` line names the cause, and `statespace doctor` prints the matching hint [X RUN-bwrap-lanes]:
+
+| First line of the failure | What it means | What changes it |
+|---|---|---|
+| `bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces` | the container's seccomp profile blocks `clone` with namespace flags, as Docker's default profile does, or the host forbids unprivileged user namespaces | the devcontainer's opt-in sandbox profile; on a host, enable unprivileged user namespaces |
+| `bwrap: Can't mount proc on /newroot/proc: Operation not permitted` | the container masks `/proc` paths | `systempaths=unconfined` |
+| `bwrap: Can't mkdir /run/user: Read-only file system` | the image has no `/run/user` | create the directory in the image |
+| `bwrap: pivot_root: Operation not permitted` | seccomp blocks `pivot_root`, which Docker's default profile does even with `CAP_SYS_ADMIN` | allow it, as the opt-in profile does |
+| `bwrap: unshare user ns: Operation not permitted`, `bwrap: Failed to make / slave: Operation not permitted` or `bwrap: unmount old root: Operation not permitted` | seccomp blocks `unshare`, `mount` or `umount2` | allow them |
+| `bwrap: setting up uid map: Permission denied` or `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` | Ubuntu 24.04's AppArmor restriction on unprivileged user namespaces | on the host, the sysctl or an AppArmor profile for the binary |
+| `bwrap: Failed to make / slave: Permission denied` | Docker's AppArmor profile denies `mount` | `apparmor=unconfined` in the container |
+| `error: ... needs ... to sandbox the code it checks, and it was not found.` (exit 2) | bubblewrap is not installed or not on `PATH` | install it |
+
+macOS and Windows learners use the devcontainer (spine §9.2).
 
 **E · Agents in the container** (0.5 min). The lab zip's agent kit travels with it, and its hook blocks agent edits to `TODO(you)` bodies, challenge files, claims and receipts (GATE-guardrails).
 
@@ -710,11 +723,11 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **Placement and test-out.** None: this drawer is operational. It opens summary first once LAB-2.c1 passes (the receipt shows kernel acceptance and the axiom list), or item 1 and one further fresh item on the same KC are both answered right.
 
-**Runs.** Executed: RUN-lean-ledger, RUN-tlc-jars, RUN-pg-anomalies, RUN-z3-starter, RUN-lean-toolchain, RUN-lean-mathlib, RUN-lean-bwrap-docker, RUN-lean-axioms, RUN-lean-comparator. To record: RUN-scaffold (W0-S12), RUN-doctor-devcontainer (W0-T05).
+**Runs.** Executed: RUN-lean-ledger, RUN-tlc-jars, RUN-pg-anomalies, RUN-z3-starter, RUN-lean-toolchain, RUN-lean-mathlib, RUN-lean-bwrap-docker, RUN-lean-axioms, RUN-lean-comparator, RUN-bwrap-lanes, RUN-scaffold, RUN-doctor-devcontainer.
 
 ### D-16 · Alloy: scopes and instances
 
-**Opens at.** S7.L3† (link: S7.L3 quotes Jackson and points here, S07) and LAB-7.8, the `[stretch]` stage (link). Alloy honors the roadmap's "Soufflé or Alloy" as a drawer, so S7 adds no second engine (V2-23). **Objective.** Judge what a bounded check at scope k establishes beside other kinds of result (GEN-call-it t4; GEN-which-stamp t1), find a world within a scope (GEN-find-the-witness t1), and predict whether a subset constraint holds only vacuously (GEN-call-it t1). **KCs.** Teaches KC-7.policy-checking and KC-7.small-scope (S7.L3). **Misconceptions.** dp:A1, dp:A5, dp:A6, dp:X3, dp:Z2.
+**Opens at.** S7.L3 (link: S7.L3 quotes Jackson and points here, S07) and LAB-7.8, the `[stretch]` stage (link). Alloy honors the roadmap's "Soufflé or Alloy" as a drawer, so S7 adds no second engine (V2-23). **Objective.** Judge what a bounded check at scope k establishes beside other kinds of result (GEN-call-it t4; GEN-which-stamp t1), find a world within a scope (GEN-find-the-witness t1), and predict whether a subset constraint holds only vacuously (GEN-call-it t1). **KCs.** Teaches KC-7.policy-checking and KC-7.small-scope (S7.L3). **Misconceptions.** dp:A1, dp:A5, dp:A6, dp:X3, dp:Z2.
 
 **Body** (6–8 min)
 
@@ -726,7 +739,7 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **D · Subset is not overlap** (1 min). `s in t` says s is a subset of t, and on an empty s it holds vacuously (dp:A1); overlap is `some s & t`.
 
-**E · Running it** (1 min). Alloy runs on the Bench, optionally {{run:RUN-alloy-version}}; Alloy4Fun is a disclosed, uncredited link-out only, because it stores models on its server (OD-4; landscape digest §2). The tab has no Alloy, so this drawer's items are keyed by Z3 and the Datalog engine over finite worlds.
+**E · Running it** (1 min). Alloy 6.2.0 runs on the Bench, optionally [X RUN-alloy-version]; Alloy4Fun is a disclosed, uncredited link-out only, because it stores models on its server (OD-4; landscape digest §2). The tab has no Alloy, so this drawer's items are keyed by Z3 and the Datalog engine over finite worlds.
 
 **Items**
 
@@ -739,11 +752,11 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **Placement and test-out.** S7's test-out (§6.6).
 
-**Runs.** To record: RUN-alloy-version (W0-S12). No other tool fact appears.
+**Runs.** Executed: RUN-alloy-version. No other tool fact appears.
 
 ### D-17 · Query containment
 
-**Opens at.** S7.L4† (link: the proof alternative to the RLS differential for the conjunctive fragment, S07), LAB-7.8 (link; a `[stretch]` option) and S9.L8† (link: validating generated SQL, S09). **Objective.** Decide containment of two conjunctive queries by a homomorphism (GEN-call-it t4), refute a claimed equivalence with a database instance once duplicates or NULLs enter (GEN-find-the-witness t1), and stamp each method's result (GEN-which-stamp t1). **KCs.** Its items carry KC-6.differential-testing (threshold) and KC-6.sql-not-algebra, first taught in S6, as spirals; they preview KC-9.sql-equivalence in S7 and teach it in S9.L8. **Misconceptions.** dp:Q3, dp:X1; dp:Q8, dp:Q9 (proposed by S06).
+**Opens at.** S7.L4 (link: the proof alternative to the RLS differential for the conjunctive fragment, S07), LAB-7.8 (link; a `[stretch]` option) and S9.L8 (link: validating generated SQL, S09). **Objective.** Decide containment of two conjunctive queries by a homomorphism (GEN-call-it t4), refute a claimed equivalence with a database instance once duplicates or NULLs enter (GEN-find-the-witness t1), and stamp each method's result (GEN-which-stamp t1). **KCs.** Its items carry KC-6.differential-testing (threshold) and KC-6.sql-not-algebra, first taught in S6, as spirals; they preview KC-9.sql-equivalence in S7 and teach it in S9.L8. **Misconceptions.** dp:Q3, dp:X1; dp:Q8, dp:Q9 (proposed by S06).
 
 **Body** (6–8 min)
 
@@ -771,7 +784,7 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 ### D-18 · Apalache for inductive invariants
 
-**Opens at.** S4.L6† (link, optional: Apalache's inductive checks earn [M], never [P] alone, S04) and S5.L9 (link). **Objective.** Stamp an inductive-invariant check at fixed constants and a parametric proof of the step (GEN-which-stamp t1), judge what each covers (GEN-call-it t4), and decide inductive, CTI or reachable for a satisfiable step (GEN-cti-or-bug t2). **KCs.** Its items carry KC-4.invariant-vs-inductive (threshold, first taught in S4.L4) when opened at S4.L6, and KC-5.inductive-invariant-tla (S5.L9) with KC-5.bounded-scope (threshold, S5.L8) when opened at S5.L9. **Misconceptions.** dp:G9, dp:O3, dp:T5, dp:Z1.
+**Opens at.** S4.L6 (link, optional: Apalache's inductive checks earn [M], never [P] alone, S04) and S5.L9 (link). **Objective.** Stamp an inductive-invariant check at fixed constants and a parametric proof of the step (GEN-which-stamp t1), judge what each covers (GEN-call-it t4), and decide inductive, CTI or reachable for a satisfiable step (GEN-cti-or-bug t2). **KCs.** Its items carry KC-4.invariant-vs-inductive (threshold, first taught in S4.L4) when opened at S4.L6, and KC-5.inductive-invariant-tla (S5.L9) with KC-5.bounded-scope (threshold, S5.L8) when opened at S5.L9. **Misconceptions.** dp:G9, dp:O3, dp:T5, dp:Z1.
 
 **Body** (6–8 min)
 
@@ -781,7 +794,7 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **C · For every N** (2 min). Discharge the step with the parameter as an uninterpreted sort in Z3, or prove it in Lean, for PROVED [P] · Z3 5.3.1 unsat · uncertified [X RUN-z3-starter], with a premise witness and the open defeater "encoding unverified" for the SMT translation of the spec (CL-5.4 {{run:RUN-z3-inductive-param}}, beside TLC's check at N = k {{run:RUN-tlc-inductive}}).
 
-**D · Running Apalache** (1 min). Optional, on the Bench {{run:RUN-apalache-version}}; S05 points to its documentation's section on checking an inductive invariant [U].
+**D · Running Apalache** (1 min). Optional, on the Bench: Apalache 0.62.4, recorded with a bounded smoke check of five steps that says nothing more [X RUN-apalache-version]; S05 points to its documentation's section on checking an inductive invariant [U].
 
 **E · A gap to spot** (0.5 min). "TLC inductive check at N = 3, stamped PROVED for all N" is AUD-5.3's G5 variant: a bounded result presented as proof (spine §6.2).
 
@@ -795,11 +808,11 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 **Placement and test-out.** S4's and S5's test-outs (§6.6); TLA+ is never pre-credited from kernelspace.
 
-**Runs.** Executed: RUN-z3-starter (the Z3 version). To record: RUN-z3-inductive-param and RUN-tlc-inductive (W3-T07), RUN-apalache-version (W0-S12).
+**Runs.** Executed: RUN-z3-starter (the Z3 version), RUN-apalache-version. To record: RUN-z3-inductive-param and RUN-tlc-inductive (W3-T07).
 
 ### D-19 · Scheduled work and timers
 
-**Opens at.** S8.L4† (link: the late-reply cell, where a timer released the hold; S08 has D-19 "frame the timer as a durable obligation"); the spine lists S8. Concurrency failures are expert-treated, so it is linked by default. **Objective.** Model a timer as durable state plus an action and judge statements about it (GEN-call-it t4), find a duplicate a timeout causes without any crash (GEN-find-the-witness t2), and find the starving lasso when the timer has no fairness (GEN-lasso-or-not t1). **KCs.** Its items carry KC-8.crash-windows and KC-8.at-least-once (threshold), first taught in S8.L3, and KC-5.fairness (threshold, S5.L7), all as spirals. **Misconceptions.** dp:E6 (proposed by S08); dp:T10, dp:T13, dp:T14 (proposed by S05).
+**Opens at.** S8.L4 (link: the late-reply cell, where a timer released the hold; S08 has D-19 "frame the timer as a durable obligation"); the spine lists S8. Concurrency failures are expert-treated, so it is linked by default. **Objective.** Model a timer as durable state plus an action and judge statements about it (GEN-call-it t4), find a duplicate a timeout causes without any crash (GEN-find-the-witness t2), and find the starving lasso when the timer has no fairness (GEN-lasso-or-not t1). **KCs.** Its items carry KC-8.crash-windows and KC-8.at-least-once (threshold), first taught in S8.L3, and KC-5.fairness (threshold, S5.L7), all as spirals. **Misconceptions.** dp:E6 (proposed by S08); dp:T10, dp:T13, dp:T14 (proposed by S05).
 
 **Body** (5–7 min)
 
@@ -827,7 +840,7 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 ### D-20 · Sensitivity in caches, without vendor specifics
 
-**Opens at.** S7.L7† (link: a cache is one more observer, S07). The roadmap defers edge and CDN topology (D-37), so this card names no vendor and no deployment (BRIEF §5.1, the resolved cache-header item). **Objective.** Treat a shared cache as part of the observer and find a pair of worlds it lets another tenant tell apart (GEN-leaks-to-observer t1, t3), and judge what a `private` directive promises (GEN-call-it t4). **KCs.** Its items carry KC-7.observer-equivalence (threshold), KC-7.side-channels and KC-7.hyperproperty, all first taught before S7.L7, as spirals. **Misconceptions.** dp:A4, dp:X1; dp:A13 (proposed by S07).
+**Opens at.** S7.L7 (link: a cache is one more observer, S07). The roadmap defers edge and CDN topology (D-37), so this card names no vendor and no deployment (BRIEF §5.1, the resolved cache-header item). **Objective.** Treat a shared cache as part of the observer and find a pair of worlds it lets another tenant tell apart (GEN-leaks-to-observer t1, t3), and judge what a `private` directive promises (GEN-call-it t4). **KCs.** Its items carry KC-7.observer-equivalence (threshold), KC-7.side-channels and KC-7.hyperproperty, all first taught before S7.L7, as spirals. **Misconceptions.** dp:A4, dp:X1; dp:A13 (proposed by S07).
 
 **Body** (5–7 min)
 
@@ -853,7 +866,7 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 ### D-21 · byzantine in one page: consistency and the deterministic harness
 
-**Opens at.** S7.L8 (link: the new enemy as an ordering problem), S8.L6 (link: byzantine's deterministic network harness) and S6.L8† (optional link: byzantine's linearizability checker as the model for the serial-order search, S06). It is the self-contained prerequisite card for both byzantine bridges (M-sibling-bridge). **Objective.** Show a stale read after a revocation as a trace on a replicated model (GEN-trace-allowed t1), find where two runs of one seed diverge and why (GEN-find-the-witness t2), and judge statements about revocation and determinism (GEN-call-it t4). **KCs.** Teaches KC-7.revocation-past (S7.L8) and KC-8.deterministic-simulation (S8.L6), each where it opens; elsewhere they are previews. **Misconceptions.** dp:A6; dp:A14 (proposed by S07); dp:E8 (proposed by S08).
+**Opens at.** S7.L8 (link: the new enemy as an ordering problem), S8.L6 (link: byzantine's deterministic network harness) and S6.L8 (optional link: byzantine's linearizability checker as the model for the serial-order search, S06). It is the self-contained prerequisite card for both byzantine bridges (M-sibling-bridge). **Objective.** Show a stale read after a revocation as a trace on a replicated model (GEN-trace-allowed t1), find where two runs of one seed diverge and why (GEN-find-the-witness t2), and judge statements about revocation and determinism (GEN-call-it t4). **KCs.** Teaches KC-7.revocation-past (S7.L8) and KC-8.deterministic-simulation (S8.L6), each where it opens; elsewhere they are previews. **Misconceptions.** dp:A6; dp:A14 (proposed by S07); dp:E8 (proposed by S08).
 
 **Body** (6–8 min)
 
@@ -939,23 +952,23 @@ Budgets are `rlimit`, because a `timeout` set under Pyodide never returned [X RU
 
 ## 4. The deferred drawers, D-30–D-40
 
-The roadmap: "Defer category theory, advanced dependent type theory, proof-certificate infrastructure, Kani/Verus, full cryptographic protocol verification, mobile attestation, Cloudflare topology, generalized migrations, UI code generation, and multi-framework SDKs until a concrete proof obligation or implementation demands them." Each deferred drawer is always openable from SCR-drawer and search, carries the tag "deferred", and shows one short card: what the topic is, why the roadmap defers it, and what surfaces it (spine §3.12). A trigger surfaces the card in Today; it unlocks nothing (spine §12 item 22).
+The roadmap: "Defer category theory, advanced dependent type theory, proof-certificate infrastructure, Kani/Verus, full cryptographic protocol verification, mobile attestation, Cloudflare topology, generalized migrations, UI code generation, and multi-framework SDKs until a concrete proof obligation or implementation demands them." Each deferred drawer is always openable from SCR-drawer and search, carries the tag "deferred", and shows one short card: what the topic is, why the roadmap defers it, and what surfaces it (spine §3.12). A trigger surfaces the card in Today; it unlocks nothing (spine §12 item 22). Triggers are derived at read time (I2): D-33–D-40 read claim@1's optional `topics[]`, drawn from the eight keys of spine §3.12 and set on a claim card, on one of its assumptions or through the park option of `statespace stuck`, which writes the parked goal as an [A] assumption; D-31 reads a structured correspondence reference (language, path, symbol).
 
 **No graded items, by design.** (1) The roadmap defers these topics until an obligation demands them, and items would turn each card into a lesson. (2) The KC graph holds no KC for them (spine §4), and GATE-kc requires every item to carry one. (3) The work their triggers create is graded where it arises: ER-1 and ER-7 each carry a forecast item and a remedy card (GATE-erosions), and a claim that names a deferred topic is checked like any claim. When an obligation does demand one, the learner's own claim and its checks are the graded work.
 
 | ID | Card: what the topic is | Surfaced in Today when | The card then adds |
 |---|---|---|---|
 | D-30 | Kani: a bounded model checker for Rust, which checks properties of Rust code for every input up to the bounds it is given | ER-1 fires (SP-6.4: PostgreSQL refuses a credit with 22003 where the model commits [X RUN-pg-claims]) and the learner's runtime has an `i64` path, where `checked_add` returns `None` on overflow {{run:RUN-rust-i64}} (S06, S10) | the overflowing credit as the obligation; what a result would earn, MODEL-CHECKED [M] · bound; ER-1's remedies (spine §5.4); Kani's version is pinned and recorded as a run when first used |
-| D-31 | Verus and Aeneas: tools that verify Rust code directly, Verus by checking annotated Rust with an SMT solver, Aeneas by translating Rust into a proof assistant's language | a correspondence field names Rust code the learner wants verified directly rather than tested; S9.L9 shows the trigger, and S10's trusted-base section can fire it (S09, S10) | the claim and the code it names; the trust-stack question of what the translation itself rests on (KC-4.trust-stack) |
+| D-31 | Verus and Aeneas: tools that verify Rust code directly, Verus by checking annotated Rust with an SMT solver, Aeneas by translating Rust into a proof assistant's language | the first claim whose structured correspondence reference names Rust code, once per learner; S9.L9 links it as well (S09, S10) | the claim and the code it names; the trust-stack question of what the translation itself rests on (KC-4.trust-stack) |
 | D-32 | Proof certificates (Alethe and Carcara): a solver emits a proof of `unsat` that an independent checker replays; cvc5 emits Alethe proofs, and Carcara checks them | ER-7 fires (SP-4.5: on issue #11179's inputs Z3 5.3.0 answered `unsat` on satisfiable inputs [X RUN-z3-11179]); again when S10's report logs a common-mode doubt (S04, S10) | SP-4.6, a cvc5 Alethe proof containing a `hole` step [X RUN-cvc5-alethe], so a certificate with a gap is partial; "uncertified" stays on solver-only stamps until a certificate replays |
-| D-33 | Category theory: the mathematics of structure and structure-preserving maps, behind some semantics and type-theory texts | the learner tags a parked goal or a NOT COVERED line with this topic (§10, issue 14) | the obligation, and a note that no proof in the course needs it |
-| D-34 | Advanced dependent type theory: type theory beyond what the course's Lean uses, which stops at refined types such as `Amount := {n : Int // 0 < n}` (S3.L2) | as D-33 | the obligation, and S3.L2's refined type as the edge of what the course teaches |
-| D-35 | Cryptographic protocol verification: proving secrecy and authentication properties of protocols against an active attacker | a claim names a protocol | a note that S7's observer model assumes no cryptography |
-| D-36 | Mobile attestation, deferred by the roadmap: checking what a device and its software claim about themselves | a claim names it | nothing beyond the roadmap's deferral |
-| D-37 | Edge and CDN topology, deferred by the roadmap: how requests pass through caching and edge layers before they reach your system | a claim names it | D-20, which treats a cache as an observer without vendor specifics |
-| D-38 | Generalized migrations: showing that schema and data migrations preserve your claims in general, rather than for one change | a claim names a migration obligation, as when S10's report writes schema migrations as NOT COVERED (S10) | state the migration as an [A] or [N] line until an obligation demands more |
-| D-39 | UI code generation: generating user-interface code from a specification | a claim names it, as a NOT COVERED line can in S10 | a note that nothing in the Core covers user interfaces |
-| D-40 | Multi-framework SDKs: client libraries generated for several frameworks from one interface | a claim names it | nothing beyond the roadmap's deferral |
+| D-33 | Category theory: the mathematics of structure and structure-preserving maps, behind some semantics and type-theory texts | a claim or parked goal carries the topic `category-theory` | the obligation, and a note that no proof in the course needs it |
+| D-34 | Advanced dependent type theory: type theory beyond what the course's Lean uses, which stops at refined types such as `Amount := {n : Int // 0 < n}` (S3.L2) | a claim or parked goal carries the topic `dependent-types` | the obligation, and S3.L2's refined type as the edge of what the course teaches |
+| D-35 | Cryptographic protocol verification: proving secrecy and authentication properties of protocols against an active attacker | a claim or parked goal carries the topic `crypto-protocols` | a note that S7's observer model assumes no cryptography |
+| D-36 | Mobile attestation, deferred by the roadmap: checking what a device and its software claim about themselves | a claim or parked goal carries the topic `mobile-attestation` | nothing beyond the roadmap's deferral |
+| D-37 | Edge and CDN topology, deferred by the roadmap: how requests pass through caching and edge layers before they reach your system | a claim or parked goal carries the topic `edge-cdn` | D-20, which treats a cache as an observer without vendor specifics |
+| D-38 | Generalized migrations: showing that schema and data migrations preserve your claims in general, rather than for one change | a claim or parked goal carries the topic `migrations`, as when S10's report writes schema migrations as NOT COVERED (S10) | state the migration as an [A] or [N] line until an obligation demands more |
+| D-39 | UI code generation: generating user-interface code from a specification | a claim or parked goal carries the topic `ui-codegen`, as a NOT COVERED line can in S10 | a note that nothing in the Core covers user interfaces |
+| D-40 | Multi-framework SDKs: client libraries generated for several frameworks from one interface | a claim or parked goal carries the topic `multi-framework-sdks` | nothing beyond the roadmap's deferral |
 
 The cards keep to the roadmap's words and generic definitions, and GATE-privacy lints them like any copy (I9).
 
@@ -967,7 +980,7 @@ Copy (D-30's Today card): "Deferred topic, now relevant: Kani. Your overflow ero
 
 ### 5.1 What it is
 
-An optional, adaptive check of the ten S1 ideas: at most 20 items, about 15 minutes. It finds what the learner already knows, so that the ground drawers and S1's lessons can open on summaries and Today can schedule confirmations instead of first-learning doses. It locks nothing, skips nothing on the learner's behalf, and stores nothing but item events: its result is derived at read time (I2). It inherits kernelspace's placement walk (wave-1 spec §7.1: at most 20 items, probes in curriculum order, two right means solid, a day-7 confirmation, a target of at least 85% confirmed) and re-tunes it: statespace probes reasoning moves, keeps Project 00 first (V2-20) and never pre-credits logic.
+An optional, adaptive check of ten of S1's eleven ideas, all but the six-field card, which is this course's own format: at most 20 items, about 15 minutes. It finds what the learner already knows, so that the ground drawers and S1's lessons can open on summaries and Today can schedule confirmations instead of first-learning doses. It locks nothing, skips nothing on the learner's behalf, and stores nothing but item events: its result is derived at read time (I2). It inherits kernelspace's placement walk (wave-1 spec §7.1: at most 20 items, probes in curriculum order, two right means solid, a day-7 confirmation, a target of at least 85% confirmed) and re-tunes it: statespace probes reasoning moves, keeps Project 00 first (V2-20) and never pre-credits logic.
 
 ### 5.2 Where it is offered
 
@@ -998,11 +1011,11 @@ Probe order is a topological order of S1's `requires` edges (spine §4). Each KC
 
 **Chance.** Each pair includes a constructed response or an all-or-nothing five-statement item, so the probability of "shown" by blind guessing stays at most 1/20 per KC [D]. A constructed template's blind rate is the success rate of GATE-items' blind strategies on it (submitting the worked example's values, all zeros, a random draw), and the walk prints the product for each KC.
 
-**Length and mode.** At most 20 items; the learner may stop after any item, and a partial walk keeps what it showed. Probe rules apply, with the key and a one-line why after each item and the misconception note collapsed, to hold the 15 minutes. Each item carries a call; placement calls never reach the Mirror, because they precede instruction (spine §8.5). The walk leaves out KC-2.induction-principle, which requires KC-2.proof-reading (S2.L0); S2's test-out covers both (§6.6).
+**Length and mode.** At most 20 items; the learner may stop after any item, and a partial walk keeps what it showed. Probe rules apply, with the key and a one-line why after each item and the misconception note collapsed, to hold the 15 minutes. Each item carries a call; placement calls never reach the Mirror, because they precede instruction (spine §8.5). The walk leaves out KC-2.induction-principle, which requires KC-2.proof-reading (S2.L0); S2's test-out covers both (§6.6). It also leaves out KC-1.claim-anatomy, the six-field card, which is this course's own format and new to everyone; S1's test-out can show it on fresh items (§6.6).
 
-### 5.4 Phones and consent
+### 5.4 Phones and downloads
 
-Items keyed by Z3 need INS-z3, whose first load asks consent (OD-6). Without consent, the walk serves the items INS-pocket can key offline (witness replays, five-statement items over finite tables), marks the rest "not probed: needs the solver", and offers to finish on the laptop.
+Items keyed by Z3 need INS-z3, which downloads without asking while the loader shows its size (OD-6). Until Z3 is ready, or offline before it is cached, the walk serves the items INS-pocket can key offline (witness replays, five-statement items over finite tables), marks the rest "not probed: needs the solver", and offers to finish on the laptop.
 
 ### 5.5 What the result changes
 
@@ -1064,7 +1077,7 @@ A pass never signs off a stage: the Defence remains, Parts A–D. It never mints
 
 | Stage | KCs | Families that serve test-out items | Notes |
 |---|---|---|---|
-| S1 | 10 | GEN-negate-it t1–t4, GEN-find-the-witness t1, GEN-call-it t1 and t4, GEN-which-stamp t1–t2 | the placement walk covers S1 first (§5) |
+| S1 | 11 | GEN-negate-it t1–t4, GEN-find-the-witness t1, GEN-call-it t1 and t4, GEN-which-stamp t1–t3 | the placement walk covers ten of the eleven first (§5); KC-1.claim-anatomy is served by GEN-which-stamp t3 and GEN-find-the-witness t1 |
 | S2 | 12 | GEN-proof-structure t1–t3 (goals from build-time elaboration), GEN-call-it t1 and t4, GEN-which-stamp t1, GEN-find-the-witness t1 (for KC-2.finite-map-update) | KC-2.proof-reading has only GEN-proof-structure, so its three items come from t1–t3; induction can be shown on fresh items but is never pre-credited (V2-20); writing proofs stays lab work |
 | S3 | 12 | GEN-find-the-witness t1–t2 (INS-interp), GEN-proof-structure t1–t3, GEN-call-it t1 and t4 | LAB-3's goldens and proof stages are unchanged |
 | S4 | 11 | GEN-wp-it t1–t3, GEN-negate-it t2–t3, GEN-cti-or-bug t1–t3, GEN-which-stamp t1–t3, GEN-call-it t1 and t4 | GEN-cti-or-bug items also serve KC-5.inductive-invariant-tla in S5 |
@@ -1075,7 +1088,7 @@ A pass never signs off a stage: the Defence remains, Parts A–D. It never mints
 | S9 | 11 | GEN-proof-structure t1–t3, GEN-find-the-witness t1, t2 and t4, GEN-leaks-to-observer t3, GEN-which-stamp t1, GEN-call-it t4 | each mini-Defence still samples its own half |
 | S10 | 4 | GEN-which-stamp t1–t3, GEN-spot-the-gap t1–t4, GEN-call-it t4 | the Defence over the report remains the stage's sign-off |
 
-The counts sum to the spine's 104 KCs.
+The counts sum to the spine's 105 KCs.
 
 ### 6.7 Copy
 
@@ -1089,7 +1102,7 @@ The counts sum to the spine's 104 KCs.
 
 ## 7. Data and derivation
 
-- **Events.** Drawer, placement, test-out and confirmation items are `item` events (spine §8.2). `ref` carries the item revision and a context: `drawer:D-03/i2`, `placement:step-4`, `testout:KC-1.violation-as-sat`, `confirm:KC-1.violation-as-sat`. Imported packs are `receipt-import` events with `ref: pack:<course>` and self-declared provenance. Drawer opens are logged as help-seeking, which needs an uncredited event kind the spine lacks (§10, issue 8).
+- **Events.** Drawer, placement, test-out and confirmation items are `item` events (spine §8.2). `ref` carries the item revision and a context: `drawer:D-03/i2`, `placement:step-4`, `testout:KC-1.violation-as-sat`, `confirm:KC-1.violation-as-sat`. Imported packs are `receipt-import` events with `ref: pack:<course>` and self-declared provenance. Drawer opens are logged as help-seeking, as the spine's uncredited `view` kind (§8.2).
 - **Derived per KC at read time** (I2): first contact, shown at placement, tested out, confirmed, not shown yet, not probed. No status is stored. The derivation is a pure function of the event log and the KC graph, so a double import, a merge or a stale tab gives the same result (the property tests W1-T03 runs on the event log, which W2-T16 extends).
 - **Dates.** For a KC shown at placement or tested out, VRK₃₀ and "settled" count from the confirmation date [D] (§10, issue 12).
 - **Travel.** Placement and test-out results travel with the event log's export and its merge-import with undo (SCR-settings), because they are nothing but events.
@@ -1098,34 +1111,33 @@ The counts sum to the spine's 104 KCs.
 
 ## 8. Ownership, runs and time
 
-### 8.1 Proposed owners
+### 8.1 Owners
 
-The spine assigns W1-T11 (D-01–D-06, D-13), W4-T12 (D-30), W4-T13 (D-11, D-21) and, through INS-bench-alloy, W4-T09 (D-16); the rest is proposed here (§10, issues 5 and 6). Review hours follow the spine's rubric of 0.25 h per drawer [D] (spine §13).
+Spine §13 names the owner of every drawer: a stage's lesson task owns the drawers its stage introduces, W1-T44 writes the eleven deferred cards, and W3-T35, W4-T12 and W5-T40 wire their triggers. `tracker/tasks.yaml` also carries the drawers in tasks of their own (W2-T43, W2-T44, W3-T43, W4-T38, W4-T43 and W5-T39), and its review hours govern where they differ. Review hours follow the spine's rubric of 0.25 h per drawer [D] (spine §13).
 
 | Task | Parts of this spec | Review h [D] |
 |---|---|---|
-| W1-T11 (spine) | D-01–D-06 and D-13; proposed additions: the S1 placement walk (§5) and the text of the eleven deferred cards (§4) | 1.75 (spine), plus about 0.5 for the walk and 0.25 for the cards |
-| W2-T04 (proposed) | D-07, D-08, D-15 | 0.75 |
-| W2-T08 (proposed) | D-14 | 0.25 |
-| W2-T09 (proposed) | D-22, D-23 | 0.5 |
-| W2-T16 (spine) | the per-stage test-out (§6), confirmations, and the "From kernelspace" and sibling imports (§5.7) | 1 (spine) |
-| W2-T17 (spine) | the dp:G1–dp:G11 refutation cards (§1.4) | within its 0.5 |
-| W3-T03 (proposed) | D-10; D-13's item 4 | 0.25 |
-| W3-T11 (proposed) | D-09, D-18 | 0.5 |
-| W3-T12 (spine) | D-32's trigger at ER-7 | within its 1.5 |
-| W4-T09 (spine for D-16; proposed for the rest) | D-16, D-17, D-20 | 0.75 |
-| W4-T12 (spine) | D-30 and its trigger | within its 0.5 |
-| W4-T13 (spine) | D-11, D-21 | within its 1.5 |
-| W5-T02 (proposed) | D-12, D-19 | 0.5 |
-| W5-T05 (proposed) | D-31's trigger at S9.L9 | within its 10.5 |
-| W5-T06 (proposed) | the topic-tag triggers of D-33–D-40 (§10, issue 14) | 0.25 |
+| W1-T11 | D-01–D-06 and D-13 | 1.75 (spine) |
+| W1-T09 | the S1 slice of the placement walk (§5) | within its 1.5 (spine) |
+| W1-T44 | the text of the eleven deferred cards (§4) | 0.25 |
+| W2-T04 | D-07, D-08, D-15 | 0.75 |
+| W2-T09 | D-14, D-22 | 0.5 |
+| W2-T16 | the per-stage test-out (§6), confirmations, and the "From kernelspace" and sibling imports (§5.7) | 1 (spine) |
+| W2-T17 | the dp:G1–dp:G11 refutation cards (§1.4) | within its 0.5 |
+| W3-T03 | D-10 and D-18; D-13's item 4 | 0.5 |
+| W3-T11 | D-09 | 0.25 |
+| W3-T35 | D-32's trigger at ER-7 | within its 0.5 |
+| W4-T05 | D-23 | 0.25 |
+| W4-T09 | D-16, D-17, D-20 | 0.75 |
+| W4-T12 | D-30's trigger at ER-1 | within its 0.5 |
+| W4-T13 | D-11, D-21 | within its 1.5 |
+| W5-T02 | D-12, D-19 | 0.5 |
+| W5-T40 | the triggers of D-31 and D-33–D-40 (§10, issue 14) | 0.25 |
 
 ### 8.2 Runs
 
-- **Executed, cited here:** RUN-z3-starter, RUN-z3-optimize-min, RUN-z3-bv64, RUN-z3-conservation-noguard, RUN-z3-selftransfer, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-z3-11179, RUN-cvc5-alethe, RUN-lean-ledger, RUN-lean-selftransfer, RUN-lean-axioms, RUN-lean-skipkernel, RUN-lean-comparator, RUN-lean-bwrap-docker, RUN-lean-toolchain, RUN-lean-mathlib, RUN-tlc-doublespend, RUN-tlc-jars, RUN-pg-anomalies, RUN-pg-claims, RUN-pglite.
-- **To record, already in the spine:** RUN-z3-vacuous-unsat, RUN-z3-double-capture and RUN-rust-i64 (W1-T12); RUN-lean-ih-ungeneralised and RUN-lean-noguard (W2-T10); RUN-z3-missing-frame, RUN-z3-inductive-param and RUN-tlc-inductive (W3-T07); RUN-pg-sum-null, RUN-pg-mixed-levels and RUN-interp-revocation (W4-T10); RUN-tlc-lost-effect and RUN-pg-one-db (W5-T03); RUN-pg-catalog (W0-S09); RUN-spectacle-s5s8 (W0-S04); RUN-lean-wasm (W0-S11); RUN-scaffold, RUN-apalache-version and RUN-alloy-version (W0-S12); RUN-doctor-devcontainer (W0-T05).
-- **Proposed by sibling specs, used here:** RUN-z3-demorgan (S01), RUN-lean-s2-cells (S02), RUN-pcal-doublespend (S05), and the TLC help text cited from `research/evidence/a2r3/out/tlc-help-tla180.txt`, which S05 proposes to register as RUN-tlc-help.
-- **New here:** RUN-z3-smtlib-tour, for D-13's page: the starter as SMT-LIB and a budgeted `unknown` with its reason, natively and on Pyodide (§10, issue 16).
+- **Executed, cited here:** RUN-z3-starter, RUN-z3-optimize-min, RUN-z3-bv64, RUN-z3-conservation-noguard, RUN-z3-selftransfer, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-z3-11179, RUN-cvc5-alethe, RUN-lean-ledger, RUN-lean-selftransfer, RUN-lean-axioms, RUN-lean-skipkernel, RUN-lean-comparator, RUN-lean-bwrap-docker, RUN-lean-toolchain, RUN-lean-mathlib, RUN-tlc-doublespend, RUN-tlc-jars, RUN-pg-anomalies, RUN-pg-claims, RUN-pglite; and, recorded by W0, RUN-pg-catalog, RUN-spectacle-s5s8, RUN-lean-wasm, RUN-scaffold, RUN-apalache-version, RUN-alloy-version, RUN-doctor-devcontainer, RUN-tlc-help and RUN-bwrap-lanes.
+- **To record, all in spine §9.5:** RUN-z3-vacuous-unsat, RUN-z3-double-capture, RUN-z3-demorgan, RUN-z3-smtlib-tour and RUN-rust-i64 (W1-T12; RUN-z3-smtlib-tour is D-13's page: the starter as SMT-LIB and a budgeted `unknown` with its reason, natively and on Pyodide); RUN-lean-ih-ungeneralised, RUN-lean-noguard and RUN-lean-s2-cells (W2-T10); RUN-z3-missing-frame, RUN-z3-inductive-param, RUN-tlc-inductive and RUN-pcal-doublespend (W3-T07); RUN-pg-sum-null, RUN-pg-mixed-levels and RUN-interp-revocation (W4-T10); RUN-tlc-lost-effect and RUN-pg-one-db (W5-T03).
 
 ### 8.3 Time
 
@@ -1142,21 +1154,23 @@ Drawer reading sits outside the spine's §3.11 totals, which count only the read
 
 ## 10. Spine issues
 
+*This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.*
+
 Each item names where this file departs from the spine, or depends on a change to it. Nothing here is applied silently.
 
-1. **Misconception namespace.** GATE-items requires a misconception ID on every option, but the spine defines no namespace, and the digest's G1–G9 collide with gap classes G1–G13. This file follows S01's `dp:` prefix (S01 issue 4; S07 SI-9; S10 issue 7) and proposes dp:G10 (precedence or scope) and dp:G11 (quantifier order), seeded by PutnamBench #361, #366 and #368 (§1.4).
-2. **"Reading a counterexample" has no drawer.** It is a ground topic this spec covers, but §3.12 has no drawer for it, so it lives in D-01 §C, D-04 §E, D-09 §D and D-21 §C. Propose renaming D-01 "A proof is not a test; reading a counterexample", or record the split.
-3. **D-06 has no KC.** Roadmap rule 3 is the course's thesis, yet no KC holds it: D-06's items borrow KC-1.three-answers, KC-1.violation-as-sat and KC-1.non-vacuity-check, and the six-field skill is never itself graded as the learner's. Propose KC-1.claim-anatomy ("state a guarantee in six fields, with an 'if weakened' witness that refutes the claim's own proposition"), first taught in S1.L3 and within the 110-KC cap, or confirm the borrowing.
-4. **§3.12 lags the stage specs.** Sibling specs add triggers: D-02 at S2.L2 and S4.L8; D-04 at S2.L8 and S4.L4; D-06 at S2.L10, LAB-4.8 and LAB-10.8; D-07 at LAB-3.c4–c5's rungs; D-09 at S8.L2; D-10 at S4.L3 and in S7 (S07 SI-15); D-13 at S1.L2, LAB-1.6 and LAB-4.2 onward; D-14 at LAB-4, LAB-6, LAB-9.11 and LAB-10.2–10.3; D-15 at S5.L2 on the builder's path (S05 issue 5), LAB-6.1 and LAB-10.2–10.3; D-16 at S7.L3; D-17 at S7.L4 and S9.L8 (S09 issue 6); D-18 at S4.L6; D-19 at S8.L4; D-20 at S7.L7; D-21 at S6.L8. Update the table, or state that GATE-links derives "Used in" from content.
-5. **No task owns the placement walk.** Boot ends with "an optional placement walk" (§3.1; S01's Boot timeline), but W1 builds no placement, and W2-T16 owns the test-out and the "From kernelspace" import. The walk uses only W1 families and decides how the W1 ground drawers present, so propose its S1 slice in W1 (W1-T09 or W1-T11); otherwise Boot omits the link until W2.
-6. **Most drawers have no owner, and W1-T11's acceptance is thin.** Only D-01–D-06 and D-13 (W1-T11), D-11 and D-21 (W4-T13), D-30 (W4-T12) and D-16 (through W4-T09) are owned; §8.1 proposes the rest. Drawers sit outside §7, §9.1 and §10.1, so GATE-links' ownership check misses them: extend it to D-*. W1-T11's acceptance is GATE-links alone; add GATE-items, GATE-generators and GATE-kc for drawer items, and GATE-numbers, GATE-runs and GATE-codes for drawer copy. W1-T11 also ships D-05, whose natural items (GEN-proof-structure) arrive with W2-T11 (§1.8). GATE-lessons should apply its copy, block-type and no-lock rules to SCR-drawer, but not its lesson anatomy.
-7. **Test-out pass rule.** §8.6 says "three fresh items per KC, confirmed by one more after 7 days" and gives no threshold; two of three on three-option items would pass a blind guesser about one time in four. This file adopts kernelspace's "two of three with the constructed response right", a composer cap of 1/20 on blind passing, one attempt per KC per day, and a 7–14-day confirmation window (§6.2–§6.4).
-8. **Event kinds.** §8.2's kinds include none for a drawer open, which A3 M1 asks to log as help-seeking, and nothing marks placement, test-out or confirmation context. Propose an uncredited `view` kind, and `ref` contexts on `item` events (§7).
-9. **The kernelspace deny list has no IDs.** "Never logic, induction, TLA+ or isolation" (§2.1; W2-T16's property test) needs sets. Proposed: KC-1.*; KC-2.induction-principle and KC-2.generalized-ih; KC-5.*; KC-6.anomaly-isolation, KC-6.compilation-pattern, KC-6.serializable-retries and KC-6.abstract-serializability (§5.7).
-10. **Derived credit is unordered.** GATE-kc orders content by first teaching, but nothing orders credit derived from placement or test-out, so a test-out could credit a KC whose prerequisites are uncredited. §6.4 credits only once the hard `requires` are credited; propose stating that rule in §8.6.
-11. **Dose for KCs shown early.** §4.1's "≥ 8 graded opportunities in 60 days" and W1-T08's scheduler test are silent on KCs shown before their lesson. Proposed: FSRS maintenance from the confirmation, and exclusion from the dose check (§6.5).
-12. **"First learning" is undefined** for VRK₃₀ and "settled" when a KC was shown at placement or tested out. Proposed: the confirmation date (§7).
-13. **S1's budget leaves out the ground drawers.** §3.11 counts only the Z3Py introduction under S1's reading. For the reference learner the five S1 ground drawers and D-13 add about 35–50 minutes [D], taking S1's high estimate from 9.4 h to about 10.0–10.2 h against the 10 h reading of "2–4 focused sessions". Count them in S1's Read column and trim elsewhere, or record that drawers sit outside the plan.
-14. **Deferred triggers cannot be derived.** "When a claim names it" (D-33–D-40) and "when a correspondence field names Rust code" (D-31) cannot be computed from claim@1 as it stands (I2). Propose an optional `topics[]` field from a fixed vocabulary, settable on claim lines (NOT COVERED lines included) and on parked goals (`statespace stuck`), and a structured correspondence reference (language, path, symbol) for D-31.
-15. **D-22's trigger needs a detector.** Propose that `statespace check` flag `declare_syntax_cat` in the learner's LAB-3 and LAB-9 modules, beside LAB-3.c3's existing lint, and that receipt@1 carry the flag, for example in a `lints[]` list.
-16. **Runs outside §9.5.** This file cites three sibling-proposed runs (RUN-z3-demorgan, RUN-lean-s2-cells, RUN-pcal-doublespend) and S05's proposed RUN-tlc-help, and proposes RUN-z3-smtlib-tour for D-13. RUN-z3-unknown-pow's §9.5 entry describes only `x**y`, though its log also holds the `∀k. k·k ≠ y` line D-03 cites and the "incomplete quantifiers" line S01 cites; widen the entry so GATE-facts can match them.
+1. **Misconception namespace.** GATE-items requires a misconception ID on every option, but the spine defines no namespace, and the digest's G1–G9 collide with gap classes G1–G13. This file follows S01's `dp:` prefix (S01 issue 4; S07 SI-9; S10 issue 7) and proposes dp:G10 (precedence or scope) and dp:G11 (quantifier order), seeded by PutnamBench #361, #366 and #368 (§1.4). *Revision 3: already resolved (ID conventions; §8.3; §12 item 40).*
+2. **"Reading a counterexample" has no drawer.** It is a ground topic this spec covers, but §3.12 has no drawer for it, so it lives in D-01 §C, D-04 §E, D-09 §D and D-21 §C. Propose renaming D-01 "A proof is not a test; reading a counterexample", or record the split. *Revision 3: already resolved (§3.12 D-01).*
+3. **D-06 has no KC.** Roadmap rule 3 is the course's thesis, yet no KC holds it: D-06's items borrow KC-1.three-answers, KC-1.violation-as-sat and KC-1.non-vacuity-check, and the six-field skill is never itself graded as the learner's. Propose KC-1.claim-anatomy ("state a guarantee in six fields, with an 'if weakened' witness that refutes the claim's own proposition"), first taught in S1.L3 and within the 110-KC cap, or confirm the borrowing. *Revision 3: already resolved (§4, §3.1 S1.L3, §12 item 43).*
+4. **§3.12 lags the stage specs.** Sibling specs add triggers: D-02 at S2.L2 and S4.L8; D-04 at S2.L8 and S4.L4; D-06 at S2.L10, LAB-4.8 and LAB-10.8; D-07 at LAB-3.c4–c5's rungs; D-09 at S8.L2; D-10 at S4.L3 and in S7 (S07 SI-15); D-13 at S1.L2, LAB-1.6 and LAB-4.2 onward; D-14 at LAB-4, LAB-6, LAB-9.11 and LAB-10.2–10.3; D-15 at S5.L2 on the builder's path (S05 issue 5), LAB-6.1 and LAB-10.2–10.3; D-16 at S7.L3; D-17 at S7.L4 and S9.L8 (S09 issue 6); D-18 at S4.L6; D-19 at S8.L4; D-20 at S7.L7; D-21 at S6.L8. Update the table, or state that GATE-links derives "Used in" from content. *Revision 3: already resolved (§3.12).*
+5. **No task owns the placement walk.** Boot ends with "an optional placement walk" (§3.1; S01's Boot timeline), but W1 builds no placement, and W2-T16 owns the test-out and the "From kernelspace" import. The walk uses only W1 families and decides how the W1 ground drawers present, so propose its S1 slice in W1 (W1-T09 or W1-T11); otherwise Boot omits the link until W2. *Revision 3: already resolved (§13 W1-T09).*
+6. **Most drawers have no owner, and W1-T11's acceptance is thin.** Only D-01–D-06 and D-13 (W1-T11), D-11 and D-21 (W4-T13), D-30 (W4-T12) and D-16 (through W4-T09) are owned; §8.1 proposes the rest. Drawers sit outside §7, §9.1 and §10.1, so GATE-links' ownership check misses them: extend it to D-*. W1-T11's acceptance is GATE-links alone; add GATE-items, GATE-generators and GATE-kc for drawer items, and GATE-numbers, GATE-runs and GATE-codes for drawer copy. W1-T11 also ships D-05, whose natural items (GEN-proof-structure) arrive with W2-T11 (§1.8). GATE-lessons should apply its copy, block-type and no-lock rules to SCR-drawer, but not its lesson anatomy. *Revision 3: applied, merged into PLAN#8 (§13 rules and rows; §11.2 GATE-links, GATE-lessons).*
+7. **Test-out pass rule.** §8.6 says "three fresh items per KC, confirmed by one more after 7 days" and gives no threshold; two of three on three-option items would pass a blind guesser about one time in four. This file adopts kernelspace's "two of three with the constructed response right", a composer cap of 1/20 on blind passing, one attempt per KC per day, and a 7–14-day confirmation window (§6.2–§6.4). *Revision 3: applied (§8.6, §7 M-test-out, §13 W2-T16).*
+8. **Event kinds.** §8.2's kinds include none for a drawer open, which A3 M1 asks to log as help-seeking, and nothing marks placement, test-out or confirmation context. Propose an uncredited `view` kind, and `ref` contexts on `item` events (§7). *Revision 3: already resolved (§8.2).*
+9. **The kernelspace deny list has no IDs.** "Never logic, induction, TLA+ or isolation" (§2.1; W2-T16's property test) needs sets. Proposed: KC-1.*; KC-2.induction-principle and KC-2.generalized-ih; KC-5.*; KC-6.anomaly-isolation, KC-6.compilation-pattern, KC-6.serializable-retries and KC-6.abstract-serializability (§5.7). *Revision 3: already resolved (§2.1).*
+10. **Derived credit is unordered.** GATE-kc orders content by first teaching, but nothing orders credit derived from placement or test-out, so a test-out could credit a KC whose prerequisites are uncredited. §6.4 credits only once the hard `requires` are credited; propose stating that rule in §8.6. *Revision 3: already resolved (§8.6; §13 W1-T09, W2-T16).*
+11. **Dose for KCs shown early.** §4.1's "≥ 8 graded opportunities in 60 days" and W1-T08's scheduler test are silent on KCs shown before their lesson. Proposed: FSRS maintenance from the confirmation, and exclusion from the dose check (§6.5). *Revision 3: already resolved (§4.1, §13 W1-T08).*
+12. **"First learning" is undefined** for VRK₃₀ and "settled" when a KC was shown at placement or tested out. Proposed: the confirmation date (§7). *Revision 3: already resolved (§2.3, §12 item 47).*
+13. **S1's budget leaves out the ground drawers.** §3.11 counts only the Z3Py introduction under S1's reading. For the reference learner the five S1 ground drawers and D-13 add about 35–50 minutes [D], taking S1's high estimate from 9.4 h to about 10.0–10.2 h against the 10 h reading of "2–4 focused sessions". Count them in S1's Read column and trim elsewhere, or record that drawers sit outside the plan. *Revision 3: already resolved (§3.11).*
+14. **Deferred triggers cannot be derived.** "When a claim names it" (D-33–D-40) and "when a correspondence field names Rust code" (D-31) cannot be computed from claim@1 as it stands (I2). Propose an optional `topics[]` field from a fixed vocabulary, settable on claim lines (NOT COVERED lines included) and on parked goals (`statespace stuck`), and a structured correspondence reference (language, path, symbol) for D-31. *Revision 3: applied (§3.12, §9.6 `statespace stuck`, §11.2 GATE-schema).*
+15. **D-22's trigger needs a detector.** Propose that `statespace check` flag `declare_syntax_cat` in the learner's LAB-3 and LAB-9 modules, beside LAB-3.c3's existing lint, and that receipt@1 carry the flag, for example in a `lints[]` list. *Revision 3: applied (§3.12 D-22, §3.3 LAB-3.c3, §9.4).*
+16. **Runs outside §9.5.** This file cites three sibling-proposed runs (RUN-z3-demorgan, RUN-lean-s2-cells, RUN-pcal-doublespend) and S05's proposed RUN-tlc-help, and proposes RUN-z3-smtlib-tour for D-13. RUN-z3-unknown-pow's §9.5 entry describes only `x**y`, though its log also holds the `∀k. k·k ≠ y` line D-03 cites and the "incomplete quantifiers" line S01 cites; widen the entry so GATE-facts can match them. *Revision 3: already resolved (§9.5).*

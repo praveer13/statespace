@@ -1,10 +1,10 @@
 # statespace: evidence and assessment
 
-**Status:** the canonical rules for evidence, grading, calibration and sign-off in statespace v2. This document elaborates spine §8 (Assessment) and the assessment rows of spine §2, §4, §6 and §11. Every ID in it comes from `docs/spine/SPINE.md`. **Date:** 2026-10-23 (machine clock). **Review:** owner decisions OD-1–OD-15 are adopted defaults awaiting owner review (spine §1.2); OD-8, honor-system provenance, shapes §2 and §9.
+**Status:** the canonical rules for evidence, grading, calibration and sign-off in statespace v2. This document elaborates spine §8 (Assessment) and the assessment rows of spine §2, §4, §6 and §11. Every ID in it comes from `docs/spine/SPINE.md`. **Date:** 2026-10-23 (machine clock). **Review:** the owner reviewed decisions OD-1–OD-15 on 2026-10-25 (spine §1.2; DECISIONS.md, section 1); OD-8, honor-system provenance, accepted then, shapes §2 and §9.
 
 **Precedence.** The roadmap sets scope; executed runs (`research/spikes/RESULTS.md` and `research/evidence/`) beat any report; then come the redesign brief, the four digests, the research reports and adversarial reviews, kernelspace's learning engine, and the v1 design as history. The spine is the index for IDs and wins over this document. Where the spine is silent, this document decides and tags the decision [D]. Where this document believes the spine is wrong, it says so under "Spine issues" at the end, and the spine governs until it changes.
 
-**Tags.** `[X RUN-id]` marks an executed run already on disk; `{{run:RUN-id}}` a run that must be recorded before the sentence ships; `[D]` a design decision or an exact computation (every interval below uses z = 1.96 and can be reproduced from the formula in §6.4). Evidence grades follow the pedagogy digest: **A** a meta-analysis or several consistent RCTs; **B** one good experiment on a similar task; **C** a small study, correlational data or a preprint; **D** theory, consensus or design rationale. `[dp row N]` cites row N of the pedagogy digest's graded evidence table (`research/synthesis/digest-pedagogy.md` §1); `[dp §2, Stage k]` cites its misconception catalog; `[dp §3.x]` and `[dp §6]` its assessment and dosage sections. Other lowercase keys in brackets resolve in the brief's source index (`research/synthesis/BRIEF.md` §9). Stamp codes are bracketed ([P], [M], [T] …); IDs never are. Learner-facing copy calls the learner's own product "your system".
+**Tags.** `[X RUN-id]` marks an executed run already on disk; `{{run:RUN-id}}` a run that must be recorded before the sentence ships; `[D]` a design decision or an exact computation (every interval below uses z = 1.96, except the two 97.5% intervals behind balanced accuracy's interval (§3.7), which use z = 2.24, and can be reproduced from the formula in §6.4). Evidence grades follow the pedagogy digest: **A** a meta-analysis or several consistent RCTs; **B** one good experiment on a similar task; **C** a small study, correlational data or a preprint; **D** theory, consensus or design rationale. `[dp row N]` cites row N of the pedagogy digest's graded evidence table (`research/synthesis/digest-pedagogy.md` §1); `[dp §2, Stage k]` cites its misconception catalog; `[dp §3.x]` and `[dp §6]` its assessment and dosage sections. Other lowercase keys in brackets resolve in the brief's source index (`research/synthesis/BRIEF.md` §9). Stamp codes are bracketed ([P], [M], [T] …); IDs never are. Learner-facing copy calls the learner's own product "your system".
 
 ---
 
@@ -13,8 +13,8 @@
 1. **Evidence moves status, and nothing else does** (I1). A learner state changes only on checker-graded work that the learner declares unassisted, on an instance generated from a seed drawn at grade time. Reading, lab checks, receipts, claims and agent work never move it.
 2. **Every state is derived** at read time from an append-only event log (I2): per-KC relearning, stage sign-off, settled KCs, VRK₃₀ and audit accuracy. Nothing stores a status.
 3. **Checkers decide, about the learner too** (I3). Fourteen generator families compute their keys with Z3, TLC state graphs, the Mini-Plinth interpreter, recorded PostgreSQL histories, the paired-state evaluator, Lean's elaboration or the verdict→stamp deriver. No language model grades an answer, and none writes an item at run time.
-4. **Signed off** means the Defence's Parts A–C passed (at least 75% overall; each part at least 60%, or at most one miss in a part of five or fewer items), Part D was attempted, and every KC of the stage was answered correctly on fresh items in three spaced sessions. **Settled** means one fresh probe per KC answered correctly at least 30 days after sign-off. Both are learner states drawn in ink; neither borrows a stamp's color, revokes or locks anything.
-5. **Calls are calibrated, never scored.** Three taps carry bands printed from certainty-based marking's switch points; every item prints its chance level; payoffs are shown as feedback only. The private Mirror leads with bias and per-band hit rates with Wilson intervals, and diagnoses nothing below about 20–30 calls in a band (operationally 20, §5.6).
+4. **Signed off** means the Defence's Parts A–C passed (at least 75% overall; each part at least 60%, every part with at least four items), Part D was attempted, and every KC of the stage was answered correctly on fresh items in three spaced sessions. **Settled** means one fresh probe per KC answered correctly at least 30 days after sign-off. Both are learner states drawn in ink; neither borrows a stamp's color, revokes or locks anything.
+5. **Calls are calibrated, never scored.** Three taps carry bands printed from certainty-based marking's switch points; every item prints its chance level; payoffs are shown as feedback only. The private Mirror leads with bias and per-band hit rates with Wilson intervals, and diagnoses a band only with at least 20 calls and an interval wholly outside it (§5.6).
 6. **The course stamps its own assessments.** A passed Defence is [T] · n unseen items with its Wilson interval, never PROVED competence; a self-check is [A].
 7. **Validity is a CI property.** Keys reproduce on their engines, item lints run on every generated pool, blind strategies are held to chance + 2 SD, cue ablation runs on every template, and the course states that its oracles are "unseen, not secret".
 8. **The limits are printed** on SCR-assurance (§9): provenance is self-declared, oracles are visible, Defence Part B has no outcome data, and one learner supports no causal claim. Expect effects of tenths of a standard deviation at most; the median education effect is about 0.10 SD [kraft20].
@@ -45,33 +45,38 @@ The spine fixes the fields of an event (§8.2); this table fixes their meaning.
 | Field | Meaning and rule |
 |---|---|
 | `id` | a random UUID; a merge keeps one copy per id (§2.6) |
-| `kind` | one of nine kinds (§2.2) |
+| `v` | the shape version of the record's kind (spine §8.2) |
+| `kind` | one of ten kinds (§2.2) |
 | `ref` | what was answered, in the grammar of §2.7; with `itemRev` it identifies the instance |
 | `itemRev` | a content fingerprint of the template, its misconception set and its key procedure. When an erratum changes it, earlier events on that template are flagged "re-check" and nothing is deducted (§2.6) |
 | `engine@version` | the engine that computed the key at grade time: `z3@5.3.1` in the Pyodide 314.0.7 worker [X RUN-z3-starter-pyodide]; a pocket checker by bundle hash; a TLC 1.8.0 state graph [X RUN-tlc-jars]; the interpreter, the lasso validator, the paired-state evaluator or the stamp deriver by content hash; Goal Replay strips from Lean 4.35.0 [X RUN-lean-ledger]; or `bench:` plus a receipt hash. A bounded engine also records its bound |
 | `seed` | the uint32 drawn at grade time for a generated instance; absent for authored cells and audit anchors |
 | `ok` | `true`, `false` or `null`. `null` means ungraded: the engine returned `unknown` or reached its budget at grade time, or the answer fell outside the item's language. An ungraded event never counts as a miss |
 | `conf` | `guess`, `think` or `sure` when a call was asked (§5); stored as the tap, never as a number |
-| `provenance` | `own`, `assisted`, `agent` or `automated` (§2.4) |
-| `seen \| unseen` | exposure (§2.3) |
+| `provenance` | `own`, `assisted` or `agent` (§2.4); `automated` is a flag on receipts and claims, never a provenance |
+| `exposure` | `seen` or `unseen` (§2.3) |
 | `at` | an RFC 3339 timestamp carrying the device's UTC offset, so the local day is fixed when the event is written and travel never rewrites spacing |
+| `tz` | minutes east of UTC, frozen when the event is written |
+| `day` | the local date, frozen when the event is written; sessions, spacing (§3.2) and "met in k of the last 12 weeks" read it |
+| `dev` | a random identifier for the browser profile that wrote the event, used by multi-device merges (W1-T03) |
 | `ms` | time on task |
 
-Two derivations need data the spine's record does not hold. Refutation cards fire "after two misses on a tag" (M-refutation-card), and a miss's tag can be recovered only from the learner's response. This document therefore assumes two more fields, `resp` (the response in canonical form: an option id, a formula, a witness or a verdict vector) and `mis` (the misconception tags a wrong response matched), and lists them under Spine issues.
+Two derivations need more than the core fields. Refutation cards fire "after two misses on a tag" (M-refutation-card), and a miss's tag can be recovered only from the learner's response, so the spine's record (§8.2) carries `resp` (the response in canonical form: an option id, a formula, a witness or a verdict vector) and `mis` (the misconception tags a wrong response matched). Sessions and spacing are computed in local days, so `at` carries the local UTC offset and `tz` and `day` freeze the local date when the event is written.
 
 ### 2.2 Kinds
 
 | Kind | Written when | Key from | Produces |
 |---|---|---|---|
 | `call` | the first run of an authored instrument cell; the interpretation tap (§5.4); an audit case's statement-alone call | the run's verdict, read through §8 | calibration and scheduling input |
-| `item` | a generated item in practice mode: lesson exit items, Today, re-finds, sure-and-wrong returns, interleaved sets | the family's engine | evidence |
-| `probe` | a generated item in probe mode, one shot with feedback after submission: Defence Part A, settled probes, test-out | the family's engine | evidence |
+| `item` | a generated item in practice mode: lesson exit items, Today, re-finds, sure-and-wrong returns, interleaved sets; also a test-out item and the item that confirms it, whose `ref` carries a `testout:` or `confirm:` context (§2.7; spine §8.2) | the family's engine | evidence |
+| `probe` | a generated item in probe mode, one shot with feedback after submission: Defence Part A, settled probes | the family's engine | evidence |
 | `audit` | an audit case decided with a class and typed evidence: Today, the Clearinghouse, Defence Part C | the case's checker | evidence, for audit accuracy |
 | `prove-it` | a prediction about a seeded mutation of the learner's own artifact: a lab's Prove-it, Defence Part B | the checker's verdict on the mutant, read from the receipt | evidence |
 | `lab-check` | a lab check's result | `statespace check` (Lane B) or the tab (Lane A) | claims and specimens only |
 | `receipt-import` | a receipt imported by file or URL fragment | schema and statement-hash validation | claims and specimens only |
 | `explain-back` | Defence Part D completed | nobody | uncredited; its existence is required for sign-off |
 | `note` | a technical note exported | nobody | uncredited |
+| `view` | a drawer is opened | nobody | uncredited; logged as help-seeking |
 
 ### 2.3 Instance identity, exposure and "fresh"
 
@@ -87,17 +92,19 @@ Two derivations need data the spine's record does not hold. Refutation cards fir
 | `own` | default: the learner declared no help | full weight |
 | `assisted` | a hint rung past R2; a `statespace stuck` packet or another context packet used on this instance; a receipt's self-reported `assisted: explain` or `code`; the learner's "I had help" toggle, which every item carries and nothing questions | weight 0.3 for scheduling. An assisted event never upgrades; the KC is credited again when a later fresh variant passes unassisted |
 | `agent` | the learner's declaration that an agent produced the answer; a receipt's `agent: true` | weight 0; may produce claims, never evidence |
-| `automated` | mechanically, from a receipt's automation flags: a tactic closed a step taught in manual mode (`grind` adds `Classical.choice`, `omega` does not [X RUN-lean-axioms]) | weight 0 for the taught KC and a flag on the receipt. Lab receipts never count as evidence, so in practice the flag shows on the claim's qualifier |
 
 The weights are the spine's (§8.2), which follow kernelspace's (spine §12, item 10):
 
 | Provenance and exposure | Weight | Counts toward |
 |---|---|---|
-| own · unseen | 1.0 | sign-off, settled, VRK₃₀, Judgment |
+| own · unseen · generated (fresh) | 1.0 | sign-off, settled, VRK₃₀, Judgment |
+| own · unseen, authored (a first exposure to a fixed cell or anchor) | 1.0 | Judgment; scheduling |
 | own · seen (practice) | 0.3 | scheduling only |
 | assisted (past rung R2, or a context packet used) | 0.3 | scheduling only, until an unseen variant passes unassisted |
-| automated (a tactic closed a step taught in manual mode) | 0 for that KC | flagged on the receipt |
+| automated (a tactic closed a step taught in manual mode) | — | a flag on receipts and claims only, which never count as evidence, so it never weighs an evidence event |
 | agent | 0 | may produce claims; never evidence |
+
+`automated` is not a provenance value. It is a flag on receipts and claims, set mechanically from a receipt's automation flags when a tactic closed a step taught in manual mode (`grind` adds `Classical.choice`, `omega` does not [X RUN-lean-axioms]). Lab receipts never count as evidence, so the flag shows on the claim's qualifier and never weighs an evidence event.
 
 **Honesty** (OD-8). Provenance is self-declared, and nothing on a static site can verify "unassisted". The system calibrates rather than polices: it asks, records, weights and says so on SCR-settings and SCR-assurance. The weights exist because substitution harms unassisted performance (A−/B · [dp row 33]); they are not an accusation. AI use also inflates self-assessment (B · [dp row 35] [fernandes26]), so assisted work is shown apart from unassisted work wherever either appears.
 
@@ -114,10 +121,11 @@ The weights are the spine's (§8.2), which follow kernelspace's (spine §12, ite
 | `call`, pre-instruction (prequestions, Boot's first-contact call) | — | — | — | — | — | — | creates the KC's first Today card | — |
 | any own · seen event | — | — | — | — | — | — | 0.3 | — |
 | any assisted event | — | not credited | — | — | — | shown apart | 0.3 | — |
-| any agent or automated event | — | not credited | — | — | — | — | 0 | may produce claims |
+| any agent event | — | not credited | — | — | — | — | 0 | may produce claims |
 | `lab-check`, `receipt-import` | — | — | — | — | — | — | — | yes |
 | `explain-back` | — | Part D, required and uncredited | — | — | — | — | — | — |
 | `note` | — | — | — | — | — | — | — | — |
+| `view` | — | — | — | — | — | — | — | — |
 
 "Not credited" means the item counts in its part's denominator and not in its numerator: a Defence item answered with help is neither a pass nor a misconception.
 
@@ -134,6 +142,7 @@ The weights are the spine's (§8.2), which follow kernelspace's (spine §12, ite
 | Kind | `ref` | Example |
 |---|---|---|
 | `item`, `probe` | `gen:{family}:{template}:{band}:{seed}` | `gen:GEN-negate-it:t4:b2:0x7c1e09a4` |
+| `item` in a test-out | `testout:{KC}`, and `confirm:{KC}` for the item that confirms it (`curriculum/D-drawers.md`) | `testout:KC-1.violation-as-sat` |
 | `call` on a cell | `cell:{lesson}#{n}` | `cell:S1.L3#2` |
 | `call` as interpretation tap | `tap:{lesson}#{n}` | `tap:S1.L3#3` |
 | `call` on an audit statement | `aud:{AUD-id}:statement`, or with `:v:{seed}` for a variant | `aud:AUD-1.1:statement` |
@@ -153,7 +162,7 @@ A Defence attempt's parts and items are a deterministic function of its stage an
 
 ### 3.1 How assessment uses the graph
 
-- **The graph** is the spine's (§4): 104 KCs, 26 of them threshold KCs; `requires` edges form a DAG; seven confusable sets (A–G) define what may be interleaved; six fading families (F1–F6) run from worked examples to transfer.
+- **The graph** is the spine's (§4): 105 KCs, 26 of them threshold KCs; `requires` edges form a DAG; eight confusable sets (A–H) define what may be interleaved; six fading families (F1–F6) run from worked examples to transfer.
 - **Tags.** Every template, audit case, lab check and specimen carries KC tags (GATE-kc). A generated item names one primary KC and at most two secondary KCs [D]. Evidence credits the primary KC only; secondary tags steer interleaving, misconception analysis and scheduling at weight 0.3, so a three-tag item never counts three times.
 - **Threshold KCs** get extra calls, spiral returns in later stages, and at least one Part A slot in a later stage's Defence (§6.2).
 - **Interleaving.** M-which-is-it serves mixed sets from one confusable set only, after the KC's exit item, for at most half a session (A · [dp row 4] [brunmair19]).
@@ -165,7 +174,7 @@ A Defence attempt's parts and items are a deterministic function of its stage an
 |---|---|
 | session | a maximal run of graded events in which consecutive events are less than 30 minutes apart |
 | local day | the calendar date of `at` in the offset it carries |
-| first learning of KC k | the learner's first attempt at the exit item of k's first lesson, or the first test-out probe on k, whichever comes first |
+| first learning of KC k | the first attempt at the exit item of k's first lesson or step briefing; for a KC credited at placement or test-out, the confirmation date |
 | post-instruction on k | at or after first learning of k. Prequestions, Boot's first-contact call and in-lesson predictions before the exit item are pre-instruction |
 | spaced | two counted sessions are spaced when their local days are at least 2 apart (one full day between) |
 
@@ -188,7 +197,7 @@ Relearned never reverts, because a stage's sign-off is a belt that does not revo
 ### 3.4 Stage sign-off
 
 ```
-partPassed(c, n) = c/n ≥ 0.60  or  (n ≤ 5 and n − c ≤ 1)
+partPassed(c, n) = c/n ≥ 0.60
 
 defencePassed(S, t):
   for P in {A, B, C}:
@@ -205,6 +214,7 @@ signedOff(S, t) = defencePassed(S, t) and relearned(k, t) for every KC k of S
 signOffDate(S)  = the earliest t at which signedOff(S, t) holds
 ```
 
+- Every credited part has at least four items (spine §8.6), so the 60% floor never makes one miss fatal; the earlier small-part clause changed no result at four or more items and is dropped (spine §12, item 27).
 - The Defence and the relearning criterion can be met in either order. The Defence's own Part A probes are fresh events and count toward relearning when they fall in a spaced session.
 - Lab completion, receipts and claims are absent from the rule (§1, claims are not evidence). Part B needs the learner's own artifact to mutate, so building the lab is a precondition of taking Part B, not a source of credit.
 - S9 signs off through two mini-Defences, one per half; each samples only its half, and both must pass (spine §3.9).
@@ -243,13 +253,13 @@ FN = flawed cases accepted, or rejected without both
 TN = sound cases marked "none: sound"
 FP = sound cases rejected
 TPR = TP / (TP + FN),   TNR = TN / (TN + FP),   each with its Wilson interval
-balanced accuracy = (TPR + TNR) / 2, shown with the mean of the two Wilson bounds
+balanced accuracy = (TPR + TNR) / 2, shown with the interval described below
 per class c, shown only once n ≥ 10:
   recall(c)    over flawed cases whose canonical class is c
   precision(c) over the learner's findings labeled c
 ```
 
-Averaging the two components' bounds gives a wider interval than their joint sampling error warrants, so it errs toward modesty [D]. With 9 of 12 flawed cases found (0.47–0.91) and 7 of 9 sound cases accepted (0.45–0.94), balanced accuracy shows as 0.76 with 0.46–0.92 [D]. Balanced accuracy puts always-reject and always-accept at exactly 0.5, which is why the Audit Desk scores it instead of precision on rejections: with v1's 4 sound cases in 32, rejecting everything scored 87.5% precision and 100% recall [dp §3.6]. The case flow, the pool and the gap taxonomy are the spine's (§6). Erroneous examples carry grade A (small) · [dp row 16] [alemdag25], and findings need typed evidence because the effect was larger when learners explained the error.
+Balanced accuracy is the mean of two proportions, so its interval is assembled from the 97.5% Wilson intervals of TPR and TNR (§6.4's formula with z = 2.24 in place of 1.96): [(L_TPR + L_TNR) / 2, (U_TPR + U_TNR) / 2]. The two intervals hold together with probability at least 95% (Bonferroni), so the interval for their mean holds at least that often [D]. With 9 of 12 flawed cases found (0.43–0.92 at 97.5%) and 7 of 9 sound cases accepted (0.41–0.95), balanced accuracy shows as 0.76 with 0.42–0.93 [D]. Balanced accuracy puts always-reject and always-accept at exactly 0.5, which is why the Audit Desk scores it instead of precision on rejections: with v1's 4 sound cases in 32, rejecting everything scored 87.5% precision and 100% recall [dp §3.6]. The case flow, the pool and the gap taxonomy are the spine's (§6). Erroneous examples carry grade A (small) · [dp row 16] [alemdag25], and findings need typed evidence because the effect was larger when learners explained the error.
 
 ### 3.8 The end-state matrix
 
@@ -257,8 +267,8 @@ Each roadmap end-state (a)–(g) is a generated task set (spine §2.2). Its crit
 
 ### 3.9 Test-out and placement
 
-- **Test-out** (M-test-out): three fresh probes per KC, confirmed by one more at least 7 days later. High assistance hurts learners with high prior knowledge, d = −0.428 (A · [dp row 9] [tetzlaff25]), so showing a KC is always an option. A passed test-out sets first learning, starts the KC in maintenance scheduling, and counts its probes toward relearning like any fresh events; the stage still signs off only through the Defence. A failed test-out changes only the schedule; the lessons were open anyway.
-- **Placement "From kernelspace"** pre-credits only KCs that a kernelspace Evidence Pack evidences, and never logic, induction, TLA+ or isolation KCs (spine §2.1; W2-T16). Pre-credit sets first learning and puts the KC's test-out first in its schedule. No imported event counts toward sign-off, settled or VRK₃₀, which need statespace's own fresh events.
+- **Test-out** (M-test-out): three fresh items per KC, passed at two of three with the constructed answer right, the items composed so that a blind guesser passes at most 1 time in 20; one attempt per KC per day; confirmed by one more fresh item 7–14 days later [D] (spine §8.6). High assistance hurts learners with high prior knowledge, d = −0.428 (A · [dp row 9] [tetzlaff25]), so showing a KC is always an option. A confirmed test-out sets first learning at the confirmation date, starts the KC in maintenance scheduling, and counts its items toward relearning like any fresh events; the stage still signs off only through the Defence. A failed test-out changes only the schedule; the lessons were open anyway.
+- **Placement "From kernelspace"** pre-credits only KCs that a kernelspace Evidence Pack evidences, and never logic, induction, TLA+ or isolation KCs (spine §2.1; W2-T16). Pre-credit puts the KC's test-out first in its schedule, and first learning is the confirmation date (§3.2). No imported event counts toward sign-off, settled or VRK₃₀, which need statespace's own fresh events.
 
 ### 3.10 Scheduling inputs
 
@@ -284,7 +294,7 @@ Immediate confidence predicts retention worse than delayed judgments do (A · [d
 | Rule | Detail | Held by |
 |---|---|---|
 | Purity | `make(seed, band)` reads no clock, no storage and no randomness beyond its seed. The same family, template, band, seed and `itemRev` give the same instance in Chromium, Firefox and WebKit (I3) | GATE-generators |
-| Keys at grade time | the key is computed from the instance by the family's engine when the learner submits, never stored with the item. Two families differ only in where their engine runs: GEN-proof-structure replays Lean 4.35.0 elaboration recorded at build time, because no Lean runs in the tab (an embedded WASM Lean is reported at 137.5 MB and needs isolation {{run:RUN-lean-wasm}}); GEN-defend's checkers run on the Bench and return in a receipt | GATE-calls, GATE-replay, GATE-labs |
+| Keys at grade time | the key is computed from the instance by the family's engine when the learner submits, never stored with the item. Two families differ only in where their engine runs: GEN-proof-structure replays Lean 4.35.0 elaboration recorded at build time, because no Lean runs in the tab (an embedded WASM Lean downloads 137,362,599 B decoded and needs cross-origin isolation [X RUN-lean-wasm]); GEN-defend's checkers run on the Bench and return in a receipt | GATE-calls, GATE-replay, GATE-labs |
 | Templates and bands | 2–4 structurally different templates per family, 47 in all, each with bands 1–3 set by operator count, quantifier alternation, trace length and process count | GATE-generators |
 | Distractors | each applies one cataloged misconception to the key. The family's engine checks that it differs from the key and from every other option on at least one state, trace, world or history, and stores that witness for the option's "why". Each carries a misconception tag (Appendix A) | GATE-generators, GATE-items |
 | `unknown` | an `unknown` while generating discards the seed and redraws deterministically; an `unknown` or budget stop while grading records `ok = null`. `unknown` is a key only in GEN-call-it's three-way template, built on SP-1.7's reason-stable construction: `x**y == 8, y > 1` gives `unknown`, "incomplete (theory arithmetic)", natively and in the tab [X RUN-z3-unknown-pow] | GATE-generators, GATE-calls |
@@ -303,10 +313,10 @@ Immediate confidence predicts retention worse than delayed judgments do (A · [d
 
 | Family | Learner produces | Engine (key at grade time) | Fragment or bound | Templates | Stages · ships |
 |---|---|---|---|---|---|
-| GEN-negate-it | a violation query | Z3: equivalence of premises and of the negated property, plus a premise witness | QF_LIA; QF_BV at 16, 32 or 64 bits; finite account sorts, grounded | 4 | S1, S4, S7 · W1 |
-| GEN-spec-it | a property, policy or postcondition | Z3 equivalence with a reference; requirement fit by scenarios | QF_LIA; policies inside a printed finite scope | 3 | S1, S4, S7 · W2 |
+| GEN-negate-it | a violation query | Z3: equivalence of premises and of the negated property, plus a premise witness | QF_LIA; QF_BV at 16, 32 or 64 bits; finite account sorts, grounded | 4 | S1, S4 · W1 |
+| GEN-spec-it | a property, policy or postcondition | Z3 equivalence with a reference; requirement fit by scenarios | QF_LIA; policies inside a printed finite scope | 3 | S4, S7 · W2 |
 | GEN-wp-it | a weakest precondition | Z3 equivalence with the reference generator's WP; distinguishing state replayed | QF_LIA, loop-free commands | 3 | S4 · W3 |
-| GEN-find-the-witness | a model, trace, history or state pair, then its class | the engine evaluates the witness; no stored key | ground evaluation; traces up to a printed length; serial-order search n ≤ 6–8 | 4 | S1–S9 · W1 (the lesson rows; spine §8.3 omits S2 and S4) |
+| GEN-find-the-witness | a model, trace, history or state pair, then its class | the engine evaluates the witness; no stored key | ground evaluation; traces up to a printed length; serial-order search n ≤ 6–8 | 4 | S1–S9 · W1 |
 | GEN-cti-or-bug | inductive, CTI or reachable | Z3 on initiation, consecution and safety; keys certified by a strengthening or a replayed trace | QF_LIA transition systems; reachable depth within a printed N | 3 | S4, S5, interleaved to S9 · W3 |
 | GEN-trace-allowed | one satisfying and one violating trace | replay on the TLC state graph | finite graph at printed constants | 3 | S5, S7, S8 · W3 |
 | GEN-lasso-or-not | a fair violating lasso, or "none" | the lasso validator over the TLC graph | finite graph; fair-cycle analysis | 2 | S5, S8 · W3 |
@@ -316,13 +326,13 @@ Immediate confidence predicts retention worse than delayed judgments do (A · [d
 | GEN-which-stamp | the stamp and qualifier for a raw output | the verdict→stamp deriver (§8) | exact | 3 | all · W1 |
 | GEN-proof-structure | the next goal, a Proof Blocks order, or the needed hypothesis | Goal Replay strips; DAG check; hypothesis deletion at build time | pinned Lean 4.35.0 elaboration | 3 | S2, S3, S9 · W2 |
 | GEN-defend | predictions about seeded mutations of the learner's own artifact | comparator, TLC, Z3 or cargo through `statespace defend` | per checker | 4 | S1–S10 · W2 |
-| GEN-spot-the-gap | a gap class and typed evidence | the checker run on the mutated twin; evidence replayed | per anchor | 4 | all · W1 |
+| GEN-spot-the-gap | a gap class and typed evidence | the checker run on the mutated pair member; evidence replayed | per anchor | 4 | all · W1 |
 
 Worked examples below are illustrative instances; their seeds are made up, and any number that a tool produced cites its run. Where an example shows a state that tells two formulas apart, the state can be checked by hand; at generation the family's engine finds such states itself.
 
 ### 4.3 GEN-negate-it
 
-**KCs.** KC-1.violation-as-sat, KC-1.quantifier-negation, KC-1.only-if-direction, KC-1.implication-vacuity and KC-1.non-vacuity-check in S1; KC-4.vc-shape in S4; KC-7.policy-checking in S7.
+**KCs.** KC-1.violation-as-sat, KC-1.quantifier-negation, KC-1.only-if-direction, KC-1.implication-vacuity and KC-1.non-vacuity-check in S1, and KC-1.two-state-property (t2, S1.L4); KC-4.vc-shape in S4.
 
 **Produces.** A violation query for a stated property. In pick mode the learner chooses among misconception mutants; in fix mode, repairs a near-miss; in write mode, writes the query in two parts: the premises (state, step and guard) and the negated property.
 
@@ -366,7 +376,7 @@ In practice mode a wrong choice shows its state, replays it against the requirem
 
 ### 4.4 GEN-spec-it
 
-**KCs.** KC-1.only-if-direction and KC-1.two-state-property in S1; KC-4.frame-condition and KC-4.vc-shape in S4; KC-7.policy-as-datalog and KC-7.policy-checking in S7.
+**KCs.** KC-4.frame-condition and KC-4.vc-shape in S4; KC-7.policy-as-datalog and KC-7.policy-checking in S7.
 
 **Produces.** A specification from an English requirement (a property, a policy, or a postcondition with its frame) plus, for non-vacuity, a distinguishing request: one input the specification accepts and one it rejects.
 
@@ -503,7 +513,7 @@ A seed whose instance yields none of the three certificates within budget is dis
 
 **Distractor verdicts.** "Reachable" on a CTI (`mis:cti-is-bug`); "inductive" on a true but non-inductive invariant (`mis:invariant-is-inductive`); "CTI" on a reachable bug because a search stopped early (`mis:no-error-is-proof`).
 
-**Worked example: a CTI and its reachable twin.** GEN-cti-or-bug · t2 and t3 · band 2 · seed `0x6f40d1b9` (T = 100 drawn from the seed). Primary KC: KC-4.cti-or-bug. The pair is a generated variant of SP-4.3 ({{run:RUN-z3-cti-pair}}).
+**Worked example: a CTI and its reachable pair member.** GEN-cti-or-bug · t2 and t3 · band 2 · seed `0x6f40d1b9` (T = 100 drawn from the seed). Primary KC: KC-4.cti-or-bug. The pair is a generated variant of SP-4.3 ({{run:RUN-z3-cti-pair}}).
 
 > *State:* balances `a`, `b` and a pending amount `p`. *Init:* `a = 100, b = 0, p = 0`. *Debit(x):* guard `p = 0 ∧ 0 < x ≤ a`; `a′ = a − x`, `p′ = x`. *Credit:* guard `p > 0`; `b′ = b + p`, `p′ = 0`. *Inv:* `a + b ≤ 100`.
 >
@@ -511,7 +521,7 @@ A seed whose instance yields none of the three certificates within budget is dis
 >
 > *Key: CTI.* Every reachable state satisfies `a + b + p = 100` and `p ≥ 0`, so `(100, 0, 1)` is unreachable. The certificate adds one conjunct, `Inv* = Inv ∧ a + b + p ≤ 100`: it holds at Init (100 ≤ 100); Debit leaves `a + b + p` unchanged and lowers `a + b`; Credit moves `p` into `b`, so `a + b` becomes the old `a + b + p`, which was at most 100; and `Inv*` implies `Inv`. The fix is to strengthen the invariant, not to change a command.
 >
-> *Twin, key: reachable.* Change Credit so that it leaves `p` uncleared (`b′ = b + p`, `p′ = p`). Then Init, Debit(1), Credit, Credit reaches `(99, 2, 1)`, where `a + b = 101`: reachable in 3 actions. The fix is the command.
+> *Pair member, key: reachable.* Change Credit so that it leaves `p` uncleared (`b′ = b + p`, `p′ = p`). Then Init, Debit(1), Credit, Credit reaches `(99, 2, 1)`, where `a + b = 101`: reachable in 3 actions. The fix is the command.
 
 Both verdicts are arithmetic a reader can check; at grade time Z3 and the interpreter recompute them.
 
@@ -551,7 +561,7 @@ Both verdicts are arithmetic a reader can check; at grade time Z3 and the interp
 
 **Produces.** A lasso that violates a liveness property under the stated fairness (a stem from an initial state and a cycle back to a state on it), or "none".
 
-**Grader.** The lasso validator (INS-lasso) checks, on the TLC graph, that the stem starts in an initial state and follows edges; that the cycle follows edges back to its first state; that the property fails on the infinite behavior stem·cycle^ω (for `<>P`, no state satisfies P; for `[]<>P`, no cycle state does; for `P ~> Q`, a P-state on the cycle is never followed by Q); and that the lasso is fair: under `WF(A)`, if A is enabled in every cycle state then A occurs in the cycle; under `SF(A)`, if A is enabled in some cycle state then A occurs in the cycle. "None" is checked exactly: a fair violating lasso exists if and only if a reachable strongly connected component admits a fair cycle on which the property fails, which the validator decides on the finite graph. The validator is tested against TLC's liveness results on fixtures (GATE-conformance), and its JSON input awaits W0-S05 ({{run:RUN-tlc-lasso-json}}).
+**Grader.** The lasso validator (INS-lasso) checks, on the TLC graph, that the stem starts in an initial state and follows edges; that the cycle follows edges back to its first state; that the property fails on the infinite behavior stem·cycle^ω (for `<>P`, no state satisfies P; for `[]<>P`, no cycle state does; for `P ~> Q`, a P-state on the cycle is never followed by Q); and that the lasso is fair: under `WF(A)`, if A is enabled in every cycle state then A occurs in the cycle; under `SF(A)`, if A is enabled in some cycle state then A occurs in the cycle. "None" is checked exactly: a fair violating lasso exists if and only if a reachable strongly connected component admits a fair cycle on which the property fails, which the validator decides on the finite graph. The validator is tested against TLC's liveness results on fixtures (GATE-conformance), and its JSON input is lasso@1, TLC 1.8.0's `-dumpTrace json` counterexample as written, whose format W0-S05 recorded [X RUN-tlc-lasso-json].
 
 **Fragment and bound.** A finite graph at printed constants; exact.
 
@@ -584,13 +594,13 @@ Both verdicts are arithmetic a reader can check; at grade time Z3 and the interp
 
 **Fragment and bound.** The classification is exact for the recorded run and says nothing about other runs, which is why S6's claims are [T]. The serial-order search is bounded at n ≤ 6–8 transactions, and the bound is printed.
 
-**Instance supply.** The tab cannot run concurrent PostgreSQL, because PGlite serializes two sessions [X RUN-pglite], and a history with altered numbers would be an unrun fact (GATE-numbers). Instances are therefore drawn only from recorded histories: the rows of RUN-pg-anomalies and RUN-pg-claims today, and the isolation catalog that W0-S09 records ({{run:RUN-pg-catalog}}). The seed varies presentation only (account and table names, display order). The size of the recorded pool bounds how long this family can stay unseen (Spine issues).
+**Instance supply.** The tab cannot run concurrent PostgreSQL, because PGlite serializes two sessions [X RUN-pglite], and a history with altered numbers would be an unrun fact (GATE-numbers). Instances are therefore drawn only from recorded histories: the rows of RUN-pg-anomalies and RUN-pg-claims today, and the isolation catalog that W0-S09 recorded [X RUN-pg-catalog]. The seed varies presentation only (account and table names, display order). RUN-pg-catalog records a seeded grid per template: 558, 1,080, 1,134 and 837 histories for t1 to t4 [X RUN-pg-catalog]. The pool target is 200 histories per template with at least 100 in each half of the seed space (display and graded, §2.3) [D], and GATE-generators reports each template's unseen supply.
 
 **Templates and bands.**
 
 | Template | Band 1 | Band 2 | Band 3 |
 |---|---|---|---|
-| t1 read-modify-write | 2 transactions, READ COMMITTED against REPEATABLE READ | beside its conditional-UPDATE twin | 3 transactions |
+| t1 read-modify-write | 2 transactions, READ COMMITTED against REPEATABLE READ | beside its conditional-UPDATE pair member | 3 transactions |
 | t2 write skew | the team-sum variant | the holds variant | across all three isolation levels |
 | t3 read skew | 2 transactions | 3 transactions | mixed isolation levels |
 | t4 serialization failure or deadlock | 40001 | 40P01 | which SQLSTATEs a retry policy should retry |
@@ -635,7 +645,7 @@ Both verdicts are arithmetic a reader can check; at grade time Z3 and the interp
 >
 > *The "none" variant:* the same view projecting only `{title, body}`. Self-composition finds no pair inside the scope, and the key is "none, within the printed scope".
 
-**Basis.** Mistaking enforcement for noninterference and observers that ignore aborts are cataloged without a learner study, D · [dp §2, Stages 7 and 9–10]. A leaking view beside its projected twin is a contrasting case, A · [dp row 15].
+**Basis.** Mistaking enforcement for noninterference and observers that ignore aborts are cataloged without a learner study, D · [dp §2, Stages 7 and 9–10]. A leaking view beside its projected pair member is a contrasting case, A · [dp row 15].
 
 ### 4.12 GEN-call-it
 
@@ -720,7 +730,7 @@ A band 3 follow-up shows the same spec with `-deadlock`, which reports the `NoOv
 
 **Produces.** The goal a tactic produces next (chosen among goals); an order for a proof's steps (Proof Blocks, with one or two distractor blocks); or the hypothesis a step needs.
 
-**Grader.** Instances come from a corpus of proofs elaborated at build time on Lean 4.35.0. Goal Replay strips record each tactic's goal through `$/lean/plainGoal` ({{run:RUN-lean-plaingoal}}), deterministically per toolchain ({{run:RUN-replay-gen}}). *Next goal:* the key is the recorded goal. *Proof Blocks:* the build records each step's dependencies; any order that respects the dependency DAG is accepted, and distractor blocks must be left out (M-proof-blocks). *Needed hypothesis:* at build time each candidate hypothesis is deleted in turn and the proof re-elaborated; the key is the one whose deletion breaks the step. GATE-replay regenerates the strips on the pinned toolchain and fails if they differ from the committed ones.
+**Grader.** Instances come from a corpus of proofs elaborated at build time on Lean 4.35.0. Goal Replay strips record each tactic's goal through `$/lean/plainGoal` [X RUN-lean-plaingoal], deterministically per toolchain [X RUN-replay-gen]. *Next goal:* the key is the recorded goal. *Proof Blocks:* the build records each step's dependencies; any order that respects the dependency DAG is accepted, and distractor blocks must be left out (M-proof-blocks). *Needed hypothesis:* at build time each candidate hypothesis is deleted in turn and the proof re-elaborated; the key is the one whose deletion breaks the step. GATE-replay regenerates the strips on the pinned toolchain and fails if they differ from the committed ones.
 
 **Fragment and bound.** Exact for the pinned toolchain; a toolchain bump regenerates every key.
 
@@ -734,18 +744,18 @@ A band 3 follow-up shows the same spec with `-deadlock`, which reports the `NoOv
 
 **Distractor mutants.** The hypothesis for the original state only (`mis:ih-not-generalized`); using the theorem being proved (`mis:circular-step`); "automation closes it" (`mis:automation-closes-taught-step`); a block that uses the hypothesis before the case split (`mis:circular-step`).
 
-**Worked example.** GEN-proof-structure · t3 · band 3 · pick · seed `0x2b9d0c11`. Primary KC: KC-2.generalized-ih (fading family F1).
+**Worked example.** GEN-proof-structure · t3 · band 3 · pick · seed `0x2b9d0c11`. Primary KC: KC-2.generalized-ih (fading family F1). The theorem is S2.L7's parallel sequence theorem, not LAB-2.5's `run_conserves` (Q-1; spine §12 item 52).
 
-> *Proof*, on core Lean 4.35.0 [X RUN-lean-ledger]:
-> `theorem run_conserves (s : Ledger) (ns : List Int) : total (run s ns) = total s := by induction ns generalizing s with | nil => rfl | cons n ns ih => simp [run, ih, transfer_conserves]`.
+> *Proof*, on core Lean 4.35.0 {{run:RUN-lean-s2-cells}}; `runPos` threads `transferPos`, a transfer that also rejects a zero amount, through a list (`curriculum/S02-proof.md` §1):
+> `theorem runPos_conserves (s : Ledger) (ns : List Int) : total (runPos s ns) = total s := by induction ns generalizing s with | nil => rfl | cons n ns ih => simp [runPos, ih, transferPos_conserves]`.
 > *Which hypothesis does the `cons` case need?* Chance: 1 in 4.
 
 | Option | Tag | Why |
 |---|---|---|
-| `ih`, the hypothesis for every state, used at the state `transfer s n` | key | `run s (n :: ns)` unfolds to `run (transfer s n) ns`, so the hypothesis must apply to a state other than `s`, which `generalizing s` provides |
-| the hypothesis for the original `s` only | `mis:ih-not-generalized` | without `generalizing s` the step cannot be proved (SP-2.3, {{run:RUN-lean-ih-ungeneralised}}) |
-| `run_conserves` itself | `mis:circular-step` | a proof cannot use the theorem it proves |
-| none: `simp` closes the case unaided | `mis:automation-closes-taught-step` | the goal mentions `run (transfer s n) ns`, which only the hypothesis speaks about; `transfer_conserves` covers one transfer |
+| `ih`, the hypothesis for every state, used at the state `transferPos s n` | key | `runPos s (n :: ns)` unfolds to `runPos (transferPos s n) ns`, so the hypothesis must apply to a state other than `s`, which `generalizing s` provides |
+| the hypothesis for the original `s` only | `mis:ih-not-generalized` | without `generalizing s` the step cannot be proved: the failure SP-2.3 records for `run_conserves` ({{run:RUN-lean-ih-ungeneralised}}) |
+| `runPos_conserves` itself | `mis:circular-step` | a proof cannot use the theorem it proves |
+| none: `simp` closes the case unaided | `mis:automation-closes-taught-step` | the goal mentions `runPos (transferPos s n) ns`, which only the hypothesis speaks about; `transferPos_conserves` covers one transfer |
 
 The key comes from deleting each candidate from the `cons` case at build time and re-elaborating; it is never authored by hand.
 
@@ -761,13 +771,13 @@ The key comes from deleting each candidate from the `cons` case at build time an
 
 **Fragment and bound.** Per checker: comparator is exact; TLC is bounded by the spec's printed constants; Z3 runs under an `rlimit` [X RUN-z3-budget-pyodide], and an `unknown` leaves the mutant ungraded; cargo tests report n.
 
-**Templates and bands.** The spine names four templates (§8.3); the stages' Defence lines name operators that fall outside those names, so this document reads each template broadly enough to hold every listed operator while keeping GATE-generators' cap of four (Spine issues).
+**Templates and bands.** The spine's four template names (§8.3) cover every operator the stages' Defence lines list, within GATE-generators' cap of four.
 
 | Template | Operators, from the stages' Defence lines |
 |---|---|
-| t1 drop or weaken a hypothesis or statement | drop `amount ≤ balance`; drop `generalizing s`; weaken a statement under the same name; weaken the invariant |
-| t2 weaken a guard or a check | `≤` to `<`; drop a conjunct of the refund rule; reverse a guard; drop the rowcount check; drop reply validation; drop `FORCE` |
-| t3 change the encoding or the trusted base | ℤ → ℕ; Int → BitVec 64; drop `amount > 0` under BitVec 64; `decide` → `native_decide` on a closed goal |
+| t1 change a hypothesis or the statement | drop `amount ≤ balance`; drop `generalizing s`; weaken a statement under the same name; weaken the invariant |
+| t2 change a guard or check | `≤` to `<`; drop a conjunct of the refund rule; reverse a guard; drop the rowcount check; drop reply validation; drop `FORCE` |
+| t3 change the encoding or the trusted base (the checking route, such as `native_decide`) | ℤ → ℕ; Int → BitVec 64; drop `amount > 0` under BitVec 64; `decide` → `native_decide` on a closed goal |
 | t4 change concurrency, the environment or the observer | split the atomic action; drop weak fairness; add a duplicate-reply action; a READ COMMITTED pool; retry only 40001; switch crash actions off; widen the observer; make aborts unobservable |
 
 Bands apply to every template: band 1 asks for the verdict, band 2 adds the locus, and band 3 adds the first failing goal or state, or pairs the mutant with a second, interacting one.
@@ -790,7 +800,7 @@ Bands apply to every template: band 1 asks for the verdict, band 2 adds the locu
 
 **Produces.** For a generated audit variant, the Audit Desk's five steps (spine §6): a call on the statement alone; the diff revealed; "This proves: ___" (uncredited prose); a gap class, with no default and "none: sound" offered; typed evidence anchored to lines.
 
-**Grader.** Each variant comes from an anchor's sound twin by one gap-class mutation operator (spine §6.2, Variants). Its key is set by running the anchor's checker on the mutated twin: the class or classes the operator produces (keys are multi-label, with an acceptable set) and the evidence that certifies them. A finding is correct when its class is in the acceptable set and its typed evidence validates mechanically:
+**Grader.** Each variant comes from an anchor's sound pair member by one gap-class mutation operator (spine §6.2, Variants). Its key is set by running the anchor's checker on the mutated pair member: the class or classes the operator produces (keys are multi-label, with an acceptable set) and the evidence that certifies them. A finding is correct when its class is in the acceptable set and its typed evidence validates mechanically:
 
 | Evidence type | Validated by |
 |---|---|
@@ -811,7 +821,7 @@ A sound case is correct when "none: sound" is chosen. Each session draws its sou
 | t1 rebutting (G1, G2, G3, G12) | one-line statements | statements with two hypotheses | a requirement scenario needed as evidence |
 | t2 undermining (G4, G5, G6, G7, G11) | an axiom or verdict line | an encoding change | an environment assumption hidden in fairness or configuration |
 | t3 undercutting (G8, G9, G10, G13) | mismatched identifiers | an observer that is too weak | a CTI "fixed" by changing correct code |
-| t4 sound | the anchor's sound twin | a sound variant with a harmless change | a sound case from an earlier stage, interleaved |
+| t4 sound | the anchor's sound pair member | a sound variant with a harmless change | a sound case from an earlier stage, interleaved |
 
 **Distractor classes.** Every class is always offered, so the misconception lies in the choice. GATE-audit-blind guards the shortcuts: always reject, always accept, "the last case is sound", and "the class is the topic just taught" (§7.3).
 
@@ -821,9 +831,9 @@ A sound case is correct when "none: sound" is chosen. Each session draws its sou
 >
 > *Diff revealed:* the query's premises are `a ≥ 0`, `x > 0`, `x ≤ a` and, on a later line, `a < x`, followed by the violation `a − x < 0`.
 >
-> *Key:* G2, vacuous premise. *Evidence:* the learner anchors the lines `x ≤ a` and `a < x`; the grader asks Z3 whether the anchored premises can hold together. They cannot (no integers satisfy both), so the evidence validates. Choosing G4 or G5 is a miss, and so is G2 anchored to lines that can hold together. The sound twin, the same claim without the contradictory line and with a premise witness shown, is keyed "none: sound".
+> *Key:* G2, vacuous premise. *Evidence:* the learner anchors the lines `x ≤ a` and `a < x`; the grader asks Z3 whether the anchored premises can hold together. They cannot (no integers satisfy both), so the evidence validates. Choosing G4 or G5 is a miss, and so is G2 anchored to lines that can hold together. The sound pair member, the same claim without the contradictory line and with a premise witness shown, is keyed "none: sound".
 
-**Basis.** Erroneous examples help learners who have prior knowledge, g = .136 overall and d = .33 at one week, so cases are scheduled after their lab, A (small) · [dp row 16] [alemdag25][mclaren15]. Matched sound and flawed twins, A · [dp row 15]. Findings need explanations and typed evidence [dp §3.6].
+**Basis.** Erroneous examples help learners who have prior knowledge, g = .136 overall and d = .33 at one week, so cases are scheduled after their lab, A (small) · [dp row 16] [alemdag25][mclaren15]. Matched sound and flawed pairs, A · [dp row 15]. Findings need explanations and typed evidence [dp §3.6].
 
 ---
 
@@ -880,7 +890,7 @@ GATE-items holds the call rules; GATE-lessons holds the rail.
 3. *Resolution:* the hit rate at "sure" minus the hit rate at "guess", each with its interval, shown separately because calibration feedback reduces overconfidence without improving discrimination, and teaching content can even raise overconfidence (B/C · [dp row 29] [stone00]).
 4. *Sure-and-wrong list,* each item already re-queued (§5.7).
 
-**Diagnosis rule.** A band gets a sentence only when it holds at least 20 calls and its Wilson interval lies wholly outside the printed band [D, within the spine's "about 20–30"].
+**Diagnosis rule.** A band gets a sentence only when it holds at least 20 calls and its Wilson interval lies wholly outside the printed band (spine §8.5) [D].
 
 | Band | Calls | Wilson 95% | Printed band | Sentence |
 |---|---|---|---|---|
@@ -919,9 +929,9 @@ The Defence is untimed: nothing shows that timing adds validity, and the harm fr
 
 ### 6.3 Scoring and the sign-off rule
 
-An item scores 1 when `ok` is true and provenance is own, and 0 otherwise. A Part B prediction scores 1 when the verdict matches and, for a mutant that fails, the locus matches. A Part C case scores 1 when the decision is right and, for a flawed case, the class is acceptable and the evidence validates (§4.16). The rule is §3.4's:
+An item scores 1 when `ok` is true and provenance is own, and 0 otherwise. A Part B prediction scores 1 when the verdict matches and, for a mutant that fails, the locus matches. A Part C case scores 1 when a flawed case is found with an acceptable class and valid typed evidence (§4.16), or a sound case is accepted with its restatement answered (spine §8.6; AUDIT-DESK §6.6). The rule is §3.4's:
 
-- each of Parts A–C passes at 60% or more, or with at most one miss when it has five or fewer items;
+- each of Parts A–C scores at least 60%, every part with at least four items;
 - Parts A–C together score at least 75%;
 - Parts A–C span at least two sessions, and Part C held at least one sound case;
 - a Part D event exists;
@@ -977,7 +987,7 @@ A passed Defence is stamped [T] · n unseen items with its Wilson interval, for 
 | Mechanism | Gate | Lane |
 |---|---|---|
 | Generators are pure and deterministic across three engines, have 2–4 templates, discard `unknown`, and keep distractors distinct from the key and from each other | GATE-generators | fast |
-| Authored call answers reproduce on their engines (Pyodide-in-Node and native Z3, Spectacle, the interpreter), checked by witness properties rather than model values; every authored `unsat` is cross-checked with cvc5 1.4.2 from W1 (the executed run's pip wheel reports `1.4.2-modified` [X RUN-cvc5-alethe]; the Bench binary is {{run:RUN-scaffold}}) | GATE-calls | fast; Lean calls nightly |
+| Authored call answers reproduce on their engines (Pyodide-in-Node and native Z3, Spectacle, the interpreter), checked by witness properties rather than model values; every authored `unsat` is cross-checked with cvc5 1.4.2 from W1 (the Alethe proof run's pip wheel reports `1.4.2-modified` [X RUN-cvc5-alethe]; the Bench binary prints 1.4.2 [X RUN-scaffold]) | GATE-calls | fast; Lean calls nightly |
 | Second semantics agree with their references: Spectacle = TLC [X RUN-spectacle]; Pyodide Z3 = native Z3; PGlite = PostgreSQL 18.6 on single-session specimens; tab Datalog = Soufflé; pocket checkers = Z3; the lasso validator = TLC on fixtures | GATE-conformance | nightly |
 | The interpreter matches the kernel-checked goldens, n reported (the held seam SEAM-13) | GATE-interp | fast |
 | Goal Replay strips, which key GEN-proof-structure, regenerate identically on the pinned toolchain | GATE-replay | nightly |
@@ -1020,7 +1030,7 @@ For a pool of N scored decisions with chance rates c₁ … c_N, a strategy that
 | the last case in a session is sound | audit cases | GATE-audit-blind |
 | topic is class: the class most common among the anchors of the case's stage | audit cases | GATE-audit-blind |
 
-For audit strategies, chance is the score of a random strategy that knows only the pool's base rates, measured over simulated sessions drawn by the real session sampler, Clearinghouse incidents included [D]. Balanced accuracy puts always-reject and always-accept at exactly 0.5, so those two pass by construction; last-is-sound and topic-is-class are the live risks, which is why spine §6 interleaves earlier stages' classes into later sessions.
+For audit strategies, chance is the permutation null of spine §6 and AUDIT-DESK §7.4: the strategy's picks are permuted across the whole stream for decision figures and within each stage for class figures, because a case's stage legitimately narrows its class. The streams are simulated sessions drawn by the real session sampler, Clearinghouse incidents included [D]. Balanced accuracy puts always-reject and always-accept at exactly 0.5, so those two pass by construction; last-is-sound and topic-is-class are the live risks, which is why spine §6 interleaves earlier stages' classes into later sessions.
 
 ### 7.4 Cue ablation
 
@@ -1091,7 +1101,7 @@ SCR-assurance prints these limits (spine §8.9), with the reason for each.
 1. **Unassisted work is self-declared.** The weights in §2.4 rest on the learner's word (OD-8). The course calibrates; it does not police, and it cannot detect an agent that answered for the learner.
 2. **Oracles are visible to a determined learner.** "Unseen" means not shown with its answer, not secret (§7.5).
 3. **Defence Part B has no outcome data.** Predicting mutation effects on one's own artifact has face validity only (C/D); the course reports the score and draws no further conclusion from it.
-4. **One learner.** Every figure describes one learner (n = 1). Wilson intervals describe sampling over items, not over people, and nothing supports a population claim or a causal claim about any mechanic. Keep/kill decisions about mechanics follow rules fixed and hashed before the first learner-zero event (W0-T07, {{run:RUN-keepkill-rules}}), read descriptively from 30-day fresh-seed accuracy.
+4. **One learner.** Every figure describes one learner (n = 1). Wilson intervals describe sampling over items, not over people, and nothing supports a population claim or a causal claim about any mechanic. Keep/kill decisions about mechanics follow rules fixed and hashed before the first learner-zero event (W0-T07, [X RUN-keepkill-rules]), read descriptively from 30-day fresh-seed accuracy.
 5. **A sign-off is a screen, not a measurement of competence.** Ten of twelve has an interval of 0.55–0.95 [D], which is why sign-off adds three spaced sessions per KC and settled adds a 30-day probe.
 6. **Template familiarity leaks.** Exposure to an instance is tracked; familiarity with a template is not, and a solo learner gains some advantage from it [chen18].
 7. **The graded forms are proxies for explanation.** The roadmap's completion tests are explanations. The course grades checker-gradable forms of them (multiple true/false, needed hypotheses, Proof Blocks, witnesses) and keeps the spoken explanation uncredited, so it cannot certify that the learner can write the explanation.
@@ -1160,23 +1170,32 @@ Each tag is a misconception ID in the spine's form, `dp:{catalog key}`, and reso
 
 ## Spine issues
 
+This list was resolved in spine revision 3 on 2026-10-25 (spine §15). Each item ends with its outcome and the spine sections that carry it.
+
 Things in `docs/spine/SPINE.md` that this document believes are wrong, contradictory or under-specified, with a proposal for each. Until the spine changes, it governs.
 
-1. **Generator stage columns drift from the lesson rows** (§8.3). S2.L8, S4.L7 and S4.L8 use GEN-find-the-witness, but §8.3 lists it for S1, S3 and S5–S9. GEN-negate-it is listed for S7 and GEN-spec-it for S1 and S4, where no lesson row or Defence line names them. Proposal: generate §8.3's Stages column from the lesson rows and Defence lines, as §9.1's "Used in" column is generated, and have GATE-links check it.
-2. **GEN-defend's template names are too narrow for its operators** (§8.3 against §3's Defence lines). The four names (drop a hypothesis; weaken a guard; change the encoding; split an action, drop fairness or widen the observer) leave out operators the stages require: `decide` → `native_decide` (S2, S9), a statement weakened under the same name (S2), the read-modify-write compilation and "retry only 40001" (S6), an added duplicate-reply action (S5), crash actions switched off (S8) and aborts made unobservable (S9). GATE-generators caps a family at four templates. Proposal: rename the four as §4.15 does (hypothesis or statement; guard or check; encoding or trusted base; concurrency, environment or observer).
-3. **Misconception IDs had no format** (§8.3, §8.4, GATE-items; resolved). Every option must carry a misconception ID, and the pedagogy digest's catalog keys collide with the gap classes G1–G13 and the stages S1–S10. The spine's ID table now defines the kind as `dp:{catalog key}`, registered from EVIDENCE.md §6, and W0-T03 adds that registry to GATE-links. Appendix A gives each of this document's `mis:` tags its `dp:` key and keeps the `mis:` name as a descriptive alias; it proposes dp:Q16, dp:A16 and dp:A17 for three uncataloged confusions.
-4. **The event record cannot support two derivations** (§8.2). M-refutation-card fires after two misses on a tag, but the record holds neither the response nor the matched tag. Proposal: add `resp` and `mis` to `event@1`, and state that `at` carries the local UTC offset, because sessions and spacing are computed in local days.
-5. **"Unseen" is weaker than "fresh"** (§8.2, against §2.3, §4 and §8.6). The weights table credits own · unseen toward sign-off, settled and VRK₃₀, while §2.3 and §8.6 require fresh generated items; authored cells and audit anchors are unseen on first exposure yet fixed and public. Proposal: define fresh as own · unseen · generated for sign-off, settled and VRK₃₀, and keep own · unseen for Judgment.
-6. **"Settled" has no anchor date** (§0 glossary, §4.1, §8.6). "At least 30 days later" does not say later than what, while VRK₃₀ (§2.3) counts from first learning. This document anchors settled at the stage's sign-off date. Proposal: say so in §8.6 and in the glossary.
-7. **The two-session rule sits outside the sign-off criterion** (§3.0, §8.6). The Defence is described as taken "over at least two sessions", but the signed-off bullet omits it; the pedagogy digest put it in the criterion. This document requires Parts A–C to span two sessions. Proposal: add it to the bullet, or drop it from the description.
-8. **I3 says every key is computed at grade time** (§1.1), but GEN-proof-structure's keys come from build-time Lean elaboration (GATE-replay) and GEN-defend's from Bench receipts. Proposal: "computed by an engine at grade time, or by the pinned checker at build time or on the Bench and replayed at grade time".
-9. **GEN-cti-or-bug's grader can mint a wrong key** (§8.3). "Then bounded reachability (bound printed)" keys an instance "CTI" whenever no violation turns up within N, which is wrong when the violation lies deeper. This document certifies CTI keys with an inductive strengthening and reachable keys with a replayed trace, and discards seeds that yield neither (§4.7). Proposal: adopt that wording in §8.3.
-10. **GEN-anomaly-id's unseen supply is unsized** (§8.3, W0-S09). The tab cannot run concurrent PostgreSQL and an altered history would be an unrun fact, so every instance must be a recorded history; W0-S09's acceptance ("unrun rows recorded in isolationtester format") sets no catalog size. Proposal: have RUN-pg-catalog record a seeded grid of amounts, balances and interleavings with a target count per template, and have GATE-generators report each template's unseen supply.
-11. **Two outcome criteria count claims** (§2.2). Outcome (f)'s criterion includes "LAB-6.c7 passing" and outcome (g)'s the recorded demonstration (CL-10.1). Both are claims, which §8.1–§8.2 keep out of learner states because agents may produce them. Proposal: show them as artifact lines beside the outcome, outside the per-learner criterion.
-12. **Three calibration rules lack an operational form** (§8.4, §8.5, GATE-items): how a band maps to a probability for bias (this document imputes band midpoints, §5.6); the Mirror's minimum n, "about 20–30" (this document uses 20 calls plus an interval wholly outside the band); and "genuine surprise" (this document uses review A8's narrative-blind definition, §5.5). Proposal: write the chosen forms into §8.4, §8.5 and GATE-items.
-13. **GATE-audit-blind's "chance" is undefined** (§6, §11.2). Under balanced accuracy, always-reject and always-accept score exactly 0.5 by construction, so the gate needs a defined baseline for last-is-sound and topic-is-class. Proposal: chance is a random strategy that knows only the pool's base rates, over simulated sessions from the real sampler (§7.3).
-14. **The small-part clause is inert** (§8.6). Parts have at least four items, and there "at most one miss when the part has five or fewer items" never changes a result: 60% of four already allows one miss, and at five items 60% allows two. As written, it would also pass a one-item part with its only item missed. Proposal: state a minimum part size of four and drop the clause, or keep it as a documented no-op.
-15. **The `automated` weight can never bind** (§8.2). Automation flags arrive only on receipts, and receipts never count as evidence, so "0 for that KC" applies to no evidence event. It is harmless, but it reads as if receipts could count. Proposal: say that `automated` marks receipts and claims only.
-16. **One run description is abridged** (§9.5, RUN-tlc-hold-lasso). The recorded lasso is Try, Busy, Try, then Busy back to state 1; "Try → Busy → Try → back to the start" leaves out the closing Busy. GATE-facts compares tool-behavior sentences with their runs, so the sentence should match the log.
+1. **Generator stage columns drift from the lesson rows** (§8.3). S2.L8, S4.L7 and S4.L8 use GEN-find-the-witness, but §8.3 lists it for S1, S3 and S5–S9. GEN-negate-it is listed for S7 and GEN-spec-it for S1 and S4, where no lesson row or Defence line names them. Proposal: generate §8.3's Stages column from the lesson rows and Defence lines, as §9.1's "Used in" column is generated, and have GATE-links check it. *Revision 3: already resolved (§8.3, §11.2 GATE-links).*
+2. **GEN-defend's template names are too narrow for its operators** (§8.3 against §3's Defence lines). The four names (drop a hypothesis; weaken a guard; change the encoding; split an action, drop fairness or widen the observer) leave out operators the stages require: `decide` → `native_decide` (S2, S9), a statement weakened under the same name (S2), the read-modify-write compilation and "retry only 40001" (S6), an added duplicate-reply action (S5), crash actions switched off (S8) and aborts made unobservable (S9). GATE-generators caps a family at four templates. Proposal: rename the four as §4.15 does (hypothesis or statement; guard or check; encoding or trusted base; concurrency, environment or observer). *Revision 3: already resolved (§8.3 GEN-defend).*
+3. **Misconception IDs had no format** (§8.3, §8.4, GATE-items). Every option must carry a misconception ID, and the pedagogy digest's catalog keys collide with the gap classes G1–G13 and the stages S1–S10. The spine's ID table now defines the kind as `dp:{catalog key}`, registered from EVIDENCE.md §6, and W0-T03 adds that registry to GATE-links. Appendix A gives each of this document's `mis:` tags its `dp:` key and keeps the `mis:` name as a descriptive alias; it proposes dp:Q16, dp:A16 and dp:A17 for three uncataloged confusions. *Revision 3: already resolved (ID conventions; §12 item 40).*
+4. **The event record cannot support two derivations** (§8.2). M-refutation-card fires after two misses on a tag, but the record holds neither the response nor the matched tag. Proposal: add `resp` and `mis` to `event@1`, and state that `at` carries the local UTC offset, because sessions and spacing are computed in local days. *Revision 3: already resolved (§8.2).*
+5. **"Unseen" is weaker than "fresh"** (§8.2, against §2.3, §4 and §8.6). The weights table credits own · unseen toward sign-off, settled and VRK₃₀, while §2.3 and §8.6 require fresh generated items; authored cells and audit anchors are unseen on first exposure yet fixed and public. Proposal: define fresh as own · unseen · generated for sign-off, settled and VRK₃₀, and keep own · unseen for Judgment. *Revision 3: applied (§8.2; §2.2 row (a)).*
+6. **"Settled" has no anchor date** (§0 glossary, §4.1, §8.6). "At least 30 days later" does not say later than what, while VRK₃₀ (§2.3) counts from first learning. This document anchors settled at the stage's sign-off date. Proposal: say so in §8.6 and in the glossary. *Revision 3: already resolved (§8.6, §0 term 15, §12 item 47).*
+7. **The two-session rule sits outside the sign-off criterion** (§3.0, §8.6). The Defence is described as taken "over at least two sessions", but the signed-off bullet omits it; the pedagogy digest put it in the criterion. This document requires Parts A–C to span two sessions. Proposal: add it to the bullet, or drop it from the description. *Revision 3: already resolved (§8.6, §3.0).*
+8. **I3 says every key is computed at grade time** (§1.1), but GEN-proof-structure's keys come from build-time Lean elaboration (GATE-replay) and GEN-defend's from Bench receipts. Proposal: "computed by an engine at grade time, or by the pinned checker at build time or on the Bench and replayed at grade time". *Revision 3: already resolved (§1.1 I3).*
+9. **GEN-cti-or-bug's grader can mint a wrong key** (§8.3). "Then bounded reachability (bound printed)" keys an instance "CTI" whenever no violation turns up within N, which is wrong when the violation lies deeper. This document certifies CTI keys with an inductive strengthening and reachable keys with a replayed trace, and discards seeds that yield neither (§4.7). Proposal: adopt that wording in §8.3. *Revision 3: already resolved (§8.3 GEN-cti-or-bug).*
+10. **GEN-anomaly-id's unseen supply is unsized** (§8.3, W0-S09). The tab cannot run concurrent PostgreSQL and an altered history would be an unrun fact, so every instance must be a recorded history; W0-S09's acceptance ("unrun rows recorded in isolationtester format") sets no catalog size. Proposal: have RUN-pg-catalog record a seeded grid of amounts, balances and interleavings with a target count per template, and have GATE-generators report each template's unseen supply. *Revision 3: already resolved (§8.3 GEN-anomaly-id, §13 W0-S09).*
+11. **Two outcome criteria count claims** (§2.2). Outcome (f)'s criterion includes "LAB-6.c7 passing" and outcome (g)'s the recorded demonstration (CL-10.1). Both are claims, which §8.1–§8.2 keep out of learner states because agents may produce them. Proposal: show them as artifact lines beside the outcome, outside the per-learner criterion. *Revision 3: applied (§2.2 row (g)).*
+12. **Three calibration rules lack an operational form** (§8.4, §8.5, GATE-items): how a band maps to a probability for bias (this document imputes band midpoints, §5.6); the Mirror's minimum n, "about 20–30" (this document uses 20 calls plus an interval wholly outside the band); and "genuine surprise" (this document uses review A8's narrative-blind definition, §5.5). Proposal: write the chosen forms into §8.4, §8.5 and GATE-items. *Revision 3: already resolved (§8.4, §8.5, §11.2 GATE-items, §7 M-mirror).*
+13. **GATE-audit-blind's "chance" is undefined** (§6, §11.2). Under balanced accuracy, always-reject and always-accept score exactly 0.5 by construction, so the gate needs a defined baseline for last-is-sound and topic-is-class. Proposal: chance is a random strategy that knows only the pool's base rates, over simulated sessions from the real sampler (§7.3). *Revision 3: already resolved (§6 Scoring, §11.2 GATE-audit-blind).*
+14. **The small-part clause is inert** (§8.6). Parts have at least four items, and there "at most one miss when the part has five or fewer items" never changes a result: 60% of four already allows one miss, and at five items 60% allows two. As written, it would also pass a one-item part with its only item missed. Proposal: state a minimum part size of four and drop the clause, or keep it as a documented no-op. *Revision 3: already resolved (§8.6, §12 item 27).*
+15. **The `automated` weight can never bind** (§8.2). Automation flags arrive only on receipts, and receipts never count as evidence, so "0 for that KC" applies to no evidence event. It is harmless, but it reads as if receipts could count. Proposal: say that `automated` marks receipts and claims only. *Revision 3: already resolved (§8.2, §12 item 10).*
+16. **One run description is abridged** (§9.5, RUN-tlc-hold-lasso). The recorded lasso is Try, Busy, Try, then Busy back to state 1; "Try → Busy → Try → back to the start" leaves out the closing Busy. GATE-facts compares tool-behavior sentences with their runs, so the sentence should match the log. *Revision 3: already resolved (§9.5).*
 
-Decided here because the spine leaves them open, not because it is wrong: multiple true/false scoring (an item is right when every statement is; chance 1/2^m); Part B and Part C item scoring (§6.3); which part is retaken when every part clears its floor but the overall falls short (§6.5); sessions, spacing and first learning (§3.2); VRK₃₀ counting a KC by its latest qualifying event, and the active study-month behind its rate (§3.6); band 2 for Defence and settled probes (§4.1).
+Decided here because the spine leaves them open, not because it is wrong:
+
+- multiple true/false scoring (an item is right when every statement is; chance 1/2^m). *Revision 3: already resolved (§8.5).*
+- Part B and Part C item scoring (§6.3). *Revision 3: applied (§8.6; §12 item 49).*
+- which part is retaken when every part clears its floor but the overall falls short (§6.5). *Revision 3: applied (§8.6 Retake; §12 item 49).*
+- sessions, spacing and first learning (§3.2). *Revision 3: applied (§8.6; §2.3; §12 item 49).*
+- VRK₃₀ counting a KC by its latest qualifying event, and the active study-month behind its rate (§3.6). *Revision 3: applied (§2.3; §12 item 49).*
+- band 2 for Defence and settled probes (§4.1). *Revision 3: applied (§8.6; §12 item 49).*

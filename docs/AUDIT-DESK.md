@@ -1,12 +1,12 @@
 # The Audit Desk
 
-**Status:** design specification for M-audit-desk, M-twins, GEN-spot-the-gap, SCR-audit, GATE-audit and GATE-audit-blind. It elaborates spine §6 and never overrides it; where this document adds a rule the spine does not state, the rule is marked [D] and, if it changes the spine, it is listed under "Spine issues" at the end. **Date:** 2026-10-23 (machine clock). **IDs:** every ID comes from `docs/spine/SPINE.md`. **Owner decisions:** the adopted defaults OD-1 to OD-14 (OD-15 proposed) await owner review.
+**Status:** design specification for M-audit-desk, M-twins, GEN-spot-the-gap, SCR-audit, GATE-audit and GATE-audit-blind. It elaborates spine §6 and never overrides it; where this document adds a rule the spine does not state, the rule is marked [D] and, if it changes the spine, it is listed under "Spine issues" at the end. **Date:** 2026-10-23 (machine clock). **IDs:** every ID comes from `docs/spine/SPINE.md`. **Owner decisions:** the owner reviewed OD-1 to OD-16 on 2026-10-25 (DECISIONS.md, section 1).
 
 **Sources, in precedence order.** The roadmap (`research/context/roadmap.md`); executed runs (`research/spikes/RESULTS.md`, `research/evidence/`); the v2 brief (`research/synthesis/BRIEF.md`, §4.8 and V2-04); the four digests, chiefly the landscape digest §4 and the pedagogy digest §1 and §3.6; three research reports, `research/reports/R2-ai-fv.md` ("the AI-verification report"), `R5-authz-compilers-assurance.md` ("the assurance report") and `L3-assessment-ai.md` ("the assessment report"), with their verification logs; the adversarial reviews A3, A6, A7 and A8, cited by the brief's finding IDs (A3-C3, A8-04 and so on); the spine. Change IDs D1–D26 belong to the first review digest.
 
 **Tags** (as in the spine). `[X RUN-id]` an executed run on disk; `{{run:RUN-id}}` a run that must be recorded before the sentence ships; `[V]` re-checked against a primary source by a digest; `[D]` design rationale or derived arithmetic; evidence grades **A–D** follow the pedagogy digest (A meta-analysis or several RCTs; B one good similar experiment; C small, correlational or preprint; D rationale). Tool numbers, verdicts, flags and versions from this course's own runs carry a run tag; figures and versions quoted from the literature carry their source.
 
-**Words.** This is an internal document. "Judgment" is the internal name of outcome (g)'s measure; learner copy says "audit accuracy". "Anchor", "variant", "pool", "key" and "acceptable set" are internal too; learner copy says "case", "kind of gap" and "sound". The spine calls matched sound and flawed cases "twins"; learner copy cannot, because glossary term 19 reserves "twin" for production twins (see Spine issues), so this document writes "pair" for the matched cases and "sound twin" only where it quotes spine §6.2.
+**Words.** This is an internal document. "Judgment" is the internal name of outcome (g)'s measure; learner copy says "audit accuracy". "Anchor", "variant", "pool", "key" and "acceptable set" are internal too; learner copy says "case", "kind of gap" and "sound". The spine and this document both write "pair" for matched sound and flawed cases, because glossary term 19 reserves "twin" for production twins.
 
 ---
 
@@ -20,11 +20,11 @@ A case is an agent's proposal: a claim (quoted, never stamped), the statement th
 
 | Item | Definition | Where it lives |
 |---|---|---|
-| Outcome (g), spine §2.2 | "Audit Desk balanced accuracy and per-class precision and recall; GEN-spot-the-gap; GEN-which-stamp; the capstone demonstration" | Judgment, derived at read time (I2) |
+| Outcome (g), spine §2.2 | "Audit Desk balanced accuracy and per-class precision and recall; GEN-spot-the-gap; GEN-which-stamp" | Judgment, derived at read time (I2) |
 | Judgment | balanced accuracy on `own · unseen` audit decisions, with an interval, plus per-class precision and recall once a class has n ≥ 10 (§6) | SCR-audit, private and local |
 | Core KCs | KC-10.agent-proposal-triage, KC-4.trust-stack, KC-2.kernel-not-requirement | every case also carries the KCs of its class (§3) |
 | Confusable set | set C, "gap class": G1–G13 and their subclasses; opens at S2 | M-which-is-it rules apply |
-| Dose | 2–3 cases a week; at least six exemplars per class (spine §4.1) | the Keep block; 0–1 case per Today session |
+| Dose | 2–3 cases a week; at least six exemplars per class once its anchors have shipped (spine §4.1) | the Keep block; 0–1 case per Today session |
 
 ### 1.2 Why this form, and how much to expect
 
@@ -128,7 +128,7 @@ The classes overlap at their edges, so single-label keys would be invalid (A8-04
 | Situation | Primary | Also acceptable | Why |
 |---|---|---|---|
 | an `Int` model shipped for `i64` code | G4 | G8 | the encoding slip is also a model that is not the code |
-| a pool that runs some writers at READ COMMITTED | G6e | G7 | "every writer is SERIALIZABLE" is an [A] clause (S6.L9) the claim dropped |
+| a pool that runs some writers at READ COMMITTED | G6e | G7, G8 | "every writer is SERIALIZABLE" is an [A] clause (S6.L9) the claim dropped (G7), and the deployed pool is not the configuration the claim names (G8) |
 | a precedence slip that makes the premises inconsistent | G2 | G1 | the statement is vacuous, and therefore weaker than intended |
 | an agent edits a correct command after a CTI | G13 | G8d | the edit is code bent to fit the proof |
 | a validator that checks shape, not meaning | G11 | G10 | the check observes less than equivalence requires |
@@ -152,22 +152,22 @@ Twenty-five anchors cover all thirteen classes, at least two per stage (spine §
 | AUD-1.1 | S1 | G2 (G1) | Z3Py | {{run:RUN-z3-vacuous-unsat}} | LAB-1.3 | W1-T17, with variants |
 | AUD-1.2 | S1 | G4 (G8) | Z3Py, BitVec 64 | [X RUN-z3-bv64, RUN-z3-bv64-pyodide]; {{run:RUN-z3-bv64-negamt}} | LAB-1, S1.L5 | W1-T17, with variants |
 | AUD-1.3 | S1 | G5 | Z3Py | [X RUN-z3-budget-pyodide, RUN-z3-unknown-pow] | LAB-1, S1.L2 | W1-T17, with variants |
-| AUD-2.1 | S2 | G1 (G12) | SMT in W1; Lean from W2 | [X RUN-z3-refund-a21] | LAB-2 | W1-T17 run-keyed; variants W2-T13 |
+| AUD-2.1 | S2 | G1 (G12) | SMT in W1; Lean from W2 | [X RUN-z3-refund-a21, RUN-lean-refund-a21]; both-parties member {{run:RUN-lean-refund-both}} | LAB-2 | W1-T17 run-keyed; variants W2-T13 |
 | AUD-2.2 | S2 | G6a (G6b for the native form) | Lean | [X RUN-lean-axioms] | LAB-2, S2.L9 | W1-T17 run-keyed; variants W2-T13 |
 | AUD-2.3 | S2 | G6c (G6d) | Lean receipt | [X RUN-lean-skipkernel] | LAB-2, S2.L9 | W1-T17 run-keyed; variants W2-T13 |
 | AUD-2.4 | S2 | G8a (G8c) | Lean | [X RUN-lean-comparator] | LAB-2, S2.L10 | W1-T17 run-keyed; variants W2-T13 |
-| AUD-3.1 | S3 | G8 (G8a) | Lean | none named in the spine (Spine issues) | LAB-3 | W2-T13 |
+| AUD-3.1 | S3 | G8 (G8a) | Lean | {{run:RUN-lean-checker-drift}} | LAB-3 | W2-T13 |
 | AUD-3.2 | S3 | G4 | Lean | {{run:RUN-lean-nat-trunc}} | LAB-3, S3.L7 | W2-T13 |
 | AUD-4.1 | S4 | G8 (G1) | SMT-LIB, Lane A | {{run:RUN-z3-missing-frame}} | LAB-4.4 | W3-T13 |
-| AUD-4.2 | S4 | none: sound (flawed member G1) | SMT-LIB | [X RUN-z3-conservation-noguard, RUN-z3-optimize-min] | LAB-4 | W3-T13 |
+| AUD-4.2 | S4 | none: sound (flawed member G1) | SMT-LIB | [X RUN-z3-conservation-noguard, RUN-z3-optimize-min]; flawed case {{run:RUN-check-fragment}} | LAB-4 | W3-T13 |
 | AUD-4.3 | S4 | G13 (G8d) | Z3, interpreter | {{run:RUN-z3-cti-pair}} | LAB-4.6 | W3-T13 |
 | AUD-5.1 | S5 | G3 | TLA+ | [X RUN-tlc-hold-lasso]; {{run:RUN-tlc-eventually}} | LAB-5, S5.L6 | W3-T13 |
-| AUD-5.2 | S5 | G7 | TLA+ | [X RUN-tlc-hold-lasso]; {{run:RUN-tlc-eventually}} | LAB-5.5 | W3-T13 |
-| AUD-5.3 | S5 | G5 | TLA+ | [X RUN-tlc-doublespend]; {{run:RUN-tlc-inductive}}, {{run:RUN-z3-inductive-param}} | LAB-5.1 | W1-T17 run-keyed; G5 variant W3-T13 |
+| AUD-5.2 | S5 | G7 | TLA+ | [X RUN-tlc-hold-lasso]; {{run:RUN-tlc-eventually}}, {{run:RUN-tlc-hold-fairness}} | LAB-5.5 | W3-T13 |
+| AUD-5.3 | S5 | G5 | TLA+ | [X RUN-tlc-doublespend, RUN-tlc-sym-liveness]; {{run:RUN-tlc-inductive}}, {{run:RUN-z3-inductive-param}} | LAB-5.1 | W1-T17 run-keyed; G5 variants W3-T13 |
 | AUD-5.4 | S5 | G9 | TLA+, SQL | [X RUN-tlc-rtw3, RUN-tlc-atomic, RUN-pg-anomalies] | LAB-5, S5.L3 | W3-T13 |
 | AUD-6.1 | S6 | G11 | Rust, SQL | {{run:RUN-drt-transfers}} | LAB-6.4 | W4-T13 |
 | AUD-6.2 | S6 | G10 (G11) | Rust, SQL | [X RUN-pg-claims]; {{run:RUN-drt-transfers}} | LAB-6.4 | W4-T13 |
-| AUD-6.3 | S6 | G6e (G7 for the pool form) | SQL | {{run:RUN-pg-mixed-levels}}, {{run:RUN-history-g2item}}, {{run:RUN-isorun-upstream}} | LAB-6, S6.L9 | W4-T13 |
+| AUD-6.3 | S6 | G6e (G7 or G8 for the pool form) | SQL | {{run:RUN-pg-mixed-levels}}, {{run:RUN-history-g2item}}, {{run:RUN-isorun-upstream}} | LAB-6, S6.L9 | W4-T13 |
 | AUD-7.1 | S7 | G10 | Z3 pairs, SQL row security | {{run:RUN-z3-count-channel}}, {{run:RUN-pg-rls-covert}} | LAB-7, S7.L6 | W4-T13 |
 | AUD-7.2 | S7 | G12 (G1) | Z3 self-composition | {{run:RUN-z3-selfcomp}} | LAB-7, S7.L7 | W4-T13 |
 | AUD-8.1 | S8 | G7 | TLA+ | {{run:RUN-tlc-double-charge}}, {{run:RUN-tlc-key-ttl}}, {{run:RUN-tlc-outbox-safety}} | LAB-8.8 | W5-T11 |
@@ -207,7 +207,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Sound member:** the query run under `s.set('rlimit', N)` returns `unsat`, with a premise witness, and is stamped with its budget: [P] · Z3 5.3.1 unsat · uncertified · rlimit N [X RUN-z3-starter].
 - **Flawed member:** the run returned `unknown`, and `s.reason_unknown()` reports `canceled` because the budget ran out; the claim reports it as "no counterexample". In the tab, `rlimit` 5e6 gave `unknown (canceled)` in 1.1 s, while a `timeout` setting never returned [X RUN-z3-budget-pyodide]. A second flawed form: `x**y == 8, y > 1` returns `unknown` with "incomplete (theory arithmetic)" [X RUN-z3-unknown-pow], reported as "no solution exists". Under spine §8.8 both are [?] with their reason.
 - **Based on:** S3 Block Public Access (FSE 2020): "if the analysis result is unknown due to a time-out, we say the policy is not Trust Safe", so `unknown` fails closed where it guards enforcement. https://doi.org/10.1145/3368089.3409728 [V]
-- **Operators:** report an inconclusive result as a verdict (proposed, §4.2): shrink the budget, or move the query into nonlinear integer arithmetic. Sound form: the same budget with an `unsat` result, stamped with the budget.
+- **Operators:** report an inconclusive result as a verdict (§4.2): shrink the budget, or move the query into nonlinear integer arithmetic. Sound form: the same budget with an `unsat` result, stamped with the budget.
 - **Evidence:** the raw verdict line and its reason.
 - **Key:** RUN-z3-budget-pyodide, RUN-z3-unknown-pow. **KCs:** KC-1.three-answers, KC-1.unknown-fails-closed.
 
@@ -223,12 +223,12 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
   ```
 
   In W1 the case renders as executed in SMT: with a modify-style update the violation query for the stated property (the customer is non-negative after the refund) is `unsat`, and the query for the merchant is `sat` [X RUN-z3-refund-a21].
-- **Sound member:** per spine §6.2, a refund theorem covering both parties: `NonNeg s → NonNeg (refund s p amt)` for a refund that rejects unless the merchant holds `amt`. Its key is recorded with the Lean rendering in W2-T13. In W1, before that run exists, the sound member is the customer-only statement with an honest card, "protects the customer; the merchant is not covered [N]", keyed by the same run's first line (Spine issues).
+- **Sound member:** per spine §6.2, a refund theorem covering both parties: `NonNeg s → NonNeg (refund s p amt)` for a refund that rejects unless the merchant holds `amt`. Its key, {{run:RUN-lean-refund-both}}, is recorded with the Lean rendering in W2-T13. In W1, before that run exists, the sound member is the customer-only statement with an honest card, "protects the customer; the merchant is not covered [N]", keyed by the first line of RUN-z3-refund-a21 and by the Lean proof of `refund_nonneg` in [X RUN-lean-refund-a21] (spine §6).
 - **Third member:** with a value-style update the stated property itself fails (`sat`, a self-refund) [X RUN-z3-refund-a21]. D3 made that form its own "statement false" case; it is a G12 variant keyed by the same run.
 - **Based on:** Spec-Harness (arXiv 2604.00280, first version 2026-03-31): 22.7% of verifier-accepted specifications had no postcondition, on SpecGenBench. https://arxiv.org/abs/2604.00280 (confirmed by the AI-verification report's verification log)
 - **Operators:** weaken a postcondition (drop the merchant's conjunct); swap ∀ and ∃; drop parentheses. Sound form: drop a conjunct that the remaining ones imply.
 - **Evidence:** a scenario the statement permits and the requirement forbids, such as a refund that leaves the merchant negative; graded by evaluating the statement and the requirement on the scenario, never by matching values.
-- **Key:** RUN-z3-refund-a21. **KCs:** KC-2.theorem-statement-reading, KC-2.kernel-not-requirement.
+- **Key:** [X RUN-z3-refund-a21, RUN-lean-refund-a21]; both-parties member {{run:RUN-lean-refund-both}}. **KCs:** KC-2.theorem-statement-reading, KC-2.kernel-not-requirement.
 
 #### AUD-2.2 · S2 · G6a Hidden trust: escape hatches
 
@@ -247,7 +247,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Sound member:** the same theorem, built and then replayed by the kernel with no complaint; in the recorded log, the replay of the conservation module prints no problem [X RUN-lean-skipkernel].
 - **Flawed member:** a proof built while the `debug.skipKernelTC` option was set. The build exits 0 and `#print axioms` reports no axioms; only the kernel replay rejects the declaration [X RUN-lean-skipkernel]. The case shows the option line and the verdict lines from the recorded run. It never shows how the proof was produced, and no case ships such a construction.
 - **Based on:** an older Lean REPL "did not utilize the Lean verification kernel", so 12 incorrect miniF2F proofs passed (arXiv 2507.14722, 2025-07, Appendix B). https://arxiv.org/abs/2507.14722
-- **Operators:** no source-level operator generates this class, by design. Receipt-level variants come from "drop a verification step" (proposed, §4.2), which yields G6d: a receipt with a build verdict and no replay line.
+- **Operators:** no source-level operator generates this class, by design. Receipt-level variants come from "drop a verification step" (§4.2), which yields G6d: a receipt with a build verdict and no replay line.
 - **Evidence:** the option line and the replay verdict.
 - **Key:** RUN-lean-skipkernel. **KCs:** KC-2.axioms-and-trust.
 
@@ -266,7 +266,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 
 - **Flawed member:** a weakened statement under the same name, which comparator reports as "theorem statement do not match", or a redefined `transfer`, reported as "Const does not match" (exit 1) [X RUN-lean-comparator].
 - **Based on:** FormalQualBench (math.inc; runs evaluated 2026-03-18 and 2026-03-19). Agents attempted workarounds at the elaborator level, and "Comparator catches the illegal axiom". https://math.inc/formalqualbench (a vendor page; the AI-verification report's verification log confirmed the quoted sentence). The card cites the incident for its lesson, that an out-of-band statement check catches what the build accepts, and reproduces nothing of the workaround.
-- **Operators:** weaken a postcondition, kept under the pinned name; redefine a definition the statement uses (proposed). Sound form: a different proof of the same pinned statement.
+- **Operators:** weaken a postcondition, kept under the pinned name; redefine a definition the statement uses. Sound form: a different proof of the same pinned statement.
 - **Evidence:** the mismatched identifiers and the comparator verdict.
 - **Key:** RUN-lean-comparator. **KCs:** KC-2.statement-pinning, KC-2.kernel-not-requirement.
 
@@ -276,9 +276,9 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Sound member:** the step-invariant (or preservation) theorem stated over `HasType`, the relation the shipped checker implements, pinned in the challenge pack.
 - **Flawed member:** the theorem is proved over `HasType'`, a stricter copy (for example one that also excludes self-transfers), while the shipped checker implements `HasType`; programs the shipped checker accepts fall outside the theorem.
 - **Based on:** VERINA pull request #17 (merged 2026-04-17): a published verification benchmark fixed its specifications in 18 tasks and its code in 9. https://github.com/sunblaze-ucb/verina/pull/17 [V]
-- **Operators:** redefine a definition the statement uses, or point the theorem at a stricter copy (proposed). Sound form: the theorem over the shipped `HasType`, with an extra helper lemma.
+- **Operators:** redefine a definition the statement uses, or point the theorem at a stricter copy. Sound form: the theorem over the shipped `HasType`, with an extra helper lemma.
 - **Evidence:** the mismatched identifiers; comparator reports the statement mismatch when the challenge pins `HasType`.
-- **Key:** no run is named in the spine (Spine issues); the comparator verdict's shape is [X RUN-lean-comparator], and the S3 recording task is W2-T10. **KCs:** KC-3.goldens-as-theorems, KC-2.statement-pinning.
+- **Key:** {{run:RUN-lean-checker-drift}}, recorded by W2-T13; the comparator verdict's shape is [X RUN-lean-comparator]. **KCs:** KC-3.goldens-as-theorems, KC-2.statement-pinning.
 
 #### AUD-3.2 · S3 · G4 Encoding and type-semantics slip
 
@@ -308,7 +308,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Based on:** Erdős problem #124 (2025-11): the Lean statement said "= 1" where the comment said "≥ 1", which made it weaker; the corrected form was also proved. https://www.erdosproblems.com/forum/thread/124
 - **Operators:** weaken a postcondition (drop a conjunct of `Inv′`) for the flawed member; drop a premise (the guard) for the sound one. The edit has the same shape both ways and the opposite effect, which is what the pair teaches.
 - **Evidence:** sound: the restatement (§5.4, step 3). Flawed: a scenario the checked query permits and the stated invariant forbids.
-- **Key:** RUN-z3-conservation-noguard, RUN-z3-optimize-min. **KCs:** KC-4.vc-shape, KC-2.theorem-statement-reading.
+- **Key:** RUN-z3-conservation-noguard, RUN-z3-optimize-min; flawed case {{run:RUN-check-fragment}}. **KCs:** KC-4.vc-shape, KC-2.theorem-statement-reading.
 
 #### AUD-4.3 · S4 · G13 Induction failure confused with a bug
 
@@ -316,7 +316,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Sound member:** the inductive step for an invariant is `sat`, a counterexample to induction (CTI); bounded reachability finds no violation within N; the invariant is strengthened (for example, a captured amount never exceeds the amount held), the strengthened invariant is inductive, and the command is unchanged.
 - **Flawed member:** the same CTI, but the agent changes the correct command (adds a guard or alters the update), although the CTI's pre-state is unreachable.
 - **Based on:** Spec-Harness (arXiv 2604.00280): 5.6% of verifier-accepted specifications "come with code that the model changed", on SpecGenBench. https://arxiv.org/abs/2604.00280
-- **Operators:** weaken an invariant to produce a CTI (GEN-cti-or-bug's CTI template), then edit the executable code (proposed). Sound form: the "reachable" template, where the command really is wrong and the same kind of edit fixes it.
+- **Operators:** weaken an invariant to produce a CTI (GEN-cti-or-bug's CTI template), then edit the executable code. Sound form: the "reachable" template, where the command really is wrong and the same kind of edit fixes it.
 - **Evidence:** the CTI's pre-state shown unreachable within the stated bound, with the bound printed (I10), plus the diff.
 - **Key:** {{run:RUN-z3-cti-pair}} (SP-4.3). **KCs:** KC-4.cti-or-bug, KC-4.invariant-vs-inductive.
 
@@ -324,9 +324,9 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 
 - **Claim:** "TLC finds no deadlock, so every hold resolves."
 - **Sound member:** `EventuallyResolves` checked as a temporal property under stated fairness on system actions, stamped [M] · constants with the fairness drawn as [A] (CL-5.3) {{run:RUN-tlc-eventually}}.
-- **Flawed member:** the claim argues "every hold resolves" from deadlock freedom and an invariant check. A deadlock-free spec can still loop: in the Hold spec, TLC reports `EventuallyResolves` violated by the lasso Try → Busy → Try, back to the start [X RUN-tlc-hold-lasso].
+- **Flawed member:** the claim argues "every hold resolves" from deadlock freedom and an invariant check. A deadlock-free spec can still loop: in the Hold spec, TLC reports `EventuallyResolves` violated by the lasso Try, Busy, Try, then Busy back to state 1 [X RUN-tlc-hold-lasso].
 - **Based on:** SysMoBench (arXiv 2509.23130, 2025-09): model-written TLA+ specifications violated 41.9% of liveness properties, against 8.3% of safety properties. https://arxiv.org/abs/2509.23130 [V]
-- **Operators:** restate an "eventually" property as an invariant (proposed). Sound form: a safety property ("a hold never resolves twice") checked as an invariant.
+- **Operators:** restate an "eventually" property as an invariant. Sound form: a safety property ("a hold never resolves twice") checked as an invariant.
 - **Evidence:** a lasso, validated by INS-lasso.
 - **Key:** RUN-tlc-hold-lasso; {{run:RUN-tlc-eventually}}. **KCs:** KC-5.safety-vs-liveness, KC-5.lasso-reading.
 
@@ -338,18 +338,19 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Based on:** SysMoBench: fairness choices in model-written specifications were "overly technical or random". https://arxiv.org/abs/2509.23130 [V]
 - **Operators:** drop or misplace fairness. Sound form: move fairness between two system actions.
 - **Evidence:** the fairness conjunct and the lasso that appears when it is removed; with fairness on Try and Busy only, TLC returns the starving lasso [X RUN-tlc-hold-lasso].
-- **Key:** RUN-tlc-hold-lasso; {{run:RUN-tlc-eventually}}. **KCs:** KC-5.fairness.
+- **Key:** RUN-tlc-hold-lasso; {{run:RUN-tlc-eventually}}, {{run:RUN-tlc-hold-fairness}}. **KCs:** KC-5.fairness.
 
 #### AUD-5.3 · S5 · G5 Bounded or inconclusive presented as proof
 
 - **Claim:** "TLC found no invariant violation."
 - **Sound member:** DoubleSpend (Init 100, Amount 80, two workers) run with `-deadlock` reports "Invariant NoOverspend is violated" at 11 distinct states, with a 5-state, 4-action trace [X RUN-tlc-doublespend]; the honest stamp is [R] with a witness length of 4 actions.
 - **Flawed member:** the same spec under default flags stops at "Deadlock reached" after 10 distinct states [X RUN-tlc-doublespend]. The invariant was checked only on the states explored, so the verdict is [?] · stopped at deadlock (spine §8.8), not "no violation".
-- **G5 variant (W3-T13):** "TLC inductive check at N = 3 stamped PROVED for all N". The honest stamp is [M] · constants · inductive at N = 3; [P] for every N needs the parametric proof {{run:RUN-tlc-inductive}}, {{run:RUN-z3-inductive-param}}.
+- **First G5 variant (W3-T13):** "TLC inductive check at N = 3 stamped PROVED for all N". The honest stamp is [M] · constants · inductive at N = 3; [P] for every N needs the parametric proof {{run:RUN-tlc-inductive}}, {{run:RUN-z3-inductive-param}}.
+- **Second G5 variant (W3-T13):** "TLC found no liveness violation", from a run that declared `SYMMETRY` while checking a liveness `PROPERTY`. TLC itself warns that this "might cause TLC to miss violations of the stated liveness properties" [X RUN-tlc-sym-liveness], so a "no violation" from that run is inconclusive. Sound form: the same property checked with symmetry off.
 - **Based on:** this course's own v1 mock-ups printed TLC numbers that no run had produced (2026-10-20), and the executed run replaced them (2026-10-21). Sources: `docs/history/v1/` and `research/evidence/A5r3/tla/run.log` in this repository.
-- **Operators:** stamp a bounded inductive check as proof; report an inconclusive result as a verdict (proposed: drop `-deadlock` and keep the claim). Sound form: the atomic variant explored completely, [M] · constants · complete, 4 distinct states [X RUN-tlc-atomic].
+- **Operators:** stamp a bounded inductive check as proof; report an inconclusive result as a verdict (drop `-deadlock` and keep the claim). Sound form: the atomic variant explored completely, [M] · constants · complete, 4 distinct states [X RUN-tlc-atomic].
 - **Evidence:** the argv and the stop line.
-- **Key:** RUN-tlc-doublespend. **KCs:** KC-5.tlc-flags-matter, KC-5.bounded-scope; KC-5.inductive-invariant-tla for the G5 variant.
+- **Key:** RUN-tlc-doublespend; [X RUN-tlc-sym-liveness] for the second G5 variant. **KCs:** KC-5.tlc-flags-matter, KC-5.bounded-scope; KC-5.inductive-invariant-tla for the first G5 variant.
 
 #### AUD-5.4 · S5 · G9 Granularity
 
@@ -385,9 +386,9 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 
 - **Claim:** "Serializable by construction; the database guarantees it."
 - **Sound member:** the claim names PostgreSQL 18.6, reads back `transaction_isolation` for every writer, retries whole commands on 40001 and 40P01 [X RUN-pg-anomalies, RUN-pg-claims], and rests on the held seam SEAM-14, tested nightly with the upstream `update-conflict-out` spec {{run:RUN-isorun-upstream}}.
-- **Flawed member:** the claim rests on SERIALIZABLE in a version with a reported anomaly, or a connection pool's setup puts some writers at READ COMMITTED; mixed isolation levels void the guarantee (SP-6.10) {{run:RUN-pg-mixed-levels}}. The pool form also accepts G7, because "every writer is SERIALIZABLE" is an [A] clause the claim dropped.
+- **Flawed member:** the claim rests on SERIALIZABLE in a version with a reported anomaly, or a connection pool's setup puts some writers at READ COMMITTED; mixed isolation levels void the guarantee (SP-6.10) {{run:RUN-pg-mixed-levels}}. The pool form also accepts G7 or G8, because "every writer is SERIALIZABLE" is an [A] clause the claim dropped (G7) and the deployed pool is not the configuration the claim names (G8).
 - **Based on:** Jepsen, PostgreSQL 12.3 (2020-06-12): SERIALIZABLE exhibited G2-item. https://jepsen.io/analyses/postgresql-12.3 [V] (toy history: the dated-incident specimen SP-6.11)
-- **Operators:** change an isolation level; pin an affected engine version (proposed). Sound form: raise the pool to SERIALIZABLE, with whole-command retries.
+- **Operators:** change an isolation level; pin an affected engine version. Sound form: raise the pool to SERIALIZABLE, with whole-command retries.
 - **Evidence:** the version string or configuration read back, plus the history.
 - **Key:** {{run:RUN-pg-mixed-levels}}, {{run:RUN-history-g2item}}, {{run:RUN-isorun-upstream}}. **KCs:** KC-6.db-as-assumption, KC-6.serializable-retries.
 
@@ -406,8 +407,8 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Claim:** "No tenant can ever observe any change in another tenant."
 - **Sound member:** noninterference modulo the declassified share. Paired states that agree on everything tenant A may see, including documents tenant B has shared with A, give A equal observations; the declassification record states what, who, where and when (CL-7.3).
 - **Flawed member:** the blanket claim. Sharing is a legitimate feature: when B edits a document shared with A, A observes the change, so the claim forbids behavior the requirement wants.
-- **Based on:** a study of model answers to Erdős problems (arXiv 2601.22401, 2026-01-29): of 200 graded answers, 13 were "meaningfully correct", and 50 were "technically valid but mathematically vacuous", missing the problem's intent. https://arxiv.org/abs/2601.22401
-- **Operators:** drop a declassification (proposed for spine §6.2; it is already in the S7 Defence's mutation list). Sound form: add a declassification with its record.
+- **Based on:** AuthV2 (ICSE 2025): all seven shadow-test mismatches came from the specification, and "no issues were found with tools or proofs". https://www.amazon.science/publications/formally-verified-cloud-scale-authorization [V]
+- **Operators:** drop a declassification (it is also in the S7 Defence's mutation list). Sound form: add a declassification with its record.
 - **Evidence:** a scenario of legitimate behavior (a share) that the claim forbids, graded as multiple true/false over scenarios: the statement is evaluated on each, and the requirement's verdict is authored.
 - **Key:** {{run:RUN-z3-selfcomp}}. **KCs:** KC-7.declassification, KC-2.kernel-not-requirement.
 
@@ -417,7 +418,7 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Sound member:** at-least-once delivery with no double charge given the provider's idempotency, stated as [A], plus the provider-horizon clause written in LAB-8.8 (CL-8.2) {{run:RUN-tlc-outbox-safety}}.
 - **Flawed member:** "exactly once", with the provider's idempotency absent from the assumptions.
 - **Based on:** Stripe's API v1 documentation: idempotency keys may be pruned after at least 24 hours (read 2026-10-21). https://docs.stripe.com/api/idempotent_requests (also the dated-incident specimen SP-8.5)
-- **Operators:** drop or misplace an environment assumption (a proposed generalization of "drop or misplace fairness"). Sound form: restore the assumption as [A].
+- **Operators:** drop or misplace an environment assumption (a generalization of "drop or misplace fairness"). Sound form: restore the assumption as [A].
 - **Evidence:** a trace with a duplicate effect: a crash after the provider accepts and before the acknowledgement leads to a second dispatch (SP-8.1).
 - **Key:** {{run:RUN-tlc-double-charge}}, {{run:RUN-tlc-key-ttl}}, {{run:RUN-tlc-outbox-safety}}. **KCs:** KC-8.at-least-once, KC-8.provider-horizon.
 
@@ -426,8 +427,8 @@ Each card gives the agent's claim (always quoted, UNREVIEWED), the two members o
 - **Claim:** "The simulator implements the outbox spec; all tests pass."
 - **Sound member:** NDJSON traces from the learner's Rust simulator, validated against the spec with TLC over n seeds: [T] · n seeds, composed with the spec's [M] (CL-8.3).
 - **Flawed member:** the code acknowledges before the durable write, while the spec orders the write first. Unit tests pass; trace validation rejects the trace at the acknowledgement step.
-- **Based on:** MongoDB (arXiv 2006.00915): checking traces against a highly abstract specification was "impractical", while model-based test-case generation "was highly successful for Realm Sync". https://arxiv.org/abs/2006.00915 [V]
-- **Operators:** reorder two effects in the implementation (proposed; "ack before the durable write" is already in the S8 Defence's mutation list). Sound form: reorder two effects the spec allows in either order.
+- **Based on:** CCF (NSDI 2025): checking the implementation against its TLA+ spec, trace validation included, found six consensus bugs (arXiv 2406.17455, §7). https://arxiv.org/abs/2406.17455 [V]
+- **Operators:** reorder two effects in the implementation ("ack before the durable write" is already in the S8 Defence's mutation list). Sound form: reorder two effects the spec allows in either order.
 - **Evidence:** the trace and its first non-conforming step.
 - **Key:** {{run:RUN-tlc-trace-validation}} (SP-8.4). **KCs:** KC-8.trace-validation.
 
@@ -476,11 +477,11 @@ Each class grows to at least six exemplars through seeded mutation operators who
 | replace a proof by a single-database test | the method behind a stamp | G11 | the same test, stamped [T] · 1 instance | the verdict→stamp table (GEN-which-stamp) |
 | stamp a bounded inductive check as proof | the stamp on a bounded check | G5 | the same check, stamped [M] · constants · inductive at N = k | the verdict→stamp table |
 
-### 4.2 Operators this document proposes
+### 4.2 Operators added to spine §6.2
 
-The spine's list leaves several anchors without an operator that produces their class: G3 and G13 cannot reach six exemplars from it, and G5 grows only through TLA+. These operators fill the gap; each traces to an anchor, a subclass or a Defence mutation the spine already names, and none needs a new ID (Spine issues).
+The operators of §4.1 alone leave several anchors without an operator that produces their class: G3 and G13 cannot reach six exemplars from them, and G5 grows only through TLA+. The spine's Variants paragraph (§6.2) now adds these operators; each traces to an anchor, a subclass or a Defence mutation the spine names, and none needs a new ID.
 
-| Operator (proposed) | Classes | Matched sound form | Traced to |
+| Operator | Classes | Matched sound form | Traced to |
 |---|---|---|---|
 | report an inconclusive result as a verdict | G5 | report it as [?] with its reason | AUD-1.3, AUD-5.3; spine §8.8 |
 | drop a verification step and keep the claim (the replay, `lake check`, the comparator, the cvc5 cross-check) | G6d | the step present and passing | AUD-2.3; the receipt pipeline (spine §9.4) |
@@ -502,6 +503,7 @@ Runs already on disk supply ready variants, as the brief's "tool-trust specimens
 | SP-4.5 | [X RUN-z3-11179] | "proved" on Z3 5.3.0, which answers `unsat` on both satisfiable inputs | G6e | the same inputs on 5.3.1, reported as [?] (`unknown`), failing closed |
 | SP-4.6 | [X RUN-cvc5-alethe] | "certified by cvc5" when the Alethe proof contains a `hole` step | G6a | the `unsat` stamped "uncertified", with the hole named |
 | SP-5.2 | [X RUN-tlc-doublespend] | "no violation" from a run stopped at "Deadlock reached" | G5 | the `-deadlock` run, stamped [R] |
+| none (AUD-5.3's second variant) | [X RUN-tlc-sym-liveness] | "no violation" from a liveness check that declared `SYMMETRY`, which TLC warns "might cause TLC to miss violations of the stated liveness properties" | G5 | the same property checked with symmetry off |
 
 ### 4.3 The keying battery
 
@@ -532,17 +534,17 @@ The order encodes a judgment [D]: a proof that leans on `sorryAx` says nothing a
 |---|---|---|---|
 | G1 | AUD-2.1; AUD-4.2's flawed member | weaken a postcondition; drop parentheses; swap ∀ and ∃ | yes, across SMT, Lean and policies |
 | G2 | AUD-1.1 | add a contradictory hypothesis; drop parentheses | yes, from one anchor across media |
-| G3 | AUD-5.1 | none in §6.2; proposed: restate "eventually" as an invariant | not with §6.2 alone |
+| G3 | AUD-5.1 | none in §4.1; restate "eventually" as an invariant (§4.2) | yes, with the §4.2 operator |
 | G4 | AUD-1.2, AUD-3.2 | ℤ → ℕ or BitVec 64 | yes; RUN-z3-bv64 alone gives two flawed forms |
-| G5 | AUD-1.3, AUD-5.3 | stamp a bounded inductive check as proof; proposed: report an inconclusive result as a verdict; SP-5.2 | yes with the proposal; with §6.2 alone only through TLA+ |
+| G5 | AUD-1.3, AUD-5.3 | stamp a bounded inductive check as proof; report an inconclusive result as a verdict (§4.2); SP-5.2; the symmetry variant | yes with the §4.2 operator; with §4.1 alone only through TLA+ |
 | G6 | AUD-2.2, AUD-2.3, AUD-6.3 | insert `native_decide` or `sorry`; change an isolation level; SP-2.8, SP-4.5, SP-4.6 | yes |
-| G7 | AUD-5.2, AUD-8.1 | drop or misplace fairness; proposed: environment assumptions | yes |
-| G8 | AUD-2.4, AUD-3.1, AUD-4.1, AUD-8.2 | drop a frame conjunct; move the conclusion into a premise; weaken a postcondition under the pinned name; proposed: redefine, reorder, edit code | yes |
+| G7 | AUD-5.2, AUD-8.1 | drop or misplace fairness; environment assumptions (§4.2) | yes |
+| G8 | AUD-2.4, AUD-3.1, AUD-4.1, AUD-8.2 | drop a frame conjunct; move the conclusion into a premise; weaken a postcondition under the pinned name; redefine, reorder, edit code (§4.2) | yes |
 | G9 | AUD-5.4 | split an atomic action | yes, in TLA+ and SQL |
 | G10 | AUD-6.2, AUD-7.1, AUD-9.1 | widen or narrow the observer | yes |
 | G11 | AUD-6.1, AUD-9.2 | replace a proof by a single-database test | yes |
-| G12 | AUD-7.2 | drop parentheses and swap ∀ and ∃ (when the result is incomparable with the requirement); proposed: drop a declassification | yes |
-| G13 | AUD-4.3 | none in §6.2; GEN-cti-or-bug plus the proposed code edit | not with §6.2 alone |
+| G12 | AUD-7.2 | drop parentheses and swap ∀ and ∃ (when the result is incomparable with the requirement); drop a declassification (§4.2) | yes |
+| G13 | AUD-4.3 | none in §4.1; GEN-cti-or-bug plus the code edit (§4.2) | yes, with the §4.2 operator |
 
 ---
 
@@ -654,13 +656,13 @@ The three-line cap means selecting every line cannot validate a declaration find
 - **BA** is the mean of two proportions, so its interval is assembled from the 97.5% Wilson intervals of TPR and TNR: [(L_TPR + L_TNR) ÷ 2, (U_TPR + U_TNR) ÷ 2]. The two intervals hold together with probability at least 95% (Bonferroni), so the interval for their mean holds at least that often [D]. Worked examples [D]: flawed 8 of 10 and sound 8 of 10 give BA 0.80 with interval 0.45–0.95; flawed 16 of 20 and sound 14 of 20 give 0.75 with interval 0.50–0.90.
 - **Per-class figures** appear only once n ≥ 10 (spine §6): a class's recall once ten cases of that primary class are counted, its precision once the learner has named it ten times. Below that the class shows "n so far; a rate appears at 10" and no percentage.
 - **Every rate** shows its n and its interval; I10 applies to the course's own graders.
-- **Calibration** from step-1 calls goes to the Mirror: bias and hit rate per band with Wilson intervals, and nothing diagnosed below about 20–30 calls per band (spine §8.5).
+- **Calibration** from step-1 calls goes to the Mirror: bias and hit rate per band with Wilson intervals, and a band is diagnosed only with at least 20 calls and an interval wholly outside it (spine §8.5).
 
 ### 6.6 Defence Part C
 
 - **Draw:** four cases, at least one sound, from the stage's pairs and their variants; S9 runs four per half, and S10 includes one case harvested by `statespace audit`.
 - **Hit:** a flawed case found with a correct finding, or a sound case accepted with its restatement answered.
-- **Pass:** at most one miss, the rule for a part with five or fewer items, alongside the Defence's overall rule; a failed part is retaken on fresh seeds after at least three days (spine §8.6).
+- **Pass:** the part's 60% floor, which with four cases allows one miss, alongside the Defence's overall rule; a failed part is retaken on fresh seeds after at least three days (spine §8.6).
 - **Stamp:** the part's result is [T] · 4 cases with its Wilson interval (for example, 3 of 4 gives 0.30–0.95 [D]); a pass is never PROVED competence.
 
 ### 6.7 Never shown
@@ -804,7 +806,7 @@ G3, G9, G10 and G13 have no row here, and G5 only a partial one: they come from 
 | W1-T17 | W1 | M-audit-desk, M-twins, SCR-audit; AUD-1.1–AUD-1.3 with variants; AUD-2.1–AUD-2.4 and AUD-5.3 keyed by executed runs, without variants, scheduled after LAB-2 and LAB-5 | GATE-audit, GATE-audit-blind |
 | W2-T12 | W2 | the Defence engine, Part C included | GATE-schema; ledger property tests |
 | W2-T13 | W2 | AUD-3.1, AUD-3.2; variants of AUD-2.1–AUD-2.4 | GATE-audit |
-| W3-T13 | W3 | AUD-4.1–AUD-4.3, AUD-5.1, AUD-5.2, AUD-5.4; AUD-5.3's G5 variant | GATE-audit |
+| W3-T13 | W3 | AUD-4.1–AUD-4.3, AUD-5.1, AUD-5.2, AUD-5.4; AUD-5.3's G5 variants | GATE-audit |
 | W3-T14 | W3 | Clearinghouse v0 incidents | GATE-audit-blind extended to the incidents; RUN-docket-baselines |
 | W4-T13 | W4 | AUD-6.1–AUD-6.3, AUD-7.1, AUD-7.2 | GATE-audit |
 | W5-T11 | W5 | AUD-8.1–AUD-9.2; `statespace audit` | GATE-audit; keys computed locally |
@@ -831,20 +833,22 @@ G3, G9, G10 and G13 have no row here, and G5 only a partial one: they come from 
 
 ## 12. Spine issues
 
+This list was resolved in spine revision 3 on 2026-10-25 (spine §15). Each item ends with its outcome and the spine sections that carry it.
+
 Items in `docs/spine/SPINE.md` that this document believes are wrong, inconsistent or underspecified, with the choice made here.
 
-1. **"Twin" means two things.** Glossary term 19 defines "twin" as a production system pinned at a SHA, while §6, M-twins and the AUD table call matched sound and flawed cases "twins". Learner copy at the Desk cannot use the word without colliding; this document writes "pair" and recommends that §6 and M-twins do the same.
-2. **AUD-2.1's sound twin has no executed key.** §6 says the five W1 anchors from later stages "ship keyed only by executed runs", but RUN-z3-refund-a21 keys only the flawed variant (and a narrower customer-only claim), not "a refund theorem covering both parties". This document uses the honest customer-only claim as the W1 sound member and moves the both-parties member to W2-T13 with its own run.
-3. **§6.2 has no key-run column.** AUD-3.1 names no run at all. AUD-4.2, AUD-5.1 and AUD-5.2 can be keyed by executed runs the table does not cite (RUN-z3-conservation-noguard, RUN-z3-optimize-min, RUN-tlc-hold-lasso). GATE-audit needs every key from a run, so the table should carry run references, as §5.1 does for specimens.
-4. **The operator list cannot grow every class.** No §6.2 operator produces G3 or G13, so neither can reach six exemplars; G5 grows only through TLA+; and AUD-1.3, AUD-2.3, AUD-3.1, AUD-4.3, AUD-5.1, AUD-6.3, AUD-7.2, AUD-8.1 and AUD-8.2 have no operator for their own class. §4.2 proposes eleven operators, each traced to an anchor, a subclass or a Defence mutation the spine already names.
-5. **GATE-audit's six-per-class count cannot hold in W1.** §4.1 says GATE-audit holds "≥ 6 per class", but W1-T17 requires GATE-audit green with eight anchors and variants for only three of them. The count should apply to classes whose anchors have shipped, or start at W5.
-6. **GATE-audit-blind's "chance" is undefined.** With a naive null, topic-is-class fails every pool on class figures, because a case's own stage legitimately narrows its class. §7.4 defines the null: a full permutation for decision figures, a within-stage permutation for class figures.
-7. **The sound share is undefined for single-case streams.** §6 draws the share per session, but Today serves 0–1 case per session and the Clearinghouse 1–3 incidents a week. §5.2 draws it per block of 10 serves, with independent draws, because feedback follows every serve.
-8. **"Wilson interval" for balanced accuracy.** §2.2's criterion for outcome (g) shows balanced accuracy "with a Wilson interval", but Wilson intervals are defined for a single proportion. §6.5 assembles the interval from the two parts' 97.5% Wilson intervals (Bonferroni).
-9. **Multi-label keys are unscored in the spine.** Digest-review-2 (A4) makes keys multi-label, and §6 does not say how per-class precision and recall treat an acceptable set. §6.2 defines them with a primary class and an acceptable set.
-10. **AUD-6.3 mixes two failures under G6e.** A database anomaly under SERIALIZABLE is a trusted-base bug, but a pool that runs writers at READ COMMITTED drops S6.L9's [A] clause "every writer is SERIALIZABLE", which fits G7 at least as well. This document keeps G6e as primary and accepts G7 for the pool form.
-11. **AUD-2.4's "based on" card.** FormalQualBench reports an injected axiom that comparator caught, which is closer to G8c or G6a than to statement substitution. The anchor's class is right; its card should cite the incident for its lesson, the out-of-band statement check, as §3 does. The landscape digest also lists "the FormalQualBench literal" as unverified, so only the confirmed sentence is quoted.
-12. **Dates.** The spine dates Spec-Harness "2026-04", while the AI-verification report gives its first version as 2026-03-31 (the arXiv identifier 2604.00280 is consistent with both). The same report dates VERINA's pull request #17 to 2026-03-05, while the landscape digest and the spine say "merged 2026-04-17"; the cards should say which event each date marks.
-13. **Evidence on disk without a run ID.** `research/evidence/a2r3/out/tlc_runs.txt` also records TLC's warning that declaring symmetry during liveness checking can miss violations, a ready G5 variant with no ID in §9.5. `research/evidence/a2r3/out/lean_audit.txt` holds a compiled Lean rendering of the refund case that could key AUD-2.1's Lean member, also without an ID.
-14. **S9's Part C draws.** §3.9 drew Part C's cases "per half from the AUD-9.1–AUD-9.2 twin pool" without saying which anchor serves which half, while a mini-Defence samples only its own half; one anchor per half would leave each half's four cases to a single family's variants, which is thin. AUD-9.1 is scheduled after S9.L4 and AUD-9.2 after LAB-9.11 (§3.1), but mini-Defence A draws AUD-9.1 variants and IR-level AUD-9.2 variants, since half A teaches translation validation (S9.L2, LAB-9.1), and mini-Defence B draws both anchors' variants, since half B states the observations and proves the abort case (LAB-9.4, LAB-9.9). §3.9 now states this split.
-15. **No learner word for "gap class".** The glossary (§0) has no term for it. "Kind of gap" is plain English and needs no new term under the 25-term cap; GATE-lessons should accept it.
+1. **"Twin" means two things.** Glossary term 19 defines "twin" as a production system pinned at a SHA, while §6, M-twins and the AUD table call matched sound and flawed cases "twins". Learner copy at the Desk cannot use the word without colliding; this document writes "pair" and recommends that §6 and M-twins do the same. *Revision 3: already resolved (§0 term 19, §6, §7 M-twins, §12 item 46).*
+2. **AUD-2.1's sound twin has no executed key.** §6 says the five W1 anchors from later stages "ship keyed only by executed runs", but RUN-z3-refund-a21 keys only the flawed variant (and a narrower customer-only claim), not "a refund theorem covering both parties". This document uses the honest customer-only claim as the W1 sound member and moves the both-parties member to W2-T13 with its own run. *Revision 3: already resolved (§6 Pool, §6.2 AUD-2.1, §13 W2-T13).*
+3. **§6.2 has no key-run column.** AUD-3.1 names no run at all. AUD-4.2, AUD-5.1 and AUD-5.2 can be keyed by executed runs the table does not cite (RUN-z3-conservation-noguard, RUN-z3-optimize-min, RUN-tlc-hold-lasso). GATE-audit needs every key from a run, so the table should carry run references, as §5.1 does for specimens. *Revision 3: already resolved (§6.2 Key run).*
+4. **The operator list cannot grow every class.** No §6.2 operator produces G3 or G13, so neither can reach six exemplars; G5 grows only through TLA+; and AUD-1.3, AUD-2.3, AUD-3.1, AUD-4.3, AUD-5.1, AUD-6.3, AUD-7.2, AUD-8.1 and AUD-8.2 have no operator for their own class. §4.2 proposes eleven operators, each traced to an anchor, a subclass or a Defence mutation the spine already names. *Revision 3: already resolved (§6.2 Variants).*
+5. **GATE-audit's six-per-class count cannot hold in W1.** §4.1 says GATE-audit holds "≥ 6 per class", but W1-T17 requires GATE-audit green with eight anchors and variants for only three of them. The count should apply to classes whose anchors have shipped, or start at W5. *Revision 3: already resolved (§4.1, §6, §11.2 GATE-audit).*
+6. **GATE-audit-blind's "chance" is undefined.** With a naive null, topic-is-class fails every pool on class figures, because a case's own stage legitimately narrows its class. §7.4 defines the null: a full permutation for decision figures, a within-stage permutation for class figures. *Revision 3: already resolved (§6 Scoring, §11.2 GATE-audit-blind).*
+7. **The sound share is undefined for single-case streams.** §6 draws the share per session, but Today serves 0–1 case per session and the Clearinghouse 1–3 incidents a week. §5.2 draws it per block of 10 serves, with independent draws, because feedback follows every serve. *Revision 3: applied (§6 Pool).*
+8. **"Wilson interval" for balanced accuracy.** §2.2's criterion for outcome (g) shows balanced accuracy "with a Wilson interval", but Wilson intervals are defined for a single proportion. §6.5 assembles the interval from the two parts' 97.5% Wilson intervals (Bonferroni). *Revision 3: already resolved (§2.2, §6 Scoring).*
+9. **Multi-label keys are unscored in the spine.** Digest-review-2 (A4) makes keys multi-label, and §6 does not say how per-class precision and recall treat an acceptable set. §6.2 defines them with a primary class and an acceptable set. *Revision 3: already resolved (§6 Scoring).*
+10. **AUD-6.3 mixes two failures under G6e.** A database anomaly under SERIALIZABLE is a trusted-base bug, but a pool that runs writers at READ COMMITTED drops S6.L9's [A] clause "every writer is SERIALIZABLE", which fits G7 at least as well. This document keeps G6e as primary and accepts G7 for the pool form. *Revision 3: already resolved (§6.2 AUD-6.3).*
+11. **AUD-2.4's "based on" card.** FormalQualBench reports an injected axiom that comparator caught, which is closer to G8c or G6a than to statement substitution. The anchor's class is right; its card should cite the incident for its lesson, the out-of-band statement check, as §3 does. The landscape digest also lists "the FormalQualBench literal" as unverified, so only the confirmed sentence is quoted. *Revision 3: already resolved (§6.2 AUD-2.4).*
+12. **Dates.** The spine dates Spec-Harness "2026-04", while the AI-verification report gives its first version as 2026-03-31 (the arXiv identifier 2604.00280 is consistent with both). The same report dates VERINA's pull request #17 to 2026-03-05, while the landscape digest and the spine say "merged 2026-04-17"; the cards should say which event each date marks. *Revision 3: already resolved (§6.2; §15 'Left unchanged').*
+13. **Evidence on disk without a run ID.** `research/evidence/a2r3/out/tlc_runs.txt` also records TLC's warning that declaring symmetry during liveness checking can miss violations, a ready G5 variant with no ID in §9.5. `research/evidence/a2r3/out/lean_audit.txt` holds a compiled Lean rendering of the refund case that could key AUD-2.1's Lean member, also without an ID. *Revision 3: already resolved (§9.5, §6.2 Variants).*
+14. **S9's Part C draws.** §3.9 drew Part C's cases "per half from the AUD-9.1–AUD-9.2 twin pool" without saying which anchor serves which half, while a mini-Defence samples only its own half; one anchor per half would leave each half's four cases to a single family's variants, which is thin. AUD-9.1 is scheduled after S9.L4 and AUD-9.2 after LAB-9.11 (§3.1), but mini-Defence A draws AUD-9.1 variants and IR-level AUD-9.2 variants, since half A teaches translation validation (S9.L2, LAB-9.1), and mini-Defence B draws both anchors' variants, since half B states the observations and proves the abort case (LAB-9.4, LAB-9.9). §3.9 now states this split. *Revision 3: applied (§3.9 Defence (S9) Part C).*
+15. **No learner word for "gap class".** The glossary (§0) has no term for it. "Kind of gap" is plain English and needs no new term under the 25-term cap; GATE-lessons should accept it. *Revision 3: already resolved (§0 Nouns, §11.2 GATE-lessons).*

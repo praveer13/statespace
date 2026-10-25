@@ -12,7 +12,7 @@ If you read only two sections before your first weekend, read §4.1 (LAB-1 needs
 
 ## 1. What a lab is
 
-A lab is a staged build on your own machine. You write real code, proofs and specifications, run the real tools on them, and keep what comes out: receipts, claim cards and specimens. There are ten labs, LAB-1 to LAB-10, one for each stage S1 to S10. They live in one repository, `statespace-lab`, which you start from the template and keep. The roadmap asks for one evolving lab repository, and that repository is your record: the browser keeps only your practice events, so back the repository up with git.
+A lab is a staged build on your own machine. You write real code, proofs and specifications, run the real tools on them, and keep what comes out: receipts, claim cards and specimens. There are ten labs, LAB-1 to LAB-10, one for each stage S1 to S10. They live in one repository, `statespace-lab`, which you start from the template and keep. The roadmap asks for one evolving lab repository, and that repository is your record. The browser's only record is your practice events, beside a disposable, read-only copy of your lab repository, so back the repository up with git.
 
 Each lab arrives as a zip that carries the lab's folder, its read-only pieces and the agent kit. Unpack it into the repository root. The first zip starts the repository, and later ones add their folder.
 
@@ -66,7 +66,7 @@ Every result names who ran the check. The interface shows one of three badges.
 
 Only the tab can say *re-checked here*, because only the tab re-ran the check. A receipt file can carry *reported from your machine* or *self-assessed* and nothing else.
 
-**Graded in the tab.** Your Rust is compiled to a wasm module with no imports, so the module needs nothing from the page (drawer D-14 explains the interface). The build is `cargo build --release --target wasm32-unknown-unknown` {{run:RUN-scaffold}}. You load the file in the tab; nothing is uploaded, because there is no server. Each check runs in a fresh worker under a time limit, on seeds drawn at the moment you submit. The oracles are "unseen, not secret": a static site cannot hide them. When a check fails, it names which kind of problem it suspects: your spec, your implementation, the tool or the proof.
+**Graded in the tab.** Your Rust is compiled to a wasm module with no imports, so the module needs nothing from the page (drawer D-14 explains the interface). The build is `cargo build --release --target wasm32-unknown-unknown` [X RUN-scaffold]. You load the file in the tab; nothing is uploaded, because there is no server. Each check runs in a fresh instance of your module (the worker is replaced only after a timeout) under a time limit, on seeds drawn at the moment you submit. The oracles are "unseen, not secret": a static site cannot hide them. When a check fails, it names which kind of problem it suspects: your spec, your implementation, the tool or the proof.
 
 **Checked on your machine.** Lean, TLC and multi-session PostgreSQL run authoritatively only on the Bench. The tab has stand-ins for learning (recorded Goal Replay, Spectacle for small TLA+ models, PGlite on one connection), and none of them issues a receipt. So the real tools run on your machine and write receipts (§8).
 
@@ -94,7 +94,7 @@ The design notes call these three the Bench's setup lanes; the interface says "w
 
 | Way | What it is | Good for | Cost and caveats |
 |---|---|---|---|
-| Devcontainer (default) | one image, pinned by digest, with every tool, and a PostgreSQL 18.6 service container beside it; you open the repository in a container | everyone; the only route on macOS and Windows for Lean checks, because Lean's sandbox is Linux-only | needs a container runtime; Lean's toolchain alone unpacks to 3.0 GB [X RUN-lean-toolchain]; a default container cannot start Lean's sandbox, and `statespace doctor` reports that as `failed` (§4.4); the image's size and CPU architecture are recorded when it is built {{run:RUN-doctor-devcontainer}} |
+| Devcontainer (default) | one image, pinned by digest, with every tool, and a PostgreSQL 18.6 service container beside it; you open the repository in a container | everyone; the only route on macOS and Windows for Lean checks, because Lean's sandbox is Linux-only | needs a container runtime; Lean's toolchain alone unpacks to 3.0 GB [X RUN-lean-toolchain]; a default container cannot start Lean's sandbox, and `statespace doctor` reports that as `failed` (§4.4); the image's size and CPU architecture are recorded when it is built [X RUN-doctor-devcontainer] |
 | Native | you install each tool at its pin (TOOLS.md §2) | Linux learners who want no container | the most variance: you keep the pins; Lean's sandbox needs bubblewrap with unprivileged user namespaces, or a setuid install |
 | Codespaces | the same image, prebuilt, in GitHub's cloud | no local install; a borrowed machine | needs a GitHub account (the course has no accounts and never sees your Codespace); GitHub sets and changes the free allowance, so read it there; the sandbox state in Codespaces is {{run:RUN-bwrap-lanes}} |
 
@@ -102,21 +102,21 @@ On the builder's path (concurrency first), your first Bench lab is LAB-5, which 
 
 ### 4.3 `statespace doctor`
 
-Run it first, and again after any upgrade. It reads; it never installs or edits anything. It compares each tool it finds with the pin, reports the sandbox state (`on`, `off` or `failed`) and prints an environment block that your receipts copy. `statespace doctor` green inside the devcontainer is itself a recorded run {{run:RUN-doctor-devcontainer}}.
+Run it first, and again after any upgrade. It reads; it never installs or edits anything. It compares each tool it finds with the pin, reports the sandbox state (`on`, `off` or `failed`) and prints an environment block that your receipts copy. `statespace doctor` green inside the devcontainer is itself a recorded run [X RUN-doctor-devcontainer].
 
 ### 4.4 The sandbox
 
-On Linux, `lake check` and `lake comparator` build and export your project inside bubblewrap. They exit 2 when they cannot start (no bubblewrap, or no `lake-manifest.json`) and 1 for a rejection [X RUN-lean-toolchain]. Under a default Docker container, bubblewrap fails with exit 1, the same code as a rejection [X RUN-lean-bwrap-docker]. A failed sandbox therefore looks like a failed proof unless you read the message. Receipts record `sandbox: on | off | failed` with the error line, and never require it.
+On Linux, `lake check` and `lake comparator` build and export your project inside bubblewrap. They exit 2 when they cannot start (no bubblewrap, or no `lake-manifest.json`) and 1 for a rejection [X RUN-lean-toolchain]. Under a default Docker container, bubblewrap fails with exit 1, the same code as a rejection [X RUN-lean-bwrap-docker]. A failed sandbox therefore looks like a failed proof unless you read the message. `statespace check` reads it for you, by evidence and never by exit code: a line that starts `bwrap:` means the sandbox failed and nothing was judged, even when later lines say that a kernel "rejected the solution", because a failed sandbox prints those lines too [X RUN-bwrap-lanes]. A check in that state carries no verdict. Receipts record `sandbox: on | off | failed` with the error line, and never require it. Running without the sandbox is your decision, made once and recorded: `statespace doctor` explains the failure and asks, or you pass `--sandbox=off`, and your repository's local settings keep the choice, so every receipt then says `off`. Your agent never makes it, and neither does a script [D].
 
 Statement matching does not need the sandbox. With it off, an honest solution is accepted and weakened or redefined statements are rejected [X RUN-lean-comparator]. Lean itself then prints "WARNING: Sandbox disabled, this run is not trustworthy" [X RUN-lean-axioms], and the receipt repeats the state.
 
 The sandbox is worth having because Lean runs code while it builds: the project's, and its dependencies'. Lean's manual treats un-reviewed AI-generated proofs as potentially malicious [V]. Your agent writes into this repository. If you let it write Lean, read what it wrote before you build with the sandbox off.
 
-To start the sandbox inside a container, the template documents an opt-in profile that relaxes the container's confinement. It is never the default; read what it relaxes before you use it. Verdicts on CI runners, Docker Desktop and Codespaces are {{run:RUN-bwrap-lanes}}.
+To start the sandbox inside a container, the template documents an opt-in profile that relaxes the container's confinement. It is never the default; read what it relaxes before you use it. The recorded set is Docker's default seccomp profile plus one rule that allows five calls (`clone`, `mount`, `pivot_root`, `umount2` and `unshare`), `systempaths=unconfined`, which leaves `/proc` and the other masked system paths open to every process in the container, and `apparmor=unconfined`, which drops Docker's AppArmor profile on a host that has one. The image also needs a `/run/user` directory, and none of the options adds a capability [X RUN-bwrap-lanes]. On a stock Ubuntu 24.04 host these options are not enough: AppArmor's restriction on unprivileged user namespaces has to be lifted on the host too [X RUN-bwrap-lanes]. Verdicts on CI runners, Docker Desktop and Codespaces, where you cannot change the host's settings, are {{run:RUN-bwrap-lanes}}.
 
-### 4.5 Disk, downloads and consent
+### 4.5 Disk and downloads
 
-The Lean 4.35.0 Linux toolchain is a 594.5 MB download and unpacks to 3.0 GB [X RUN-lean-toolchain]. Mathlib is not used: one project importing a single `Finmap` module took 7.3 GB [X RUN-lean-mathlib]. In the tab, a download above 5 MB asks first, and nothing is fetched until you agree. The Z3 and PGlite instruments are the large ones. The command line tool has no accounts and no telemetry. TOOLS.md §3 lists every measured size.
+The Lean 4.35.0 Linux toolchain is a 594.5 MB download and unpacks to 3.0 GB [X RUN-lean-toolchain]. Mathlib is not used: one project importing a single `Finmap` module took 7.3 GB [X RUN-lean-mathlib]. In the tab, nothing asks before an engine downloads: an engine downloads when a page needs it, and the loader shows its size. The Z3 and PGlite instruments are the large ones. The command line tool has no accounts and no telemetry. TOOLS.md §3 lists every measured size.
 
 ---
 
@@ -245,7 +245,7 @@ Three verdicts, copied from the executed runs:
 | an extra hypothesis added under the same name | `error: Challenge and solution theorem statement do not match: 'transfer_conserves'` | 1 |
 | `transfer` redefined | `error: Const does not match between challenge and target 'transfer'` | 1 |
 
-All three are [X RUN-lean-comparator]. The permitted axioms are taught in S2.L9. `--paranoid` adds five bundled checkers to Lean's own kernel, so six checkers in all; the executed run took about 3 s on a small project [X RUN-lean-comparator]. Six checkers are not six separate designs: lean4lean ports the reference logic for inductives, so a bug there can reach both [V]. A stamp names its checkers and versions.
+All three are [X RUN-lean-comparator]. The permitted axioms are taught in S2.L9. `--paranoid` adds five bundled checkers to Lean's own kernel, so six checkers in all. `lake comparator --paranoid` replays the closure of the named theorems: the executed run took about 3 s on a small project [X RUN-lean-comparator], and 2.92 s on the LAB-2 pack [X RUN-bwrap-lanes]. `lake check --paranoid` replays the whole environment, 57,966 declarations, almost all of them Lean's own, and took 172.6 s on that pack, about three minutes [X RUN-bwrap-lanes]. The pack figures are medians on the machine that recorded them, so a slower machine takes longer, and a project that imports `Std` did not finish `lake check --paranoid` in 6 GiB [X RUN-bwrap-lanes]. Six checkers are not six separate designs: lean4lean ports the reference logic for inductives, so a bug there can reach both [V]. A stamp names its checkers and versions.
 
 **Non-Lean statements.** Labs that are not Lean pin their statements as files you write: `claims/*.smt2`, `claims/*.tla` and `claims/*.yaml`. `statespace hash <file>` prints a hash of the text with trailing whitespace removed plus one newline, the rule Comparator Live uses for its challenge hashes. Receipts store the hash. If the statement changes after a receipt, its hash changes, and the claim voids to UNKNOWN [?].
 
@@ -273,7 +273,7 @@ Each lab opens with a stage of about two minutes. You run something that already
 | LAB-4.1 | the reference checker on the guarded Transfer | "proved for the fragment" and a premise witness | {{run:RUN-check-fragment}} |
 | LAB-5.1 | the provided DoubleSpend configuration on the Bench | the violation, its distinct-state count and its 4-action trace | [X RUN-tlc-doublespend] |
 | LAB-6.1 | `statespace isorun` on the provided read-modify-write history | the outcome as recorded | [X RUN-pg-anomalies] |
-| LAB-7.1 | the reference policy in Soufflé and in the tab engine | equal relations | {{run:RUN-fixedpoint-equal}} |
+| LAB-7.1 | the reference policy in Soufflé and in the tab engine | equal relations | [X RUN-fixedpoint-equal] |
 | LAB-8.1 | the reference simulator on seed 1 | its NDJSON trace accepted by TLC | {{run:RUN-tlc-trace-validation}} |
 | LAB-9.1 | the reference translation validator on one compiled command | the honest output accepted, a wrong-account write rejected | {{run:RUN-tv-reference}} |
 | LAB-10.1 | the reference pipeline on the provided agent proposal | the reference report skeleton | {{run:RUN-core-demo}} |
@@ -340,13 +340,18 @@ Read [AGENTS.md](AGENTS.md) once. It is short, and it is what your agent reads.
 
 | You see | What it means | Run |
 |---|---|---|
-| a Lean check exits 1 with "No permissions to create new namespace" | the sandbox could not start under a default container; nothing was judged. `statespace doctor` shows `failed` | [X RUN-lean-bwrap-docker] |
+| a Lean check exits 1 and prints a line that starts `bwrap:`, such as "No permissions to create new namespace" | the sandbox could not start, so nothing was judged, even when later lines say that a kernel "rejected the solution": a failed sandbox prints those lines too. `statespace check` reads the `bwrap:` line and never the exit code, and `statespace doctor` shows `failed` with the matching hint | [X RUN-lean-bwrap-docker, RUN-bwrap-lanes] |
+| the `bwrap:` line names a call or a mount: `pivot_root`, `unshare user ns`, `Failed to make / slave` or `unmount old root`, each "Operation not permitted", or `Can't mount proc` | the container blocks something bubblewrap needs: its seccomp profile allows too few calls, or its masked `/proc` paths stay masked. The opt-in profile of §4.4 allows the five calls and unmasks the paths | [X RUN-bwrap-lanes] |
+| `bwrap: Can't mkdir /run/user: Read-only file system` | the image has no `/run/user` directory, and bubblewrap cannot create it; create the directory in the image | [X RUN-bwrap-lanes] |
+| `bwrap: Failed to make / slave: Permission denied` | Docker's own AppArmor profile denies bubblewrap's `mount`; the opt-in profile's `apparmor=unconfined` leaves that profile, and on an Ubuntu host the next row applies too | [X RUN-bwrap-lanes] |
+| on Ubuntu 24.04, `bwrap: setting up uid map: Permission denied` or `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` | AppArmor's restriction on unprivileged user namespaces, which the host sets: container options cannot lift it. On the host, set `kernel.apparmor_restrict_unprivileged_userns` to 0, or give `/usr/bin/bwrap` an AppArmor profile that grants `userns` | [X RUN-bwrap-lanes] |
 | `lake check` or `lake comparator` exits 2 | it could not start: bubblewrap is missing, there is no `lake-manifest.json` (build the project once to write one), or there are no default targets | [X RUN-lean-toolchain] |
+| a Lean check exits 1 with "nanoda kernel rejected the solution", then `error: nanoda exited with 137` | a checker was killed for memory, which is not a rejection: there is no `bwrap:` line and no verdict. With `import Std` in the project, `lake check --paranoid` did not finish in 6 GiB, and `lake comparator --paranoid` did | [X RUN-bwrap-lanes] |
 | "Lean default kernel accepts the solution", yet the check failed | the kernel accepted the proofs and the axiom policy rejected an axiom (`sorryAx`, a custom axiom or a `_native` axiom); read the `error:` lines | [X RUN-lean-axioms] |
 | the build is green and replay rejects the proof | something skipped the kernel while building, for example `debug.skipKernelTC` | [X RUN-lean-skipkernel] |
 | TLC stops at "Deadlock reached" before your invariant | with default flags the DoubleSpend run stopped there at 10 distinct states. With `-deadlock`, a flag that means "do not check for deadlock", it reported the violation at 11 distinct states. Decide which you mean to check, and let the receipt print the flags | [X RUN-tlc-doublespend] |
 | a claim reads `UNKNOWN [?]` after you changed a file | a pinned statement changed after its receipt, so its hash differs; restore it, or re-check and re-mint | none; a design rule |
-| Z3 says `unknown` | no verdict. Read the reason line. In the tab, budgets are `rlimit`: under Pyodide in a Node harness, `timeout` never returned while `rlimit` stopped with `unknown (canceled)`; the browser measurement is {{run:RUN-phone-pyodide}} | [X RUN-z3-budget-pyodide] |
+| Z3 says `unknown` | no verdict. Read the reason line. In the tab, budgets are `rlimit`: `timeout` never returned under Pyodide in a Node harness or in Chromium, Firefox and WebKit on a desktop, while `rlimit` stopped with `unknown (canceled)` (no phone has been measured) | [X RUN-z3-budget-pyodide, RUN-phone-pyodide] |
 | a Z3 witness differs from the one you saw elsewhere | models are not canonical: the native run and the Pyodide run printed different witnesses, for nearby queries. A `sat` answer is graded by checking the witness against the property, never by matching values | [X RUN-z3-bv64-pyodide] |
 | two "concurrent" sessions in PGlite run one after the other | PGlite runs one connection; concurrency in the tab comes from histories recorded on the Bench | [X RUN-pglite] |
 

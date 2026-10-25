@@ -6,7 +6,7 @@
 
 **Tags.** `[X RUN-id]` an executed run on disk; `{{run:RUN-id}}` a run to record before the sentence ships; `[V]` re-checked against a primary source on 2026-10-23; `[D]` design rationale or estimate; grades A–D follow the pedagogy digest. Learner copy appears after "Copy:"; everything else is for authors. Learner copy uses only the spine's §0 glossary plus plain English: "step briefing", "re-entry card", "report pass", "traversal rule" and "evaluator" are authoring names, and learner copy says "doubt" where the sources say "defeater".
 
-**Pins used in this stage.** Z3 5.3.1 [X RUN-z3-starter]; cvc5 1.4.2 (the executed run used the pip wheel, whose version string reads `1.4.2-modified` [X RUN-cvc5-alethe]; the Bench binary is {{run:RUN-scaffold}}); Lean 4.35.0 [X RUN-lean-ledger], edition pin 4.35.x (OD-12); PostgreSQL 18.6 [X RUN-pg-anomalies]; `tla2tools` 1.8.0, pinned by SHA-256 and labeled pre-release [X RUN-tlc-jars]. S10 adds no new tool.
+**Pins used in this stage.** Z3 5.3.1 [X RUN-z3-starter]; cvc5 1.4.2 (the Alethe proof run used the pip wheel, whose version string reads `1.4.2-modified` [X RUN-cvc5-alethe]; the Bench binary prints 1.4.2 [X RUN-scaffold]); Lean 4.35.0 [X RUN-lean-ledger], edition pin 4.35.x (OD-12); PostgreSQL 18.6 [X RUN-pg-anomalies]; `tla2tools` 1.8.0, pinned by SHA-256 and labeled pre-release [X RUN-tlc-jars]. S10 adds no new tool.
 
 ---
 
@@ -450,7 +450,7 @@ S10 adds no catalog specimen (spine §5.1). LAB-10.5 mints the learner's own dem
 | Correspondence | compiled SQL to IR: [T] · n, or CL-9.3's per-command validation; runtime to PostgreSQL: [A] |
 | If weakened | for the default proposal, drop the fee from the corrected guard: a balance equal to the amount with a positive fee overdraws ({{run:RUN-core-demo}}); claim@1 validation checks that the witness refutes this claim's own proposition |
 | Requirement row | the learner's requirement scenarios: [T] · k scenarios or [A] · why; never [P] |
-| Stamp | composite (T4): [R] · witness length, then [P] · Z3 5.3.1 and cvc5 1.4.2 agree · uncertified · fragment F (or that [P] alone), plus [T] · n · generator statistics · engines named, plus [T] · k seeds |
+| Stamp | composite (T4): [R] · witness length, then [P] · Z3 5.3.1 and cvc5 1.4.2 agree · uncertified (the Bench cvc5 [X RUN-scaffold]) · fragment F (or that [P] alone), plus [T] · n · generator statistics · engines named, plus [T] · k seeds |
 
 **CL-10.2 · The published report** (S10.L7, minted at LAB-10.8; composite, no run of its own).
 
@@ -474,7 +474,7 @@ S10 plants no seam. One erosion fires during the stage; the report then logs all
 
 | ER | Seam | Endpoint 1: planted | Endpoint 2: cashed | Segment cracked | Remedies |
 |---|---|---|---|---|---|
-| ER-12 | SEAM-12, "retries finish before the provider forgets the key" | S8.L7, CL-8.2's provider-horizon clause written in LAB-8.8 | the Clearinghouse, in the first week SEAM-12 is the learner's oldest open erodible seam (after S9 on both published paths) · SP-8.5 {{run:RUN-tlc-key-ttl}} | an assumption record: the provider's horizon | bound the retry horizon; reconcile by key; state the loss |
+| ER-12 | SEAM-12, "every copy of every attempt is delivered or dropped before the provider can forget the key" | S8.L7, CL-8.2's provider-horizon clause written in LAB-8.8 | the Clearinghouse, in the first week SEAM-12 is the learner's oldest open erodible seam (after S9 on both published paths) · SP-8.5 {{run:RUN-tlc-key-ttl}} | an assumption record: the provider's horizon | bound how long any copy of an attempt can stay in flight, below the provider's retention; reconcile by key; state the loss |
 
 **Forecast** (M-erosion-forecast; authored call 7). The learner restates CL-8.2 from memory (six fields, uncredited). Copy: "Which segment does this incident crack?" (k = 4; chance 1/4; surprise forecast: yes)
 - (a) "Proposition-of-model." The model's "no double charge" holds under its stated assumptions; an erosion never silently cracks a proposition (spine §5.4). `dp:E4`
@@ -482,7 +482,7 @@ S10 plants no seam. One erosion fires during the stage; the report then logs all
 - (c) "Requirement-fit." The requirement is unchanged; what it rested on failed. `dp:E1`
 - **(d) "An assumption record: the provider's horizon."**
 
-**Remedy cards.** Bound the horizon: CL-8.2 restated with [A] "retries finish within H, below the provider's documented retention" and an [E] alarm when an outage passes H. Reconcile by key after recovery, stamped by its own evidence. State the loss: the window in which a duplicate is possible becomes an accepted residual doubt and a NOT COVERED line. Stripe's documented key pruning is the dated twin [stripeidem].
+**Remedy cards.** Bound the horizon: CL-8.2 restated with [A] "every copy of every attempt is delivered or dropped within H, below the provider's documented retention" and an [E] alarm when an outage passes H. Reconcile by key after recovery, stamped by its own evidence. State the loss: the window in which a duplicate is possible becomes an accepted residual doubt and a NOT COVERED line. Stripe's documented key pruning is the dated twin [stripeidem].
 
 **In the report.** The erosion log lists ER-1–ER-12 with the endpoints of spine §5.4 and the remedy each learner chose; every restated assumption is an open [A] line. The held seams appear under ASSUMED as tested and holding: SEAM-13 under every "re-checked here" badge, SEAM-14 (tested nightly by GATE-specimens) under CL-6.2, SEAM-15 (`--paranoid` at every Lean Defence) under CL-2.1–CL-2.4.
 
@@ -490,7 +490,7 @@ S10 plants no seam. One erosion fires during the stage; the report then logs all
 
 ## 8. Audit anchors and the S10 audit pool
 
-No new anchors (spine §3.10); §13 issue 3 proposes two, with dated sources. The S10 pool has three sources, a sound share seeded at 30–60% per session, typed evidence, and counts shown afterward (per class only at n ≥ 10):
+No new anchors (spine §3.10, §12 item 9); §13 issue 3 keeps the dated sources of the two anchors it proposed and revision 3 declined. The S10 pool has three sources, a sound share seeded at 30–60% per session, typed evidence, and counts shown afterward (per class only at n ≥ 10):
 
 1. **Harvested** (`statespace audit harvest`): commits by the learner's agent that touched a statement, a claim or a challenge file become cases, keyed locally by the same checkers. "Based on" card: the learner's commit (hash, date) plus the anchor whose class it instantiates.
 2. **Generated** (`statespace audit gen`): spine §6's operators applied to the learner's own claims and report lines (for example, a bounded check stamped [P], a narrowed observer, a dropped frame conjunct, a changed isolation level), each keyed by re-running its checker.
@@ -514,7 +514,7 @@ Untimed, over two or more sessions, within a week of LAB-10.9; agent closed; sig
 
 ## 10. Drawers
 
-The deferred drawers D-30–D-40, each surfaced in Today by its trigger and never locked: D-30 (Kani) at ER-1, for the runtime's `i64` path; D-31 (Verus and Aeneas) once the report's trusted-base section names Rust code to verify directly; D-32 (certificates) at ER-7, again at segment 2's common-mode doubt; D-38 when a NOT COVERED line names migrations; D-39 when one names UI generation; D-33–D-37 and D-40 on their own triggers. Re-surfaced just-in-time drawers: D-06 (the six fields) in LAB-10.8; D-14 and D-15 in LAB-10.2–LAB-10.3.
+The deferred drawers D-30–D-40, each surfaced in Today by its trigger and never locked: D-30 (Kani) at ER-1, for the runtime's `i64` path; D-31 (Verus and Aeneas) when a claim's structured correspondence reference names Rust code; D-32 (certificates) at ER-7, again at segment 2's common-mode doubt; D-38 when a claim line (a NOT COVERED line included) or a parked goal carries the topic `migrations`; D-39 when one carries `ui-codegen`; D-33–D-37 and D-40 on their own topic keys (spine §3.12). Re-surfaced just-in-time drawers: D-06 (the six fields) in LAB-10.8; D-14 and D-15 in LAB-10.2–LAB-10.3.
 
 ---
 
@@ -552,16 +552,18 @@ The roadmap gives Stage 10 no bound ("open-ended"); against the spine's six-week
 
 ## 13. Spine issues
 
-1. **The S10 KCs have no first lesson.** GATE-kc places each KC's prequestion, call and exit item "in its first lesson", but KC-10.* appear only in `[step]`s. This spec gives S10.L6 and S10.L7 step briefings, outside lesson counts. Proposed: GATE-kc reads "first lesson or step briefing", and §3.10 records the briefings.
-2. **S10's budget understates its work.** §3.11 shows "—" for S10's lessons and §3.10 gives LAB-10.8 25 minutes, while the Write column plans 6.8–11.7 h. This spec runs LAB-10.8 as nine passes (325 nominal minutes) and counts 12.2–22.7 h, still inside the cap; until this is decided, §3.3 and §12 carry the spine's figures. Proposed: record LAB-10.8 as a multi-pass write stage whose passes each fit a weekday or weekend window (spine §3.0; splitting it would change OD-15's count) and update §3.11's S10 row. Adopting it, with or without S9's Defence proposal (S9's spec, §14, item 1), raises the arc's high estimate from 194 h to about 197 h, which projects to about 79–80 weeks at 6 h/week, just past the roadmap's 18 months [D].
-3. **S10 has no audit anchors**, against §12 item 9's "at least two per stage". Proposed **AUD-10.1** (G11): sound twin, a report that counts only results re-checked outside the producing environment and logs each discrepancy as a doubt; flawed variant, a PROVED count that includes results checked only inside it; based on OEIS Open (2026-08-12; https://arxiv.org/abs/2608.11941, §2.3: 147/492 at the headline, 144/492 under Comparator); evidence, the receipt whose environment matches the producer's, beside the out-of-band verdict. Proposed **AUD-10.2** (G1a): sound twin, a report listing performance and resource limits under NOT COVERED; flawed variant, a summary implying fitness for use with no such line; based on AxDafny (2026-06-30; https://arxiv.org/abs/2606.32007: 89 of 127 verified programs failed resource limits); evidence, a scenario every PROVED line permits and the requirement forbids. Optional **AUD-10.3** (G8a, snapshot drift): based on PutnamBench issue #353 (2026-09-13; https://github.com/trishullab/PutnamBench/issues/353: 187 of 672 statements edited after creation).
-4. **The LAB-10.1 proposal's witness has no specimen ID.** Proposed SP-10.1, "a fee leg outside the guard overdraws the sender", status {{run:RUN-core-demo}}.
-5. **S10.L6's instrument list is short**: the reference replay uses INS-interp and phones see Bench runs through INS-receipt, both already covering S10 in §9.1. Proposed: add both to the row.
-6. **RUN-core-demo is overloaded** (LAB-10.c1's skeleton, CL-10.1's status, an S10.L7 cell, CL-10.1's "if weakened" witness). Proposed: list its outputs in §9.5, or split them.
-7. **Misconception tags collide.** The pedagogy digest's G1–G9 share names with gap classes G1–G13. This spec writes `dp:` tags, as S1's spec does, and uses no `dp:G*` tag. Proposed: the spine fixes the `dp:` prefix.
-8. **Catalog additions dp:X6–dp:X9** are proposed (§1.1). Other stage specs may propose X-series entries; the digest's owner should assign final IDs.
-9. **No CL template covers [C] or [N]**, yet LAB-10.c8 requires a CONFIGURED section. This spec has the learner write those records; claim@1 validation must accept claims without a template, and GATE-budget's cadence check must count them.
-10. **Part C's own-repo case can be empty**: a learner who used no agent has no harvestable commits. This spec falls back to `statespace audit gen`; the spine should say so.
-11. **S10's Part B has seven mutations**, one per learner-owned component, above §3.0's four to six. The Defence budget absorbs it; record the exception.
-12. **LAB-10.c8 names seven sections**, but [?] claims and [R] specimens also need places. This spec adds UNKNOWN and the specimens; amend the check's text.
-13. **Two small catalog gaps**: §8.3's stages for GEN-find-the-witness omit S10, whose Defence samples it (add S10, or exempt Defence sampling); KC-10.publish-limitations could take soft edges from KC-5.bounded-scope and KC-2.statement-pinning, which S10.L7's segment 3 leans on.
+This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.
+
+1. **The S10 KCs have no first lesson.** GATE-kc places each KC's prequestion, call and exit item "in its first lesson", but KC-10.* appear only in `[step]`s. This spec gives S10.L6 and S10.L7 step briefings, outside lesson counts. Proposed: GATE-kc reads "first lesson or step briefing", and §3.10 records the briefings. *Resolved in spine revision 3 (§3.10, §11.2 GATE-kc).*
+2. **S10's budget understates its work.** §3.11 shows "—" for S10's lessons and §3.10 gives LAB-10.8 25 minutes, while the Write column plans 6.8–11.7 h. This spec runs LAB-10.8 as nine passes (325 nominal minutes) and counts 12.2–22.7 h, still inside the cap; until this is decided, §3.3 and §12 carry the spine's figures. Proposed: record LAB-10.8 as a multi-pass write stage whose passes each fit a weekday or weekend window (spine §3.0; splitting it would change OD-15's count) and update §3.11's S10 row. Adopting it, with or without S9's Defence proposal (S9's spec, §14, item 1), raises the arc's high estimate from 194 h to about 197 h, which projects to about 79–80 weeks at 6 h/week, just past the roadmap's 18 months [D]. *Resolved in spine revision 3 (§3.10, §3.11).*
+3. **S10 has no audit anchors**, against §12 item 9's "at least two per stage". Proposed: an anchor for G11 (sound twin, a report that counts only results re-checked outside the producing environment and logs each discrepancy as a doubt; flawed variant, a PROVED count that includes results checked only inside it; based on OEIS Open (2026-08-12; https://arxiv.org/abs/2608.11941, §2.3: 147/492 at the headline, 144/492 under Comparator); evidence, the receipt whose environment matches the producer's, beside the out-of-band verdict), one for G1a (sound twin, a report listing performance and resource limits under NOT COVERED; flawed variant, a summary implying fitness for use with no such line; based on AxDafny (2026-06-30; https://arxiv.org/abs/2606.32007: 89 of 127 verified programs failed resource limits); evidence, a scenario every PROVED line permits and the requirement forbids), and optionally one for G8a (snapshot drift; based on PutnamBench issue #353 (2026-09-13; https://github.com/trishullab/PutnamBench/issues/353: 187 of 672 statements edited after creation)). *Declined in spine revision 3: §12 item 9 scopes the two-per-stage rule to S1–S9, because S10 audits the learner's own repository (§15 'Left unchanged').*
+4. **The LAB-10.1 proposal's witness has no specimen ID.** Proposed SP-10.1, "a fee leg outside the guard overdraws the sender", status {{run:RUN-core-demo}}. *Resolved in spine revision 3 (§5.1 SP-10.1).*
+5. **S10.L6's instrument list is short**: the reference replay uses INS-interp and phones see Bench runs through INS-receipt, both already covering S10 in §9.1. Proposed: add both to the row. *Resolved in spine revision 3 (§3.10 S10.L6).*
+6. **RUN-core-demo is overloaded** (LAB-10.c1's skeleton, CL-10.1's status, an S10.L7 cell, CL-10.1's "if weakened" witness). Proposed: list its outputs in §9.5, or split them. *Resolved in spine revision 3 (§9.5).*
+7. **Misconception tags collide.** The pedagogy digest's G1–G9 share names with gap classes G1–G13. This spec writes `dp:` tags, as S1's spec does, and uses no `dp:G*` tag. Proposed: the spine fixes the `dp:` prefix. *Resolved in spine revision 3 (ID conventions; §12 item 40).*
+8. **Catalog additions dp:X6–dp:X9** are proposed (§1.1). Other stage specs may propose X-series entries; the digest's owner should assign final IDs. *Resolved in spine revision 3 (EVIDENCE.md §6.11).*
+9. **No CL template covers [C] or [N]**, yet LAB-10.c8 requires a CONFIGURED section. This spec has the learner write those records; claim@1 validation must accept claims without a template, and GATE-budget's cadence check must count them. *Resolved in spine revision 3 (§5.2; §15 'Left unchanged').*
+10. **Part C's own-repo case can be empty**: a learner who used no agent has no harvestable commits. This spec falls back to `statespace audit gen`; the spine should say so. *Resolved in spine revision 3 (§3.10 Defence (S10)).*
+11. **S10's Part B has seven mutations**, one per learner-owned component, above §3.0's four to six. The Defence budget absorbs it; record the exception. *Resolved in spine revision 3 (§3.0, §12 item 42).*
+12. **LAB-10.c8 names seven sections**, but [?] claims and [R] specimens also need places. This spec adds UNKNOWN and the specimens; amend the check's text. *Resolved in spine revision 3 (§3.10 LAB-10.8).*
+13. **Two small catalog gaps**: §8.3's stages for GEN-find-the-witness omit S10, whose Defence samples it (add S10, or exempt Defence sampling); KC-10.publish-limitations could take soft edges from KC-5.bounded-scope and KC-2.statement-pinning, which S10.L7's segment 3 leans on. *Resolved in spine revision 3 (§8.3, §4).*

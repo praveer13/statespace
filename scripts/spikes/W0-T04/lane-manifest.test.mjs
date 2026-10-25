@@ -68,10 +68,10 @@ test('each gate script names a task that the tracker has, and that task lists th
   }
 });
 
-test('the one gate without a task says so in its note', () => {
+test('every gate names the task that builds it, and a gate without one would say so in its note', () => {
   const unowned = gates.filter((g) => g.built_by === null);
-  assert.deepEqual(unowned.map((g) => g.id), ['GATE-coverage']);
-  assert.match(unowned[0].note, /tracker names no task/);
+  assert.deepEqual(unowned.map((g) => g.id), [], 'since spine revision 3 every gate has a builder (GATE-coverage: W1-T04)');
+  for (const g of unowned) assert.match(g.note ?? '', /tracker names no task/);
 });
 
 test('the privacy gate turns strict where the CI secrets exist, and always in the release lane', () => {

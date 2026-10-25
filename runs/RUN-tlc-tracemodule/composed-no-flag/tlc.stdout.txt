@@ -1,0 +1,129 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 113 and seed -8018355190098499028 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/ToyOutboxTraceComposed.tla
+Parsing file /work/ToyOutbox.tla
+Parsing file /work/TraceValidation.tla
+Parsing file <tlc-temp>/_TLCTrace.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file <tlc-temp>/Naturals.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tlc-temp>/FiniteSets.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tlc-temp>/Sequences.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file <tlc-temp>/Json.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Json.tla)
+Parsing file <tlc-temp>/TLC.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file <tlc-temp>/TLCExt.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file <tlc-temp>/Integers.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module ToyOutbox
+Semantic processing of module TLC
+Semantic processing of module Json
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module TraceValidation
+Semantic processing of module _TLCTrace
+Semantic processing of module ToyOutboxTraceComposed
+Linting of module ToyOutbox
+Linting of module Json
+Linting of module TLCExt
+Linting of module TraceValidation
+Linting of module _TLCTrace
+Linting of module ToyOutboxTraceComposed
+Starting... (2026-10-25 03:20:22)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-25 03:20:22.
+Error: TLC threw an unexpected exception.
+This was probably caused by an error in the spec or model.
+See the User Output or TLC Console for clues to what happened.
+The exception was a java.lang.RuntimeException
+: The current version of TLC does not support action composition.  An incomplete implementation can be enabled via the tlc2.tool.impl.Tool.cdot=true java property.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 1
+/\ replies = {}
+/\ status = [c1 |-> "none", c2 |-> "none"]
+/\ seen = {}
+
+State 2: <IsCommit line 12, col 15 to line 12, col 72 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 2
+/\ replies = {}
+/\ status = [c1 |-> "pending", c2 |-> "none"]
+/\ seen = {}
+
+State 3: <IsCommit line 12, col 15 to line 12, col 72 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 3
+/\ replies = {}
+/\ status = [c1 |-> "pending", c2 |-> "pending"]
+/\ seen = {}
+
+State 4: <IsDispatch line 13, col 15 to line 18, col 56 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 4
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {}
+
+State 5: <IsTimer line 27, col 15 to line 27, col 53 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 5
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {}
+
+State 6: <IsDispatch line 13, col 15 to line 18, col 56 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 6
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {}
+
+State 7: <IsDispatch line 13, col 15 to line 18, col 56 of module ToyOutboxTraceComposed>
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c1", key |-> "key-c1", att |-> 2],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 7
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {}
+
+Error: The error occurred when TLC was evaluating the nested
+expressions at the following positions:
+0. Line 21, column 15 to line 24, column 91 in ToyOutboxTraceComposed
+1. Line 21, column 18 to line 21, column 35 in ToyOutboxTraceComposed
+2. Line 29, column 15 to line 31, column 27 in TraceValidation
+3. Line 29, column 18 to line 29, column 39 in TraceValidation
+4. Line 30, column 18 to line 30, column 31 in TraceValidation
+5. Line 31, column 18 to line 31, column 27 in TraceValidation
+6. Line 22, column 18 to line 22, column 34 in ToyOutboxTraceComposed
+7. Line 23, column 18 to line 24, column 91 in ToyOutboxTraceComposed
+8. Line 24, column 21 to line 24, column 91 in ToyOutboxTraceComposed
+
+
+7 states generated, 7 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 7.
+Finished in 00s at (2026-10-25 03:20:22)
+Trace exploration spec path: ./ToyOutboxTraceComposed_TTrace_1792898422.tla

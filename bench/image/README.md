@@ -55,4 +55,4 @@ A pin lives in three places. The Dockerfile has the download and its SHA-256 (or
 
 - Only `linux/amd64` was built and run. On arm64 doctor reports every hash as unpinned, and Soufflé has no arm64 package; Apple silicon, Docker Desktop and Codespaces are unmeasured (W0-S06 owner actions 3 and 4).
 - The Ubuntu packages are not pinned by version, so two builds differ in them even from the same Dockerfile.
-- The TLC jars are vendored here and the spine lists `vendor/tla2tools/` for them (section 11.1); see [`tla2tools/README.md`](tla2tools/README.md).
+- The TLC jars are vendored here, in `bench/image/tla2tools/` (spine section 11.1); see [`tla2tools/README.md`](tla2tools/README.md).

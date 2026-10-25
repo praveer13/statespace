@@ -17,9 +17,9 @@ Tasks add their own `RUN-*.json` files and `RUN-*/` folders. The structure, the 
 
 ## 2. A record: `run@1`
 
-A record is identified by its path and carries no schema tag. Field names are snake_case, the form every W0 record uses; spine section 9.5 and ARCHITECTURE.md section 9.1 write the same fields in camelCase:
+A record is identified by its path and carries no schema tag. Field names are snake_case, the form every W0 record uses and spine section 9.5 states; ARCHITECTURE.md section 9.1 writes the same fields in camelCase:
 
-| `run@1` | Spine and ARCHITECTURE.md | Holds |
+| `run@1` | ARCHITECTURE.md | Holds |
 |---|---|---|
 | `id` | `id` | the RUN ID; it must equal the file name |
 | `title`, `task` | | what the run establishes, and the task that recorded it |
@@ -54,7 +54,7 @@ Recording scripts (all dependency-free Node, in `scripts/runs/`):
 
 | Script | Does |
 |---|---|
-| `import-research.mjs` | imports the 37 executed runs of spine section 9.5 from `research/`; `--check` compares the records with a fresh import |
+| `import-research.mjs` | imports the 37 executed runs of spine section 9.5 whose source is in `research/`, skipping the rows the W0 tasks recorded; `--check` compares the records with a fresh import |
 | `rerun.mjs <group>` | re-runs and records: `tlc`, `lean`, `cvc5`, `asset`, `plaingoal`, `wasm` (section 5) |
 | `record-gates.mjs` | records RUN-numbers-gate and RUN-runs-gate: each gate's fast lane, release lane and self-check |
 | `build-index.mjs` | writes `index.json`; `--check` reports a stale one |

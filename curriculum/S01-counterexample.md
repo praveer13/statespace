@@ -19,7 +19,7 @@
 | S1.L0 | boot | Boot: "safe, 200 tests green" | ≤ 8 | (first contact with KC-1.violation-as-sat) | 1 | mounts SP-1.1; shows SP-1.4, SP-1.9 |
 | S1.L1 | core | Negate, then search | 40–60 | KC-1.quantifier-negation, KC-1.only-if-direction, KC-1.violation-as-sat, KC-1.witness-class | 2 + 1 generated | SP-1.1 |
 | S1.L2 | bridge | Three answers: sat, unsat, unknown | 15–25 | KC-1.three-answers, KC-1.unknown-fails-closed | 2 | SP-1.7, SP-1.8 |
-| S1.L3 | bridge | The guard, and what unsat says | 15–25 | KC-1.implication-vacuity, KC-1.non-vacuity-check | 2 | SP-1.6 · CL-1.1 |
+| S1.L3 | bridge | The guard, and what unsat says | 15–25 | KC-1.implication-vacuity, KC-1.non-vacuity-check, KC-1.claim-anatomy | 2 + 1 generated | SP-1.6 · CL-1.1 |
 | S1.L4 | bridge | Two-state properties | 15–25 | KC-1.two-state-property | 2 | SP-1.2, SP-1.3 · CL-1.2, CL-1.3, CL-1.4 |
 | S1.L5 | core | The encoding is the claim | 40–60 | KC-1.encoding-is-the-claim | 3 | SP-1.4, SP-1.5, SP-1.9, SP-1.10 · CL-1.5 |
 
@@ -37,12 +37,13 @@
 | KC-1.non-vacuity-check | | KC-1.implication-vacuity, KC-1.three-answers | S1.L3 | every later `unsat` claim card |
 | KC-1.two-state-property | | — | S1.L4 | KC-4.hoare-triple, KC-5.behaviors-stuttering, KC-3.resource-postings |
 | KC-1.encoding-is-the-claim | threshold | KC-1.three-answers | S1.L5 | confusable set F from S3 (KC-3.nat-truncation, S3 Defence); KC-6.overflow-refusal and ER-1 (S6 Defence) |
+| KC-1.claim-anatomy | | KC-1.three-answers, KC-1.violation-as-sat | S1.L3 | every later claim card (D-06 links again at S2.L10, LAB-4.8 and LAB-10.8) |
 
 Order inside lessons respects every `requires` edge. No confusable set opens in S1 (set A opens in S2, set F in S3), so M-which-is-it starts later.
 
 **Glossary schedule** (spine §0; Boot introduces exactly five): Boot: call, stamp, specimen, Today, Keep block. S1.L1: run, drawer, re-find, Mirror. S1.L3: claim, seam. S1.L4: twin. LAB-1: lab · check, receipt, Bench, Prove-it. After LAB-1: Audit Desk, Defence, signed off · settled.
 
-**Content blocks** (V2-18, at most six in W1): prose, prequestion, instrument cell with Call It, graded item, card (reading, twin, incident, "Build this"), table. GATE-lessons counts them.
+**Content blocks** (V2-18, at most six in W1; spine §12 item 48): prose, instrument (a cell with Call It), item, claim, specimen and card. An item carries the roles prequestion, graded item and exit; a card carries the roles reading, twin, incident, "Build this" and "this will feel harder"; a table is prose. GATE-lessons counts them.
 
 **The first weekend** (spine §3.1): Boot → LAB-1.1 → S1.L1 → LAB-1.2 → S1.L2 → S1.L3 → LAB-1.3 → LAB-1.4 → LAB-1.6, plus the reading. S1.L4, S1.L5 and LAB-1.5 follow in week 2. Budget in §12.
 
@@ -62,7 +63,7 @@ Order inside lessons respects every `requires` edge. No confusable set opens in 
 
 **Worked examples.** S1 has no proofs, so no Goal Replay plan; its worked examples are correct-first and unfaded (the six fading families start in S2), and no completion blank carries a prompt. S1 has no sibling bridges (spine §3.1).
 
-**Scaffolding per KC** (expertise reversal, A [tetzlaff25]): novice for all ten S1 KCs, with misconception notes open and a correct worked example before each KC's first graded constructed item (fix or write mode, or a witness the learner supplies); expert for none, because no S1 KC lies in an expert-treated domain (Rust, PostgreSQL practice, concurrency failures; spine §2.1). Two KCs lean on familiar habits (KC-1.unknown-fails-closed on fail-closed gates, KC-1.encoding-is-the-claim on Rust integer overflow), but each teaches an idea that is new here, so both stay novice: the reversal is asymmetric, and when unsure the course helps.
+**Scaffolding per KC** (expertise reversal, A [tetzlaff25]): novice for all eleven S1 KCs, with misconception notes open and a correct worked example before each KC's first graded constructed item (fix or write mode, or a witness the learner supplies); expert for none, because no S1 KC lies in an expert-treated domain (Rust, PostgreSQL practice, concurrency failures; spine §2.1). Two KCs lean on familiar habits (KC-1.unknown-fails-closed on fail-closed gates, KC-1.encoding-is-the-claim on Rust integer overflow), but each teaches an idea that is new here, so both stay novice: the reversal is asymmetric, and when unsure the course helps.
 
 ---
 
@@ -98,7 +99,7 @@ Encoding: `a ≥ 0, b ≥ 0, amount > 0, amount ≤ b` with the violation `a −
 | 6:15 | *Set your week* | A range target (for example 6–10 hours), two build blocks on your laptop, and a Keep block (term). Today (term): 10–12 minutes, 3–5 times a week. |
 | 7:30 | Close | Optional placement walk; the scheduled card is shown. |
 
-While the worker is cold the cell shows the recorded result labeled "Recorded result · Z3 5.3.1 · checked on every build" [X RUN-z3-starter-pyodide]; the live solver loads only after consent, because its first download exceeds 5 MB (OD-6; size from {{run:RUN-phone-pyodide}}).
+While the worker is cold the cell shows the recorded result labeled "Recorded result · Z3 5.3.1 · checked on every build" [X RUN-z3-starter-pyodide]; the live solver downloads, without a prompt, when the learner runs it live, and the loader shows its size (OD-6; size from [X RUN-phone-pyodide]).
 
 **Call It** (k = 3, chance 1/3). Copy: "Can the sender's balance go below zero after this transfer, for some whole-number balances?" A "No: the guard checks funds before the debit." · B "Yes: some inputs get past the guard." · C "Only when the amount exceeds both balances." **Key:** B {{run:RUN-z3-boot-variant}}. **Why** A: the guard reads `dst`, so it checks the wrong balance; green tests sample inputs, and fixtures with equal balances never reach this case (dp:G8). B: the solver searched every whole-number input and found one that passes the guard and overdraws the sender. C: an amount above both balances fails the guard; the bad inputs are those where the recipient covers the amount and the sender does not (dp:Z3). **Surprise forecast:** moderate.
 
@@ -169,7 +170,7 @@ Copy: "'Minimal' means minimal for the objective you asked for, here the amount,
 
 **Cell 1** (authored): `x**y == 8, y > 1` over `Int`. **Call It** (k = 3, chance 1/3): A `sat` · B `unsat` · C `unknown`. **Key:** C, with the reason line "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))" on Z3 5.3.1 and 4.15.4 natively, and on 5.3.1 under Pyodide [X RUN-z3-unknown-pow]. **Why** A: x = 2, y = 3 is a solution, so the formula is satisfiable, yet the verdict reports this run, not the truth (dp:Z6, proposed). B: x = 2, y = 3 satisfies it; a guess of `unsat` misread the constraint (dp:Z5). C: correct, and the reason names the gap (nonlinear exponentiation). **Surprise forecast:** yes. The same run's log holds a decided neighbor, `2**x == y, x ≥ 0, y == 5`, which is `unsat` [X RUN-z3-unknown-pow]: `unknown` belongs to a query, not to "exponents".
 
-**Cell 2** (authored): `x > 2, y > 2, z > 2, x·x·x + y·y·y == z·z·z`, which has no solution, run with `rlimit` 5000000. **Call It** (k = 2, chance 1/2): A "proved: `unsat`" · B "no verdict: `unknown`". **Key:** B, `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide]. **Why** A: no solution exists, but Z3 has not shown it within the budget; truth and verdict differ (dp:Z6, proposed). B: correct; the reason "canceled" says the budget ran out. **Surprise forecast:** yes. Then specimen SP-1.8: the same query with `s.set('timeout', 2000)` never returned and was stopped by an external 25 s limit [X RUN-z3-budget-pyodide], so course budgets are `rlimit`, with `worker.terminate()` as the hard stop. `rlimit` counts solver work rather than seconds, so a verdict at a stated `rlimit` can be re-run [D].
+**Cell 2** (authored): `x > 2, y > 2, z > 2, x·x·x + y·y·y == z·z·z`, which has no solution, run with `rlimit` 5000000. **Call It** (k = 2, chance 1/2): A "proved: `unsat`" · B "no verdict: `unknown`". **Key:** B, `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide]. **Why** A: no solution exists, but Z3 has not shown it within the budget; truth and verdict differ (dp:Z6, proposed). B: correct; the reason "canceled" says the budget ran out. **Surprise forecast:** yes. Then specimen SP-1.8: the same query with `s.set('timeout', 2000)` never returned and was stopped by an external 25 s limit [X RUN-z3-budget-pyodide]; it did not return in three desktop browsers either, which are desktop builds and not phones [X RUN-phone-pyodide]. So course budgets are `rlimit`, with `worker.terminate()` as the hard stop. `rlimit` counts solver work rather than seconds, so a verdict at a stated `rlimit` can be re-run [D].
 
 **Fail closed.** Copy: "When `unknown` guards enforcement, treat it as 'no'." The dated source: S3 Block Public Access, "To maintain soundness, we choose to fail closed: if the analysis result is unknown due to a time-out, we say the policy is not Trust Safe" (ESEC/FSE 2020, p. 8 [bpa, V]).
 
@@ -187,10 +188,10 @@ Copy: "'Minimal' means minimal for the objective you asked for, here the amount,
 
 ### S1.L3 · bridge · The guard, and what unsat says
 
-**Objective.** Add the sufficient-funds guard, read `unsat` as "for every input of exactly this encoding, if the solver is sound", and run the premise witness beside it.
-**KCs.** KC-1.implication-vacuity (threshold), KC-1.non-vacuity-check. **Prerequisites.** KC-1.only-if-direction, KC-1.three-answers. **Instruments.** INS-z3. **Generators.** GEN-negate-it, GEN-call-it. **Specimen · claim.** SP-1.6 · CL-1.1. **Drawers.** D-02, D-06. **Terms.** claim, seam. **Minutes.** 15–25.
+**Objective.** Add the sufficient-funds guard, read `unsat` as "for every input of exactly this encoding, if the solver is sound", and run the premise witness beside it; then fill CL-1.1's six fields, its "if weakened" witness refuting its own proposition (D-06).
+**KCs.** KC-1.implication-vacuity (threshold), KC-1.non-vacuity-check, KC-1.claim-anatomy. **Prerequisites.** KC-1.only-if-direction, KC-1.three-answers, KC-1.violation-as-sat. **Instruments.** INS-z3. **Generators.** GEN-negate-it, GEN-call-it, GEN-which-stamp, GEN-find-the-witness. **Specimen · claim.** SP-1.6 · CL-1.1. **Drawers.** D-02, D-06. **Terms.** claim, seam. **Minutes.** 15–25.
 
-**Prequestion** (k = 3, chance 1/3; tagged both KCs). Copy: "The violation query for 'every transfer with amount > 0 and amount ≤ MAX_TRANSFER leaves the sender at zero or above' comes back `unsat` with MAX_TRANSFER = 0. Which is true?" A "The transfer is safe for all inputs." · B "The claim is true but says nothing: no transfer meets its premises." · C "The claim is false." **Key:** B. **Why** A: `unsat` over premises that cannot hold is vacuous (dp:Z1). B: correct; an implication with a false premise is true. C: reads if-then as "and" (dp:G7).
+**Prequestion** (k = 3, chance 1/3; tagged all three KCs). Copy: "The violation query for 'every transfer with amount > 0 and amount ≤ MAX_TRANSFER leaves the sender at zero or above' comes back `unsat` with MAX_TRANSFER = 0. Which is true?" A "The transfer is safe for all inputs." · B "The claim is true but says nothing: no transfer meets its premises." · C "The claim is false." **Key:** B. **Why** A: `unsat` over premises that cannot hold is vacuous (dp:Z1). B: correct; an implication with a false premise is true, which is why a claim card's method field carries a premise witness beside its `unsat` (D-06). C: reads if-then as "and" (dp:G7).
 
 **The guard, recorded.** The guarded query's `unsat` is not called again: the roadmap prints it and Boot showed it [X RUN-z3-starter]. Copy: "`unsat` here means: for every input of exactly this encoding, the guarded transfer leaves the sender at zero or above, if the solver is sound." The course re-runs this query on a second solver at build time: cvc5 1.4.2 (its pip wheel reports `1.4.2-modified`) also returns `unsat` [X RUN-cvc5-alethe]. Two solvers agreeing is diversity, not a checked proof, so the qualifier stays "uncertified".
 
@@ -200,11 +201,13 @@ Copy: "'Minimal' means minimal for the objective you asked for, here the amount,
 
 **The first claim** (terms *claim* and *seam*). CL-1.1 is minted, prefilled from the cell's results: six fields, the requirement row and the three-segment strip (§5). Its two assumptions are drawn dashed: SEAM-1, "balances are unbounded integers", and SEAM-7, "the solver is sound". Copy: "A seam is an assumption planted on purpose. Some give way later in the course; some are tested and hold." D-06 explains each field.
 
+**Call It** (generated: GEN-which-stamp template 3, which strip segment; k = 3, chance 1/3; KC-1.claim-anatomy). Copy: "Z3 5.3.1 returned `unsat` on the violation query behind your first claim. Which segment of the claim's strip does that result support?" A "The proposition, about the model" · B "The correspondence: the code does what the model says" · C "The requirement: this is the guarantee you wanted". **Key:** A for this fact, from the scenario's construction at grade time; seeds draw other facts from the cards of §5 (`unsat` at Z3 5.3.1 [X RUN-z3-starter], an encoding fact, a stated requirement), so the keys fall across the three segments in seeded shares. **Why** A: the result is about the model and its encoding, if the solver is sound. B: no code is named yet, so correspondence is [A], not [P] (dp:Z4). C: requirement-fit is never [P] (dp:L3).
+
 **Graded item.** GEN-negate-it template 1 (single guard), fix mode: a near-miss violation query for a seeded guard (a wrongly negated conjunct, or an extra bound that contradicts a premise); the learner repairs it and writes the premise query. Graded by Z3 equivalence with the reference (a distinguishing state on failure); the premise query must be `sat`.
 
-**Exit item.** GEN-call-it template 1: for a seeded claim, predict the premise query's verdict. Seeds draw contradictory premises in a seeded 30–60% of instances so the rate cannot be learned; tags KC-1.non-vacuity-check, KC-1.implication-vacuity.
+**Exit items.** (1) GEN-call-it template 1: for a seeded claim, predict the premise query's verdict. Seeds draw contradictory premises in a seeded 30–60% of instances so the rate cannot be learned; tags KC-1.non-vacuity-check, KC-1.implication-vacuity. (2) GEN-find-the-witness template 1 on the "if weakened" witness: for a seeded claim with one assumption struck (the guard, or `amount > 0`), a witness that satisfies every remaining premise and violates the claim's own proposition (checked offline); tags KC-1.claim-anatomy, KC-1.violation-as-sat.
 
-**Today cards.** GEN-negate-it template 1 (fix); GEN-call-it template 1 (premise verdicts); a re-find of SP-1.6 at 7 days or more. The audit case AUD-1.1 is scheduled after LAB-1.
+**Today cards.** GEN-negate-it template 1 (fix); GEN-call-it template 1 (premise verdicts); GEN-which-stamp template 3 and GEN-find-the-witness template 1 on "if weakened" witnesses (the six fields); a re-find of SP-1.6 at 7 days or more. The audit case AUD-1.1 is scheduled after LAB-1.
 
 **Reading pointer.** Z3 guide, "Satisfiability and Validity" (`prove` asserts the negation and checks for unsatisfiability), read 2026-10-23 [V]. **Twin.** None. **Build this:** LAB-1.3, "Add the sufficient-funds guard: `unsat`, plus a satisfiable premise witness" (15 min).
 
@@ -277,7 +280,7 @@ Copy: "S6 comes back to the PostgreSQL row. There, your model takes a step the d
 
 ### 2.7 Call tally
 
-Eleven authored calls after Boot; Boot's first-contact call and the generated call in S1.L1 segment 2 are excluded (GATE-items balances generated keys per stage):
+Eleven authored calls after Boot; Boot's first-contact call and the generated calls in S1.L1 segment 2 and S1.L3 are excluded (GATE-items balances generated keys per stage):
 
 | Key | Calls | Share |
 |---|---|---|
@@ -369,7 +372,7 @@ Labels are generated from runs (M-specimen-cabinet, A/B [keith08]); a specimen i
 | SP-1.5 mixed signedness | `A = 13835060254305419776, X = 4611686018427387904` [X RUN-z3-bv64] | sender ≥ 0, signed reading | unsigned guard, signed property; A's top bit is set | not minimized | one reading in every comparison | [X RUN-z3-bv64] |
 | SP-1.6 vacuous unsat | the premises alone are `unsat`; core `amount > 0`, `amount ≤ MAX_TRANSFER` with MAX_TRANSFER = 0 | non-vacuity | contradictory premises "prove" every property | the two-constraint core (to record) | a premise query beside every `unsat`; fix the config | {{run:RUN-z3-vacuous-unsat}} |
 | SP-1.7 reason-stable unknown | `x**y == 8, y > 1` → `unknown`, "incomplete (theory arithmetic)" [X RUN-z3-unknown-pow] | none: a verdict specimen | nonlinear exponentiation lies outside what Z3 decides, though x = 2, y = 3 solves it | n/a | read the reason; never treat it as safety; fail closed in enforcement | [X RUN-z3-unknown-pow] |
-| SP-1.8 tool trust | `timeout` 2000 never returned (external stop at 25 s); `rlimit` 5000000 → `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide] | the expectation that a set budget bounds the run | observed in the course's Pyodide build under Node (§13, issue 3); cause not established | n/a | budgets as `rlimit`; `worker.terminate()` | [X RUN-z3-budget-pyodide] |
+| SP-1.8 tool trust | `timeout` 2000 never returned (external stop at 25 s); `rlimit` 5000000 → `unknown (canceled)` in 1.1 s [X RUN-z3-budget-pyodide] | the expectation that a set budget bounds the run | observed in the course's Pyodide build under Node (§13, issue 3), and the `timeout` case did not return in three desktop browsers either, Chromium, Firefox and WebKit [X RUN-phone-pyodide]: desktop builds, not phones; cause not established | n/a | budgets as `rlimit`; `worker.terminate()` | [X RUN-z3-budget-pyodide, RUN-phone-pyodide] |
 | SP-1.9 Bitcoin 2010 (dated) | toy model: two signed 64-bit outputs, each ≥ 0, whose wrapped sum passes `sum ≤ input` while one output exceeds the input | "no transaction creates value" | outputs summed in 64-bit arithmetic without a range check [btc2010] | n/a | a range check on each output before summing; the 2010 fix rejected overflowing outputs and outputs over 21 million BTC [btc2010, V] | {{run:RUN-z3-btc2010}} |
 | SP-1.10 Bloch 2006 (dated) | toy model: signed BitVec 32 with `0 ≤ low ≤ high` and `mid = (low + high) / 2` below zero | `low ≤ mid ≤ high` | `low + high` exceeds the largest `int` [bloch06] | n/a | `low + (high − low) / 2` or `LShR(low + high, 1)`, Java's `>>>` [bloch06, V] | {{run:RUN-z3-bloch06}} |
 
@@ -386,10 +389,10 @@ Six fields plus a requirement row; the strip reads proposition-of-model · corre
 *Proposition:* ∀ a, b, amount. a′ = a − amount ∧ b′ = b + amount → a′ + b′ = a + b. *Assumptions:* SEAM-1; SEAM-7; the two accounts are distinct [A]. *Model:* two `Int` variables, no guard. *Method:* negation `unsat` [X RUN-z3-conservation-noguard]; the step relation's `sat` is on the learner's receipt (LAB-1.c5). *Correspondence:* [A] "the code updates two distinct rows". *If weakened:* let the accounts alias under a map encoding with the stale-read update → `sat [n = 1, t = 0, f = 0]`, the balance rising by 1 [X RUN-z3-selftransfer]; S2.L8 returns to it. *Requirement:* "transfers neither create nor destroy money" [A]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N.
 
 **CL-1.3 · A hold is captured at most once** · minted S1.L4, LAB-1.5.
-*Proposition:* for a hold h with status HELD and held ≥ h > 0, two successive fixed captures give merchant″ − merchant ≤ h. *Assumptions:* `Int` balances (§13, issue 9); SEAM-7; captures arrive one at a time [A]; status is stored per hold [A]. *Model:* S → S′ → S″ over `Int` with a status variable. *Method:* violation `unsat`; one capture succeeds, `sat` {{run:RUN-z3-double-capture}}. *Correspondence:* [A] none named. *If weakened:* drop the status guard → `sat`, the merchant gaining 2h {{run:RUN-z3-double-capture}}. *Requirement:* "a hold pays out at most once" [A]; TigerBeetle documents the same rule [tb2pc, V]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N.
+*Proposition:* for a hold h with status HELD and held ≥ h > 0, two successive fixed captures give merchant″ − merchant ≤ h. *Assumptions:* balances are unbounded integers [A] (SEAM-1, carried); SEAM-7; captures arrive one at a time [A]; status is stored per hold [A]. *Model:* S → S′ → S″ over `Int` with a status variable. *Method:* violation `unsat`; one capture succeeds, `sat` {{run:RUN-z3-double-capture}}. *Correspondence:* [A] none named. *If weakened:* drop the status guard → `sat`, the merchant gaining 2h {{run:RUN-z3-double-capture}}. *Requirement:* "a hold pays out at most once" [A]; TigerBeetle documents the same rule [tb2pc, V]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N.
 
 **CL-1.4 · The fixed refund never mints** · minted LAB-1.4 (first weekend), revisited in S1.L4.
-*Proposition:* ∀ c, m, r ∈ ℤ. c ≥ 0 ∧ m ≥ 0 ∧ r > 0 → total(refund(c, m, r)) ≤ c + m, a rejected refund leaving the state unchanged. *Assumptions:* `Int` balances; SEAM-7; callers reject r ≤ 0 [A]. *Model:* one refund step over `Int`. *Method:* mint query `unsat` and premise query `sat` {{run:RUN-z3-refund-mint}}, and on the receipt for two fresh parameter sets (LAB-1.c4). *Correspondence:* [A] none named. *If weakened:* restore the clamp → `sat` {{run:RUN-z3-refund-mint}}. *Requirement:* "refunds move money and never create it" [A]; "refunds of one charge never exceed it" [N]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N.
+*Proposition:* ∀ c, m, r ∈ ℤ. c ≥ 0 ∧ m ≥ 0 ∧ r > 0 → total(refund(c, m, r)) ≤ c + m, a rejected refund leaving the state unchanged. *Assumptions:* balances are unbounded integers [A] (SEAM-1, carried); SEAM-7; callers reject r ≤ 0 [A]. *Model:* one refund step over `Int`. *Method:* mint query `unsat` and premise query `sat` {{run:RUN-z3-refund-mint}}, and on the receipt for two fresh parameter sets (LAB-1.c4). *Correspondence:* [A] none named. *If weakened:* restore the clamp → `sat` {{run:RUN-z3-refund-mint}}. *Requirement:* "refunds move money and never create it" [A]; "refunds of one charge never exceed it" [N]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N.
 
 **CL-1.5 · Under signed BitVec 64 with amount > 0, the guarded sender cannot go negative** · minted S1.L5.
 *Proposition:* ∀ A, B, X ∈ BV64. A ≥ₛ 0 ∧ B ≥ₛ 0 ∧ X >ₛ 0 ∧ X ≤ₛ A → A − X ≥ₛ 0, arithmetic modulo 2⁶⁴. *Assumptions:* the code's integers are 64-bit two's complement and wrap [A], which a Rust release build does and a debug build or PostgreSQL does not ({{run:RUN-rust-i64}}; [X RUN-pg-claims]); SEAM-7; callers reject amount ≤ 0 [A]. *Model:* one step over BitVec 64, signed operators. *Method:* violation `unsat`; the recipient-wrap model satisfies every premise, so it serves as the premise witness [X RUN-z3-bv64]. *Correspondence:* [A] naming the runtime, for example "Rust `i64`, release build"; otherwise [N]. *If weakened:* drop amount > 0 → `sat` {{run:RUN-z3-bv64-negamt}}; an unsigned guard → `sat` [X RUN-z3-bv64]. *Requirement:* recipient non-negativity [N] [X RUN-z3-bv64]. *Stamp:* [P] · Z3 5.3.1 unsat · uncertified · rlimit N; recipient not covered [N].
@@ -400,7 +403,7 @@ Six fields plus a requirement row; the strip reads proposition-of-model · corre
 
 | Seam | Assumption | Planted in S1 | Erosion | Cashed (lesson · specimen) | Segment cracked | Remedies offered |
 |---|---|---|---|---|---|---|
-| SEAM-1 | Balances are unbounded integers | S1.L3, S1.L4 via CL-1.1, CL-1.2; carried by CL-2.1–CL-2.4 | ER-1 | S6.L4 · SP-6.4: PostgreSQL raises 22003 on a credit the model commits [X RUN-pg-claims] | correspondence ("allowed ⇒ succeeds" fails); conservation untouched | bounded semantics and re-prove; `Except Overflow` observable in R; `numeric` with a stated bound; surfaces D-30 |
+| SEAM-1 | Balances are unbounded integers | S1.L3, S1.L4 via CL-1.1, CL-1.2; carried by CL-1.3, CL-1.4, CL-2.1–CL-2.5, CL-3.3, CL-3.4, CL-4.1, CL-4.2, CL-4.4 and CL-4.5 | ER-1 | S6.L4 · SP-6.4: PostgreSQL raises 22003 on a credit the model commits [X RUN-pg-claims] | correspondence ("allowed ⇒ succeeds" fails); conservation untouched | bounded semantics and re-prove; `Except Overflow` observable in R; `numeric` with a stated bound; surfaces D-30 |
 | SEAM-7 | The solver is sound | S1.L3 via CL-1.1's "uncertified" qualifier | ER-7 | S4.L9 · SP-4.5: Z3 #11179's inputs give a wrong `unsat` on 5.3.0 and `unknown` on 5.3.1 [X RUN-z3-11179] | assumption record (solver soundness) | a cvc5 cross-check; the "uncertified" qualifier; surfaces D-32 |
 
 S1.L5 foreshadows ER-1 through the table's PostgreSQL row and fires nothing. Each erosion opens with a forecast (M-erosion-forecast): restate the claim from memory, then call the segment that cracks. Both erosions fire on both published paths, because S1 precedes S4 and S6 on each.
@@ -424,11 +427,11 @@ S1.L5 foreshadows ER-1 through the table's PostgreSQL row and fires nothing. Eac
 Untimed, over at least two sessions within a week of LAB-1; ships with W2-T12 (M-defence, B−).
 
 - **Part A, probes** (about 25–30 min; agent closed; a call on each): 10 unseen-seed items: GEN-negate-it ×3 (templates 1, 2 and 4, write mode once eligible), GEN-find-the-witness ×3 (template 1: an overdraft, a BitVec wrap, a mint), GEN-call-it ×3 (template 1 twice, template 4 once), GEN-which-stamp ×1 (template 1 or 2). The completion tests as items: why a violation search asserts the negation (GEN-call-it template 4 plus a GEN-negate-it write); what `sat`, `unsat` and `unknown` mean precisely (GEN-call-it template 4, GEN-which-stamp); why the answer depends on the encoding (GEN-call-it template 1 on an `Int`/BitVec pair, a BitVec witness); what changes if `amount` may be zero or negative (GEN-call-it template 1; over `Int` a zero amount is a no-op and a negative one passes `amount ≤ a` and drains the recipient, and under BitVec the sender can wrap {{run:RUN-z3-bv64-negamt}}).
-- **Part B, defend** (about 15 min): four mutations of the learner's Project 00, predicted first, keyed by Z3 on the mutated files: drop `amount > 0` under BitVec 64; replace `≤` with `<` in the guard (§13, issue 8); switch `Int` to BitVec 64; drop a conjunct of the refund rule. Every mutant runs (GATE-labs).
+- **Part B, defend** (about 15 min): four mutations of the learner's Project 00, predicted first, keyed by Z3 on the mutated files: drop `amount > 0` under BitVec 64; tighten `≤` to `<` in the guard (a surprise item: the stricter guard admits fewer transfers); switch `Int` to BitVec 64; drop a conjunct of the refund rule. Every mutant runs (GATE-labs).
 - **Part C, audit** (about 20 min): four cases from the AUD-1.1–AUD-1.3 twin pool and its variants, at least one sound, typed evidence required.
 - **Part D, explain-back** (about 10 min; required, uncredited): a 2-minute oral on why searching for a violation means asserting the negation, then a 3-idea self-check compared with Part A.
 
-**Signed off** when A–C reach 75% overall and Part A at least 60%, Parts B and C (four items each) with at most one miss, the Wilson interval shown; plus fresh items on the ten S1 KCs correct in at least three spaced sessions. **Settled** when a fresh probe per KC is correct at 30 days or more. A failed part is retaken on fresh seeds at least 3 days later; nothing locks meanwhile.
+**Signed off** when A–C reach 75% overall and Part A at least 60%, Parts B and C (four items each) with at most one miss, the Wilson interval shown; plus fresh items on the eleven S1 KCs correct in at least three spaced sessions. **Settled** when a fresh probe per KC is correct at 30 days or more. A failed part is retaken on fresh seeds at least 3 days later; nothing locks meanwhile.
 
 ---
 
@@ -436,7 +439,7 @@ Untimed, over at least two sessions within a week of LAB-1; ships with W2-T12 (M
 
 | Drawer | Holds, for S1 | Surfaced in |
 |---|---|---|
-| D-01 A proof is not a test | 200 green tests against every input | Boot, S1.L1 |
+| D-01 A proof is not a test; reading a counterexample | 200 green tests against every input; reading a counterexample | Boot, S1.L1 |
 | D-02 Propositions, implication and vacuity | the truth table; false → anything | S1.L3 |
 | D-03 Quantifiers and negation | ∀/∃ duality, De Morgan, "only if", "unless" | S1.L1 |
 | D-04 State as functions, steps as relations | primed variables; chaining S → S′ → S″ | S1.L4 |
@@ -461,7 +464,7 @@ The guide's embedded runner names its own Z3 build in its footer; LAB-1 compares
 
 ## 11. Runs this stage needs
 
-**Executed and cited:** RUN-z3-starter, RUN-z3-starter-pyodide, RUN-browser-origin, RUN-z3-optimize-min, RUN-z3-conservation-noguard, RUN-z3-bv64, RUN-z3-bv64-pyodide, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-z3-selftransfer, RUN-cvc5-alethe, RUN-pg-claims, and RUN-z3-11179 (ER-7's endpoint).
+**Executed and cited:** RUN-z3-starter, RUN-z3-starter-pyodide, RUN-browser-origin, RUN-phone-pyodide (W0-S02: Boot's first-load size, which the loader shows, and the timeout case in three desktop browsers; emulated, no real phone), RUN-z3-optimize-min, RUN-z3-conservation-noguard, RUN-z3-bv64, RUN-z3-bv64-pyodide, RUN-z3-unknown-pow, RUN-z3-budget-pyodide, RUN-z3-selftransfer, RUN-cvc5-alethe, RUN-pg-claims, and RUN-z3-11179 (ER-7's endpoint).
 
 **To record in W1-T12** (natively and on Pyodide; every authored `unsat` cross-checked on cvc5 by GATE-calls):
 
@@ -475,7 +478,6 @@ The guide's embedded runner names its own Z3 build in its footer; LAB-1 compares
 | RUN-z3-bv64-negamt | signed BitVec 64 without `amount > 0`; plus the `Int` twin from `evidence/a2r3/scripts/z3_negamt.py` |
 | RUN-z3-btc2010, RUN-z3-bloch06 | the §4 toy models, buggy and fixed |
 | RUN-pg-numeric-bound, RUN-rust-i64 | the two placeholder rows of the six-row table |
-| RUN-phone-pyodide (W0-S02) | Boot's first-load size for the consent prompt |
 
 ## 12. Time budget against the roadmap
 
@@ -488,25 +490,27 @@ The guide's embedded runner names its own Z3 build in its footer; LAB-1 compares
 | Defence | 0.75–1.25 h | 45–75 min over two sessions |
 | **Total** | **5.3–9.4 h** | the roadmap's 2–4 focused sessions, read as at most 10 h (spine §12 item 11): GATE-budget passes, and no lower-bound warning |
 
-The first weekend (Boot, S1.L1–S1.L3, reading, LAB-1.1–LAB-1.4, LAB-1.6) plans at 3.25–5.9 h against the roadmap's 3–5 h; week 2 holds S1.L4, S1.L5 and LAB-1.5 (1.3–2.3 h) and the Defence. The Keep block comes off the top: ten new KCs at about ten graded reviews each, two minutes apiece, is about 3.3 h across their first 60 days [D], inside the planned block. S1 mints CL-1.1 and CL-1.4 in the first weekend, meeting the cadence of two claims by about week 4.
+The first weekend (Boot, S1.L1–S1.L3, reading, LAB-1.1–LAB-1.4, LAB-1.6) plans at 3.25–5.9 h against the roadmap's 3–5 h; week 2 holds S1.L4, S1.L5 and LAB-1.5 (1.3–2.3 h) and the Defence. The drawers sit outside these totals (spine §3.11); for the reference learner, the five S1 ground drawers and D-13 would add about 35–50 minutes of reading [D]. The Keep block comes off the top: eleven new KCs at about ten graded reviews each, two minutes apiece, is about 3.7 h across their first 60 days [D], inside the planned block. S1 mints CL-1.1 and CL-1.4 in the first weekend, meeting the cadence of two claims by about week 4.
 
 ---
 
 ## 13. Spine issues
 
+*This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.*
+
 Each item names where this file departs from, or depends on a change to, the spine. Nothing here is applied silently.
 
-1. **Boot's variant has no run.** The spine cites RUN-z3-starter-pyodide for Boot's cold-start fallback, but that run records the roadmap's starter, which Boot must not use (V2-05). Add RUN-z3-boot-variant to §9.5 and to SP-1.1's status. Boot's fallback label also should not introduce the term "run" before S1.L1; this file says "recorded result".
-2. **Cross-engine witnesses.** SP-1.4 and §8.4 say native and Pyodide witnesses differ [X RUN-z3-bv64-pyodide], but the two runs used different queries (native: the guarded transfer over A, B, X; Pyodide: `B ≥ 0, M > 0, B + M < 0`). The grading rule stands; reword the evidence or re-record the native query on Pyodide.
-3. **"In the tab" rests on Node.** RUN-z3-budget-pyodide and RUN-z3-bv64-pyodide (`A5r3/z3-pyodide.log`) ran Pyodide under Node, and RUN-z3-unknown-pow's non-native evidence is Node-hosted wasm; browsers ran only the starter (RUN-z3-starter-pyodide). SP-1.8's "never fires in the tab" and INS-z3's limits should say "under Pyodide (Node harness)" until W0-S02 records them in browsers.
-4. **No misconception namespace.** GATE-items requires a misconception ID on every option, but the spine defines none, and the digest's G1–G9 and S1–S4 collide with gap classes and stage IDs. This file writes `dp:…`; register a prefix (for example `MC-`) and the two proposed entries dp:Z6 and dp:Z7 (§1).
-5. **CL-1.1 lacks a premise-witness run.** No executed run records the guarded premises alone; extend RUN-z3-vacuous-unsat to record them (§11).
-6. **The negative-amount twin.** The A2 review's `Int` result for a guard without `amount > 0` was never committed; record it inside RUN-z3-bv64-negamt, since the Defence's zero-or-negative item needs both encodings.
-7. **Two new S1 runs.** RUN-z3-boot-variant and RUN-z3-demorgan join §9.5's "To record"; with D-13's RUN-z3-smtlib-tour, W1-T12's acceptance becomes eleven S1 runs, not eight.
-8. **"Weaken ≤ to <" tightens.** In S1 Defence Part B, `amount < a` admits fewer transfers, so it cannot make the violation query satisfiable; only the sufficient-funds check can fail. Rename it "tighten ≤ to <" (a useful surprise item) or replace it with a genuine weakening such as `amount ≤ a + 1`.
-9. **SEAM-1's claims.** CL-1.3 and CL-1.4 are `Int` claims too, yet SEAM-1 lists only CL-1.1 and CL-1.2, so ER-1 would not propagate to them. Add them, or record why not.
-10. **One prequestion, two KCs.** §3.0 gives bridges one prequestion; GATE-kc wants one per KC in its first lesson. S1.L2 and S1.L3 tag one prequestion with both KCs; the spine should say that satisfies the rule.
-11. **Twins without a SHA.** RUN-twin-pins pins twins "at a SHA", but the AWS Automated Reasoning checks card is a docs page. Record a content hash and read date for non-repository twins.
-12. **First-weekend order.** LAB-1.4 precedes S1.L4, so the refund is authored in expression form (no primed variables), and S1.L4 grades a fresh refund variant rather than re-calling LAB-1.4's answer.
-13. **W1 without ladders and Prove-it.** §3.0 requires hint rungs and Prove-it on every lab, but they ship in W2 (W2-T06, W2-T11). W1's exit should state that learner-zero's Project 00 runs without them.
-14. **A possible extra erosion.** CL-1.3 assumes captures arrive one at a time, which is SEAM-2's content; consider letting ER-2 crack CL-1.3 as well.
+1. **Boot's variant has no run.** The spine cites RUN-z3-starter-pyodide for Boot's cold-start fallback, but that run records the roadmap's starter, which Boot must not use (V2-05). Add RUN-z3-boot-variant to §9.5 and to SP-1.1's status. Boot's fallback label also should not introduce the term "run" before S1.L1; this file says "recorded result". *Revision 3: already resolved (§0, §3.1 S1.L0, §5.1 SP-1.1, §9.5).*
+2. **Cross-engine witnesses.** SP-1.4 and §8.4 say native and Pyodide witnesses differ [X RUN-z3-bv64-pyodide], but the two runs used different queries (native: the guarded transfer over A, B, X; Pyodide: `B ≥ 0, M > 0, B + M < 0`). The grading rule stands; reword the evidence or re-record the native query on Pyodide. *Revision 3: already resolved (§5.1 SP-1.4, §8.4, §9.5, §11.2 GATE-conformance).*
+3. **"In the tab" rests on Node.** RUN-z3-budget-pyodide and RUN-z3-bv64-pyodide (`A5r3/z3-pyodide.log`) ran Pyodide under Node, and RUN-z3-unknown-pow's non-native evidence is Node-hosted wasm; browsers ran only the starter (RUN-z3-starter-pyodide). SP-1.8's "never fires in the tab" and INS-z3's limits should say "under Pyodide (Node harness)" until W0-S02 records them in browsers. *Revision 3: applied (§5.1 SP-1.8, §9.1 INS-z3, §9.5); merged with the W0-S02 results, whose browser runs replace the Node-only wording as desktop builds, never phones.*
+4. **No misconception namespace.** GATE-items requires a misconception ID on every option, but the spine defines none, and the digest's G1–G9 and S1–S4 collide with gap classes and stage IDs. This file writes `dp:…`; register a prefix (for example `MC-`) and the two proposed entries dp:Z6 and dp:Z7 (§1). *Revision 3: already resolved (ID conventions; §12 item 40).*
+5. **CL-1.1 lacks a premise-witness run.** No executed run records the guarded premises alone; extend RUN-z3-vacuous-unsat to record them (§11). *Revision 3: applied (§5.2 CL-1.1, §9.5 S1 bullet).*
+6. **The negative-amount twin.** The A2 review's `Int` result for a guard without `amount > 0` was never committed; record it inside RUN-z3-bv64-negamt, since the Defence's zero-or-negative item needs both encodings. *Revision 3: applied (§9.5 S1 bullet).*
+7. **Two new S1 runs.** RUN-z3-boot-variant and RUN-z3-demorgan join §9.5's "To record"; with D-13's RUN-z3-smtlib-tour, W1-T12's acceptance becomes eleven S1 runs, not eight. *Revision 3: already resolved (§9.5, §13 W1-T12).*
+8. **"Weaken ≤ to <" tightens.** In S1 Defence Part B, `amount < a` admits fewer transfers, so it cannot make the violation query satisfiable; only the sufficient-funds check can fail. Rename it "tighten ≤ to <" (a useful surprise item) or replace it with a genuine weakening such as `amount ≤ a + 1`. *Revision 3: applied (§3.1 Defence (S1); §8.3 GEN-defend).*
+9. **SEAM-1's claims.** CL-1.3 and CL-1.4 are `Int` claims too, yet SEAM-1 lists only CL-1.1 and CL-1.2, so ER-1 would not propagate to them. Add them, or record why not. *Revision 3: already resolved (§3.1, §5.3 SEAM-1, §5.4 ER-1).*
+10. **One prequestion, two KCs.** §3.0 gives bridges one prequestion; GATE-kc wants one per KC in its first lesson. S1.L2 and S1.L3 tag one prequestion with both KCs; the spine should say that satisfies the rule. *Revision 3: already resolved (§3.0, §11.2 GATE-kc).*
+11. **Twins without a SHA.** RUN-twin-pins pins twins "at a SHA", but the AWS Automated Reasoning checks card is a docs page. Record a content hash and read date for non-repository twins. *Revision 3: already resolved (§0 term 19, §7 M-production-twin, §9.5).*
+12. **First-weekend order.** LAB-1.4 precedes S1.L4, so the refund is authored in expression form (no primed variables), and S1.L4 grades a fresh refund variant rather than re-calling LAB-1.4's answer. *Revision 3: already resolved (§3.1).*
+13. **W1 without ladders and Prove-it.** §3.0 requires hint rungs and Prove-it on every lab, but they ship in W2 (W2-T06, W2-T11). W1's exit should state that learner-zero's Project 00 runs without them. *Revision 3: already resolved (§13 W1 exit).*
+14. **A possible extra erosion.** CL-1.3 assumes captures arrive one at a time, which is SEAM-2's content; consider letting ER-2 crack CL-1.3 as well. *Revision 3: declined: SEAM-2 is planted in S2.L7, so an S1 carrier would plant it a stage early (spine §15, 'Left unchanged').*

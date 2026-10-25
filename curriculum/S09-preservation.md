@@ -373,7 +373,7 @@ Leroy's list of what CompCert still trusts: the source and target semantics, the
 
 **Graded items.** GEN-which-stamp template 1: each component of the learner's own claim graph → proved [P], validated per run ([M] or [T] per output), tested [T] or trusted [A]. GEN-call-it template 4: five claims, each sorted into command, compiler or runtime (distractors dp:P3).
 **Exit item.** GEN-call-it template 4 on fresh claims → KC-9.three-claims, KC-9.tcb.
-**Today cards.** The exits, with extra calls on KC-9.tcb in its first week; D-31 (Verus and Aeneas) surfaces when a correspondence field names Rust code to verify directly.
+**Today cards.** The exits, with extra calls on KC-9.tcb in its first week; D-31 (Verus and Aeneas) surfaces when a claim's structured correspondence reference names Rust code (spine §3.12).
 **Twin card.** AuthV2 relies on "the assumption that the DafnyLite compiler produces a correct result, whereas Cedar relies on the correctness of the Lean compiler, since the Lean spec is compiled to C in order to differentially test it" (ICSE 2025; R5 F30). Tracing question at the pinned `cedar-spec` commit {{run:RUN-twin-pins}}: where compiled Lean runs in the differential-testing harness.
 **Sibling bridge.** None. **Build this.** LAB-9.12.
 
@@ -605,15 +605,17 @@ Keep load: 11 new KCs × about 10 graded reviews × about 2 minutes ≈ 3.7 h ov
 
 ## 14. Spine issues
 
-1. **Defence budget** (§3.9, §3.11). Two mini-Defences, each with 10 probes, 4 mutations, 4 cases and an explain-back, come to about 2.3–2.8 h by the §3.0 Defence pattern, not 1.5–2.0 h [D]. The high total rises to about 33.8 h, still under 47.5 h.
-2. **LAB-9.6's title, "the assignment case".** Mini-Plinth forbids assigning resource fields (S3.L2), so the source construct is a posting pair compiled to IR writes. Suggest "the posting case (postings compiled to writes)"; this spec keeps the spine's title.
-3. **LAB-9.c3, "the determinism lemma is stated".** A stated but unproved lemma would put `sorryAx` on the receipt, so this spec requires `exec_deterministic` to be accepted (one line for a functional semantics).
-4. **LAB-9.c4, "comparator accepts the statement module".** Comparator requires every definition a pinned statement uses to match between challenge and solution ("Const does not match" [X RUN-lean-comparator]), so a course challenge cannot pin the learner's own `obs` and R. Implemented as adequacy theorems in a course challenge importing the frozen learner modules; suggest rewording.
-5. **INS-interp** (§9.1) must also run the target IR (S9.L2, S9.L3, S9.L7); GATE-interp's goldens and SEAM-13's course claim should cover it.
-6. **D-17's "Used in"** (§3.12) omits S9.L8; GATE-links will flag it.
-7. **The Clearinghouse validator plug-in** (BRIEF §7.4: "their validator checks plans") has no owning task in §13; suggest W5-T05 or W5-T13.
-8. **Misconception IDs** have no spine format, and the digest's Ground IDs collide with gap classes G1–G9. This file follows S01's `dp:` prefix and proposes dp:P4–dp:P6.
-9. **AUD-9.1's acceptable set** (G10, G1) should be recorded with the anchor, as AUDIT-DESK §2.4 records AUD-9.2's.
-10. **Mutations by half.** §3.9 lists Part B's mutations without halves. Under item 37's rule the `native_decide` golden mutation belongs to mini-Defence A (LAB-9.3 is half A); the observer, hoist and shape mutations to B.
-11. **Twin pins.** The twin cards add HOL-IMP, QED or SQLSolver, and AuthV2's note to §3.9's CompCert, Alive2 and Cedar; RUN-twin-pins must pin them.
-12. **RUN-tv-reference's scope.** It keys more cells than §9.5 says (§13's row). No new run ID is needed, but W5-T04's acceptance should list them.
+This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.
+
+1. **Defence budget** (§3.9, §3.11). Two mini-Defences, each with 10 probes, 4 mutations, 4 cases and an explain-back, come to about 2.3–2.8 h by the §3.0 Defence pattern, not 1.5–2.0 h [D]. The high total rises to about 33.8 h, still under 47.5 h. *Resolved in spine revision 3 (§3.9, §3.11).*
+2. **LAB-9.6's title, "the assignment case".** Mini-Plinth forbids assigning resource fields (S3.L2), so the source construct is a posting pair compiled to IR writes. Suggest "the posting case (postings compiled to writes)"; this spec keeps the spine's title. *Resolved in spine revision 3 (§3.9 LAB-9.6).*
+3. **LAB-9.c3, "the determinism lemma is stated".** A stated but unproved lemma would put `sorryAx` on the receipt, so this spec requires `exec_deterministic` to be accepted (one line for a functional semantics). *Resolved in spine revision 3 (§3.9 LAB-9.c3).*
+4. **LAB-9.c4, "comparator accepts the statement module".** Comparator requires every definition a pinned statement uses to match between challenge and solution ("Const does not match" [X RUN-lean-comparator]), so a course challenge cannot pin the learner's own `obs` and R. Implemented as adequacy theorems in a course challenge importing the frozen learner modules; suggest rewording. *Resolved in spine revision 3 (§3.9 LAB-9.c4).*
+5. **INS-interp** (§9.1) must also run the target IR (S9.L2, S9.L3, S9.L7); GATE-interp's goldens and SEAM-13's course claim should cover it. *Resolved in spine revision 3 (§9.1 INS-interp, §5.3 SEAM-13).*
+6. **D-17's "Used in"** (§3.12) omits S9.L8; GATE-links will flag it. *Resolved in spine revision 3 (§3.12 D-17).*
+7. **The Clearinghouse validator plug-in** (BRIEF §7.4: "their validator checks plans") has no owning task in §13; suggest W5-T05 or W5-T13. *Resolved in spine revision 3 (§13 W5-T13).*
+8. **Misconception IDs** have no spine format, and the digest's Ground IDs collide with gap classes G1–G9. This file follows S01's `dp:` prefix and proposes dp:P4–dp:P6. *Resolved in spine revision 3 (ID conventions).*
+9. **AUD-9.1's acceptable set** (G10, G1) should be recorded with the anchor, as AUDIT-DESK §2.4 records AUD-9.2's. *Resolved in spine revision 3 (§6.2 AUD-9.1).*
+10. **Mutations by half.** §3.9 lists Part B's mutations without halves. Under item 37's rule the `native_decide` golden mutation belongs to mini-Defence A (LAB-9.3 is half A); the observer, hoist and shape mutations to B. *Resolved in spine revision 3 (§3.9).*
+11. **Twin pins.** The twin cards add HOL-IMP, QED or SQLSolver, and AuthV2's note to §3.9's CompCert, Alive2 and Cedar; RUN-twin-pins must pin them. *Resolved in spine revision 3 (§3.9).*
+12. **RUN-tv-reference's scope.** It keys more cells than §9.5 says (§13's row). No new run ID is needed, but W5-T04's acceptance should list them. *Resolved in spine revision 3 (§13 W5-T04).*

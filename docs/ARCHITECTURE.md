@@ -25,7 +25,7 @@
  |   +----------------------------------------------------------+     |
  |   | INSTRUMENT ORIGIN   https://instruments.<course-domain>/ |     |
  |   |   second Pages site in a hidden iframe; no learner data  |     |
- |   |   host: origin checks, caps, schema validation, consent  |     |
+ |   |   host: origin checks, caps, schema validation           |     |
  |   |   workers: Pyodide + Z3 | Spectacle | PGlite | Lane A    |     |
  |   |            pure pool (lasso, history, pairs, parsers)    |     |
  |   |   engine cache: its own service worker, content-hashed   |     |
@@ -79,7 +79,7 @@ Seven rules carry the design.
 
 | Place | What runs there | What it holds | What it never does |
 |---|---|---|---|
-| Main origin | course UI; derivations of learner state; stamp derivation; pocket checkers (INS-pocket); INS-interp on course-authored programs; Goal Replay and Theater rendering from build-time data | the evidence log; working state (settings, consent, drafts); a disposable, read-only mirror of the lab repo | parse bytes from outside the page; run an engine; run learner code |
+| Main origin | course UI; derivations of learner state; stamp derivation; pocket checkers (INS-pocket); INS-interp on course-authored programs; Goal Replay and Theater rendering from build-time data | the evidence log; working state (settings, drafts); a disposable, read-only mirror of the lab repo | parse bytes from outside the page; run an engine; run learner code |
 | Instrument origin | Pyodide with Z3, Spectacle, PGlite, the Lane A host, and a pool of pure workers (lasso validator, history checker, paired-state evaluator, INS-interp on imported or learner-produced IR, and the parsers for receipts, bundles, fragments, traces and histories) | content-hashed engine assets in its own Cache API | read or write learner data; fetch a URL named in a message; return HTML |
 | The Bench | the `statespace` CLI and the real tools | the lab repo and the toolchains | send anything to the course |
 | CI (GitHub Actions) | gates, run recording, deploys | the course repository | see learner data |
@@ -103,7 +103,7 @@ The placement rule, instrument by instrument, is in §6.9.
 
 ### 3.1 Stack and hosting
 
-React 19, Vite 7, TypeScript 5.9, React Router 7, Playwright and axe, pinned in W0-S12 {{run:RUN-scaffold}}. The output is static and served by GitHub Pages, which runs no server code and accepts no custom response headers. Two consequences shape the rest of this document. Security policy arrives as a meta CSP (§15.4). Long-lived caching is done by service workers under content-hashed URLs (§16), not by HTTP headers. A post-build step writes an `index.html` for every static route, so deep links return HTTP 200 (kernelspace's pattern). Learner payloads that ride in links (receipts, spec duels) use the URL fragment, which browsers do not send to servers.
+React 19.3.1, Vite 7.3.7, TypeScript 5.9.3, React Router 7.18.4, Playwright and axe, pinned in W0-S12 [X RUN-scaffold]. The output is static and served by GitHub Pages, which runs no server code and accepts no custom response headers. Two consequences shape the rest of this document. Security policy arrives as a meta CSP (§15.4). Long-lived caching is done by service workers under content-hashed URLs (§16), not by HTTP headers. A post-build step writes an `index.html` for every static route, so deep links return HTTP 200 (kernelspace's pattern). Learner payloads that ride in links (receipts, spec duels) use the URL fragment, which browsers do not send to servers.
 
 ### 3.2 Routes and screens
 
@@ -133,8 +133,9 @@ React 19, Vite 7, TypeScript 5.9, React Router 7, Playwright and axe, pinned in 
 | `/changes` | SCR-changes | yes |
 | `/search` | SCR-search | yes |
 | `/settings` | SCR-settings | yes |
+| the instrument origin, `b/<buildId>/…` (the payload in the fragment) | SCR-instrument | yes |
 
-Navigation is Today · Stages · Bench · Audit · Claims, plus search (spine §0). The Mirror is reached from Today and is never linked from Claims. A route that names a learner object, such as a receipt, names it in the fragment, so no learner data appears in any request. A run record opens in a run sheet over the current screen rather than on a route of its own (§18). A spec-duel link (M-spec-duel) opens the screen that owns its item family, with the spec in the fragment, and the fragment goes to the instrument origin unparsed.
+Navigation is Today · Stages · Bench · Audit · Claims, plus search (spine §0). The Mirror is reached from Today and is never linked from Claims. A route that names a learner object, such as a receipt, names it in the fragment, so no learner data appears in any request. A run record opens in a run sheet over the current screen rather than on a route of its own (§18). A spec-duel link (M-spec-duel) and a receipt imported by link open SCR-instrument on the instrument origin, where the untrusted input renders, rather than a main-origin screen; the payload rides in the fragment, and the main origin never parses it (I6).
 
 ### 3.3 Content pipeline
 
@@ -163,14 +164,14 @@ search index                      for SCR-search
 No store holds status. There are three kinds of state:
 
 - **the event log**, append-only (§7);
-- **working state**: settings, consent per engine, drafts, drawer opens, the remembered tab; last writer wins, and none of it is evidence;
+- **working state**: settings, drafts, the remembered tab; last writer wins, and none of it is evidence;
 - **the lab mirror**: read-only, replaced on each lab bundle import (§8.3).
 
 Screens read derived views from memoized selectors over events, the mirror and content (I2).
 
 ### 3.5 The instrument client
 
-`InstrumentClient` (`apps/site/src/bus-client/`) creates the hidden iframe on the first instrument need; Boot creates it early, because its first call runs Z3. The client performs the handshake (§5.3), multiplexes requests by id, enforces the caps on outgoing messages (§5.6), runs its own watchdog per request, and exposes `run`, `cancel`, `warm`, `caps` and `evict`. While a worker is cold, or before consent, an instrument cell renders the recorded run for the same input from `runs/`, labeled as recorded and showing its run id. Boot does exactly this while Z3 loads [X RUN-z3-starter-pyodide], which also gives phones the spine's flow: predict, see a recorded run, queue the hands-on work for the laptop (spine §9.3).
+`InstrumentClient` (`apps/site/src/bus-client/`) creates the hidden iframe on the first instrument need; Boot creates it early, because its first call runs Z3. The client performs the handshake (§5.3), multiplexes requests by id, enforces the caps on outgoing messages (§5.6), runs its own watchdog per request, and exposes `run`, `cancel`, `warm`, `caps` and `evict`. While a worker is cold or its engine is downloading, an instrument cell renders the recorded run for the same input from `runs/`, labeled as recorded and showing its run id. Boot does exactly this while Z3 loads [X RUN-z3-starter-pyodide], which also gives phones the spine's flow: predict, see a recorded run, queue the hands-on work for the laptop (spine §9.3).
 
 ---
 
@@ -193,7 +194,7 @@ statespace inherits kernelspace's learning engine and none of its look (spine §
 | Verify-script framework, item lints, blind-strategy checks, `a11y.mjs` | **Vendored** | `scripts/verify-*`, `scripts/a11y.mjs` | the runner, report format and item lints carry over; most gates are new (§13) |
 | Lab packer and agent kit (AGENTS.md and CLAUDE.md templates, the fail-closed PreToolUse hook) | **Vendored and extended:** challenge packs, `comparator.json`, a protected-paths manifest, the devcontainer, the Python CLI | `labs/pack/`, `labs/agent-kit/` | V2-01 |
 | Zero-import wasm ABI (host, lab worker, Rust kit crate) | **Vendored;** ABI v2 unchanged | `apps/instruments/src/lane-a/`, `labs/kit-rs/` | the family's ABI [ksnext]; statespace adds host-side oracles (§6.6) |
-| `sw.js` with its kill switch | **Vendored;** used on both origins | `apps/site/src/sw/`, `apps/instruments/src/sw/` | offline use and consent caching (§16) |
+| `sw.js` with its kill switch | **Vendored;** used on both origins | `apps/site/src/sw/`, `apps/instruments/src/sw/` | offline use and engine caching (§16) |
 | Seeded RNG and the determinism lint | **Vendored** | `packages/rng`, GATE-generators | I3 |
 
 ### 4.3 Not inherited
@@ -248,16 +249,17 @@ The decision (OD-5, V2-19) rests on executed runs:
 
 ```html
 <iframe src="https://instruments.<course-domain>/b/<buildId>/host.html"
-        title="statespace instruments" hidden referrerpolicy="no-referrer"></iframe>
+        title="statespace instruments" hidden referrerpolicy="no-referrer"
+        sandbox="allow-scripts allow-same-origin"></iframe>
 ```
 
-A `sandbox="allow-scripts allow-same-origin"` attribute would add hardening without changing the frame's origin; it is adopted only if W0-S01 shows that workers and caches behave identically with it [D].
+The iframe carries `sandbox="allow-scripts allow-same-origin"` [D]: workers, caches and the handshake behave as without it, and it blocks top navigation and `document.domain` in Chromium, Firefox and WebKit [X RUN-origin-subdomain].
 
 1. `host.html` loads. If `window.parent === window` (opened at the top level), it shows a one-line notice and does nothing else.
 2. The host posts `{t: 'hello', bus: 1, build}` to its parent once per allowed parent origin, each time naming that origin as the target. A browser drops a message whose target origin does not match, so only the real parent receives it.
 3. The main origin accepts `hello` only when `event.origin === INSTRUMENT_ORIGIN`, `event.source === iframe.contentWindow`, and `build` equals the `buildId` it expects.
 4. The main origin creates a `MessageChannel`, keeps `port1`, and posts `{t: 'connect', bus: 1, build, nonce}` to `INSTRUMENT_ORIGIN` only, transferring `port2`.
-5. The host accepts `connect` only from an allowed parent origin, from `window.parent`, with exactly one transferred port, and only once per frame lifetime. It answers `ready` on the port.
+5. The host accepts `connect` only from an allowed parent origin, from `window.parent`, with exactly one transferred port, and only once per frame lifetime. It answers `ready` on the port. After `connect` is accepted the host registers `/sw.js` with scope `/`; a page that never completes the handshake causes no registration, and a registration from an earlier session still controls the frame from its first request [D] [X RUN-origin-subdomain].
 6. From then on both sides use only the port. Window-level messages are ignored on both sides without inspecting their payloads.
 
 ### 5.4 Message types
@@ -269,9 +271,9 @@ Every message carries `t`; request-scoped messages also carry `id`, a random 128
 | `t` | Fields | Effect |
 |---|---|---|
 | `connect` | `bus`, `build`, `nonce`; one transferred port | adopt the port (once) |
-| `run` | `id`; `req: {engine, version, input, budget}`; `consent?` | queue a run on the engine's worker |
+| `run` | `id`; `req: {engine, version, input, budget}` | queue a run on the engine's worker |
 | `cancel` | `id` | drop a queued run, or `worker.terminate()` a running one and respawn lazily |
-| `warm` | `engine`, `consent` | fetch and initialize an engine before it is needed |
+| `warm` | `engine` | fetch and initialize an engine before it is needed |
 | `caps` | — | report engines, pinned versions, cache state and first-load sizes from the manifest |
 | `evict` | `engine?` | clear engine caches: the instrument cache's kill switch |
 
@@ -285,7 +287,7 @@ Every message carries `t`; request-scoped messages also carry `id`, a random 128
 | `result` | `id`, `reply: {verdict, witness, stats, provenance}` | exactly one `result` or `error` per `run` |
 | `error` | `id?`, `code`, `detail` (plain text, capped) | codes below |
 
-**Error codes:** `bad-message`, `too-large`, `unknown-engine`, `version-mismatch`, `consent-required`, `budget-exhausted`, `terminated`, `engine-crashed`, `invalid-input`, `busy`. A `version-mismatch` means the request named a version the build does not pin. Each build pins exactly one version per engine and refuses mismatches rather than silently answering with another version, because a stamp's qualifier names the version (spine §8.7).
+**Error codes:** `bad-message`, `too-large`, `unknown-engine`, `version-mismatch`, `budget-exhausted`, `terminated`, `engine-crashed`, `invalid-input`, `busy`. A `version-mismatch` means the request named a version the build does not pin. Each build pins exactly one version per engine and refuses mismatches rather than silently answering with another version, because a stamp's qualifier names the version (spine §8.7).
 
 **Engines on the bus**
 
@@ -314,7 +316,7 @@ Every message carries `t`; request-scoped messages also carry `id`, a random 128
 **Instrument side.**
 - `ALLOWED_PARENTS` is a build-time list holding the production main origin. Development builds add `http://localhost:<port>`; GATE-bundle fails a production build whose list holds anything else.
 - `connect` is accepted only as in §5.3, and a second port is never adopted.
-- Where `location.ancestorOrigins` exists, the host refuses to start unless its first entry is an allowed parent [D]. This is defense in depth; the property is not available in every engine.
+- Where `location.ancestorOrigins` exists, the host refuses to start when its first entry is a real origin outside the allowed list; it treats `"null"` as unknown and relies on the handshake [D]. `referrerpolicy="no-referrer"` stays: where Firefox masked the ancestor as `"null"`, the handshake alone rejected the forged `connect` [X RUN-origin-subdomain]. This is defense in depth; the property is not available in every engine.
 - The host never fetches a URL taken from a message. Engines load only assets named in the build's manifest, from the instrument origin itself.
 
 ### 5.6 Size caps and structural limits [D]
@@ -333,7 +335,7 @@ These are course parameters held in `packages/bus/limits.ts`, enforced by the se
 | an imported history or NDJSON trace file | 4 MiB |
 | a URL-fragment payload (receipt or spec duel), encoded | 32 KiB; larger receipts import as files |
 | a witness in a reply | 64 KiB |
-| a graph reply (the Spectacle minimap, up to the cap of about 5k states) | 4 MiB |
+| a graph reply (the Spectacle minimap) | 4 MiB |
 | JSON structure | depth at most 64; at most 100,000 values; the keys `__proto__`, `prototype` and `constructor` rejected |
 | queues | one running request per worker; at most 16 queued per engine |
 | text shown to the learner from a reply | truncated at 10,000 characters, with "show all" in a text-only viewer |
@@ -347,11 +349,13 @@ These are course parameters held in `packages/bus/limits.ts`, enforced by the se
 
 ### 5.8 Budgets, timeouts and cancellation
 
-Every request carries a `Budget` with two parts. The engine budget (a Z3 `rlimit`, a Spectacle state cap, a history-search bound, a Lane A per-check limit) produces a verdict, and that verdict prints its bound (I10). The wall-clock watchdog `wallMs` produces `terminated` and no verdict: on expiry the supervisor calls `worker.terminate()` and the next request gets a fresh worker. The main origin runs its own watchdog, the host's plus a margin [D], and treats silence as `terminated`.
+Every request carries a `Budget` with two parts. The engine budget (a Z3 `rlimit`, a Spectacle wall-clock budget, a history-search bound, a Lane A per-check limit) produces a verdict, and that verdict prints its bound (I10). The wall-clock watchdog `wallMs` produces `terminated` and no verdict: on expiry the supervisor calls `worker.terminate()` and the next request gets a fresh worker. The main origin runs its own watchdog, the host's plus a margin [D], and treats silence as `terminated`.
 
-### 5.9 Consent enforcement
+Two rules come from W0-S02. First, every call to the solver sets an `rlimit`, because `timeout` never returned under Pyodide in Node or in three desktop browsers [X RUN-z3-budget-pyodide, RUN-phone-pyodide]. The watchdog's wall time is a second bound: twice the slowest run that the cell's `rlimit` allows on the reference profile, and at least 10 s [D] (W0-S02 §5.2). Second, `worker.terminate()` is called only by the watchdog, never on a timer, because the next request pays the warm start again.
 
-OD-6 asks before any download above 5 MB. **Definition** [D]: a download is everything one engine needs for its first load, counted as compressed bytes on the wire, as listed in the build's asset manifest. The main origin asks (M-consent) and records the answer per engine and per device in working state; later requests carry `consent: true`. The host refuses to fetch an uncached engine above the threshold without it (`consent-required`), so no code path downloads a large engine by accident. The size printed in the consent sheet comes from the manifest of the same build, never from typed copy. First-load sizes are recorded on real devices: Pyodide with Z3 in {{run:RUN-phone-pyodide}}, PGlite in {{run:RUN-pglite-0511}}.
+### 5.9 Downloads
+
+OD-6 (changed 2026-10-25): no download asks first and none warns, and while an engine downloads the loader shows its size. **Definition** [D]: an engine's size is everything it needs for its first load, counted as compressed bytes on the wire, as listed in the build's asset manifest; the host reports it in `caps` (`firstLoadBytes`) and in `progress` (`total`), and the loader prints that figure, never typed copy. The host fetches an uncached engine only for a `run` or `warm` from the main origin. First loads: Pyodide with Z3 12,893,420 B as gzip level 5 [X RUN-phone-pyodide]; PGlite 5,580,851 B as gzip level 5 [X RUN-pglite-0511].
 
 ---
 
@@ -359,25 +363,29 @@ OD-6 asks before any download above 5 MB. **Definition** [D]: a download is ever
 
 ### 6.1 The supervisor
 
-The host page runs one supervisor. It keeps one long-lived module worker per engine family, created on first use, with a FIFO queue and one request in flight per worker. It starts a watchdog per request, respawns a worker after `terminate()`, loads engine assets only from the build manifest (verified by SHA-256, §15.4), and stamps every reply with `provenance: {engine, version, build, budget}`. Workers never message each other directly: the supervisor relays oracle requests, for example from the Lane A worker to the Z3 and PGlite workers, so every worker keeps its own budget and watchdog.
+The host page runs one supervisor. It keeps one long-lived worker per engine family (a module worker, except Spectacle's classic worker, §6.3), created on first use, with a FIFO queue and one request in flight per worker. It starts a watchdog per request, respawns a worker after `terminate()`, loads engine assets only from the build manifest (verified by SHA-256, §15.4), and stamps every reply with `provenance: {engine, version, build, budget}`. Workers never message each other directly: the supervisor relays oracle requests, for example from the Lane A worker to the Z3 and PGlite workers, so every worker keeps its own budget and watchdog.
 
-Phone timings cannot be emulated in CI for these workers: in the measured harness, Chromium's CPU throttling did not reach the cross-origin iframe's worker [X RUN-browser-origin]. Phone budgets therefore come only from real devices (W0-S02, {{run:RUN-phone-pyodide}}).
+W0-S02's rules for the supervisor follow. It stops a worker only through the watchdog (§5.8). It adds no second `WebAssembly.instantiate` to the Pyodide worker after Pyodide has loaded, because that call did not settle in WebKit [X RUN-phone-pyodide]; any other module goes in its own worker [D]. `warm` messages the service worker every 15 s until it answers [D] and reports a fill that has not finished instead of waiting for it, because Firefox stopped a worker about 60 s into a fill on an emulated slow link [X RUN-phone-pyodide]. The fill stores each file after its hash check, so a retry fetches only what the cache lacks.
+
+Phone timings cannot be emulated in CI for these workers: in the measured harness, Chromium's CPU throttling did not reach the cross-origin iframe's worker [X RUN-browser-origin]. Phone budgets therefore come only from real devices. W0-S02 recorded the first load exactly and every timing as an emulation on three desktop engines [X RUN-phone-pyodide]; the real-device figures are {{run:RUN-phone-pyodide}}.
 
 ### 6.2 Pyodide with the Z3 wheel
 
-Serves INS-z3, each step of INS-derivation, spec duels (M-spec-duel), grade-time keys for the Z3-keyed generator families, and INS-datalog if W0-S03 passes.
+Serves INS-z3, each step of INS-derivation, spec duels (M-spec-duel), grade-time keys for the Z3-keyed generator families, and INS-datalog (§6.5).
 
 | Aspect | Design |
 |---|---|
 | Engine | Z3 5.3.1 through the `z3_solver` 5.3.1.0 pyemscripten wheel on Pyodide 314.0.7, all self-hosted on the instrument origin [X RUN-z3-starter-pyodide] |
 | Worker | a module worker; the measured classic-worker paths failed [X RUN-browser-origin] |
-| Ready time | 1.46–1.71 s in the measured desktop engines [X RUN-z3-starter-pyodide]; phones {{run:RUN-phone-pyodide}} |
+| Ready time | 1.46–1.71 s in the measured desktop engines [X RUN-z3-starter-pyodide]; phones: emulated figures only [X RUN-phone-pyodide], real devices {{run:RUN-phone-pyodide}} |
+| First load | 12,893,420 B as gzip level 5 [X RUN-phone-pyodide]; the first deployment sent 12,935,856 B, because GitHub Pages sent `python_stdlib.zip` uncompressed [X RUN-pages-wire-check]; it downloads without a prompt, and the loader shows its size (OD-6, §5.9) |
 | Per-request isolation | a fresh Python namespace and a fresh `Solver()` per request; no module-level state survives between requests |
-| Engine budget | an `rlimit` on every solver call. Under Pyodide, `s.set('timeout', 2000)` never returned, while an `rlimit` of 5e6 ended in `unknown (canceled)` after 1.1 s [X RUN-z3-budget-pyodide]. Every verdict prints its `rlimit` (I10) |
-| Hard stop | `worker.terminate()` from the supervisor's watchdog; the next request starts a fresh worker and pays the ready time again |
+| Engine budget | an `rlimit` on every solver call. Under Pyodide in Node, `s.set('timeout', 2000)` never returned, while an `rlimit` of 5e6 ended in `unknown (canceled)` after 1.1 s [X RUN-z3-budget-pyodide]; `timeout` never returned in Chromium, Firefox or WebKit either [X RUN-phone-pyodide]. Every verdict prints its `rlimit` (I10), and the watchdog's wall time bounds every request (§5.8) |
+| Hard stop | `worker.terminate()` from the supervisor's watchdog only, never on a timer; the next request starts a fresh worker and pays the ready time again |
 | Witnesses | returned as name-to-value strings. Native and Pyodide witnesses differ [X RUN-z3-bv64-pyodide], so graders check a witness against its property and never compare model values |
 | `unknown` | returned with Z3's reason string, as in the reason-stable `x**y == 8` case [X RUN-z3-unknown-pow]. A generated instance that comes back `unknown` is discarded and the generator draws the next seed in its deterministic sequence (I3) |
 | Inputs | Python the learner typed into a cell; course-authored Python for keys; SMT-LIB strings, parsed by Z3's own parser, for Derivation Board steps, spec duels and Lane A output |
+| Wheel | used as pinned: repackaging it without its second copy of `libz3.so` would shrink the first load but changes the pinned hash, so it is not adopted [D] |
 
 ### 6.3 Spectacle
 
@@ -385,12 +393,14 @@ Serves INS-spectacle and its minimap (M-telescope).
 
 | Aspect | Design |
 |---|---|
-| Engine | Spectacle at commit 5827c22, vendored with its MIT license [X RUN-spectacle] |
-| Conformance | its distinct-state counts equal TLC's on the double-spend family (11, 45, 191 and 813 for two to five workers) in three engines [X RUN-spectacle, RUN-tlc-full]. GATE-conformance keeps them equal for every authored spec, and a bump to a newer commit waits for that gate |
-| Speed | 524–1,125 states/s in the measured harness [X RUN-spectacle], so the learner-edit cap of about 5k states [D] costs seconds on a desktop, not minutes [D] |
-| Limits | no PlusCal (translated at build time); no fairness or liveness (INS-lasso covers lassos). Past the cap, the cell offers "send to the Bench" |
-| Loading | every module Spectacle loads, `EXTENDS` targets included, is vendored and served from the instrument origin. W0-S04 ({{run:RUN-spectacle-s5s8}}) confirms local `EXTENDS`, operator coverage on S5 and S8 specs, the state-pair check, and whether Spectacle runs in a worker or needs the host page's main thread |
-| Budget | `maxStates` plus the watchdog. A stop at the cap returns `stopped: bound`, which stamps [M] · bound · partial (spine §8.8) |
+| Engine | Spectacle at commit 5827c22, vendored with its MIT license and unmodified; a course-side adapter owns the search, the invariant and deadlock checks and TLC's counts, and carries every fix [X RUN-spectacle, RUN-spectacle-s5s8]; a fork would need a logged decision and GATE-conformance coverage (spine §12 item 56) |
+| Conformance | graph-equal to TLC on 49 of 49 configurations and verdict-equal on 47 of 47, in Node and three browser engines [X RUN-spectacle-s5s8]; its distinct-state counts equal TLC's on the double-spend family (11, 45, 191 and 813 for two to five workers) in three engines [X RUN-spectacle, RUN-tlc-full]. GATE-conformance keeps them equal for every authored spec, and a bump to a newer commit waits for that gate |
+| Speed | 524–1,125 states/s on the double-spend family [X RUN-spectacle]; S8's Outbox runs at 85 to 309 states per second in the browsers, so a two-command design of 3,887 states takes up to 41.7 s [X RUN-spectacle-s5s8], which is why learner edits run under a wall-clock budget and not a state cap |
+| Scope | 45 of 56 curriculum configurations are in scope (W0-S04's spec-by-spec table lists them) [X RUN-spectacle-s5s8]; liveness, fairness, action properties, symmetry and trace validation are Theater-only (INS-lasso covers lassos, INS-theater shows authored TLC graphs, and TLC runs on the Bench) |
+| Limits | no PlusCal (translated at build time); no `Nat`, `Int` or `STRING`; community modules are blocked, because Spectacle fetches them from a third-party URL; Spectacle's own checker skips initial states and has no deadlock check, so the adapter carries both. Past the budget, the cell offers "send to the Bench" |
+| Loading | every module Spectacle loads, `EXTENDS` targets included, is served from the instrument origin, and the adapter answers each module fetch itself and refuses any community-module name; a local `EXTENDS` resolves from the root module's directory, and `module_overrides` does not work at this commit. W0-S04 also confirmed operator coverage on S5 and S8 specs and the state-pair check, which accepted every TLC edge and rejected every sampled non-edge [X RUN-spectacle-s5s8] |
+| Worker | a classic dedicated worker on the instrument origin, never the main thread (Spectacle's scripts load with `importScripts`, which a module worker lacks); the watchdog terminates it [X RUN-spectacle-s5s8] |
+| Budget | a wall-clock budget of 10 s in the worker [D], with no separate state cap, and the watchdog behind it. A stop at the budget returns `stopped: bound`, which stamps [M] · bound · partial (spine §8.8) |
 
 Authored scenes in INS-theater do not use Spectacle. They navigate TLC state graphs exported at build time (`-workers 1`, explicit deadlock flag; W3-T06) and render on the main origin.
 
@@ -400,16 +410,16 @@ Serves INS-pglite.
 
 | Aspect | Design |
 |---|---|
-| Engine | PGlite reporting PostgreSQL 18.6: version 0.5.10 measured [X RUN-pglite]; the 0.5.11 pin is {{run:RUN-pglite-0511}} |
+| Engine | PGlite 0.5.11 reporting PostgreSQL 18.6, pinned and measured in three browser engines [X RUN-pglite-0511]; 0.5.10 was measured under Node [X RUN-pglite] |
 | Sessions | one connection. Two "concurrent" workers serialized in the measured run [X RUN-pglite], so the tab never claims to show concurrency; concurrent behavior is replayed from Bench histories in INS-history |
-| Isolation per item | a fresh in-memory database per item, built from the item's schema script [D]; nothing persists between items |
+| Isolation per item | one PGlite instance per worker, reset between items (`RESET ALL`, the item's schemas and roles dropped, its script loaded), and a worker that ends when idle, because a fresh instance costs 0.85 to 0.91 s and about 190 MiB of linear memory and closing it returns no memory [X RUN-pglite-rls, RUN-pglite-0511] [D]; nothing persists between items |
 | Outputs | rows, row counts and SQLSTATE codes as data, for example 22003 on `bigint` overflow and a NULL-amount guarded update that affects 0 rows [X RUN-pglite] |
-| Row-level security | waits on W0-S08 ({{run:RUN-pglite-rls}}); until then S7.L4's RLS work runs on the Bench |
-| Conformance | PGlite = PostgreSQL 18.6 on single-session specimens (GATE-conformance) |
+| Row-level security | S7.L4's hands-on segments run in the tab on laptops, and the Bench stays authoritative [X RUN-pglite-rls]; phones show recorded runs, because a live instance adds 565 to 1,125 MiB of resident memory in desktop browsers [X RUN-pglite-0511]. PGlite's connection is the superuser, so every RLS statement follows a `SET ROLE`, and the tab never uses `SET SESSION AUTHORIZATION`, whose reset does not work [X RUN-pglite-rls] |
+| Conformance | PGlite = PostgreSQL 18.6 on single-session specimens and on the RLS specimens (GATE-conformance), with `RESET SESSION AUTHORIZATION` the one documented difference [X RUN-pglite-rls] |
 
 ### 6.5 Datalog
 
-Serves INS-datalog. If W0-S03 passes ({{run:RUN-fixedpoint-equal}}), the `datalog` engine is an adapter over Z3's `Fixedpoint` inside the Pyodide worker; under Pyodide, `Fixedpoint` handled stratified negation [X RUN-z3-fixedpoint]; one Pyodide runtime then serves both Z3 and Datalog, so Stage 7 adds no fourth engine download. Otherwise it is a TypeScript evaluator in the pure pool. Either way GATE-conformance requires relations equal to Soufflé's on the fixtures. The adapter reconstructs one derivation per derived fact from the computed relations and checks each step as an instance of a rule, so a derivation shown in S7.L2 is valid even when it differs from the one Soufflé would print.
+Serves INS-datalog. The `datalog` engine is an adapter over Z3's `Fixedpoint` inside the Pyodide worker, so one Pyodide runtime serves both Z3 and Datalog and Stage 7 adds no fourth engine download. `Fixedpoint` is the evaluation step only: the adapter applies Soufflé's front-end checks first, translates the program, reads each relation back and rebuilds derivations itself. It equals Soufflé on 5,915 of 5,915 relation comparisons and on 53,488 of 53,488 derivation heights, natively and in four Pyodide runtimes [X RUN-fixedpoint-equal], and under Pyodide `Fixedpoint` handled stratified negation [X RUN-z3-fixedpoint]. `rlimit` and `timeout` do not bound a join, so the adapter caps a program from its size and facts, with `worker.terminate()` as the hard stop. A TypeScript evaluator in the pure pool, differential-tested against Soufflé, is the logged fallback (spine §9.1, §12 item 55). Either way GATE-conformance requires relations and derivation heights equal to Soufflé's on the fixtures. The adapter reconstructs one derivation per derived fact from the computed relations and checks each step as an instance of a rule, so a derivation shown in S7.L2 is valid even when it differs from the one Soufflé would print.
 
 ### 6.6 The Lane A host: the learner's Mini-Plinth interpreter and other components as wasm
 
@@ -431,7 +441,7 @@ Zero imports already deny a module any input or output of its own. Lane A still 
 
 Course TypeScript with no third-party engine, in one worker with the same budgets and watchdog:
 
-- the lasso validator (INS-lasso): exact on finite graphs; its TLC input format follows W0-S05 ({{run:RUN-tlc-lasso-json}});
+- the lasso validator (INS-lasso): exact on finite graphs; its input, `lasso@1`, is TLC's `-dumpTrace json` counterexample as written, with no wrapper and a strict schema [X RUN-tlc-lasso-json];
 - the abstract-serializability checker (INS-history): a bounded search over n ≤ 6–8 transactions, so its results are [T] and show anomalies present, never absent;
 - the paired-state evaluator (INS-pairs): finite domains, bounds printed;
 - INS-interp on imported or learner-produced IR;
@@ -446,21 +456,23 @@ M-docket and SCR-clearinghouse. A seeded Mini-Plinth world runs on INS-interp in
 
 | Instrument | Runs on | Worker | Engine budget | Offline |
 |---|---|---|---|---|
-| INS-z3 | instrument | Pyodide | `rlimit` | after consent and caching |
+| INS-z3 | instrument | Pyodide | `rlimit` | after caching |
 | INS-goal-replay | main | none: build-time strips | — | yes |
 | INS-interp | main for course-authored programs; instrument for imported or learner IR | none, or pure pool | step fuel | yes |
 | INS-derivation | UI on main; each step on the instrument | Pyodide | `rlimit` per step | after Z3 is cached |
 | INS-theater | main | none: build-time TLC graphs | — | yes |
-| INS-spectacle | instrument | Spectacle | state cap | after caching |
+| INS-spectacle | instrument | Spectacle (classic worker) | wall-clock budget | after caching |
 | INS-lasso | instrument | pure pool | graph size | after caching |
-| INS-pglite | instrument | PGlite | watchdog | after consent and caching |
+| INS-pglite | instrument | PGlite | watchdog | after caching |
 | INS-history | viewer on main; checker on the instrument | pure pool | transaction bound | after caching |
-| INS-datalog | instrument | Pyodide or pure pool | `rlimit` or iteration cap | after caching |
+| INS-datalog | instrument | Pyodide (the `Fixedpoint` adapter) or pure pool (fallback) | a cap the adapter sets from the program's size and facts, or an iteration cap | after caching |
 | INS-pairs | instrument | pure pool | domain bound | after caching |
 | INS-sim | instrument | Lane A | fault seeds and per-check limit | after caching |
 | INS-lane-a | instrument | Lane A | per-check limit | after caching |
-| INS-receipt | parser on the instrument; SCR-receipt on main | pure pool | size cap | after caching |
+| INS-receipt | parser on the instrument, which also shows a receipt imported by link on SCR-instrument; SCR-receipt on main | pure pool | size cap | after caching |
 | INS-pocket | main | none | — | yes |
+
+**SCR-instrument** (spine §10.1) is not an instrument but the instrument origin's own page. A spec-duel link and a receipt imported by link open it there, so the untrusted input renders on the instrument origin and never on a main-origin screen.
 
 **The rule** (§18, item 1): pure course code working on course content or on the learner's typed answers may run on the main origin; every engine, every piece of learner code and every parse of outside bytes runs on the instrument origin.
 
@@ -470,26 +482,28 @@ M-docket and SCR-clearinghouse. A seeded Mini-Plinth world runs on INS-interp in
 
 ### 7.1 Scope
 
-The browser's only record is practice events (V2-17): calls, items, probes, audit findings, Prove-it results imported from `statespace defend`, Lane A checks, receipt imports, explain-backs and notes. Claims, specimens and receipts are records in the lab repo, and the browser holds only a mirror of them (§8.3). Reading, viewing and opening a drawer write no evidence; a drawer open is logged in working state, as the spine requires ("logged, never required", spine §3.12), and never counts.
+The browser's only record is practice events (V2-17): calls, items, probes, audit findings, Prove-it results imported from `statespace defend`, Lane A checks, receipt imports, explain-backs and notes. Claims, specimens and receipts are records in the lab repo, and the browser holds only a mirror of them (§8.3). Reading and viewing write no evidence. Opening a drawer logs an uncredited `view` event, as help-seeking ("logged, never required", spine §3.12; spine §8.2), and it never counts.
 
 ### 7.2 `event@1`
 
-The fields are the spine's (§8.2) plus kernelspace's envelope fields `v`, `tz`, `day` and `dev` (§18, item 9).
+The fields are the spine's (§8.2) plus kernelspace's envelope fields `v`, `tz`, `day` and `dev` (§18, item 9). W1-T03 reconciles the published `schemas/event.schema.json` with spine §8.2: it still lists `automated` as a provenance value and has no `view` kind.
 
 | Field | Type | Rule |
 |---|---|---|
 | `id` | string | `crypto.randomUUID()`; never parsed |
 | `v` | integer | shape version of the event's kind |
-| `kind` | `call`, `item`, `probe`, `audit`, `prove-it`, `lab-check`, `receipt-import`, `explain-back`, `note` | spine §8.2 |
+| `kind` | `call`, `item`, `probe`, `audit`, `prove-it`, `lab-check`, `receipt-import`, `explain-back`, `note`, and the uncredited `view` | spine §8.2 |
 | `ref` | string | grammar below |
 | `itemRev` | string | fingerprint of the item as graded; a newer revision shows "re-check" and never deducts |
 | `engine` | string | `name@version` of the engine that keyed or graded the event |
 | `seed` | uint32 | drawn at grade time |
 | `ok` | boolean | the graded verdict |
 | `conf` | `guess`, `think`, `sure` | the Call It confidence, stored as a category; bands are applied at read time |
-| `provenance` | `own`, `assisted`, `agent`, `automated` | self-declared (OD-8) |
+| `resp` | by kind | the learner's response; its shape depends on the kind and is checked by the module that reads it |
+| `mis` | `dp:` key | the misconception tag the response matched, which M-refutation-card reads |
+| `provenance` | `own`, `assisted`, `agent` | self-declared (OD-8); `automated` is a flag on receipts and claims only, never an event value (spine §8.2) |
 | `exposure` | `seen`, `unseen` | the spine's `seen \| unseen` |
-| `at` | ISO 8601 instant | from an injectable clock |
+| `at` | ISO 8601 instant | from an injectable clock; it carries the local UTC offset |
 | `tz`, `day` | minutes east of UTC; the local date | frozen at write time, so travel never rewrites history; the weekly rhythm reads `day` |
 | `dev` | string | random per browser profile; used by multi-device merges |
 | `ms` | number | time on task |
@@ -500,7 +514,7 @@ The fields are the spine's (§8.2) plus kernelspace's envelope fields `v`, `tz`,
 | Kind | `ref` |
 |---|---|
 | `call` | `call:S{n}.L{k}/{cell}` for the first run of an authored cell; `call:GEN-{family}/{template}` for a generated item; `call:ER-{k}/forecast` for an erosion forecast |
-| `item` | `item:GEN-{family}/{template}`; KC tags are resolved from content at read time |
+| `item` | `item:GEN-{family}/{template}`; KC tags are resolved from content at read time. An item met in a drawer, a placement walk, a test-out or a confirmation names that context instead: `drawer:D-03/i2`, `placement:step-4`, `testout:KC-1.violation-as-sat`, `confirm:KC-1.violation-as-sat` |
 | `probe` | `probe:S{n}/A/{attempt}/{index}` (Defence Part A) |
 | `prove-it` | `prove-it:LAB-{n}/{mutant}`; Defence Part B uses `prove-it:S{n}/B/{attempt}/{mutant}` |
 | `audit` | `audit:AUD-{n}.{k}/{variant}`, `audit:harvest/{hash}`, `audit:S{n}/C/{attempt}/{index}` |
@@ -508,6 +522,7 @@ The fields are the spine's (§8.2) plus kernelspace's envelope fields `v`, `tz`,
 | `receipt-import` | `receipt-import:{sha256}` |
 | `explain-back` | `explain-back:S{n}` |
 | `note` | `note:{n}` |
+| `view` | `view:D-{nn}`, the drawer opened (uncredited) |
 
 ### 7.3 Provenance and weights
 
@@ -515,10 +530,11 @@ Applied at read time, never stored (spine §8.2):
 
 | Provenance and exposure | Weight | Counts toward |
 |---|---|---|
-| own · unseen | 1.0 | sign-off, settled, VRK₃₀, Judgment |
+| own · unseen · generated (fresh) | 1.0 | sign-off, settled, VRK₃₀, Judgment |
+| own · unseen, authored (a first exposure to a fixed cell or anchor) | 1.0 | Judgment; scheduling |
 | own · seen (practice) | 0.3 | scheduling only |
 | assisted (past rung R2, or a context packet used) | 0.3 | scheduling only, until an unseen variant passes unassisted |
-| automated (a tactic closed a step taught in manual mode) | 0 for that KC | flagged on the receipt |
+| automated (a tactic closed a step taught in manual mode) | — | a flag on receipts and claims only, which never count as evidence, so it never weighs an evidence event |
 | agent | 0 | may produce claims; never evidence |
 
 ### 7.4 Storage
@@ -528,7 +544,7 @@ IndexedDB database `statespace`:
 | Store | Key | Holds |
 |---|---|---|
 | `events` | `id` | `event@1` records, indexed on `at` and on `[kind, ref]` |
-| `working` | `key` | last-writer-wins records: settings, consent per engine, drafts, drawer opens, the last export time |
+| `working` | `key` | last-writer-wins records: settings, drafts, the last export time |
 | `mirror` | `path` | the read-only lab mirror (§8.3) |
 | `meta` | `key` | schema version, device id, persistence status |
 | `checkpoints` | `id` | the undo checkpoint written before any replace-import, undo or reset |
@@ -550,7 +566,7 @@ IndexedDB database `statespace`:
 | Today plan | due items on fresh seeds, 0–1 audit case, re-finds, sure-and-wrong returns, the resume card, change cards and erosion forecasts, fitted to 10–12 minutes from logged item times | M-today |
 | Signed off, settled | the §8.6 rules over a Defence attempt's `probe`, `prove-it` and `audit` events, plus fresh items correct in at least three spaced sessions; settled after a fresh probe correct at least 30 days later | §8.6 |
 | VRK₃₀ | KCs answered correctly on own · unseen fresh items at least 30 days after first learning | §2.3 |
-| Judgment ("audit accuracy" in learner copy) | balanced accuracy on own · unseen audit events with a Wilson interval; per-class precision and recall once a class has n ≥ 10 | §2.2 |
+| Judgment ("audit accuracy" in learner copy) | balanced accuracy on own · unseen audit events, with an interval assembled from the 97.5% Wilson intervals of its two class rates (spine §6); per-class precision and recall once a class has n ≥ 10 | §2.2 |
 | Mirror | bias and hit rate per confidence band with Wilson intervals; post-instruction, unassisted calls only; nothing diagnosed below about 20–30 calls per band | §8.5 |
 | Weekly rhythm | graded work per local `day`; "met in k of the last 12 weeks" with 7-day repair and reserve weeks | M-set-your-week |
 
@@ -603,7 +619,7 @@ statespace-lab/
 
 | Path | Format | Written by | Notes |
 |---|---|---|---|
-| `claims/*.yaml` | `claim@1` | the learner; cards fade from receipt-prefilled to learner-written | six fields plus the requirement row; stamps are never typed into a card |
+| `claims/*.yaml` | `claim@1` | the learner; cards fade from receipt-prefilled to learner-written | six fields plus the requirement row, and the optional `topics` (the keys of spine §3.12's vocabulary, which surface deferred drawers) and `correspondence.code[]` (`{language, path, symbol}`), both added to claim@1 by W1-T15; stamps are never typed into a card |
 | `claims/*.tla`, `claims/*.smt2` | TLA+ properties, SMT-LIB statements | the learner | hashed into receipts (I7) |
 | `labs/LAB-{n}/challenge/` | a read-only `Challenge` module and `comparator.json`, whose keys are `challenge_module`, `solution_module`, `theorem_names` and `permitted_axioms` [X RUN-lean-comparator] | the course | protected from agents |
 | `specimens/*.yaml` | `specimen@1`: violates, because, minimal?, cured by, found in, tool version; status mounted or kept | the learner, from runs | the label is generated from a run (spine §5.1) |
@@ -622,13 +638,16 @@ template: CL-2.1
 proposition: total is unchanged by every allowed transfer, over Int
 statement: { path: labs/LAB-2/challenge/Challenge.lean, theorem: transfer_conserves }
 assumptions:
-  - { text: balances are unbounded integers, seam: SEAM-1 }
+  - { text: balances are unbounded integers, seam: SEAM-1 }   # an assumption may carry topics too
 model: two accounts over Int
 method: { receipt: receipts/LAB-2.2/<file>.json }   # the stamp is derived from it, never typed
-correspondence: { text: the Lean definition is the semantics; nothing is compiled yet }
+correspondence:
+  text: the Lean definition is the semantics; nothing is compiled yet
+  code: []                                          # optional: the code the model corresponds to, as { language, path, symbol }
 if_weakened: { specimen: specimens/<id>.yaml }      # must refute this card's own proposition (GATE-claims)
 requirement: { text: money is neither created nor destroyed by a transfer }
 rests_on: []
+topics: []                                          # optional: keys of spine §3.12's vocabulary, for example migrations
 supersedes: null
 ```
 
@@ -735,6 +754,8 @@ Every tool number, verdict, flag and version in copy, keys and artboards traces 
 
 Runs whose outputs describe a moving upstream, such as RUN-twin-pins with its 60-day TTL, also carry `ttlDays` (§18, item 15).
 
+The published run@1 (`schemas/run.schema.json`) writes these fields in snake_case (`binary_sha256`, `recorded_at`, `ttl_days`) and holds more (`configs[]` for a run with several configurations, `values`, `checks[]`, `unrecorded[]`, `notes[]`); `runs/README.md` §2 maps each name below to its published one.
+
 ```json
 {
   "id": "RUN-<id>",
@@ -754,7 +775,7 @@ Runs whose outputs describe a moving upstream, such as RUN-twin-pins with its 60
 ### 9.2 References in content
 
 - **Citation.** `{{run:RUN-id}}` renders as a run chip (id, engine and version, date) that opens the run sheet: argv, input hash, outputs, and the command that re-executes it (`statespace run RUN-id`).
-- **Value** (proposed, §18, item 14). `{{run:RUN-id#outputs.values.<name>}}` prints a value straight from the record, so a number in copy is generated rather than typed.
+- **Value** (proposed, §18, item 14). `{{run:RUN-id#values.<name>}}` prints a value straight from the record (run@1 keeps `values` at the top level, beside the list of outputs), so a number in copy is generated rather than typed.
 - **Docs.** Documents use the spine's tag form `[X RUN-id]`.
 - **Drafts.** An unresolved reference renders as "run not yet recorded" only in content labeled "draft: first-learner pass pending". GATE-runs fails the fast lane on any unresolved reference in other content, and fails every release on any unresolved reference at all.
 
@@ -780,7 +801,7 @@ A receipt is the Bench's report of what real tools said about one lab stage. It 
 
 ### 10.1 Schema outline
 
-One JSON Schema source generates the TypeScript and Python types (W0-T02); GATE-schema keeps them in sync. Outline, in YAML notation:
+One JSON Schema source generates the TypeScript and Python types (W0-T02); GATE-schema keeps them in sync. The published file, `schemas/receipt.schema.json`, is the source of truth, and this outline abbreviates it, in YAML notation:
 
 ```yaml
 $schema: https://json-schema.org/draft/2020-12/schema
@@ -793,9 +814,9 @@ properties:
   schema:    { const: statespace/receipt@1 }
   lab:       { type: string, pattern: '^LAB-[0-9]+$' }
   stage:     { type: string, pattern: '^LAB-[0-9]+\.[0-9]+$' }
-  lane:      { enum: [rechecked-here, reported, self-assessed] }
-             # badge words: re-checked here | reported from your machine | self-assessed.
-             # A file written by the CLI may carry only reported or self-assessed (§10.3).
+  lane:      { enum: [reported, self-assessed] }
+             # badge words: reported from your machine | self-assessed.
+             # re-checked here is never stored: only the tab assigns it, at read time (§10.3, §17.3).
   createdAt: { type: string, format: date-time }
   cli:       { type: object, required: [name, version],
                properties: { name: { const: statespace }, version: { type: string } } }
@@ -816,6 +837,7 @@ properties:
         name:    { type: string }                       # lean, lake, tlc, java, z3, cvc5, postgres, souffle, cargo
         version: { type: string }                       # the tool's own version string, verbatim
         sha256:  { type: string, pattern: '^[0-9a-f]{64}$' }   # binary, jar or wheel
+        pinned:  { type: boolean }                      # whether sha256 equals the course's pin; false flags an unpinned tool
   statements:                                           # statement hashes (I7)
     type: array
     items:
@@ -831,6 +853,7 @@ properties:
       type: object
       required: [engine, version, argv, inputSha256, budget, exitCode, verdictLines, verdict]
       properties:
+        step:         { type: string }                  # the pipeline step: build, axioms, check, comparator, ...
         engine:       { type: string }
         version:      { type: string }
         argv:         { type: array, items: { type: string } }  # verbatim, flags included
@@ -859,6 +882,16 @@ properties:
       automation:      { type: object, properties: { manualMode: { type: boolean }, grind: { type: boolean }, omega: { type: boolean }, decide: { type: boolean } } }
       statementCheck:  { enum: [comparator, goldens, weak] }     # weak renders "statement check: weak"
       goldens:         { type: object, properties: { count: { type: integer }, kernelChecked: { type: boolean }, referenceSha: { type: string } } }
+      lints:           { type: array, items: { type: string } }    # lint findings, such as a flagged declare_syntax_cat (D-22)
+  goldens:                                              # a run of a pool of kernel-checked goldens
+    type: object
+    required: [poolSha, n, passed, failed, noVerdict]
+    properties:
+      poolSha:   { type: string, pattern: '^[0-9a-f]{64}$' }
+      n:         { type: integer }
+      passed:    { type: integer }
+      failed:    { type: integer }
+      noVerdict: { type: integer }
   tlc:
     type: object
     properties:
@@ -875,6 +908,7 @@ properties:
     type: object
     properties:
       smtlibSha256:   { type: string }
+      entry:          { enum: [cli, api] }              # SMT-LIB command line or Python API: the two can answer differently [X RUN-z3-11179]
       rlimit:         { type: integer }
       verdict:        { enum: [sat, unsat, unknown] }
       reason_unknown: { type: string }
@@ -885,16 +919,48 @@ properties:
       isolationLevel:  { enum: [read-committed, repeatable-read, serializable, mixed] }
       historySha256:   { type: string }
       sqlstateClasses: { type: object, additionalProperties: { type: integer } }   # SQLSTATE -> count
+      rls:                                              # row-level security
+        type: object
+        properties: { roleMode: { type: string }, policySha256: { type: string }, readBacks: { type: integer }, disagreements: { type: integer } }
+  traces:                                               # statespace trace validate
+    type: object
+    required: [n, seedListSha256, verdicts]
+    properties:
+      n:               { type: integer }                # counts accepted traces only
+      seedListSha256:  { type: string, pattern: '^[0-9a-f]{64}$' }
+      verdicts:                                         # W5-T14 adds the error verdict and per-trace line counts
+        type: array
+        items: { type: object, required: [trace, verdict],
+                 properties: { trace: { type: string }, seed: { type: integer },
+                               verdict: { enum: [accepted, rejected, partial] },
+                               firstNonConformingLine: { type: [integer, 'null'] } } }
+  datalog:
+    type: object
+    required: [engine, relations]
+    properties:
+      engine:      { type: string }                     # such as souffle@2.5
+      relations:   { type: object, additionalProperties: { type: string } }   # relation -> SHA-256 of its sorted tuples
+      derivations: { type: object, properties: { checked: { type: integer }, invalid: { type: integer } } }
+      generator:   { type: object }                     # the generator's own statistics
+  pairs:                                                # a paired-state check
+    type: object
+    required: [witnessSha256, relationSha256, observerSha256, bound]
+    properties:
+      witnessSha256:  { type: string }
+      relationSha256: { type: string }
+      observerSha256: { type: string }
+      bound:          { type: string }                  # printed with the stamp (I10)
   checks:
     type: array
     items: { type: object, required: [id, pass],
              properties: { id: { type: string, pattern: '^LAB-[0-9]+\.c[0-9]+$' }, pass: { type: boolean } } }
   provenance:
     type: object
-    required: [assisted, agent]
+    required: [assisted, agent, guard]
     properties:
       assisted: { enum: [none, explain, code] }         # self-reported (OD-8)
       agent:    { type: boolean }                       # self-reported
+      guard:    { enum: ['on', 'off'] }                 # off when the agent-guardrail hook was switched off with STATESPACE_GUARD=off
   claims:                                               # claims to mint or update
     type: array
     items: { type: object, required: [template],
@@ -923,7 +989,7 @@ properties:
 | Tool hashes | `tools[].sha256` |
 | TLC flags | `tlc.flags`, and `runs[].argv` |
 | Z3 `rlimit` | `z3.rlimit`, and `runs[].budget.rlimit` |
-| The lane: re-checked here, reported from your machine, or self-assessed | `lane` |
+| The lane: re-checked here, reported from your machine, or self-assessed | `lane` stores `reported` or `self-assessed`; the tab assigns *re-checked here* at read time (§10.3, §17.3) |
 | Agent claims shown as quoted UNREVIEWED text, never stamped | `provenance.agent`; agent-written claim cards live in `proposals/` and are never minted from a receipt |
 
 ### 10.3 Parsing and validation on import
@@ -933,7 +999,7 @@ On the instrument origin, in this order:
 1. **Caps.** The size cap and structural limits of §5.6, before and during JSON parsing.
 2. **Schema.** Validation with the compiled `receipt@1` validator; unknown top-level fields are rejected, and `ext` is ignored.
 3. **Re-parse every verdict.** The course's TypeScript line parsers re-derive each `runs[].verdict` from its `verdictLines`; a disagreement rejects the receipt. Neither the CLI's normalization nor an exit code is trusted alone, and the executed runs show why. Without bubblewrap the comparator exits 2, and bubblewrap under default Docker exits 1, the code of a rejection [X RUN-lean-bwrap-docker]. `lake check` errors on non-standard axioms while its log still says the default kernel accepts, and a file containing `sorry` exits 0 [X RUN-lean-axioms]. A `debug.skipKernelTC` proof of `False` builds with exit code 0, and only `leanchecker` rejects it [X RUN-lean-skipkernel].
-4. **Lane.** A receipt file may carry `reported` or `self-assessed`; a file claiming `rechecked-here` is rejected. Only the tab assigns "re-checked here", to checks it re-ran itself.
+4. **Lane.** `lane` is `reported` or `self-assessed`; a value outside the enum, `rechecked-here` included, fails schema validation (step 2). Only the tab assigns "re-checked here", at read time, to checks it re-ran itself, and it never stores that value.
 5. **Consistency.** `stage` and every `checks[].id` belong to `lab`; every `claims[].template` exists in content.
 6. **Statements.** When the mirror holds a statement's text, its hash is recomputed and compared; otherwise the hash is displayed as reported.
 
@@ -959,14 +1025,14 @@ One digest-pinned image, built in CI from `bench/image/` with pinned base images
 | TLC | `tla2tools` 1.8.0, a pre-release pinned by SHA-256, with 1.7.4 as the text-trace fallback; Java 21 | [X RUN-tlc-jars, RUN-tlc-doublespend] |
 | PostgreSQL | 18.6, as a service container | [X RUN-pg-anomalies]; re-recorded after PostgreSQL 19 GA (OD-12) |
 | Z3 | 5.3.1 | [X RUN-z3-starter] |
-| cvc5 | 1.4.2; the Bench binary is recorded in {{run:RUN-scaffold}}, while the executed run used the pip wheel, whose version string reads `1.4.2-modified` | [X RUN-cvc5-alethe] |
-| Soufflé | {{run:RUN-souffle-version}} | — |
-| Rust | the toolchain with the `wasm32-unknown-unknown` target; `tokio-postgres`, `testcontainers`, `pg_query`, `proptest` | {{run:RUN-scaffold}} |
-| Apalache (optional) | {{run:RUN-apalache-version}} | D-18 |
-| Alloy (optional) | {{run:RUN-alloy-version}} | D-16 |
-| uv and the `statespace` CLI | {{run:RUN-scaffold}} | — |
+| cvc5 | 1.4.2; the Bench binary prints 1.4.2 [X RUN-scaffold], while the Alethe proof run used the pip wheel, whose version string reads `1.4.2-modified` | [X RUN-cvc5-alethe] |
+| Soufflé | 2.5, with the CPU architecture recorded; the release ships no arm64 package | [X RUN-souffle-version] |
+| Rust | the toolchain with the `wasm32-unknown-unknown` target; `tokio-postgres`, `testcontainers`, `pg_query`, `proptest`, at the versions the scaffold pinned | [X RUN-scaffold] |
+| Apalache (optional) | 0.62.4; its run records the version and a bounded smoke check only | D-18; [X RUN-apalache-version] |
+| Alloy (optional) | 6.2.0 | D-16; [X RUN-alloy-version] |
+| uv and the `statespace` CLI | the versions the scaffold pinned | [X RUN-scaffold] |
 
-**The sandbox.** Lean's comparator sandbox (bubblewrap) is Linux-only. It is recorded as on, off or failed and never required [X RUN-lean-bwrap-docker]; W0-S06 measures it on CI runners, Docker Desktop and Codespaces ({{run:RUN-bwrap-lanes}}). macOS and Windows learners use the devcontainer.
+**The sandbox.** Lean's comparator sandbox (bubblewrap) is Linux-only. It is recorded as on, off or failed and never required [X RUN-lean-bwrap-docker]. In a container it starts only when the seccomp profile allows `clone`, `unshare`, `mount`, `umount2` and `pivot_root`, `/proc` is not masked and the image has a `/run/user` directory; on a stock Ubuntu 24.04 host, AppArmor's restriction on unprivileged user namespaces is a further host condition that container options cannot lift [X RUN-bwrap-lanes]. W0-S06 ran a Docker Engine container and a stock Ubuntu 24.04 virtual machine; the CI-runner, Docker Desktop and Codespaces lanes have labeled stand-ins only, and their results are {{run:RUN-bwrap-lanes}}. macOS and Windows learners use the devcontainer.
 
 **Before the devcontainer.** LAB-1 runs with `uv run --with z3-solver==5.3.1`, as the executed spikes ran [X RUN-z3-starter], or entirely in the tab; the devcontainer arrives at S2 (D-15), because a first install was kernelspace's top drop-off risk [dp §6].
 
@@ -977,7 +1043,7 @@ Python, managed by uv, shipped in `statespace-lab`; it keeps the course's name (
 - **Types** are generated from `schemas/` (W0-T02), the same source as the site's.
 - **Dependencies** are few and pinned [D]: a JSON Schema validator, a YAML parser, and psycopg for `isorun`.
 - **Verdict-line parsers** exist twice, in Python for the CLI and in TypeScript for the tab (§10.3). Both are tested against one fixture set copied from executed logs: comparator lines [X RUN-lean-comparator], `lake check` lines [X RUN-lean-axioms], sandbox failure lines [X RUN-lean-bwrap-docker] and TLC lines [X RUN-tlc-doublespend].
-- **The statement hash** has one specification and two implementations, with shared test vectors (§18, item 19).
+- **The statement hash** has one written specification, `x-statementHash` in `schemas/defs.schema.json`, and two implementations, tested against the shared vectors in `schemas/vectors/statement-hash.json` (§18, item 19).
 - **Nothing leaves the machine.** The CLI makes no network requests beyond local containers.
 
 ### 11.3 Commands
@@ -985,7 +1051,7 @@ Python, managed by uv, shipped in `statespace-lab`; it keeps the course's name (
 | Command | Brief shorthand | Does | Writes |
 |---|---|---|---|
 | `statespace doctor` | `bench doctor` | checks the devcontainer pins and the sandbox; prints a receipt-ready environment block | stdout |
-| `statespace check <lab>[.<stage>]` | `bench check` | Lean: build → `#print axioms` → `lake check` → `lake comparator` (`--paranoid` in CI and at the Defence, six checkers in about 3 s [X RUN-lean-comparator]); TLC with recorded argv after verifying the jar's SHA-256; Z3 and cvc5 with `rlimit`; cargo; local claim@1 validation | `receipts/` |
+| `statespace check <lab>[.<stage>]` | `bench check` | Lean: build → `#print axioms` → `lake check` → `lake comparator` (`lake comparator --paranoid` in CI and at the Defence: six checkers in about 3 s [X RUN-lean-comparator]; `lake check --paranoid` took 172.6 s on the LAB-2 pack [X RUN-bwrap-lanes], so it runs once per lab and nightly, not at every step, spine §9.6); TLC with recorded argv after verifying the jar's SHA-256; Z3 and cvc5 with `rlimit`; cargo; local claim@1 validation | `receipts/` |
 | `statespace receipt verify <file>` | — | validates a receipt against `receipt@1` and recomputes its statement hashes | stdout |
 | `statespace hash <file>` | — | the comparator-style statement hash | stdout |
 | `statespace run <RUN-id>` | — | in the course repository: re-executes a registry run and diffs its outputs; `--record` records a new one | a runs diff |
@@ -994,7 +1060,7 @@ Python, managed by uv, shipped in `statespace-lab`; it keeps the course's name (
 | `statespace sim <seed>` | — | runs the learner's simulator under a seeded fault schedule | an NDJSON trace |
 | `statespace defend` | `bench defend` | seeds mutations of the learner's own artifact in a temporary copy (drop a hypothesis, weaken a guard, change the encoding, split an action, drop fairness, widen the observer), records the predictions and their hash first, then grades with the right checker | a Prove-it bundle for the tab |
 | `statespace audit gen \| harvest` | `bench audit` | mutates the learner's repo with gap-class operators, harvests agent commits that touched statements, computes keys locally | an `auditbundle@1` file |
-| `statespace stuck` | `bench stuck` | captures the failing goal or check, the statement and a required hypothesis; emits a forum-ready minimal example with private paths stripped, a short packet for the learner's own agent, and a park option (a parked goal carried as [A], re-found in 7 days) | packet files; a claim update |
+| `statespace stuck` | `bench stuck` | captures the failing goal or check, the statement and a required hypothesis; emits a forum-ready minimal example with private paths stripped, a short packet for the learner's own agent, and a park option (a parked goal, carried as [A] in the claim, optionally with a topic from spine §3.12's vocabulary; re-found in 7 days) | packet files; a claim update |
 | `statespace export` | — | bundles claims, statement texts, specimens and receipts; exports the report | `labbundle@1`; `report@1` with Markdown |
 | `statespace overlay` | — | the private overlay for "your system" | a directory outside the repo; never committed |
 
@@ -1074,7 +1140,7 @@ The heavy gates run inside the same image the learner uses, so a pin cannot diff
 | GATE-links | fast | `verify-links` | every ID resolves against the registry generated from the spine; catalog ownership; §9.1 "Used in"; `[step]` exclusions |
 | GATE-budget | fast | `verify-budget` | stage plans against the roadmap; Keep load; claim cadence; one new tool per stage; the cut list |
 | GATE-glyphs | fast | `verify-glyphs` | the JuliaMono subset and the speech map cover every glyph |
-| GATE-bundle | fast | `verify-bundle` (Playwright) | bundle budgets (§14); consent above 5 MB; route and kill-switch tests; the Boot timing gate at 360 px; fragments parsed only on the instrument origin; no `localhost` in production parent lists; the fuzzed-import test (§5.7) |
+| GATE-bundle | fast | `verify-bundle` (Playwright) | bundle budgets (§14); no prompt or warning before an engine download, and the loader's size equal to the manifest's; route and kill-switch tests; lints that the instrument iframe carries `sandbox="allow-scripts allow-same-origin"` and that `apps/site` never assigns `document.cookie`; the Boot timing gate at 360 px, held with an engine download in flight; fragments parsed only on the instrument origin; no `localhost` in production parent lists; the fuzzed-import test (§5.7) |
 | GATE-guardrails | fast | `verify-guardrails` | lab zips carry the kit; the hook fixture matrix (§12.3); no `_solutions` |
 | GATE-privacy | fast | `verify-privacy` | no private-design terms, personal identifiers, emails or private paths; review JSONs absent; licenses beside vendored code |
 | GATE-schema | fast | `verify-schema` | all records validate; TypeScript and Python types in sync; shared hash vectors; the keep/kill rules hash equals RUN-keepkill-rules |
@@ -1095,8 +1161,8 @@ The heavy gates run inside the same image the learner uses, so a pin cannot diff
 |---|---|---|---|
 | Spectacle = TLC | verdict and distinct-state count per authored spec (TLC with `-workers 1` and an explicit deadlock flag) | every authored spec | exact; equality on the double-spend family is already recorded [X RUN-spectacle, RUN-tlc-full] |
 | Pyodide Z3 = native Z3 | verdict per authored call; witness validity by property | every authored Z3 cell and generator template | verdicts exact; witnesses never compared by value [X RUN-z3-bv64-pyodide] |
-| PGlite = PostgreSQL 18.6 | rows, row counts and SQLSTATE per statement | single-session specimens | exact |
-| Tab Datalog = Soufflé | computed relations | the S7 fixtures | equal relations ({{run:RUN-fixedpoint-equal}}) |
+| PGlite = PostgreSQL 18.6 | rows, row counts, SQLSTATE, message and detail per statement | single-session specimens and the RLS specimens | exact, with `RESET SESSION AUTHORIZATION` the one documented difference [X RUN-pglite-rls] |
+| Tab Datalog = Soufflé | computed relations and derivation heights | the S7 fixtures | equal relations and heights [X RUN-fixedpoint-equal] |
 | Pocket checkers = Z3 | the predicate's verdict on random witnesses | property tests per pocket predicate | exact |
 | Lasso validator = TLC | lasso accepted or rejected | TLC liveness fixtures | exact |
 
@@ -1125,15 +1191,15 @@ GATE-bundle enforces the budgets below on every build. The route figures are sta
 | A lesson route, excluding instrument engines | ≤ 250 KB | [D] |
 | Web fonts | self-hosted subsets only (Archivo, Source Serif 4, JuliaMono), counted in the route budgets | spine §10.2; GATE-glyphs |
 | Instrument host page without engines | ≤ 50 KB | [D]; Boot loads it early |
-| Engine first loads | above 5 MB, behind consent (OD-6, §5.9): Pyodide with Z3 {{run:RUN-phone-pyodide}}; PGlite {{run:RUN-pglite-0511}}; Spectacle and the Lane A host as measured in the build manifest | GATE-bundle |
-| Z3 ready time | 1.46–1.71 s in the measured desktop engines [X RUN-z3-starter-pyodide]; phones {{run:RUN-phone-pyodide}} | W0-S02 |
-| Boot | the target is a first success within 4 minutes [ks100x], at most 8 minutes on a phone. A Playwright timing gate at 360 px uses the budget set from {{run:RUN-phone-pyodide}}; at least five naive testers are recorded in RUN-boot-firstsuccess before the "external learners" label | GATE-bundle; W1-T09 |
+| Engine first loads | downloaded without a prompt, the loader showing each size (OD-6, §5.9): Pyodide with Z3 12,893,420 B as gzip level 5 [X RUN-phone-pyodide], which the first deployment sent as 12,935,856 B [X RUN-pages-wire-check]; PGlite 5,580,851 B as gzip level 5 [X RUN-pglite-0511]; Spectacle and the Lane A host as measured in the build manifest | GATE-bundle |
+| Z3 ready time | 1.46–1.71 s in the measured desktop engines [X RUN-z3-starter-pyodide]; phones: emulated figures only [X RUN-phone-pyodide], real devices {{run:RUN-phone-pyodide}} | W0-S02 |
+| Boot | the target is a first success within 4 minutes [ks100x], at most 8 minutes on a phone. A Playwright timing gate at 360 px uses the Boot timing budget of W0-S02 §5.3, derived from the emulated slowest tier and provisional until a real-device report is merged [X RUN-phone-pyodide]; at least five naive testers are recorded in RUN-boot-firstsuccess before the "external learners" label | GATE-bundle; W1-T09 |
 | Today | 10–12 minutes per session; learner-zero's median is recorded descriptively (RUN-lz-today-w1) | M-today |
-| Spectacle learner edits | about 5k states, then "send to the Bench" | [D]; spine §9.1 |
+| Spectacle learner edits | a 10 s wall-clock budget in the worker, with no separate state cap, then "send to the Bench" | [D]; spine §9.1, §12 item 56 |
 | Lane A | module ≤ 8 MiB; the per-check limit of §6.6 | [D] |
 | Phone timings | from real devices only, because CI's CPU throttling did not reach the cross-origin worker [X RUN-browser-origin] | W0-S02 |
 
-**Order of loading.** Nothing above the consent threshold loads during Boot's first screen. Boot renders its prompt and the recorded run, prefetches the small host page, and asks for consent before Z3; a learner who declines keeps the recorded run and the pocket checkers. Lesson content loads per route, and per-stage content is cached on the first visit (§16).
+**Order of loading.** No engine loads during Boot's first screen: Boot renders its prompt and the recorded run and prefetches the small host page. Z3 downloads without a prompt when a live run or a warm asks for it, and the loader shows its size; a learner who never runs it live keeps the recorded run and the pocket checkers. Lesson content loads per route, and per-stage content is cached on the first visit (§16).
 
 ---
 
@@ -1167,7 +1233,7 @@ The principal threat is self-deception, not attack (BRIEF §5.1, R3). The learne
 | T9 | A course grader is wrong | a pocket checker disagrees with Z3; INS-interp disagrees with Lean | GATE-conformance, GATE-interp, GATE-calls; graders print their bounds | SEAM-13 is held and tested |
 | T10 | Blind strategies beat the items | always-reject on the Audit Desk | GATE-items, GATE-audit-blind; seeded sound shares | — |
 | T11 | Practice events are lost | WebKit's seven-day eviction [webkit7d]; cleared site data | the lab repo is the record; exports; the backup card; `persist()` | events since the last export |
-| T12 | Crafted outside input | a malicious spec-duel link; a tampered receipt or bundle | parsed only on the instrument origin, which holds no learner data; schemas, caps, no HTML, no `eval` (§5.6, §5.7) | an exploited parser reaches only what the instrument origin holds (its engine cache, which the kill switch clears) and the replies it sends, which the main origin validates as data; a forged receipt is self-deception and shows its lane |
+| T12 | Crafted outside input | a malicious spec-duel link; a tampered receipt or bundle | parsed only on the instrument origin, which holds no learner data; schemas, caps, no HTML, no `eval` (§5.6, §5.7); the frame is sandboxed (§5.3) and the main origin sets no cookies (§15.4) | an exploited parser reaches only what the instrument origin holds (its engine cache, which the kill switch clears) and the replies it sends, which the main origin validates as data; a forged receipt is self-deception and shows its lane |
 | T13 | Supply chain | vendored code; engine binaries | pinned SHAs with licenses; the SHA-256 manifest checked before engine assets are served (§15.4); no third-party scripts at runtime | upstream bugs, caught by conformance gates |
 | T14 | Privacy leakage | non-public material and personal identifiers in the public repo; home paths in a stuck packet | GATE-privacy over the repo, zips and stuck fixtures; `statespace stuck` strips paths; the overlay never enters the repo | — |
 
@@ -1180,11 +1246,13 @@ The principal threat is self-deception, not attack (BRIEF §5.1, R3). The learne
 | main origin pages | `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://instruments.<course-domain>; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'` |
 | instrument host page | `default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'` |
 
-W1-T02 confirms the style policy against the built app. A meta CSP cannot express `frame-ancestors`, so the instrument origin relies on the handshake allowlist and `ancestorOrigins` (§5.5). Nor does it govern workers loaded from URLs, so the engine workers on Pages run without a policy of their own; that is one more reason the instrument origin holds nothing worth taking.
+W1-T02 confirms the style policy against the built app. A meta CSP cannot express `frame-ancestors`, so the instrument origin relies on the handshake allowlist, with `ancestorOrigins` as defense in depth where an engine reports it (§5.5). Nor does it govern workers loaded from URLs, so the engine workers on Pages run without a policy of their own; that is one more reason the instrument origin holds nothing worth taking.
 
 **Engine asset integrity** [D]. The build writes a manifest of every engine asset with its SHA-256 and sizes. The instrument origin's service worker fills its cache only with bytes whose hash matches the manifest and serves engine assets only from that cache; the supervisor starts an engine only once the service worker controls the page. W0-S01 and W1-T06 confirm the mechanics in all three engines.
 
 **Third parties.** No third-party script, style or font loads at runtime on either origin. Third-party tools are disclosed, uncredited link-outs (OD-4): live.lean-lang.org, the Natural Number Game, TLA+ By Example, Alloy4Fun and TigerBeetle's simulator. CheerpJ is not embedded.
+
+**Cookies.** The main origin sets no cookies, and never one with a `Domain` attribute: such a cookie is the one store a same-site instrument origin can read [D] [X RUN-origin-subdomain].
 
 **Privacy.** No accounts, cookies, analytics or telemetry. No request leaves the two origins. The private overlay (M-overlay) lives in local storage in the tab and in a directory outside the repo on the Bench.
 
@@ -1202,7 +1270,7 @@ W1-T02 confirms the style policy against the built app. A meta CSP cannot expres
 
 **Main origin.** The vendored `sw.js` with kernelspace's rules: `index.html` network-first with a short timeout, so deploys propagate; content-hashed assets cache-first; a precache of the app shell, Boot, Today, the pocket checkers, the KC graph and the generator code; lesson content cached per stage on its first visit. A schema handshake means the worker never serves a cached shell older than the newest schema it has seen, and it never caches IndexedDB contents. The kill switch is a deployed `sw.js` that unregisters itself and clears its caches; `?nosw=1` unregisters from the app.
 
-**Instrument origin.** Its own service worker caches engine assets cache-first under content-hashed URLs, filled only after consent and the SHA-256 check (§15.4). The `evict` message and its own kill switch clear it.
+**Instrument origin.** Its own service worker caches engine assets cache-first under content-hashed URLs, filled when a run or warm first needs an engine, after the SHA-256 check (§15.4). The host registers it after the handshake succeeds (§5.3), and a registration from an earlier session controls the frame from its first request [X RUN-origin-subdomain]. The `evict` message and its own kill switch clear it.
 
 **Updates.** A new deploy installs in the background, and the page offers a reload between sessions, never in the middle of an item [D]. The web app manifest supports Home Screen installation. There are no push notifications: the course sends nothing that resembles a daily counter.
 
@@ -1211,7 +1279,7 @@ W1-T02 confirms the style policy against the built app. A meta CSP cannot expres
 | Capability | Phone, offline | Laptop, offline |
 |---|---|---|
 | Today items keyed by pocket checkers | yes | yes |
-| Today items whose key needs Z3 | only if Z3 is cached after consent; otherwise they wait for a connection | same |
+| Today items whose key needs Z3 | only if Z3 is cached; otherwise they wait for a connection | same |
 | Lessons: text, Goal Replay, Theater graphs, recorded runs | yes, for stages visited before | yes |
 | Spectacle edits, PGlite cells, Datalog | if the engine is cached | if the engine is cached |
 | Lane A checks | if the host is cached; the module is local | same |
@@ -1226,7 +1294,7 @@ W1-T02 confirms the style policy against the built app. A meta CSP cannot expres
 
 ### 17.1 Repository tree
 
-The spine's layout (§11.1) plus a `packages/` directory for pure code shared by the two apps (§18, item 8).
+The spine's layout (§11.1), which lists the `packages/` directory for pure code shared by the two apps as of revision 3 (§18, item 8).
 
 ```
 apps/
@@ -1237,7 +1305,7 @@ apps/
                               instrument cell, trace table, goal strip
     src/bus-client/           InstrumentClient: iframe, handshake, port, requests, watchdog
     src/storage/              IndexedDB adapter for packages/ledger; working state; the mirror
-    src/consent/              M-consent
+    src/consent/              M-consent: the download loader (OD-6)
     src/sw/                   vendored sw.js wrapper and registration
   instruments/                instrument origin
     src/host/                 host.html entry: origin checks, port, supervisor, caps
@@ -1247,6 +1315,7 @@ apps/
     src/lane-a/               vendored ABI host plus statespace's oracle composition
     src/manifest/             generated asset manifest: paths, SHA-256, sizes
     src/sw/                   engine-cache service worker
+    src/pages/                SCR-instrument, the origin's own page (spec-duel and receipt links)
 packages/                     pure TypeScript: no DOM, storage or network (lint-enforced)
   schema/                     generated types and compiled validators from schemas/
   ids/                        the ID registry generated from the spine (GATE-links)
@@ -1264,15 +1333,18 @@ packages/                     pure TypeScript: no DOM, storage or network (lint-
   content/                    lesson and drawer loaders, block types, rail builder
   rng/                        vendored seeded RNG
 content/                      stages/S{n}/, kc/, generators/, audit/, specimens/, claims/,
-                              seams/, drawers/, registry/ (dated facts, twin pins)
+                              seams/, drawers/, registry/ (dated facts, twin pins),
+                              governance/ (the keep/kill rules), pg-catalog/ (the PostgreSQL
+                              isolation catalog), assurance/ (gate-claims.json, assurance copy)
 runs/                         RUN-*.json and runs/inputs/
-schemas/                      receipt@1, claim@1, run@1, event@1, IR@1, and those of §18, item 12
+schemas/                      receipt@1, claim@1, run@1, event@1, IR@1, plan@1 (the Lane A plan value),
+                              and those of §18, item 12
 labs/                         template/, agent-kit/, kit-rs/, pack/; _solutions/ is gitignored
 bench/                        the Python CLI (statespace) and bench/image/ for the devcontainer
 scripts/                      verify-* gates, build-* generators, runs/ recording, vendor-drift
 vendor/kernelspace/           vendored files at a pinned SHA, VENDOR.md, LICENSE
 status/                       nightly.json (§13.4)
-docs/                         spine, specs, redacted evidence, assurance copy
+docs/                         spine, specs, redacted evidence
 ```
 
 ### 17.2 Dependency rules
@@ -1309,7 +1381,8 @@ export type EngineId =
 export interface Budget {
   wallMs: number;      // watchdog: expiry means terminate() and no verdict
   rlimit?: number;     // Z3; printed with the verdict (I10)
-  maxStates?: number;  // Spectacle, lasso validator
+  maxStates?: number;  // lasso validator
+  maxMs?: number;      // Spectacle: stop at the bound and keep the partial verdict
   maxTxns?: number;    // history search bound
   perCheckMs?: number; // Lane A
   seed?: number;       // uint32, drawn at grade time
@@ -1347,17 +1420,17 @@ export interface LaneACheck {
   n?: number;
 }
 
-export interface EngineCaps { engine: EngineId; version: string; cached: boolean; firstLoadBytes: number; needsConsent: boolean }
+export interface EngineCaps { engine: EngineId; version: string; cached: boolean; firstLoadBytes: number }
 
 export type BusErrorCode =
-  | 'bad-message' | 'too-large' | 'unknown-engine' | 'version-mismatch' | 'consent-required'
+  | 'bad-message' | 'too-large' | 'unknown-engine' | 'version-mismatch'
   | 'budget-exhausted' | 'terminated' | 'engine-crashed' | 'invalid-input' | 'busy';
 
 export type ToInstrument =
   | { t: 'connect'; bus: 1; build: string; nonce: string }   // with one transferred MessagePort
-  | { t: 'run'; id: string; req: InstrumentRequest; consent?: boolean }
+  | { t: 'run'; id: string; req: InstrumentRequest }
   | { t: 'cancel'; id: string }
-  | { t: 'warm'; engine: EngineId; consent: boolean }
+  | { t: 'warm'; engine: EngineId }
   | { t: 'caps' }
   | { t: 'evict'; engine?: EngineId };
 
@@ -1370,13 +1443,15 @@ export type FromInstrument =
 
 // packages/ledger: event@1
 export type EventKind =
-  | 'call' | 'item' | 'probe' | 'audit' | 'prove-it' | 'lab-check' | 'receipt-import' | 'explain-back' | 'note';
+  | 'call' | 'item' | 'probe' | 'audit' | 'prove-it' | 'lab-check' | 'receipt-import' | 'explain-back' | 'note'
+  | 'view';                                  // uncredited: a drawer opened, logged as help-seeking
 
 export interface LedgerEvent {
   id: string; v: number; kind: EventKind; ref: string; itemRev?: string;
   engine?: string;                          // "<engine>@<pinned version>"
   seed?: number; ok?: boolean; conf?: 'guess' | 'think' | 'sure';
-  provenance: 'own' | 'assisted' | 'agent' | 'automated';
+  resp?: unknown; mis?: string;             // the response, and the misconception tag it matched
+  provenance: 'own' | 'assisted' | 'agent';  // automated is a flag on receipts and claims only
   exposure: 'seen' | 'unseen';
   at: string; tz: number; day: string; dev: string; ms?: number;
   data?: Record<string, unknown>;
@@ -1412,7 +1487,7 @@ export interface Grade { ok: boolean; why: string; misconception?: string; witne
 export type StampCode = '[P]' | '[M]' | '[T]' | '[E]' | '[C]' | '[A]' | '[?]' | '[N]' | '[R]';
 export type StampWord =
   | 'PROVED' | 'MODEL-CHECKED' | 'TESTED' | 'ENFORCED' | 'CONFIGURED' | 'ASSUMED' | 'UNKNOWN' | 'NOT COVERED' | 'REFUTED';
-export type Lane = 'rechecked-here' | 'reported' | 'self-assessed';
+export type Lane = 'rechecked-here' | 'reported' | 'self-assessed';   // a derived stamp's lane; a stored receipt carries only the last two
 
 export interface Stamp { word: StampWord; code: StampCode; qualifier: string; lane: Lane; source: string }
 
@@ -1464,27 +1539,27 @@ export interface Lesson {
 
 ## 18. Decisions this document adds
 
-Each item decides something the spine leaves open. They await owner review, like the spine's own decisions, and none changes an ID.
+Each item decides something the spine leaves open. They await owner review, as the spine's decisions log does (spine §12), and none changes an ID.
 
 1. **Placement rule.** Pure course code working on course content or on the learner's typed answers may run on the main origin (INS-pocket, Goal Replay and Theater rendering, INS-interp on authored programs). Every engine, every piece of learner code and every parse of outside bytes runs on the instrument origin (§6.9). Reason: offline Today needs INS-pocket on the main origin, and I6 is about untrusted input, not about course code.
 2. **Every outside byte is parsed on the instrument origin:** receipts, fragments and wasm as I6 names them, and also export bundles, lab bundles, audit bundles, histories, NDJSON traces and IR exports. Reason: they are just as untrusted.
 3. **Hosting.** Both origins under one registrable domain; the instrument site in a second repository; immutable `b/<buildId>/` paths, with the main site pinned to the build it was tested with (§5.2). Reason: same-site framing, one Pages site per repository, and no version skew during deploys.
 4. **Handshake.** One `MessageChannel` port after an origin-checked handshake, explicit target origins, one port per frame lifetime (§5.3). Reason: after the handshake, no window-level message is ever trusted.
 5. **Caps and structural limits** as in §5.6, held in `packages/bus/limits.ts`.
-6. **Consent.** "A download" means one engine's compressed first load, from the build manifest, and the instrument host enforces consent as well as the main origin (§5.9).
+6. **Downloads.** An engine's size means its compressed first load, from the build manifest; nothing asks before it downloads, and the loader shows that size (§5.9; OD-6, changed 2026-10-25).
 7. **Engine asset integrity.** The instrument service worker serves engine assets only after checking their SHA-256 against the manifest (§15.4).
-8. **`packages/`** holds pure code shared by the two apps; it is not in spine §11.1's layout.
+8. **`packages/`** holds pure code shared by the two apps; spine §11.1's layout lists it as of revision 3.
 9. **`event@1`** adds kernelspace's envelope fields `v`, `tz`, `day` and `dev`, names the exposure field `exposure`, and fixes the ref grammar of §7.2.
 10. **The lab mirror.** The browser holds a disposable, read-only mirror of the lab repo, replaced on each lab bundle import (§8.3).
 11. **`proposals/`** holds agent-proposed claims, outside the guard's protection; `claims/` is learner-owned and protected (§8.2, §12.2).
-12. **Added schemas:** `specimen@1`, `history@1`, `trace@1` (NDJSON, one object per line), `bundle@1` (the browser export), `labbundle@1`, `auditbundle@1`, and `lasso@1` once W0-S05 fixes TLC's format; `report@1` as W5-T06 names it.
-13. **Receipt lanes.** `lane` takes three values, but a file from the CLI may carry only `reported` or `self-assessed` (§10.3).
-14. **Value references.** `{{run:RUN-id#outputs.values.<name>}}` prints a value from a run record, beside the citation form (§9.2).
-15. **`ttlDays` on `run@1`** for runs that describe a moving upstream, such as RUN-twin-pins (§9.1).
+12. **Added schemas:** `specimen@1`, `history@1`, `trace@1` (NDJSON, one object per line), `bundle@1` (the browser export), `labbundle@1`, `auditbundle@1`, `plan@1` (the Lane A plan value), and `lasso@1`, which W0-S05 fixed as TLC's `-dumpTrace json` counterexample with no wrapper and a strict schema [X RUN-tlc-lasso-json]; `report@1` as W5-T06 names it.
+13. **Receipt lanes.** A receipt stores `lane` as `reported` or `self-assessed` only; `rechecked-here` exists only as the read-time `Lane` of a stamp the tab derives, and a receipt that carries it fails schema validation (§10.1, §10.3, §17.3).
+14. **Value references.** `{{run:RUN-id#values.<name>}}` prints a value from a run record, beside the citation form (§9.2).
+15. **`ttlDays` on `run@1`** (`ttl_days` in the published schema, mapped in `runs/README.md` §2) for runs that describe a moving upstream, such as RUN-twin-pins (§9.1).
 16. **The run sheet.** Run records open in a sheet over the current screen, so no screen is added to spine §10.1.
 17. **Six initial block types:** `prose`, `instrument`, `item`, `claim`, `specimen`, `card` (§3.3).
 18. **Lane A.** The family ABI v2 export names are kept verbatim so the vendored host runs unchanged; oracles are composed on the host; seeds are drawn on the main origin and recorded before the run; the per-check limit defaults to the vendored host's setting (§6.6).
-19. **The statement hash** has one written trim specification, implemented in TypeScript and Python against shared test vectors under GATE-schema.
+19. **The statement hash** has one written trim specification, `x-statementHash` in `schemas/defs.schema.json`, implemented in TypeScript and Python against the shared test vectors in `schemas/vectors/statement-hash.json` under GATE-schema.
 20. **Red nights** publish `status/nightly.json` and redeploy, so "unverified since <date>" appears without a code change (§13.4).
 21. **Private lab solutions** reach CI from a private companion repository through a read-only deploy key (§13.5).
 22. **TTL warnings.** GATE-facts also warns, and never fails, when a dated fact in the facts registry passes its TTL.
@@ -1497,43 +1572,45 @@ Each item decides something the spine leaves open. They await owner review, like
 
 | Unknown | Closed by | Fallback |
 |---|---|---|
-| The custom-subdomain origin in three engines; same-site framing; whether the framed origin's cache persists across sessions on desktop | W0-S01, {{run:RUN-origin-subdomain}} | recorded runs stay available and consent is asked again; the evidence log is unaffected |
-| Pyodide with Z3 on real phones: load time, first-load size, memory, `rlimit` timing, cache persistence | W0-S02, {{run:RUN-phone-pyodide}} | recorded runs and pocket checkers on phones |
-| Fixedpoint yields Soufflé's relations | W0-S03, {{run:RUN-fixedpoint-equal}} | the TypeScript evaluator, differential-tested against Soufflé |
-| Spectacle on S5 and S8 specs: local `EXTENDS`, worker or main thread, the state-pair check | W0-S04, {{run:RUN-spectacle-s5s8}} | authored TLC graphs in INS-theater; TLC on the Bench |
-| TLC's lasso JSON | W0-S05, {{run:RUN-tlc-lasso-json}} | parse the 1.7.4 text traces |
-| The sandbox on CI runners, Docker Desktop and Codespaces | W0-S06, {{run:RUN-bwrap-lanes}} | record `off` or `failed`; never required |
-| `vcgen` on a custom command type | W0-S07, {{run:RUN-vcgen-cmd}} | the production twin stays dated and experimental |
-| PGlite row-level security and first-load size | W0-S08, {{run:RUN-pglite-rls}}, {{run:RUN-pglite-0511}} | RLS on Bench PostgreSQL only |
-| The PostgreSQL 18.6 isolation catalog rows | W0-S09, {{run:RUN-pg-catalog}} | the retry policy stays tagged [D] |
-| Goal Replay through `$/lean/plainGoal` | W0-S10, {{run:RUN-replay-gen}} | recorded strips, reviewed by hand |
+| The custom-subdomain origin in three engines; same-site framing; whether the framed origin's cache persists across sessions on desktop | W0-S01, [X RUN-origin-subdomain, RUN-origin-subdomain-live] | recorded runs stay available and the engine downloads again, the loader showing its size; the evidence log is unaffected |
+| Pyodide with Z3 on real phones: load time, first-load size, memory, `rlimit` timing, cache persistence | W0-S02: the first load is exact and every timing emulated [X RUN-phone-pyodide]; real devices {{run:RUN-phone-pyodide}} | recorded runs and pocket checkers on phones |
+| Fixedpoint yields Soufflé's relations | W0-S03 [X RUN-fixedpoint-equal]: INS-datalog is Z3 `Fixedpoint` behind an adapter (spine §9.1, §12 item 55) | the TypeScript evaluator, differential-tested against Soufflé |
+| Spectacle on S5 and S8 specs: local `EXTENDS`, worker or main thread, the state-pair check | W0-S04 [X RUN-spectacle-s5s8]: the limits, speed, loading and worker of §6.3 (spine §9.1 INS-spectacle) | authored TLC graphs in INS-theater; TLC on the Bench |
+| TLC's lasso JSON | W0-S05 [X RUN-tlc-lasso-json]: lasso@1 is TLC's `-dumpTrace json` counterexample, with no wrapper and a strict schema | parse the 1.7.4 text traces |
+| The sandbox on CI runners, Docker Desktop and Codespaces | W0-S06 ran stand-ins only [X RUN-bwrap-lanes]; the three lanes themselves {{run:RUN-bwrap-lanes}} | record `off` or `failed`; never required |
+| `vcgen` on a custom command type | W0-S07, [X RUN-vcgen-cmd] | the production twin stays dated and experimental |
+| PGlite row-level security and first-load size | W0-S08 [X RUN-pglite-rls, RUN-pglite-0511]: S7.L4 runs in the tab on laptops with the Bench authoritative; the first load is 5,580,851 B as gzip level 5 | RLS on Bench PostgreSQL only |
+| The PostgreSQL 18.6 isolation catalog rows | W0-S09, [X RUN-pg-catalog] | the retry policy stays tagged [D] |
+| Goal Replay through `$/lean/plainGoal` | W0-S10 [X RUN-replay-gen]: Lean lays out goal text at a width the server option cannot change | recorded strips, reviewed by hand |
 | Receipt schema, imported runs, number lints | W0-S11 | — |
-| Stack pins, vendoring, tool versions | W0-S12, {{run:RUN-scaffold}} and the version runs | — |
-| The fast lane under 5 minutes | W0-T04, {{run:RUN-ci-fastlane}} | a slow gate moves to the nightly lane by a logged decision |
-| `statespace doctor` in the devcontainer | W0-T05, {{run:RUN-doctor-devcontainer}} | the uv lane for Z3-only labs |
+| Stack pins, vendoring, tool versions | W0-S12, [X RUN-scaffold] and the version runs | — |
+| The fast lane under 5 minutes | W0-T04, [X RUN-ci-fastlane] | a slow gate moves to the nightly lane by a logged decision |
+| `statespace doctor` in the devcontainer | W0-T05, [X RUN-doctor-devcontainer] | the uv lane for Z3-only labs |
 | Engine-asset verification in the instrument service worker | W0-S01, W1-T06 | the supervisor verifies bytes before handing them to an engine |
 
 ---
 
 ## 20. Spine issues
 
+*Resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.*
+
 What this document believes the spine gets wrong or leaves dangerously open, most consequential first. §18 records how this architecture proceeds in each case until the spine is revised.
 
-1. **Agent claims have no home.** §8.1 says agents may produce claims, and GATE-guardrails blocks agent edits to claim files; nothing names where an agent's claim goes. This document uses `proposals/`, rendered as quoted UNREVIEWED text and never stamped (I8). The spine should name it in §11.1 and in GATE-guardrails.
-2. **GATE-labs cannot run as written.** It requires "private solutions pass", but §11.1 keeps solutions out of the repository (`labs/_solutions/` is gitignored), and nothing says how CI obtains them. This document uses a private companion repository behind a read-only deploy key (§13.5).
-3. **I6's list of untrusted input is too narrow.** It names URL-fragment specs, imported receipts and learner wasm. The course also imports event export bundles (SCR-settings, W1-T20), lab bundles (`statespace export`), audit bundles (`statespace audit`), Bench histories (INS-history), NDJSON traces (LAB-8) and IR exports. I6 should cover every byte from outside the page.
-4. **§9.1's header misplaces three instruments.** "Instrument origin unless noted", with no row noted, puts INS-pocket, INS-goal-replay and INS-theater on the instrument origin, although INS-pocket must grade offline in Today and the other two render build-time course data; INS-interp, INS-history and INS-receipt split across origins. Each row should state its origin (§6.9).
-5. **§11.1's `apps/instruments/` list is incomplete.** It omits the receipt and bundle parsers, the history checker, the paired-state evaluator, the simulator host, and the instrument origin's own service worker and engine cache.
-6. **§11.1's schema list is incomplete.** It names receipt@1, claim@1, run@1, event@1 and IR@1, but omits report@1 (which W5-T06 implements), a specimen schema (V2-17; the review digest's change B4 has the repo's records "all schema-validated" [dr2 B4]), the NDJSON trace schema that LAB-8 supplies, the `isorun` history format, the export bundle (W1-T20), the audit bundle, and the lasso JSON that W0-S05 fixes.
-7. **§8.2's event record lacks the envelope fields kernelspace needed:** `v` (a per-kind shape version), `tz` and `day` (the local date frozen at write time, which M-set-your-week's "met in k of the last 12 weeks" must read), and `dev` (for the multi-device merges W1-T03 tests).
-8. **"The browser keeps practice events only"** (§0, §11.1) cannot hold literally. SCR-claims, SCR-receipt and SCR-specimens are phone-first and need lab data on the device. The spine should say the browser's only *record* is practice events, and that it may hold a disposable, read-only mirror of the lab repo.
-9. **§9.4's `lane` has no values or authority.** A receipt file could claim "re-checked here". CLI receipts should carry only "reported from your machine" or "self-assessed"; only the tab assigns "re-checked here".
-10. **§9.4's statement hash is underspecified across languages.** It follows Comparator Live's JavaScript `trimRight`, but the CLI is Python, whose `rstrip()` trims a different set of characters: ECMAScript's whitespace includes U+FEFF, which Python's `str.isspace` excludes, and Python's includes U+0085 and U+001C–U+001F, which ECMAScript's excludes. Without one written specification and shared test vectors, the tab and the CLI will disagree on some hashes and void claims wrongly.
-11. **The "uncertified" qualifier contradicts itself.** Spine §8.8 says a solver `unsat` is "uncertified" unless cross-checked, while CL-4.2's expected qualifier reads "Z3 5.3.1 and cvc5 1.4.2 agree · uncertified". Two solvers agreeing is not a checked certificate (certificate replay is the deferred drawer D-32), so this document follows CL-4.2; §8.8 should say that a cross-check adds "Z3 and cvc5 agree" and keeps "uncertified".
-12. **OD-6 leaves its unit open.** "A download above 5 MB" does not say per file, per engine or per session, nor compressed or not. This document counts one engine's compressed first load (§5.9).
-13. **No gate checks TTLs.** BRIEF §1.2 makes every number "a dated, sourced claim with a TTL", and RUN-twin-pins carries a 60-day TTL, but none of the 28 gates warns when a dated fact expires (kernelspace's registry gate did). This document adds a warn-only check to GATE-facts.
-14. **"Claims registry" collides with learner claims.** §7 uses kernelspace's name for its store of dated facts (in the data columns of M-change-cards and M-production-twin), while "claim" is a learner glossary term, claim@1 a schema and SCR-claims a screen. Suggest "facts registry".
-15. **INS-receipt's URL-fragment import needs a cap.** A full Lean receipt (verdict lines, per-theorem axioms, one row per checker) can outgrow a shareable fragment. The spine should cap fragment imports and route larger receipts through files (32 KiB encoded here).
-16. **W0-S01's acceptance misses cache persistence.** RUN-origin-subdomain checks execution and storage isolation, not whether the framed instrument origin's Cache API and service worker survive across sessions in desktop engines under storage partitioning; RUN-phone-pyodide covers phones only. If the framed cache does not persist, consent prompts repeat and offline use degrades.
-17. **INS-lane-a's "per-check results in a fresh worker"** differs from the vendored host, which gives each check a fresh instance of one compiled module and replaces the worker only after a timeout. For zero-import modules that isolates each check just as well at lower cost. Reword the row, or log a reason for a worker per check.
+1. **Agent claims have no home.** §8.1 says agents may produce claims, and GATE-guardrails blocks agent edits to claim files; nothing names where an agent's claim goes. This document uses `proposals/`, rendered as quoted UNREVIEWED text and never stamped (I8). The spine should name it in §11.1 and in GATE-guardrails. *Revision 3: applied (spine §8.1, §11.1 Data, §11.2 GATE-guardrails).*
+2. **GATE-labs cannot run as written.** It requires "private solutions pass", but §11.1 keeps solutions out of the repository (`labs/_solutions/` is gitignored), and nothing says how CI obtains them. This document uses a private companion repository behind a read-only deploy key (§13.5). *Revision 3: applied (spine §11.1 labs/, §11.2 GATE-labs).*
+3. **I6's list of untrusted input is too narrow.** It names URL-fragment specs, imported receipts and learner wasm. The course also imports event export bundles (SCR-settings, W1-T20), lab bundles (`statespace export`), audit bundles (`statespace audit`), Bench histories (INS-history), NDJSON traces (LAB-8) and IR exports. I6 should cover every byte from outside the page. *Revision 3: already resolved (spine §1.1 I6, §11.1 Data).*
+4. **§9.1's header misplaces three instruments.** "Instrument origin unless noted", with no row noted, puts INS-pocket, INS-goal-replay and INS-theater on the instrument origin, although INS-pocket must grade offline in Today and the other two render build-time course data; INS-interp, INS-history and INS-receipt split across origins. Each row should state its origin (§6.9). *Revision 3: already resolved (spine §9.1 origin note); SCR-instrument is added here (§3.2, §6.9, §17.1).*
+5. **§11.1's `apps/instruments/` list is incomplete.** It omits the receipt and bundle parsers, the history checker, the paired-state evaluator, the simulator host, and the instrument origin's own service worker and engine cache. *Revision 3: applied (spine §11.1 layout).*
+6. **§11.1's schema list is incomplete.** It names receipt@1, claim@1, run@1, event@1 and IR@1, but omits report@1 (which W5-T06 implements), a specimen schema (V2-17; the review digest's change B4 has the repo's records "all schema-validated" [dr2 B4]), the NDJSON trace schema that LAB-8 supplies, the `isorun` history format, the export bundle (W1-T20), the audit bundle, and the lasso JSON that W0-S05 fixes. *Revision 3: applied (spine §11.1 schemas/); plan@1 is added here (§17.1, §18 item 12).*
+7. **§8.2's event record lacks the envelope fields kernelspace needed:** `v` (a per-kind shape version), `tz` and `day` (the local date frozen at write time, which M-set-your-week's "met in k of the last 12 weeks" must read), and `dev` (for the multi-device merges W1-T03 tests). *Revision 3: applied (spine §8.2); §7 here matches.*
+8. **"The browser keeps practice events only"** (§0, §11.1) cannot hold literally. SCR-claims, SCR-receipt and SCR-specimens are phone-first and need lab data on the device. The spine should say the browser's only *record* is practice events, and that it may hold a disposable, read-only mirror of the lab repo. *Revision 3: applied (spine §0, §11.1 Data, §10.1 SCR-bench).*
+9. **§9.4's `lane` has no values or authority.** A receipt file could claim "re-checked here". CLI receipts should carry only "reported from your machine" or "self-assessed"; only the tab assigns "re-checked here". *Revision 3: already resolved (spine §9.3, §9.4, §9.1 INS-receipt, §13 W1-T14); §10.1 and §10.3 here match.*
+10. **§9.4's statement hash is underspecified across languages.** It follows Comparator Live's JavaScript `trimRight`, but the CLI is Python, whose `rstrip()` trims a different set of characters: ECMAScript's whitespace includes U+FEFF, which Python's `str.isspace` excludes, and Python's includes U+0085 and U+001C–U+001F, which ECMAScript's excludes. Without one written specification and shared test vectors, the tab and the CLI will disagree on some hashes and void claims wrongly. *Revision 3: already resolved (spine §9.4, §11.2 GATE-schema); §11.2 and §18 item 19 here name the written specification and the shared vectors.*
+11. **The "uncertified" qualifier contradicts itself.** Spine §8.8 says a solver `unsat` is "uncertified" unless cross-checked, while CL-4.2's expected qualifier reads "Z3 5.3.1 and cvc5 1.4.2 agree · uncertified". Two solvers agreeing is not a checked certificate (certificate replay is the deferred drawer D-32), so this document follows CL-4.2; §8.8 should say that a cross-check adds "Z3 and cvc5 agree" and keeps "uncertified". *Revision 3: already resolved (spine §8.8, §5.2 CL-4.2).*
+12. **OD-6 leaves its unit open.** "A download above 5 MB" does not say per file, per engine or per session, nor compressed or not. This document counts one engine's compressed first load (§5.9). *Revision 3: merged into T09#3 (spine §15): obsolete as asked, because OD-6 as changed has no threshold (the replaced rule was consent above 5 MB [D]); the unit survives as the size the loader shows, one engine's compressed first load (§5.9 here).*
+13. **No gate checks TTLs.** BRIEF §1.2 makes every number "a dated, sourced claim with a TTL", and RUN-twin-pins carries a 60-day TTL, but none of the 28 gates warns when a dated fact expires (kernelspace's registry gate did). This document adds a warn-only check to GATE-facts. *Revision 3: already resolved (spine §11.2 GATE-facts).*
+14. **"Claims registry" collides with learner claims.** §7 uses kernelspace's name for its store of dated facts (in the data columns of M-change-cards and M-production-twin), while "claim" is a learner glossary term, claim@1 a schema and SCR-claims a screen. Suggest "facts registry". *Revision 3: already resolved (spine §0, §7, §11.2 GATE-facts).*
+15. **INS-receipt's URL-fragment import needs a cap.** A full Lean receipt (verdict lines, per-theorem axioms, one row per checker) can outgrow a shareable fragment. The spine should cap fragment imports and route larger receipts through files (32 KiB encoded here). *Revision 3: applied (spine §9.1 INS-receipt, §7 M-spec-duel, §13 W1-T14).*
+16. **W0-S01's acceptance misses cache persistence.** RUN-origin-subdomain checks execution and storage isolation, not whether the framed instrument origin's Cache API and service worker survive across sessions in desktop engines under storage partitioning; RUN-phone-pyodide covers phones only. If the framed cache does not persist, downloads repeat and offline use degrades. *Revision 3: already resolved (spine §13 W0-S01). Closed for desktop engines by W0-S01 [X RUN-origin-subdomain, RUN-origin-subdomain-live]; Safari on macOS and phones remain owner actions.*
+17. **INS-lane-a's "per-check results in a fresh worker"** differs from the vendored host, which gives each check a fresh instance of one compiled module and replaces the worker only after a timeout. For zero-import modules that isolates each check just as well at lower cost. Reword the row, or log a reason for a worker per check. *Revision 3: already resolved (spine §9.1 INS-lane-a).*
 

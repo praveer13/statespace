@@ -6,7 +6,7 @@ This file lists the tools the labs use, the exact version of each, how to instal
 
 **Why pins matter.** A receipt records every tool's version string verbatim, with a hash of its binary, jar or wheel. A claim is only as good as the tool that stamped it, and tools have bugs: Z3 5.3.0 answered `unsat` on two satisfiable inputs where 5.3.1 answers `unknown` [X RUN-z3-11179]. So the course names what it ran.
 
-**Reading the tags.** `[X RUN-id]` names an executed run on file; `[X RESULTS.md]` names the spike results file. `{{run:RUN-id}}` marks a run that will be recorded before the sentence ships. `[V]` marks a fact re-checked against a primary source on 2026-10-23 that is not a run (a release date, a license, an upstream issue). `[D]` marks design rationale. Where an executed fact and a report disagree, the executed fact wins. Section 8 lists where each executed run lives on disk.
+**Reading the tags.** `[X RUN-id]` names an executed run on file; `[X RESULTS.md]` names the spike results file. `{{run:RUN-id}}` marks a run that will be recorded before the sentence ships. `[V]` marks a fact re-checked against a primary source that is not a run (a release date, a license, an upstream issue), on the date its sentence or row states, or on 2026-10-23 where none is stated. `[D]` marks design rationale. Where an executed fact and a report disagree, the executed fact wins. Section 8 lists where each executed run lives on disk.
 
 ---
 
@@ -22,19 +22,19 @@ Edition 1 pins Lean 4.35.x and PostgreSQL 18.6, and re-records the isolation cat
 | Z3, Bench | 5.3.1: `z3.get_version_string()` prints `5.3.1`; the wheel's own version is 5.3.1.0 [V] | Bench; LAB-1 with `uv run` | [X RUN-z3-starter] | S1 (LAB-1) |
 | Z3, tab | 5.3.1 through the `z3_solver` 5.3.1.0 pyemscripten wheel on Pyodide | tab | [X RUN-z3-starter-pyodide] | Boot |
 | Pyodide | 314.0.7 | tab | [X RUN-z3-starter-pyodide] | Boot |
-| cvc5 | 1.4.2; the pip wheel's version string reads `1.4.2-modified` | Bench | [X RUN-cvc5-alethe]; the Bench binary {{run:RUN-scaffold}} | S4 (LAB-4.8) |
+| cvc5 | 1.4.2; the pip wheel's version string reads `1.4.2-modified`, and the Bench binary's reads `1.4.2` | Bench | [X RUN-cvc5-alethe]; the Bench binary [X RUN-scaffold] | S4 (LAB-4.8) |
 | Java | 21; the executed runs used Eclipse Temurin 21, and TLC's banner printed `Eclipse Adoptium 21.0.12.1` | Bench | [X RUN-tlc-doublespend] | S5 (LAB-5) |
 | tla2tools 1.8.0 | a rolling pre-release, pinned by SHA-256 `5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2`; prints `TLC2 Version 2026.10.20.183001 (rev: d2e1472)` | Bench | [X RUN-tlc-jars, RUN-tlc-doublespend] | S5 |
 | tla2tools 1.7.4 | the last stable tag, the text-trace fallback; SHA-256 `936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88`; prints `TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)` | Bench, CI | [X RUN-tlc-jars] | S5 |
 | PostgreSQL | 18.6; the executed image `postgres:18` reported `PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)` | Bench | [X RUN-pg-anomalies, RUN-pg-claims] | S6 (LAB-6) |
-| PGlite | 0.5.11 {{run:RUN-pglite-0511}}; the measured 0.5.10 reports PostgreSQL 18.6 | tab | [X RUN-pglite] | S6 |
+| PGlite | 0.5.11 [X RUN-pglite-0511] | tab | [X RUN-pglite] | S6 |
 | Spectacle | commit `5827c22` (dated 2026-09-30 [V]), vendored under MIT [V] | tab | [X RUN-spectacle] | S5 |
-| Soufflé | 2.5 {{run:RUN-souffle-version}} | Bench | none yet | S7 (LAB-7) |
-| Alloy | 6.2.0, optional {{run:RUN-alloy-version}} | Bench | none yet | S7 (drawer D-16) |
-| Apalache | 0.62.4, optional {{run:RUN-apalache-version}} | Bench | none yet | S5.L9 (drawer D-18) |
-| Rust | the toolchain with the `wasm32-unknown-unknown` target {{run:RUN-scaffold}} | Bench | none yet | S3 (LAB-3) |
-| Rust crates | `tokio-postgres` 0.7.18, `testcontainers` 0.28.0, `pg_query` 6.2.1, `proptest` 1.12.0: candidates read from the crates.io API on 2026-10-23 [V]; the pinned set is {{run:RUN-scaffold}} | Bench | none yet | S6 |
-| `uv`, `psycopg` | {{run:RUN-scaffold}} | Bench | none yet | S1; S6 |
+| Soufflé | 2.5 | Bench | [X RUN-souffle-version] | S7 (LAB-7) |
+| Alloy | 6.2.0, optional | Bench | [X RUN-alloy-version] | S7 (drawer D-16) |
+| Apalache | 0.62.4, optional | Bench | [X RUN-apalache-version] | S5.L9 (drawer D-18) |
+| Rust | 1.96.0: `rustc --version` prints `rustc 1.96.0 (ac68faa20 2026-05-25)`; the `wasm32-unknown-unknown` target is installed | Bench | [X RUN-scaffold] | S3 (LAB-3) |
+| Rust crates | `tokio-postgres` 0.7.18, `testcontainers` 0.28.0, `pg_query` 6.2.1, `proptest` 1.12.0: read from the crates.io API on 2026-10-23 [V], pinned with `=` and resolved into a committed `Cargo.lock` | Bench | [X RUN-scaffold] | S6 |
+| `uv`, `psycopg` | `uv` 0.10.2; `psycopg` 3.3.6, with its binary package | Bench | [X RUN-scaffold] | S1; S6 |
 | Browsers tested for the tab | Chromium 153.0.8010.12, Firefox 155.0, WebKit 26.6 | tab | [X RUN-z3-starter-pyodide] | all |
 
 ---
@@ -45,7 +45,7 @@ In the devcontainer every tool below is already in the image, and `statespace do
 
 ### 2.1 `uv`, Python and Z3 (LAB-1)
 
-- **Install.** `uv` from [its documentation](https://docs.astral.sh/uv/). Its version is {{run:RUN-scaffold}}.
+- **Install.** `uv` from [its documentation](https://docs.astral.sh/uv/). The Bench has version 0.10.2 [X RUN-scaffold].
 - **Run.** The pinned form the spikes ran [X RUN-z3-starter]:
 
   ```
@@ -78,18 +78,18 @@ In the devcontainer every tool below is already in the image, and `statespace do
   The platform triple differs on other platforms. Both outputs are from [X RUN-lean-toolchain]. LAB-2.1's reference proof lists `[propext, Quot.sound]` for `transfer_conserves` [X RUN-lean-ledger].
 - **What the toolchain bundles.** Its `bin/` holds `lean`, `lake`, `leanc`, `leanexport`, `leanir`, `leanmake`, `leantar`, `cadical`, `clang`, `ld.lld` and `llvm-ar`, and the checkers `leanchecker`, `leanchecker-paranoid`, `lean4lean`, `nanoda_bin`, `con-leche` and `con-ron` [X RUN-lean-toolchain].
 - **Settings the template sets.** `autoImplicit` is false, so a misspelled variable is an error and not a new implicit argument. The template uses core Lean and Std and no Mathlib: a Mathlib `Finmap` project's packages took 7.3 GB [X RUN-lean-mathlib], and core Lean proves the ledger [X RUN-lean-ledger].
-- **The two commands.** `lake check` builds the default targets, exports them, and replays the export through the kernel, erroring on any use of a non-standard axiom. `lake comparator` establishes that every named theorem in the solution proves the same statement as the challenge, uses no axiom outside the permitted list, and is accepted by the kernel. Both need a `lake-manifest.json`, which one `lake build` writes. Exit codes, from the 4.35.0 binary's own help text [X RUN-lean-toolchain]: 0 accepted; 1 rejected (a checker rejects, an axiom is not permitted, or the build failed); 2 could not start (no `bwrap`, no manifest, no default targets, or for `lake comparator` a missing or malformed `comparator.json`). `--paranoid` adds `leanchecker-paranoid`, `lean4lean`, `nanoda`, `con-leche` and `con-ron` to Lean's own kernel, six checkers in all; on a small project each verdict took 1 to 2 s and `--paranoid` about 3 s [X RUN-lean-comparator]. Six checkers are not six separate designs: lean4lean ports the reference logic for inductives [V].
+- **The two commands.** `lake check` builds the default targets, exports them, and replays the export through the kernel, erroring on any use of a non-standard axiom. `lake comparator` establishes that every named theorem in the solution proves the same statement as the challenge, uses no axiom outside the permitted list, and is accepted by the kernel. Both need a `lake-manifest.json`, which one `lake build` writes. Exit codes, from the 4.35.0 binary's own help text [X RUN-lean-toolchain]: 0 accepted; 1 rejected (a checker rejects, an axiom is not permitted, or the build failed); 2 could not start (no `bwrap`, no manifest, no default targets, or for `lake comparator` a missing or malformed `comparator.json`). `--paranoid` adds `leanchecker-paranoid`, `lean4lean`, `nanoda`, `con-leche` and `con-ron` to Lean's own kernel, six checkers in all. On a small project each verdict of `lake comparator` took 1 to 2 s and `lake comparator --paranoid` about 3 s [X RUN-lean-comparator]; on the LAB-2 pack the medians were 1.44 s and 2.92 s [X RUN-bwrap-lanes]. `lake check` replays Lean's whole environment, 57,966 declarations: on that pack it took 53.6 s, and `lake check --paranoid`, which replays it through six checkers one after another, took 172.6 s [X RUN-bwrap-lanes]. A project that imports `Std` did not finish `lake check --paranoid` in 6 GiB, and a slower machine takes longer [X RUN-bwrap-lanes]. Six checkers are not six separate designs: lean4lean ports the reference logic for inductives [V].
 
 ### 2.3 cvc5 1.4.2
 
-- **Install.** The executed run used the pip wheel [X RUN-cvc5-alethe]; the Bench binary and its hash are {{run:RUN-scaffold}}.
-- **Verify.** The wheel's `Solver.getVersion()` returned `1.4.2-modified` [X RUN-cvc5-alethe]. Receipts record the string verbatim, so accept the `-modified` suffix and do not "fix" it.
+- **Install.** The executed run used the pip wheel [X RUN-cvc5-alethe]; the Bench binary is a static build that prints `cvc5 1.4.2 [git 282d5e0 on branch HEAD]`, and its SHA-256 is `6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102` [X RUN-scaffold].
+- **Verify.** The wheel's `Solver.getVersion()` returned `1.4.2-modified` [X RUN-cvc5-alethe]. Receipts record the string verbatim, so accept the `-modified` suffix and do not "fix" it; the Bench binary carries no suffix, and the two are different builds of the same release [X RUN-scaffold].
 - **What it is for.** Authored `unsat` answers are cross-checked with cvc5, and two solvers agreeing is still "uncertified": the executed Alethe proof for the guard query has 19 lines and contains a `hole` step for an untranslated rewrite [X RUN-cvc5-alethe].
 
 ### 2.4 Java 21 and TLC
 
 - **Java.** A JRE 21 from any distribution. The executed runs used Eclipse Temurin 21 in a container [X RUN-tlc-doublespend]. The minimum Java version TLC 1.8.0 supports has not been established [V], so the course pins the one it ran on.
-- **The jars.** The `v1.8.0` release is a rolling pre-release: its asset is re-published under the same tag (published 2026-10-20 and re-published since [V]), so a download of the tag can differ from the jar the course ran. The SHA-256 is the pin. The landscape digest recommends shipping that exact jar rather than fetching the tag, and this file adopts that as a design choice [D]: the jar is MIT-licensed [V], and where it ships is {{run:RUN-doctor-devcontainer}}. 1.7.4 is the last stable tag.
+- **The jars.** The `v1.8.0` release is a rolling pre-release: its asset is re-published under the same tag (published 2026-10-20 and re-published since [V]), so a download of the tag can differ from the jar the course ran. The SHA-256 is the pin. The landscape digest recommends shipping that exact jar rather than fetching the tag, and this file adopts that as a design choice [D]: the jar is MIT-licensed [V], and it ships in the Bench image at `/opt/tla2tools/`, copied from `bench/image/tla2tools/` in the repository and checked against the pinned SHA-256 before the build goes on [X RUN-doctor-devcontainer]. 1.7.4 is the last stable tag.
 
   | Jar | SHA-256 | First line TLC prints | Trace output |
   |---|---|---|---|
@@ -103,7 +103,7 @@ In the devcontainer every tool below is already in the image, and `statespace do
 
 ### 2.5 PostgreSQL 18.6
 
-- **Install.** In the devcontainer, a PostgreSQL 18.6 service container runs beside the image, pinned by digest {{run:RUN-scaffold}}. The executed runs used the container image `postgres:18`, which reported 18.6 [X RUN-pg-anomalies]. Natively, install PostgreSQL 18 from your platform, or run that image, and confirm the version below.
+- **Install.** In the devcontainer, a PostgreSQL 18.6 service container runs beside the image, pinned by digest: `postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336` [X RUN-scaffold]. The executed runs used the container image `postgres:18`, which reported 18.6 [X RUN-pg-anomalies]. Natively, install PostgreSQL 18 from your platform, or run that image, and confirm the version below.
 - **Verify.**
 
   ```
@@ -111,29 +111,29 @@ In the devcontainer every tool below is already in the image, and `statespace do
   ```
 
   begins `PostgreSQL 18.6` [X RUN-pg-claims]. The same experiments gave the same outcomes on 17.11 [X RUN-pg-claims]. The pin to 18.6 is for the recorded isolation catalog and for matching PGlite, which reports 18.6 [X RUN-pglite] [D].
-- **Python driver.** `psycopg` 3, with its binary package, drives `statespace isorun` {{run:RUN-scaffold}}.
+- **Python driver.** `psycopg` 3, with its binary package, drives `statespace isorun`; the Bench has 3.3.6 [X RUN-scaffold].
 - **Documentation.** Link `/docs/18/`, not `/docs/current/`, because `current` moves to PostgreSQL 19 when it is released [D].
 
 ### 2.6 Rust and the crates
 
-- **Install.** Rust through `rustup`, with the wasm target added: `rustup target add wasm32-unknown-unknown` {{run:RUN-scaffold}}. The toolchain version is {{run:RUN-scaffold}}.
-- **Crates.** `tokio-postgres`, `testcontainers`, `pg_query` and `proptest`, at the versions in the template's lockfile {{run:RUN-scaffold}}. Candidate versions are in section 1.
-- **Verify.** `rustc --version`, and the lockfile's versions against section 1 once they are recorded.
+- **Install.** Rust through `rustup`, with the wasm target added: `rustup target add wasm32-unknown-unknown` on an existing install, or `-t wasm32-unknown-unknown` to `rustup-init`, which the recorded install used [X RUN-scaffold]. The toolchain version is 1.96.0 [X RUN-scaffold].
+- **Crates.** `tokio-postgres`, `testcontainers`, `pg_query` and `proptest`, at the versions in the template's lockfile [X RUN-scaffold], which section 1 lists.
+- **Verify.** `rustc --version`, and the lockfile's versions against section 1.
 
 ### 2.7 Soufflé, Alloy and Apalache
 
-- **Soufflé 2.5** is the Datalog reference for S7 {{run:RUN-souffle-version}}. An upstream issue (#2476, "sporadic crashes on ARM") was open when last read on 2026-10-21 [V], so a receipt records the CPU architecture [D]. Verify with `souffle --version` {{run:RUN-souffle-version}}.
-- **Alloy 6.2.0** is optional and only used by drawer D-16 {{run:RUN-alloy-version}}. It needs Java 17 or later [V]. Its release notes add a command line, documented with `java -jar alloy.jar help` [V].
-- **Apalache 0.62.4** is optional and only used by S5.L9 and drawer D-18 {{run:RUN-apalache-version}}. Its inductive-invariant check is bounded by the constants and types it instantiates, so it earns [M], never [P] alone.
+- **Soufflé 2.5** is the Datalog reference for S7 [X RUN-souffle-version]. An upstream issue (#2476, "sporadic crashes on ARM") was open when last read on 2026-10-21 [V], so a receipt records the CPU architecture [D]; the 2.5 release has no arm64 package [X RUN-souffle-version]. Verify with `souffle --version`, whose banner reads `Version: 2.5 (2.5)` [X RUN-souffle-version].
+- **Alloy 6.2.0** is optional and only used by drawer D-16 [X RUN-alloy-version]. It needs Java 17 or later [V]. Its release notes add a command line, documented with `java -jar alloy.jar help` [V].
+- **Apalache 0.62.4** is optional and only used by S5.L9 and drawer D-18 [X RUN-apalache-version]. Its inductive-invariant check is bounded by the constants and types it instantiates, so it earns [M], never [P] alone.
 
 ### 2.8 Pins that live in the tab
 
 You install nothing for these. Each instrument reply names its engine and version, and imported receipts show theirs.
 
-- **Z3 on Pyodide.** Z3 5.3.1 through the `z3_solver` 5.3.1.0 pyemscripten wheel on Pyodide 314.0.7, in a module worker on the instrument origin, which needs no cross-origin isolation [X RUN-z3-starter-pyodide, RUN-browser-origin]. The starter was ready in 1.46 to 1.71 s in Chromium, Firefox and WebKit [X RUN-z3-starter-pyodide]. Budgets are `rlimit`: under Pyodide in a Node harness, `timeout` never returned and `rlimit` stopped with `unknown (canceled)` [X RUN-z3-budget-pyodide]; the browser measurement and the first-load size on real devices are {{run:RUN-phone-pyodide}}.
-- **PGlite.** One connection, so two "concurrent" sessions run one after the other [X RUN-pglite]. Version 0.5.11 and its first-load size are {{run:RUN-pglite-0511}}.
+- **Z3 on Pyodide.** Z3 5.3.1 through the `z3_solver` 5.3.1.0 pyemscripten wheel on Pyodide 314.0.7, in a module worker on the instrument origin, which needs no cross-origin isolation [X RUN-z3-starter-pyodide, RUN-browser-origin]. The starter was ready in 1.46 to 1.71 s in Chromium, Firefox and WebKit [X RUN-z3-starter-pyodide]. Budgets are `rlimit`: `timeout` never returned under Pyodide in a Node harness [X RUN-z3-budget-pyodide] or in Chromium, Firefox and WebKit on a desktop, while `rlimit` stopped with `unknown (canceled)`; no phone has been measured. The first load is 12,893,420 B as gzip level 5, and the loader shows that size while it downloads [X RUN-phone-pyodide].
+- **PGlite.** One connection, so two "concurrent" sessions run one after the other [X RUN-pglite]. Version 0.5.11 reports `PostgreSQL 18.6 (PGlite 0.5.11)`, and its first load is 5,580,851 B as gzip level 5, which the loader shows while it downloads [X RUN-pglite-0511].
 - **Spectacle** at commit `5827c22`, vendored under its MIT license [V]. It found 11, 45, 191 and 813 distinct states for 2 to 5 workers, the same as TLC [X RUN-spectacle]. It has no PlusCal and no fairness or liveness checking [V], so liveness stays with TLC on the Bench.
-- **The Datalog engine** is decided by a spike: Z3 `Fixedpoint` in the same Pyodide worker if it passes (stratified negation was measured [X RUN-z3-fixedpoint]), and otherwise a TypeScript evaluator differential-tested against Soufflé {{run:RUN-fixedpoint-equal}}.
+- **The Datalog engine** is Z3 `Fixedpoint` in the same Pyodide worker, behind an adapter (stratified negation was first measured [X RUN-z3-fixedpoint]). It equals Soufflé on relations and derivation heights [X RUN-fixedpoint-equal]. A TypeScript evaluator differential-tested against Soufflé is the logged fallback.
 
 ---
 
@@ -148,12 +148,12 @@ You install nothing for these. Each instrument reply names its engine and versio
 | a core-only ledger project's `.lake` after one build | 244K (`du -sh` printed `244K`) | [X RUN-lean-toolchain] |
 | a Mathlib project importing one `Finmap` module, packages | 7.3 GB | [X RUN-lean-mathlib] |
 | npm `z3-solver` 5.3.1 (not used), unpacked and its `z3-built.wasm` | 35.5 MB and 34.6 MB | [X RESULTS.md] |
-| Pyodide with the Z3 wheel, first load | {{run:RUN-phone-pyodide}} | |
-| PGlite, first load | {{run:RUN-pglite-0511}} | |
-| the community WebAssembly build of Lean (not used) | reported at 137.5 MB | {{run:RUN-lean-wasm}} |
-| the devcontainer image | {{run:RUN-doctor-devcontainer}} | |
+| Pyodide with the Z3 wheel, first load | 12,893,420 B as gzip level 5, 20,056,541 B unpacked; the real instrument host sent 12,935,856 B in all, every file gzip-encoded except `python_stdlib.zip` | [X RUN-phone-pyodide, RUN-pages-wire-check] |
+| PGlite, first load | 5,580,851 B as gzip level 5 in 11 files, 17,424,328 B raw, as the harness's server sent it; the real host's compression of its `.wasm` and `.data` files is not yet measured | [X RUN-pglite-0511] |
+| the community WebAssembly build of Lean (not used) | 137,362,599 B decoded in a cold load, 17,179,888 B of response bodies as received | [X RUN-lean-wasm] |
+| the devcontainer image | `docker image inspect` reports 1,663,129,890 B and `docker images` 7.63GB; its unpacked root file system is 5,799,502,321 B; linux/amd64 only. Which of these is a download size was not measured, because no registry was involved | [X RUN-doctor-devcontainer] |
 
-In the tab, a download above 5 MB asks first, and nothing is fetched until you agree. The command line tool has no accounts and no telemetry; what it downloads, if anything, is what your own tool installers download, and the sizes above are those downloads.
+In the tab, nothing asks before an engine downloads, and the loader shows its size while it downloads. The command line tool has no accounts and no telemetry; what it downloads, if anything, is what your own tool installers download, and the sizes above are those downloads.
 
 ---
 
@@ -166,12 +166,18 @@ It exists because Lean runs code while it builds. The advisory for the 2026 kern
 | State on a receipt | Meaning | How it arises |
 |---|---|---|
 | `on` | the project was built, exported and checked inside bubblewrap | Linux with bubblewrap and user namespaces, or a setuid install |
-| `off` | the check ran without the sandbox | `--inadvisably-no-sandbox`; Lean then prints "WARNING: Sandbox disabled, this run is not trustworthy" [X RUN-lean-axioms] |
-| `failed` | the sandbox was wanted and could not start | bubblewrap under default Docker: "No permissions to create new namespace", exit code 1, the code of a rejection [X RUN-lean-bwrap-docker] |
+| `off` | the check ran without the sandbox | `--inadvisably-no-sandbox`, which `statespace check` passes only on your recorded choice (`--sandbox=off`) or in CI, never on an agent's or a script's [D]; Lean then prints "WARNING: Sandbox disabled, this run is not trustworthy" [X RUN-lean-axioms] |
+| `failed` | the sandbox was wanted and could not start | a line that starts `bwrap:`, such as, under default Docker, "No permissions to create new namespace" with exit code 1, the code of a rejection [X RUN-lean-bwrap-docker]; `statespace check` goes by that line and never by the exit code, so a check in this state carries no verdict [X RUN-bwrap-lanes] |
 
-Without bubblewrap the commands exit 2 [X RUN-lean-bwrap-docker]. Statement matching still works with the sandbox off: an honest solution is accepted and a weakened statement and a redefined function are rejected [X RUN-lean-comparator]. macOS and Windows learners use the devcontainer, because the sandbox is Linux-only [D].
+Without bubblewrap the commands exit 2 [X RUN-lean-bwrap-docker]. A failed sandbox can also print `<name> kernel rejected the solution` for a checker, so a `bwrap:` line outranks any rejection line, and a checker killed for memory (exit 137 or 143) is no verdict either [X RUN-bwrap-lanes]. Statement matching still works with the sandbox off: an honest solution is accepted and a weakened statement and a redefined function are rejected [X RUN-lean-comparator]. macOS and Windows learners use the devcontainer, because the sandbox is Linux-only [D].
 
-**Making the sandbox start inside a container.** The feasibility run found that bubblewrap started only with `seccomp=unconfined`, `apparmor=unconfined` and `systempaths=unconfined`, and an existing `/run/user/0` (`research/evidence/A5r3/comp-run3.log` to `comp-run5.log` show the failures that led there). Each setting relaxes the container's confinement. The template offers them only as an opt-in, documented profile and never as the default. Verdicts on CI runners, Docker Desktop and Codespaces are {{run:RUN-bwrap-lanes}}.
+**Making the sandbox start inside a container.** The first feasibility run found that bubblewrap started with `seccomp=unconfined`, `apparmor=unconfined` and `systempaths=unconfined` and an existing `/run/user/0` (`research/evidence/A5r3/comp-run3.log` to `comp-run5.log` show the failures that led there). W0-S06 then measured which of these the sandbox needs [X RUN-bwrap-lanes]. Three things have to hold together:
+
+- the container's seccomp profile allows `clone`, `mount`, `pivot_root`, `umount2` and `unshare`: Docker's default profile plus one rule that names them, each of the five being needed (`--cap-add SYS_ADMIN` alone does not help, because Docker's default profile blocks `pivot_root` whatever the capabilities are);
+- `/proc` is not masked, which is what `systempaths=unconfined` does;
+- the image has a `/run/user` directory, because Lake covers that path with a tmpfs and bubblewrap cannot create the mount point in a read-only root.
+
+`apparmor=unconfined` changed nothing on the recording host, which has no AppArmor, and is needed where Docker's AppArmor profile applies. With those three, the sandbox started as root and as a non-root user, and none of the options adds a capability. On a host without AppArmor, `seccomp=unconfined` with `systempaths=unconfined` also starts it, and relaxes more. On a stock Ubuntu 24.04 host, AppArmor's restriction on unprivileged user namespaces stops the sandbox as shipped, and no container option lifts it: it starts after `sysctl kernel.apparmor_restrict_unprivileged_userns=0`, or with an AppArmor profile that gives `/usr/bin/bwrap` the `userns` permission [X RUN-bwrap-lanes]. Each relaxation lowers the container's confinement, so the template offers them only as an opt-in, documented profile and never as the default. Verdicts on CI runners, Docker Desktop and Codespaces are {{run:RUN-bwrap-lanes}}.
 
 ---
 
@@ -181,7 +187,7 @@ Without bubblewrap the commands exit 2 [X RUN-lean-bwrap-docker]. Statement matc
 |---|---|---|
 | Mathlib | one `Finmap` project's packages took 7.3 GB, and core Lean proves the ledger | [X RUN-lean-mathlib, RUN-lean-ledger] |
 | the npm `z3-solver` build, in the tab | it needs threads, SharedArrayBuffer and COOP/COEP headers, which static hosting here does not send; the Pyodide wheel runs without them | [X RESULTS.md, RUN-z3-starter-pyodide] |
-| a WebAssembly build of Lean in the tab | reported at 137.5 MB, needs cross-origin isolation, and lags upstream; the course generates Goal Replay from real elaboration instead and links to live.lean-lang.org, uncredited | {{run:RUN-lean-wasm}}, [V] |
+| a WebAssembly build of Lean in the tab | a cold load decoded 137,362,599 B, the build needs cross-origin isolation, and it reports `Lean 4.33.0-pre`, older than the 4.35.0 the course pins; the course generates Goal Replay from real elaboration instead and links to live.lean-lang.org, uncredited | [X RUN-lean-wasm], [V] |
 | CheerpJ, embedded | free only when served from the vendor's CDN; self-hosting needs a commercial license | [V] |
 | Alloy4Fun, embedded | it stores learners' models on a third-party server | [V] |
 | Stateright, madsim | dormant: Stateright has had no push since 2025-07-27, and madsim's last commit was a dependency bump | [V] |
@@ -205,7 +211,7 @@ A pin is a version string, plus a hash or a commit where one exists, recorded ve
 1. **Propose it.** Name the new pin and the reason in the decisions log.
 2. **Re-run everything.** Every recorded run is executed again against the new tool (`statespace run <RUN-id>` in the course repository), and the outputs are diffed.
 3. **Regenerate what was generated.** A Lean bump regenerates Goal Replay from real elaboration and compares it with the committed strips.
-4. **Run the conformance pairs.** Spectacle against TLC, Pyodide Z3 against native Z3, PGlite against PostgreSQL 18.6 on single-session specimens, the tab Datalog against Soufflé, and the lasso validator against TLC on the fixtures.
+4. **Run the conformance pairs.** Spectacle against TLC, Pyodide Z3 against native Z3, PGlite against PostgreSQL 18.6 on single-session specimens, the tab Datalog against Soufflé, and the lasso validator against TLC on the fixtures. The first pin to move this way was PGlite's, from 0.5.10 to 0.5.11: the same specimens gave the same answers on both [X RUN-pglite-0511].
 5. **Read the diff.** If every verdict is unchanged, the pin moves and the new binary hashes are recorded. If one changed, that is not a quiet edit: it becomes an erosion entry on the course's own assurance page and a change card for learners ("N things you learned have changed"), and the affected records get a "re-check" flag, never a deduction.
 6. **Update every place the pin lives.** This file, the devcontainer image digest, the command line tool's pin table, and the pins receipts are compared with.
 
@@ -219,7 +225,7 @@ A learner's older receipts stay valid records and show the version they were mad
 | PostgreSQL | Pin 18.6. A minor release is a re-pin like any other: the isolation catalog is re-run on it before the pin moves [D]. PostgreSQL 19 release candidate 1 appeared on 2026-10-15 and general availability is planned for 2026-11-19, with no isolation or row-level-security changes in its notes [V]; the isolation catalog is re-recorded after general availability, and docs links stay on `/docs/18/` |
 | TLC | Never pin by tag: 1.8.0 is rolling. The SHA-256 is the pin. A new nightly is a re-pin: new hash, every TLC run repeated, the distinct-state counts of the DoubleSpend family compared (11, 45, 191 and 813), and the JSON trace shape compared. When a stable release at or above 1.8.0 exists, move to it, drop the "pre-release" label and retire the 1.7.4 fallback |
 | Z3, cvc5 | Solver bumps can regress [X RUN-z3-11179]. A bump re-runs the corpus of authored queries, which must stay solved, and every authored `unsat` is cross-checked with the other solver |
-| Pyodide and the Z3 wheel | Bumped together. `rlimit` budgets are measured again, because `timeout` never returned in the Node measurement [X RUN-z3-budget-pyodide] |
+| Pyodide and the Z3 wheel | Bumped together. `rlimit` budgets are measured again, because `timeout` never returned in the Node or the browser measurements [X RUN-z3-budget-pyodide, RUN-phone-pyodide] |
 | PGlite | A patch release re-runs the single-session specimens against PostgreSQL 18.6 |
 | Spectacle | Pinned by commit. The upstream head moved to `8193eb0` on 2026-10-23 [V]; it is adopted only after Spectacle equals TLC on every authored spec |
 | Soufflé, Alloy, Apalache | Pinned when their runs are recorded; optional ones move only with the lessons that use them |
@@ -237,14 +243,7 @@ Every `{{run:RUN-id}}` in this file waits for a recorded run. When the run exist
 
 | Run | Recorded by | What this file waits for |
 |---|---|---|
-| RUN-scaffold | W0-S12 | `uv`, `psycopg`, the Rust toolchain and crates, the cvc5 Bench binary |
-| RUN-souffle-version, RUN-alloy-version, RUN-apalache-version | W0-S12 | the three optional or S7 tools' versions |
-| RUN-pglite-0511 | W0-S08 | PGlite 0.5.11 and its first-load size |
-| RUN-phone-pyodide | W0-S02 | the first-load size of Pyodide with Z3 on real devices |
-| RUN-bwrap-lanes | W0-S06 | sandbox verdicts on CI runners, Docker Desktop and Codespaces |
-| RUN-doctor-devcontainer | W0-T05 | `statespace doctor` green in the devcontainer; the image's size and architecture; where the pinned TLC jar is shipped |
-| RUN-lean-wasm | W0-S11 | the size of the community WebAssembly Lean build |
-| RUN-fixedpoint-equal | W0-S03 | which Datalog engine runs in the tab |
+| RUN-bwrap-lanes | W0-S06 | sandbox verdicts on CI runners, Docker Desktop and Codespaces: the record holds labeled stand-ins for the three lanes, and the owner records the real ones |
 
 ---
 
@@ -275,3 +274,5 @@ Paths are relative to `research/`.
 | RUN-pg-anomalies | `spikes/pg_anomalies.py`; `spikes/RESULTS.md` |
 | RUN-pg-claims | `evidence/a2r3/scripts/pg_claims.py`; `evidence/a2r3/out/pg_claims.txt` |
 | RUN-pglite | `evidence/A5r3/pglite.log`; `evidence/a2r3/out/pglite.txt` |
+
+Runs recorded from W0 on keep their record at `runs/<RUN-id>.json` (`runs/README.md`) and their outputs in `runs/<RUN-id>/`. This file cites RUN-scaffold, RUN-souffle-version, RUN-alloy-version, RUN-apalache-version, RUN-pglite-0511, RUN-phone-pyodide, RUN-pages-wire-check, RUN-bwrap-lanes, RUN-doctor-devcontainer, RUN-lean-wasm and RUN-fixedpoint-equal from there. The runs of the table above were imported from `research/` in W0 and have records too; the table gives where their original outputs are.

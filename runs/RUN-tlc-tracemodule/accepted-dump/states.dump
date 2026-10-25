@@ -1,0 +1,357 @@
+State 1:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 1
+/\ replies = {}
+/\ status = [c1 |-> "none", c2 |-> "none"]
+/\ seen = {}
+
+State 2:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 2
+/\ replies = {}
+/\ status = [c1 |-> "pending", c2 |-> "none"]
+/\ seen = {}
+
+State 3:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 0, c2 |-> 0]
+/\ reqs = {}
+/\ l = 3
+/\ replies = {}
+/\ status = [c1 |-> "pending", c2 |-> "pending"]
+/\ seen = {}
+
+State 4:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 4
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {}
+
+State 5:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 5
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {}
+
+State 6:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {}
+/\ l = 4
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {"key-c1"}
+
+State 7:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 6
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {}
+
+State 8:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 0]
+/\ reqs = {}
+/\ l = 5
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "pending"]
+/\ seen = {"key-c1"}
+
+State 9:
+/\ charges = [c1 |-> 0, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c1", key |-> "key-c1", att |-> 2],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 7
+/\ replies = {}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {}
+
+State 10:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 1]
+/\ reqs = {[cmd |-> "c2", key |-> "key-c2", att |-> 1]}
+/\ l = 6
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1"}
+
+State 11:
+/\ charges = [c1 |-> 0, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 6
+/\ replies = {[cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c2"}
+
+State 12:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 2],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1"}
+
+State 13:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c2", key |-> "key-c2", att |-> 1] }
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1"}
+
+State 14:
+/\ charges = [c1 |-> 0, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c1", key |-> "key-c1", att |-> 2] }
+/\ l = 7
+/\ replies = {[cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c2"}
+
+State 15:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 1, c2 |-> 1]
+/\ reqs = {}
+/\ l = 6
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 16:
+/\ charges = [c1 |-> 1, c2 |-> 0]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c2", key |-> "key-c2", att |-> 1]}
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1"}
+
+State 17:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 18:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 19:
+/\ charges = [c1 |-> 0, c2 |-> 1]
+/\ durable = {"c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = { [cmd |-> "c1", key |-> "key-c1", att |-> 1],
+  [cmd |-> "c1", key |-> "key-c1", att |-> 2] }
+/\ l = 8
+/\ replies = {[cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c2"}
+
+State 20:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 7
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 21:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 8
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 22:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 8
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 23:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 8
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 24:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 9
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 25:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 9
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 26:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 9
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "inflight"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 27:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 10
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 28:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 10
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 29:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 10
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "inflight", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 30:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 11
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 31:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 11
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 32:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 11
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 33:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 2]}
+/\ l = 12
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 34:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ l = 12
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+
+State 35:
+/\ charges = [c1 |-> 1, c2 |-> 1]
+/\ durable = {"c1", "c2"}
+/\ attempts = [c1 |-> 2, c2 |-> 1]
+/\ reqs = {}
+/\ l = 12
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"], [cmd |-> "c2", key |-> "key-c2"]}
+/\ status = [c1 |-> "acked", c2 |-> "acked"]
+/\ seen = {"key-c1", "key-c2"}
+

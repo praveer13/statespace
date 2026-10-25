@@ -73,7 +73,7 @@ Each of these makes a check look satisfied without the property being establishe
 |---|---|---|---|
 | `sorry` | closes any goal; the file still builds, exit code 0 [X RUN-lean-axioms] | a `declaration uses sorry` warning and `sorryAx` in `#print axioms`; the claim earns no [P] | leave the goal open and say which one. Only the person parks a goal, with `statespace stuck` |
 | `axiom` you declare | assumes the goal | its name in `#print axioms`; `lake check` rejects it as "not permitted" [X RUN-lean-axioms] | nothing: do not |
-| `native_decide`; `bv_decide` can add one too | trusts the compiler, or a SAT solver run | an axiom containing `_native` for each use [X RUN-lean-axioms]; `bv_decide` {{run:RUN-lean-bv-decide}} | `decide` on a closed goal, or a manual proof |
+| `native_decide`; `bv_decide` can add one too | trusts the compiler, or a SAT solver run | an axiom containing `_native` for each use [X RUN-lean-axioms]; `bv_decide` [X RUN-lean-bv-decide] | `decide` on a closed goal, or a manual proof |
 | `set_option debug.skipKernelTC`, or a metaprogram that calls `addDecl` | adds a declaration without the kernel checking it | the build is green and `#print axioms` shows nothing; only kernel replay rejects it [X RUN-lean-skipkernel] | nothing: do not |
 | `implemented_by`, `extern`, `partial`, `unsafe` in a semantics module | swaps in compiled code or skips termination and type checks | the semantics lint of the lab | structural recursion, or fuel |
 | `assume(false)` and its relatives in other verifiers | assumes the goal away; agents used it in published work (AlphaVerus, arXiv 2412.06176) | no equivalent in Lean | nothing: do not |

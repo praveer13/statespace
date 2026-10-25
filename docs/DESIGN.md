@@ -1,8 +1,8 @@
 # statespace: design system and screen specs (v2)
 
-**Status:** the v2 design system, component specs and screen specs, for authoring and build. Every ID comes from `docs/spine/SPINE.md` (revision 2). **Date:** 2026-10-23 (machine clock). **Review:** awaits the owner, alongside the spine's owner decisions OD-1–OD-15.
+**Status:** the v2 design system, component specs and screen specs, for authoring and build. Every ID comes from `docs/spine/SPINE.md` (revision 2). **Date:** 2026-10-23 (machine clock). **Review:** awaits the owner. The owner decisions it builds on were reviewed on 2026-10-25 (DECISIONS.md, section 1): OD-6 and OD-10 changed, the rest accepted.
 
-**What this file governs.** It implements the spine's Look (§0), stamps (§8.7–§8.8), interface (§10) and the visual change V2-33, and it specifies all 23 screens of spine §10.1 at phone (360 px) and desktop (1280 px) widths. Where the spine is silent, this file decides and says so. Where it believes the spine is wrong, it says so in **Spine issues** at the end.
+**What this file governs.** It implements the spine's Look (§0), stamps (§8.7–§8.8), interface (§10) and the visual change V2-33, and it specifies all 24 screens of spine §10.1 at phone (360 px) and desktop (1280 px) widths. Where the spine is silent, this file decides and says so. Where it believes the spine is wrong, it says so in **Spine issues** at the end.
 
 **Precedence.** (1) the roadmap; (2) executed runs (`research/spikes/RESULTS.md`, `research/evidence/`); (3) the v2 brief; (4) the digests; (5) reports and adversarial reviews, chiefly the design review A7; (6) kernelspace, for its learning engine only; (7) the v1 design (`docs/history/v1/DESIGN-v1.md`) and the v1 canvas (`design/canvas/`), for history only.
 
@@ -92,7 +92,7 @@ These four rules carry over from v1, rewritten for v2's vocabulary.
 ### 2.1 Token rules
 
 1. **Color is semantic.** The only saturated colors are stamp hues. Nothing is colored for decoration.
-2. **Hue scope.** Stamp hues appear only inside stamps (`.stamp`) and claim strips (`.strip`), plus the two vermilion line styles the line language defines, witnessed violation (`.line-violation`) and erosion crack (`.line-crack`). GATE-stamps checks that allowlist (Spine issues, item 1).
+2. **Hue scope.** Stamp hues appear only inside stamps (`.stamp`) and claim strips (`.strip`), plus the two vermilion line styles the line language defines, witnessed violation (`.line-violation`) and erosion crack (`.line-crack`). GATE-stamps checks that allowlist (spine §10.2, §11.2).
 3. **Progress is ink.** Signed off, settled, in progress, counts, calibration, the path and the Mirror are drawn in ink and pencil. They never borrow a stamp hue or a stamp frame (V2-02, A7-02).
 4. **Verdigris marks links and "you are here", in light only.** Links are always underlined, because verdigris against ink is 2.37:1 and fails color-only distinction (WCAG 1.4.1). "You are here" is the pointer glyph ▸, drawn in verdigris, so it never depends on color. Night has no verdigris: links are ink and underlined, and the pointer is ink.
 5. **Meaningful boundaries use the component rule** (at least 3:1, WCAG 1.4.11): inputs, buttons, focusable cells, trace cells. Hairlines are decorative only and never the sole boundary of a control.
@@ -152,7 +152,7 @@ Each stamp has a text color, the surface behind its text, and an identifying str
 Notes on the table:
 
 - **Lowest pairs.** The lowest text pair in either theme is light [R], 5.18:1, above the 4.5:1 floor. The lowest meaningful non-text pair is the light component rule on vellum, 3.51:1, above 3:1.
-- **[?] moved off ochre in both themes.** v1 shared one ochre between TESTED and UNKNOWN (A7-06). The design review moved light UNKNOWN to neutral gray but proposed a yellow night UNKNOWN (`#E0C878`) beside a yellow night TESTED (`#E0B44C`), which recreates the clash; both themes here use a neutral gray hatch (Spine issues, item 2).
+- **[?] moved off ochre in both themes.** v1 shared one ochre between TESTED and UNKNOWN (A7-06). The design review moved light UNKNOWN to neutral gray but proposed a yellow night UNKNOWN (`#E0C878`) beside a yellow night TESTED (`#E0B44C`), which recreates the clash; both themes here use a neutral gray hatch (spine §10.2).
 - **[C] is new.** Neither v1 nor the review defined a CONFIGURED hue. Plum keeps it apart from the blues of [P] and [M] in normal vision; its open-sided frame keeps it apart from everything in grayscale.
 - **The [?] hatch** is a 45° stripe pattern at 6-px pitch. Text sits directly on it and is measured against the stripe nearer in luminance to the text, so the ratio holds wherever a glyph lands.
 
@@ -174,7 +174,7 @@ Color is the fourth cue on a stamp, after the word, the code and the frame. The 
 | Pair | Where color fails | What still separates them |
 |---|---|---|
 | [P] / [E], light | luminance ratio 1.07 (identical in a grayscale print); ΔE76 12.2 under tritanopia | solid fill against a double frame with no fill. v1 drew both as solid fills (A7-06); v2 does not |
-| [P] / [R], night | luminance ratio 1.08: both are solid fills of near-equal lightness. Color separates them well (ΔE76 81–94 under all three simulations), but grayscale, print and achromatopsia do not | [R] carries the heavy outer ring; [P] has none. This ring is v2's addition to the spine's "solid vermilion" (Spine issues, item 3) |
+| [P] / [R], night | luminance ratio 1.08: both are solid fills of near-equal lightness. Color separates them well (ΔE76 81–94 under all three simulations), but grayscale, print and achromatopsia do not | [R] carries the heavy outer ring; [P] has none. The spine records the ring as [R]'s second cue (spine §8.7). |
 | [T] / [R], light | ΔE76 0.7 under protanopia | a single frame with no fill against a ringed solid fill |
 | [T] / [R], night | ΔE76 5.6 under deuteranopia | as above |
 | [M] / [?] | both pale or dark fills of near-equal luminance (ratio 1.01 in both themes) | dotted frame with a flat tint against a solid frame with a hatch |
@@ -253,9 +253,9 @@ The theme follows the system setting, falls back to light when the system states
 |---|---|---|---|
 | Structure | **Archivo**, a grotesque with a width axis | variable, weights 400–800, widths 100–125 | headings, labels, navigation, buttons, stamp words, title blocks, tables |
 | Reading | **Source Serif 4** | regular, italic, semibold | lesson prose, sidenotes, drawers, technical notes |
-| Code and logic | **JuliaMono** {{run:RUN-juliamono-glyphs}} | regular, semibold | instrument code, theorem statements, traces, goal strips, SMT-LIB, stamp codes and qualifiers, inline math in prose |
+| Code and logic | **JuliaMono** [X RUN-juliamono-glyphs] | regular, semibold | instrument code, theorem statements, traces, goal strips, SMT-LIB, stamp codes and qualifiers, inline math in prose |
 
-**Why JuliaMono.** The design review parsed the served font files and found IBM Plex Mono (v1's code face) missing 36 of 49 sampled Lean and TLA+ symbols, with a proportional fallback that pushes logic lines out of alignment, while JuliaMono missed none and keeps one advance width (A7-15). Those are review measurements; W0-S12 re-records coverage against the course's own content as {{run:RUN-juliamono-glyphs}}. Source Serif 4 also lacks ℤ, ∀, ∃ and ⇒ (A7-15), so prose never sets a logic symbol in the serif: inline math is always a JuliaMono span.
+**Why JuliaMono.** The design review parsed the served font files and found IBM Plex Mono (v1's code face) missing 36 of 49 sampled Lean and TLA+ symbols, with a proportional fallback that pushes logic lines out of alignment, while JuliaMono missed none and keeps one advance width (A7-15). Those are review measurements; W0-S12 re-recorded coverage against the course's own content [X RUN-juliamono-glyphs]. Source Serif 4 also lacks ℤ, ∀, ∃ and ⇒ (A7-15), so prose never sets a logic symbol in the serif: inline math is always a JuliaMono span.
 
 ### 3.2 Scale
 
@@ -286,7 +286,7 @@ The theme follows the system setting, falls back to light when the system states
 - **Lean shows Unicode,** as Lean source does. Each symbol offers its input abbreviation (`\forall` gives ∀) on hover, focus or tap.
 - **SMT-LIB and Z3Py are ASCII.**
 - **Every symbol has a spoken name** from the speech map (§10.6), used as its accessible name.
-- **Glyph gate.** GATE-glyphs extracts every code point from lessons, specimens, audit cases, claims and goal strips and fails on any not present in JuliaMono's subset or the speech map. This file asks one extension: fail on a logic symbol set in the serif or sans rather than in a code span (Spine issues, item 7).
+- **Glyph gate.** GATE-glyphs extracts every code point from lessons, specimens, audit cases, claims and goal strips and fails on any not present in JuliaMono's subset or the speech map. The spine adopts one extension: fail on a logic symbol set in the serif or sans rather than in a code span (spine §10.2, §11.2).
 - **Subscripts** such as VRK₃₀ are set with `<sub>` in the surrounding face unless GATE-glyphs finds the Unicode subscript in that face.
 
 ### 3.4 Self-hosted subsets
@@ -340,7 +340,7 @@ Rules (spine §10.2; A7-16):
 | MODEL-CHECKED | [M] | holds in every state explored within stated constants | constants; complete or partial | dotted frame, tint | S5 (CL-5.1) |
 | TESTED | [T] | held on n sampled runs | n and generator statistics | single solid frame | S1 (the Defence's own stamp); S3 for claims (CL-3.5) |
 | ENFORCED | [E] | the running system rejects violations | where | double frame | S6 (CL-6.4) |
-| CONFIGURED | [C] | a setting, read back from the system | source, and when it was read back | rules above and below, open sides | S6–S7 (no claim template yet: Spine issues, item 5) |
+| CONFIGURED | [C] | a setting, read back from the system | source, and when it was read back | rules above and below, open sides | S7 (CL-7.4) |
 | ASSUMED | [A] | taken on trust | why | dashed frame | S1 (SEAM-1, SEAM-7) |
 | UNKNOWN | [?] | no verdict | reason | hatched, solid frame | S1.L2 (SP-1.7) |
 | NOT COVERED | [N] | outside the model | what is outside | bare | S1.L5 (CL-1.5) |
@@ -375,7 +375,7 @@ Examples, each from a run or a spine template:
 | `TESTED [T] · n = ‹n› · ‹generator statistics› · PGlite and PostgreSQL 18.6` | CL-6.1 {{run:RUN-drt-transfers}} |
 | `TESTED [T] · 1 instance` | "results match" on one database, SP-9.4 {{run:RUN-pg-one-db}} |
 | `ENFORCED [E] · deferred check over postings, at commit` | CL-6.4 {{run:RUN-pg-enforce-commit}} |
-| `CONFIGURED [C] · ‹setting› read back from ‹source› at ‹time›` | the pattern; no spine template uses [C] yet |
+| `CONFIGURED [C] · ‹setting› read back from ‹source› at ‹time›` | CL-7.4 {{run:RUN-pg-rls-differential}} |
 | `ASSUMED [A] · contention assumed finite` | CL-6.5, assumed by design |
 | `NOT COVERED [N] · the recipient's balance` | CL-1.5 [X RUN-z3-bv64] |
 | `TESTED [T] · 10 of 12 unseen items · Wilson 0.55–0.95` | the course's stamp on a passed Defence part, with the spine's worked interval [D] |
@@ -412,7 +412,7 @@ Every stamp names its lane in a badge beside it. Learners see only the badge wor
 | *re-checked here* | an engine in this tab produced or re-checked the result (INS-z3, INS-lane-a, INS-interp and the other tab instruments) |
 | *reported from your machine* | an imported receipt from the Bench (Lean, TLC, multi-session PostgreSQL) |
 | *self-assessed* | the learner's own judgment; its stamp is [A] |
-| *recorded run* | the course's own run, shown in place of a live one on a phone or while a worker is cold, with its RUN id. It is course evidence, never the learner's: it mints no learner stamp, claim or evidence event; only the learner's call before it is recorded (Spine issues, item 4) |
+| *recorded run* | the course's own run, shown in place of a live one on a phone or while a worker is cold, with its RUN id. It is course evidence, never the learner's: it mints no learner stamp, claim or evidence event; only the learner's call before it is recorded (spine §9.3). Boot labels it *recorded result* until S1.L1 introduces "run" (spine §0, §9.3) |
 
 Badges are pencil text with a small line icon. They are never framed, because frames belong to stamps.
 
@@ -426,7 +426,7 @@ Every claim renders a strip of three segments (spine §5.2; review digest R12):
 | **Correspondence** | how does the model relate to the running system? | [A] while a seam stands in for it; [T] (a differential run); [P] (a preservation proof, CL-9.2); [E] (enforced in the system itself); [R] once a witness cracks it |
 | **Requirement fit** | is the proposition the requirement? | [A] (the learner says so), [T] · n requirement scenarios, [N] (outside the model), [R] (a scenario the theorem permits and the requirement forbids). **Never [P]** (GATE-stamps) |
 
-- **One primary stamp per segment.** Supporting stamps and open defeaters stack under the strip in the claim card, and show in the strip as a "+1" disclosure. CL-5.4, for example, carries [P] in its first segment with the open defeater "translation from the TLA+ spec unverified" and a supporting [M]; CL-7.4 carries [E] in the first segment and [T] for its `SET ROLE` differential in the second.
+- **One primary stamp per segment.** Supporting stamps and open defeaters stack under the strip in the claim card, and show in the strip as a "+1" disclosure. CL-5.4, for example, carries [P] in its first segment with the open defeater "translation from the TLA+ spec unverified" and a supporting [M]; CL-7.4 carries [E] in the first segment, [T] for its `SET ROLE` differential in the second, and [C] for the read-back of `relrowsecurity` and `relforcerowsecurity`.
 - **Assumptions attach to segments.** A seam that a segment rests on draws as a dashed tick on that segment's edge, linked to its assumption record.
 - **Layout.** At 600 px and wider the strip is three equal cells under a 1.5-px frame, each headed by a 12-px label. Below 600 px it stacks into three rows, label on the left.
 - **Claims never collapse to one stamp.** One stamp could not say "proved of the model; correspondence refuted by a specimen; requirement assumed", which is why v1's single-stamp Ledger row read as both proved and refuted (A7-03).
@@ -540,8 +540,7 @@ Schematic. Z3 5.3.1 in the tab is the recorded Pyodide build [X RUN-z3-starter-p
 | State | What the cell shows |
 |---|---|
 | Cold | the course's recorded run at once, under the *recorded run* label with its RUN id [X RUN-z3-starter-pyodide]. The learner can still call first; the call counts. "Run it live in this tab" sits beside it |
-| Consent | before any download above 5 MB (OD-6, M-consent): "Z3 runs in this tab after a one-time download of ‹size› ({{run:RUN-phone-pyodide}}). It stays on this device until you remove it in Settings." Buttons: Download · Use the recorded run |
-| Loading | a determinate progress bar by bytes, with text ("‹received› of ‹total›"); no spinner |
+| Loading | no prompt and no warning first (OD-6, M-consent); a determinate progress bar by bytes, with text ("Downloading ‹engine› · ‹received› of ‹size›", the size from the build manifest; Z3's first load [X RUN-phone-pyodide]), while the recorded run stays in view; no spinner |
 | Running | "Running · rlimit ‹N›", with Stop |
 | Stopped | "Stopped before a verdict. Your call stands; no result was recorded." |
 | `unknown` | not an error: [?] with its reason |
@@ -558,9 +557,9 @@ The same fieldset serves GEN-call-it's four templates and every graded item that
 | Template | Answer control | Chance line |
 |---|---|---|
 | Three-way verdict | three radios | "3 options · chance 1 in 3" |
-| Trace length as an interval | two number fields, in actions | "open answer" (no chance level) |
+| Trace length as an interval | one radio per offered interval | ‹k› options · chance 1 in ‹k› |
 | Which anomaly | one radio per option | "‹k› options · chance 1 in ‹k›" |
-| Multiple true/false, about five scenarios | a true/false radio pair per scenario row | one confidence for the whole set, with "all ‹n› by guessing: 1 in 2^‹n›" printed; the Mirror keeps these calls in their own bin (Spine issues, item 6) |
+| Multiple true/false, about five scenarios | a true/false radio pair per scenario row | one confidence for the whole set, with "all ‹n› by guessing: 1 in 2^‹n›" printed; the Mirror keeps these calls in their own bin (spine §8.5) |
 
 - **Probes** (Defence Part A, test-out) are one shot, with feedback only after submission, because counterexamples invite patching the special case (spine §8.4; B [dantoni15]).
 - **Practice** shows the witness and its class after the answer.
@@ -674,7 +673,7 @@ Schematic; Z3 5.3.1 in the tab per [X RUN-z3-starter-pyodide].
 
 ### 6.9 Goal Replay
 
-Goal Replay (INS-goal-replay) shows Lean goal strips generated at build time from real Lean 4.35.0 elaboration through `$/lean/plainGoal` {{run:RUN-lean-plaingoal}}, regenerated on every toolchain bump (GATE-replay; {{run:RUN-replay-gen}}). It is never live Lean and never hand-written.
+Goal Replay (INS-goal-replay) shows Lean goal strips generated at build time from real Lean 4.35.0 elaboration through `$/lean/plainGoal` [X RUN-lean-plaingoal], regenerated on every toolchain bump (GATE-replay; [X RUN-replay-gen]). It is never live Lean and never hand-written.
 
 - **A strip** is a sequence of frames, one per tactic: the tactic line, then the goal after it, hypotheses above the turnstile and the target below.
 - **Diffs** against the previous frame: added hypotheses marked + in the margin, removed ones −, changed target lines ~. The marks persist; the motion (§9) only draws attention to them. Screen readers hear "added", "removed", "changed".
@@ -683,11 +682,11 @@ Goal Replay (INS-goal-replay) shows Lean goal strips generated at build time fro
 - **Types on demand:** hover, focus or tap shows a term's type. The popover is dismissible, hoverable and stays until dismissed (WCAG 1.4.13).
 - **Learner-paced, never autoplay:** narrated animated proofs lost more by two weeks than learner-paced ones (C, pedagogy digest row 18).
 - **The proposition is pinned** at the top with its requirement row: "Is this the requirement?"
-- **Phone:** one frame per screen, with Previous and Next buttons (a swipe is an extra, never the only way) and collapsible hypotheses.
+- **Phone:** one frame per screen, with Previous and Next buttons (a swipe is an extra, never the only way) and collapsible hypotheses. Long goal lines wrap or scroll inside the strip, never the page (spine §10.1 SCR-lesson).
 
 ```
-GOAL REPLAY · run_conserves · Lean 4.35.0 · generated, not live Lean
-tactic ‹k› of ‹n›:  induction ops generalizing s
+GOAL REPLAY · ‹theorem› · Lean 4.35.0 · generated, not live Lean
+tactic ‹k› of ‹n›:  induction ns generalizing s
  before                               after (case cons)
  ‹hypotheses›                         ‹hypotheses›
                                       + ih : ‹hypothesis›
@@ -736,8 +735,8 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 
 ### 6.12 Mirror panels
 
-- **Calibration by band.** Three rows: guess, think so, sure. Each row prints n and hits, and draws the hit rate's Wilson 95% interval as a dimension line on a 0–100% axis, beside a pale ink bracket for the band's range (guess: chance to 67%; think so: 67–80%; sure: 80–100%). A sentence appears only when the band has reached the diagnosis threshold (about 20–30 calls, spine §8.5, fixed as one constant in W1-T07) and its interval lies outside the band: "Your 'sure' calls hit less often than 'sure' says: ‹hits› of ‹n›, interval ‹low›–‹high›." Below the threshold: "Too few calls in this band to say anything yet (‹n›)."
-- **Bias,** stated confidence minus accuracy, with its interval, shown above the threshold only. It needs one representative confidence per band, declared as a constant (Spine issues, item 6).
+- **Bias, first.** Stated confidence minus accuracy, with its interval, shown above the threshold only (defined below). Stated confidence is imputed from the band: for guess, midway between the item's chance and 2/3; for think so, 0.73 [D]; for sure, 0.90 [D] (spine §8.5).
+- **Hit rate by band.** Three rows: guess, think so, sure. Each row prints n and hits, and draws the hit rate's Wilson 95% interval as a dimension line on a 0–100% axis, beside a pale ink bracket for the band's range (guess: chance to 67%; think so: 67–80%; sure: 80–100%). A sentence appears only when the band has reached the diagnosis threshold (at least 20 calls, spine §8.5, fixed as one constant in W1-T07) and its interval lies outside the band: "Your 'sure' calls hit less often than 'sure' says: ‹hits› of ‹n›, interval ‹low›–‹high›." Below the threshold: "Too few calls in this band to say anything yet (‹n›)."
 - **What counts.** Post-instruction, unassisted calls only; assisted calls are shown apart (pedagogy digest §3.4).
 - **VRK₃₀.** "Reasoning moves still yours at 30 days": the count, its rate per active study-month with an interval, and the KCs counted; then the settled KCs with their dates.
 - **Ink only.** No stamp hue, no green-good/red-bad, no comparison with other learners, no population target (spine §2.3).
@@ -781,7 +780,7 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 | Revision mark | △‹n› beside a line an erratum changed, linking to SCR-changes |
 | Banners | "Draft: first-learner pass pending" on unreviewed content (spine §13); "unverified since ‹date›" on course claims after a red night; both pencil text under a solid rule |
 
-**Content block types for W1–W2.** V2-18 allows at most six, counted by GATE-lessons. This file proposes: (1) prose, with sidenotes and inline math; (2) instrument cell; (3) item: prequestion, graded item or exit question; (4) Goal Replay strip (W2 only); (5) content card; (6) a static table or figure drawn from runs. The rail, provenance blocks, "Establishes", stamps and Today cards are shell components rendered from data, not authored blocks.
+**Content block types for W1–W2.** V2-18 allows at most six, counted by GATE-lessons, and the spine names them (spine §12 item 48): (1) prose, with sidenotes and inline math, which also carries a static table or figure drawn from runs; (2) instrument, an instrument cell, which also carries a Goal Replay strip (W2 only); (3) item: prequestion, graded item or exit question; (4) claim; (5) specimen; (6) card, which is the content card. The rail, provenance blocks, "Establishes", stamps and Today cards are shell components rendered from data, not authored blocks.
 
 ---
 
@@ -820,11 +819,11 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 
 ### 7.4 The phone contract
 
-- **Phone-first surfaces** are Today, Lesson, Audit and Claims (spine §0), plus every screen spine §10.1 marks phone-first.
+- **Flagship phone surfaces** are Today, Lesson, Audit and Claims (spine §0); spine §10.1 marks every screen that also works on a phone.
 - **The phone flow** is predict, see a recorded run with its run ID, then queue the hands-on part for the Bench (spine §9.3).
 - **Laptop surfaces:** the Bench and labs (phones get resume cards), the Derivation Board (read only on phones), the Theater (vertical lanes on phones), the Defence (Part D on phones) and notes.
-- **Queues stay on their device.** With no server, a "Queue for the Bench" item lives on the device that made it and reaches another device only through export and merge-import in SCR-settings (Spine issues, item 8).
-- **Downloads above 5 MB ask first** (OD-6), so phones default to recorded runs.
+- **Queues stay on their device.** With no server, a "Queue for the Bench" item lives on the device that made it and reaches another device only through export and merge-import in SCR-settings (spine §9.3).
+- **No download asks first** (OD-6). A cell opens on its recorded run and an engine downloads only when a page needs it, the loader showing its size, so phones still begin on recorded runs.
 - **Offline,** after a first visit, Today and items "checked offline" work without a solver download.
 
 ### 7.5 Frames, sheets and wide content
@@ -839,7 +838,7 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 
 ### 8.0 Index
 
-| Screen | Purpose | Phone-first (spine §10.1) | Built by | Wave |
+| Screen | Purpose | Works on a phone (spine §10.1) | Built by | Wave |
 |---|---|---|---|---|
 | SCR-boot | the first session, at most 8 minutes | yes | W1-T09 | W1 |
 | SCR-today | home for return visits | yes | W1-T08 | W1 |
@@ -859,23 +858,24 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 | SCR-mirror | private calibration and VRK₃₀ | yes | W1-T07 | W1 |
 | SCR-notes | technical notes | no | W2-T15 | W2 |
 | SCR-drawer | drawers | yes | W1-T11 | W1 |
-| SCR-clearinghouse | the Clearinghouse | yes | W3-T14 | W3 |
+| SCR-clearinghouse | the Clearinghouse | yes for incidents; plug-in management is laptop-only | W3-T14 | W3 |
 | SCR-assurance | the course's own claims | yes | W5-T08 | W5 |
 | SCR-changes | errata and freshness | yes | W3-T15 | W3 |
 | SCR-search | search | yes | W1-T02 | W1 |
-| SCR-settings | data and consent | yes | W1-T20 | W1 |
+| SCR-settings | data and downloads | yes | W1-T20 | W1 |
+| SCR-instrument | the instrument origin's own page, where untrusted input renders | yes | W1-T14 | W1 |
 
 Each spec below gives the purpose and the IDs it serves, the phone layout at 360 px (regions top to bottom), the desktop layout at 1280 px, the states that matter, and notes. Wireframes are schematic.
 
 ### SCR-boot · Start here
 
-**Purpose.** S1.L0, the first session: at most 8 minutes on a phone, with a first success targeted within 4 minutes [ks100x], checked by the GATE-bundle timing gate at 360 px and by at least five naive testers (RUN-boot-firstsuccess) before the "external learners" label. Learners see "Start here"; "Boot" is an internal name (Spine issues, item 9). **Serves:** S1.L0, SP-1.1, SP-1.4, SP-1.9, INS-z3, M-call-it, M-feels-harder, M-set-your-week, M-test-out (placement).
+**Purpose.** S1.L0, the first session: at most 8 minutes on a phone, with a first success targeted within 4 minutes [ks100x], checked by the GATE-bundle timing gate at 360 px and by at least five naive testers (RUN-boot-firstsuccess) before the "external learners" label. Learners see "Start here"; "Boot" is an internal name (spine §0). **Serves:** S1.L0, SP-1.1, SP-1.4, SP-1.9, INS-z3, M-call-it, M-feels-harder, M-set-your-week, M-test-out (placement).
 
 **Phone (360 px).** One column of sheets under a thin six-node route (skippable steps, never locks):
 
 1. **The agent's claim.** An agent's pull request, its words quoted under UNREVIEWED ("safe, 200 tests green"), and the guarded transfer it adds, a variant whose answer the roadmap does not print.
 2. **Call it.** "Is it safe for the sender?" (safe · not safe · can't tell; "3 options · chance 1 in 3"), then a confidence. This first-contact call is recorded and scheduled but counts toward no KC state until S1.L1 teaches it.
-3. **Z3.** The instrument cell opens on the course's recorded run at once [X RUN-z3-starter-pyodide], with "Run it live in this tab" behind the consent sheet. The overdraft witness appears (SP-1.1), then the corrected guard's `unsat`, and their stamps land.
+3. **Z3.** The instrument cell opens at once on the variant's recorded result {{run:RUN-z3-boot-variant}} (spine §3.1), labeled "recorded result", with "Run it live in this tab" beside it; the tap downloads Z3 without asking while the loader shows its size. The overdraft witness appears (SP-1.1), then the corrected guard's `unsat`, and their stamps land.
 4. **The reveal, uncredited.** Re-encoded in BitVec 64, the guard protects the sender but the recipient wraps (SP-1.4) [X RUN-z3-bv64].
 5. **The dated incident.** Bitcoin CVE-2010-5139, values that overflowed when summed, as a toy model (SP-1.9 {{run:RUN-z3-btc2010}}; source [btc2010]).
 6. **"This will feel harder."** The card sets expectations (B [deslauriers19]); then *Set your week*: a weekly range, planned at the pessimistic end, two study blocks and a Keep block; and an optional placement walk, including "From kernelspace".
@@ -906,9 +906,9 @@ Each spec below gives the purpose and the IDs it serves, the phone layout at 360
 
 **Desktop (1280 px).** The same sequence in the 680-px column, with the instrument cell widened to 880 px and the incident card and the "feels harder" card in the right margin.
 
-**States.** Cold worker: the recorded run, labeled. Declined consent: Boot completes entirely on recorded runs. Returning before finishing: Boot resumes at the last step; Today shows a "Finish Start here" card, never a nag.
+**States.** Cold worker: the variant's recorded result {{run:RUN-z3-boot-variant}}, labeled "recorded result". No live run: Boot completes entirely on recorded runs. Returning before finishing: Boot resumes at the last step; Today shows a "Finish Start here" card, never a nag.
 
-**Notes.** At most five glossary terms are introduced here: call, stamp, specimen, Today, Keep block (spine §0). Boot's copy therefore says "study blocks", not "Bench blocks", and labels the cold-start result "recorded earlier" with its ID, leaving the words *Bench* and *run* to LAB-1 and S1.L1 (Spine issues, item 9).
+**Notes.** At most five glossary terms are introduced here: call, stamp, specimen, Today, Keep block (spine §0). Boot's copy therefore says "study blocks", not "Bench blocks", and labels the cold-start result "recorded result" with its ID, leaving the words *Bench* and *run* to LAB-1 and S1.L1 (spine §0).
 
 ### SCR-today · Today
 
@@ -1126,21 +1126,21 @@ The steps, the final `spent = 160, bal = 20` and the trace counts come from Doub
 
 **Desktop (1280 px).** The command, postcondition and current obligation across the top; the steps as a table in the middle; the keyboard stepper toolbar under it; on the right, the rule reference (assignment, sequence, the four guard readings) and the selected step's Z3 result, with its distinguishing state as a small table.
 
-**States.** A step that is not valid shows its distinguishing state; later steps resting on it are marked "follow-on". Z3 not loaded: steps can be written, and they are checked once the solver loads, after consent.
+**States.** A step that is not valid shows its distinguishing state; later steps resting on it are marked "follow-on". Z3 not loaded: steps can be written, and they are checked once the solver loads.
 
 **Notes.** The keyboard-only path is a W3 exit criterion; "Derivation Board polish" is first in the cut order (spine §14), so polish is optional and the stepper is not.
 
 ### SCR-bench · the Bench
 
-**Purpose.** Labs and lanes: the lab list, `statespace doctor` output, receipt import by file or link, and lane badges. **Serves:** LAB-1–LAB-10, INS-receipt, INS-bench-lean, INS-bench-tlc, INS-bench-pg, INS-bench-smt, INS-bench-souffle, INS-bench-cargo, D-15.
+**Purpose.** Labs and lanes: the lab list, `statespace doctor` output, receipt and lab-bundle import by file or link, and lane badges. **Serves:** LAB-1–LAB-10, INS-receipt, INS-bench-lean, INS-bench-tlc, INS-bench-pg, INS-bench-smt, INS-bench-souffle, INS-bench-cargo, D-15.
 
-**Phone (360 px).** A note that the Bench is the learner's laptop with the real tools, so a phone reads receipts and resume cards; the lab list (lab, current stage, last check result); recent receipts; import by file.
+**Phone (360 px).** A note that the Bench is the learner's laptop with the real tools, so a phone reads receipts and resume cards; the lab list (lab, current stage, last check result); recent receipts; import by file, of a receipt or a lab bundle.
 
-**Desktop (1280 px).** The lab table (lab, current stage, last check, receipt date, lane); the environment panel from the latest receipt's `statespace doctor` block (devcontainer digest, OS, sandbox state); the import area: a drop zone drawn with a solid rule (never dashed, §4.1), and "Import from a link", which opens the instrument origin (§8.24).
+**Desktop (1280 px).** The lab table (lab, current stage, last check, receipt date, lane); the environment panel from the latest receipt's `statespace doctor` block (devcontainer digest, OS, sandbox state); the import area: a drop zone drawn with a solid rule (never dashed, §4.1), the controls "Import a receipt" and "Import a lab bundle", and "Import from a link", which opens the instrument origin (§8.24).
 
 **States.** S1: "LAB-1 needs no devcontainer: `uv run --with z3-solver==5.3.1`, or run it in the tab" (spine §3.1). Before S2: a setup card for the devcontainer and `statespace doctor` (D-15), noting that the Lean toolchain unpacks to 3.0 GB [X RUN-lean-toolchain].
 
-**Notes.** Receipt bytes go to the instrument origin for parsing; the main origin renders only validated fields (I6).
+**Notes.** Receipt and lab-bundle bytes go to the instrument origin for parsing; the main origin renders only validated fields (I6). A lab bundle, which `statespace export` writes, fills the read-only mirror of the lab repo that SCR-claims dates with its "as of" line.
 
 ### SCR-lab · a staged lab
 
@@ -1229,7 +1229,7 @@ The steps, the final `spent = 160, bal = 20` and the trace counts come from Doub
 
 **Purpose.** The claim graph and the report. **Serves:** M-claim-card, M-assurance-strip, M-seam-erosion, M-weekly-review, `statespace export`, `report@1`, CL-*, SEAM-*, ER-*.
 
-**Header.** "‹n› claims · ‹m› assumptions · ‹k› erosions. Start with what they rest on." Never a count of PROVED claims, which would teach that PROVED needs no reading (A7-03).
+**Header.** "‹n› claims · ‹m› assumptions · ‹k› erosions. Start with what they rest on." Never a count of PROVED claims, which would teach that PROVED needs no reading (A7-03). Under it, a pencil line reads "As of ‹bundle date or commit›": the screen shows a read-only mirror of the lab repo, filled by a lab bundle imported on the Bench (SCR-bench), and the line says how old it is.
 
 **Phone (360 px).** Tabs: Claims · Specimens · Notes. Filter chips with counts (stage; a stamp in a given segment; cracked; open defeaters); claim cards with their strips; the rests-on view (pick an assumption, see every claim on it: the blast radius); the erosion log; export (Markdown, JSON).
 
@@ -1277,9 +1277,9 @@ The result panel shows each part as "‹k› of ‹n›", with its Wilson interv
 
 **Purpose.** Private calibration and VRK₃₀ (§6.12). **Serves:** M-mirror, §2.3, §8.5.
 
-**Phone (360 px).** Calibration by band (three rows with dimension-line intervals); bias, when there are enough calls; VRK₃₀; settled KCs; a short "How to read this" drawer.
+**Phone (360 px).** Bias, when there are enough calls; hit rate by band (three rows with dimension-line intervals); VRK₃₀; settled KCs; a short "How to read this" drawer.
 
-**Desktop (1280 px).** Two columns: calibration and bias on the left; VRK₃₀ and settled KCs on the right.
+**Desktop (1280 px).** Two columns: bias and hit rate by band on the left; VRK₃₀ and settled KCs on the right.
 
 **States.** Few calls: "Too few calls in this band to say anything yet (‹n›)." Assisted calls appear in their own rows.
 
@@ -1287,7 +1287,7 @@ The result panel shows each part as "‹k› of ‹n›", with its Wilson interv
 
 ### SCR-notes · technical notes
 
-**Purpose.** A 600–1,000-word note after S2, S5, S7 and S9, from memory first (M-notes; A, small [kobayashi19]).
+**Purpose.** A 600–1,000-word note after S2, S5, S7 and S9, from memory first (M-notes; A, small [bangertdrowns04]).
 
 **Phone (360 px).** Drafts readable and editable, with a note that the layout is built for a laptop.
 
@@ -1330,11 +1330,11 @@ The result panel shows each part as "‹k› of ‹n›", with its Wilson interv
 
 ### SCR-changes · changes
 
-**Purpose.** Errata and freshness (M-change-cards). **Serves:** W3-T15; GATE-runs diffs; the claims registry's TTLs.
+**Purpose.** Errata and freshness (M-change-cards). **Serves:** W3-T15; GATE-runs diffs; the facts registry's TTLs.
 
-**Phone (360 px).** Change cards, newest first: the old line struck through, the new line, source and date, what it touches (revision marks in lessons link here), and the two retrieval items it sends to Today. Below them, registry claims past their TTL, each marked "stale since ‹date›".
+**Phone (360 px).** Change cards, newest first: the old line struck through, the new line, source and date, what it touches (revision marks in lessons link here), and the two retrieval items it sends to Today. Below them, registry facts past their TTL, each marked "stale since ‹date›".
 
-**Desktop (1280 px).** Two columns: changes on the left; stale claims and tool-bump diffs on the right.
+**Desktop (1280 px).** Two columns: changes on the left; stale facts and tool-bump diffs on the right.
 
 **Notes.** Errata flag "re-check" and never deduct (spine §2.4).
 
@@ -1350,19 +1350,19 @@ The result panel shows each part as "‹k› of ‹n›", with its Wilson interv
 
 ### SCR-settings · settings
 
-**Purpose.** Data, consent and preferences. **Serves:** W1-T20, M-consent, OD-6, OD-8.
+**Purpose.** Data, downloads and preferences. **Serves:** W1-T20, M-consent, OD-6, OD-8.
 
 **Phone (360 px)** and **desktop (1280 px)**, desktop with a section list on the left:
 
 1. **Appearance:** theme (system, light, night); motion (system, reduce); TLA+ notation (ASCII, pretty); shortcuts (on, off).
 2. **Data:** export a bundle; merge-import with undo; the 7-day backup nudge and the last export date, because WebKit may clear script-written storage after seven days without interaction [webkit7d]; storage used.
-3. **Downloads:** consent per engine, with sizes from their runs (Z3 in the tab {{run:RUN-phone-pyodide}}; PGlite {{run:RUN-pglite-0511}}); remove each; the service worker's kill switch.
+3. **Downloads:** each engine's size and cache state, with sizes from their runs (Z3 in the tab [X RUN-phone-pyodide]; PGlite [X RUN-pglite-0511]); nothing asks before a download (OD-6); remove each; the service worker's kill switch.
 4. **Path:** roadmap order or the builder's path (OD-3); placement.
 5. **Honesty and privacy:** "Provenance is self-declared. Nothing on this device can tell assisted work from unassisted work; your declarations schedule and calibrate your practice, and police nothing" (OD-8). No accounts, no telemetry: data stays in this browser and in your lab repo.
 
-### 8.24 Instrument-origin pages
+### 8.24 SCR-instrument · the instrument origin's page
 
-Two flows must render untrusted input that the main origin may never parse (I6): a spec duel opened from a link (M-spec-duel) and a receipt imported from a link (INS-receipt). Their links point at the instrument origin's own custom subdomain (OD-5), which serves a minimal page in the same tokens: a header reading "statespace · instruments" with "Back to the course", the untrusted spec or receipt rendered as text only, and the result (the distinguishing state Z3 returns, or the validated receipt fields handed back to the main origin by message). The spine gives these pages no screen ID (Spine issues, item 10).
+Two flows must render untrusted input that the main origin may never parse (I6): a spec duel opened from a link (M-spec-duel) and a receipt imported from a link (INS-receipt). Their links point at the instrument origin's own custom subdomain (OD-5), which serves a minimal page in the same tokens: a header reading "statespace · instruments" with "Back to the course", the untrusted spec or receipt rendered as text only, and the result (the distinguishing state Z3 returns, or the validated receipt fields handed back to the main origin by message). Spine §10.1 names the page SCR-instrument; W1-T14 builds it and W4-T15 uses it for spec duels.
 
 ---
 
@@ -1549,7 +1549,7 @@ Precise and unhurried. Second person, present tense, short sentences. US English
 
 ### 11.5 Nouns
 
-Learner copy uses only the 25 glossary terms of spine §0 plus plain English, and the Boot session introduces at most five. This file's copy also says "Start here" for S1.L0, describes lesson tiers as formats ("full lesson", "short lesson with reading") and says "study blocks" during Boot (Spine issues, item 9).
+Learner copy uses only the 25 glossary terms of spine §0 plus plain English, and the Boot session introduces at most five. This file's copy also says "Start here" for S1.L0, describes lesson tiers as formats ("full lesson", "short lesson with reading") and says "study blocks" during Boot (spine §0).
 
 ### 11.6 Patterns
 
@@ -1564,8 +1564,8 @@ Learner copy uses only the 25 glossary terms of spine §0 plus plain English, an
 | Kept | "Kept: you found the same class again on a fresh variant." |
 | Erosion forecast | "Before the reveal: restate ‹claim› from memory, then call which segment cracks." |
 | Erosion | "This has cracked. ‹claim› still holds of the model; its ‹segment› does not: ‹one-line reason›. ‹specimen›." |
-| Consent | "‹engine› runs in this tab after a one-time download of ‹size›. It stays on this device until you remove it in Settings." · Download · Use the recorded run |
-| Recorded run | "Recorded run ‹RUN-id› · ‹engine› ‹version› · ‹date›" |
+| Downloading | "Downloading ‹engine› · ‹received› of ‹size›. It stays on this device until you remove it in Settings." |
+| Recorded run | "Recorded run ‹RUN-id› · ‹engine› ‹version› · ‹date›"; in Boot, "Recorded result ‹RUN-id› · ‹engine› ‹version› · ‹date›" |
 | Laptop-only | "This part runs on the Bench, your laptop. Queue it for the Bench." |
 | Deferred drawer | "Deferred. The roadmap defers ‹topic› until ‹condition›. This drawer is open now; it surfaces in Today when ‹trigger›." |
 | Welcome back | "Welcome back. Here is a short set to pick up where you were." |
@@ -1602,13 +1602,13 @@ What carries over from v1 is the light palette and type stack (kept, then valida
 | W0-S12 | the scaffold; the font subsets and RUN-juliamono-glyphs |
 | W1-T01 | tokens (§2), stamps and strip (§5); GATE-stamps, GATE-codes |
 | W1-T02 | shell and navigation (§7); SCR-stages, SCR-stage, SCR-lesson, SCR-search |
-| W1-T06 | the instrument cell with consent and the recorded fallback (§6.2) |
+| W1-T06 | the instrument cell with the download loader and the recorded fallback (§6.2) |
 | W1-T07 | Call It (§6.2–§6.4); the Mirror (§6.12); SCR-mirror |
 | W1-T08 | Today cards (§6.11); SCR-today, SCR-week |
 | W1-T09 | SCR-boot |
 | W1-T11 | SCR-drawer |
 | W1-T13 | SCR-bench, SCR-lab |
-| W1-T14 | the receipt view (§6.13); SCR-receipt |
+| W1-T14 | the receipt view (§6.13); SCR-receipt, SCR-instrument |
 | W1-T15 | the claim card (§6.6); SCR-claims |
 | W1-T16 | the specimen label (§6.5); SCR-specimens |
 | W1-T17 | the audit flow (§6.10); SCR-audit |
@@ -1627,7 +1627,7 @@ What carries over from v1 is the light palette and type stack (kept, then valida
 | W3-T15 | change cards; SCR-changes |
 | W4-T03, W4-T08 | the history viewer and the paired-state viewer (§6.15) |
 | W4-T11 | the "dated incidents" filter (SCR-specimens) |
-| W4-T15 | the instrument-origin duel page (§8.24) |
+| W4-T15 | the instrument-origin duel page (SCR-instrument, §8.24) |
 | W5-T06 | the report export from SCR-claims |
 | W5-T08 | SCR-assurance |
 | W6-T01, W6-T03 | the accessibility pass; glyphs and fonts |
@@ -1638,18 +1638,20 @@ What carries over from v1 is the light palette and type stack (kept, then valida
 
 ## Spine issues
 
+*This list was resolved in spine revision 3 on 2026-10-25 (spine §15); each item ends with its outcome.*
+
 Things in `docs/spine/SPINE.md` (revision 2) that this file believes are wrong, inconsistent or missing, with what this file does meanwhile.
 
-1. **The hue-scope rule contradicts the line language.** §10.2 allows stamp hues "only inside stamps and strips (GATE-stamps)", but the same section's line language draws witnessed violations in heavy vermilion and erosion cracks as a vermilion zig-zag: on trace steps, specimen witnesses, claim graphs and state pairs, all outside stamps. As written, GATE-stamps fails the design or the design breaks the gate. This file allowlists `.line-violation` and `.line-crack` beside `.stamp` and `.strip` (§2.1); the spine should say so.
-2. **The adopted night table (A7-20) brings back the TESTED/UNKNOWN clash.** It gives UNKNOWN a yellow (`#E0C878`) beside TESTED's yellow (`#E0B44C`), the clash A7-06 removed in light mode by moving UNKNOWN to neutral gray. It also has no night values for CONFIGURED or NOT COVERED, and no light CONFIGURED hue exists anywhere. This file uses a neutral gray hatch for [?] in both themes and defines [C] (§2.4).
-3. **Night [P] and [R] cannot be told apart in grayscale.** Both are solid fills with a luminance ratio of 1.08 (computed here, and noted by A7-20 itself). The review relied on glyphs (⊢, ⊥) to separate them, and v2 rejected glyphs (review digest R11). The §8.7 shape cues "solid" and "solid vermilion" therefore do not meet §10.2's "shapes separable in grayscale" at night. This file adds a ring to [R] (§2.6, §5.3); §8.7 should record a second cue.
-4. **No badge word exists for a course-recorded run.** §9.3 gives three badges for stamps, yet phones and cold workers show the course's own recorded runs with their run IDs (S1.L0, §9.3, W1-T06). This file adds a *recorded run* label and states that such a run mints no learner stamp, claim or evidence (§5.5).
-5. **CONFIGURED has no claim template.** None of CL-1.1–CL-10.2 expects [C], yet LAB-10.c8 requires the report to have a "configured" section and GEN-which-stamp trains [C]. The natural homes are an isolation level read back in S6.L9 (where CL-6.2's "[A] clauses" sit) or `FORCE ROW LEVEL SECURITY` read back in S7.L4. Add a template, or let the section read "none".
-6. **Call It is underspecified in two places.** (a) §8.5's bands and chance assume a single verdict, but GEN-call-it template 4 (multiple true/false over about five scenarios, which §3.0 names as the usual graded form) has no rule for how confidence and chance apply; nor does the trace-length interval template. (b) "Bias (stated confidence minus accuracy)" needs one number per band, but the bands are ranges and no representative values are defined. This file uses one confidence per set with chance printed as 1 in 2ⁿ and a separate Mirror bin, declares the representative values as one constant, and leads the Mirror with band-versus-interval (§6.3, §6.12). The spine should decide both.
-7. **GATE-glyphs checks too little.** It covers JuliaMono's subset and the speech map, but Source Serif 4 lacks ℤ, ∀, ∃ and ⇒ (A7-15), so a logic symbol typed into prose falls back silently. The gate should check every code point against the face assigned to its role (§3.3).
-8. **"Queue for the laptop" has no channel.** §9.3's phone flow queues hands-on work for the laptop, but with no server a queue lives on the device that made it, and the only transfer the spine provides is export and merge-import (W1-T20). State that limit, or add a handoff task (kernelspace used a QR delta handoff) (§7.4).
-9. **Boot overruns its noun budget, and some learner-facing names are outside the glossary.** M-set-your-week ("two Bench blocks") and the cold-start recorded run put glossary terms #12 Bench and #6 run into Boot, whose "first introduced" column says LAB-1 and S1.L1; Boot would then introduce seven coined terms against its cap of five. Also outside the 25 terms: "Boot" itself (S1.L0's title in §3.1), "the Core", and words for the `[core]` and `[bridge]` tiers. This file's copy says "Start here", "study blocks" and "recorded earlier" during Boot, and gives tiers as formats (SCR-boot, §11.5). The spine should list these names or confirm they stay out of learner copy.
-10. **Instrument-origin pages have no screen ID.** M-spec-duel (W4-T15) and receipt import by link (INS-receipt) must render untrusted input on the instrument origin (I6), which therefore needs a visible page of its own. §10.1 has no SCR for it, so GATE-links' ownership check cannot cover it (§8.24).
-11. **The gates will fail on the history this spine keeps.** GATE-numbers and GATE-links scan artboards (§11.2), and W0-T03's acceptance resolves "every ID in docs and canvas", yet §10.2 keeps the v1 canvas in `design/canvas/`. Those sheets use v1's ID formats, which cannot resolve against the spine's registry, and contain sentences on the BRIEF §2.2 deny-list. Exempt `design/canvas/` and `docs/history/` from both gates, or move the canvas under `docs/history/v1/`. No task owns redrawing artboards from runs.
-12. **Phone-first is defined twice.** §0 names four phone-first surfaces (Today, Lesson, Audit, Claims); §10.1 marks seventeen screens phone-first. One of them should be reworded, for example "flagship phone surfaces" in §0, or a §10.1 column that separates phone-first from phone-capable (§7.4).
-13. **The kept v1 light tokens have no compliant component boundary, and night has no link token.** v1's `--rule` (`#C9CFC6`) is 1.53:1 on the sheet, below WCAG 1.4.11's 3:1 for a control's boundary, and §10.2's night list stops at four tokens. This file adds a component rule (`#7A837B`, at least 3.51:1), demotes v1's value to a decorative hairline, and makes night links and the location pointer ink, with no verdigris (§2.2, §2.3).
+1. **The hue-scope rule contradicts the line language.** §10.2 allows stamp hues "only inside stamps and strips (GATE-stamps)", but the same section's line language draws witnessed violations in heavy vermilion and erosion cracks as a vermilion zig-zag: on trace steps, specimen witnesses, claim graphs and state pairs, all outside stamps. As written, GATE-stamps fails the design or the design breaks the gate. This file allowlists `.line-violation` and `.line-crack` beside `.stamp` and `.strip` (§2.1); the spine should say so. *Revision 3: already resolved in the spine (§10.2 stamp grammar, §11.2 GATE-stamps).*
+2. **The adopted night table (A7-20) brings back the TESTED/UNKNOWN clash.** It gives UNKNOWN a yellow (`#E0C878`) beside TESTED's yellow (`#E0B44C`), the clash A7-06 removed in light mode by moving UNKNOWN to neutral gray. It also has no night values for CONFIGURED or NOT COVERED, and no light CONFIGURED hue exists anywhere. This file uses a neutral gray hatch for [?] in both themes and defines [C] (§2.4). *Revision 3: already resolved in the spine (§10.2 tokens).*
+3. **Night [P] and [R] cannot be told apart in grayscale.** Both are solid fills with a luminance ratio of 1.08 (computed here, and noted by A7-20 itself). The review relied on glyphs (⊢, ⊥) to separate them, and v2 rejected glyphs (review digest R11). The §8.7 shape cues "solid" and "solid vermilion" therefore do not meet §10.2's "shapes separable in grayscale" at night. This file adds a ring to [R] (§2.6, §5.3); §8.7 should record a second cue. *Revision 3: already resolved in the spine (§8.7).*
+4. **No badge word exists for a course-recorded run.** §9.3 gives three badges for stamps, yet phones and cold workers show the course's own recorded runs with their run IDs (S1.L0, §9.3, W1-T06). This file adds a *recorded run* label and states that such a run mints no learner stamp, claim or evidence (§5.5). *Revision 3: already resolved in the spine (§9.3 Lane B; §0; §13 W1-T06).*
+5. **CONFIGURED has no claim template.** None of CL-1.1–CL-10.2 expects [C], yet LAB-10.c8 requires the report to have a "configured" section and GEN-which-stamp trains [C]. The natural homes are an isolation level read back in S6.L9 (where CL-6.2's "[A] clauses" sit) or `FORCE ROW LEVEL SECURITY` read back in S7.L4. Add a template, or let the section read "none". *Revision 3: applied (§5.2 CL-7.4, §3.7 LAB-7.4).*
+6. **Call It is underspecified in two places.** (a) §8.5's bands and chance assume a single verdict, but GEN-call-it template 4 (multiple true/false over about five scenarios, which §3.0 names as the usual graded form) has no rule for how confidence and chance apply; nor does the trace-length interval template. (b) "Bias (stated confidence minus accuracy)" needs one number per band, but the bands are ranges and no representative values are defined. This file uses one confidence per set with chance printed as 1 in 2ⁿ and a separate Mirror bin, declares the representative values as one constant, and leads the Mirror with band-versus-interval (§6.3, §6.12). The spine should decide both. *Revision 3: already resolved in the spine (§8.5, §7 M-mirror); this file's residual mismatches are fixed in §6.3, §6.12 and SCR-mirror.*
+7. **GATE-glyphs checks too little.** It covers JuliaMono's subset and the speech map, but Source Serif 4 lacks ℤ, ∀, ∃ and ⇒ (A7-15), so a logic symbol typed into prose falls back silently. The gate should check every code point against the face assigned to its role (§3.3). *Revision 3: already resolved in the spine (§10.2 type, §11.2 GATE-glyphs).*
+8. **"Queue for the laptop" has no channel.** §9.3's phone flow queues hands-on work for the laptop, but with no server a queue lives on the device that made it, and the only transfer the spine provides is export and merge-import (W1-T20). State that limit, or add a handoff task (kernelspace used a QR delta handoff) (§7.4). *Revision 3: already resolved in the spine (§9.3 Phones); the second alternative, a handoff task, is declined, because edition 1 has no server.*
+9. **Boot overruns its noun budget, and some learner-facing names are outside the glossary.** M-set-your-week ("two Bench blocks") and the cold-start recorded run put glossary terms #12 Bench and #6 run into Boot, whose "first introduced" column says LAB-1 and S1.L1; Boot would then introduce seven coined terms against its cap of five. Also outside the 25 terms: "Boot" itself (S1.L0's title in §3.1), "the Core", and words for the `[core]` and `[bridge]` tiers. This file's copy says "Start here", "study blocks" and "recorded earlier" during Boot, and gives tiers as formats (SCR-boot, §11.5). The spine should list these names or confirm they stay out of learner copy. *Revision 3: applied (§0, §3.1 S1.L0, §10.1 SCR-boot, §11.2 GATE-lessons).*
+10. **Instrument-origin pages have no screen ID.** M-spec-duel (W4-T15) and receipt import by link (INS-receipt) must render untrusted input on the instrument origin (I6), which therefore needs a visible page of its own. §10.1 has no SCR for it, so GATE-links' ownership check cannot cover it (§8.24). *Revision 3: already resolved in the spine (§10.1 SCR-instrument, §13 W1-T14).*
+11. **The gates will fail on the history this spine keeps.** GATE-numbers and GATE-links scan artboards (§11.2), and W0-T03's acceptance resolves "every ID in docs and canvas", yet §10.2 keeps the v1 canvas in `design/canvas/`. Those sheets use v1's ID formats, which cannot resolve against the spine's registry, and contain sentences on the BRIEF §2.2 deny-list. Exempt `design/canvas/` and `docs/history/` from both gates, or move the canvas under `docs/history/v1/`. No task owns redrawing artboards from runs. *Revision 3: already resolved in the spine (§10.2 Artboards, §11.2); moving the canvas is declined, because it stays in design/canvas/, labeled.*
+12. **Phone-first is defined twice.** §0 names four phone-first surfaces (Today, Lesson, Audit, Claims); §10.1 marks seventeen screens phone-first. One of them should be reworded, for example "flagship phone surfaces" in §0, or a §10.1 column that separates phone-first from phone-capable (§7.4). *Revision 3: already resolved in the spine (§0 Navigation, §10.1).*
+13. **The kept v1 light tokens have no compliant component boundary, and night has no link token.** v1's `--rule` (`#C9CFC6`) is 1.53:1 on the sheet, below WCAG 1.4.11's 3:1 for a control's boundary, and §10.2's night list stops at four tokens. This file adds a component rule (`#7A837B`, at least 3.51:1), demotes v1's value to a decorative hairline, and makes night links and the location pointer ink, with no verdigris (§2.2, §2.3). *Revision 3: applied (§10.2 tokens).*

@@ -17,13 +17,13 @@ Verdict is the final adversarial verifier's verdict. A task the implementer mark
 | Task | Title | Model | Verdict | Fix rounds | Runs recorded | Decision |
 |---|---|---|---|---|---|---|
 | W0-S01 | Instrument origin on a custom subdomain | opus | pass | 0 | RUN-origin-subdomain (emulated: `.test` origins with a per-run test CA, three engines in the Playwright image) | OD-5 stands: the instruments live on their own same-site subdomain behind the handshake; the framed cache persists across desktop sessions; adopt `sandbox="allow-scripts allow-same-origin"`; fallback another static host, I6 never relaxed |
-| W0-S02 | Pyodide-Z3 on real phones | sonnet | pass; real devices are the owner's | 0 | RUN-phone-pyodide (emulated: CPU-quota tiers in the Playwright image; no phone) | INS-z3 stays in the tab behind consent and no lesson waits for it; consent is counted from the build manifest; the Boot timing budget for W1-T41 is provisional until phone sessions are recorded |
+| W0-S02 | Pyodide-Z3 on real phones | sonnet | pass; real devices are the owner's | 0 | RUN-phone-pyodide (emulated: CPU-quota tiers in the Playwright image; no phone) | INS-z3 stays in the tab and no lesson waits for it; its first load is counted from the build manifest (the consent rule it assumed was replaced by OD-6 on 2026-10-25; see the record's addendum); the Boot timing budget for W1-T41 is provisional until phone sessions are recorded |
 | W0-S03 | Z3 `Fixedpoint` for Stage 7 | sonnet | pass | 0 | RUN-fixedpoint-equal | INS-datalog is `Fixedpoint` in the Pyodide worker, behind an adapter that owns the checks, the translation, derivations and the budget; whether the faster naive evaluator becomes the tab engine is left to the owner |
 | W0-S04 | Spectacle on Stage 5/8 specs and state pairs | opus | pass | 1 | RUN-spectacle-s5s8 (re-recorded in the fix round from unchanged engine outputs) | a configuration is Spectacle's only when it equals TLC in every engine within the interactive budget [D]; liveness, action properties, symmetry and trace validation are Theater-only; the spec-by-spec list is in the record's section 5.2 |
 | W0-S05 | TLC lasso JSON | sonnet | pass | 0 | RUN-tlc-lasso-json | `lasso@1` is TLC's JSON trace as written, read by six rules and a strict draft schema; the property is named from the receipt; fallback the older jar's text trace |
 | W0-S06 | Sandbox lanes and `--paranoid` timing | sonnet | pass; the three lanes are labeled substitutes | 1 | RUN-bwrap-lanes | the sandbox is recorded as on, off or failed and never required; a sandbox failure is told from a rejection by a `bwrap:` line, never by exit code; each `--paranoid` mode goes where its cost buys something |
 | W0-S07 | `vcgen` on a custom `Cmd` | opus | pass | 0 | RUN-vcgen-cmd | `vcgen` works on a Mini-Plinth-style command type; the S4.L9 twin stays dated and experimental; the course ships the glue and the learner does not write it |
-| W0-S08 | PGlite RLS and first-load size | sonnet | pass | 0 | RUN-pglite-rls, RUN-pglite-0511 | S7.L4 runs in the tab on PGlite on laptops, with the Bench authoritative; PGlite asks for consent first; one instance per worker, reset between items; every RLS statement follows a `SET ROLE` |
+| W0-S08 | PGlite RLS and first-load size | sonnet | pass | 0 | RUN-pglite-rls, RUN-pglite-0511 | S7.L4 runs in the tab on PGlite on laptops, with the Bench authoritative; PGlite's first load is the loader's figure (OD-6, changed 2026-10-25); one instance per worker, reset between items; every RLS statement follows a `SET ROLE` |
 | W0-S09 | PostgreSQL 18.6 isolation catalog rows | sonnet | pass | 0 | RUN-pg-catalog | rows H01 to H24 recorded in isolationtester format; the retry rule stays a [D] policy with its basis recorded; the seeded grid is GEN-anomaly-id's pool |
 | W0-S10 | Goal Replay via `$/lean/plainGoal` | sonnet | pass | 0 | RUN-replay-gen | strips are generated through `$/lean/plainGoal` in the pinned image, read at the start of each tactic and at the end of the proof; GATE-replay requires byte equality |
 | W0-S11 | Receipt schema, `runs/`, lints | opus | pass | 0 | 44 records: 31 imported from `research/`, 13 recorded or re-run here, among them RUN-lean-wasm, RUN-lean-plaingoal, RUN-numbers-gate and RUN-runs-gate | `receipt@1` and `run@1` published, `run@1` with the snake_case fields the W0 records share; GATE-numbers and GATE-runs built |
@@ -106,7 +106,7 @@ Consolidated from the twenty results; each task's decision record or run record 
 1. Choose the course domain and set up the instrument origin on its own subdomain: a second GitHub Pages repository with a CNAME file, the DNS record, domain verification and enforced HTTPS; keep the domain only in deployment configuration (OD-5; W0-S01).
 2. Set `COURSE_DOMAIN` for the production build of `apps/site`, whose CSP blocks the instrument frame until it names the instrument host (W0-S12), and the Actions variable `STATESPACE_COURSE_DOMAIN` for GATE-privacy (W0-T04).
 3. Re-record RUN-origin-subdomain on the real origins and check desktop browsers by hand, Safari above all, after a restart and again after a week away (W0-S01).
-4. On the first deployment, check whether the host compresses the large engine files, for Pyodide with `scripts/spikes/W0-S02/wire-check.mjs` and for PGlite's `.wasm` and `.data` files, since the consent figures assume compression (W0-S02, W0-S04, W0-S08).
+4. On the first deployment, check whether the host compresses the large engine files, for Pyodide with `scripts/spikes/W0-S02/wire-check.mjs` and for PGlite's `.wasm` and `.data` files, since the loader's figures assume compression (W0-S02, W0-S04, W0-S08).
 
 **Real phones**
 
@@ -131,15 +131,15 @@ Consolidated from the twenty results; each task's decision record or run record 
 
 **Licenses, privacy and private material**
 
-14. Decide OD-16: add the code and content licenses at the root, and add the code license to kernelspace so W0-S12 vendors it beside `vendor/kernelspace/VENDOR.md`; this turns GATE-privacy green (W0-T01, W0-S12).
+14. Decide OD-16: add the code and content licenses at the root, and add the code license to kernelspace so W0-S12 vendors it beside `vendor/kernelspace/VENDOR.md`; this turns GATE-privacy green (W0-T01, W0-S12). Done 2026-10-25 (§9).
 15. Write the private term list outside the repository, hash it with `node scripts/verify-privacy.mjs --hash-terms`, and store the result and its key as the CI secrets `STATESPACE_PRIVACY_TERMS` and `STATESPACE_PRIVACY_KEY`; decide whether the code-hosting handle counts as private (W0-T01).
-16. Move W0-S06's private LAB-2 fixtures from the copy kept outside the repository into the private companion repository, and decide whether the complete LAB-2 proofs already committed under `research/`, and repeated in W0-S10's corpus, stay public (W0-S06).
+16. Move W0-S06's private LAB-2 fixtures from the copy kept outside the repository into the private companion repository; the complete LAB-2 proofs already committed under `research/`, and repeated in W0-S10's corpus, stay public (Q-1, 2026-10-25) (W0-S06).
 
 **Decisions in the twenty reviews** (the queue of section 7)
 
 17. W0-S03: whether the naive evaluator, about 35 to 45 times faster per case, replaces `Fixedpoint` as the tab engine [X RUN-fixedpoint-equal]; adopt SI-6 in GATE-conformance.
 18. W0-S04: the interactive budget and learner-edit cap that replace "about 5k states", and whether INS-spectacle may patch Spectacle.
-19. W0-S05: lasso@1 as TLC's raw JSON with no wrapper, and a schema that rejects unknown keys; and whether W0-S13 is adopted.
+19. W0-S05: lasso@1 as TLC's raw JSON with no wrapper, and a schema that rejects unknown keys; W0-S13 was adopted on 2026-10-25 (Q-2).
 20. W0-S07: whether the SP-4.7 card shows the command-type demonstration beside the shallow contract.
 21. W0-S08: how S7.L4 names the per-request setting, since the lesson's `SET` form is a syntax error, before W4-T09 and W4-T29.
 22. W0-S09: who amends the S6, D-drawers and S8 cells; the grid's [D] defaults and the S6.L7 retry wording; whether the four pool files stay in the repository; a rerun when OD-12's release is out.
@@ -147,19 +147,19 @@ Consolidated from the twenty results; each task's decision record or run record 
 24. W0-S11: settle `run@1`'s field naming against the spine's camelCase, and the receipt `lane` values; review GATE-numbers' rules and its known-debt list.
 25. W0-T02: the statement-hash rule and the schema naming conventions; the first versions of `claim@1`, `event@1` and `IR@1`.
 26. W0-T05: arm64 support, the TLC jars' location, and the opt-in sandbox profile, the same choice as W0-S06's.
-27. W0-T06: the S10 cadence ruling, the two builder-path cut-list warnings, the reading of the lower-bound rule and a displacement for LAB-2.9.
+27. W0-T06: the S10 cadence ruling, the two builder-path cut-list warnings, the reading of the lower-bound rule and a displacement for the proposed S2 stretch stage, declined in spine revision 3, §12 item 51.
 28. W0-T07: the rules' judgment calls, reviewed before the first W1 learner-zero event; turn the comparisons on in SCR-settings before that event; commit the rules file byte-identical.
 29. W0-T08: the design decisions of GATE-facts, and a re-check of the seed tool facts when their TTLs run out.
 
 **The owner decisions**
 
-30. Review OD-1 to OD-15 through W0-T09, OD-15 and OD-7 first. Several W0 results bear on them: W0-S01 confirms OD-5 on the stand-in; W0-S02 and W0-S08 put both in-tab engines' first loads above OD-6's threshold, so both ask for consent; W0-S09 waits on OD-12.
+30. Done: the owner reviewed OD-1 to OD-16, Q-1 and Q-2 on 2026-10-25 (§9), and W0-T09 records them in `docs/DECISIONS.md`.
 
 ## 6. What remains for W0-T09, W0-T10, W0-S13 and W0-T11
 
-- **W0-T09** (owner review of OD-1 to OD-15): prepare the packets and record each decision in `docs/DECISIONS.md`; a changed decision reopens the tasks it touches. It has owner review, so it starts once the queue is under 10 hours.
+- **W0-T09** records the owner's review of 2026-10-25 in `docs/DECISIONS.md` and reopens W0-S01, W0-S02 and W0-S08 (OD-6).
 - **W0-T10** (spine revision 3) collects the companion specifications' spine issues and, from this wave: SCR-instrument in W1-T14; the ten pending run IDs of section 3, the run ID W0-S13 proposes, and the decision on RUN-trace-validate-spike; the registered `proposed_ids` entries GATE-links lists; the four task titles that differ from the spine (W0-S05, W1-T04, W4-T14, W5-T13); W0-S11's description, which counts 36 executed runs where spine section 9.5 lists 37; the value path `values.<name>` where ARCHITECTURE.md writes `outputs.values.<name>`, and the value-tag and fact-reference forms; `run@1`'s naming; owners for GATE-coverage, the site deploy workflow, `content/assurance/gate-claims.json` and the keep/kill comparisons' implementation (W0-T07); and the document edits the decision records list, among them the `{{run:}}` placeholders that now resolve, ARCHITECTURE.md sections 5.3 and 5.5 (W0-S01), the S06 cells (W0-S09), the S07 comment syntax and `SET` form (W0-S03, W0-S08) and S08's H20 (W0-S09).
-- **W0-S13** (trace validation, proposed): waits for the owner to set `adopted: true`. W0-S05 notes that the spine's RUN-trace-validate-spike has no adopted owner, and W5-T14 builds on this spike's fallback.
+- **W0-S13** (trace validation): adopted by the owner on 2026-10-25 (Q-2). W0-S05 noted that the spine's RUN-trace-validate-spike had no adopted owner; W0-T10 decides how it resolves against W0-S13's run, and W5-T14 builds on this spike's fallback.
 - **W0-T11** (exit review): it depends on every other W0 task. Against the exit criteria today: each of W0-S01 to W0-S10 has a recorded run and a decision record; the fast-lane time is recorded only as an emulation [X RUN-ci-fastlane] until the GitHub run; GATE-numbers and GATE-runs trip on their planted faults; GATE-privacy is red until OD-16; the keep/kill rules are hashed [X RUN-keepkill-rules] and must be committed byte-identical before the first learner-zero event; and the review queue must be under 10 hours when the record is filed.
 
 ## 7. Review queue
@@ -194,3 +194,110 @@ The owner recorded a verdict for every W0 result and every open decision on the 
 - **All twenty results accepted** (00:54 to 01:00). Each is now `done` in `tracker/tasks.yaml` and `[x]` in `docs/TRACKER.md`, and the review queue is 0 hours, so W0-T09, W0-T10, W0-S13 and W0-T11 may start. The owner actions of section 5 that need the owner's devices, accounts or private material still stand, but no W0 task waits on them.
 - **Decisions** (01:11 to 01:15): OD-1 to OD-5, OD-7 to OD-9 and OD-11 to OD-15 accepted. OD-6 changed: no download asks first and none warns; the loader shows each engine's size while it downloads. OD-10 changed after a question: the self-explanation unit adapts the booklet's text, not its three rights-reserved images, under the CC BY-SA 4.0 its PDF states, with credit and a change note, in its own directory, without asking the authors first; if they object, an original unit replaces it. OD-16 decided: code under MIT, content under CC BY 4.0, for statespace and kernelspace. Q-1 accepted: LAB-2's published proofs stay public, and S2's worked examples use parallel theorems. Q-2 accepted: W0-S13 is adopted. W0-T09 records each decision in `docs/DECISIONS.md` and reopens what the two changed decisions touch.
 - **Licenses added.** `LICENSE` (MIT) and `LICENSE-CONTENT` (CC BY 4.0) at the root, with a License section in the README. kernelspace received the same two files and a ts-fsrs `NOTICE` in its pull request 26; `vendor/kernelspace/` is re-pinned to that merge, `80c8537e`, which changed no vendored file, and carries upstream's `LICENSE`. GATE-privacy passes, warning only that no hashed term list is set (owner action 15), and the fast lane passes locally (13 passed, 0 failed, 15 absent).
+
+## 10. Finishing W0 (2026-10-25)
+
+A second workflow run finished W0's remaining work after the owner's review of section 9: W0-T09 and W0-S13 first, then W0-T10, and between them the three addenda W0-T09 asked for. Each task had an implementer, an independent adversarial verifier and up to two fix rounds; an integration step then ran the gates and updated the tracker.
+
+### 10.1 W0-T09: the owner's decisions
+
+The verifier failed one criterion after two fix rounds: GATE-links, on three markers in `docs/TRACKER.md`, a file outside the task's two (section 10.5).
+
+- **Recorded.** `docs/DECISIONS.md` records the review of section 9, each decision with its date. OD-1 to OD-5, OD-7 to OD-9 and OD-11 to OD-15 are accepted, and OD-15 is an owner decision from that date. OD-6 and OD-10 are changed: each record states the new rule, the owner's reason and the consequences, and keeps the replaced default at its end as history. OD-16 keeps the record added with the licenses (section 9). Q-1 and Q-2 follow OD-16 as records of their own, each with the question as asked. The status line, the index's Status column and "Where review attention pays" follow the review.
+- **Reopened.** W0-S01, W0-S02 and W0-S08 went back to `in-progress`, because their decision records state the consent rule that OD-6 replaced. Their addenda (section 10.2) are now applied.
+- **Edited to the new rules.** Eleven `todo` tasks in `tracker/tasks.yaml`: W1-T06, W1-T20, W1-T41, W4-T04 and W6-T02 for OD-6; W2-T05 for OD-10 and Q-1; W2-T19, W2-T20, W2-T21 and W2-T30 for Q-1; and W5-T14 for Q-2, which drops its branch for a declined W0-S13. W0-S05's note records that Q-2 settles its owner action.
+- **Handed to W0-T10.** 29 edits to documents outside W0-T09's two files. W0-T10 applied 27, found 1 already resolved and declined 1 (spine §15, T09#1 to T09#29).
+
+### 10.2 The three addenda
+
+Each record's status line now says that the owner accepted it on 2026-10-25 and that OD-6 reopened it the same day. A section "Addendum (2026-10-25): OD-6 changed" restates every statement that rested on the consent rule, and short dated notes ("Superseded in part, 2026-10-25") at those statements point to it: three in W0-S01, nine in W0-S02 and two in W0-S08. No measurement and no earlier sentence was rewritten. The integration step checked that every passage an addendum quotes as old text occurs in its record, and the three records pass GATE-numbers and GATE-links.
+
+- **W0-S01.** An engine downloads once per device until its cache is evicted; after an eviction it downloads again, and the loader shows its size. The harness's consent step stays as recorded [X RUN-origin-subdomain]; it describes the harness's protocol, which the product host drops. OD-5, the other decisions, the fallback and both runs stand.
+- **W0-S02.** INS-z3's first load, 12,893,420 bytes as gzip level 5, downloads without a prompt and is the size the loader shows [X RUN-phone-pyodide]. Decisions 1, 2, 4 and 5 of section 5.1 are restated for the loader. The Boot gate's values do not change and its consent rows are renamed for the loader; its route test becomes "no prompt or warning may come before the download, and the loader's size must equal `caps.firstLoadBytes`". The risk that a consent record and the cache could part is retired.
+- **W0-S08.** PGlite downloads without asking, and its first load, 5,580,851 B as gzip, is the figure the loader shows [X RUN-pglite-0511]. The comparisons with the former 5 MB line [D] stay as measured. The risk that stands is a host that sends the files uncompressed, 17,424,328 B, which the loader would show [X RUN-pglite-0511].
+
+### 10.3 W0-S13: trace validation
+
+The verifier passed after one fix round.
+
+The trace-module method works on the pinned `tla2tools` 1.8.0 with only the modules the jar bundles, `Json`, `TLC` and `TLCExt` [X RUN-tlc-tracemodule]. The jar has no `IOUtils`, so the log's path is a constant in a config written for each trace. On a toy outbox in S8's vocabulary, the accepted trace matched 11 of 11 lines (35 distinct states); the ack-before-store mutant was rejected at line 8, its first `Ack` (23 distinct states); and a log cut after 8 lines matched all 8 (26 distinct states) and is reported partial, because only an end record tells a whole log from a cut one [X RUN-tlc-tracemodule]. The verdict comes from the line counter, never from TLC's search depth, because TLC fills in the provider's unlogged steps. TLC's trace-loading flag replays TLC's own traces, not implementation logs, and its JSON form fails on any state that holds a set [X RUN-tlc-tracemodule]. The run passed all 265 of its checks on 38 configurations [X RUN-tlc-tracemodule].
+
+Section 6 of `docs/spikes/W0-S13.md` is the fallback W5-T14 builds on: the command, its four verdicts and the line each prints, five additions to receipt@1 (among them an `error` verdict), and trace@1, whose complete log ends with an end record. W0-T10 registered RUN-tlc-tracemodule and kept RUN-trace-validate-spike as a superseded ID, since IDs are never deleted (spine §12 item 53).
+
+### 10.4 W0-T10: spine revision 3
+
+The verifier passed after two fix rounds.
+
+- **The log.** The revision 3 block that opens spine §15 lists 481 items in 27 tables, each item once: 172 applied, 42 of them marked *Adapted* with the reason; 14 declined, each with its reason; 266 already resolved; and 29 merged into the item that carries the change. The items come from the companion specifications' spine issues, the owner's decisions of 2026-10-25, the W0 report, the W0 decision records, W0-T09's handoff, W0-S13's consequences and the pending ID proposals.
+- **Notable changes.** OD-6 runs through the spine: M-consent keeps its ID and now names the loader, and INS-z3, INS-pglite, SCR-settings, GATE-bundle and W1-T06, now "INS-z3 cell with the download loader and recorded fallback", follow. Under OD-10, S2.L0 and W2-T05 adapt the booklet's text under CC BY-SA 4.0, and revision 2's fallback after 4 weeks without a reply no longer applies. Under Q-1, §3.2 states that S2's worked material proves parallel theorems. Under Q-2, W0-S13 joins §13, which now counts 109 tasks, 20 of them in W0. §12 gains items 48 to 59 and edits items 4, 19, 40 and 44, and `docs/DECISIONS.md` section 3 gains a record for each new item. W5-T36 becomes W5-T13's child, and W2-T08 moves to opus. The companion documents follow (the curriculum, `docs/`, the lab manuals and the README), the six v1 artboards now carry "illustrative, v1 history", and the status lines of W0-S04, W0-S06, W0-S07, W0-S09 and W0-S10 record the owner's acceptance.
+- **Declined.** The three proposed S10 audit anchors, because §12 item 9 scopes the two-anchor rule to S1–S9; the proposed S2 stretch stage with its claim template and run, and the proposed S8 stretch stage with its two runs, because OD-15 fixes 8 stretch stages (§12 item 51); an ID kind for decision records; S7.L3 cell 3's scope, which goes to W4-T10 and W4-T29 instead; and a rewrite of two passages of the closed W0-S05 record.
+- **IDs.** `packages/ids`, regenerated from revision 3, holds 1217 entries: 14 added (13 runs and W0-S13), none removed or retyped, and 41 changed in fields only. `packages/ids/proposals.json` is empty, and no task keeps `proposed_ids`. The spine counts 74 executed runs and 101 to record, one of them superseded.
+
+### 10.5 Integration
+
+The fast lane and `node scripts/verify-links.mjs --strict` were both green when the integration step began, so nothing needed fixing. W0-T10 had already applied the `docs/TRACKER.md` edit behind W0-T09's one failed criterion (T09#1), so that criterion now passes; the final verification found no other failure, and W0-T09 goes to `review` with the other two.
+
+| File | Change |
+|---|---|
+| `tracker/tasks.yaml` | W0-T09, W0-S13 and W0-T10 to `review`, each with a note on what to review; W0-S01, W0-S02 and W0-S08 back to `review`, each with a note that the re-review covers only its addendum; W0-T11 stays `todo` |
+| `docs/TRACKER.md` | the six markers to `[=]`, and the status line |
+| `runs/index.json` | rebuilt with `node scripts/runs/build-index.mjs`; unchanged, since W0-S13 had already indexed its record |
+| `docs/waves/W0-report.md` | this section |
+
+### 10.6 Gates after integration
+
+All gates ran on this host after the changes above. This is a local run, not a GitHub-hosted runner.
+
+| Step | Result | Findings and warnings |
+|---|---|---|
+| the fast lane (`lane.mjs fast`) | pass | 13 passed, 0 failed; 15 gates absent until later tasks build them |
+| GATE-links, `--strict` | pass | no pending ID; one note: LAB-7.6 names Lane A, but §9.1 does not list S7 for INS-lane-a |
+| GATE-numbers | pass | the known debt in `scripts/runs/numbers-baseline.json` fails only `--strict` |
+| GATE-facts | pass | |
+| GATE-schema | pass | the 74 run records validate against `run@1` |
+| GATE-budget | pass | two warnings, the S10 cadence on each published path; the two builder-path cut-list warnings of section 4 are gone |
+| GATE-privacy | pass | warns that no hashed term list is set (owner action 15) |
+| GATE-runs | pass | 26 warnings: inputs of eight records changed since their runs (section 10.8) |
+
+### 10.7 Review queue
+
+The queue is the sum of `review_h` over tasks with status `review` and `owner_review: true`, computed from `tracker/tasks.yaml`: **4.5 hours**, under the 10-hour gate (OD-7).
+
+| Task | What to review | Hours |
+|---|---|---|
+| W0-T10 | the revision 3 block of spine §15, §12 items 48 to 59, and the declines | 1.5 |
+| W0-T09 | the OD-6, OD-10 and Q-1 records in `docs/DECISIONS.md`, and the eleven task edits | 1 |
+| W0-S13 | `docs/spikes/W0-S13.md`, above all the five choices of its section 7 | 0.5 |
+| W0-S01 | the OD-6 addendum only | 0.5 |
+| W0-S02 | the OD-6 addendum only | 0.5 |
+| W0-S08 | the OD-6 addendum only | 0.5 |
+| | **6 tasks** | **4.5** |
+
+W0-T11 adds 0.25 hours once it has filed its record.
+
+### 10.8 What W0-T11 checks
+
+W0-T11 starts when the six tasks above are `done`, and files `docs/waves/W0-exit.md` against W0's exit criteria (spine §13):
+
+1. **Every spike has a recorded run and a decision record.** W0-S01 to W0-S10 and W0-S13 each have a record in `docs/spikes/` and a run on disk; W0-T11 also confirms that W0-S11's and W0-S12's runs resolve.
+2. **The fast lane runs under 5 minutes.** The GitHub-hosted run took 79 s against the 300 s budget [X RUN-ci-fastlane]; RUN-ci-fastlane is among the records to re-record below.
+3. **GATE-numbers fails on a planted untagged number, and GATE-runs on an unresolved run reference:** the planted-fault self-checks of the nightly and release lanes.
+4. **GATE-privacy is green.** It is green here, though it checks only the local identity until the hashed term list is set (owner action 15).
+5. **The keep/kill rules are committed and hashed before the first learner-zero event** [X RUN-keepkill-rules]; GATE-schema checks the hash.
+
+It also computes the review queue from `tracker/tasks.yaml`, which must be under 10 hours when the record is filed, and states whether W1 may start.
+
+**Runs to re-record before release.** GATE-runs warns that inputs of eight run records changed since they were recorded; the release lane fails on each until it is re-recorded.
+
+| Record | Inputs changed since the run |
+|---|---|
+| RUN-budget-gate | `content/stages/budget.yaml`, `docs/spine/SPINE.md`, `curriculum/S02-proof.md`, `curriculum/S10-assembly.md` |
+| RUN-ci-fastlane | `scripts/spikes/W0-T04/gates.json`, `package-lock.json` |
+| RUN-facts-gate | `package-lock.json`, `packages/runs/test/check.test.ts` |
+| RUN-links-gate | `packages/ids/src/index.ts`, `packages/ids/src/registry.json`, `packages/ids/proposals.json`, `docs/spine/SPINE.md`, `docs/EVIDENCE.md`, `tracker/tasks.yaml`, `docs/TRACKER.md` |
+| RUN-privacy-gate | `scripts/verify-privacy.mjs`, `.gitignore` |
+| RUN-scaffold | `package-lock.json`, `vendor/kernelspace/VENDOR.md` |
+| RUN-schema-self-check | `schemas/codegen/self-check.mjs` |
+| RUN-w0-integration | `scripts/spikes/W0-T04/gates.json`, `packages/ids/proposals.json`, `scripts/verify-privacy.mjs`, `tracker/tasks.yaml`, `docs/TRACKER.md` |
+
+RUN-links-gate and RUN-w0-integration read the tracker, so every later status change, W0-T11's included, stales them again; re-record them last.

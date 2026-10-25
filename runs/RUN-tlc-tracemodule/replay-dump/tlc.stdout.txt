@@ -1,0 +1,94 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 123 and seed 8015905947444561302 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/ToyOutboxReplay.tla
+Parsing file /work/ToyOutbox.tla
+Parsing file <tlc-temp>/_JsonTrace.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/_JsonTrace.tla)
+Parsing file <tlc-temp>/_TLCTrace.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file <tlc-temp>/Naturals.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file <tlc-temp>/FiniteSets.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file <tlc-temp>/Sequences.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file <tlc-temp>/TLC.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file <tlc-temp>/TLCExt.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file <tlc-temp>/Json.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Json.tla)
+Parsing file <tlc-temp>/Integers.tla (jar:file:/opt/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module ToyOutbox
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module Json
+Semantic processing of module _JsonTrace
+Semantic processing of module _TLCTrace
+Semantic processing of module ToyOutboxReplay
+Linting of module ToyOutbox
+Linting of module TLCExt
+Linting of module Json
+Linting of module _JsonTrace
+Linting of module _TLCTrace
+Linting of module ToyOutboxReplay
+Starting... (2026-10-25 03:20:27)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-25 03:20:27.
+Error: Invariant NothingAcked is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ attempts = [c1 |-> 0]
+/\ status = [c1 |-> "none"]
+/\ durable = {}
+/\ charges = [c1 |-> 0]
+
+State 2: <Commit("c1") line 42, col 14 to line 44, col 77 of module ToyOutbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ attempts = [c1 |-> 0]
+/\ status = [c1 |-> "pending"]
+/\ durable = {}
+/\ charges = [c1 |-> 0]
+
+State 3: <Dispatch("c1") line 47, col 16 to line 53, col 63 of module ToyOutbox>
+/\ reqs = {[cmd |-> "c1", key |-> "key-c1", att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ attempts = [c1 |-> 1]
+/\ status = [c1 |-> "inflight"]
+/\ durable = {}
+/\ charges = [c1 |-> 0]
+
+State 4: <Next line 78, col 12 to line 78, col 36 of module ToyOutbox>
+/\ reqs = {}
+/\ seen = {"key-c1"}
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ attempts = [c1 |-> 1]
+/\ status = [c1 |-> "inflight"]
+/\ durable = {}
+/\ charges = [c1 |-> 1]
+
+State 5: <Persist("c1") line 65, col 15 to line 69, col 77 of module ToyOutbox>
+/\ reqs = {}
+/\ seen = {"key-c1"}
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ attempts = [c1 |-> 1]
+/\ status = [c1 |-> "inflight"]
+/\ durable = {"c1"}
+/\ charges = [c1 |-> 1]
+
+State 6: <Ack("c1") line 72, col 11 to line 75, col 74 of module ToyOutbox>
+/\ reqs = {}
+/\ seen = {"key-c1"}
+/\ replies = {[cmd |-> "c1", key |-> "key-c1"]}
+/\ attempts = [c1 |-> 1]
+/\ status = [c1 |-> "acked"]
+/\ durable = {"c1"}
+/\ charges = [c1 |-> 1]
+
+"CounterExample written: replay.json"
+14 states generated, 12 distinct states found, 3 states left on queue.
+The depth of the complete state graph search is 6.
+Finished in 00s at (2026-10-25 03:20:27)
+Trace exploration spec path: ./ToyOutboxReplay_TTrace_1792898427.tla

@@ -4,7 +4,7 @@
 # wave's sequence. Never renumber a task.
 schema: statespace/tracker@1
 updated: 2026-10-25
-spine: "docs/spine/SPINE.md, revision 2, section 13"
+spine: "docs/spine/SPINE.md, revision 3, section 13"
 rules:
   wave_entry: "A wave starts only when the previous wave's exit task is done, with its gates green, and the owner's review queue is under 10 h (OD-7)."
   review_queue: "The sum of review_h over tasks with status review and owner_review true."
@@ -23,7 +23,7 @@ waves:
     enters_after: null
     learner_zero_study: "none"
     review_h: 17
-    spine_review_h: 13.25
+    spine_review_h: 13.75
     exit:
       - "Every spike has a recorded run and a decision record."
       - "The fast lane runs under 5 minutes (RUN-ci-fastlane)."
@@ -39,7 +39,7 @@ waves:
     review_h: 33.25
     spine_review_h: 29.75
     exit:
-      - "Learner-zero finishes Project 00 with at least two claims and two kept specimens."
+      - "Learner-zero finishes Project 00, without the hint ladders and Prove-it, which ship in W2 (W2-T06, W2-T11), with at least two claims and two kept specimens."
       - "The Boot timing gate passes, and learner-zero's Boot time is recorded as descriptive, learner-zero only (RUN-lz-boot-w1)."
       - "Blind strategies stay within chance + 2 SD."
       - "Learner-zero's median Today is at most 12 minutes (RUN-lz-today-w1, descriptive)."
@@ -51,14 +51,14 @@ waves:
     goal: "S2 and S3 with statement integrity: nothing an agent writes can change what is being proved."
     exit_task: W2-T46
     enters_after: W1-T47
-    learner_zero_study: "S1–S2 signed off: 20.9–37.9 h"
+    learner_zero_study: "S1–S2 signed off: 20.9–37.8 h"
     review_h: 42
-    spine_review_h: 38.5
+    spine_review_h: 39.75
     exit:
       - "CI shows comparator rejecting a weakened statement and a redefined function [X RUN-lean-comparator], and kernel replay rejecting skipKernelTC [X RUN-lean-skipkernel]."
       - "GATE-replay passes on a toolchain bump."
       - "Learner-zero signs off S1–S2 (RUN-lz-signoff-w2)."
-      - "ER-6 ships (GATE-erosions)."
+      - "ER-6 ships (GATE-erosions v0 and the ER-6 forecast, W2-T42)."
       - "The screen-reader pass is filed."
   - id: W3
     title: "Obligations and Time"
@@ -67,7 +67,7 @@ waves:
     enters_after: W2-T46
     learner_zero_study: "none at the exit; learner-zero studies S3–S4 meanwhile"
     review_h: 35
-    spine_review_h: 32.5
+    spine_review_h: 33.25
     exit:
       - "Spectacle = TLC on every authored spec."
       - "The lasso validator agrees with TLC on its fixtures."
@@ -82,7 +82,7 @@ waves:
     enters_after: W3-T45
     learner_zero_study: "none at the exit"
     review_h: 35
-    spine_review_h: 31.5
+    spine_review_h: 32.25
     exit:
       - "Nightly PostgreSQL 18.6 asserts 22003, 40001, 40P01 and write skew at REPEATABLE READ [X RUN-pg-anomalies, RUN-pg-claims]."
       - "The checker classifies the history fixture set."
@@ -94,9 +94,9 @@ waves:
     goal: "S8–S10 and the published report: effects modeled and simulated, a compiler step proved, and the Core assembled."
     exit_task: W5-T42
     enters_after: W4-T45
-    learner_zero_study: "the whole arc through S10: 105–194 h, about 42–78 weeks from W1's start at 6 h/week"
+    learner_zero_study: "the whole arc through S10: 107–197 h, about 43–80 weeks from W1's start at 6 h/week"
     review_h: 37
-    spine_review_h: 33.5
+    spine_review_h: 34
     exit:
       - "Trace validation rejects the ack-before-durable mutant."
       - "Learner-zero publishes a report."
@@ -144,12 +144,18 @@ tasks:
     model: opus
     model_reason: "Open question whose decision record shapes later content; needs judgment."
     depends_on: []
-    status: done
+    status: review
     notes: >-
       Passed on a local stand-in labeled emulated (.test origins over HTTPS, three engines in the
       Playwright image). Owner: set up the real instrument subdomain (OD-5), re-record
       RUN-origin-subdomain there and check Safari by hand, and review decision record section 5.
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Reopened 2026-10-25 by OD-6 (changed): decision 2 of section 5 says consent is asked once per
+      engine and device, and section 6 says consent is asked again after a lost cache, but no download
+      asks first now. An addendum restates both for the loader, with section 1's question and the
+      harness's consent step; the OD-5 decision, the other decisions and the runs stand.
+      The addendum was applied on 2026-10-25, with the status line and three short dated notes that
+      point to it. The re-review covers only these; the rest of the record stays accepted.
     owner_review: true
     review_h: 0.5
   - id: W0-S02
@@ -163,8 +169,8 @@ tasks:
       first-load size, memory, rlimit timing and cache persistence across sessions. CI throttling did
       not reach the cross-origin worker [X RUN-browser-origin], so only real devices count, and the
       existing budget evidence ran under a Node harness (curriculum/S01-counterexample.md issue 3).
-      The first-load size feeds the consent prompt (OD-6) and the Boot time budget that GATE-bundle
-      enforces. Fallback: recorded runs with ids and pocket checkers carry phone sessions.
+      The first-load size is the size the loader shows (OD-6) and feeds the Boot time budget that
+      GATE-bundle enforces. Fallback: recorded runs with ids and pocket checkers carry phone sessions.
     deliverables:
       - "docs/spikes/W0-S02.md"
       - "runs/RUN-phone-pyodide.json"
@@ -177,13 +183,20 @@ tasks:
     model: sonnet
     model_reason: "Fixed measurement protocol with a stated fallback; little design judgment."
     depends_on: [W0-S01]
-    status: done
+    status: review
     notes: >-
       Passed with RUN-phone-pyodide labeled emulated (CPU-quota tiers in the Playwright image, no
       phone), so the real-device half of the acceptance is the owner's. Owner: run the five sessions
       on an iPhone and an Android phone (decision record section 7), check the deployed host's
       compression, and review section 5.
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Reopened 2026-10-25 by OD-6 (changed): section 5.1 (decisions 1, 2, 4 and 5), section 5.3 (the
+      consent rows, the route test and the over-budget text), section 6, section 8 (the request to
+      W1-T06 and the suggested INS-z3 row) and section 9 state the consent rule, and no download asks
+      first now. An addendum restates them for the loader; the measurements, the pins and the budget
+      values stand.
+      The addendum was applied on 2026-10-25, with the status line and nine short dated notes that
+      point to it. The re-review covers only these; the rest of the record stays accepted.
     owner_review: true
     review_h: 0.5
   - id: W0-S03
@@ -280,6 +293,9 @@ tasks:
       also passes the schema subset lint. Owner: confirm the raw-JSON choice and the closed schema,
       and decide the trace-validation spike (W0-S13).
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Q-2 (accepted 2026-10-25) settles the owner action on the trace-validation spike: W0-S13 is
+      adopted. W0-T10 decides how the spine's RUN-trace-validate-spike resolves against its run.
+      Spine revision 3 moved trace validation to W0-S13 (RUN-tlc-tracemodule).
     owner_review: true
     review_h: 0.5
   - id: W0-S06
@@ -314,6 +330,9 @@ tasks:
       private fixtures to the companion repository, run the three real lanes, decide whether the
       LAB-2 proofs already public under research/ stay, and choose the opt-in sandbox profile.
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Q-1 (accepted 2026-10-25) settles the owner action on the LAB-2 proofs already public under
+      research/: they stay, and S2's worked examples use parallel theorems. The pack's solution
+      files stay in the private companion repository.
     owner_review: true
     review_h: 1
   - id: W0-S07
@@ -368,13 +387,20 @@ tasks:
     model: sonnet
     model_reason: "Fixed measurement protocol with a stated fallback; little design judgment."
     depends_on: []
-    status: done
+    status: review
     notes: >-
       Row-level security works in PGlite as S7.L4 uses it, so S7.L4 runs in the tab on laptops with
       the Bench authoritative. Owner: review section 5, measure on a real phone, check the deployed
       compression, and choose how the lesson sets the per-request setting, since its SET form is a
       syntax error.
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Reopened 2026-10-25 by OD-6 (changed): decision 3 of section 5 (PGlite asks first), the In
+      one line, section 6's consent-card condition, section 8's requests (W4-T04, W1-T06, the
+      INS-pglite row) and section 9's first-load risk rest on the consent rule, and no download asks
+      first now. An addendum restates them for the loader; the lane, the pin, the instance policy
+      and the measured first load stand.
+      The addendum was applied on 2026-10-25, with the status line and two short dated notes that
+      point to it. The re-review covers only these; the rest of the record stays accepted.
     owner_review: true
     review_h: 0.5
   - id: W0-S09
@@ -386,8 +412,8 @@ tasks:
     description: >-
       Run the isolation-catalog rows that still lack executed outcomes on the pinned PostgreSQL [X
       RUN-pg-anomalies], in PostgreSQL's isolationtester format, including the SERIALIZABLE behavior
-      of the transient errors S6.L7's retry policy names ({{run:RUN-pg-catalog}}). ASSESSMENT.md spine
-      issue 10 asks for a seeded grid of amounts, balances and interleavings with a target count per
+      of the transient errors S6.L7's retry policy names [X RUN-pg-catalog]. ASSESSMENT.md spine issue
+      10 asks for a seeded grid of amounts, balances and interleavings with a target count per
       GEN-anomaly-id template; record that grid here so the generator has an unseen supply. Unrun rows
       stay out of copy, and the retry rule stays a [D] policy until recorded.
     deliverables:
@@ -448,13 +474,14 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      Publish receipt@1 (spine section 9.4) and run@1, create runs/ and import the 36 executed runs of
+      Publish receipt@1 (spine section 9.4) and run@1, create runs/ and import the 37 executed runs of
       spine section 9.5 from research/ with engine, version, binary SHA-256, argv, input hash, budget
       and outputs. Re-run RUN-lean-wasm and RUN-lean-plaingoal from their scripts and commit the
       outputs. Build GATE-numbers (tool-shaped tokens carry run references; the BRIEF section 2.2
       deny-list) and GATE-runs (every run reference resolves; the fast-lane check applies to content
       not labeled draft). curriculum/S05-time.md issue 2 proposes re-running two TLC runs that rest on
-      RESULTS.md prose, with argv, and registering two TLC logs already on disk.
+      RESULTS.md prose, with argv, and registering two TLC logs already on disk; spine section 9.5
+      registers both as executed, RUN-tlc-help and RUN-tlc-sym-liveness.
     deliverables:
       - "schemas/receipt.schema.json"
       - "schemas/run.schema.json"
@@ -464,7 +491,7 @@ tasks:
       - "scripts/verify-runs.mjs"
     acceptance:
       - "receipt@1 published (GATE-schema)"
-      - "the 36 executed runs imported; RUN-lean-wasm and RUN-lean-plaingoal re-run with outputs committed"
+      - "the 37 executed runs imported; RUN-lean-wasm, RUN-lean-plaingoal, RUN-lean-bv-decide and RUN-lean-vcgen re-run with their outputs committed; RUN-lean-selftransfer, RUN-tlc-atomic, RUN-tlc-unsafe-3w and RUN-tlc-full's two-worker figure re-run with argv; RUN-cvc5-alethe's full proof and RUN-lean-asset recorded"
       - "GATE-numbers trips on a planted untagged number"
       - "GATE-runs trips on an unresolved run reference"
     implements: ["INS-receipt", "GATE-numbers", "GATE-runs", "I4"]
@@ -478,9 +505,9 @@ tasks:
       trip on planted faults. Owner: settle the run@1 field naming and the receipt lane values, and
       review GATE-numbers' rules and its known-debt list, which document owners shrink by tagging.
       Owner accepted on 2026-10-25 (UTC), on the review page.
+      Text corrected by W0-T10 on 2026-10-25; status unchanged.
     owner_review: true
     review_h: 1.5
-    proposed_ids: ["RUN-tlc-help", "RUN-tlc-sym-liveness"]
   - id: W0-S12
     wave: W0
     title: "Vendoring and a React 19 / Vite 7 scaffold"
@@ -492,9 +519,9 @@ tasks:
       and its license (ARCHITECTURE.md section 4.2: the verify-script framework and item lints,
       a11y.mjs, the agent kit and fail-closed hook, sw.js with its kill switch, fsrs.ts, the seeded
       RNG, the zero-import wasm ABI host and the lab packer). Scaffold apps/site, apps/instruments and
-      packages/ (with the purity lint) on the stack pinned in {{run:RUN-scaffold}}. Record
-      RUN-scaffold (including the cvc5 Bench binary), RUN-souffle-version, RUN-apalache-version,
-      RUN-alloy-version and RUN-juliamono-glyphs.
+      packages/ (with the purity lint) on the pinned stack [X RUN-scaffold]. Record RUN-scaffold
+      (including the cvc5 Bench binary), RUN-souffle-version, RUN-apalache-version, RUN-alloy-version
+      and RUN-juliamono-glyphs.
     deliverables:
       - "vendor/kernelspace/"
       - "vendor/kernelspace/VENDOR.md"
@@ -527,7 +554,7 @@ tasks:
     title: "Trace validation by TLC's trace-module method"
     workstream: "Spikes"
     kind: work
-    origin: proposed
+    origin: spine
     description: >-
       curriculum/S08-effects.md issue 1 reports that trace validation is unspiked and that an earlier
       review found TLC's trace-loading flag did not round-trip. Spike the trace-module method S8
@@ -539,17 +566,20 @@ tasks:
       - "scripts/spikes/W0-S13/"
     acceptance:
       - "decision record committed with an accepted, a rejected and a partial trace"
-      - "the spike's run recorded under the ID W0-T10 registers (proposed: RUN-tlc-tracemodule)"
+      - "the spike's run recorded as RUN-tlc-tracemodule (spine section 9.5)"
     size: S
     model: opus
     model_reason: "Open question whose decision record shapes later content; needs judgment."
     depends_on: []
-    status: todo
+    status: review
     notes: >-
       Adopted by the owner on 2026-10-25 (UTC): decision Q-2 on the review page.
+      The trace-module method works on the pinned TLC jar with only its bundled modules: the accepted
+      trace passes, the ack-before-store mutant is rejected at its first Ack, and a cut log is
+      reported partial (RUN-tlc-tracemodule). Owner: confirm the five choices of the decision
+      record's section 7; a repeat on a second host waits until the devcontainer and CI lanes run TLC.
     owner_review: true
     review_h: 0.5
-    proposed_ids: ["RUN-tlc-tracemodule"]
     adopted: true
   - id: W0-T01
     wave: W0
@@ -694,9 +724,9 @@ tasks:
     description: >-
       Build the digest-pinned Bench image under bench/image/ with the pinned Lean, the TLC jars [X
       RUN-tlc-jars], PostgreSQL, the SMT solvers, Soufflé and the Rust toolchain and crates (versions
-      from {{run:RUN-scaffold}}), plus the Codespaces prebuild. Start the bench/ Python package with
-      `statespace doctor`: check the pins and the sandbox and print a receipt-ready environment block.
-      LAB-1 must keep working without the devcontainer (spine section 12 item 34).
+      as recorded [X RUN-scaffold]), plus the Codespaces prebuild. Start the bench/ Python package
+      with `statespace doctor`: check the pins and the sandbox and print a receipt-ready environment
+      block. LAB-1 must keep working without the devcontainer (spine section 12 item 34).
     deliverables:
       - "bench/image/Dockerfile"
       - ".devcontainer/devcontainer.json"
@@ -837,7 +867,14 @@ tasks:
     model: sonnet
     model_reason: "Compile a review packet from the spine and brief; the owner decides."
     depends_on: []
-    status: todo
+    status: review
+    notes: >-
+      Recorded the owner's review of 2026-10-25 in docs/DECISIONS.md (OD-6 and OD-10 changed, with
+      their replaced defaults kept as history; OD-16 decided; Q-1 and Q-2 accepted), reopened W0-S01,
+      W0-S02 and W0-S08 for OD-6, and edited eleven todo tasks to the new rules; owner: check the
+      OD-6, OD-10 and Q-1 records and those task edits. The verifier's one failure, GATE-links on
+      three docs/TRACKER.md markers outside this task's files, cleared once the integration mirrored
+      them; nothing else remains.
     owner_review: true
     review_h: 1
   - id: W0-T10
@@ -862,11 +899,19 @@ tasks:
       - "GATE-links green across docs/, curriculum/ and labs/ after the revision"
       - "every companion 'Spine issues' item applied or logged as declined in spine section 12 or 15"
       - "no existing catalog or task ID changed (GATE-links diff against revision 2)"
+      - "every v1 artboard labeled 'illustrative, v1 history' (spine section 10.2)"
     size: M
     model: opus
     model_reason: "High-judgment reconciliation across nine specs; the spine is the canonical index."
     depends_on: [W0-T03]
-    status: todo
+    status: review
+    notes: >-
+      Spine revision 3 is applied: section 15 logs 481 items (172 applied, 14 declined, 266 already
+      resolved, 29 merged), section 12 gains items 48 to 59, and packages/ids adds 14 IDs and removes
+      or retypes none; owner: review the revision 3 block of section 15, section 12 items 48 to 59
+      and the declines (the three S10 anchors, and the S2 and S8 stretch stages with their runs).
+      Nothing remains: RUN-trace-validate-spike stays registered as superseded (section 12 item 53),
+      and GATE-links passes in strict mode.
     owner_review: true
     review_h: 1.5
   - id: W0-T11
@@ -908,9 +953,9 @@ tasks:
       with checker and version, the bound first for [M] and [T], requirement-fit never [P], and agent
       assertions rendered as quoted UNREVIEWED text with no stamp (I8). Build M-assurance-strip and
       the section 10.2 tokens for both themes, with DESIGN.md's fixes for night [P]/[R] separability
-      and the [?] and [C] hues (DESIGN.md issues 2 and 3), and self-host the font subsets. Build
+      and the [?] and [C] hues (spine sections 8.7 and 10.2), and self-host the font subsets. Build
       GATE-stamps (stamps derived from receipts; hue scope with violation and crack lines allowlisted,
-      DESIGN.md issue 1; grayscale separability) and GATE-codes (codes bracketed, IDs not; no bare
+      spine section 11.2; grayscale separability) and GATE-codes (codes bracketed, IDs not; no bare
       "verified", "correct" or "safe").
     deliverables:
       - "packages/stamps/"
@@ -942,7 +987,9 @@ tasks:
       Stages, Bench, Audit and Claims plus search, no route guards (I5), and a static index.html per
       route. Build SCR-stages (the path drawing with its list mirror), SCR-stage, SCR-lesson (the
       680-px column, a rail of segment titles only, the sticky Call It sheet) and SCR-search over the
-      build-time index. Register the vendored sw.js with its kill switch on the main origin.
+      build-time index. Register the vendored sw.js with its kill switch on the main origin. Add the
+      deploy workflow: a green fast lane on the default branch builds once and publishes both origins;
+      the deploy credentials stay an owner action.
     deliverables:
       - "apps/site/src/app/"
       - "apps/site/src/screens/stages/"
@@ -950,9 +997,11 @@ tasks:
       - "apps/site/src/screens/lesson/"
       - "apps/site/src/screens/search/"
       - "apps/site/src/sw/"
+      - ".github/workflows/deploy.yml"
     acceptance:
       - "GATE-bundle: Playwright route tests for the five destinations plus search"
       - "GATE-bundle: the service-worker kill-switch test"
+      - "a green fast lane on the default branch publishes apps/site to the main origin and apps/instruments to the instrument origin from one build, with COURSE_DOMAIN and STATESPACE_COURSE_DOMAIN set and GATE-privacy finding no domain in the repository"
     implements: ["SCR-stages", "SCR-stage", "SCR-lesson", "SCR-search"]
     size: M
     model: sonnet
@@ -970,9 +1019,12 @@ tasks:
     description: >-
       Implement packages/ledger (event@1: fold, merge, the canonical conflict rule, codec) and its
       IndexedDB adapter with a write-ahead outbox and cross-tab sync (ARCHITECTURE.md section 7).
-      Events carry provenance (own, assisted, agent, automated) and exposure (seen, unseen) with the
-      weights of spine section 8.2, plus the envelope fields v, tz, day and dev (ARCHITECTURE.md
-      section 18 item 9). Nothing stores a status: learner state is derived at read time (I2).
+      Events carry provenance (own, assisted, agent) and exposure (seen, unseen) with the weights of
+      spine section 8.2, plus the envelope fields v, tz, day and dev (ARCHITECTURE.md section 18 item
+      9). Nothing stores a status: learner state is derived at read time (I2). Reconcile event@1 with
+      spine section 8.2: drop automated from the provenance enum, add the uncredited view kind and the
+      item ref contexts (drawer:, placement:, testout:, confirm:), regenerate the types, and keep
+      GATE-schema green.
     deliverables:
       - "packages/ledger/"
       - "apps/site/src/storage/"
@@ -980,6 +1032,7 @@ tasks:
     acceptance:
       - "GATE-schema"
       - "property tests: a double import, a merge and a stale tab give identical logs"
+      - "keep/kill machinery (spine section 12 item 58): expSeed is in the event log, its export and its merge rule (the earliest draw governs); one pure allocation function reproduces RUN-keepkill-rules' vectors for its four example seeds (reference: scripts/spikes/W0-T07/keepkill.mjs); the entry rules hold; each read writes a learner-zero run record"
     implements: ["I2"]
     size: M
     model: opus
@@ -990,25 +1043,29 @@ tasks:
     review_h: 1
   - id: W1-T04
     wave: W1
-    title: "KC graph v0 (104 KCs)"
+    title: "KC graph v0 (105 KCs)"
     workstream: "Learning engine"
     kind: work
     origin: spine
     description: >-
-      Encode the 104 KCs of spine section 4 with requires, confusable and threshold edges, the
+      Encode the 105 KCs of spine section 4 with requires, confusable and threshold edges, the
       confusable sets and the six fading families, in content/kc/ with loaders in packages/kc. Build
       GATE-kc: a DAG; 80 to 110 KCs; every item tagged; every threshold KC with a generator or at
       least four isomorphs; each KC's prequestion, call and exit item in its first lesson;
       first-taught order in roadmap order; and both published paths as linear extensions of the hard
       requires edges and the lab-artifact dependencies, with every soft edge naming its substitute
-      (D-23).
+      (D-23). Build GATE-coverage (spine section 11.2): parse docs/COVERAGE.md and fail when a row's
+      lesson, LAB, CL or SP ID no longer resolves, or was cut without a receiving ID that names the
+      roadmap clause.
     deliverables:
       - "content/kc/graph.yaml"
       - "packages/kc/"
       - "scripts/verify-kc.mjs"
+      - "scripts/verify-coverage.mjs"
     acceptance:
       - "GATE-kc green, its order and path checks included"
-    implements: ["GATE-kc"]
+      - "GATE-coverage passes over docs/COVERAGE.md and trips on a planted unresolved ID"
+    implements: ["GATE-kc", "GATE-coverage"]
     size: M
     model: opus
     model_reason: "The KC graph and its path checks underpin dosing, ordering and both published paths."
@@ -1049,6 +1106,7 @@ tasks:
       - "GATE-generators green on GEN-negate-it, GEN-find-the-witness, GEN-call-it, GEN-spot-the-gap and GEN-which-stamp"
       - "GATE-calls green, with every authored unsat cross-checked by cvc5"
       - "native Z3 equals Pyodide Z3 on every template's verdicts"
+      - "M-layered-feedback and M-class-hint each read their keep/kill arm, and the scheduler never does (spine section 12 item 58)"
     implements: ["GEN-negate-it", "GEN-find-the-witness", "GEN-call-it", "GEN-spot-the-gap", "GEN-which-stamp", "M-layered-feedback", "M-class-hint", "M-which-is-it", "GATE-generators", "GATE-calls"]
     size: S
     spine_size: L
@@ -1060,24 +1118,31 @@ tasks:
     review_h: 0
   - id: W1-T06
     wave: W1
-    title: "INS-z3 cell with consent and recorded fallback"
+    title: "INS-z3 cell with the download loader and recorded fallback"
     workstream: "Instruments"
     kind: work
     origin: spine
     description: >-
       Build the Pyodide-Z3 module worker on the instrument origin, with rlimit budgets, because a
       timeout never returned under Pyodide [X RUN-z3-budget-pyodide], and worker.terminate() as the
-      hard stop; and build the instrument cell on the main origin. Implement M-consent: downloads
-      above 5 MB ask first, with content-hashed caching and a kill switch (OD-6). While the worker is
-      cold or consent is pending, the cell shows the recorded run for the same input with its run id,
-      labeled as recorded; include the interpretation-tap slot DESIGN.md section 6.4 specifies.
+      hard stop; and build the instrument cell on the main origin. Implement M-consent as OD-6 reads
+      since 2026-10-25: no download asks first and none warns, and while an engine downloads the
+      loader shows its size (bytes received of the engine's compressed first load, from the build
+      manifest through caps), with content-hashed caching and a kill switch. While the worker is cold
+      or the engine is downloading, the cell shows the recorded run for the same input with its run
+      id, labeled as recorded; include the interpretation-tap slot DESIGN.md section 6.4 specifies.
+      Build to W0-S02's decisions as its addendum restates them for the loader. Follow W0-S02's
+      supervisor rules: an rlimit on every call and a watchdog wall time; worker.terminate() only from
+      the watchdog; no second WebAssembly.instantiate in the Pyodide worker; warm messages the service
+      worker every 15 s [D] and reports an unfinished fill instead of waiting on it; and no repackaged
+      wheel. scripts/spikes/W0-S01/site/instruments/ is reference code.
     deliverables:
       - "apps/instruments/src/workers/pyodide-z3/"
       - "apps/instruments/src/engines/z3/"
       - "apps/site/src/components/instrument-cell/"
       - "apps/site/src/consent/"
     acceptance:
-      - "GATE-bundle: consent above 5 MB; no engine load before consent"
+      - "GATE-bundle: no prompt or warning before an engine download, and the loader's size equals the build manifest's first-load figure"
       - "a labeled recorded run renders while the worker is cold (Playwright)"
     implements: ["INS-z3", "M-consent"]
     size: M
@@ -1099,7 +1164,7 @@ tasks:
       uneditable. Build SCR-mirror v0: bias and hit rate per band with intervals, VRK30's count and
       rate, and nothing diagnosed below the minimum calls per band (one constant); only
       post-instruction, unassisted calls count. Use ASSESSMENT.md section 5.6's operational forms for
-      band midpoints and the minimum n until W0-T10 settles them.
+      band midpoints and the minimum n per spine section 8.5.
     deliverables:
       - "apps/site/src/components/call-it/"
       - "apps/site/src/screens/mirror/"
@@ -1137,6 +1202,7 @@ tasks:
     acceptance:
       - "scheduler property test: every KC gets at least 8 graded opportunities in 60 days at the four windows on a simulated calendar, and the Keep load is computed"
       - "RUN-lz-today-w1 records learner-zero's median Today (descriptive)"
+      - "M-set-your-week reads its keep/kill arm, and the scheduler never does (spine section 12 item 58)"
     implements: ["M-today", "M-set-your-week", "M-weekly-review", "M-monthly-retro", "SCR-today", "SCR-week"]
     size: M
     model: sonnet
@@ -1157,7 +1223,7 @@ tasks:
       corrected guard's unsat, and the BitVec 64 recipient wrap as an uncredited reveal (spine section
       3.1; curriculum/S01-counterexample.md section 2). It mounts SP-1.1, ends with the "this will
       feel harder" card (M-feels-harder), Set your week and the optional placement walk, and
-      introduces at most five glossary terms (DESIGN.md issue 9). Record learner-zero's Boot time as
+      introduces at most five glossary terms (spine section 0). Record learner-zero's Boot time as
       descriptive, and at least five naive testers' first-success times before any "external learners"
       label.
     deliverables:
@@ -1174,7 +1240,7 @@ tasks:
     size: M
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
-    depends_on: [W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41]
+    depends_on: [W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41, W1-T45]
     status: todo
     owner_review: true
     review_h: 1.5
@@ -1223,8 +1289,8 @@ tasks:
       Author the ground drawers D-01 to D-06 and D-13 from curriculum/D-drawers.md sections 2 and 3,
       and build SCR-drawer: always open, opening logged and never required, deferred drawers showing
       their tag and card. Drawer items use only W1 families; D-05's proof-structure items wait for
-      W2-T30 (D-drawers.md issue 6). D-13's page cites the stage specs' runs; RUN-z3-smtlib-tour is
-      proposed for it.
+      W2-T30 (D-drawers.md issue 6). D-13's page cites the stage specs' runs and RUN-z3-smtlib-tour,
+      which W1-T12 records.
     deliverables:
       - "content/drawers/D-01.md"
       - "content/drawers/D-02.md"
@@ -1238,15 +1304,16 @@ tasks:
       - "GATE-links green"
       - "GATE-numbers and GATE-runs green on drawer copy"
       - "GATE-lessons' copy, block-type and no-lock rules on SCR-drawer"
+      - "GATE-items, GATE-generators and GATE-kc on drawer items (D-05's GEN-proof-structure items follow with W2-T11)"
+      - "GATE-codes on drawer copy"
     implements: ["SCR-drawer", "D-01", "D-02", "D-03", "D-04", "D-05", "D-06", "D-13"]
     size: M
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
-    depends_on: [W1-T04, W1-T12, W1-T36, W1-T38]
+    depends_on: [W1-T04, W1-T12, W1-T36, W1-T38, W1-T01, W1-T21, W1-T39]
     status: todo
     owner_review: true
     review_h: 1.75
-    proposed_ids: ["RUN-z3-smtlib-tour"]
   - id: W1-T12
     wave: W1
     title: "Record the S1 runs"
@@ -1254,12 +1321,14 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      Record the eight S1 runs of spine section 9.5 natively and on Pyodide, with argv, input hash and
-      budget: RUN-z3-bv64-negamt, RUN-z3-double-capture, RUN-z3-refund-mint, RUN-z3-vacuous-unsat,
-      RUN-z3-btc2010, RUN-z3-bloch06, RUN-pg-numeric-bound and RUN-rust-i64, whose source exists but
-      whose output was never committed. curriculum/S01-counterexample.md section 11 proposes two more;
-      record them once W0-T10 registers them. Witnesses are recorded by property, never compared by
-      value across engines [X RUN-z3-bv64-pyodide].
+      Record the eleven S1 runs of spine section 9.5 natively and on Pyodide, with argv, input hash
+      and budget: RUN-z3-bv64-negamt (signed BitVec 64 without the amount > 0 guard, and its Int
+      twin), RUN-z3-double-capture, RUN-z3-refund-mint, RUN-z3-vacuous-unsat (the guarded premises
+      alone, which CL-1.1's method field needs, and the MAX_TRANSFER = 0 configuration's violation,
+      absurd-property and premise queries with their unsat core), RUN-z3-btc2010, RUN-z3-bloch06,
+      RUN-z3-boot-variant, RUN-z3-demorgan, RUN-z3-smtlib-tour (D-13), RUN-pg-numeric-bound and
+      RUN-rust-i64, whose source exists but whose output was never committed. Witnesses are recorded
+      by property, never compared by value across engines [X RUN-z3-bv64-pyodide].
     deliverables:
       - "runs/RUN-z3-bv64-negamt.json"
       - "runs/RUN-z3-double-capture.json"
@@ -1267,11 +1336,14 @@ tasks:
       - "runs/RUN-z3-vacuous-unsat.json"
       - "runs/RUN-z3-btc2010.json"
       - "runs/RUN-z3-bloch06.json"
+      - "runs/RUN-z3-boot-variant.json"
+      - "runs/RUN-z3-demorgan.json"
+      - "runs/RUN-z3-smtlib-tour.json"
       - "runs/RUN-pg-numeric-bound.json"
       - "runs/RUN-rust-i64.json"
       - "runs/inputs/S1/"
     acceptance:
-      - "the eight S1 runs of spine section 9.5 recorded (GATE-runs)"
+      - "the eleven S1 runs of spine section 9.5 recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -1279,7 +1351,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.5
-    proposed_ids: ["RUN-z3-boot-variant", "RUN-z3-demorgan"]
   - id: W1-T13
     wave: W1
     title: "LAB-1 and `statespace check` for Z3"
@@ -1321,9 +1392,12 @@ tasks:
     origin: spine
     description: >-
       Implement INS-receipt: Lane B receipts imported by file or URL fragment, parsed and
-      schema-validated only on the instrument origin (I6), size-capped (fragments capped as
-      ARCHITECTURE.md section 20 issue 15 proposes), never rendered as HTML, every verdict line
-      re-parsed and statement hashes recomputed. Build SCR-receipt as a title block: verdict lines,
+      schema-validated only on the instrument origin (I6), size-capped (a fragment above the cap of
+      spine section 9.1 is refused in favor of a file), never rendered as HTML, every verdict line
+      re-parsed and statement hashes recomputed. Import lab bundles (labbundle@1,
+      schemas/labbundle.schema.json) the same way into the disposable read-only mirror on the
+      instrument origin, so the phone-first SCR-claims, SCR-receipt and SCR-specimens have lab data
+      from W1 (spine sections 0 and 11.1). Build SCR-receipt as a title block: verdict lines,
       statement hashes, TCB, checks, claims to mint and the lane badge. Receipts from the CLI may
       carry only "reported from your machine" or "self-assessed"; only the tab assigns "re-checked
       here".
@@ -1331,9 +1405,12 @@ tasks:
       - "apps/instruments/src/engines/receipt/"
       - "apps/site/src/screens/receipt/"
       - "packages/claims/mint/"
+      - "schemas/labbundle.schema.json"
     acceptance:
       - "GATE-schema"
       - "a fuzzed import never renders as HTML (GATE-bundle fuzz test)"
+      - "a fragment above the size cap is refused in favor of a file"
+      - "a CLI receipt claiming re-checked here is rejected"
     implements: ["INS-receipt", "SCR-receipt", "SCR-instrument"]
     size: M
     model: opus
@@ -1354,7 +1431,9 @@ tasks:
       downloaded YAML, because the browser never edits a claim. Build GATE-claims: six fields present;
       the "if weakened" witness refutes the card's own proposition; statement hashes match; the CLI's
       local claim@1 validation shares these rules. Agent-proposed cards from proposals/ render as
-      quoted UNREVIEWED text (I8).
+      quoted UNREVIEWED text (I8). Add claim@1's optional topics (spine section 3.12's eight keys,
+      unique) on the card and on each assumption, and correspondence.code[] (language, path, symbol);
+      regenerate the types and fixtures, and let GATE-schema check the topics enum.
     deliverables:
       - "schemas/claim.schema.json"
       - "packages/claims/"
@@ -1495,7 +1574,8 @@ tasks:
     description: >-
       Build SCR-settings: export bundles (bundle@1), merge-import or replace behind an undo
       checkpoint, the 7-day backup nudge (WebKit may clear script-written storage after seven days
-      without interaction), download consent per engine, and the provenance honesty statement (OD-8).
+      without interaction), the downloads list (each engine's size and cache state, with a remove
+      control; nothing asks before a download, OD-6), and the provenance honesty statement (OD-8).
       Imported bundles are outside bytes and are parsed on the instrument origin (ARCHITECTURE.md
       section 18 item 2).
     deliverables:
@@ -1503,6 +1583,7 @@ tasks:
       - "schemas/bundle.schema.json"
     acceptance:
       - "GATE-schema plus property tests: export then merge-import round-trips, and undo restores the log"
+      - "the keep/kill switch, on for learner-zero before the first event, and expSeed survive export and merge-import (spine section 13 W1-T20)"
     implements: ["SCR-settings", "OD-8"]
     size: M
     model: sonnet
@@ -1608,7 +1689,7 @@ tasks:
       Implement GEN-call-it's four templates (three-way verdict, trace length as an interval, which
       anomaly, multiple true/false over about five scenarios), with keys computed at grade time and
       the chance level printed: 1/k for one verdict, 1 in 2^m for an m-statement set scored right only
-      when every statement is (ASSESSMENT.md section 4.12; DESIGN.md issue 6). Templates that need
+      when every statement is (ASSESSMENT.md section 4.12; spine section 8.5). Templates that need
       later engines (trace length, which anomaly) are keyed once those engines exist.
     deliverables:
       - "packages/generators/src/call-it/"
@@ -1751,7 +1832,8 @@ tasks:
       specification and the shared vectors; ARCHITECTURE.md section 20 issue 10) and `run <RUN-id>`
       for the course repo. The Z3 lane runs under an rlimit and parses every verdict line; an exit
       code alone is never trusted. Later tasks add the Lean (W2-T32, W2-T33), TLC (W3-T05), cvc5
-      (W3-T22), PostgreSQL (W4-T16) and trace (W5-T14) lanes.
+      (W3-T22), PostgreSQL (W4-T16) and trace (W5-T14) lanes. `statespace export` writes the lab
+      bundle (labbundle@1) from W1, which W1-T14 imports; W5-T06 keeps the report export.
     deliverables:
       - "bench/statespace/cli.py"
       - "bench/statespace/check/"
@@ -1893,10 +1975,10 @@ tasks:
     parent: W1-T17
     description: >-
       Author AUD-2.1 (G1), AUD-2.2 (G6a), AUD-2.3 (G6c), AUD-2.4 (G8a) and AUD-5.3 (G5), keyed only by
-      executed runs (RUN-z3-refund-a21, RUN-lean-axioms, RUN-lean-skipkernel, RUN-lean-comparator,
-      RUN-tlc-doublespend), without variants, and served only after LAB-2 and LAB-5. Following
-      AUDIT-DESK.md issue 2, AUD-2.1's W1 sound member is the honest customer-only claim; the
-      both-parties member moves to W2-T13 with its own run.
+      executed runs (RUN-z3-refund-a21 and RUN-lean-refund-a21 for AUD-2.1, RUN-lean-axioms,
+      RUN-lean-skipkernel, RUN-lean-comparator, RUN-tlc-doublespend), without variants, and served
+      only after LAB-2 and LAB-5. Following AUDIT-DESK.md issue 2, AUD-2.1's W1 sound member is the
+      honest customer-only claim; the both-parties member moves to W2-T13 with its own run.
     deliverables:
       - "content/audit/AUD-2.1.yaml"
       - "content/audit/AUD-2.2.yaml"
@@ -1984,8 +2066,8 @@ tasks:
       Build GATE-calls: every authored Call It answer reproduces on its engine (Pyodide in Node and
       native Z3 now; Spectacle and the interpreter as they land; Lean calls nightly), witnesses
       checked by property rather than model values, and every authored unsat cross-checked with the
-      cvc5 Bench binary pinned in {{run:RUN-scaffold}} (V2-12). A native-versus-Pyodide verdict
-      divergence fails the gate.
+      pinned cvc5 Bench binary [X RUN-scaffold] (V2-12). A native-versus-Pyodide verdict divergence
+      fails the gate.
     deliverables:
       - "scripts/verify-calls.mjs"
       - "scripts/conformance/z3-pyodide-native.mjs"
@@ -2086,12 +2168,17 @@ tasks:
     kind: work
     origin: added
     description: >-
-      Build GATE-bundle in Playwright: the route budgets of ARCHITECTURE.md section 14, downloads
-      above 5 MB behind consent, route and kill-switch tests, the Boot timing gate at 360 px with the
-      budget W0-S02 set, spec-duel fragments parsed only on the instrument origin, and the
-      fuzzed-import test. Wire the vendored a11y.mjs as GATE-a11y (axe, 0 serious issues at 360, 320
-      and 1280 px). One learner-state fixture drives the Playwright screenshots and the axe runs
-      (DESIGN.md section 12).
+      Build GATE-bundle in Playwright: the route budgets of ARCHITECTURE.md section 14, no prompt or
+      warning before an engine download and the loader's size checked against the build manifest
+      (OD-6, changed 2026-10-25), route and kill-switch tests, the Boot timing gate at 360 px with the
+      budget W0-S02 set, held with an engine download in flight because nothing now asks before Z3
+      loads, spec-duel fragments parsed only on the instrument origin, and the fuzzed-import test.
+      Wire the vendored a11y.mjs as GATE-a11y (axe, 0 serious issues at 360, 320 and 1280 px). One
+      learner-state fixture drives the Playwright screenshots and the axe runs (DESIGN.md section 12).
+      Add GATE-bundle's two lints of spine section 11.2: the instrument iframe carries
+      sandbox="allow-scripts allow-same-origin", and apps/site never assigns document.cookie; each
+      trips on a planted fixture. W0-S02's yardstick and lag monitor (W0-S02 section 5.3) are the Boot
+      gate's reference.
     deliverables:
       - "scripts/verify-bundle.mjs"
       - "scripts/a11y.mjs"
@@ -2099,7 +2186,8 @@ tasks:
       - "tests/fixtures/learner-state.json"
     acceptance:
       - "GATE-bundle and GATE-a11y run in their lanes on the shell"
-      - "each trips on a planted fixture (an unconsented large asset; a contrast failure)"
+      - "each trips on a planted fixture (a loader size that differs from the build manifest; a contrast failure)"
+      - "the sandbox-attribute and document.cookie lints each trip on a planted fixture (a frame without the attribute; a cookie assignment)"
     implements: ["GATE-bundle", "GATE-a11y"]
     size: M
     model: sonnet
@@ -2120,10 +2208,13 @@ tasks:
       starting with Pyodide Z3 = native Z3. Later tasks add rows: pocket checkers (W1-T19), Spectacle
       = TLC (W3-T08), the lasso validator (W3-T09), PostgreSQL specimens (W4-T02), PGlite (W4-T04) and
       Datalog (W4-T07). A red night writes the touched course claims to status/nightly.json as
-      "unverified since <date>".
+      "unverified since <date>". Seed content/assurance/gate-claims.json with the rule that a gate ID
+      maps to the course claim IDs it backs, starting with the mapping the spine names: GATE-interp
+      backs the SEAM-13 course claim.
     deliverables:
       - "scripts/verify-specimens.mjs"
       - "scripts/verify-conformance.mjs"
+      - "content/assurance/gate-claims.json"
     acceptance:
       - "GATE-specimens green on the executed runs behind SP-1.1–SP-1.10"
       - "GATE-conformance green on Pyodide Z3 = native Z3"
@@ -2147,7 +2238,9 @@ tasks:
       solutions pass, weakening mutants fail, every check has rungs R0–R4, and every Defence mutant
       elaborates or builds or its key predicts that it fails to. Private solutions come from a private
       companion repository through a read-only deploy key; a fork without the key runs in
-      template-only mode, and GATE-release requires the full mode (ARCHITECTURE.md section 13.5).
+      template-only mode, and GATE-release requires the full mode (ARCHITECTURE.md section 13.5). In
+      CI the Lean lane runs with --sandbox=auto, so a failed sandbox is re-run without it; elsewhere
+      only the learner's recorded choice turns it off (spine sections 9.6 and 12 item 57).
     deliverables:
       - "scripts/verify-labs.mjs"
       - ".github/workflows/nightly.yml"
@@ -2194,14 +2287,15 @@ tasks:
     origin: added
     description: >-
       Build the optional placement walk that ends Boot (spine section 3.1) from W1 families only, as
-      curriculum/D-drawers.md section 5 and issue 5 propose. It decides how the ground drawers
-      present, credits nothing and keeps its calls out of the Mirror; W2-T16 adds test-out credit and
-      the "From kernelspace" placement.
+      curriculum/D-drawers.md section 5 and issue 5 propose. It decides how the ground drawers present
+      and keeps its calls out of the Mirror; the walk itself credits nothing, and a KC is credited at
+      its confirmation 7–14 days later, once its hard requires are credited (spine section 8.6);
+      W2-T16 adds test-out credit and the "From kernelspace" placement.
     deliverables:
       - "content/stages/S1/placement.yaml"
       - "apps/site/src/screens/boot/placement/"
     acceptance:
-      - "property test: placement calls never reach the Mirror and credit no KC"
+      - "property test: placement calls never reach the Mirror; the walk itself credits nothing, and a KC is credited only at its confirmation 7–14 days later, once its hard requires are credited (spine section 8.6)"
       - "GATE-lessons on its copy"
     size: S
     model: opus
@@ -2330,7 +2424,15 @@ tasks:
       W0-S10's decision), plus recorded #guard_msgs outputs, and the goal-strip component with
       predict-the-next-goal, diffs and backward fading. M-goal-replay-fading: blanks without prompts
       and one principle prompt per revealed step, for the six fading families only. Build GATE-replay:
-      strips regenerated on the pinned toolchain equal the committed strips.
+      strips regenerated on the pinned toolchain equal the committed strips. S2's learner-facing
+      strips come from parallel-theorem sources in the style of W0-S10's corpus/Shapes.lean, never
+      from LAB-2's statements; the Ledger strips stay as RUN-replay-gen evidence and a GATE-replay
+      fixture (Q-1). Build to W0-S10's eight rules (inputs, request, where to read, what a strip is,
+      output, byte equality, bump handling, failing candidates), reusing
+      scripts/spikes/W0-S10/lib/lean-server.mjs, gen-strips.mjs and diff-strips.mjs; the simulated
+      bump passes --lean-opt pp.fieldNotation=false; GATE-replay's monthly run on the newest stable
+      Lean is report-only; and long goal lines wrap or scroll inside the strip at 360 and 320 px under
+      GATE-a11y.
     deliverables:
       - "scripts/build-goal-replay.mjs"
       - "apps/site/src/components/goal-strip/"
@@ -2392,18 +2494,21 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      The agent drafts, and the owner sends, a request to the authors of the CC BY-SA self-explanation
-      booklet to adapt it (OD-10), and the reply is logged. With permission, adapt it as S2.L0
-      [bridge] "Reading a proof line by line" in its own directory under its license; after 4 weeks
-      without a reply, write an original 15–20-minute unit under the course license instead
-      (M-self-explanation; curriculum/S02-proof.md section 2). The unit is uncredited reading practice
-      before any Lean is written.
+      Author S2.L0 [bridge] "Reading a proof line by line" by adapting the CC BY-SA self-explanation
+      booklet's text, not its three rights-reserved images, under the CC BY-SA 4.0 that page 1 of its
+      PDF states (OD-10, changed 2026-10-25): credit its authors, add a change note, and keep the
+      adapted text in its own directory with the CC BY-SA 4.0 license file. Nobody asks the authors
+      and nothing waits; if they ever object, the original 15–20-minute unit that
+      curriculum/S02-proof.md section 2 specifies replaces the adaptation under the course license
+      (M-self-explanation). The unit's worked proof and its reading bank prove parallel theorems,
+      never one a LAB-2 stage asks for (Q-1). The unit is uncredited reading practice before any Lean
+      is written.
     deliverables:
       - "content/stages/S2/S2.L0.md"
       - "content/third-party/self-explanation/"
-      - "docs/DECISIONS.md"
     acceptance:
-      - "the authors' reply logged and the license file in place; or, after 4 weeks without a reply, an original 15–20-minute unit passes GATE-lessons"
+      - "the adapted text sits in content/third-party/self-explanation/ with the CC BY-SA 4.0 license file, the credit and a change note, and none of the booklet's three rights-reserved images"
+      - "S2.L0 passes GATE-lessons, and neither its worked proof nor its reading bank proves a theorem that a LAB-2 stage asks for (Q-1)"
     implements: ["M-self-explanation", "S2.L0", "OD-10"]
     size: S
     model: opus
@@ -2488,8 +2593,8 @@ tasks:
       - "GATE-interp and GATE-schema green"
     implements: ["INS-interp", "INS-lane-a", "GATE-interp", "V2-15"]
     size: M
-    model: sonnet
-    model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
+    model: opus
+    model_reason: "Hosts and grades the learner's wasm (untrusted input, I6) and is the key-computing oracle; decision 24 makes graders and untrusted-input parsers opus."
     depends_on: [W2-T07]
     status: todo
     owner_review: true
@@ -2547,12 +2652,13 @@ tasks:
     children: [W2-T38, W2-T39]
     description: >-
       Milestone closing when the S2 runs (W2-T38) and the S3 runs (W2-T39) are recorded; confirms that
-      all fourteen S2–S3 runs of spine section 9.5 resolve.
+      all eighteen S2–S3 runs of spine section 9.5 resolve.
     deliverables:
       - "runs/RUN-lean-noguard.json"
       - "runs/RUN-lean-ih-ungeneralised.json"
       - "runs/RUN-lean-intent.json"
       - "runs/RUN-lean-finmap.json"
+      - "runs/RUN-lean-s2-cells.json"
       - "runs/RUN-lean-stuck.json"
       - "runs/RUN-lean-unsafe-cmd.json"
       - "runs/RUN-lean-nat-trunc.json"
@@ -2563,8 +2669,11 @@ tasks:
       - "runs/RUN-interp-goldens.json"
       - "runs/RUN-lean-progress.json"
       - "runs/RUN-lean-preservation.json"
+      - "runs/RUN-lean-golden-harness.json"
+      - "runs/RUN-lean-implemented-by.json"
+      - "runs/RUN-z3-nat-trunc.json"
     acceptance:
-      - "the fourteen S2–S3 runs of spine section 9.5 recorded (GATE-runs)"
+      - "the eighteen S2–S3 runs of spine section 9.5 recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Integration of clearly specified children."
@@ -2612,16 +2721,17 @@ tasks:
       at least two sessions, untimed; Part A sampled from at least three families on unseen seeds with
       a call on each; Part B from statespace defend receipts; Part C four cases with at least one
       sound; Part D (M-explain-back) required and uncredited. Sign-off is derived, never stored: Parts
-      A-C at least 75% overall and each part at least 60% (with the small-part rule), plus fresh items
-      in three spaced sessions; settled is a fresh probe at least 30 days after sign-off
-      (ASSESSMENT.md issue 6). A failed part is retaken on fresh seeds at least 3 days later, and the
-      Wilson interval is displayed.
+      A-C at least 75% overall and each part at least 60% (with the minimum part size of four items,
+      the two-session rule and the retake rules, spine section 8.6), plus fresh items in three spaced
+      sessions; settled is a fresh probe at least 30 days after sign-off (ASSESSMENT.md issue 6). A
+      failed part is retaken on fresh seeds at least 3 days later, and the Wilson interval is
+      displayed.
     deliverables:
       - "packages/learner/signoff/"
       - "apps/site/src/screens/defence/"
       - "schemas/defence.schema.json"
     acceptance:
-      - "GATE-schema plus ledger property tests: sign-off derived, never stored; the Wilson display; the small-part and retake rules of spine section 8.6"
+      - "GATE-schema plus ledger property tests: sign-off derived, never stored; the Wilson display; the minimum part size of four items, the two-session rule and the retake rules (spine section 8.6)"
     implements: ["M-defence", "M-explain-back", "SCR-defence", "V2-02"]
     size: M
     model: opus
@@ -2668,7 +2778,8 @@ tasks:
       private paths stripped and a short packet for the learner's own agent; and offer to park the
       goal, carried as [A] in the claim ("parked goal" in learner copy) with a re-find in 7 days. The
       packet carries no answer and no private path, and the parked goal's [A] line stays on the claim
-      card until the goal closes.
+      card until the goal closes. The park option takes an optional topic from spine section 3.12's
+      eight keys.
     deliverables:
       - "bench/statespace/stuck.py"
       - "apps/site/src/screens/lab/stuck/"
@@ -2719,8 +2830,8 @@ tasks:
       landmark restart after 6 weeks; no overdue counts) and M-test-out (three fresh items per KC, two
       of three with the constructed response right, confirmed 7–14 days later; curriculum/D-drawers.md
       section 6). Implement the "From kernelspace" placement: it pre-credits only KCs a kernelspace
-      Evidence Pack evidences and never logic, induction, TLA+ or isolation (D-drawers.md section 5.7
-      and issue 9 give the deny-list sets), and credits a KC only once its hard requires are credited.
+      Evidence Pack evidences and never logic, induction, TLA+ or isolation (spine section 2.1 gives
+      the deny list), and credits a KC only once its hard requires are credited.
     deliverables:
       - "packages/learner/testout/"
       - "apps/site/src/screens/today/welcome-back/"
@@ -2728,6 +2839,9 @@ tasks:
     acceptance:
       - "GATE-lessons: no overdue counts, no lock copy"
       - "property tests: placement pre-credits only evidenced KCs and never logic, induction, TLA+ or isolation"
+      - "each test-out card's printed blind-pass probability equals the composer's computation and is at most 1 in 20"
+      - "one test-out attempt per KC per local day"
+      - "placement and pre-instruction test-out calls never reach the Mirror"
     implements: ["M-welcome-back", "M-test-out", "V2-20"]
     size: M
     model: sonnet
@@ -2746,8 +2860,8 @@ tasks:
       Implement M-refutation-card (after two misses on one misconception tag, a card that names and
       refutes the misconception; the catalog cards of curriculum/D-drawers.md section 1.4) and
       M-sure-wrong-returns (sure-and-wrong items return at about 1 day and 1 week). Both need the
-      event record to carry the response and the matched tag (ASSESSMENT.md issue 4), which W0-T10 is
-      expected to add to event@1.
+      event record to carry the response and the matched tag; event@1 carries resp and mis (spine
+      section 8.2).
     deliverables:
       - "packages/learner/refutation/"
       - "content/refutations/"
@@ -2777,6 +2891,7 @@ tasks:
     acceptance:
       - "GATE-a11y: keyboard ordering"
       - "GATE-items"
+      - "M-proof-blocks reads its keep/kill arm, and the scheduler never does (spine section 12 item 58)"
     implements: ["M-proof-blocks"]
     size: M
     model: sonnet
@@ -2799,7 +2914,9 @@ tasks:
       Goal Replay) and S2.L4 "Induction you can explain" (Proof Blocks with a circular-hypothesis
       distractor). Each bridge is at most 1,000 words with one prequestion, instrument cells with Call
       It on first runs, one graded item naming family and template plus an exit item, and a dated,
-      section-level reading pointer.
+      section-level reading pointer. Worked examples, strips and the bank instances their items draw
+      from prove parallel theorems, never one a LAB-2 stage asks for (Q-1), so S2.L3's strip moves off
+      transfer_conserves and its transfer-variant bank leaves out LAB-2's own transfer.
     deliverables:
       - "content/stages/S2/S2.L1.md"
       - "content/stages/S2/S2.L2.md"
@@ -2808,6 +2925,7 @@ tasks:
     acceptance:
       - "GATE-lessons, GATE-numbers and GATE-runs green on S2.L1–S2.L4"
       - "GATE-replay green on their strips"
+      - "no worked example, strip, Proof Blocks item or bank instance proves a theorem that a LAB-2 stage asks for (Q-1)"
     implements: ["S2.L1", "S2.L2", "S2.L3", "S2.L4"]
     size: M
     model: opus
@@ -2829,7 +2947,11 @@ tasks:
       CL-2.3), and S2.L7 [core] "Sequences of transfers: generalize first" (SP-2.3, CL-2.4; plants
       SEAM-2; fading family F1 with backward fading). S2.L5's "if weakened" field carries a witness
       against its own proposition, and S2.L6 names which axioms automation would add [X
-      RUN-lean-axioms].
+      RUN-lean-axioms]. Worked examples, reference strips, fading rungs, Proof Blocks and the bank
+      instances their items draw from prove parallel theorems, never one a LAB-2 stage asks for
+      (Q-1): S2.L5's worked example moves off transfer_conserves, S2.L6's strip off transfer_nonneg,
+      and S2.L7's reference proof, rungs and Proof Blocks off run_conserves; the threaded-state bank
+      leaves out LAB-2's run.
     deliverables:
       - "content/stages/S2/S2.L5.md"
       - "content/stages/S2/S2.L6.md"
@@ -2840,6 +2962,7 @@ tasks:
       - "GATE-lessons, GATE-numbers and GATE-runs green on S2.L5–S2.L7"
       - "GATE-claims on CL-2.1–CL-2.4"
       - "GATE-specimens on SP-2.2 and SP-2.3"
+      - "no worked example, strip, fading rung, Proof Blocks item or bank instance proves a theorem that a LAB-2 stage asks for (Q-1)"
     implements: ["S2.L5", "S2.L6", "S2.L7"]
     size: M
     model: opus
@@ -2864,7 +2987,10 @@ tasks:
       forbidden scenario in INS-interp, which is why this task depends on W2-T08 (curriculum/S02 issue
       9). Each lesson meets spine section 3.0's tier anatomy and PLAN.md section 11.1's authoring
       contract: every graded item names its generator family and template, every tool fact is an
-      executed run or a placeholder, and the rail shows segment titles only.
+      executed run or a placeholder, and the rail shows segment titles only. Worked examples, strips
+      and the bank instances their items draw from prove parallel theorems, never one a LAB-2 stage
+      asks for (Q-1), so S2.L8's decide strip exhibits another instance, with another balance and
+      amount, than the selftransfer_mints instance LAB-2.6 asks for.
     deliverables:
       - "content/stages/S2/S2.L8.md"
       - "content/stages/S2/S2.L9.md"
@@ -2874,6 +3000,7 @@ tasks:
     acceptance:
       - "GATE-lessons, GATE-numbers and GATE-runs green on S2.L8–S2.L10"
       - "GATE-specimens on SP-2.1 and SP-2.4–SP-2.9"
+      - "no worked example, strip, Proof Blocks item or bank instance proves a theorem that a LAB-2 stage asks for (Q-1)"
     implements: ["S2.L8", "S2.L9", "S2.L10"]
     size: M
     model: opus
@@ -2954,8 +3081,8 @@ tasks:
       Author S3.L7 [core] "Edge cases are decisions" (SP-3.3; cashes ER-6, with its forecast item and
       remedy card), S3.L8 [bridge] "Termination: structural recursion and fuel" and S3.L9 [bridge]
       "The unsafe command; goldens as theorems" (SP-3.2, SP-3.5, CL-3.5; shows the held SEAM-13).
-      curriculum/S03-semantics.md issue 1 proposes three more runs for these cells; cite them once
-      W0-T10 registers them.
+      Their cells also cite RUN-lean-golden-harness, RUN-lean-implemented-by and RUN-z3-nat-trunc,
+      which spine section 9.5 registers from curriculum/S03-semantics.md issue 1 and W2-T39 records.
     deliverables:
       - "content/stages/S3/S3.L7.md"
       - "content/stages/S3/S3.L8.md"
@@ -2974,7 +3101,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 2.5
-    proposed_ids: ["RUN-lean-golden-harness", "RUN-lean-implemented-by", "RUN-z3-nat-trunc"]
   - id: W2-T25
     wave: W2
     title: "LAB-3 stages LAB-3.1–LAB-3.3"
@@ -3122,13 +3248,16 @@ tasks:
       Implement GEN-proof-structure's three templates (next goal, Proof Blocks with 1–2 distractors,
       needed hypothesis), with goals from real elaboration through Goal Replay, DAG grading, and
       hypothesis-deletion checks run in CI (ASSESSMENT.md section 4.14). Its keys come from build-time
-      Lean elaboration replayed at grade time (ASSESSMENT.md issue 8).
+      Lean elaboration replayed at grade time (ASSESSMENT.md issue 8). S2's instances, which its
+      lessons and its Defence draw from, show proofs of parallel theorems only, never a proof of a
+      theorem that a LAB-2 stage asks for (Q-1).
     deliverables:
       - "packages/generators/src/proof-structure/"
       - "content/generators/GEN-proof-structure/"
     acceptance:
       - "GATE-generators green"
       - "GATE-replay green on the generated goals"
+      - "no S2 instance proves a theorem that a LAB-2 stage asks for (Q-1)"
     implements: ["GEN-proof-structure"]
     size: M
     model: opus
@@ -3179,7 +3308,11 @@ tasks:
       axioms per theorem, nativeAxioms, sorryCount, automation flags). Parse every verdict line rather
       than trusting exit codes: a sorry builds with exit code 0, and lake check errors while logging
       that the default kernel accepts [X RUN-lean-axioms]. Flag automated closes of manually taught
-      steps (M-manual-mode: grind and omega off in manual variants).
+      steps (M-manual-mode: grind and omega off in manual variants). Read every Lean verdict by
+      W0-S06's closed list of rejection lines and its five-step classification rule (spine sections
+      9.6 and 12 item 57), with Python and TypeScript ports run over the configs[].steps[] of
+      runs/RUN-bwrap-lanes.json, the checker-stage lookalike as a required fixture, and a no-verdict
+      screen that shows the evidence lines.
     deliverables:
       - "bench/statespace/lanes/lean.py"
       - "schemas/receipt.schema.json"
@@ -3206,7 +3339,11 @@ tasks:
       paranoid mode in CI and at the Defence [X RUN-lean-comparator], and kernel replay so that a
       skipKernelTC build is rejected [X RUN-lean-skipkernel]. Record the sandbox as on, off or failed
       per W0-S06's decision, and tell a sandbox failure from a rejection, since under default Docker
-      they share an exit code [X RUN-lean-bwrap-docker].
+      they share an exit code [X RUN-lean-bwrap-docker]. Tell them apart by positive evidence, a
+      bwrap: line, under the closed list of rejection lines and the five-step rule that W2-T32 ports,
+      with the checker-stage lookalike as a required fixture and a no-verdict screen that shows the
+      evidence lines. CI runs with --sandbox=auto; elsewhere a failed sandbox is re-run without it
+      only on the learner's recorded choice (spine sections 9.6 and 12 item 57).
     deliverables:
       - "bench/statespace/lanes/comparator.py"
       - "bench/statespace/lanes/replay.py"
@@ -3256,9 +3393,10 @@ tasks:
       Build the goldens harness: theorems of the form golden_k : run c s0 = r, proved by decide, for a
       golden set covering zero, self-transfer, failed guard and overflow, generated from the one
       source that also feeds GATE-interp's table. Add the semantics lint (no implemented_by, extern,
-      partial, unsafe or native_decide in semantics modules) and the IR export through lake exe.
-      Semantics that cannot be checked by goldens fall back to a statement check stamped "statement
-      check: weak" (BRIEF section 4.3).
+      partial, unsafe or native_decide in semantics modules; declare_syntax_cat in LAB-3 modules
+      flagged on the receipt's lints[], D-22's trigger, spine section 3.3) and the IR export through
+      lake exe. Semantics that cannot be checked by goldens fall back to a statement check stamped
+      "statement check: weak" (BRIEF section 4.3).
     deliverables:
       - "labs/reference/mini-plinth/Goldens.lean"
       - "scripts/build-goldens.mjs"
@@ -3338,17 +3476,18 @@ tasks:
     origin: refined
     parent: W2-T10
     description: >-
-      Record the four S2 runs of spine section 9.5 with the Lean lane: RUN-lean-noguard
-      (curriculum/S02 widens it to three guard weakenings), RUN-lean-ih-ungeneralised, RUN-lean-intent
-      and RUN-lean-finmap. curriculum/S02-proof.md section 11 proposes one more run for the other
-      authored S2 cells; record it once W0-T10 registers it.
+      Record the five S2 runs of spine section 9.5 with the Lean lane: RUN-lean-noguard
+      (curriculum/S02 widens it to three guard weakenings), RUN-lean-ih-ungeneralised,
+      RUN-lean-intent, RUN-lean-finmap and RUN-lean-s2-cells, the run for the other authored S2 cells
+      (curriculum/S02-proof.md section 11).
     deliverables:
       - "runs/RUN-lean-noguard.json"
       - "runs/RUN-lean-ih-ungeneralised.json"
       - "runs/RUN-lean-intent.json"
       - "runs/RUN-lean-finmap.json"
+      - "runs/RUN-lean-s2-cells.json"
     acceptance:
-      - "the four S2 runs recorded (GATE-runs)"
+      - "the five S2 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -3356,7 +3495,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.25
-    proposed_ids: ["RUN-lean-s2-cells"]
   - id: W2-T39
     wave: W2
     title: "Record the S3 runs"
@@ -3365,12 +3503,13 @@ tasks:
     origin: refined
     parent: W2-T10
     description: >-
-      Record the ten S3 runs of spine section 9.5 against the reference semantics: RUN-lean-stuck,
-      RUN-lean-unsafe-cmd, RUN-lean-nat-trunc, RUN-lean-bigsmall, RUN-lean-golden-redef,
-      RUN-lean-step-invariant, RUN-lean-postings-refine, RUN-interp-goldens, RUN-lean-progress and
-      RUN-lean-preservation, plus the three runs curriculum/S03-semantics.md issue 1 proposes once
-      W0-T10 registers them. Each record follows run@1: engine, version, binary SHA-256, image, argv,
-      input and its hash, budget, outputs and the recording time.
+      Record the thirteen S3 runs of spine section 9.5 against the reference semantics:
+      RUN-lean-stuck, RUN-lean-unsafe-cmd, RUN-lean-nat-trunc, RUN-lean-bigsmall,
+      RUN-lean-golden-redef, RUN-lean-step-invariant, RUN-lean-postings-refine, RUN-interp-goldens,
+      RUN-lean-progress, RUN-lean-preservation, RUN-lean-golden-harness, RUN-lean-implemented-by and
+      RUN-z3-nat-trunc (the last three from curriculum/S03-semantics.md issue 1). Each record follows
+      run@1: engine, version, binary SHA-256, image, argv, inputs and their hashes, budget, outputs
+      and the recording time.
     deliverables:
       - "runs/RUN-lean-stuck.json"
       - "runs/RUN-lean-unsafe-cmd.json"
@@ -3382,8 +3521,11 @@ tasks:
       - "runs/RUN-interp-goldens.json"
       - "runs/RUN-lean-progress.json"
       - "runs/RUN-lean-preservation.json"
+      - "runs/RUN-lean-golden-harness.json"
+      - "runs/RUN-lean-implemented-by.json"
+      - "runs/RUN-z3-nat-trunc.json"
     acceptance:
-      - "the ten S3 runs recorded (GATE-runs)"
+      - "the thirteen S3 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -3391,7 +3533,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.25
-    proposed_ids: ["RUN-lean-golden-harness", "RUN-lean-implemented-by", "RUN-z3-nat-trunc"]
   - id: W2-T40
     wave: W2
     title: "Defence content for S1 and S2"
@@ -3491,6 +3632,7 @@ tasks:
     acceptance:
       - "GATE-links, GATE-numbers and GATE-runs green on the three drawers"
       - "GATE-lessons' copy rules on them"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["D-07", "D-08", "D-15"]
     size: S
     model: opus
@@ -3519,6 +3661,7 @@ tasks:
     acceptance:
       - "GATE-links green"
       - "GATE-kc confirms D-23 is the named substitute for the soft edge KC-6.rowcount-as-guard to KC-3.big-step-errors"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["D-14", "D-22", "D-23"]
     size: S
     model: opus
@@ -3641,7 +3784,10 @@ tasks:
       Milestone closing when S4.L1–S4.L9 (W3-T18 to W3-T20) are done. Residual: the S4 stage page
       (SEAM-5, anchors, drawers, budget) and the production-twin cards (Lean's experimental vcgen [X
       RUN-lean-vcgen], shown after the learner's own generator; Cedar's symbolic compilation) with
-      SHAs in RUN-twin-pins.
+      SHAs in RUN-twin-pins. S4.L9 shows vcgen on the Mini-Plinth-style command type beside the
+      shallow contract (spine section 3.4), under W0-S07's authoring rules; before the card ships, the
+      twin is re-checked within its 60-day TTL (pinned in RUN-twin-pins, or RUN-vcgen-cmd
+      re-recorded), by 2026-12-23 at the latest.
     deliverables:
       - "content/stages/S4/stage.yaml"
       - "content/registry/twins/S4.yaml"
@@ -3705,7 +3851,9 @@ tasks:
       every receipt, one worker for minimal traces, and receipt@1's tlc section (spec and config
       hashes, constants, flags, distinct states, depth, result, trace file). Parse "Deadlock reached"
       as a stop before full exploration, which stamps [?] rather than [M] (spine section 8.8; [X
-      RUN-tlc-doublespend]). Add the TLC grader to statespace defend.
+      RUN-tlc-doublespend]). Add the TLC grader to statespace defend. Ask TLC for -dumpTrace json
+      <file>, record it as tlc.traceFile, name the property from the receipt's verdict lines, and
+      never read an exit code alone [X RUN-tlc-lasso-json].
     deliverables:
       - "bench/statespace/lanes/tlc.py"
       - "schemas/receipt.schema.json"
@@ -3728,7 +3876,9 @@ tasks:
     origin: spine
     children: [W3-T23, W3-T24]
     description: >-
-      Milestone closing when the Theater engine (W3-T23) and SCR-theater (W3-T24) are done.
+      Milestone closing when the Theater engine (W3-T23) and SCR-theater (W3-T24) are done. Graphs for
+      the Theater-only specs come from TLC's -dump dot,actionlabels output, parsed as W0-S04's tlc.mjs
+      does [X RUN-spectacle-s5s8].
     deliverables:
       - "apps/site/src/components/theater/"
       - "scripts/build-theater-graphs.mjs"
@@ -3770,8 +3920,12 @@ tasks:
       - "runs/RUN-tlc-never-twice.json"
       - "runs/RUN-tlc-eventually.json"
       - "runs/RUN-tlc-inductive.json"
+      - "runs/RUN-tlc-lifecycle.json"
+      - "runs/RUN-tlc-hold-fairness.json"
+      - "runs/RUN-tlc-bare-property.json"
+      - "runs/RUN-pcal-doublespend.json"
     acceptance:
-      - "the fifteen S4–S5 runs of spine section 9.5 recorded (GATE-runs)"
+      - "the nineteen S4–S5 runs of spine section 9.5 recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Integration of clearly specified children."
@@ -3787,10 +3941,12 @@ tasks:
     origin: spine
     description: >-
       Build INS-spectacle on the instrument origin from the vendored MIT-licensed commit [X
-      RUN-spectacle], within W0-S04's scope decision: learner edits capped at about 5k states [D],
-      then "send to the Bench"; PlusCal translated at build time; no fairness or liveness. Build
-      M-telescope, the minimap (learners see "the Spectacle view's minimap"), with TLC counts
-      precomputed in CI. Add the GATE-conformance pair Spectacle = TLC on every authored spec.
+      RUN-spectacle], within W0-S04's scope decision: learner edits run under a 10 s wall-clock budget
+      in the worker [D], then "send to the Bench"; PlusCal translated at build time; no fairness or
+      liveness. Build M-telescope, the minimap (learners see "the Spectacle view's minimap"), with TLC
+      counts precomputed in CI. Add the GATE-conformance pair Spectacle = TLC on every authored spec.
+      Follow the seven adapter rules of W0-S04 section 5.3 (spine section 12 item 56); the nightly
+      Spectacle = TLC pair runs W0-S04's harness in Node.
     deliverables:
       - "apps/instruments/src/workers/spectacle/"
       - "apps/site/src/components/minimap/"
@@ -3815,7 +3971,10 @@ tasks:
       Build INS-lasso: a validator for liveness lassos over TLC state graphs and imported traces in
       the lasso@1 format W0-S05 fixed, exact on finite graphs, parsing outside bytes only on the
       instrument origin. Add the GATE-conformance pair lasso validator = TLC on TLC's liveness
-      fixtures, including the starving lasso [X RUN-tlc-hold-lasso].
+      fixtures, including the starving lasso [X RUN-tlc-hold-lasso]. Implement W0-S05's strict lasso@1
+      schema, its six reading rules, its import order (caps, parse, schema, rules, then graph checks)
+      and its label rule, and publish schemas/lasso.schema.json; regenerated fixtures fix -workers 1
+      and -fp (spine section 9.2 INS-bench-tlc) [X RUN-tlc-lasso-json].
     deliverables:
       - "apps/instruments/src/engines/lasso/"
       - "schemas/lasso.schema.json"
@@ -3867,7 +4026,10 @@ tasks:
       Milestone closing when S5's lessons (W3-T29 to W3-T31) and LAB-5's stages (W3-T32, W3-T33) are
       done. Residual: the S5 stage page (SEAM-4 and SEAM-8 planted, ER-2 cashed), technical note 2's
       prompt, and the twin cards (TigerBeetle's two-phase transfers; TLA+ By Example's authoring
-      contract as a disclosed link-out) with SHAs in RUN-twin-pins.
+      contract as a disclosed link-out) with SHAs in RUN-twin-pins. Spectacle-run specs follow
+      W0-S04's authoring rules: finite sets instead of Nat, Int and STRING; only the nine built-in
+      modules and the course's own; one operator per disjunct of Next; an implication inside a box
+      action formula parenthesized; and lesson constants inside the time budget.
     deliverables:
       - "content/stages/S5/stage.yaml"
       - "content/registry/twins/S5.yaml"
@@ -4235,7 +4397,9 @@ tasks:
       Build INS-theater's engine: authored scenes as TLC state graphs generated in CI with one worker
       and an explicit deadlock flag, enabled-action controls, branching history, and monitors that
       report observations, never stamps; only TLC or Spectacle results earn [M]. The graphs are
-      build-time course data rendered on the main origin (ARCHITECTURE.md section 18 item 1).
+      build-time course data rendered on the main origin (ARCHITECTURE.md section 18 item 1). Export
+      the TLC graphs of the Theater-only specs with the -dump dot,actionlabels parse of
+      scripts/spikes/W0-S04/tlc.mjs, whose labels carry parameters [X RUN-spectacle-s5s8].
     deliverables:
       - "apps/site/src/components/theater/"
       - "scripts/build-theater-graphs.mjs"
@@ -4288,7 +4452,7 @@ tasks:
       RUN-z3-missing-frame, RUN-z3-capture, RUN-z3-cti-pair, RUN-z3-vacuity-trap, RUN-z3-inductive,
       RUN-z3-inductive-param and RUN-lean-vcgen-soundness, natively and on Pyodide wherever a tab cell
       cites them, with cvc5 cross-checks on every unsat. Each record follows run@1: engine, version,
-      binary SHA-256, image, argv, input and its hash, budget, outputs and the recording time.
+      binary SHA-256, image, argv, inputs and their hashes, budget, outputs and the recording time.
     deliverables:
       - "runs/RUN-check-fragment.json"
       - "runs/RUN-z3-wp-transfer.json"
@@ -4316,11 +4480,11 @@ tasks:
     origin: refined
     parent: W3-T07
     description: >-
-      Record the six S5 runs of spine section 9.5 with argv, constants and the deadlock setting:
+      Record the ten S5 runs of spine section 9.5 with argv, constants and the deadlock setting:
       RUN-tlc-resolved-twice, RUN-tlc-n3-only, RUN-tlc-starbucks15, RUN-tlc-never-twice,
-      RUN-tlc-eventually and RUN-tlc-inductive. curriculum/S05-time.md issue 3 proposes four more (the
-      lifecycle, the hold-fairness rows, a bare property and the PlusCal double spend); record them
-      once W0-T10 registers them.
+      RUN-tlc-eventually, RUN-tlc-inductive, RUN-tlc-lifecycle, RUN-tlc-hold-fairness,
+      RUN-tlc-bare-property and RUN-pcal-doublespend (the lifecycle, the hold-fairness rows, a bare
+      property and the PlusCal double spend of curriculum/S05-time.md issue 3).
     deliverables:
       - "runs/RUN-tlc-resolved-twice.json"
       - "runs/RUN-tlc-n3-only.json"
@@ -4328,8 +4492,12 @@ tasks:
       - "runs/RUN-tlc-never-twice.json"
       - "runs/RUN-tlc-eventually.json"
       - "runs/RUN-tlc-inductive.json"
+      - "runs/RUN-tlc-lifecycle.json"
+      - "runs/RUN-tlc-hold-fairness.json"
+      - "runs/RUN-tlc-bare-property.json"
+      - "runs/RUN-pcal-doublespend.json"
     acceptance:
-      - "the six S5 runs recorded (GATE-runs)"
+      - "the ten S5 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -4337,7 +4505,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.25
-    proposed_ids: ["RUN-tlc-lifecycle", "RUN-tlc-hold-fairness", "RUN-tlc-bare-property", "RUN-pcal-doublespend"]
   - id: W3-T27
     wave: W3
     title: "GEN-trace-allowed"
@@ -4523,7 +4690,7 @@ tasks:
       lasso accepted by INS-lasso), LAB-5.6 (the bound statement and [M] claim cards printing
       constants and "complete" or "partial") and the stretch LAB-5.7 (TLC's inductive check at fixed
       constants, then the inductive step for arbitrary N in Z3; Apalache optional through
-      INS-bench-apalache {{run:RUN-apalache-version}}). Every check also lists its receipt fields and
+      INS-bench-apalache [X RUN-apalache-version]). Every check also lists its receipt fields and
       Prove-it mutants that elaborate or build, or are predicted not to (PLAN.md section 11.1);
       reference solutions stay in the private companion repository.
     deliverables:
@@ -4554,7 +4721,7 @@ tasks:
       proposition-of-model. Firing rule: an erosion fires when both endpoints exist in the learner's
       record, a claim minted after its specimen arrives already cracked, and Clearinghouse erosions
       follow the oldest open erodible seam (held SEAM-13 to SEAM-15 excluded; ordered by first
-      planting event, ties by seam number; WORLD.md issue 6). Extend GATE-erosions with the both-path
+      planting event, ties by seam number; spine section 5.4). Extend GATE-erosions with the both-path
       replay.
     deliverables:
       - "packages/claims/graph/"
@@ -4691,15 +4858,16 @@ tasks:
     description: >-
       Build the standing world from the public edition seed (docs/WORLD.md sections 2–5): the ledger
       phase on INS-interp with accounts, postings and holds; canonical replay with week hashes; week
-      seeds drawn at grade time; the checker slot keyed by LAB-4's reference checker (WORLD.md issue
-      1); and the front-end and interpreter attachment. A reference module fills an empty slot, and no
-      reference module runs on an incident's event before its audit event exists.
+      seeds drawn at grade time; the checker slot keyed by LAB-4's reference checker; and the
+      front-end and interpreter attachment. A reference module fills an empty slot, and no reference
+      module runs on an incident's event before its audit event exists.
     deliverables:
       - "apps/instruments/src/engines/clearinghouse/"
       - "content/world/"
     acceptance:
       - "GATE-generators: a canonical week renders identically in three engines"
       - "a gate fixture shows that no reference module runs before an incident's audit event"
+      - "a GATE-labs smoke test for the checker slot"
     implements: ["M-docket"]
     size: M
     model: opus
@@ -4804,6 +4972,7 @@ tasks:
       - "content/drawers/D-18.md"
     acceptance:
       - "GATE-links, GATE-numbers and GATE-runs green on the three drawers"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["D-09", "D-10", "D-18"]
     size: S
     model: opus
@@ -4872,7 +5041,9 @@ tasks:
     children: [W4-T16, W4-T17]
     description: >-
       Milestone closing when the isorun driver (W4-T16) and its validation on upstream isolationtester
-      specs (W4-T17) are done.
+      specs (W4-T17) are done. The recorded .out files under content/pg-catalog/ are the expected
+      outputs isorun is tested against, and the vendored upstream specs carry the PostgreSQL license
+      text (GATE-privacy).
     deliverables:
       - "bench/statespace/isorun.py"
       - "bench/statespace/lanes/pg.py"
@@ -4943,16 +5114,23 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      Build INS-pglite on the instrument origin: PGlite on one connection [X RUN-pglite], behind
-      consent (its first load is {{run:RUN-pglite-0511}}), with two "concurrent" sessions shown to
-      serialize, so that concurrency is always replayed from Bench histories. Row-level security runs
-      here only if W0-S08 passed. Add the GATE-conformance pair PGlite = PostgreSQL on single-session
-      specimens (rows, row counts and SQLSTATE).
+      Build INS-pglite on the instrument origin: PGlite on one connection [X RUN-pglite], with no
+      prompt before its download and the loader showing its first load, the compressed size of the
+      eleven files in the asset manifest, taken from that manifest (OD-6; W0-S08 measured it [X
+      RUN-pglite-0511]), with two "concurrent" sessions shown to serialize, so that concurrency is
+      always replayed from Bench histories. Follow W0-S08's decisions: a module worker with no
+      isolation headers, one instance per worker reset between items, and a role switch before every
+      RLS statement, because the connection is the superuser [X RUN-pglite-rls]. Add the
+      GATE-conformance pairs PGlite = PostgreSQL on single-session specimens (rows, row counts and
+      SQLSTATE) and on the RLS specimens: scripts/conformance/pglite-pg.mjs is built from W0-S08's
+      rls-spec.mjs, with RESET SESSION AUTHORIZATION recorded as the one difference (spine section
+      11.2 GATE-conformance).
     deliverables:
       - "apps/instruments/src/workers/pglite/"
       - "scripts/conformance/pglite-pg.mjs"
     acceptance:
       - "GATE-conformance: PGlite = PostgreSQL 18.6 [X RUN-pg-anomalies] on single-session specimens"
+      - "GATE-conformance: PGlite = PostgreSQL 18.6 on the RLS specimens of scripts/spikes/W0-S08/rls-spec.mjs, RESET SESSION AUTHORIZATION the one recorded difference [X RUN-pglite-rls]"
     implements: ["INS-pglite"]
     size: M
     model: sonnet
@@ -5015,8 +5193,10 @@ tasks:
       - "labs/reference/refinement/"
       - "labs/template/labs/LAB-6/"
       - "content/stages/S6/lab.yaml"
+      - "schemas/plan.schema.json"
     acceptance:
       - "GATE-labs, every check with rungs R0–R4, with the differential suite on PostgreSQL 18.6 [X RUN-pg-anomalies] and on PGlite"
+      - "plan@1 validates the plan value crossing the Lane A ABI (GATE-schema)"
     implements: ["LAB-6"]
     size: S
     spine_size: L
@@ -5033,16 +5213,18 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      Build INS-datalog per W0-S03's decision (Z3's Fixedpoint engine in the Pyodide worker, or the
-      TypeScript evaluator) and the INS-bench-souffle lane in statespace check
-      {{run:RUN-souffle-version}}. Add the GATE-conformance pair tab Datalog = Soufflé: equal
-      relations on the S7 fixtures, plus derivation heights if W0-T10 adopts curriculum/S07 SI-6.
+      Build INS-datalog on the decided engine, Z3's Fixedpoint in the Pyodide worker behind an adapter
+      (spine section 9.1), and the INS-bench-souffle lane in statespace check on the pinned Soufflé [X
+      RUN-souffle-version]. Follow W0-S03's decisions 2 to 5: the adapter's checks, translation,
+      read-back, derivations and printed budget cap; the fragment; heights gated; and the spike's
+      corpus as the first fixture set. Add the GATE-conformance pair tab Datalog = Soufflé: equal
+      relations on the S7 fixtures, plus derivation heights (curriculum/S07 SI-6, adopted).
     deliverables:
       - "apps/instruments/src/engines/datalog/"
       - "bench/statespace/lanes/souffle.py"
       - "scripts/conformance/datalog-souffle.mjs"
     acceptance:
-      - "GATE-conformance: equal relations"
+      - "GATE-conformance: equal relations and derivation heights"
     implements: ["INS-datalog", "INS-bench-souffle"]
     size: M
     model: sonnet
@@ -5087,7 +5269,10 @@ tasks:
       Milestone closing when S7's lessons (W4-T29 to W4-T31) and LAB-7's stages (W4-T32, W4-T33) are
       done. Residual: the S7 stage page (SEAM-10 planted; ER-3 and ER-9 cashed), technical note 3's
       prompt, and the twin cards (Cedar's three evidence layers; Zanzibar's "new enemy") with SHAs in
-      RUN-twin-pins.
+      RUN-twin-pins. S7.L4's lane (spine sections 3.7 and 5.2, CL-7.4): the tab on PGlite with the
+      Bench authoritative; the per-request setting through set_config('app.user', 'u', false);
+      PGlite's connection is the superuser, so the tab's owner probe is SET ROLE app_owner; and the
+      covert channel stated as the error class, with no key in the message [X RUN-pglite-rls].
     deliverables:
       - "content/stages/S7/stage.yaml"
       - "content/registry/twins/S7.yaml"
@@ -5122,7 +5307,10 @@ tasks:
     origin: spine
     children: [W4-T34, W4-T35]
     description: >-
-      Milestone closing when the S6 runs (W4-T34) and the S7 runs (W4-T35) are recorded.
+      Milestone closing when the S6 runs (W4-T34) and the S7 runs (W4-T35) are recorded. Its children
+      reuse scripts/spikes/W0-S08/rls-spec.mjs for RUN-pg-rls-owner, RUN-pg-rls-covert,
+      RUN-pg-rls-differential and RUN-pg-rls-semantics, and S7.L3 cell 3 prints its scope and bound
+      and sizes its sweep from the recorded per-case cost [X RUN-fixedpoint-equal].
     deliverables:
       - "runs/RUN-pg-sum-null.json"
       - "runs/RUN-pg-read-skew.json"
@@ -5132,6 +5320,7 @@ tasks:
       - "runs/RUN-pg-conditional-concurrent.json"
       - "runs/RUN-serializability-fixtures.json"
       - "runs/RUN-pg-enforce-commit.json"
+      - "runs/RUN-pg-sql-semantics.json"
       - "runs/RUN-z3-leaky-field.json"
       - "runs/RUN-z3-count-channel.json"
       - "runs/RUN-interp-revocation.json"
@@ -5143,8 +5332,10 @@ tasks:
       - "runs/RUN-z3-cross-tenant.json"
       - "runs/RUN-z3-selfcomp.json"
       - "runs/RUN-pg-rls-differential.json"
+      - "runs/RUN-pg-rls-semantics.json"
+      - "runs/RUN-pairs-reference.json"
     acceptance:
-      - "the nineteen S6–S7 runs of spine section 9.5 recorded (GATE-runs)"
+      - "the twenty-two S6–S7 runs of spine section 9.5 recorded (GATE-runs)"
     size: S
     spine_size: M
     model: sonnet
@@ -5188,15 +5379,16 @@ tasks:
       database refuses, and conservation is untouched), ER-3 (SEAM-3 cracked by SP-7.1 in S7.L7:
       confidentiality becomes [N] in CL-3.3's requirement-fit) and ER-9 (SEAM-9 cracked by SP-7.6 in
       S7.L8: replicas and ordering), each with its forecast item and remedy card, and wire ER-1 to
-      surface the deferred Kani drawer D-30. Each forecast is answered before the crack is shown, and
-      each remedy card offers the fixes spine section 5.4 lists for its erosion.
+      surface the deferred Kani drawer D-30, whose card W1-T44 writes. Each forecast is answered
+      before the crack is shown, and each remedy card offers the fixes spine section 5.4 lists for its
+      erosion.
     deliverables:
       - "content/seams/ER-1.yaml"
       - "content/seams/ER-3.yaml"
       - "content/seams/ER-9.yaml"
     acceptance:
       - "GATE-erosions"
-    implements: ["ER-1", "ER-3", "ER-9", "V2-08"]
+    implements: ["ER-1", "ER-3", "ER-9", "D-30", "V2-08"]
     size: S
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
@@ -5237,7 +5429,7 @@ tasks:
     review_h: 0
   - id: W4-T14
     wave: W4
-    title: "Clearinghouse plug-ins: compiler, users, teams and documents"
+    title: "Clearinghouse plug-ins: compiler, concurrent traffic, users, teams and documents"
     workstream: "Clearinghouse"
     kind: milestone
     origin: spine
@@ -5250,6 +5442,7 @@ tasks:
       - "content/world/families/"
     acceptance:
       - "the learner's compiler runs on PGlite inside the world, and the world gains users, teams, roles, documents and sharing"
+      - "concurrent command traffic replays recorded histories"
       - "GATE-audit-blind on the new incidents"
       - "plug-in smoke tests in GATE-labs"
       - "RUN-docket-baselines re-recorded"
@@ -5271,8 +5464,8 @@ tasks:
     description: >-
       Implement M-spec-duel: a spec rides in the URL fragment, never leaves the device, and is parsed
       only on the instrument origin, which returns a distinguishing state keyed by Z3. The duel opens
-      the screen that owns its item family; the instrument-origin page that renders the untrusted spec
-      still needs a screen ID (DESIGN.md issue 10).
+      the screen that owns its item family; the untrusted spec renders on SCR-instrument (spine
+      section 10.1), which W1-T14 builds.
     deliverables:
       - "apps/instruments/src/engines/fragment/"
       - "apps/site/src/components/spec-duel/"
@@ -5326,7 +5519,9 @@ tasks:
       Run statespace isorun on PostgreSQL's own isolationtester specs from the REL_18_STABLE branch
       and compare with upstream's expected outputs (curriculum/S06-correspondence.md section 11:
       simple-write-skew's permutations, and update-conflict-out passing), recording
-      RUN-isorun-upstream. Convert W0-S09's catalog rows into isorun fixtures.
+      RUN-isorun-upstream. Convert W0-S09's catalog rows into isorun fixtures. The recorded .out files
+      under content/pg-catalog/ are the expected outputs isorun is tested against, and the vendored
+      upstream specs carry the PostgreSQL license text (GATE-privacy).
     deliverables:
       - "runs/RUN-isorun-upstream.json"
       - "content/pg-catalog/"
@@ -5401,7 +5596,9 @@ tasks:
       serialization failure or deadlock). Every instance is a recorded PostgreSQL history from
       RUN-pg-catalog's grid, classified by the history checker, because the tab cannot run concurrent
       PostgreSQL and an altered history would be an unrun fact (ASSESSMENT.md issue 10). Report each
-      template's unseen supply, and add GEN-find-the-witness's history template.
+      template's unseen supply, and add GEN-find-the-witness's history template. The grid's defaults
+      stand as the owner accepted them with W0-S09, 200 histories per template and at least 100 per
+      half [D]; this task may regenerate the verbatim blocks from the seed for the tab bundle's index.
     deliverables:
       - "packages/generators/src/anomaly-id/"
       - "content/generators/GEN-anomaly-id/"
@@ -5486,15 +5683,16 @@ tasks:
     origin: refined
     parent: W4-T05
     description: >-
-      Author S6.L7 [bridge] "SERIALIZABLE and retries" (CL-6.5, termination as [A]; the
-      transient-error rule stays a [D] policy until {{run:RUN-pg-catalog}}), S6.L8 [core] "The
-      refinement relation R(S, D)" (CL-6.3; byzantine's checker as the model for the serial-order
-      search) and S6.L9 [bridge] "Postgres semantics is an assumption" (SP-6.9–SP-6.11; plants SEAM-9;
-      the dated Jepsen PostgreSQL report [jepsenpg] as the example; a light kernelspace strand that
-      re-stamps pool conformance as [T]). Each lesson meets spine section 3.0's tier anatomy and
-      PLAN.md section 11.1's authoring contract: every graded item names its generator family and
-      template, every tool fact is an executed run or a placeholder, and the rail shows segment titles
-      only.
+      Author S6.L7 [bridge] "SERIALIZABLE and retries" (CL-6.5, termination as [A]; 23505 and 23P01
+      are retried only inside a command that re-reads the key before it writes, a [D] policy because
+      the SQLSTATE alone does not say whether the condition persists [X RUN-pg-catalog], and the
+      classifier is told which commands re-check before a retry), S6.L8 [core] "The refinement
+      relation R(S, D)" (CL-6.3; byzantine's checker as the model for the serial-order search) and
+      S6.L9 [bridge] "Postgres semantics is an assumption" (SP-6.9–SP-6.11; plants SEAM-9; the dated
+      Jepsen PostgreSQL report [jepsenpg] as the example; a light kernelspace strand that re-stamps
+      pool conformance as [T]). Each lesson meets spine section 3.0's tier anatomy and PLAN.md section
+      11.1's authoring contract: every graded item names its generator family and template, every tool
+      fact is an executed run or a placeholder, and the rail shows segment titles only.
     deliverables:
       - "content/stages/S6/S6.L7.md"
       - "content/stages/S6/S6.L8.md"
@@ -5526,9 +5724,11 @@ tasks:
     deliverables:
       - "labs/reference/compiler/"
       - "labs/reference/refinement/"
+      - "schemas/plan.schema.json"
     acceptance:
       - "the reference compiler matches the interpreter's outcome classes on the differential fixtures on PostgreSQL and on PGlite"
       - "GATE-stamps: output of a reference module mints no learner stamp"
+      - "plan@1 validates the plan value crossing the Lane A ABI (GATE-schema)"
     size: M
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
@@ -5572,12 +5772,14 @@ tasks:
     parent: W4-T06
     description: >-
       Build LAB-6.6 (a retry policy for serialization failures and deadlocks with attempt logs; 22003
-      is never retried), LAB-6.7 (the learner's R(S, D) with the abstract-serializability check,
-      classifying the history fixture set as the reference does), LAB-6.8 (capstone S10.L4: a
-      transaction runtime wired to the learner's compiler, with the S6 differential suite passing
-      through it) and LAB-6.9 (claim cards with their [A] clauses), each with rungs R0–R4. Every check
-      also lists its receipt fields and Prove-it mutants that elaborate or build, or are predicted not
-      to (PLAN.md section 11.1); reference solutions stay in the private companion repository.
+      is never retried, and the classifier retries 23505 or 23P01 only for a command its declared
+      policy marks as re-reading the key before it writes [X RUN-pg-catalog]), LAB-6.7 (the learner's
+      R(S, D) with the abstract-serializability check, classifying the history fixture set as the
+      reference does), LAB-6.8 (capstone S10.L4: a transaction runtime wired to the learner's
+      compiler, with the S6 differential suite passing through it) and LAB-6.9 (claim cards with their
+      [A] clauses), each with rungs R0–R4. Every check also lists its receipt fields and Prove-it
+      mutants that elaborate or build, or are predicted not to (PLAN.md section 11.1); reference
+      solutions stay in the private companion repository.
     deliverables:
       - "labs/template/labs/LAB-6/"
       - "content/stages/S6/lab.yaml"
@@ -5655,10 +5857,14 @@ tasks:
       with derivations" (CL-7.1), S7.L3 [bridge] "Checking policies: distinguishing requests" (SP-7.7,
       CL-7.2; the small-scope claim read as Jackson's hypothesis) and S7.L4 [core] "Row-level security
       as enforcement" (SP-7.4, SP-7.5, CL-7.4; the owner bypass, the FORCE fix and the covert channel,
-      on the lane W0-S08 chose), from curriculum/S07-secrecy.md section 3. Each lesson meets spine
-      section 3.0's tier anatomy and PLAN.md section 11.1's authoring contract: every graded item
-      names its generator family and template, every tool fact is an executed run or a placeholder,
-      and the rail shows segment titles only.
+      in the tab on PGlite with the Bench authoritative), from curriculum/S07-secrecy.md section 3.
+      Each lesson meets spine section 3.0's tier anatomy and PLAN.md section 11.1's authoring
+      contract: every graded item names its generator family and template, every tool fact is an
+      executed run or a placeholder, and the rail shows segment titles only. S7.L4 sets the
+      per-request setting through set_config('app.user', 'u', false); PGlite's connection is the
+      superuser, so the tab's owner probe is SET ROLE app_owner; and the covert channel is stated as
+      the error class, with no key in the message [X RUN-pglite-rls]. S7.L3's cell 3 prints its scope
+      and bound and sizes its sweep from the recorded per-case cost [X RUN-fixedpoint-equal].
     deliverables:
       - "content/stages/S7/S7.L1.md"
       - "content/stages/S7/S7.L2.md"
@@ -5745,7 +5951,7 @@ tasks:
     parent: W4-T09
     description: >-
       Build LAB-7's template and stages LAB-7.1 (the reference policy in Soufflé and in the tab
-      engine; equal relations {{run:RUN-fixedpoint-equal}}), LAB-7.2 (the learner's read policy with
+      engine; equal relations [X RUN-fixedpoint-equal]), LAB-7.2 (the learner's read policy with
       derivations, matching the reference matrix on fresh worlds), LAB-7.3 ("no cross-tenant read"
       with a distinguishing request and a non-vacuity witness) and LAB-7.4 (RLS policies and the SET
       ROLE differential on PostgreSQL, plus the owner probe that catches the bypass, curriculum/S07
@@ -5777,10 +5983,10 @@ tasks:
       finds the planted leak, and the fix passes modulo the declassified fields), LAB-7.6 (revocation
       stated temporally beside its refuted twin, over interpreter traces in Lane A, with the bound
       printed), LAB-7.7 (the leak fix, the what/who/where/when declassification record and claim
-      cards) and the stretch LAB-7.8 (an Alloy model through INS-bench-alloy
-      {{run:RUN-alloy-version}}, D-16, or query containment, D-17). Every check also lists its receipt
-      fields and Prove-it mutants that elaborate or build, or are predicted not to (PLAN.md section
-      11.1); reference solutions stay in the private companion repository.
+      cards) and the stretch LAB-7.8 (an Alloy model through INS-bench-alloy [X RUN-alloy-version],
+      D-16, or query containment, D-17). Every check also lists its receipt fields and Prove-it
+      mutants that elaborate or build, or are predicted not to (PLAN.md section 11.1); reference
+      solutions stay in the private companion repository.
     deliverables:
       - "labs/template/labs/LAB-7/"
       - "content/stages/S7/lab.yaml"
@@ -5803,10 +6009,10 @@ tasks:
     origin: refined
     parent: W4-T10
     description: >-
-      Record the eight S6 runs of spine section 9.5: RUN-pg-sum-null, RUN-pg-read-skew,
+      Record the nine S6 runs of spine section 9.5: RUN-pg-sum-null, RUN-pg-read-skew,
       RUN-pg-mixed-levels, RUN-history-g2item, RUN-drt-transfers, RUN-pg-conditional-concurrent,
-      RUN-serializability-fixtures and RUN-pg-enforce-commit. curriculum/S06-correspondence.md section
-      11 proposes one more run for the single-session SQL cells; record it once W0-T10 registers it.
+      RUN-serializability-fixtures, RUN-pg-enforce-commit and RUN-pg-sql-semantics, the run for the
+      single-session SQL cells (curriculum/S06-correspondence.md section 11).
     deliverables:
       - "runs/RUN-pg-sum-null.json"
       - "runs/RUN-pg-read-skew.json"
@@ -5816,8 +6022,9 @@ tasks:
       - "runs/RUN-pg-conditional-concurrent.json"
       - "runs/RUN-serializability-fixtures.json"
       - "runs/RUN-pg-enforce-commit.json"
+      - "runs/RUN-pg-sql-semantics.json"
     acceptance:
-      - "the eight S6 runs recorded (GATE-runs)"
+      - "the nine S6 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -5825,7 +6032,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.5
-    proposed_ids: ["RUN-pg-sql-semantics"]
   - id: W4-T35
     wave: W4
     title: "Record the S7 runs"
@@ -5834,11 +6040,14 @@ tasks:
     origin: refined
     parent: W4-T10
     description: >-
-      Record the eleven S7 runs of spine section 9.5: RUN-z3-leaky-field, RUN-z3-count-channel,
+      Record the thirteen S7 runs of spine section 9.5: RUN-z3-leaky-field, RUN-z3-count-channel,
       RUN-interp-revocation, RUN-pg-rls-owner, RUN-pg-rls-covert, RUN-interp-new-enemy,
-      RUN-z3-hierarchy-unknown, RUN-datalog-matrix, RUN-z3-cross-tenant, RUN-z3-selfcomp and
-      RUN-pg-rls-differential. curriculum/S07-secrecy.md SI-3 proposes two more; record them once
-      W0-T10 registers them.
+      RUN-z3-hierarchy-unknown, RUN-datalog-matrix, RUN-z3-cross-tenant, RUN-z3-selfcomp,
+      RUN-pg-rls-differential, RUN-pg-rls-semantics and RUN-pairs-reference (the last two from
+      curriculum/S07-secrecy.md SI-3). Reuse scripts/spikes/W0-S08/rls-spec.mjs for the four RLS runs,
+      since it already runs the lesson's behaviors against PostgreSQL 18.6 [X RUN-pglite-rls]; in the
+      tab, PGlite's connection is the superuser, so its owner probe is SET ROLE app_owner, and the
+      covert channel is recorded as the error class, with no key in the message.
     deliverables:
       - "runs/RUN-z3-leaky-field.json"
       - "runs/RUN-z3-count-channel.json"
@@ -5851,8 +6060,10 @@ tasks:
       - "runs/RUN-z3-cross-tenant.json"
       - "runs/RUN-z3-selfcomp.json"
       - "runs/RUN-pg-rls-differential.json"
+      - "runs/RUN-pg-rls-semantics.json"
+      - "runs/RUN-pairs-reference.json"
     acceptance:
-      - "the eleven S7 runs recorded (GATE-runs)"
+      - "the thirteen S7 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
@@ -5860,7 +6071,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.5
-    proposed_ids: ["RUN-pg-rls-semantics", "RUN-pairs-reference"]
   - id: W4-T36
     wave: W4
     title: "Anchors AUD-6.1–AUD-6.3"
@@ -5870,10 +6080,10 @@ tasks:
     parent: W4-T13
     description: >-
       Author AUD-6.1 (G11, n differential runs stamped PROVED), AUD-6.2 (G10, a harness that compares
-      balances only) and AUD-6.3 (G6e as the primary class, with G7 accepted for the READ COMMITTED
-      pool form; AUDIT-DESK.md issue 10), keyed by PostgreSQL runs, with variants. Each anchor carries
-      typed evidence anchored to lines and a dated, sourced "based on" card with no exploit code
-      (PLAN.md section 11.1).
+      balances only) and AUD-6.3 (G6e as the primary class, with G7 or G8 accepted for the pool
+      variant; spine section 6.2), keyed by PostgreSQL runs, with variants. Each anchor carries typed
+      evidence anchored to lines and a dated, sourced "based on" card with no exploit code (PLAN.md
+      section 11.1).
     deliverables:
       - "content/audit/AUD-6.1.yaml"
       - "content/audit/AUD-6.2.yaml"
@@ -5934,6 +6144,7 @@ tasks:
     acceptance:
       - "the prerequisite cards D-11 and D-21 resolve (GATE-links)"
       - "GATE-lessons' copy rules on the bridge cards"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["M-sibling-bridge", "D-11", "D-21", "V2-31"]
     size: S
     model: opus
@@ -6064,6 +6275,7 @@ tasks:
       - "content/drawers/D-20.md"
     acceptance:
       - "GATE-links, GATE-numbers and GATE-runs green on the three drawers"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["D-16", "D-17", "D-20"]
     size: S
     model: opus
@@ -6130,7 +6342,8 @@ tasks:
     children: [W5-T14, W5-T15]
     description: >-
       Milestone closing when trace validation (W5-T14) and the simulator (W5-T15) are done; it records
-      RUN-tlc-trace-validation on LAB-8.c6's fixtures.
+      RUN-tlc-trace-validation on LAB-8.c6's fixtures. Its schemas/trace.schema.json requires the End
+      record and each event's fields (W0-S13 section 6).
     deliverables:
       - "runs/RUN-tlc-trace-validation.json"
       - "bench/statespace/trace.py"
@@ -6145,7 +6358,7 @@ tasks:
     spine_size: L
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
-    depends_on: [W3-T05, W5-T14, W5-T15]
+    depends_on: [W3-T05, W5-T14, W5-T15, W0-S13]
     status: todo
     owner_review: false
     review_h: 0
@@ -6160,7 +6373,10 @@ tasks:
       Milestone closing when S8's lessons (W5-T16 to W5-T18) and LAB-8's stages (W5-T19, W5-T20) are
       done. Residual: the S8 stage page (SEAM-12 planted; ER-4 and ER-8 cashed) and the twin cards
       (CCF's TLA+ trace validation; TigerBeetle's simulator as a disclosed link-out; Stripe's
-      idempotency documentation as a dated twin) with SHAs in RUN-twin-pins.
+      idempotency documentation as a dated twin) with SHAs in RUN-twin-pins. Spectacle-run specs
+      follow W0-S04's authoring rules: finite sets instead of Nat, Int and STRING; only the nine
+      built-in modules and the course's own; one operator per disjunct of Next; an implication inside
+      a box action formula parenthesized; and lesson constants inside the time budget.
     deliverables:
       - "content/stages/S8/stage.yaml"
       - "content/registry/twins/S8.yaml"
@@ -6203,6 +6419,8 @@ tasks:
       - "runs/RUN-tlc-crash-liveness.json"
       - "runs/RUN-tlc-outbox-safety.json"
       - "runs/RUN-tlc-recovery.json"
+      - "runs/RUN-sim-determinism.json"
+      - "runs/RUN-pglite-inbound-key.json"
       - "runs/inputs/S8/"
       - "runs/RUN-lean-stack-machine.json"
       - "runs/RUN-lean-preservation-frag.json"
@@ -6213,7 +6431,7 @@ tasks:
       - "runs/RUN-sql-validation.json"
       - "runs/RUN-pg-one-db.json"
     acceptance:
-      - "the fifteen S8–S9 runs of spine section 9.5 not recorded by W5-T01 or W5-T04 (GATE-runs)"
+      - "the seventeen S8–S9 runs of spine section 9.5 not recorded by W5-T01 or W5-T04 (GATE-runs)"
     size: S
     spine_size: M
     model: sonnet
@@ -6261,9 +6479,11 @@ tasks:
     description: >-
       Milestone closing when S9's lessons (W5-T23 to W5-T25) and LAB-9's stages (W5-T26 to W5-T28) are
       done. Residual: configure the two mini-Defences, each sampling only its half (half A:
-      S9.L1–S9.L4 with LAB-9.1–LAB-9.3 and AUD-9.1; half B: S9.L5–S9.L9 with LAB-9.4–LAB-9.12 and
-      AUD-9.2; AUDIT-DESK.md issue 14), technical note 4's prompt, the S9 stage page, the twin cards
-      (CompCert; Alive2; Cedar) and D-31's trigger at S9.L9.
+      S9.L1–S9.L4 with LAB-9.1–LAB-9.3, its Part C from AUD-9.1's pairs and the IR-level variants of
+      AUD-9.2; half B: S9.L5–S9.L9 with LAB-9.4–LAB-9.12, its Part C from both anchors' pairs and
+      variants, the G5 and G6b variants included; spine section 3.9), technical note 4's prompt, the
+      S9 stage page, the twin cards (CompCert; Alive2; Cedar) and D-31's trigger at S9.L9. The S9 lint
+      flags declare_syntax_cat in LAB-9 modules on the receipt's lints[] (D-22's trigger).
     deliverables:
       - "content/stages/S9/defence.yaml"
       - "content/stages/S9/stage.yaml"
@@ -6302,11 +6522,11 @@ tasks:
     origin: spine
     description: >-
       Publish report@1 and implement statespace export and the SCR-claims export: a traversal of the
-      claim graph into sections for proved, model-checked, tested, enforced, configured (or "none",
-      DESIGN.md issue 5), assumed and not covered; a checker matrix; statement hashes; budgets and
-      advisories; every open seam as [A]; the erosion log; and the defeater log as m of n
-      (curriculum/S10-assembly.md section 4). Every line of the report links to its claim, receipt or
-      run, so GATE-links resolves the whole export.
+      claim graph into sections for proved, model-checked, tested, enforced, configured (CL-7.4's
+      read-back, plus any line a learner adds), assumed and not covered; a checker matrix; statement
+      hashes; budgets and advisories; every open seam as [A]; the erosion log; and the defeater log as
+      m of n (curriculum/S10-assembly.md section 4). Every line of the report links to its claim,
+      receipt or run, so GATE-links resolves the whole export.
     deliverables:
       - "schemas/report.schema.json"
       - "packages/claims/report/"
@@ -6364,7 +6584,9 @@ tasks:
       agrees with the Lean reference: [T] with n goldens"), the course's erosion log fed by runs diffs
       and red nights, "what this cannot establish" (spine section 8.9), and the honor-system
       provenance statement (OD-8). A red night or a runs diff turns the affected course claims to
-      "unverified since <date>" without a code change (ARCHITECTURE.md section 13.4).
+      "unverified since <date>" without a code change (ARCHITECTURE.md section 13.4). Extend
+      content/assurance/gate-claims.json as course claims ship, and report the keep/kill reads on
+      SCR-assurance (spine section 12 item 58).
     deliverables:
       - "apps/site/src/screens/assurance/"
       - "content/assurance/"
@@ -6487,15 +6709,15 @@ tasks:
     review_h: 1
   - id: W5-T13
     wave: W5
-    title: "Clearinghouse provider plug-in and ER-12"
+    title: "Clearinghouse provider and validator plug-ins; ER-12"
     workstream: "Clearinghouse"
     kind: milestone
     origin: spine
-    children: [W5-T35]
+    children: [W5-T35, W5-T36]
     description: >-
-      Milestone closing when the effects phase (W5-T35) is done. Replay both published paths to show
-      that ER-12 fires by the oldest-open-erodible-seam rule, after S9, and re-record
-      RUN-docket-baselines.
+      Milestone closing when the effects phase (W5-T35) and the plans phase with the validator slot
+      (W5-T36) are done. Replay both published paths to show that ER-12 fires by the
+      oldest-open-erodible-seam rule, after S9, and re-record RUN-docket-baselines.
     deliverables:
       - "content/seams/ER-12.yaml"
       - "apps/instruments/src/engines/clearinghouse/"
@@ -6509,7 +6731,7 @@ tasks:
     spine_size: M
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
-    depends_on: [W4-T14, W5-T01, W3-T12, W5-T35]
+    depends_on: [W4-T14, W5-T01, W3-T12, W5-T35, W5-T36]
     status: todo
     owner_review: true
     review_h: 0.25
@@ -6521,17 +6743,25 @@ tasks:
     origin: refined
     parent: W5-T01
     description: >-
-      Implement `statespace trace validate <spec> <traces>`: validate NDJSON traces (trace@1, one
-      object per line) as behaviors of the learner's TLA+ spec with TLC by the trace-module method
-      W0-S13 tested, report n seeds, and stamp [T] with n seeds composed with the spec's [M]. Add the
-      trace lane to receipts. If the owner declined W0-S13, build the method from
-      curriculum/S08-effects.md's specification directly and keep the same acceptance fixtures.
+      Implement `statespace trace validate <spec> <traces>` on docs/spikes/W0-S13.md section 6: port
+      scripts/spikes/W0-S13/tv.mjs to bench/statespace/trace.py (the lint, the config, the parse of
+      TLC's output, tlcProblem and the printed line); ship TraceValidation.tla as a pinned course
+      file; and implement trace@1, one object per line, with the End record. Report n seeds and stamp
+      [T] with n seeds composed with the spec's [M], n counting accepted traces only. Add the trace
+      lane to receipts: receipt@1's traces block gains, per verdict, lines, matched, endRecord and the
+      trace's sha256 (distinctStates optional), and an error verdict with its reason; correct the
+      W0-T02 fixture schemas/fixtures/receipt/valid/trace-validation.json, whose partial verdict
+      carries line 4 (GATE-schema).
     deliverables:
       - "bench/statespace/trace.py"
       - "schemas/trace.schema.json"
+      - "schemas/receipt.schema.json"
+      - "schemas/fixtures/receipt/valid/trace-validation.json"
     acceptance:
       - "accepts the reference simulator's seed-1 trace and rejects the ack-before-durable mutant"
       - "GATE-schema on trace@1"
+      - "partial and error verdicts are reported and never counted toward n"
+      - "a slip in the trace module prints SANY's or TLC's message with its location (W0-S13 section 4.9), never TLC's generic first Error line"
     size: M
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
@@ -6549,8 +6779,8 @@ tasks:
     description: >-
       Build the reference simulator and INS-sim: the learner's wasm outbox machine under recorded
       fault seeds in the tab (not authoritative; TLC trace validation on the Bench is), with
-      statespace sim <seed> on the Bench and NDJSON export. curriculum/S08-effects.md proposes a
-      determinism run (seed 1's trace hash on two runs).
+      statespace sim <seed> on the Bench and NDJSON export. RUN-sim-determinism, which W5-T21 records,
+      keeps seed 1's trace hash from two runs (spine section 9.5).
     deliverables:
       - "apps/instruments/src/workers/lane-a/"
       - "labs/reference/simulator/"
@@ -6566,7 +6796,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 0.75
-    proposed_ids: ["RUN-sim-determinism"]
   - id: W5-T16
     wave: W5
     title: "S8 lessons S8.L1–S8.L3"
@@ -6697,8 +6926,8 @@ tasks:
       as specified), LAB-8.6 (NDJSON traces validated by TLC over n seeds; the ack-before-durable
       mutant rejected), LAB-8.7 (capstone S10.L5: the differential plus simulation suite, failures
       mounted as specimens), LAB-8.8 (claim cards with the [A] provider horizon) and the stretch
-      LAB-8.9 (the key TTL and replayed server errors in the spec), each with rungs R0–R4.
-      curriculum/S08 proposes a PGlite run for LAB-8.5's cells.
+      LAB-8.9 (the key TTL and replayed server errors in the spec), each with rungs R0–R4. LAB-8.5's
+      PGlite cells cite RUN-pglite-inbound-key, which W5-T21 records (spine section 9.5).
     deliverables:
       - "labs/template/labs/LAB-8/"
       - "content/stages/S8/lab.yaml"
@@ -6713,7 +6942,6 @@ tasks:
     status: todo
     owner_review: true
     review_h: 1.25
-    proposed_ids: ["RUN-pglite-inbound-key"]
   - id: W5-T21
     wave: W5
     title: "Record the S8 runs"
@@ -6722,12 +6950,14 @@ tasks:
     origin: refined
     parent: W5-T03
     description: >-
-      Record the seven S8 runs of spine section 9.5 with argv, constants and the deadlock setting,
+      Record the nine S8 runs of spine section 9.5 with argv, constants and the deadlock setting,
       writing the S8 reference specs that curriculum/S08-effects.md specifies as run inputs (its
       section 11 lists what each run must record): RUN-tlc-double-charge, RUN-tlc-lost-effect,
       RUN-tlc-fresh-key, RUN-tlc-key-ttl, RUN-tlc-crash-liveness, RUN-tlc-outbox-safety and
-      RUN-tlc-recovery. Each record follows run@1: engine, version, binary SHA-256, image, argv, input
-      and its hash, budget, outputs and the recording time.
+      RUN-tlc-recovery, plus RUN-sim-determinism (seed 1's trace hash from two runs of W5-T15's
+      reference simulator) and RUN-pglite-inbound-key (LAB-8.5's cells on PGlite). Each record follows
+      run@1: engine, version, binary SHA-256, image, argv, inputs and their hashes, budget, outputs
+      and the recording time.
     deliverables:
       - "runs/RUN-tlc-double-charge.json"
       - "runs/RUN-tlc-lost-effect.json"
@@ -6736,13 +6966,15 @@ tasks:
       - "runs/RUN-tlc-crash-liveness.json"
       - "runs/RUN-tlc-outbox-safety.json"
       - "runs/RUN-tlc-recovery.json"
+      - "runs/RUN-sim-determinism.json"
+      - "runs/RUN-pglite-inbound-key.json"
       - "runs/inputs/S8/"
     acceptance:
-      - "the seven S8 runs recorded (GATE-runs)"
+      - "the nine S8 runs recorded (GATE-runs)"
     size: S
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
-    depends_on: [W3-T05]
+    depends_on: [W3-T05, W5-T15]
     status: todo
     owner_review: true
     review_h: 0.5
@@ -6757,8 +6989,8 @@ tasks:
       Record the eight S9 runs of spine section 9.5 against W5-T04's challenge packs and reference
       proofs: RUN-lean-stack-machine, RUN-lean-preservation-frag, RUN-lean-hoist,
       RUN-lean-abort-blind, RUN-lean-leaky-compile, RUN-sql-shape-validator, RUN-sql-validation and
-      RUN-pg-one-db. Each record follows run@1: engine, version, binary SHA-256, image, argv, input
-      and its hash, budget, outputs and the recording time.
+      RUN-pg-one-db. Each record follows run@1: engine, version, binary SHA-256, image, argv, inputs
+      and their hashes, budget, outputs and the recording time.
     deliverables:
       - "runs/RUN-lean-stack-machine.json"
       - "runs/RUN-lean-preservation-frag.json"
@@ -7074,8 +7306,10 @@ tasks:
     description: >-
       Author AUD-9.1 (G10, preservation proved with an observer that ignores aborts; half A) and
       AUD-9.2 (G11, a validator that checks shape, not meaning; half B), keyed by Lean and
-      SQL-validation runs, with variants. Earlier stages' families may fill each half's Part C
-      (AUDIT-DESK.md issue 14).
+      SQL-validation runs, with variants. Half A's Part C draws on AUD-9.1's pairs and AUD-9.2's
+      IR-level variants, and half B's on both anchors' pairs and variants, the G5 and G6b variants
+      included; a half whose unseen pool runs short is topped up from earlier stages' anchor families
+      (spine section 3.9).
     deliverables:
       - "content/audit/AUD-9.1.yaml"
       - "content/audit/AUD-9.2.yaml"
@@ -7126,15 +7360,16 @@ tasks:
     description: >-
       Add the Clearinghouse's effects phase: the provider simulator per curriculum/S08-effects.md
       section 1.1 with seeded faults and NDJSON export, the outbox slot for the learner's machine, and
-      the duplicate-replies, crash-windows and provider-horizon families. Propose the GATE-conformance
-      row in which the provider simulator's traces validate against S8's reference spec with TLC
-      (WORLD.md issue 8). ER-12 cashes here once SEAM-12 is the learner's oldest open erodible seam.
+      the duplicate-replies, crash-windows and provider-horizon families. Build the GATE-conformance
+      row (spine section 11.2) in which the provider simulator's traces validate against S8's
+      reference spec with TLC. ER-12 cashes here once SEAM-12 is the learner's oldest open erodible
+      seam.
     deliverables:
       - "apps/instruments/src/engines/clearinghouse/"
       - "content/world/families/"
     acceptance:
       - "GATE-audit-blind on the effects incidents"
-      - "the provider simulator's traces validate against the S8 reference spec (GATE-conformance row, if adopted)"
+      - "the provider simulator's traces validate against the S8 reference spec (GATE-conformance row)"
     size: M
     model: opus
     model_reason: "World design: incident families, baselines and keys must neither leak nor mislead."
@@ -7147,13 +7382,13 @@ tasks:
     title: "Plans phase and the validator slot"
     workstream: "Clearinghouse"
     kind: work
-    origin: added
+    origin: refined
+    parent: W5-T13
     description: >-
       BRIEF section 7.4 names four plug-ins, among them the learner's validator checking plans, and
-      spine section 13 owns only the checker, compiler and outbox slots (curriculum/S09 issue 7;
-      WORLD.md issue 1). Add the plans phase with the learner's SQL validator from LAB-9.11 in a
-      validator slot and a plan-validation family. Under the world's own cut order this family moves
-      to the Audit Desk as variants of AUD-9.2 (WORLD.md section 9.4).
+      spine section 13 assigns the validator plug-in to W5-T13. Add the plans phase with the learner's
+      SQL validator from LAB-9.11 in a validator slot and a plan-validation family. Under the world's
+      own cut order this family moves to the Audit Desk as variants of AUD-9.2 (WORLD.md section 9.4).
     deliverables:
       - "apps/instruments/src/engines/clearinghouse/"
       - "content/world/families/"
@@ -7236,6 +7471,7 @@ tasks:
       - "content/drawers/D-19.md"
     acceptance:
       - "GATE-links, GATE-numbers and GATE-runs green on both drawers"
+      - "GATE-items, GATE-generators and GATE-kc on the drawers' items"
     implements: ["D-12", "D-19"]
     size: S
     model: opus
@@ -7254,8 +7490,8 @@ tasks:
       Wire the remaining deferred triggers as derived state, never stored (I2): D-31 when a
       correspondence field names Rust code to verify directly, and D-33 to D-40 when a claim line or a
       parked goal names their topic. Use the optional topics vocabulary and the structured
-      correspondence reference that curriculum/D-drawers.md issue 14 proposes, once W0-T10 adds them
-      to claim@1. A trigger surfaces a drawer in Today and unlocks nothing.
+      correspondence reference; the fields are in spine section 3.12 and claim@1 (W1-T15). A trigger
+      surfaces a drawer in Today and unlocks nothing.
     deliverables:
       - "packages/learner/triggers/"
       - "schemas/claim.schema.json"
@@ -7265,7 +7501,7 @@ tasks:
     implements: ["D-31", "D-33", "D-34", "D-35", "D-36", "D-37", "D-38", "D-39", "D-40"]
     size: S
     model: sonnet
-    model_reason: "Derived triggers over a schema field W0-T10 settles; clearly specified once settled."
+    model_reason: "Derived triggers over claim@1 fields that spine section 3.12 fixes; clearly specified."
     depends_on: [W5-T06, W3-T34]
     status: todo
     owner_review: true
@@ -7355,7 +7591,8 @@ tasks:
     description: >-
       Replace ARCHITECTURE.md section 14's starting budgets with logged measurements and hold them in
       GATE-bundle: route JavaScript for Boot and Today, the entry chunk, lesson routes, fonts, the
-      instrument host page, and engine first loads behind consent. Today must start offline.
+      instrument host page, and engine first loads, which download without a prompt while the loader
+      shows each size (OD-6). Today must start offline.
     deliverables:
       - "scripts/verify-bundle.mjs"
       - "docs/performance-budgets.md"
@@ -7376,10 +7613,10 @@ tasks:
     kind: work
     origin: spine
     description: >-
-      Build GATE-glyphs: every glyph in content is covered by the JuliaMono subset
-      {{run:RUN-juliamono-glyphs}} and the speech map, and, as DESIGN.md issue 7 proposes, every code
-      point is checked against the face assigned to its role, so a logic symbol in prose cannot fall
-      back silently. ASCII TLA+ stays the default.
+      Build GATE-glyphs: every glyph in content is covered by the JuliaMono subset [X
+      RUN-juliamono-glyphs] and the speech map, and, per spine section 11.2, every code point is
+      checked against the face assigned to its role, so a logic symbol in prose cannot fall back
+      silently. ASCII TLA+ stays the default.
     deliverables:
       - "scripts/verify-glyphs.mjs"
       - "content/speech-map.yaml"

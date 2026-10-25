@@ -9,7 +9,7 @@
 | `tracker/tasks.yaml` | The source of truth: the rules, the waves with their exit criteria, and one record per task | wave workflows and the owner |
 | `docs/TRACKER.md` | The human view: each wave's exit criteria and a checklist by workstream, the summary tables and the critical path | changed in the same commit as `tasks.yaml` |
 
-Both start from spine section 13 ([docs/spine/SPINE.md](../docs/spine/SPINE.md), revision 2). Its 108 tasks keep their IDs, titles and scope, because PLAN.md and the other documents cite them. The tracker refines and extends that list; it never renumbers it. GATE-links (built by W0-T03) reads task IDs and each task's `implements` list from `tasks.yaml`, and fails when `docs/TRACKER.md` shows a different status from `tasks.yaml`.
+Both start from spine section 13 ([docs/spine/SPINE.md](../docs/spine/SPINE.md), revision 3). Its 109 tasks (the 108 of revision 2 and W0-S13) keep their IDs, titles and scope, because PLAN.md and the other documents cite them. The tracker refines and extends that list; it never renumbers it. GATE-links (built by W0-T03) reads task IDs and each task's `implements` list from `tasks.yaml`, and fails when `docs/TRACKER.md` shows a different status from `tasks.yaml`.
 
 ## 2. The task record
 
@@ -33,8 +33,8 @@ Both start from spine section 13 ([docs/spine/SPINE.md](../docs/spine/SPINE.md),
 | `status` | `todo`, `in-progress`, `review` or `done` |
 | `owner_review` | `true` when the owner must review the result before it counts as `done` |
 | `review_h` | The owner-review estimate [D] from the spine's rubric: about 1.5 h per core lesson, 0.5 h per bridge, 2–3 h per lab, 0.3 h per audit anchor, 0.25 h per drawer, 0.5–1.5 h per spike or infrastructure decision |
-| `proposed_ids` | Run IDs a stage specification proposes but the spine does not yet register; GATE-links skips this field until W0-T10 registers or declines them |
-| `adopted` | Present only on proposed tasks; a workflow selects one only after the owner sets it to `true` |
+| `proposed_ids` | Run IDs a stage specification proposes but the spine does not yet register; GATE-links reports their uses as pending until a spine revision registers or declines them (none remain after revision 3) |
+| `adopted` | Present on proposed tasks; a workflow selects one only after the owner sets it to `true`. A task the spine later registers keeps it as the record of the owner's adoption (W0-S13) |
 
 Fields added as work proceeds:
 
@@ -131,7 +131,7 @@ Other changes:
 
 - **Adding a task:** give it the next unused number in its wave, add it to both files, and set `origin` and, for a child, `parent`. To refine an existing task, make it a milestone and move its work into children; keep its ID, title and acceptance.
 - **Declining a proposal:** delete the task from both files and from every `depends_on` list, and record the decision in docs/DECISIONS.md.
-- **Registering a proposed run:** once W0-T10 adds a run ID to the spine, move it from `proposed_ids` into the task's description or acceptance.
+- **Registering a proposed run:** spine revision 3 (W0-T10) registered every run ID that a task listed in `proposed_ids`, and each task now names them in its description, deliverables or acceptance, so no `proposed_ids` remain. A run ID proposed later goes into its task's `proposed_ids` or into `packages/ids/proposals.json` until the spine registers it; then it moves into the task's description or acceptance.
 - **Changing an estimate:** edit `review_h` and refresh the summary tables in `docs/TRACKER.md`.
 
 ## 9. The wave rule
@@ -143,3 +143,4 @@ When review runs behind, the order of response is fixed (PLAN.md section 13.2): 
 ## 10. Change log
 
 - **2026-10-24.** The tracker is created from spine revision 2, section 13: 263 tasks (108 spine, 114 refined, 39 added, 2 proposed); 183 opus and 80 sonnet; 104 S, 158 M and 1 L; 209.75 hours of planned owner review against the spine's 189.
+- **2026-10-25.** Spine revision 3 (W0-T10): W0-S13 joins section 13 (origin `spine`), W5-T36 becomes W5-T13's child, W2-T08 moves to opus, the proposed run IDs are registered and named in their tasks, and the descriptions follow the owner's decisions and the W0 results. 263 tasks (109 spine, 115 refined, 38 added, 1 proposed); 184 opus and 79 sonnet; 104 S, 158 M and 1 L; 209.75 hours of planned owner review against the spine's 192.75.

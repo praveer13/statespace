@@ -1,6 +1,6 @@
 # S3 Semantics (Mini-Plinth in Lean): curriculum spec
 
-**Status:** authoring spec for W2 (W2-T07 reference and goldens, W2-T08 IR and interpreter, W2-T09 lessons and LAB-3, W2-T10 runs, W2-T13 anchors; ladders W2-T06, Prove-it W2-T11, the Defence W2-T12). Draft: first-learner pass pending. **Date:** 2026-10-23 (machine clock). **IDs:** all from `docs/spine/SPINE.md` (revision 2); anything the spine lacks is marked "proposed" and listed in §14.
+**Status:** authoring spec for W2 (W2-T07 reference and goldens, W2-T08 IR and interpreter, W2-T09 lessons and LAB-3, W2-T10 runs, W2-T13 anchors; ladders W2-T06, Prove-it W2-T11, the Defence W2-T12). Draft: first-learner pass pending. **Date:** 2026-10-23 (machine clock); updated 2026-10-25 for spine revision 3. **IDs:** all from `docs/spine/SPINE.md` (revision 3); anything the spine lacks is marked "proposed" and listed in §14, each item there ending with its revision 3 outcome.
 
 **Sources** (precedence order): the roadmap; executed runs (`research/spikes/RESULTS.md`, `spikes/lean/Ledger.lean`, `evidence/a2r3/out/lean_trust.txt`, `evidence/A5r3/comp-run*.log`, `evidence/lean-measure/`); the brief (V2-15, V2-16, §4.3); the digests; reviews A1, A2 and A4; the spine.
 
@@ -28,7 +28,7 @@
 
 **KCs** (spine §4). Twelve; the threshold KCs KC-3.small-step-stuck and KC-3.progress-preservation-scope get extra calls, spiral returns (S6.L2, S9.L4; S4.L4, S9.L9) and items in the S3 and S9 Defences. Confusable set F (KC-3.refined-types, KC-3.nat-truncation with KC-1.encoding-is-the-claim) opens in S3.L7 after its exit items; KC-3.goldens-as-theorems joins set A when S6 opens it. Order inside lessons respects every `requires` edge.
 
-**Glossary.** S3 introduces "erosion" (ER-6, S3.L7) and "Clearinghouse" (after LAB-3, §5). **Content blocks:** V2-18's six. **Sibling bridges:** none in S3 (spine §3.3), so lessons omit the line; each lesson's instruments and generators are spine §3.3's, and each cell names its instrument.
+**Glossary.** S3 introduces "erosion" (ER-6, S3.L7) and "Clearinghouse" (after LAB-3, §5). **Content blocks:** V2-18's six, named in spine §12 item 48: prose, instrument, item, claim, specimen and card. The prequestion, the graded item and the exit item are item roles; the Build this line, the production twin and the dated incident are card roles. **Sibling bridges:** none in S3 (spine §3.3), so lessons omit the line; each lesson's instruments and generators are spine §3.3's, and each cell names its instrument.
 
 **Cadence** [D]. At 6 h/week (4.75 h of stage work) S3 takes five to six weeks, the lab interleaved, with a specimen or claim at least every two weeks: SP-3.1 and SP-3.4 (week 2), CL-3.3 and SP-3.3 (week 4), SP-3.2 (week 5), CL-3.5 (weeks 5–6). **Paths.** On the builder's path S3 follows S2 unchanged; D-14 is already read (LAB-8.4).
 
@@ -72,7 +72,7 @@ Design choices [D] unless tagged, settling what the spine leaves open.
 | dp:S13 | An `#eval` result is as good as a kernel-checked golden |
 | dp:S14 | A refined type is a run-time check that fires later |
 
-**Graded items** name a family and template (spine §8.3, numbered in its order). In S3, GEN-find-the-witness template 1 (model) takes a program, state and call, and template 2 (trace) a small-step trace; the engine (the reference typechecker, evaluator or stepper, or Z3) is the key, never a stored answer, and the learner then names the class. GEN-proof-structure goals come from real elaboration ({{run:RUN-lean-plaingoal}}); needed-hypothesis keys come from CI hypothesis deletion. Practice shows class hints; probes are one-shot.
+**Graded items** name a family and template (spine §8.3, numbered in its order). In S3, GEN-find-the-witness template 1 (model) takes a program, state and call, and template 2 (trace) a small-step trace; the engine (the reference typechecker, evaluator or stepper, or Z3) is the key, never a stored answer, and the learner then names the class. GEN-proof-structure goals come from real elaboration ([X RUN-lean-plaingoal]); needed-hypothesis keys come from CI hypothesis deletion. Practice shows class hints; probes are one-shot.
 
 **Today cards.** Each exit item creates FSRS cards (KC, family, template): at least 8 graded opportunities in 60 days, at about 1–3, 7, 21 and 45–60 days (spine §4.1).
 
@@ -454,16 +454,18 @@ Lessons: three core at 40–60 minutes, six bridges at 15–25. Build: 302 nomin
 
 ## 14. Spine issues
 
-1. **Three proposed runs** for §9.5 under W2-T10 (with S2's RUN-lean-s2-cells, eighteen S2–S3 runs, not fourteen): RUN-lean-golden-harness (no core `DecidableEq` for `Except`; with a derived one, goldens elaborate axiom-free; fueled structural definitions reduce under `decide`, well-founded ones do not) and RUN-lean-implemented-by (the kernel proves `spec 3 = 3`, `#eval` prints 4; A2-F13), both seen in unregistered scratch elaborations on 2026-10-23; and RUN-z3-nat-trunc (the truncation witness; the `Int`-plus-guard `unsat`, cvc5-checked).
-2. **Misconception IDs collide** with stage IDs (S1–S4) and gap classes (G1–G9). This spec and its siblings write `dp:`; the spine's ID table should adopt it. Proposed here: dp:S5–dp:S14.
-3. **CL-3.4 has no lab stage.** Minted from the reference proof, it reaches the learner's semantics through goldens; the alternative is a pinned lemma over the learner's `exec` in LAB-3.5 (+15–25 minutes).
-4. **SEAM-1 carriage.** CL-3.3 and CL-3.4 rest on unbounded `Int` under the unbounded decision; §5.3's "carried by" should name them, and ER-1's blast radius reaches their correspondence.
-5. **Golden prerequisites** (a finite state, an `Except` instance, a structural evaluator; §1.1 items 1–2) belong in §3.3 and W2-T07's acceptance.
-6. **Template list.** §3.3's template should also supply `Inv` and `Policy`, or a learner could weaken `Inv`.
-7. **receipt@1** needs a golden block, `goldens {poolSha, n, passed, failed, noVerdict}` (§9.4).
-8. **"Fresh seeds"** for kernel-checked goldens can only mean seeded sampling from a build-time pool; say so in §3.3 and under I3.
-9. **The reference and "no `_solutions`".** `MiniPlinthRef` answers LAB-3.3; ship it as a pinned dependency learner semantics may not import (§1.1 item 8).
-10. **Manual mode** disables `grind` and `omega`; LAB-3.4–LAB-3.5 keep `omega` (§1.1 item 10). Log per-lab variants in §12.
-11. **Additions within the spine's patterns:** a fifth Part B mutation (B5); a TigerBeetle twin card in S3.L2.
-12. **Cross-stage (S04 spec).** S04 keeps v0's one-statement bodies (§1.1 item 5), but its holds example counts `held` against `bal` (`n ≤ bal − held`), while v0 moves held funds into escrow accounts, so `balance` is already the available balance; LAB-4's step relation must use v0's encoding, or its witnesses will not replay in the interpreter.
-13. **Cross-stage (S06 spec).** S06's plan writes "Ok with no SQL" for an allowed self-transfer, but S3 runs the guard first, so a self-transfer above the balance is `guardFailed`; the plan must still check the balance, or the differential diverges.
+Resolved in spine revision 3 on 2026-10-25 (spine §15); the section numbers in each item's closing note are the spine's.
+
+1. **Three proposed runs** for §9.5 under W2-T10 (with S2's RUN-lean-s2-cells, eighteen S2–S3 runs, not fourteen): RUN-lean-golden-harness (no core `DecidableEq` for `Except`; with a derived one, goldens elaborate axiom-free; fueled structural definitions reduce under `decide`, well-founded ones do not) and RUN-lean-implemented-by (the kernel proves `spec 3 = 3`, `#eval` prints 4; A2-F13), both seen in unregistered scratch elaborations on 2026-10-23; and RUN-z3-nat-trunc (the truncation witness; the `Int`-plus-guard `unsat`, cvc5-checked). *Revision 3: already resolved (§9.5, §13 W2-T10).*
+2. **Misconception IDs collide** with stage IDs (S1–S4) and gap classes (G1–G9). This spec and its siblings write `dp:`; the spine's ID table should adopt it. Proposed here: dp:S5–dp:S14. *Revision 3: already resolved (ID conventions; §12 item 40).*
+3. **CL-3.4 has no lab stage.** Minted from the reference proof, it reaches the learner's semantics through goldens; the alternative is a pinned lemma over the learner's `exec` in LAB-3.5 (+15–25 minutes). *Revision 3: already resolved (§5.2 CL-3.4).*
+4. **SEAM-1 carriage.** CL-3.3 and CL-3.4 rest on unbounded `Int` under the unbounded decision; §5.3's "carried by" should name them, and ER-1's blast radius reaches their correspondence. *Revision 3: already resolved (§5.3 SEAM-1).*
+5. **Golden prerequisites** (a finite state, an `Except` instance, a structural evaluator; §1.1 items 1–2) belong in §3.3 and W2-T07's acceptance. *Revision 3: already resolved (§3.3, §13 W2-T07).*
+6. **Template list.** §3.3's template should also supply `Inv` and `Policy`, or a learner could weaken `Inv`. *Revision 3: already resolved (§3.3 LAB-3).*
+7. **receipt@1** needs a golden block, `goldens {poolSha, n, passed, failed, noVerdict}` (§9.4). *Revision 3: already resolved (§9.4).*
+8. **"Fresh seeds"** for kernel-checked goldens can only mean seeded sampling from a build-time pool; say so in §3.3 and under I3. *Revision 3: already resolved (§3.3, §1.1 I3).*
+9. **The reference and "no `_solutions`".** `MiniPlinthRef` answers LAB-3.3; ship it as a pinned dependency learner semantics may not import (§1.1 item 8). *Revision 3: already resolved (§3.3, §11.2 GATE-guardrails).*
+10. **Manual mode** disables `grind` and `omega`; LAB-3.4–LAB-3.5 keep `omega` (§1.1 item 10). Log per-lab variants in §12. *Revision 3: already resolved (§3.3, §12 item 41).*
+11. **Additions within the spine's patterns:** a fifth Part B mutation (B5); a TigerBeetle twin card in S3.L2. *Revision 3: already resolved (§3.3).*
+12. **Cross-stage (S04 spec).** S04 keeps v0's one-statement bodies (§1.1 item 5), but its holds example counts `held` against `bal` (`n ≤ bal − held`), while v0 moves held funds into escrow accounts, so `balance` is already the available balance; LAB-4's step relation must use v0's encoding, or its witnesses will not replay in the interpreter. *Revision 3: already resolved (§3.4 LAB-4).*
+13. **Cross-stage (S06 spec).** S06's plan writes "Ok with no SQL" for an allowed self-transfer, but S3 runs the guard first, so a self-transfer above the balance is `guardFailed`; the plan must still check the balance, or the differential diverges. *Revision 3: already resolved (§3.6 S6.L2).*

@@ -40,7 +40,7 @@
 7. **S10, "a research artifact even if a broad Plinth platform never ships."** Not stated. File: `curriculum/S10-assembly.md`.
 8. **Purpose, "not a deadline or a commitment to a fixed architecture."** Half missing (§1). File: `README.md`.
 9. **Working approach, 20/65/15.** PLAN §4.4 asserts a match the spine (§3.11, revision M9) explicitly replaced. File: `docs/PLAN.md`.
-10. **Learning rule 3 has no KC.** The six-field skill is checked by claim@1 validation in labs but is never a KC, so it is never spaced or sampled in a Defence (D-drawers spine issue 3, still open). File: `docs/spine/SPINE.md`.
+10. **Learning rule 3 had no KC.** The six-field skill was checked by claim@1 validation in labs but was never a KC, so it was never spaced or sampled in a Defence (D-drawers spine issue 3). *Closed in spine revision 3:* KC-1.claim-anatomy holds it, first taught in S1.L3 with D-06 (spine §4, §12 item 43). File: `docs/spine/SPINE.md`.
 11. **Tool order, Rust.** See §2. File: `docs/spine/SPINE.md`.
 12. **No gate keeps this matrix true.** Cut eligibility (spine §14) protects the sole lesson of a completion test but not the sole lesson of a roadmap project sentence, theory term or resource (S3.L8 is the only lesson on "termination", S4.L1 the only Hoare-logic lesson, S2.L1 the NNG lesson; all are cut-eligible). No GATE checks roadmap clauses against lesson and lab IDs. File: `docs/spine/SPINE.md`.
 
@@ -277,7 +277,7 @@
 |---|---|---|---|
 | 1. Read only enough theory; revisit it when the artifact exposes a gap | just-in-time drawers surfaced on a miss (D-drawers §0); bridge reading pointers; budgets below the roadmap's bounds (spine §3.11) | C | |
 | 2. Preserve broken examples and counterexample traces beside fixed versions | labs/README §9.3; labs/AGENTS.md (`broken/**` never edited); specimens | C | |
-| 3. Explain every guarantee in six parts | claim cards and GATE-claims; D-06; PLAN §1.1 | P | Checked in labs but no KC (§3, item 10) |
+| 3. Explain every guarantee in six parts | claim cards and GATE-claims; KC-1.claim-anatomy, first taught in S1.L3 with D-06 (spine §4, §12 item 43); PLAN §1.1 | C | Spaced in Today and sampled in Defences as the learner's own; closes §3, item 10 |
 | 4. Don't equate Lean's proof checking with the business requirement | S2.L10; KC-2.kernel-not-requirement; DESIGN principle 4; requirement-fit never [P] | C | |
 | 5. Publish a short technical note every 2–3 stages | M-notes after S2, S5, S7 and S9 (spine §7); PLAN §5.4; `notes/` in the lab repo | C\* | Publishing is optional, so nothing is coerced |
 | 6. Track progress by what you can reason about | VRK₃₀ (spine §2.3; ASSESSMENT §3.6); weekly review (PLAN §5.4) | C | |
