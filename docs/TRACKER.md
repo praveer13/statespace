@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** as of 2026-10-25, 17 of the 263 tasks are `done` and 6 are in `review`: W0-S13, W0-T09 and W0-T10, and W0-S01, W0-S02 and W0-S08, which OD-6 reopened on 2026-10-25 and whose re-review covers only their addenda. The other 240 are `todo`. On the review page the owner accepted all 20 W0 tasks the wave workflow verified (see [the W0 wave report](waves/W0-report.md), sections 9 and 10). The owner's review queue is 4.5 hours, under the 10-hour gate (OD-7); W0-T11, the exit review, starts once those six are `done`. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-25, 23 of the 263 tasks are `done`: every W0 task except the exit review, W0-T11. The owner accepted the twenty W0 tasks the wave workflow verified on the review page, and W0-T09, W0-T10, W0-S13 and the OD-6 addenda of W0-S01, W0-S02 and W0-S08 in conversation (see [the W0 wave report](waves/W0-report.md), sections 9 and 10). The other 240 are `todo`. The owner's review queue is 0 hours, under the 10-hour gate (OD-7). **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -126,25 +126,25 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Spikes
 
-- [=] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
-- [=] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
+- [x] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
+- [x] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
 - [x] W0-S03 · Z3 `Fixedpoint` for Stage 7 · S · sonnet · —
 - [x] W0-S04 · Spectacle on Stage 5/8 specs and state pairs · M · opus · —
 - [x] W0-S05 · TLC lasso JSON · S · sonnet · —
 - [x] W0-S06 · Sandbox lanes and `--paranoid` timing [X RUN-bwrap-lanes] · M · sonnet · —
 - [x] W0-S07 · `vcgen` on a custom `Cmd` · S · opus · —
-- [=] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
+- [x] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
 - [x] W0-S09 · PostgreSQL 18.6 isolation catalog rows [X RUN-pg-anomalies] · M · sonnet · —
 - [x] W0-S10 · Goal Replay via `$/lean/plainGoal` · S · sonnet · —
-- [=] W0-S13 · Trace validation by TLC's trace-module method · S · opus · —
+- [x] W0-S13 · Trace validation by TLC's trace-module method · S · opus · —
 
 ### Governance
 
 - [x] W0-T01 · Publication hygiene · S · opus · —
 - [x] W0-T03 · ID registry generated from this spine · M · sonnet · —
 - [x] W0-T07 · Keep/kill rules fixed in advance (n = 1) · S · opus · W0-T02
-- [=] W0-T09 · Owner review of OD-1 to OD-15 (added) · S · sonnet · —
-- [=] W0-T10 · Spine revision 3 from the companion specs' issues (added) · M · opus · W0-T03
+- [x] W0-T09 · Owner review of OD-1 to OD-15 (added) · S · sonnet · —
+- [x] W0-T10 · Spine revision 3 from the companion specs' issues (added) · M · opus · W0-T03
 
 ### Platform
 
