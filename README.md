@@ -312,6 +312,8 @@ statespace is built by one person, the owner, working with coding agents.
 
 ## License
 
-No license has been chosen yet. The owner will choose a license for the course content and one for the code, which may differ. Until a license file is added, nothing in this repository is offered under an open license.
+- **Code** is under the [MIT License](LICENSE): the apps, the packages, the scripts and gates, the schemas, the lab templates and checkers, the Bench image, the CI workflows and the configuration.
+- **Course content** is under [Creative Commons Attribution 4.0 International](LICENSE-CONTENT) (CC BY 4.0): the stage and lesson text, exercises, items, audit cases, figures, the docs, the curriculum and the research write-ups. Where a file holds both, as lesson data written as code does, its prose and figures are content and the rest is code.
+- The owner chose both licenses for statespace and for kernelspace (OD-16).
 
-Third-party material keeps its own terms. Every vendored directory will carry its license file, which GATE-privacy checks. The self-explanation unit in S2.L0 will adapt a CC BY-SA self-explanation booklet only if its authors agree, and then in its own directory under that license (OD-10); otherwise W2-T05 writes an original unit. The reviewers' raw JSON files stay out of the repository (OD-11); the digests summarize them.
+Third-party material keeps its own terms, and every vendored directory carries its license file, which GATE-privacy checks: `vendor/kernelspace/` (MIT, with the ts-fsrs notice beside it), the TLA+ tools in `bench/image/tla2tools/` (MIT) and Docker's seccomp profiles in `.devcontainer/seccomp/` and `runs/RUN-bwrap-lanes/profiles/` (Apache-2.0). The upstream copies the research spikes ran against are not committed; [research/evidence/THIRD-PARTY.md](research/evidence/THIRD-PARTY.md) lists them with their licenses. If the self-explanation unit in S2.L0 adapts the CC BY-SA self-explanation booklet, the adaptation lives in its own directory under that license (OD-10). The reviewers' raw JSON files stay out of the repository (OD-11); the digests summarize them.

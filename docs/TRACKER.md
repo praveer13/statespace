@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** as of 2026-10-24, 20 of the 263 tasks are in `review` (the W0 tasks the wave workflow verified; see [the W0 wave report](waves/W0-report.md)) and the other 243 are `todo`. The owner's review queue is 13.75 hours, above the 10-hour gate (OD-7), so no task with owner review starts until the queue falls under it. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 2), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-25, 20 of the 263 tasks are `done`: the W0 tasks the wave workflow verified, which the owner accepted on the review page (see [the W0 wave report](waves/W0-report.md), section 9). The other 243 are `todo`. The owner's review queue is 0 hours, under the 10-hour gate (OD-7), so W0's last four tasks (W0-T09, W0-T10, W0-S13 and W0-T11) may start. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 2), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -65,7 +65,7 @@ The spine's calendar counts 189 hours of owner review [D]: 184 hours of section 
 | Owner decisions and spine revision 3 | W0-T09, W0-T10 | 2.5 |
 | Wave exit reviews and the edition 1 release | W0-T11, W1-T47, W2-T46, W3-T45, W4-T45, W5-T42, W6-T14 | 2 |
 | Boot's placement walk and the world's validator plug-in | W1-T45, W5-T36 | 1 |
-| Proposed by companion specifications, awaiting adoption | W0-S13, W4-T41 | 1 |
+| Proposed by companion specifications (W0-S13 adopted; W4-T41 awaiting adoption) | W0-S13, W4-T41 | 1 |
 | **Total** | **263** | **209.75** |
 
 Net of the screen-reader passes, the tracker adds 20.75 hours to the spine's calendar, about 8 weeks at 2.5 hours a week; proposed tasks, which the owner may decline, account for 1 of them. If a wave's total outruns its window, the cut order of spine section 14 applies before the queue gate is relaxed, and logged review time replaces these estimates after each wave (PLAN.md section 14.5).
@@ -82,7 +82,7 @@ Net of the screen-reader passes, the tracker adds 20.75 hours to the spine's cal
 
 ### Proposed tasks and proposed run IDs
 
-W0-S13 (a trace-validation spike, from curriculum/S08-effects.md issue 1) and W4-T41 (a Lean reference for S7, from curriculum/S07-secrecy.md SI-8) are proposals: tasks.yaml marks them `adopted: false`, and no workflow selects them until the owner adopts them. Run IDs that the stage specifications propose, but the spine does not yet register, are listed under each task's `proposed_ids` in tasks.yaml rather than on this page; GATE-links skips that field until W0-T10 registers or declines them.
+W0-S13 (a trace-validation spike, from curriculum/S08-effects.md issue 1) and W4-T41 (a Lean reference for S7, from curriculum/S07-secrecy.md SI-8) are proposals, and no workflow selects one until the owner adopts it. The owner adopted W0-S13 on 2026-10-25 (decision Q-2), so tasks.yaml marks it `adopted: true`; W4-T41 is still `adopted: false`. Run IDs that the stage specifications propose, but the spine does not yet register, are listed under each task's `proposed_ids` in tasks.yaml rather than on this page; GATE-links skips that field until W0-T10 registers or declines them.
 
 ## Critical path
 
@@ -126,41 +126,41 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Spikes
 
-- [=] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
-- [=] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
-- [=] W0-S03 · Z3 `Fixedpoint` for Stage 7 · S · sonnet · —
-- [=] W0-S04 · Spectacle on Stage 5/8 specs and state pairs · M · opus · —
-- [=] W0-S05 · TLC lasso JSON · S · sonnet · —
-- [=] W0-S06 · Sandbox lanes and `--paranoid` timing [X RUN-bwrap-lanes] · M · sonnet · —
-- [=] W0-S07 · `vcgen` on a custom `Cmd` · S · opus · —
-- [=] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
-- [=] W0-S09 · PostgreSQL 18.6 isolation catalog rows [X RUN-pg-anomalies] · M · sonnet · —
-- [=] W0-S10 · Goal Replay via `$/lean/plainGoal` · S · sonnet · —
-- [ ] W0-S13 · Trace validation by TLC's trace-module method (proposed) · S · opus · —
+- [x] W0-S01 · Instrument origin on a custom subdomain · S · opus · —
+- [x] W0-S02 · Pyodide-Z3 on real phones · S · sonnet · W0-S01
+- [x] W0-S03 · Z3 `Fixedpoint` for Stage 7 · S · sonnet · —
+- [x] W0-S04 · Spectacle on Stage 5/8 specs and state pairs · M · opus · —
+- [x] W0-S05 · TLC lasso JSON · S · sonnet · —
+- [x] W0-S06 · Sandbox lanes and `--paranoid` timing [X RUN-bwrap-lanes] · M · sonnet · —
+- [x] W0-S07 · `vcgen` on a custom `Cmd` · S · opus · —
+- [x] W0-S08 · PGlite RLS and first-load size · S · sonnet · —
+- [x] W0-S09 · PostgreSQL 18.6 isolation catalog rows [X RUN-pg-anomalies] · M · sonnet · —
+- [x] W0-S10 · Goal Replay via `$/lean/plainGoal` · S · sonnet · —
+- [ ] W0-S13 · Trace validation by TLC's trace-module method (proposed; adopted) · S · opus · —
 
 ### Governance
 
-- [=] W0-T01 · Publication hygiene · S · opus · —
-- [=] W0-T03 · ID registry generated from this spine · M · sonnet · —
-- [=] W0-T07 · Keep/kill rules fixed in advance (n = 1) · S · opus · W0-T02
+- [x] W0-T01 · Publication hygiene · S · opus · —
+- [x] W0-T03 · ID registry generated from this spine · M · sonnet · —
+- [x] W0-T07 · Keep/kill rules fixed in advance (n = 1) · S · opus · W0-T02
 - [ ] W0-T09 · Owner review of OD-1 to OD-15 (added) · S · sonnet · —
 - [ ] W0-T10 · Spine revision 3 from the companion specs' issues (added) · M · opus · W0-T03
 
 ### Platform
 
-- [=] W0-S12 · Vendoring and a React 19 / Vite 7 scaffold {{run:RUN-scaffold}} · M · sonnet · —
-- [=] W0-T04 · CI lanes: fast, nightly, release stub · S · sonnet · W0-S12, W0-S11
-- [=] W0-T05 · Devcontainer, `statespace doctor`, Codespaces prebuild · M · sonnet · W0-S06, W0-S11
+- [x] W0-S12 · Vendoring and a React 19 / Vite 7 scaffold {{run:RUN-scaffold}} · M · sonnet · —
+- [x] W0-T04 · CI lanes: fast, nightly, release stub · S · sonnet · W0-S12, W0-S11
+- [x] W0-T05 · Devcontainer, `statespace doctor`, Codespaces prebuild · M · sonnet · W0-S06, W0-S11
 
 ### Gates
 
-- [=] W0-T06 · GATE-budget over the stage plans · S · sonnet · W0-T03
-- [=] W0-T08 · GATE-facts and the facts registry (added) · S · opus · W0-S11
+- [x] W0-T06 · GATE-budget over the stage plans · S · sonnet · W0-T03
+- [x] W0-T08 · GATE-facts and the facts registry (added) · S · opus · W0-S11
 
 ### Evidence and claims
 
-- [=] W0-S11 · Receipt schema, `runs/`, lints · M · opus · W0-T02
-- [=] W0-T02 · One JSON Schema with TypeScript and Python codegen · S · sonnet · —
+- [x] W0-S11 · Receipt schema, `runs/`, lints · M · opus · W0-T02
+- [x] W0-T02 · One JSON Schema with TypeScript and Python codegen · S · sonnet · —
 
 ### Wave exit
 

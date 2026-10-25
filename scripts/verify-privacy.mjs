@@ -27,7 +27,7 @@
  * requires us to keep.
  *
  * Warnings, which --strict turns into failures: no hashed term list in the environment; fewer than
- * two course licenses at the root (OD-16, open for the owner); a .gitignore that no longer excludes
+ * two course licenses at the root (OD-16); a .gitignore that no longer excludes
  * the review JSONs. The release lane, and the push lane once the owner has set the CI secrets, run
  * with --strict.
  *

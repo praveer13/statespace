@@ -58,6 +58,7 @@ Each line repeats the "In one line" of a record below. The first table is the fo
 | OD-13 · Sigstore attestations | Sigstore attestations are off by default and may be enabled only on a learner's own public repository. | Before receipt@1 is published (W0-S11), so that a schema change is not forced later. |
 | OD-14 · Name of the persistent world | The persistent world is called "the Clearinghouse" for now, and the course keeps its coined nouns few. | Before W3-T14. |
 | OD-15 · Lab shape | Proposed by the spine, not an owner decision yet; full record is Log item 4. | Owner review |
+| OD-16 · Course licenses | Code is under the MIT License and course content under CC BY 4.0, in statespace and in kernelspace. | Settled 2026-10-25. |
 
 ### Contested items in the brief
 
@@ -344,6 +345,21 @@ The brief's recommendations (BRIEF §8) are adopted as defaults, and the spine r
 ### OD-15 · Lab shape (noted, not one of the fourteen)
 
 The spine proposes a lab shape of 10 labs with 91 stages (83 planned and 8 `[stretch]`), against the brief's 9 labs and "~45 stages", and asks the owner to review it as OD-15 (SPINE §1.2). The full record is Log item 4. **Status.** Proposed by the spine, awaiting owner review; it is not an adopted default.
+
+### OD-16 · Course licenses
+
+**In one line.** Code is under the MIT License and course content under CC BY 4.0, in statespace and in kernelspace.
+
+- **Decision.** Which licenses the course offers its own code and content under, and which license kernelspace's vendored code carries.
+- **Adopted default.** None: OD-16 was open. The review page offered MIT for code and CC BY 4.0 for content as a suggestion, and the owner chose both for both repositories.
+- **Rationale and sources.**
+  - A public file without a license grants a reader no rights, and GATE-privacy kept the fast lane red while `vendor/kernelspace/` had no license file of its own (W0-T01, W0-S12) [X RUN-privacy-gate].
+  - MIT is the license kernelspace's Rust crates already declared, and CC BY 4.0 lets anyone reuse and adapt the text and figures with credit. Neither is copyleft, so learners may build on the lab templates and checkers in their own projects under any terms [D].
+  - The OD-10 booklet, if adapted, keeps its CC BY-SA terms in its own directory, and third-party material keeps its own license (README, License).
+- **Consequences.** `LICENSE` (MIT) and `LICENSE-CONTENT` (CC BY 4.0) at the root of both repositories, and a License section in each README that says which files are code and which are content. kernelspace gained a `NOTICE` for ts-fsrs. `vendor/kernelspace/` is pinned to kernelspace's licensed commit `80c8537e`, which changed no vendored file, and carries upstream's `LICENSE`. GATE-privacy's vendor-license finding and its course-license warning clear.
+- **How to change it later.** Future versions can be relicensed at any time, but copies already published stay available under these terms. The copyright lines name "the statespace authors" and "the kernelspace authors"; putting a person's name there is a one-line edit.
+- **Settle by.** Before the first public push; settled late, on 2026-10-25.
+- **Status.** Decided 2026-10-25: the owner took the suggestion, MIT for code and CC BY 4.0 for content, for statespace and for kernelspace (review page).
 
 ## 2. Contested items in the brief (BRIEF §5.1)
 
