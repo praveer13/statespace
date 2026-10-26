@@ -1,0 +1,799 @@
+{
+  "id": "RUN-tlc-outbox-safety",
+  "title": "The full outbox design (CL-8.1, CL-8.2): no error and a complete exploration with every window, two crashes and one stable key; design B loses its intent; a handler without the lateness check captures a released hold",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S8.L3 cell 2's Outbox_full configuration (and two commands); the no-outbox designs of S8.L1; S8.L4's reply handler with all checks and with status and cost only",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:41:11.995Z",
+  "started_at": "2026-10-26T16:41:09.453Z",
+  "duration_s": 2.527,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-outbox-safety-full-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "Outbox_full.cfg",
+    "Outbox"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-outbox-safety/inputs/Outbox.tla",
+      "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+      "bytes": 4304,
+      "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+      "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+      "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+      "bytes": 3474,
+      "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/inputs/Outbox_full.cfg",
+      "sha256": "a282759070645c7f441806534756744b29a8b50667cf26dbead5abe3408bd665",
+      "bytes": 288,
+      "role": "config: S8.L3 cell 2's configuration text, verbatim"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_full2.cfg",
+      "sha256": "96185a8ed5f0fb564778349af506f3e783836dba2ff1cbbcc1893cdbaaff08e7",
+      "bytes": 292,
+      "role": "config, two commands"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox.tla",
+      "sha256": "b090d7d06f471084edd12c8bbfc9b093d3d1698e81296217a9cb949774eb8739",
+      "bytes": 2480,
+      "role": "spec: S8.L1's designs A and B (W0-S04's representative)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox_cts.cfg",
+      "sha256": "d2e54ba193741828470f1f1e7ea2e05e2ba4346c69abc2ea0167482ebc785c04",
+      "bytes": 140,
+      "role": "config, design B: commit then send"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox_stc.cfg",
+      "sha256": "6e727295eca0208dca6609d7c69e7fdfb52ed5331b0f4fbb551f9fb13e9d80d5",
+      "bytes": 140,
+      "role": "config, design A: send then commit"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies.tla",
+      "sha256": "751ba2ce1c559e301d9d0c68182dde3dda6c529d62be62ef945278a936c04296",
+      "bytes": 2370,
+      "role": "spec: S8.L4's reply handler (W0-S04's representative)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies_statuscostonly.cfg",
+      "sha256": "ff6f8c4784a77669d5349c139974ba600b173baef3297f4bde9d67f4eeb4b1bc",
+      "bytes": 252,
+      "role": "config, status and cost checks only"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies_allon.cfg",
+      "sha256": "70858fed1e12b509b9349360135c734c43d0646b0012282b7a73dfef2f2c38c7",
+      "bytes": 250,
+      "role": "config, all four checks"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 72 and seed -3709083927014045854 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:09.",
+    "Model checking completed. No error has been found.",
+    "188 states generated, 99 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 15.",
+    "Finished in 00s at (2026-10-26 16:41:09)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-outbox-safety/full.log",
+      "sha256": "949cbb285e8deeb5fd49e2e012b7a0585f518c0f72bc7e8ad9c53ccdf369d00a",
+      "bytes": 2436,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/full2.log",
+      "sha256": "a6c9160ffa8ac73ca749bc92675b90000b556b415f3170e46a7da7ae2036c047",
+      "bytes": 2447,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/design-b.log",
+      "sha256": "10f0ed87b3e5bcec4495d1465cd3d5504906f59e8471d13fcc85df8f9ac375cd",
+      "bytes": 2745,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/design-a.log",
+      "sha256": "4f3375c8c4dce3954c4448cc2ced67ed4962ae6ff1720d0598519122183d8cc4",
+      "bytes": 2749,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/replies-statuscostonly.log",
+      "sha256": "cedcb21cc07f68334a8ec98e401d332749eea51980051c6fe7fcc065a31dcc3c",
+      "bytes": 3234,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-outbox-safety/replies-allon.log",
+      "sha256": "da79632e183736166b8abc1b8923ee0de7deb70047880ed27840921939bd4ebd",
+      "bytes": 2359,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "full": {
+      "result": "no error",
+      "states_generated": 188,
+      "distinct_states": 99,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1
+    },
+    "full2": {
+      "result": "no error",
+      "states_generated": 14288,
+      "distinct_states": 3887,
+      "states_left": 0,
+      "depth": 25,
+      "initial_states": 1
+    },
+    "design-b": {
+      "result": "invariant violated",
+      "violated": "NoLostIntent",
+      "states_generated": 8,
+      "distinct_states": 7,
+      "states_left": 2,
+      "depth": 4,
+      "initial_states": 1,
+      "trace_states": 4,
+      "trace_actions": 3,
+      "trace": [
+        "Start(c1)",
+        "CommitStep(c1)",
+        "Crash"
+      ]
+    },
+    "design-a": {
+      "result": "invariant violated",
+      "violated": "NoEffectWithoutRecord",
+      "states_generated": 8,
+      "distinct_states": 7,
+      "states_left": 2,
+      "depth": 4,
+      "initial_states": 1,
+      "trace_states": 4,
+      "trace_actions": 3,
+      "trace": [
+        "Start(c1)",
+        "SendStep(c1)",
+        "Crash"
+      ]
+    },
+    "replies-statuscostonly": {
+      "result": "invariant violated",
+      "violated": "NoCaptureAfterRelease",
+      "states_generated": 43,
+      "distinct_states": 27,
+      "states_left": 16,
+      "depth": 4,
+      "initial_states": 1,
+      "trace_states": 4,
+      "trace_actions": 3,
+      "trace": [
+        "Deliver([status |-> \"ok\", cost |-> 80, key |-> \"k1\"])",
+        "TimerRelease",
+        "Handle([status |-> \"ok\", cost |-> 80, key |-> \"k1\"])"
+      ]
+    },
+    "replies-allon": {
+      "result": "no error",
+      "states_generated": 101,
+      "distinct_states": 40,
+      "states_left": 0,
+      "depth": 6,
+      "initial_states": 1
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "full",
+  "configs": [
+    {
+      "id": "full",
+      "description": "S8.L3 cell 2: one command, two crashes, every window, Dedup = TRUE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:09.453Z",
+      "duration_s": 0.422,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-full-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_full.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-outbox-safety/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "runs/RUN-tlc-outbox-safety/inputs/Outbox_full.cfg",
+          "sha256": "a282759070645c7f441806534756744b29a8b50667cf26dbead5abe3408bd665",
+          "bytes": 288,
+          "role": "config: S8.L3 cell 2's configuration text, verbatim"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 72 and seed -3709083927014045854 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:09.",
+        "Model checking completed. No error has been found.",
+        "188 states generated, 99 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:41:09)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/full.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 188,
+        "distinct_states": 99,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "full2",
+      "description": "the same with two commands, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:09.878Z",
+      "duration_s": 0.535,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-full2-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_full2.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-outbox-safety/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_full2.cfg",
+          "sha256": "96185a8ed5f0fb564778349af506f3e783836dba2ff1cbbcc1893cdbaaff08e7",
+          "bytes": 292,
+          "role": "config, two commands"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 103 and seed 4521492373286314651 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:10.",
+        "Model checking completed. No error has been found.",
+        "14288 states generated, 3887 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 25.",
+        "Finished in 00s at (2026-10-26 16:41:10)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/full2.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 14288,
+        "distinct_states": 3887,
+        "states_left": 0,
+        "depth": 25,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "design-b",
+      "description": "NoOutbox, commitThenSend, one crash, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:10.416Z",
+      "duration_s": 0.393,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-design-b-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "NoOutbox_cts.cfg",
+        "NoOutbox"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox.tla",
+          "sha256": "b090d7d06f471084edd12c8bbfc9b093d3d1698e81296217a9cb949774eb8739",
+          "bytes": 2480,
+          "role": "spec: S8.L1's designs A and B (W0-S04's representative)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox_cts.cfg",
+          "sha256": "d2e54ba193741828470f1f1e7ea2e05e2ba4346c69abc2ea0167482ebc785c04",
+          "bytes": 140,
+          "role": "config, design B: commit then send"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 109 and seed -178588679026027482 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:10.",
+        "Error: Invariant NoLostIntent is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Start(c1) line 18, col 13 to line 23, col 60 of module NoOutbox>",
+        "State 3: <CommitStep(c1) line 25, col 18 to line 31, col 54 of module NoOutbox>",
+        "State 4: <Crash line 41, col 10 to line 46, col 44 of module NoOutbox>",
+        "8 states generated, 7 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "Finished in 00s at (2026-10-26 16:41:10)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/design-b.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoLostIntent",
+        "states_generated": 8,
+        "distinct_states": 7,
+        "states_left": 2,
+        "depth": 4,
+        "initial_states": 1,
+        "trace_states": 4,
+        "trace_actions": 3,
+        "trace": [
+          "Start(c1)",
+          "CommitStep(c1)",
+          "Crash"
+        ]
+      }
+    },
+    {
+      "id": "design-a",
+      "description": "NoOutbox, sendThenCommit, one crash, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:10.812Z",
+      "duration_s": 0.397,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-design-a-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "NoOutbox_stc.cfg",
+        "NoOutbox"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox.tla",
+          "sha256": "b090d7d06f471084edd12c8bbfc9b093d3d1698e81296217a9cb949774eb8739",
+          "bytes": 2480,
+          "role": "spec: S8.L1's designs A and B (W0-S04's representative)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/NoOutbox_stc.cfg",
+          "sha256": "6e727295eca0208dca6609d7c69e7fdfb52ed5331b0f4fbb551f9fb13e9d80d5",
+          "bytes": 140,
+          "role": "config, design A: send then commit"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 102 and seed -3928769101326913533 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:11.",
+        "Error: Invariant NoEffectWithoutRecord is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Start(c1) line 18, col 13 to line 23, col 60 of module NoOutbox>",
+        "State 3: <SendStep(c1) line 33, col 16 to line 39, col 54 of module NoOutbox>",
+        "State 4: <Crash line 41, col 10 to line 46, col 44 of module NoOutbox>",
+        "8 states generated, 7 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "Finished in 00s at (2026-10-26 16:41:11)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/design-a.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoEffectWithoutRecord",
+        "states_generated": 8,
+        "distinct_states": 7,
+        "states_left": 2,
+        "depth": 4,
+        "initial_states": 1,
+        "trace_states": 4,
+        "trace_actions": 3,
+        "trace": [
+          "Start(c1)",
+          "SendStep(c1)",
+          "Crash"
+        ]
+      }
+    },
+    {
+      "id": "replies-statuscostonly",
+      "description": "reply handler, CheckStatus and CheckCost only, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:11.212Z",
+      "duration_s": 0.401,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-replies-statuscostonly-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "OutboxReplies_statuscostonly.cfg",
+        "OutboxReplies"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies.tla",
+          "sha256": "751ba2ce1c559e301d9d0c68182dde3dda6c529d62be62ef945278a936c04296",
+          "bytes": 2370,
+          "role": "spec: S8.L4's reply handler (W0-S04's representative)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies_statuscostonly.cfg",
+          "sha256": "ff6f8c4784a77669d5349c139974ba600b173baef3297f4bde9d67f4eeb4b1bc",
+          "bytes": 252,
+          "role": "config, status and cost checks only"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 88 and seed 3535628375235498793 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:11.",
+        "Error: Invariant NoCaptureAfterRelease is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Deliver([status |-> \"ok\", cost |-> 80, key |-> \"k1\"]) line 24, col 15 to line 26, col 69 of module OutboxReplies>",
+        "State 3: <TimerRelease line 29, col 17 to line 32, col 63 of module OutboxReplies>",
+        "State 4: <Handle([status |-> \"ok\", cost |-> 80, key |-> \"k1\"]) line 36, col 14 to line 46, col 45 of module OutboxReplies>",
+        "43 states generated, 27 distinct states found, 16 states left on queue.",
+        "The depth of the complete state graph search is 4.",
+        "Finished in 00s at (2026-10-26 16:41:11)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/replies-statuscostonly.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoCaptureAfterRelease",
+        "states_generated": 43,
+        "distinct_states": 27,
+        "states_left": 16,
+        "depth": 4,
+        "initial_states": 1,
+        "trace_states": 4,
+        "trace_actions": 3,
+        "trace": [
+          "Deliver([status |-> \"ok\", cost |-> 80, key |-> \"k1\"])",
+          "TimerRelease",
+          "Handle([status |-> \"ok\", cost |-> 80, key |-> \"k1\"])"
+        ]
+      }
+    },
+    {
+      "id": "replies-allon",
+      "description": "reply handler, all four checks, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:11.616Z",
+      "duration_s": 0.379,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-outbox-safety-replies-allon-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "OutboxReplies_allon.cfg",
+        "OutboxReplies"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies.tla",
+          "sha256": "751ba2ce1c559e301d9d0c68182dde3dda6c529d62be62ef945278a936c04296",
+          "bytes": 2370,
+          "role": "spec: S8.L4's reply handler (W0-S04's representative)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxReplies_allon.cfg",
+          "sha256": "70858fed1e12b509b9349360135c734c43d0646b0012282b7a73dfef2f2c38c7",
+          "bytes": 250,
+          "role": "config, all four checks"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 73 and seed -4078839683258847979 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:11.",
+        "Model checking completed. No error has been found.",
+        "101 states generated, 40 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 6.",
+        "Finished in 00s at (2026-10-26 16:41:11)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-outbox-safety/replies-allon.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 101,
+        "distinct_states": 40,
+        "states_left": 0,
+        "depth": 6,
+        "initial_states": 1
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "tlc-outbox-safety-check-1",
+      "name": "S8.L4 cell 2's Handle and NoCaptureAfterRelease occur in OutboxReplies.tla",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "Outbox.tla is S8.L2 cell 1 verbatim. OutboxIface.tla, the supplied read-only module, appears in no lesson; the W0-S04 spike module is used, whose Accept, Forget, CanForget and properties are the ones S8.L3, S8.L4 and S8.L7 quote.",
+    "S8.L3 cell 2's command line is `java -jar tla2tools.jar -workers 1 -deadlock -config Outbox_full.cfg Outbox.tla`; the recorded form runs the same jar's tlc2.TLC with the same flags plus -metadir, in the bench image.",
+    "S8.L1's designs are prose and a diagram; NoOutbox.tla is the spike's model of them, with NoLostIntent defined on its own variables.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

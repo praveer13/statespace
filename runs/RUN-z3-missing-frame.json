@@ -1,0 +1,502 @@
+{
+  "id": "RUN-z3-missing-frame",
+  "title": "Without the frame c_p = c, Transfer's violation query is sat with c_p below zero and c untouched; the witness is no step of Transfer and does not replay; with the frame the query is unsat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-4.1, AUD-4.1 and CL-4.2: S4.L5 cell 1 as written and with frame_c put back, the Optimize objective on |c_p - c| and the witness against the full step relation (the S4 spec), and S10.L3 cell 1 (the checker in miniature with its replay)",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:23.071Z",
+  "started_at": "2026-10-26T16:36:22.284Z",
+  "duration_s": 0.784,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l5_cell1.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l5_cell1_frame.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "missing_frame_optimize.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s10l3_cell1.py"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-missing-frame/cells/s4l5_cell1.py",
+      "sha256": "20de761c936b1c27119e04147a6f754ead8e88d040b6a18e6b228ee55bb2ea6d",
+      "bytes": 564,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L5.md, the instrument at line 40: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/cells/s4l5_cell1_frame.py",
+      "sha256": "10ff24170cdd2cfeb59244219f727a33bead5ad9950d7ad7a4d506f8a6a68482",
+      "bytes": 573,
+      "role": "cell variant",
+      "source": "content/stages/S4/S4.L5.md, the instrument at line 40: its fenced block, with the edit the @after names (\"Put frame_c back\"): line 13 adds frame_c to s.add"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/cells/missing_frame_optimize.py",
+      "sha256": "30741f4cb75248bfbf5e257753934c4c4707b5374d122bfe0eaa4f0baaffdd60",
+      "bytes": 1385,
+      "role": "script",
+      "source": "written for this record from S4.L5 cell 1's premises, for the two facts curriculum/S04-obligations.md states about its model (SP-4.1: an Optimize objective on |c' - c|; Run 1: the witness against the step relation with the frame is unsat)"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/cells/s10l3_cell1.py",
+      "sha256": "4fb42da73aaf088f84fd6310b4192c3fb93fc4a25e47e6522f0e7deb67c4dbbb",
+      "bytes": 1563,
+      "role": "cell",
+      "source": "content/stages/S10/S10.L3.md, the instrument at line 41: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== s4l5-cell1: python -I s4l5_cell1.py",
+    "(declare-fun c () Int)",
+    "(declare-fun b () Int)",
+    "(declare-fun a () Int)",
+    "(declare-fun p_amount () Int)",
+    "(declare-fun b_p () Int)",
+    "(declare-fun a_p () Int)",
+    "(declare-fun c_p () Int)",
+    "(assert (and (>= a 0) (>= b 0) (>= c 0)))",
+    "(assert (and (> p_amount 0) (<= p_amount a)))",
+    "(assert (and (= a_p (- a p_amount)) (= b_p (+ b p_amount))))",
+    "(assert (not (and (>= a_p 0) (>= b_p 0) (>= c_p 0))))",
+    "sat",
+    "[c = 0,",
+    " b_p = 1,",
+    " b = 0,",
+    " a_p = 0,",
+    " c_p = -1,",
+    " p_amount = 1,",
+    " a = 1]",
+    "-- exit 0",
+    "== s4l5-cell1-frame: python -I s4l5_cell1_frame.py",
+    "(declare-fun c () Int)",
+    "(declare-fun b () Int)",
+    "(declare-fun a () Int)",
+    "(declare-fun p_amount () Int)",
+    "(declare-fun b_p () Int)",
+    "(declare-fun a_p () Int)",
+    "(declare-fun c_p () Int)",
+    "(assert (and (>= a 0) (>= b 0) (>= c 0)))",
+    "(assert (and (> p_amount 0) (<= p_amount a)))",
+    "(assert (and (= a_p (- a p_amount)) (= b_p (+ b p_amount))))",
+    "(assert (= c_p c))",
+    "(assert (not (and (>= a_p 0) (>= b_p 0) (>= c_p 0))))",
+    "unsat",
+    "Traceback (most recent call last):",
+    "  File \"/opt/venv/lib/python3.13/site-packages/z3/z3.py\", line 7797, in model",
+    "    return ModelRef(Z3_solver_get_model(self.ctx.ref(), self.solver), self.ctx)",
+    "                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "  File \"/opt/venv/lib/python3.13/site-packages/z3/z3core.py\", line 4532, in Z3_solver_get_model",
+    "    _elems.Check(a0)",
+    "    ~~~~~~~~~~~~^^^^",
+    "  File \"/opt/venv/lib/python3.13/site-packages/z3/z3core.py\", line 1643, in Check",
+    "    raise self.Exception(self.get_error_message(ctx, err))",
+    "z3.z3types.Z3Exception: b'there is no current model'",
+    "During handling of the above exception, another exception occurred:",
+    "Traceback (most recent call last):",
+    "  File \"/w/s4l5_cell1_frame.py\", line 16, in <module>",
+    "    print(s.model())",
+    "          ~~~~~~~^^",
+    "  File \"/opt/venv/lib/python3.13/site-packages/z3/z3.py\", line 7799, in model",
+    "    raise Z3Exception(\"model is not available\")",
+    "z3.z3types.Z3Exception: model is not available",
+    "-- exit 1",
+    "== frame-optimize: python -I missing_frame_optimize.py",
+    "Optimize, minimum |c_p - c| over the frame-less violation query: sat 1",
+    "  model: {'a': '1', 'b': '0', 'c': '0', 'p_amount': '1', 'a_p': '0', 'b_p': '1', 'c_p': '-1'}",
+    "the witness against the step relation with frame_c stated: unsat",
+    "-- exit 0",
+    "== s10l3-cell1: python -I s10l3_cell1.py",
+    "without the frame: sat",
+    "no stamp: the witness does not replay",
+    "with the frame: unsat",
+    "PROVED [P]",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-missing-frame/s4l5-cell1.log",
+      "sha256": "a5e296913a56ca983794905c95e36249bf39f12f4d7daa435cf8922032906a87",
+      "bytes": 452,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/s4l5-cell1-frame.log",
+      "sha256": "d97b3b9c2c3d3fdee7dbba4afb304f78de60e579ef94cd8a899c8e37d313931f",
+      "bytes": 1370,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/frame-optimize.log",
+      "sha256": "498f8836b858bb4094390cd379c3a2d942779bccfde4425580e5f1fb5160a377",
+      "bytes": 230,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-missing-frame/s10l3-cell1.log",
+      "sha256": "534f83deb9a95c20b4914f0442a2f38c53a7bc9b5f88a75134b8eb892175b72b",
+      "bytes": 94,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s4l5-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "verdict": {
+            "verdict": "sat"
+          }
+        }
+      },
+      "s4l5-cell1-frame": {
+        "exit_code": 1,
+        "lines": {
+          "verdict": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "frame-optimize": {
+        "exit_code": 0,
+        "lines": {
+          "optimize_minimum_c_p_c_over_the_frame_less_violation_query": {
+            "verdict": "sat",
+            "detail": "1"
+          },
+          "the_witness_against_the_step_relation_with_frame_c_stated": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "s10l3-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "without_the_frame": {
+            "verdict": "sat"
+          },
+          "with_the_frame": {
+            "verdict": "unsat"
+          }
+        }
+      }
+    },
+    "verdict": "sat",
+    "model": "[c = 0, b_p = 1, b = 0, a_p = 0, c_p = -1, p_amount = 1, a = 1]",
+    "frame_put_back": {
+      "verdict": "unsat",
+      "exit_code": 1,
+      "error": "z3.z3types.Z3Exception: model is not available"
+    },
+    "min_abs_c_change": 1,
+    "optimize_model": "{'a': '1', 'b': '0', 'c': '0', 'p_amount': '1', 'a_p': '0', 'b_p': '1', 'c_p': '-1'}",
+    "witness_against_full_step": "unsat",
+    "s10": {
+      "without_frame": "sat",
+      "without_frame_stamp": "no stamp: the witness does not replay",
+      "with_frame": "unsat",
+      "with_frame_stamp": "PROVED [P]"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s4l5-cell1",
+      "purpose": "S4.L5 cell 1, as written: the frame-less violation query, its SMT-LIB, verdict and model",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l5_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/cells/s4l5_cell1.py",
+          "sha256": "20de761c936b1c27119e04147a6f754ead8e88d040b6a18e6b228ee55bb2ea6d",
+          "bytes": 564,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L5.md, the instrument at line 40: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:22.284Z",
+      "duration_s": 0.194,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/s4l5-cell1.log",
+          "sha256": "a5e296913a56ca983794905c95e36249bf39f12f4d7daa435cf8922032906a87",
+          "bytes": 452,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s4l5-cell1-frame",
+      "purpose": "S4.L5 cell 1 with frame_c put back",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l5_cell1_frame.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/cells/s4l5_cell1_frame.py",
+          "sha256": "10ff24170cdd2cfeb59244219f727a33bead5ad9950d7ad7a4d506f8a6a68482",
+          "bytes": 573,
+          "role": "cell variant",
+          "source": "content/stages/S4/S4.L5.md, the instrument at line 40: its fenced block, with the edit the @after names (\"Put frame_c back\"): line 13 adds frame_c to s.add"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:22.479Z",
+      "duration_s": 0.187,
+      "exit_code": 1,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/s4l5-cell1-frame.log",
+          "sha256": "d97b3b9c2c3d3fdee7dbba4afb304f78de60e579ef94cd8a899c8e37d313931f",
+          "bytes": 1370,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "frame-optimize",
+      "purpose": "Optimize, the minimum |c_p - c| over the frame-less query, and that model checked against the step relation with frame_c",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "missing_frame_optimize.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/cells/missing_frame_optimize.py",
+          "sha256": "30741f4cb75248bfbf5e257753934c4c4707b5374d122bfe0eaa4f0baaffdd60",
+          "bytes": 1385,
+          "role": "script",
+          "source": "written for this record from S4.L5 cell 1's premises, for the two facts curriculum/S04-obligations.md states about its model (SP-4.1: an Optimize objective on |c' - c|; Run 1: the witness against the step relation with the frame is unsat)"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 5000000
+      },
+      "started_at": "2026-10-26T16:36:22.667Z",
+      "duration_s": 0.194,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/frame-optimize.log",
+          "sha256": "498f8836b858bb4094390cd379c3a2d942779bccfde4425580e5f1fb5160a377",
+          "bytes": 230,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s10l3-cell1",
+      "purpose": "S10.L3 cell 1 (call=false), as written: the query without and with the frame, each model replayed in the miniature interpreter before a stamp",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s10l3_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/cells/s10l3_cell1.py",
+          "sha256": "4fb42da73aaf088f84fd6310b4192c3fb93fc4a25e47e6522f0e7deb67c4dbbb",
+          "bytes": 1563,
+          "role": "cell",
+          "source": "content/stages/S10/S10.L3.md, the instrument at line 41: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:22.862Z",
+      "duration_s": 0.209,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-missing-frame/s10l3-cell1.log",
+          "sha256": "534f83deb9a95c20b4914f0442a2f38c53a7bc9b5f88a75134b8eb892175b72b",
+          "bytes": 94,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s4l5-cell1",
+  "notes": [
+    "The s4l5-cell1 and s10l3-cell1 cells are the lessons' fenced blocks, copied byte for byte; s4l5_cell1_frame.py differs from s4l5_cell1.py in line 13 only. They set no rlimit.",
+    "values.model is the model Z3 printed over several lines after sat, joined on one line.",
+    "With frame_c put back, S4.L5 cell 1 prints its SMT-LIB and unsat, and then its last line, print(s.model()), raises Z3Exception \"model is not available\": the process exits 1. The verdict line is unsat, as the lesson's @after says; the traceback is in the log.",
+    "The S4.L7 replay in the interpreter is not part of this run: the course's reference interpreter is not built yet. S10.L3 cell 1's replay is that cell's own miniature interpreter, in Python.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-missing-frame/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

@@ -1,0 +1,446 @@
+{
+  "id": "RUN-pg-mixed-levels",
+  "title": "PostgreSQL 18.6: the team-sum write skew with A SERIALIZABLE and B READ COMMITTED commits both and ends at a team total of -100; with both SERIALIZABLE, B fails at COMMIT with 40001",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-6.10: S6.L9 cell 2 (catalog row H10's first mixed permutation, as the cell writes it), and the same permutation with both sessions SERIALIZABLE as the control",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "harness": {
+    "name": "iso_driver.py",
+    "driver": "psycopg 3.3.6",
+    "python": "3.13.12",
+    "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a"
+  },
+  "recorded_at": "2026-10-26T16:42:30.599Z",
+  "started_at": "2026-10-26T16:41:33Z",
+  "duration_s": 0.042,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-mixed"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-mixed",
+      "--network",
+      "ssrec-net-mixed",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-mixed",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-mixed",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "iso_driver.py",
+      "--spec",
+      "S6.L9-cell2.spec",
+      "--setup",
+      "setup-H10.sql",
+      "--check",
+      "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1",
+      "--label",
+      "cell2",
+      "--out",
+      "cell2.json"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-mixed",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-mixed",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "iso_driver.py",
+      "--spec",
+      "S6.L9-cell2.spec",
+      "--setup",
+      "setup-H10.sql",
+      "--check",
+      "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1",
+      "--subst",
+      "b_begin:READ COMMITTED=>SERIALIZABLE",
+      "--label",
+      "control-both-ser",
+      "--out",
+      "control-both-ser.json"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-mixed"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-mixed"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S6/RUN-pg-mixed-levels/iso_driver.py",
+      "sha256": "8952dfbae3a23ee1193f8f7bd37c478607cfb93a3c8b47c1ccc293ec1dd31557",
+      "bytes": 7398,
+      "role": "harness",
+      "source": "written by the recorder"
+    },
+    {
+      "path": "runs/inputs/S6/RUN-pg-mixed-levels/S6.L9-cell2.spec",
+      "sha256": "36925a1689ad669423aaa9f04b9d611e3aac8a3ca486e82090ece1762911a426",
+      "bytes": 719,
+      "role": "spec",
+      "source": "content/stages/S6/S6.L9.md, instrument cell=2, verbatim"
+    },
+    {
+      "path": "runs/inputs/S6/RUN-pg-mixed-levels/setup-H10.sql",
+      "sha256": "5ec04ae38c0c96bc71f4bbcdcf8713b03940b59b914a9d9d1e782a9a71a7b2d7",
+      "bytes": 121,
+      "role": "setup",
+      "source": "the setup block of content/pg-catalog/H10-mixed-levels.spec, which the cell's comments describe and do not include"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "permutation a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit",
+    "  step a_begin: BEGIN",
+    "  step a_total: SELECT 1 [[\"200\"]]",
+    "  step b_begin: BEGIN",
+    "  step b_total: SELECT 1 [[\"200\"]]",
+    "  step a_debit: UPDATE 1",
+    "  step b_debit: UPDATE 1",
+    "  step a_commit: COMMIT",
+    "  step b_commit: COMMIT",
+    "  check: [[1, -50], [2, -50]]; [[\"-100\"]]"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-mixed-levels/cell2.json",
+      "sha256": "285e34c4af438fa8845c817553ae5f787742368eb139686164d82146d285c98c",
+      "bytes": 3236,
+      "kind": "driver result: every step, its results or error, and the check"
+    },
+    {
+      "path": "runs/RUN-pg-mixed-levels/cell2.log",
+      "sha256": "e9b292d60e865aa85c2410444316c15fdc2424f93f0eac2991fd0ee13e01af3d",
+      "bytes": 333,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-mixed-levels/control-both-ser.json",
+      "sha256": "d5a117c20ebe45ff2351437039e421b5f08f66feac8bd5e151e1c7e5a8648d7b",
+      "bytes": 3436,
+      "kind": "driver result: every step, its results or error, and the check"
+    },
+    {
+      "path": "runs/RUN-pg-mixed-levels/control-both-ser.log",
+      "sha256": "7c7f6cb24cb2cecb261e7c0430b5cf34afc0da97a9c57228c0024ca5664f4679",
+      "bytes": 415,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "permutation": "a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit",
+    "mixed": {
+      "totals_read": [
+        200,
+        200
+      ],
+      "a_commit": {
+        "committed": true,
+        "sqlstate": null,
+        "error": null
+      },
+      "b_commit": {
+        "committed": true,
+        "sqlstate": null,
+        "error": null
+      },
+      "final_balances": {
+        "1": -50,
+        "2": -50
+      },
+      "team_total": -100
+    },
+    "both_commit": true,
+    "control_both_serializable": {
+      "totals_read": [
+        200,
+        200
+      ],
+      "a_commit": {
+        "committed": true,
+        "sqlstate": null,
+        "error": null
+      },
+      "b_commit": {
+        "committed": false,
+        "sqlstate": "40001",
+        "error": "could not serialize access due to read/write dependencies among transactions"
+      },
+      "final_balances": {
+        "1": -50,
+        "2": 100
+      },
+      "team_total": 50
+    }
+  },
+  "checks": [
+    {
+      "id": "mixed-both-commit",
+      "pass": true
+    },
+    {
+      "id": "control-b-40001",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "harness_image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "ssrec-net-mixed (a user network for the server and the driver only)"
+    }
+  },
+  "primary_config": "cell2",
+  "configs": [
+    {
+      "id": "cell2",
+      "purpose": "S6.L9 cell 2, verbatim: A SERIALIZABLE, B READ COMMITTED; the primary configuration",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:41:33Z",
+      "duration_s": 0.042,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-mixed",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "-e",
+        "PGHOST=ssrec-pg-mixed",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "iso_driver.py",
+        "--spec",
+        "S6.L9-cell2.spec",
+        "--setup",
+        "setup-H10.sql",
+        "--check",
+        "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1",
+        "--label",
+        "cell2",
+        "--out",
+        "cell2.json"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/iso_driver.py",
+          "sha256": "8952dfbae3a23ee1193f8f7bd37c478607cfb93a3c8b47c1ccc293ec1dd31557",
+          "bytes": 7398,
+          "role": "harness",
+          "source": "written by the recorder"
+        },
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/S6.L9-cell2.spec",
+          "sha256": "36925a1689ad669423aaa9f04b9d611e3aac8a3ca486e82090ece1762911a426",
+          "bytes": 719,
+          "role": "spec",
+          "source": "content/stages/S6/S6.L9.md, instrument cell=2, verbatim"
+        },
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/setup-H10.sql",
+          "sha256": "5ec04ae38c0c96bc71f4bbcdcf8713b03940b59b914a9d9d1e782a9a71a7b2d7",
+          "bytes": 121,
+          "role": "setup",
+          "source": "the setup block of content/pg-catalog/H10-mixed-levels.spec, which the cell's comments describe and do not include"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "permutation a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit",
+        "  step a_begin: BEGIN",
+        "  step a_total: SELECT 1 [[\"200\"]]",
+        "  step b_begin: BEGIN",
+        "  step b_total: SELECT 1 [[\"200\"]]",
+        "  step a_debit: UPDATE 1",
+        "  step b_debit: UPDATE 1",
+        "  step a_commit: COMMIT",
+        "  step b_commit: COMMIT",
+        "  check: [[1, -50], [2, -50]]; [[\"-100\"]]"
+      ],
+      "outputs": [
+        "runs/RUN-pg-mixed-levels/cell2.json",
+        "runs/RUN-pg-mixed-levels/cell2.log"
+      ],
+      "environment": {
+        "harness": "psycopg 3.3.6 on Python 3.13.12 in statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "server_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      }
+    },
+    {
+      "id": "control-both-ser",
+      "purpose": "the control: the same permutation with txn B's begin step at SERIALIZABLE (the driver's --subst)",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:41:34Z",
+      "duration_s": 0.036,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-mixed",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "-e",
+        "PGHOST=ssrec-pg-mixed",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "iso_driver.py",
+        "--spec",
+        "S6.L9-cell2.spec",
+        "--setup",
+        "setup-H10.sql",
+        "--check",
+        "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1",
+        "--subst",
+        "b_begin:READ COMMITTED=>SERIALIZABLE",
+        "--label",
+        "control-both-ser",
+        "--out",
+        "control-both-ser.json"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/iso_driver.py",
+          "sha256": "8952dfbae3a23ee1193f8f7bd37c478607cfb93a3c8b47c1ccc293ec1dd31557",
+          "bytes": 7398,
+          "role": "harness",
+          "source": "written by the recorder"
+        },
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/S6.L9-cell2.spec",
+          "sha256": "36925a1689ad669423aaa9f04b9d611e3aac8a3ca486e82090ece1762911a426",
+          "bytes": 719,
+          "role": "spec",
+          "source": "content/stages/S6/S6.L9.md, instrument cell=2, verbatim"
+        },
+        {
+          "path": "runs/inputs/S6/RUN-pg-mixed-levels/setup-H10.sql",
+          "sha256": "5ec04ae38c0c96bc71f4bbcdcf8713b03940b59b914a9d9d1e782a9a71a7b2d7",
+          "bytes": 121,
+          "role": "setup",
+          "source": "the setup block of content/pg-catalog/H10-mixed-levels.spec, which the cell's comments describe and do not include"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "permutation a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit",
+        "  step a_begin: BEGIN",
+        "  step a_total: SELECT 1 [[\"200\"]]",
+        "  step b_begin: BEGIN",
+        "  step b_total: SELECT 1 [[\"200\"]]",
+        "  step a_debit: UPDATE 1",
+        "  step b_debit: UPDATE 1",
+        "  step a_commit: COMMIT",
+        "  step b_commit:  ERROR 40001: could not serialize access due to read/write dependencies among transactions",
+        "  check: [[1, -50], [2, 100]]; [[\"50\"]]"
+      ],
+      "outputs": [
+        "runs/RUN-pg-mixed-levels/control-both-ser.json",
+        "runs/RUN-pg-mixed-levels/control-both-ser.log"
+      ],
+      "environment": {
+        "harness": "psycopg 3.3.6 on Python 3.13.12 in statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "server_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      }
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "The cell is in isolationtester format; isolationtester itself was not run (it is built from the PostgreSQL source tree, as W0-S09 did for RUN-pg-catalog). iso_driver.py, written by the recorder, replays it with psycopg 3.3.6 on Python 3.13.12 in the bench image: one connection per session in autocommit mode (BEGIN and COMMIT are steps), each step sent with the simple query protocol so a step of two statements returns both results, a step reported as waiting once pg_isolation_test_session_is_blocked says so (the function isolationtester uses), a permutation not run when it needs a step from a session that is still waiting, a fresh setup before each permutation, and the check query on a separate connection after both sessions finish. The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on its own user network with --memory=6g; before the driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0 (at most 120 polls, 0.5 s apart). argv lists the commands in order; started_at, duration_s and exit_code are those of the driver's run.",
+    "The cell's debit steps carry no guard (its comments say \"only if a_total allowed it\"; both totals read 200, so the guard H10 writes in SQL would have allowed both debits); they ran as the cell writes them. values.mixed holds each session's COMMIT outcome and the state after; values.control_both_serializable the same for the control."
+  ]
+}

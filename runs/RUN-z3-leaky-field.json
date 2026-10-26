@@ -1,0 +1,178 @@
+{
+  "id": "RUN-z3-leaky-field",
+  "title": "Self-composition of Open(dana, contract) with title and body released: sat, and the lesson's pair (only internal_notes differs) gives different pages; without internal_notes on the page that pair is unsat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-7.1 and S7.L7 cell 1: the self-composition query under ~Acme with the release, the lesson's pair, and the cure (internal_notes dropped from the shared projection)",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:25.538Z",
+  "started_at": "2026-10-26T16:36:25.343Z",
+  "duration_s": 0.194,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "leaky_field.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-leaky-field/cells/leaky_field.py",
+      "sha256": "4016e4901f8deac9a173f3e3b2844fbfa158e583366fa4e4e748b5634389b494",
+      "bytes": 3171,
+      "role": "script",
+      "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell1.txt (content/stages/S7/S7.L7.md line 48); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-leaky-field/cells/s7l7_cell1.txt",
+      "sha256": "835cef2c4a38ca14753e31715068ee3e3f4c30589965f11e9cd2ba1fe37340a0",
+      "bytes": 365,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== selfcomp: python -I leaky_field.py",
+    "self-composition, page with internal_notes: sat | both pages shown: True | state fields that differ: ['owner_team', 'internal_notes'] | responses differ in: ['owner_team', 'internal_notes']",
+    "the lesson pair, page with internal_notes: sat | both pages shown: True | state fields that differ: ['internal_notes'] | responses differ in: ['internal_notes']",
+    "the lesson pair, internal_notes dropped from the page: unsat",
+    "self-composition, internal_notes dropped from the page: sat | both pages shown: True | state fields that differ: ['owner_team'] | responses differ in: ['owner_team']",
+    "premise witness: Rel and a different internal_notes: sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-leaky-field/selfcomp.log",
+      "sha256": "d8990f3c925f838bd29bdc038951a2c4b9a2234ec973350e28585e500aa5619b",
+      "bytes": 635,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "selfcomp": {
+        "exit_code": 0,
+        "lines": {
+          "self_composition_page_with_internal_notes": {
+            "verdict": "sat"
+          },
+          "the_lesson_pair_page_with_internal_notes": {
+            "verdict": "sat"
+          },
+          "the_lesson_pair_internal_notes_dropped_from_the_page": {
+            "verdict": "unsat"
+          },
+          "self_composition_internal_notes_dropped_from_the_page": {
+            "verdict": "sat"
+          },
+          "premise_witness_rel_and_a_different_internal_notes": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "selfcomp": "sat",
+    "lesson_pair": "sat",
+    "lesson_pair_responses_differ_in": "['internal_notes']",
+    "lesson_pair_without_notes": "unsat",
+    "selfcomp_without_notes": "sat",
+    "selfcomp_without_notes_differ_in": "['owner_team']",
+    "premise_witness": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "selfcomp",
+      "purpose": "the view, the relation with the release, and the pair of S7.L7 cell 1, encoded as S7.L6 cell 2 encodes Open",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "leaky_field.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-leaky-field/cells/leaky_field.py",
+          "sha256": "4016e4901f8deac9a173f3e3b2844fbfa158e583366fa4e4e748b5634389b494",
+          "bytes": 3171,
+          "role": "script",
+          "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell1.txt (content/stages/S7/S7.L7.md line 48); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+        },
+        {
+          "path": "runs/RUN-z3-leaky-field/cells/s7l7_cell1.txt",
+          "sha256": "835cef2c4a38ca14753e31715068ee3e3f4c30589965f11e9cd2ba1fe37340a0",
+          "bytes": 365,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 5000000
+      },
+      "started_at": "2026-10-26T16:36:25.343Z",
+      "duration_s": 0.194,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-leaky-field/selfcomp.log",
+          "sha256": "d8990f3c925f838bd29bdc038951a2c4b9a2234ec973350e28585e500aa5619b",
+          "bytes": 635,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "selfcomp",
+  "notes": [
+    "The cell is in the pair notation for INS-pairs, which is not built yet; leaky_field.py states the cell's view, release and pair in Z3, and the cell is committed verbatim beside it. The viewer's replay is not part of this run.",
+    "The encoding relates only what the cell's release names (title and body of a shared document) and dana's read right; owner_team, which the cell's page also shows, is left unreleased, so with internal_notes dropped the general query still finds a pair that differs in owner_team. The lesson pair (only internal_notes differs) is unsat once internal_notes leaves the page.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-leaky-field/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "id": "RUN-pg-rls-owner",
+  "title": "PostgreSQL 18.6: the table owner sees every document with RLS enabled and not forced; after FORCE ROW LEVEL SECURITY it sees frank's matrix row",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S7.L4 cell 2 (SP-7.4): the owner probe with app.user = frank, then the @after's re-run after FORCE, with relrowsecurity and relforcerowsecurity read back from pg_class with the time",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T16:41:04.008Z",
+  "started_at": "2026-10-26T16:32:56.321Z",
+  "duration_s": 0.061,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "-d",
+      "--name",
+      "ssrec-pg-pg-rls-owner-cell2",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-e",
+      "POSTGRES_HOST_AUTH_METHOD=trust",
+      "-v",
+      "<sandbox>/work:/q:ro",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-pg-pg-rls-owner-cell2",
+      "psql",
+      "-X",
+      "-q",
+      "-v",
+      "ON_ERROR_STOP=1",
+      "-U",
+      "postgres",
+      "-f",
+      "/q/world-all-policies.sql"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-pg-pg-rls-owner-cell2",
+      "sh",
+      "-c",
+      "psql -X -U postgres -v VERBOSITY=verbose -f /q/S7.L4-cell2.sql -f /q/S7.L4-cell2-force.sql 2>&1"
+    ],
+    [
+      "docker",
+      "rm",
+      "-f",
+      "ssrec-pg-pg-rls-owner-cell2"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S7/RUN-pg-rls-owner/world-all-policies.sql",
+      "sha256": "0ed3d43ff8e641b45763711cd0f308577052b9d78806a96b2a02358693bda975",
+      "bytes": 4369,
+      "role": "prelude",
+      "source": "generated from scripts/spikes/W0-S08/rls-spec.mjs: the world with every policy of POLICY_SETUP"
+    },
+    {
+      "path": "runs/inputs/S7/RUN-pg-rls-owner/S7.L4-cell2.sql",
+      "sha256": "9fd2f5151df03c0e6ede8298249d5cd36ce772f8d491fbcde7d08c702dfa8e56",
+      "bytes": 209,
+      "role": "script",
+      "source": "content/stages/S7/S7.L4.md, instrument cell=2, verbatim"
+    },
+    {
+      "path": "runs/inputs/S7/RUN-pg-rls-owner/S7.L4-cell2-force.sql",
+      "sha256": "27e9399d8a659ef72e1ba1cea0ebf0fad6d7e74f1119efa5d937af0d01bb8a9f",
+      "bytes": 472,
+      "role": "script",
+      "source": "written by the recorder from the @after of S7.L4 cell 2"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "SET",
+    "SET",
+    " set_config",
+    "------------",
+    " frank",
+    "(1 row)",
+    "      id",
+    "--------------",
+    " contract",
+    " layoffs-memo",
+    " q3-plan",
+    " roadmap",
+    "(4 rows)",
+    "ALTER TABLE",
+    " relrowsecurity | relforcerowsecurity |            read_at",
+    "----------------+---------------------+-------------------------------",
+    " t              | t                   | 2026-10-26 16:32:56.379607+00",
+    "(1 row)",
+    " set_config",
+    "------------",
+    " frank",
+    "(1 row)",
+    "   id",
+    "---------",
+    " roadmap",
+    "(1 row)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-rls-owner/cell2.log",
+      "sha256": "7786706b5f34fb8d7a5ce2d833bf7c384860af7e35078665a4ff6a6b19f10571",
+      "bytes": 445,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "owner_rows_noforce": [
+      "contract",
+      "layoffs-memo",
+      "q3-plan",
+      "roadmap"
+    ],
+    "owner_rows_noforce_count": 4,
+    "owner_rows_force": [
+      "roadmap"
+    ],
+    "flags_after_force": {
+      "relrowsecurity": true,
+      "relforcerowsecurity": true,
+      "read_at": "2026-10-26 16:32:56.379607+00"
+    }
+  },
+  "checks": [
+    {
+      "id": "owner-sees-every-row",
+      "pass": true
+    },
+    {
+      "id": "force-binds-owner",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "network": "none"
+    }
+  },
+  "primary_config": "cell2",
+  "configs": [
+    {
+      "id": "cell2",
+      "purpose": "S7.L4 cell 2, verbatim, then the @after's FORCE re-run in the same session; the primary configuration",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:32:56.321Z",
+      "duration_s": 0.061,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-pg-pg-rls-owner-cell2",
+        "sh",
+        "-c",
+        "psql -X -U postgres -v VERBOSITY=verbose -f /q/S7.L4-cell2.sql -f /q/S7.L4-cell2-force.sql 2>&1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-pg-rls-owner/world-all-policies.sql",
+          "sha256": "0ed3d43ff8e641b45763711cd0f308577052b9d78806a96b2a02358693bda975",
+          "bytes": 4369,
+          "role": "prelude",
+          "source": "generated from scripts/spikes/W0-S08/rls-spec.mjs: the world with every policy of POLICY_SETUP"
+        },
+        {
+          "path": "runs/inputs/S7/RUN-pg-rls-owner/S7.L4-cell2.sql",
+          "sha256": "9fd2f5151df03c0e6ede8298249d5cd36ce772f8d491fbcde7d08c702dfa8e56",
+          "bytes": 209,
+          "role": "script",
+          "source": "content/stages/S7/S7.L4.md, instrument cell=2, verbatim"
+        },
+        {
+          "path": "runs/inputs/S7/RUN-pg-rls-owner/S7.L4-cell2-force.sql",
+          "sha256": "27e9399d8a659ef72e1ba1cea0ebf0fad6d7e74f1119efa5d937af0d01bb8a9f",
+          "bytes": 472,
+          "role": "script",
+          "source": "written by the recorder from the @after of S7.L4 cell 2"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "SET",
+        "SET",
+        " set_config",
+        "------------",
+        " frank",
+        "(1 row)",
+        "      id",
+        "--------------",
+        " contract",
+        " layoffs-memo",
+        " q3-plan",
+        " roadmap",
+        "(4 rows)",
+        "ALTER TABLE",
+        " relrowsecurity | relforcerowsecurity |            read_at",
+        "----------------+---------------------+-------------------------------",
+        " t              | t                   | 2026-10-26 16:32:56.379607+00",
+        "(1 row)",
+        " set_config",
+        "------------",
+        " frank",
+        "(1 row)",
+        "   id",
+        "---------",
+        " roadmap",
+        "(1 row)"
+      ],
+      "outputs": [
+        "runs/RUN-pg-rls-owner/cell2.log"
+      ],
+      "environment": {
+        "server_binary": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "psql": "psql (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "container_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      },
+      "commands": [
+        [
+          "docker",
+          "run",
+          "-d",
+          "--name",
+          "ssrec-pg-pg-rls-owner-cell2",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-e",
+          "POSTGRES_HOST_AUTH_METHOD=trust",
+          "-v",
+          "<sandbox>/work:/q:ro",
+          "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+        ],
+        [
+          "docker",
+          "exec",
+          "ssrec-pg-pg-rls-owner-cell2",
+          "psql",
+          "-X",
+          "-q",
+          "-v",
+          "ON_ERROR_STOP=1",
+          "-U",
+          "postgres",
+          "-f",
+          "/q/world-all-policies.sql"
+        ],
+        [
+          "docker",
+          "exec",
+          "ssrec-pg-pg-rls-owner-cell2",
+          "sh",
+          "-c",
+          "psql -X -U postgres -v VERBOSITY=verbose -f /q/S7.L4-cell2.sql -f /q/S7.L4-cell2-force.sql 2>&1"
+        ],
+        [
+          "docker",
+          "rm",
+          "-f",
+          "ssrec-pg-pg-rls-owner-cell2"
+        ]
+      ],
+      "command_exit_codes": {
+        "start": 0,
+        "prelude": 0,
+        "psql": 0,
+        "remove": 0
+      }
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "Each configuration ran in its own fresh server: docker run -d of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 with --network none, --memory=6g and trust authentication, the work directory mounted read-only at /q; the recorder waited until docker logs showed \"PostgreSQL init process complete\" and \"database system is ready to accept connections\" twice and pg_isready exited 0 (at most 120 polls, 0.5 s apart), then ran psql through docker exec and sh with stdout and stderr merged by 2>&1, so the log is in the order psql wrote it, and removed the container. argv lists the commands in order (start, prelude when there is one, psql, removal); started_at, duration_s and exit_code are the psql command's. psql ran with -X and -v VERBOSITY=verbose, so each ERROR line carries its SQLSTATE; the SQL files ran unchanged, several -f files in one psql session.",
+    "The template world (world-*.sql) is generated by the recorder from scripts/spikes/W0-S08/rls-spec.mjs, the harness W0-S08 wrote for these specimens (docs/spikes/W0-S08.md asks W4-T10 to reuse it): ROLE_SETUP, SCHEMA_SETUP_AS_SUPERUSER, SCHEMA_SETUP_AS_OWNER as app_owner, the reference world WORLD_W0 (Acme and Birch; Payments, Growth, Legal and Risk; dana, frank, gia, hal, eli, ivy; contract, layoffs-memo, q3-plan, roadmap), and policies. It ran as the prelude, with ON_ERROR_STOP=1, as the superuser postgres; the cell then ran in a new psql session as postgres, as a tab cell runs as its superuser. documents is owned by app_owner, so `SET ROLE app_owner` makes the cell's query run as the table owner.",
+    "values.owner_rows_noforce lists the ids the owner's query returned before FORCE (all four documents of the world); values.owner_rows_force those after FORCE: roadmap only, frank's row of the access matrix (frank is a viewer on Growth, which owns roadmap). values.flags_after_force is the pg_class read-back, with the server's now() at the read.",
+    "The tab runs this cell on PGlite; PGlite was not run for this record. Placeholder in argv: <sandbox>/work is a scratch copy of the inputs this record lists, mounted at /q."
+  ]
+}

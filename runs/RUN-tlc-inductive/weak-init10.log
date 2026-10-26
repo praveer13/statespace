@@ -1,0 +1,51 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 122 and seed 6260614375978348547 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/DoubleSpendInd.tla
+Parsing file /w/DoubleSpendAtomic.tla
+Parsing file /tmp/tlc-10324063899472890263/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-10324063899472890263/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-10324063899472890263/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-10324063899472890263/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-10324063899472890263/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-10324063899472890263/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-10324063899472890263/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module DoubleSpendAtomic
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module DoubleSpendInd
+Linting of module DoubleSpendAtomic
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module DoubleSpendInd
+Starting... (2026-10-26 16:41:04)
+Computing initial states...
+Computed 2 initial states...
+Computed 4 initial states...
+Computed 8 initial states...
+Computed 16 initial states...
+Computed 32 initial states...
+Computed 64 initial states...
+Computed 128 initial states...
+Computed 256 initial states...
+Finished computing initial states: 484 distinct states generated at 2026-10-26 16:41:04.
+Error: Invariant WeakInv is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ spent = 3
+/\ bal = 8
+/\ pc = (w1 :> "go" @@ w2 :> "go")
+
+State 2: <Spend(w1) line 11, col 13 to line 15, col 46 of module DoubleSpendAtomic>
+/\ spent = 11
+/\ bal = 0
+/\ pc = (w1 :> "done" @@ w2 :> "go")
+
+849 states generated, 485 distinct states found, 119 states left on queue.
+The depth of the complete state graph search is 2.
+Finished in 00s at (2026-10-26 16:41:04)
+Trace exploration spec path: ./DoubleSpendInd_TTrace_1793032864.tla

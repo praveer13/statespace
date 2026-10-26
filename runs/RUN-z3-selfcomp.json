@@ -1,0 +1,251 @@
+{
+  "id": "RUN-z3-selfcomp",
+  "title": "Self-composition of Open for frank: version 0 leaks (sat), version 1 is unsat with the premise witness sat; the reference checker's SMT-LIB for version 1 is unsat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-7.3, AUD-7.2 and S7.L6 cells 2 and 3: the product query for Open v0 and v1 with the premise witness, and the SMT-LIB of v1 through the z3 executable",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:24.961Z",
+  "started_at": "2026-10-26T16:36:24.636Z",
+  "duration_s": 0.324,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s7l6_cell2.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "z3",
+      "s7l6_cell3.smt2"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-selfcomp/cells/s7l6_cell2.py",
+      "sha256": "b309ec72daad031e28626762c4b1c952aa2f433d65fb6c56bc9c2f8b1eaa5d1c",
+      "bytes": 1330,
+      "role": "cell",
+      "source": "content/stages/S7/S7.L6.md, the instrument at line 102: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-selfcomp/cells/s7l6_cell3.smt2",
+      "sha256": "87464ec985e750c7a449b8edcbc376a88091cccc8bddf4538cf66993308869aa",
+      "bytes": 918,
+      "role": "cell",
+      "source": "content/stages/S7/S7.L6.md, the instrument at line 186: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== s7l6-cell2: python -I s7l6_cell2.py",
+    "v0 sat",
+    "v1 unsat",
+    "premise witness sat",
+    "-- exit 0",
+    "== s7l6-cell3: z3 s7l6_cell3.smt2",
+    "unsat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-selfcomp/s7l6-cell2.log",
+      "sha256": "eee93d34bb3679c0ccadf65ecfdfc89977683ef38334eca013a3a100c1ef57f2",
+      "bytes": 36,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-selfcomp/s7l6-cell3.log",
+      "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18",
+      "bytes": 6,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s7l6-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "v0": {
+            "verdict": "sat"
+          },
+          "v1": {
+            "verdict": "unsat"
+          },
+          "premise_witness": {
+            "verdict": "sat"
+          }
+        }
+      },
+      "s7l6-cell3": {
+        "exit_code": 0,
+        "lines": {
+          "verdict": {
+            "verdict": "unsat"
+          }
+        }
+      }
+    },
+    "v0": "sat",
+    "v1": "unsat",
+    "premise_witness": "sat",
+    "smt2_v1": "unsat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s7l6-cell2",
+      "purpose": "S7.L6 cell 2, as written",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s7l6_cell2.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-selfcomp/cells/s7l6_cell2.py",
+          "sha256": "b309ec72daad031e28626762c4b1c952aa2f433d65fb6c56bc9c2f8b1eaa5d1c",
+          "bytes": 1330,
+          "role": "cell",
+          "source": "content/stages/S7/S7.L6.md, the instrument at line 102: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:24.636Z",
+      "duration_s": 0.183,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-selfcomp/s7l6-cell2.log",
+          "sha256": "eee93d34bb3679c0ccadf65ecfdfc89977683ef38334eca013a3a100c1ef57f2",
+          "bytes": 36,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s7l6-cell3",
+      "purpose": "S7.L6 cell 3, as written, through the z3 executable",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "Z3 version 5.3.1 - 64 bit",
+      "binary": "bin/z3 from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "z3",
+        "s7l6_cell3.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-selfcomp/cells/s7l6_cell3.smt2",
+          "sha256": "87464ec985e750c7a449b8edcbc376a88091cccc8bddf4538cf66993308869aa",
+          "bytes": 918,
+          "role": "cell",
+          "source": "content/stages/S7/S7.L6.md, the instrument at line 186: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:24.820Z",
+      "duration_s": 0.141,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-selfcomp/s7l6-cell3.log",
+          "sha256": "5c17dfcc2a8f1f30d9e96df6a9825a5030ade046d560332c19de74d93d591a18",
+          "bytes": 6,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s7l6-cell2",
+  "notes": [
+    "Both cells are the lesson's fenced blocks, copied byte for byte. They set no rlimit.",
+    "The cell prints verdicts only; the decoded v0 pair and its replay in the pair viewer (INS-pairs, not built yet) are not part of this run.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-selfcomp/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

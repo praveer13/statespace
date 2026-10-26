@@ -1,0 +1,294 @@
+{
+  "id": "RUN-lean-stuck",
+  "title": "Lean accepts the ill-typed guard balance(amount) >= amount as a Cmd, and the small-step relation has no rule for balance(30), so the guard balance(30) >= 30 is stuck",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:35:55.203Z",
+  "started_at": "2026-10-26T16:33:09.876Z",
+  "duration_s": 0.336,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-leanb-lean-stuck-balancestuck",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "BalanceStuck.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-stuck/inputs/OddCheck.lean",
+      "sha256": "17dd7b120d935bb8b0d0c8c171582a957993b6a42ce331afc89197c6ef420fce",
+      "bytes": 1267,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S3/S3.L1.md",
+      "sha256": "2d52409f913d97dd11205acf926d95337b9f63b7d8c3bc8ff93028b253f3b321",
+      "bytes": 8143,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-stuck/inputs/BalanceStuck.lean",
+      "sha256": "29872780a8b707ae1f2081d63fc438dbf376803fcc5150c46408f7ed83384ac4",
+      "bytes": 991,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S3/S3.L4.md",
+      "sha256": "7a0eb9100cd193b1b5306e01115198bd5384ebb7ef43a272324fee0583390fbc",
+      "bytes": 7442,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-stuck/inputs/GuardStuck.lean",
+      "sha256": "f3e938c2ce3d48d47e391d8224eaf64e314cd2df6980275ac5bae5b3f3546c85",
+      "bytes": 1341,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-stuck/odd-check.log",
+      "sha256": "e24d2b7f2469507f34de8dc631ef831e10409037093d7732adb4472d9211a458",
+      "bytes": 10,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-stuck/balance-stuck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-stuck/guard-stuck.log",
+      "sha256": "6e2069559c3b86e5cd3b33ce6cc73b4bca8e9d906a2537a049fb36c9b6f919fa",
+      "bytes": 97,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "odd_check": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "eval_lines": [
+        "odd : Cmd"
+      ]
+    },
+    "balance_stuck": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "guard_stuck": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "axioms_lines": [
+        "'balance_num_stuck' does not depend on any axioms",
+        "'guard_30_stuck' does not depend on any axioms"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "balance-stuck",
+  "configs": [
+    {
+      "id": "odd-check",
+      "origin": "recorded",
+      "purpose": "S3.L1 cell 2: #check odd, after the lesson's AST (Ty, Expr, ResourceOp, Stmt, Cmd)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:09.562Z",
+      "duration_s": 0.313,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-stuck-oddcheck",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "OddCheck.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-stuck/inputs/OddCheck.lean",
+          "sha256": "17dd7b120d935bb8b0d0c8c171582a957993b6a42ce331afc89197c6ef420fce",
+          "bytes": 1267,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S3/S3.L1.md",
+          "sha256": "2d52409f913d97dd11205acf926d95337b9f63b7d8c3bc8ff93028b253f3b321",
+          "bytes": 8143,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "odd : Cmd"
+      ],
+      "outputs": [
+        "runs/RUN-lean-stuck/odd-check.log"
+      ]
+    },
+    {
+      "id": "balance-stuck",
+      "origin": "recorded",
+      "purpose": "S3.L4's small-step block: E, Step and balance_num_stuck",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:09.876Z",
+      "duration_s": 0.336,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-stuck-balancestuck",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "BalanceStuck.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-stuck/inputs/BalanceStuck.lean",
+          "sha256": "29872780a8b707ae1f2081d63fc438dbf376803fcc5150c46408f7ed83384ac4",
+          "bytes": 991,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S3/S3.L4.md",
+          "sha256": "7a0eb9100cd193b1b5306e01115198bd5384ebb7ef43a272324fee0583390fbc",
+          "bytes": 7442,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-stuck/balance-stuck.log"
+      ]
+    },
+    {
+      "id": "guard-stuck",
+      "origin": "recorded",
+      "purpose": "probe: S3.L4's block plus guard_30_stuck, no step from balance(30) >= 30, and #print axioms for both theorems",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:10.212Z",
+      "duration_s": 0.288,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-stuck-guardstuck",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "GuardStuck.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-stuck/inputs/GuardStuck.lean",
+          "sha256": "f3e938c2ce3d48d47e391d8224eaf64e314cd2df6980275ac5bae5b3f3546c85",
+          "bytes": 1341,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S3/S3.L4.md",
+          "sha256": "7a0eb9100cd193b1b5306e01115198bd5384ebb7ef43a272324fee0583390fbc",
+          "bytes": 7442,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'balance_num_stuck' does not depend on any axioms",
+        "'guard_30_stuck' does not depend on any axioms"
+      ],
+      "outputs": [
+        "runs/RUN-lean-stuck/guard-stuck.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only; runs/RUN-lean-stuck/inputs/ holds those files as they ran.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md). run@1's task field admits only W<n>-S<nn>/W<n>-T<nn> IDs, so the follow-up is named in task_label instead.",
+    "Each log is the container's stdout and stderr, as lean printed them. verdict_lines are the error and warning header lines, the #print axioms lines and the #eval/#check output lines, copied from the log.",
+    "OddCheck.lean is S3.L1's AST block followed by its cell 2, verbatim; BalanceStuck.lean is S3.L4's lean block verbatim.",
+    "guard-stuck adds one theorem (authored) for the configuration S3.L4's cell 1 calls with typing bypassed: the guard `balance(30) >= 30` as `.ge (.bal (.num 30)) (.num 30)` has no step.",
+    "S3.L4's cell 1 itself is text notation for the trace view (INS-interp), which no engine reads yet; this record covers it through the Lean relation in the same lesson."
+  ]
+}

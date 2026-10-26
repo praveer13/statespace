@@ -1,0 +1,179 @@
+{
+  "id": "RUN-z3-capture",
+  "title": "Naive substitution into forall k. bal(k) >= 0 for Debit(k, amt) captures the parameter: the naive WP is strictly stronger than the capture-free one, with a witness where another account holds less than amt",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-4.2 and S4.L2 cell 3: lines 3 to 5 of the capture derivation, and line 2 checked against Z3's own capture-free substitution",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:25.342Z",
+  "started_at": "2026-10-26T16:36:25.137Z",
+  "duration_s": 0.205,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "capture.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-capture/cells/capture.py",
+      "sha256": "46c26c3d9e6a96e7cfc7e3e35536f4fe2c91b2e63215f45a38c5b260ea3d7c1b",
+      "bytes": 2441,
+      "role": "script",
+      "source": "written for this record from the cell, committed verbatim beside it as s4l2_cell3.txt (content/stages/S4/S4.L2.md line 178); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-capture/cells/s4l2_cell3.txt",
+      "sha256": "16f6ee42a65fd0f85598600792d0bc1f7cf6170bd5ec30211e0f72a419d0de5c",
+      "bytes": 640,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== derivation: python -I capture.py",
+    "line 2 against the capture-free substitution, a state where they differ: unsat",
+    "line 3 equivalence, a state where line 1 and line 2 disagree: sat [k = 2, amt = 1]",
+    "line 4 consequence, line 1 => line 2 fails: unsat",
+    "line 5 consequence reverse, line 2 => line 1 fails: sat [k = 2, amt = 1, bal = Store(K(Int, 0), 2, 1)]",
+    "  witness has an account j != k with 0 <= bal(j) < amt: sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-capture/derivation.log",
+      "sha256": "1136fa1ac8c174a42f9b5dda23af82b18eced45533fcf48b513d71fda077ef10",
+      "bytes": 375,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "derivation": {
+        "exit_code": 0,
+        "lines": {
+          "line_2_against_the_capture_free_substitution_a_state_where_they_differ": {
+            "verdict": "unsat"
+          },
+          "line_3_equivalence_a_state_where_line_1_and_line_2_disagree": {
+            "verdict": "sat",
+            "detail": "[k = 2, amt = 1]"
+          },
+          "line_4_consequence_line_1_line_2_fails": {
+            "verdict": "unsat"
+          },
+          "line_5_consequence_reverse_line_2_line_1_fails": {
+            "verdict": "sat",
+            "detail": "[k = 2, amt = 1, bal = Store(K(Int, 0), 2, 1)]"
+          },
+          "witness_has_an_account_j_k_with_0_bal_j_amt": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "line2_matches_substitution": "unsat",
+    "equivalence": "sat",
+    "naive_implies_free": "unsat",
+    "free_implies_naive": "sat",
+    "free_implies_naive_witness": "[k = 2, amt = 1, bal = Store(K(Int, 0), 2, 1)]",
+    "witness_has_j_with_0_le_bal_lt_amt": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "derivation",
+      "purpose": "lines 2 to 5 of the capture derivation as Z3 queries over an array bal",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "capture.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-capture/cells/capture.py",
+          "sha256": "46c26c3d9e6a96e7cfc7e3e35536f4fe2c91b2e63215f45a38c5b260ea3d7c1b",
+          "bytes": 2441,
+          "role": "script",
+          "source": "written for this record from the cell, committed verbatim beside it as s4l2_cell3.txt (content/stages/S4/S4.L2.md line 178); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+        },
+        {
+          "path": "runs/RUN-z3-capture/cells/s4l2_cell3.txt",
+          "sha256": "16f6ee42a65fd0f85598600792d0bc1f7cf6170bd5ec30211e0f72a419d0de5c",
+          "bytes": 640,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 5000000
+      },
+      "started_at": "2026-10-26T16:36:25.137Z",
+      "duration_s": 0.205,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-capture/derivation.log",
+          "sha256": "1136fa1ac8c174a42f9b5dda23af82b18eced45533fcf48b513d71fda077ef10",
+          "bytes": 375,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "derivation",
+  "notes": [
+    "The cell is a plain-text derivation for the Derivation Board (INS-derivation), which is not built yet; capture.py states each line as the cell's @direction describes it, and the cell is committed verbatim beside it.",
+    "curriculum/S04-obligations.md (SP-4.2) mentions an Optimize objective on bal(j); this run has none, because the objective is not stated precisely enough to encode without inventing it.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-capture/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

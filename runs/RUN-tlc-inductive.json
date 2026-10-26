@@ -1,0 +1,567 @@
+{
+  "id": "RUN-tlc-inductive",
+  "title": "Lamport's inductive check at fixed constants: Inv is inductive for two and three workers, and NoOverspend alone has a counterexample to induction",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "ISpec == Inv /\\ [][Next]_vars on S5.L3's atomic transfer, Init 100, Amount 80, at N = 2 and N = 3; NoOverspend alone (WeakInv) at Init 10 and at Init 100",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:41:04.874Z",
+  "started_at": "2026-10-26T16:41:03.068Z",
+  "duration_s": 1.796,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-inductive-inv-w3-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "Ind_w3.cfg",
+    "DoubleSpendInd"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-inductive/inputs/DoubleSpendAtomic.tla",
+      "sha256": "f5d7d11dcfd76c62a3cf80898123a9517b5db74c8e0b76bfcb205448be1799dd",
+      "bytes": 655,
+      "role": "spec: S5.L3 cell 2, the atomic transfer",
+      "source": "content/stages/S5/S5.L3.md lines 125-146 (cell 2, verbatim)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.tla",
+      "sha256": "86176f9bac72b3c83bca57a64f197ce14aba5fe81a43af9cf1779234c336960d",
+      "bytes": 724,
+      "role": "the inductive-check module (W0-S04's representative of S5.L9's check), with S5.L9's Inv"
+    },
+    {
+      "path": "runs/RUN-tlc-inductive/inputs/Ind_w3.cfg",
+      "sha256": "dc0ef6284aff1f3ad8c6b4244a91f02ad0f3a27ff3bc63e56954410201bb2931",
+      "bytes": 91,
+      "role": "config, written by the recorder: three workers, as S5.L9 states"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.cfg",
+      "sha256": "1af4100c8264cf1f92b7d15ef699eb0fdd99cecfd4edd33e9e0b84422d7a27e7",
+      "bytes": 87,
+      "role": "config, two workers"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd_weak10.cfg",
+      "sha256": "ec931444ace12444ed5d4154b2f140476df111495ebc7b48b524acaf084d70a3",
+      "bytes": 93,
+      "role": "config, NoOverspend alone at Init 10"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd_weak.cfg",
+      "sha256": "4e03a16bf486e790bc15b877a2250d15d417f90c8df5e8b95f56815c7b7536ff",
+      "bytes": 95,
+      "role": "config, NoOverspend alone at Init 100"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 93 and seed -8894453608666834517 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 808 distinct states generated at 2026-10-26 16:41:03.",
+    "Model checking completed. No error has been found.",
+    "2020 states generated, 808 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 1.",
+    "Finished in 00s at (2026-10-26 16:41:03)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-inductive/inv-w3.log",
+      "sha256": "db989a5781769466e3c8c98fa9f7655902ab21ad07cd8a411e4b2b83aeb82e0d",
+      "bytes": 2759,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-inductive/inv-w2.log",
+      "sha256": "6916afde2c616b7a05e5e1ac6242e9fd1b63c86e979ec64323600492a8d29528",
+      "bytes": 2726,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-inductive/weak-init10.log",
+      "sha256": "eff15357348f612da345a5661f3e416e6bba1543847ca8c6cc68040882a5526e",
+      "bytes": 2773,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-inductive/weak-init100.log",
+      "sha256": "3f845d00e5c49511a6930edbf6106995b6a540a8cb3e3554fa19ec63b37c74a9",
+      "bytes": 3008,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "inv-w3": {
+      "result": "no error",
+      "states_generated": 2020,
+      "distinct_states": 808,
+      "states_left": 0,
+      "depth": 1,
+      "initial_states": 808
+    },
+    "inv-w2": {
+      "result": "no error",
+      "states_generated": 808,
+      "distinct_states": 404,
+      "states_left": 0,
+      "depth": 1,
+      "initial_states": 404
+    },
+    "weak-init10": {
+      "result": "invariant violated",
+      "violated": "WeakInv",
+      "states_generated": 849,
+      "distinct_states": 485,
+      "states_left": 119,
+      "depth": 2,
+      "initial_states": 484,
+      "trace_states": 2,
+      "trace_actions": 1,
+      "trace": [
+        "Spend(w1)"
+      ]
+    },
+    "weak-init100": {
+      "result": "invariant violated",
+      "violated": "WeakInv",
+      "states_generated": 73209,
+      "distinct_states": 40805,
+      "states_left": 8399,
+      "depth": 2,
+      "initial_states": 40804,
+      "trace_states": 2,
+      "trace_actions": 1,
+      "trace": [
+        "Spend(w1)"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "inv-w3",
+  "configs": [
+    {
+      "id": "inv-w3",
+      "description": "Inv at N = 3",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:03.068Z",
+      "duration_s": 0.423,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-inductive-inv-w3-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Ind_w3.cfg",
+        "DoubleSpendInd"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-inductive/inputs/DoubleSpendAtomic.tla",
+          "sha256": "f5d7d11dcfd76c62a3cf80898123a9517b5db74c8e0b76bfcb205448be1799dd",
+          "bytes": 655,
+          "role": "spec: S5.L3 cell 2, the atomic transfer",
+          "source": "content/stages/S5/S5.L3.md lines 125-146 (cell 2, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.tla",
+          "sha256": "86176f9bac72b3c83bca57a64f197ce14aba5fe81a43af9cf1779234c336960d",
+          "bytes": 724,
+          "role": "the inductive-check module (W0-S04's representative of S5.L9's check), with S5.L9's Inv"
+        },
+        {
+          "path": "runs/RUN-tlc-inductive/inputs/Ind_w3.cfg",
+          "sha256": "dc0ef6284aff1f3ad8c6b4244a91f02ad0f3a27ff3bc63e56954410201bb2931",
+          "bytes": 91,
+          "role": "config, written by the recorder: three workers, as S5.L9 states"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 93 and seed -8894453608666834517 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 808 distinct states generated at 2026-10-26 16:41:03.",
+        "Model checking completed. No error has been found.",
+        "2020 states generated, 808 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 1.",
+        "Finished in 00s at (2026-10-26 16:41:03)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-inductive/inv-w3.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 2020,
+        "distinct_states": 808,
+        "states_left": 0,
+        "depth": 1,
+        "initial_states": 808
+      }
+    },
+    {
+      "id": "inv-w2",
+      "description": "Inv at N = 2",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:03.494Z",
+      "duration_s": 0.402,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-inductive-inv-w2-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendInd.cfg",
+        "DoubleSpendInd"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-inductive/inputs/DoubleSpendAtomic.tla",
+          "sha256": "f5d7d11dcfd76c62a3cf80898123a9517b5db74c8e0b76bfcb205448be1799dd",
+          "bytes": 655,
+          "role": "spec: S5.L3 cell 2, the atomic transfer",
+          "source": "content/stages/S5/S5.L3.md lines 125-146 (cell 2, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.tla",
+          "sha256": "86176f9bac72b3c83bca57a64f197ce14aba5fe81a43af9cf1779234c336960d",
+          "bytes": 724,
+          "role": "the inductive-check module (W0-S04's representative of S5.L9's check), with S5.L9's Inv"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.cfg",
+          "sha256": "1af4100c8264cf1f92b7d15ef699eb0fdd99cecfd4edd33e9e0b84422d7a27e7",
+          "bytes": 87,
+          "role": "config, two workers"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 43 and seed 6902996157788109255 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 404 distinct states generated at 2026-10-26 16:41:03.",
+        "Model checking completed. No error has been found.",
+        "808 states generated, 404 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 1.",
+        "Finished in 00s at (2026-10-26 16:41:03)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-inductive/inv-w2.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 808,
+        "distinct_states": 404,
+        "states_left": 0,
+        "depth": 1,
+        "initial_states": 404
+      }
+    },
+    {
+      "id": "weak-init10",
+      "description": "WeakInv at Init 10, Amount 8, N = 2",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:03.900Z",
+      "duration_s": 0.416,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-inductive-weak-init10-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendInd_weak10.cfg",
+        "DoubleSpendInd"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-inductive/inputs/DoubleSpendAtomic.tla",
+          "sha256": "f5d7d11dcfd76c62a3cf80898123a9517b5db74c8e0b76bfcb205448be1799dd",
+          "bytes": 655,
+          "role": "spec: S5.L3 cell 2, the atomic transfer",
+          "source": "content/stages/S5/S5.L3.md lines 125-146 (cell 2, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.tla",
+          "sha256": "86176f9bac72b3c83bca57a64f197ce14aba5fe81a43af9cf1779234c336960d",
+          "bytes": 724,
+          "role": "the inductive-check module (W0-S04's representative of S5.L9's check), with S5.L9's Inv"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd_weak10.cfg",
+          "sha256": "ec931444ace12444ed5d4154b2f140476df111495ebc7b48b524acaf084d70a3",
+          "bytes": 93,
+          "role": "config, NoOverspend alone at Init 10"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 122 and seed 6260614375978348547 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 484 distinct states generated at 2026-10-26 16:41:04.",
+        "Error: Invariant WeakInv is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Spend(w1) line 11, col 13 to line 15, col 46 of module DoubleSpendAtomic>",
+        "849 states generated, 485 distinct states found, 119 states left on queue.",
+        "The depth of the complete state graph search is 2.",
+        "Finished in 00s at (2026-10-26 16:41:04)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-inductive/weak-init10.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WeakInv",
+        "states_generated": 849,
+        "distinct_states": 485,
+        "states_left": 119,
+        "depth": 2,
+        "initial_states": 484,
+        "trace_states": 2,
+        "trace_actions": 1,
+        "trace": [
+          "Spend(w1)"
+        ]
+      }
+    },
+    {
+      "id": "weak-init100",
+      "description": "WeakInv at Init 100, Amount 80, N = 2",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:04.319Z",
+      "duration_s": 0.555,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-inductive-weak-init100-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendInd_weak.cfg",
+        "DoubleSpendInd"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-inductive/inputs/DoubleSpendAtomic.tla",
+          "sha256": "f5d7d11dcfd76c62a3cf80898123a9517b5db74c8e0b76bfcb205448be1799dd",
+          "bytes": 655,
+          "role": "spec: S5.L3 cell 2, the atomic transfer",
+          "source": "content/stages/S5/S5.L3.md lines 125-146 (cell 2, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd.tla",
+          "sha256": "86176f9bac72b3c83bca57a64f197ce14aba5fe81a43af9cf1779234c336960d",
+          "bytes": 724,
+          "role": "the inductive-check module (W0-S04's representative of S5.L9's check), with S5.L9's Inv"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendInd_weak.cfg",
+          "sha256": "4e03a16bf486e790bc15b877a2250d15d417f90c8df5e8b95f56815c7b7536ff",
+          "bytes": 95,
+          "role": "config, NoOverspend alone at Init 100"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 66 and seed -7285569190176495002 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 40804 distinct states generated at 2026-10-26 16:41:04.",
+        "Error: Invariant WeakInv is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Spend(w1) line 11, col 13 to line 15, col 46 of module DoubleSpendAtomic>",
+        "73209 states generated, 40805 distinct states found, 8399 states left on queue.",
+        "The depth of the complete state graph search is 2.",
+        "Finished in 00s at (2026-10-26 16:41:04)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-inductive/weak-init100.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WeakInv",
+        "states_generated": 73209,
+        "distinct_states": 40805,
+        "states_left": 8399,
+        "depth": 2,
+        "initial_states": 40804,
+        "trace_states": 2,
+        "trace_actions": 1,
+        "trace": [
+          "Spend(w1)"
+        ]
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "tlc-inductive-check-1",
+      "name": "S5.L9's Inv line occurs verbatim in DoubleSpendInd.tla",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "TypeOK, which leads Inv so that TLC can enumerate the initial states, is not shown in S5.L9; it is the spike module's TypeOK (bal and spent in 0..Init, pc a function to {\"go\", \"done\"}).",
+    "DoubleSpendInd EXTENDS DoubleSpendAtomic; the staged DoubleSpendAtomic.tla is S5.L3 cell 2 verbatim, whose trailing comment lines follow the module end.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

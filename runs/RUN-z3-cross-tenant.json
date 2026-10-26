@@ -1,0 +1,259 @@
+{
+  "id": "RUN-z3-cross-tenant",
+  "title": "Without schema invariants a cross-tenant read with no share is sat; with WF1 it is unsat, beside satisfiable premise and non-vacuity witnesses",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-7.2 and S7.L3 cell 1: as written (no invariants), and with the three commented lines uncommented, as the lesson asks after the call",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:24.142Z",
+  "started_at": "2026-10-26T16:36:23.755Z",
+  "duration_s": 0.385,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s7l3_cell1.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s7l3_cell1_uncommented.py"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-cross-tenant/cells/s7l3_cell1.py",
+      "sha256": "ee2b2a9dbb01bb0f4e92d22c254978db4a91a0bba1d6ab9de9b6f5ad5f19bf99",
+      "bytes": 1662,
+      "role": "cell",
+      "source": "content/stages/S7/S7.L3.md, the instrument at line 36: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-cross-tenant/cells/s7l3_cell1_uncommented.py",
+      "sha256": "ca9d01ebc9ea24e24df7257ed43a2426f636bce759ae1b333e60bd353d4831dc",
+      "bytes": 1656,
+      "role": "cell variant",
+      "source": "content/stages/S7/S7.L3.md, the instrument at line 36: its fenced block, with the edit its comment names (\"remove the # marks and run again\"): lines 34 to 36 uncommented"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the cell sets rlimit 1000000 on every solver"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== s7l3-cell1: python -I s7l3_cell1.py",
+    "no invariants : sat",
+    "-- exit 0",
+    "== s7l3-cell1-uncommented: python -I s7l3_cell1_uncommented.py",
+    "no invariants : sat",
+    "with WF1      : unsat",
+    "premises      : sat",
+    "non-vacuity   : sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-cross-tenant/s7l3-cell1.log",
+      "sha256": "4835de000b91518f34608f70829394257ad6ea1c28d01ba90a78836abdeffb5b",
+      "bytes": 20,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cross-tenant/s7l3-cell1-uncommented.log",
+      "sha256": "6be58cf471d46e17b24ad48347aaea0f6c31703ddb8e28373c2d6f00fabb2f47",
+      "bytes": 82,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s7l3-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "no_invariants": {
+            "verdict": "sat"
+          }
+        }
+      },
+      "s7l3-cell1-uncommented": {
+        "exit_code": 0,
+        "lines": {
+          "no_invariants": {
+            "verdict": "sat"
+          },
+          "with_wf1": {
+            "verdict": "unsat"
+          },
+          "premises": {
+            "verdict": "sat"
+          },
+          "non_vacuity": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "no_invariants": "sat",
+    "with_wf1": "unsat",
+    "premises": "sat",
+    "non_vacuity": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s7l3-cell1",
+      "purpose": "S7.L3 cell 1, as written",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s7l3_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cross-tenant/cells/s7l3_cell1.py",
+          "sha256": "ee2b2a9dbb01bb0f4e92d22c254978db4a91a0bba1d6ab9de9b6f5ad5f19bf99",
+          "bytes": 1662,
+          "role": "cell",
+          "source": "content/stages/S7/S7.L3.md, the instrument at line 36: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 1000000
+      },
+      "started_at": "2026-10-26T16:36:23.755Z",
+      "duration_s": 0.18,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cross-tenant/s7l3-cell1.log",
+          "sha256": "4835de000b91518f34608f70829394257ad6ea1c28d01ba90a78836abdeffb5b",
+          "bytes": 20,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s7l3-cell1-uncommented",
+      "purpose": "S7.L3 cell 1 with WF1, the premise witness and the non-vacuity witness",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s7l3_cell1_uncommented.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cross-tenant/cells/s7l3_cell1_uncommented.py",
+          "sha256": "ca9d01ebc9ea24e24df7257ed43a2426f636bce759ae1b333e60bd353d4831dc",
+          "bytes": 1656,
+          "role": "cell variant",
+          "source": "content/stages/S7/S7.L3.md, the instrument at line 36: its fenced block, with the edit its comment names (\"remove the # marks and run again\"): lines 34 to 36 uncommented"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 1000000
+      },
+      "started_at": "2026-10-26T16:36:23.936Z",
+      "duration_s": 0.205,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cross-tenant/s7l3-cell1-uncommented.log",
+          "sha256": "6be58cf471d46e17b24ad48347aaea0f6c31703ddb8e28373c2d6f00fabb2f47",
+          "bytes": 82,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s7l3-cell1",
+  "notes": [
+    "The cell is the lesson's fenced block, copied byte for byte; the uncommented variant differs in lines 34 to 36 only.",
+    "The cell prints verdicts only, no model; the lesson's description of the world (a Birch user on an Acme team) is not a value of this run. CL-7.2's cvc5 cross-check is not part of this run.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-cross-tenant/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

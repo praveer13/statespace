@@ -1,0 +1,359 @@
+{
+  "id": "RUN-lean-preservation-frag",
+  "title": "The refusing compiler satisfies Preserves by a one-line proof, and post_sim builds; the S9.L6 template cells and pack S9B are not recorded",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "pack S9B's reference accepted, axioms listed, `--paranoid`; the vacuous-compiler proof; the variants without `∀ regs`",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:35:55.204Z",
+  "started_at": "2026-10-26T16:33:11.249Z",
+  "duration_s": 0.279,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-leanb-lean-preservation-frag-refusepreserves",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "RefusePreserves.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-preservation-frag/inputs/RefusePreserves.lean",
+      "sha256": "7212c126740f7198ca2137fc39c3a7826d3e9588d868ab42049276f7bc2bb934",
+      "bytes": 495,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S9/S9.L4.md",
+      "sha256": "6f17921147606a5c4a4717841a9332d595db004ddb114b20399ec2ab0b622899",
+      "bytes": 12940,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/inputs/RefusePreservesAxioms.lean",
+      "sha256": "917d92519ddba8637567d25be18c90d3c3ddc88ca8fcdaa7657e9671b0b34f20",
+      "bytes": 527,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/inputs/PostSim.lean",
+      "sha256": "477a7527fb363f1ab45b7c5875af9753937f2870f6f893c41dc4710bd3bb6ff6",
+      "bytes": 1370,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S9/S9.L5.md",
+      "sha256": "442bc0aa0813ac80b1366ad1ed30d4014947387adf5e246471a57ec7a6d121a7",
+      "bytes": 14801,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/inputs/PostSimAxioms.lean",
+      "sha256": "045aa3be38283ffb8cb6a7529d7288ea12eaa0a9f7dc343cb9719b1ca54e575e",
+      "bytes": 1394,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-preservation-frag/refuse.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/refuse-axioms.log",
+      "sha256": "62659ba984a9a2919e7b4818dd2437b880bf135305f4669b4e087659bff3b00b",
+      "bytes": 48,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/post-sim.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-preservation-frag/post-sim-axioms.log",
+      "sha256": "b4d676bd05b822329d684f02174cea2b705b8978de6e8f3bea54aae1d7492bdf",
+      "bytes": 40,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "refuse": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "refuse_axioms": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "axioms_lines": [
+        "'refuse_preserves' depends on axioms: [propext]"
+      ]
+    },
+    "post_sim": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "post_sim_axioms": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "axioms_lines": [
+        "'post_sim' depends on axioms: [propext]"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "refuse",
+  "configs": [
+    {
+      "id": "refuse",
+      "origin": "recorded",
+      "purpose": "S9.L4 cell 2 verbatim: Preserves, refuse and refuse_preserves",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:11.249Z",
+      "duration_s": 0.279,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-preservation-frag-refusepreserves",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "RefusePreserves.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-preservation-frag/inputs/RefusePreserves.lean",
+          "sha256": "7212c126740f7198ca2137fc39c3a7826d3e9588d868ab42049276f7bc2bb934",
+          "bytes": 495,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L4.md",
+          "sha256": "6f17921147606a5c4a4717841a9332d595db004ddb114b20399ec2ab0b622899",
+          "bytes": 12940,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-preservation-frag/refuse.log"
+      ]
+    },
+    {
+      "id": "refuse-axioms",
+      "origin": "recorded",
+      "purpose": "S9.L4 cell 2 plus #print axioms refuse_preserves",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:11.529Z",
+      "duration_s": 0.303,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-preservation-frag-refusepreservesaxioms",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "RefusePreservesAxioms.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-preservation-frag/inputs/RefusePreservesAxioms.lean",
+          "sha256": "917d92519ddba8637567d25be18c90d3c3ddc88ca8fcdaa7657e9671b0b34f20",
+          "bytes": 527,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L4.md",
+          "sha256": "6f17921147606a5c4a4717841a9332d595db004ddb114b20399ec2ab0b622899",
+          "bytes": 12940,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'refuse_preserves' depends on axioms: [propext]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-preservation-frag/refuse-axioms.log"
+      ]
+    },
+    {
+      "id": "post-sim",
+      "origin": "recorded",
+      "purpose": "S9.L5 cell 1 verbatim: postS, postT, R and post_sim",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:11.833Z",
+      "duration_s": 0.339,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-preservation-frag-postsim",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "PostSim.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-preservation-frag/inputs/PostSim.lean",
+          "sha256": "477a7527fb363f1ab45b7c5875af9753937f2870f6f893c41dc4710bd3bb6ff6",
+          "bytes": 1370,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L5.md",
+          "sha256": "442bc0aa0813ac80b1366ad1ed30d4014947387adf5e246471a57ec7a6d121a7",
+          "bytes": 14801,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-preservation-frag/post-sim.log"
+      ]
+    },
+    {
+      "id": "post-sim-axioms",
+      "origin": "recorded",
+      "purpose": "S9.L5 cell 1 plus #print axioms post_sim",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:12.172Z",
+      "duration_s": 0.318,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-preservation-frag-postsimaxioms",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "PostSimAxioms.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-preservation-frag/inputs/PostSimAxioms.lean",
+          "sha256": "045aa3be38283ffb8cb6a7529d7288ea12eaa0a9f7dc343cb9719b1ca54e575e",
+          "bytes": 1394,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L5.md",
+          "sha256": "442bc0aa0813ac80b1366ad1ed30d4014947387adf5e246471a57ec7a6d121a7",
+          "bytes": 14801,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'post_sim' depends on axioms: [propext]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-preservation-frag/post-sim-axioms.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only; runs/RUN-lean-preservation-frag/inputs/ holds those files as they ran.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md). run@1's task field admits only W<n>-S<nn>/W<n>-T<nn> IDs, so the follow-up is named in task_label instead.",
+    "Each log is the container's stdout and stderr, as lean printed them. verdict_lines are the error and warning header lines, the #print axioms lines and the #eval/#check output lines, copied from the log.",
+    "Partial record. Covered: the vacuous-compiler proof (S9.L4 cell 2) and S9.L5's post_sim. Not covered, because the artifacts are not built: S9.L6's three cells (they use Outcome, Cmd, runS, exec, exec_append, compE_correct, compPost and runPost from the LAB-9 template), the variants without ∀ regs, pack S9B's reference proof, its comparator and --paranoid runs, and the assembled preservation theorem's axioms (lab.yaml, LAB-9.10). Citations of those stay unbacked until the template exists."
+  ]
+}

@@ -1,0 +1,45 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 126 and seed -123336966138609188 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/HoldsLifecycleWitness.tla
+Parsing file /w/HoldsLifecycle.tla
+Parsing file /tmp/tlc-14912666325491969150/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-14912666325491969150/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-14912666325491969150/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-14912666325491969150/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-14912666325491969150/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-14912666325491969150/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-14912666325491969150/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module HoldsLifecycle
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module HoldsLifecycleWitness
+Linting of module HoldsLifecycle
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module HoldsLifecycleWitness
+Starting... (2026-10-26 16:40:54)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:55.
+Error: Invariant WitnessReleased is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ hst = "available"
+/\ res = 0
+
+State 2: <Place line 11, col 12 to line 11, col 66 of module HoldsLifecycle>
+/\ hst = "held"
+/\ res = 0
+
+State 3: <Release line 13, col 12 to line 13, col 67 of module HoldsLifecycle>
+/\ hst = "released"
+/\ res = 1
+
+4 states generated, 4 distinct states found, 1 states left on queue.
+The depth of the complete state graph search is 3.
+Finished in 00s at (2026-10-26 16:40:55)
+Trace exploration spec path: ./HoldsLifecycleWitness_TTrace_1793032854.tla

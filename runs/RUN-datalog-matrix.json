@@ -1,0 +1,734 @@
+{
+  "id": "RUN-datalog-matrix",
+  "title": "Soufflé 2.5 on the S7 access-policy cells: the W0 access matrix, the revocation edit, a derivation and a denial, and the eight-world small scope",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S7.L1 cell 2, S7.L2 cells 1 and 2 (with the revocation edit and provenance), S7.L3 cell 3: the lesson cells keyed to RUN-datalog-matrix; LAB-7.c2's reference comparison on generated worlds is not part of this record",
+  "engine": "souffle",
+  "version": "Version: 2.5 (2.5)",
+  "version_string": "Version: 2.5 (2.5)",
+  "binary": "/usr/bin/souffle in the bench image (the Soufflé 2.5 package for Ubuntu 24.04 on x86_64)",
+  "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:32:22.731Z",
+  "started_at": "2026-10-26T16:29:21.674Z",
+  "duration_s": 0.151,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "souffle",
+    "-D-",
+    "s7l1-cell2.dl"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S7/RUN-datalog-matrix/s7l1-cell2.dl",
+      "sha256": "dc85eb11e3f02514327a41d8fe76112657bede73030264882ae934348d478fca",
+      "bytes": 1255,
+      "role": "program",
+      "source": "content/stages/S7/S7.L1.md"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "---------------",
+    "canread",
+    "u\td",
+    "===============",
+    "dana\tq3-plan",
+    "dana\troadmap",
+    "dana\tcontract",
+    "frank\troadmap",
+    "gia\tcontract",
+    "gia\tlayoffs-memo",
+    "hal\tcontract",
+    "hal\tlayoffs-memo",
+    "==============="
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-datalog-matrix/s7l1-cell2.stdout",
+      "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+      "bytes": 174,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l1-cell2.stderr",
+      "sha256": "6f786a032f622e7b471ca14e5f15a084903e13f2a39c926871821b8323495ab6",
+      "bytes": 158,
+      "kind": "stderr"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell1.stdout",
+      "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+      "bytes": 174,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell1.stderr",
+      "sha256": "eafde24dc935aa0e2fe81d4f3f61e92b2438a342b492f5655c5db6446482d059",
+      "bytes": 158,
+      "kind": "stderr"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell1-revoked.stdout",
+      "sha256": "6adb827cd8d6543b831ba9eaf38f2fe1c9c62f5df68d5dc2a962169f952a774f",
+      "bytes": 160,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell1-revoked.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "stderr"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell2.stdout",
+      "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+      "bytes": 174,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell2.stderr",
+      "sha256": "595d7ff7c53e37f2abe6b38499d490041f7bd2258b3bfa4b02d7a6d2f51f44c8",
+      "bytes": 158,
+      "kind": "stderr"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell2-explain.stdout",
+      "sha256": "1eaa24cbf9f0857a4df02d58124fe1e6d2770091412017fdafaa7e8f35648494",
+      "bytes": 286,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l2-cell2-explain.stderr",
+      "sha256": "595d7ff7c53e37f2abe6b38499d490041f7bd2258b3bfa4b02d7a6d2f51f44c8",
+      "bytes": 158,
+      "kind": "stderr"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l3-cell3.stdout",
+      "sha256": "63160f0f4fb8f7b7c09842ceb5a7939152712ef0975dbba0a336c4afd8640db2",
+      "bytes": 133,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-datalog-matrix/s7l3-cell3.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "stderr"
+    }
+  ],
+  "values": {
+    "s7l1": {
+      "canread": [
+        [
+          "dana",
+          "q3-plan"
+        ],
+        [
+          "dana",
+          "roadmap"
+        ],
+        [
+          "dana",
+          "contract"
+        ],
+        [
+          "frank",
+          "roadmap"
+        ],
+        [
+          "gia",
+          "contract"
+        ],
+        [
+          "gia",
+          "layoffs-memo"
+        ],
+        [
+          "hal",
+          "contract"
+        ],
+        [
+          "hal",
+          "layoffs-memo"
+        ]
+      ],
+      "allowed_cells": 8,
+      "dana_reads_contract": true
+    },
+    "s7l2": {
+      "canread": [
+        [
+          "dana",
+          "q3-plan"
+        ],
+        [
+          "dana",
+          "roadmap"
+        ],
+        [
+          "dana",
+          "contract"
+        ],
+        [
+          "frank",
+          "roadmap"
+        ],
+        [
+          "gia",
+          "contract"
+        ],
+        [
+          "gia",
+          "layoffs-memo"
+        ],
+        [
+          "hal",
+          "contract"
+        ],
+        [
+          "hal",
+          "layoffs-memo"
+        ]
+      ],
+      "allowed_cells": 8,
+      "canread_after_revoke": [
+        [
+          "dana",
+          "q3-plan"
+        ],
+        [
+          "dana",
+          "roadmap"
+        ],
+        [
+          "frank",
+          "roadmap"
+        ],
+        [
+          "gia",
+          "contract"
+        ],
+        [
+          "gia",
+          "layoffs-memo"
+        ],
+        [
+          "hal",
+          "contract"
+        ],
+        [
+          "hal",
+          "layoffs-memo"
+        ]
+      ],
+      "cells_removed_by_revoke": [
+        [
+          "dana",
+          "contract"
+        ]
+      ],
+      "cells_added_by_revoke": [],
+      "changed_cells": 1
+    },
+    "s7l2_explain": {
+      "dana_contract_tree": [
+        "share_user(\"contract\", \"dana\") ",
+        "---------------------------(R3)",
+        "  canread(\"dana\", \"contract\")  "
+      ],
+      "dana_contract_rule_label": "R3",
+      "frank_contract": "Tuple not found"
+    },
+    "s7l3": {
+      "worlds": 8,
+      "violation": [
+        "w4",
+        "w6"
+      ],
+      "wf2_broken": [
+        "w4",
+        "w6"
+      ],
+      "violations_without_wf2_broken": []
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "cpu_architecture": "x86_64",
+    "container": {
+      "runtime": "docker",
+      "server_version": "29.1.3",
+      "image": "statespace-bench",
+      "digest": "sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "architecture": "amd64",
+      "run_flags": [
+        "--rm",
+        "--memory=6g",
+        "--network none",
+        "-v <sandbox>/work:/w"
+      ],
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "configs": [
+    {
+      "id": "s7l1-cell2",
+      "purpose": "S7.L1 cell 2 (INS-datalog): the W0 world with tenants under rules 1 to 3; the matrix behind the call \"Can dana read contract?\"",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:21.674Z",
+      "duration_s": 0.151,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "souffle",
+        "-D-",
+        "s7l1-cell2.dl"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l1-cell2.dl",
+          "sha256": "dc85eb11e3f02514327a41d8fe76112657bede73030264882ae934348d478fca",
+          "bytes": 1255,
+          "role": "program",
+          "source": "content/stages/S7/S7.L1.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "canread",
+        "u\td",
+        "===============",
+        "dana\tq3-plan",
+        "dana\troadmap",
+        "dana\tcontract",
+        "frank\troadmap",
+        "gia\tcontract",
+        "gia\tlayoffs-memo",
+        "hal\tcontract",
+        "hal\tlayoffs-memo",
+        "==============="
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l1-cell2.stdout",
+          "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+          "bytes": 174,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l1-cell2.stderr",
+          "sha256": "6f786a032f622e7b471ca14e5f15a084903e13f2a39c926871821b8323495ab6",
+          "bytes": 158,
+          "kind": "stderr"
+        }
+      ]
+    },
+    {
+      "id": "s7l2-cell1",
+      "purpose": "S7.L2 cell 1 (INS-datalog): W0 without tenants under rules 1 to 3, the access matrix as written",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:21.834Z",
+      "duration_s": 0.145,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "souffle",
+        "-D-",
+        "s7l2-cell1.dl"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l2-cell1.dl",
+          "sha256": "a14fe37e50228ec724ea94542016e6d65d03382e48e8687fb5220d9aac2809d9",
+          "bytes": 865,
+          "role": "program",
+          "source": "content/stages/S7/S7.L2.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "canread",
+        "u\td",
+        "===============",
+        "dana\tq3-plan",
+        "dana\troadmap",
+        "dana\tcontract",
+        "frank\troadmap",
+        "gia\tcontract",
+        "gia\tlayoffs-memo",
+        "hal\tcontract",
+        "hal\tlayoffs-memo",
+        "==============="
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell1.stdout",
+          "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+          "bytes": 174,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell1.stderr",
+          "sha256": "eafde24dc935aa0e2fe81d4f3f61e92b2438a342b492f5655c5db6446482d059",
+          "bytes": 158,
+          "kind": "stderr"
+        }
+      ]
+    },
+    {
+      "id": "s7l2-cell1-revoked",
+      "purpose": "S7.L2 cell 1 with the edit its call names: revoked(\"contract\", \"dana\"). added after the facts; which cells change",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:21.987Z",
+      "duration_s": 0.141,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "souffle",
+        "-D-",
+        "s7l2-cell1-revoked.dl"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l2-cell1-revoked.dl",
+          "sha256": "7c196ea9b08c5a46df7f881df8379778f91e1481cedd6a3c16a3f5225dafbc39",
+          "bytes": 894,
+          "role": "program",
+          "source": "content/stages/S7/S7.L2.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "canread",
+        "u\td",
+        "===============",
+        "dana\tq3-plan",
+        "dana\troadmap",
+        "frank\troadmap",
+        "gia\tcontract",
+        "gia\tlayoffs-memo",
+        "hal\tcontract",
+        "hal\tlayoffs-memo",
+        "==============="
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell1-revoked.stdout",
+          "sha256": "6adb827cd8d6543b831ba9eaf38f2fe1c9c62f5df68d5dc2a962169f952a774f",
+          "bytes": 160,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell1-revoked.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "kind": "stderr"
+        }
+      ]
+    },
+    {
+      "id": "s7l2-cell2",
+      "purpose": "S7.L2 cell 2 (INS-datalog): the same program, evaluated",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:22.135Z",
+      "duration_s": 0.136,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "souffle",
+        "-D-",
+        "s7l2-cell2.dl"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l2-cell2.dl",
+          "sha256": "eca4d03a3a2672cf3a37cd6c8bc70dfbbd54b6f0b69bb1af8759bb7ed4a5821f",
+          "bytes": 730,
+          "role": "program",
+          "source": "content/stages/S7/S7.L2.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "canread",
+        "u\td",
+        "===============",
+        "dana\tq3-plan",
+        "dana\troadmap",
+        "dana\tcontract",
+        "frank\troadmap",
+        "gia\tcontract",
+        "gia\tlayoffs-memo",
+        "hal\tcontract",
+        "hal\tlayoffs-memo",
+        "==============="
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell2.stdout",
+          "sha256": "43c9dbb92a045aa2cb2e95e0584f4bae0a2d1b761a05a15fe614d80c99121333",
+          "bytes": 174,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell2.stderr",
+          "sha256": "595d7ff7c53e37f2abe6b38499d490041f7bd2258b3bfa4b02d7a6d2f51f44c8",
+          "bytes": 158,
+          "kind": "stderr"
+        }
+      ]
+    },
+    {
+      "id": "s7l2-cell2-explain",
+      "purpose": "S7.L2 cell 2 under Souffle provenance (-t explain): a derivation for canread(\"dana\", \"contract\") and the answer for the denied canread(\"frank\", \"contract\")",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:30.130Z",
+      "duration_s": 0.158,
+      "argv": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "-c",
+        "souffle -t explain -D- s7l2-cell2.dl < explain-commands.txt"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l2-cell2.dl",
+          "sha256": "eca4d03a3a2672cf3a37cd6c8bc70dfbbd54b6f0b69bb1af8759bb7ed4a5821f",
+          "bytes": 730,
+          "role": "program",
+          "source": "content/stages/S7/S7.L2.md"
+        },
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/explain-commands.txt",
+          "sha256": "15fec2dd6b718602f9f33252ebe7a32806a9907ec54dbbca7e604eb8b63ab8d6",
+          "bytes": 91,
+          "role": "provenance commands on stdin",
+          "source": "content/stages/S7/S7.L2.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "canread",
+        "u\td",
+        "===============",
+        "dana\tq3-plan",
+        "dana\troadmap",
+        "dana\tcontract",
+        "frank\troadmap",
+        "gia\tcontract",
+        "gia\tlayoffs-memo",
+        "hal\tcontract",
+        "hal\tlayoffs-memo",
+        "===============",
+        "share_user(\"contract\", \"dana\") ",
+        "---------------------------(R3)",
+        "  canread(\"dana\", \"contract\")  ",
+        "Tuple not found"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell2-explain.stdout",
+          "sha256": "1eaa24cbf9f0857a4df02d58124fe1e6d2770091412017fdafaa7e8f35648494",
+          "bytes": 286,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l2-cell2-explain.stderr",
+          "sha256": "595d7ff7c53e37f2abe6b38499d490041f7bd2258b3bfa4b02d7a6d2f51f44c8",
+          "bytes": 158,
+          "kind": "stderr"
+        }
+      ]
+    },
+    {
+      "id": "s7l3-cell3",
+      "purpose": "S7.L3 cell 3 (INS-datalog): the eight worlds of the small scope, with violation and wf2_broken",
+      "origin": "recorded",
+      "engine": "souffle",
+      "version": "Version: 2.5 (2.5)",
+      "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:29:22.279Z",
+      "duration_s": 0.144,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "souffle",
+        "-D-",
+        "s7l3-cell3.dl"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S7/RUN-datalog-matrix/s7l3-cell3.dl",
+          "sha256": "d864effaf4e8a020b5869fea56ed09ce3ef6d0204aa7e099f2d86bd6f151c2dc",
+          "bytes": 1730,
+          "role": "program",
+          "source": "content/stages/S7/S7.L3.md"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "---------------",
+        "wf2_broken",
+        "w",
+        "===============",
+        "w4",
+        "w6",
+        "===============",
+        "---------------",
+        "violation",
+        "w",
+        "===============",
+        "w4",
+        "w6",
+        "==============="
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-datalog-matrix/s7l3-cell3.stdout",
+          "sha256": "63160f0f4fb8f7b7c09842ceb5a7939152712ef0975dbba0a336c4afd8640db2",
+          "bytes": 133,
+          "kind": "stdout"
+        },
+        {
+          "path": "runs/RUN-datalog-matrix/s7l3-cell3.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "kind": "stderr"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s7l1-cell2",
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "Each .dl input is the cell code copied verbatim from the lesson named in its source field (the fenced datalog block of the instrument); s7l2-cell1-revoked.dl is S7.L2 cell 1 with one line added after share_team(\"roadmap\", \"payments\")., the edit its call names: revoked(\"contract\", \"dana\").",
+    "The bench image is a local build (statespace-bench, built from bench/image/Dockerfile on 2026-10-26); its digest is the manifest list's and it was never pushed. binary_sha256 equals RUN-souffle-version's.",
+    "Souffle warns on stderr \"No rules/facts defined for relation revoked\" for every program that declares revoked without facts; the warning does not change the exit code (0).",
+    "Provenance: Souffle labels the share_user rule (R3) in its proof output; the lessons call it rule 2. For canread(\"frank\", \"contract\") it prints \"Tuple not found\": no derivation tree exists for a denied cell. The tree shows only the positive premise; the negated premise !revoked is not printed as a node.",
+    "S7.L3 cell 3: violation holds in w4 and w6, and wf2_broken holds in exactly w4 and w6, so with WF2 imposed no violation remains within the eight-world scope."
+  ]
+}

@@ -1,0 +1,2334 @@
+{
+  "id": "RUN-lean-s2-cells",
+  "title": "The authored S2 Lean cells elaborated on Lean 4.35.0: the worked strips, the def linter, the circular appeal, the faded runPos candidates, the decide instances, and D-07's exhibits",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "the other authored S2 cells: manual proofs and axioms, `guard_gives_cover`, the `def` linter, `credit2`, `net_append`, the circular appeal, the `Int` → `Nat` mutant, D-07's exhibits; also the parallel strips of S2.L0, S2.L3, S2.L5, S2.L6 and S2.L7 (§1), S2.L7's faded cells and Proof Blocks lines, and S2.L8's other `decide` instance",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:35:55.202Z",
+  "started_at": "2026-10-26T16:32:30.247Z",
+  "duration_s": 0.332,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-leanb-lean-s2-cells-l6-cell1",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "L6_cell1.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L0_cell1.lean",
+      "sha256": "32244cc8e6f32183b6e5a0c0decc5a768520ade673c7b4f01302bc56d080294c",
+      "bytes": 489,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L0.md",
+      "sha256": "ef022ef7c2cdb371cf6a22e7c3f60bb9992729aa62bfa7726fb7ec6e76e8c000",
+      "bytes": 7288,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L0_topUp.lean",
+      "sha256": "a9db4286bfb8e0f2ce50f11d7d2f0c25dfee5c948978a1188d1be100379144e3",
+      "bytes": 259,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L0_spend.lean",
+      "sha256": "54982df9c80f286de7e7e5a4c0d872af5c3c9012373e4755b03dcaaf78f3029a",
+      "bytes": 237,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L1_cell1.lean",
+      "sha256": "723a91de495980727e9f9a9a5f24fbca6eafb6db3926b9e8efa1441dfdb3650e",
+      "bytes": 213,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L1.md",
+      "sha256": "7c632f94f1d28c24fa8de9e91e10f24bc569fbd78dcaeb3cea163dafc019d56e",
+      "bytes": 6112,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_cell1.lean",
+      "sha256": "61e64fbb0b5ecd2e2e3e19a316277e544ff08baebc4b14f0c54f11715f74e3d9",
+      "bytes": 227,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L2.md",
+      "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+      "bytes": 5646,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_cell2.lean",
+      "sha256": "af5b522547c00ec96ae28de388cf5dd3f106b8f80d41b424319162c2662e0351",
+      "bytes": 286,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_cell2_def.lean",
+      "sha256": "91dc483b0016f478887699ca6516317130e666eaec06c3b189ee8bdf88855407",
+      "bytes": 282,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_keep_a.lean",
+      "sha256": "8fc1c890377cd6fe371114f0ccaeb7d5e1ac57313dcf1f35130011ad344bde50",
+      "bytes": 294,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L3_cell1.lean",
+      "sha256": "a1394d0e777caf38e122d78cf0be5716500d0f653b1f83b01ba5c73a433914a5",
+      "bytes": 387,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L3.md",
+      "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+      "bytes": 6189,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L4_cell1.lean",
+      "sha256": "97896e1629fad43574ecc5968f25ef85cdb1e2f3bf8fbf838c5f9c807acd34a3",
+      "bytes": 237,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L4.md",
+      "sha256": "6f9b2104deef6c2e263b55580864be7147d12f8af200e981973f78a6deb70890",
+      "bytes": 6660,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L4_cell2.lean",
+      "sha256": "a726f2948444eb99e9ec919125bbd7db2c2a897d9678c09512a25d0df680b055",
+      "bytes": 412,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L5_cell1.lean",
+      "sha256": "a1394d0e777caf38e122d78cf0be5716500d0f653b1f83b01ba5c73a433914a5",
+      "bytes": 387,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L5.md",
+      "sha256": "6cbc1dba2ebbc169aa0ff1952b4c2bfc5f613ae148d94f0108fdd9319d06ade4",
+      "bytes": 13849,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L6_cell1.lean",
+      "sha256": "77f1a7a2fd9c231071a4e9367ea17d5fc195e4b7bc4eb627b76726708237221b",
+      "bytes": 523,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L6.md",
+      "sha256": "fabf6104a29225ee14905407db43f5572ace64d9e566f9afcb6436d539da73e0",
+      "bytes": 7815,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell1.lean",
+      "sha256": "3c760dfbe162c99d19d366244e7410495ac6ad33fffdfca004026feaa3e6e8e2",
+      "bytes": 697,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L7.md",
+      "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+      "bytes": 14264,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_alt.lean",
+      "sha256": "d05b7b6de4e285099f0ce5b97b569ea9bcebc93549ee068838b52bd285216e1a",
+      "bytes": 908,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_credits.lean",
+      "sha256": "068b24abf9b35a6f22288225ca5d3854c2e12e348e8dbf4b3381efaf47170a7d",
+      "bytes": 298,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3.lean",
+      "sha256": "cbc6c7c4414ebd0cc7d4eeccfc26c0168408c7247b6a3d0157f4ba235f5086df",
+      "bytes": 695,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_A.lean",
+      "sha256": "03ae1a4096892f296fbe2139e48247f95f68ecaa71b4dade861ab5c9095017bd",
+      "bytes": 660,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_B.lean",
+      "sha256": "efadf7f85e8318f70ea44ffb247cb464bddff22af9a3f9bd6e3cbdbf4a3d6bf3",
+      "bytes": 670,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_C.lean",
+      "sha256": "3578c0902337f8966e17307c0696f4d767a5d9f1393d4101fe37499b180fd784",
+      "bytes": 674,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_D.lean",
+      "sha256": "3c760dfbe162c99d19d366244e7410495ac6ad33fffdfca004026feaa3e6e8e2",
+      "bytes": 697,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_drain.lean",
+      "sha256": "e546f005575a7a808bd80f3e2fda0a8d52d8d2bb4d630c3af2f98023ef6e6bb3",
+      "bytes": 89,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L8_decide.lean",
+      "sha256": "6fab3398e9468e92b020cd81793d6713a3c49ec7210c435d2283224ef333f9a6",
+      "bytes": 653,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L8.md",
+      "sha256": "1807c6d5b8b61f35c63161f1e13fad3cdc7bdb753e7edff3199bdbf1addc08e1",
+      "bytes": 6727,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_grind.lean",
+      "sha256": "3eedf3d17f70faf4b9e2f7d07d74a646e2036a975a7279b5d7e3d565159eb568",
+      "bytes": 607,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_nat_ledger.lean",
+      "sha256": "dba08e559e6759c55040058362bb72697a9eaa7ab6709fd8471fb8f756addcc7",
+      "bytes": 1268,
+      "role": "source"
+    },
+    {
+      "path": "research/spikes/lean/Ledger.lean",
+      "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+      "bytes": 2091,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_nat_manual.lean",
+      "sha256": "06bab2db9835250e234ce286fda7ce50a08af2251a24d48a6334545d8701fc9d",
+      "bytes": 489,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_unknown_id.lean",
+      "sha256": "2d0adda8ffa2ac0667ed9875e740d005367567243090c42920e752c8cce674f9",
+      "bytes": 159,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_int_notation.lean",
+      "sha256": "270ef31f788ca7fc028be5421cb72ea4938ae2a10f9e367b4ec1417b0fbec622",
+      "bytes": 37,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_int_notation_strict.lean",
+      "sha256": "4542acceee3ed32ab5af732716b25f10f3554290aff0c4b2a931888af924beba",
+      "bytes": 68,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_linters.lean",
+      "sha256": "e084ba086fe5127dbc56060f4af6054f018e7e46b8c29756afc17bd043903101",
+      "bytes": 527,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/Probe_warmups.lean",
+      "sha256": "96d0d5229551dc44fad552de9a4ea07db8473ec984a237302d40bf942696bd69",
+      "bytes": 390,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "'transferPos_nonneg' depends on axioms: [propext]"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-s2-cells/l0-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l0-topup.log",
+      "sha256": "40fd4ea28a9b5239750ec416b30c5806cf268d57709a30f0df0fe8f14ceec87f",
+      "bytes": 640,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l0-spend.log",
+      "sha256": "522f4d3c793319e72c7bc1cc2b25f1d49366e779bb887b8cb86bfcc4ab815eb2",
+      "bytes": 640,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l1-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l2-cell1.log",
+      "sha256": "c89eef3bab1ab25a9f34aded0dced0da3bb51929e1ff52a0eb1dc1b200bdc41d",
+      "bytes": 19,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l2-cell2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l2-cell2-def.log",
+      "sha256": "ca1f7077e8f4065d35307ac2ad8e4a6eed9ae635900834c54ae46a797c7ef428",
+      "bytes": 186,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l2-keep-a.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l3-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l4-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l4-cell2.log",
+      "sha256": "4e21562efb2581c88ba49db7298d10fdad0f8629cf5754448e9ecf5742fb2d7a",
+      "bytes": 873,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l5-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l6-cell1.log",
+      "sha256": "00d67de35d9d4bc43ee4821e1bbaa7f06c9a07ed42660241ddbf9389afc611ff",
+      "bytes": 50,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-alt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-credits.log",
+      "sha256": "df7b2b1c36d5213051d8663f95da4bf2ea6807cf0e9a4647d2c861beca4e55e6",
+      "bytes": 55,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell3.log",
+      "sha256": "7dc29f201e2e3866cb1355fccd2a5be33dca234d863711a6f3e25fea030b03eb",
+      "bytes": 54,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell3-a.log",
+      "sha256": "2ca68efbe011b460c5d6ab8028b473fc3ff9251b4699a311dc275fc9642f1189",
+      "bytes": 298,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell3-b.log",
+      "sha256": "bc6312eb383d66fb8ca57f7f4afb6ff6abfe742bf7269e79b87bba26644f9578",
+      "bytes": 191,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell3-c.log",
+      "sha256": "e15329164ddf8c98eff26e18763d3ee7ef5f5ff4cfb01aa1655b75f2ad9100d0",
+      "bytes": 179,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-cell3-d.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l7-drain.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/l8-decide.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-grind.log",
+      "sha256": "fad59f3f99b9677f73cc1a9c8fc8619879c2002fadebdf8fe8f6d485d8bf6c7e",
+      "bytes": 154,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-nat-ledger.log",
+      "sha256": "ff21ad23b7e36b20b4f8c88f489fdcffe5266fd9664162cd07f9928ed81ca696",
+      "bytes": 1153,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-nat-manual.log",
+      "sha256": "5bdbfe75fee008e49e06e1f44782118d27f3fe2c958bfc1d9b07f1da7e2b09ce",
+      "bytes": 313,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-unknown-id.log",
+      "sha256": "91e613a619d5ce3628bdffefca96f89db1fe3d6f8c1b27f1e60e8a5c817672b6",
+      "bytes": 211,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-int-notation.log",
+      "sha256": "5f5188e90ce916ff8c0ee8a49eb6e9ceaac3466088d08f854de839860239c73a",
+      "bytes": 252,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-int-notation-strict.log",
+      "sha256": "062d77ce216d4cd7733d71e69d4006e334b339bf8c32ab2564bf687b8e05736d",
+      "bytes": 870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-linters.log",
+      "sha256": "a2c4bbf33d423d28d4711b8090cd2422ace8b1602428f690371d98a38da271ee",
+      "bytes": 975,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/probe-warmups.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "l0_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l0_topup": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 2
+    },
+    "l0_spend": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 2
+    },
+    "l1_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l2_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "eval_lines": [
+        "{ a := 7, b := 3 }"
+      ]
+    },
+    "l2_cell2": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l2_cell2_def": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 1
+    },
+    "l2_keep_a": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l3_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l4_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l4_cell2": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "L4_cell2.lean:10:8: error: fail to show termination for"
+    },
+    "l5_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l6_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "axioms_lines": [
+        "'transferPos_nonneg' depends on axioms: [propext]"
+      ]
+    },
+    "l7_cell1": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l7_alt": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l7_credits": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 1
+    },
+    "l7_cell3": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 1
+    },
+    "l7_cell3_a": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "L7_cell3_A.lean:24:20: error: Tactic `rfl` failed: The left-hand side"
+    },
+    "l7_cell3_b": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "L7_cell3_B.lean:24:17: error: unsolved goals"
+    },
+    "l7_cell3_c": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "L7_cell3_C.lean:24:17: error: unsolved goals"
+    },
+    "l7_cell3_d": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l7_drain": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "l8_decide": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "probe_grind": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0,
+      "axioms_lines": [
+        "'transferPos_conserves' depends on axioms: [propext, Quot.sound]",
+        "'transferPos_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    "probe_nat_ledger": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 3,
+      "axioms_lines": [
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]"
+      ],
+      "first_error": "Probe_nat_ledger.lean:24:24: error: unsolved goals"
+    },
+    "probe_nat_manual": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "Probe_nat_manual.lean:13:49: error: Application type mismatch: The argument"
+    },
+    "probe_unknown_id": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "Probe_unknown_id.lean:7:39: error(lean.unknownIdentifier): Unknown identifier `j`"
+    },
+    "probe_int_notation": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "Probe_int_notation.lean:1:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class"
+    },
+    "probe_int_notation_strict": {
+      "exit_code": 1,
+      "errors": 3,
+      "warnings": 0,
+      "first_error": "Probe_int_notation_strict.lean:3:17: error(lean.unknownIdentifier): Unknown identifier `ℤ`"
+    },
+    "probe_linters": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 4
+    },
+    "probe_warmups": {
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "l6-cell1",
+  "configs": [
+    {
+      "id": "l0-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L0 cell 1: transferPos_nonneg, manual proof",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:26.353Z",
+      "duration_s": 0.305,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l0-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L0_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L0_cell1.lean",
+          "sha256": "32244cc8e6f32183b6e5a0c0decc5a768520ade673c7b4f01302bc56d080294c",
+          "bytes": 489,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L0.md",
+          "sha256": "ef022ef7c2cdb371cf6a22e7c3f60bb9992729aa62bfa7726fb7ec6e76e8c000",
+          "bytes": 7288,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l0-cell1.log"
+      ]
+    },
+    {
+      "id": "l0-topup",
+      "origin": "recorded",
+      "purpose": "S2.L0 item: topUp_le_cap",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:26.953Z",
+      "duration_s": 0.301,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l0-topup",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L0_topUp.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L0_topUp.lean",
+          "sha256": "a9db4286bfb8e0f2ce50f11d7d2f0c25dfee5c948978a1188d1be100379144e3",
+          "bytes": 259,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L0.md",
+          "sha256": "ef022ef7c2cdb371cf6a22e7c3f60bb9992729aa62bfa7726fb7ec6e76e8c000",
+          "bytes": 7288,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "L0_topUp.lean:3:57: warning: Variable name `hn` is not explicitly referenced.",
+        "L0_topUp.lean:3:70: warning: Variable name `hc` is not explicitly referenced."
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l0-topup.log"
+      ]
+    },
+    {
+      "id": "l0-spend",
+      "origin": "recorded",
+      "purpose": "S2.L0 item: spend_le",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:26.659Z",
+      "duration_s": 0.294,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l0-spend",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L0_spend.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L0_spend.lean",
+          "sha256": "54982df9c80f286de7e7e5a4c0d872af5c3c9012373e4755b03dcaaf78f3029a",
+          "bytes": 237,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L0.md",
+          "sha256": "ef022ef7c2cdb371cf6a22e7c3f60bb9992729aa62bfa7726fb7ec6e76e8c000",
+          "bytes": 7288,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "L0_spend.lean:3:32: warning: Variable name `h0` is not explicitly referenced.",
+        "L0_spend.lean:3:60: warning: Variable name `h2` is not explicitly referenced."
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l0-spend.log"
+      ]
+    },
+    {
+      "id": "l1-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L1 cell 1: credit2_eq by induction",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:27.254Z",
+      "duration_s": 0.332,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l1-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L1_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L1_cell1.lean",
+          "sha256": "723a91de495980727e9f9a9a5f24fbca6eafb6db3926b9e8efa1441dfdb3650e",
+          "bytes": 213,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L1.md",
+          "sha256": "7c632f94f1d28c24fa8de9e91e10f24bc569fbd78dcaeb3cea163dafc019d56e",
+          "bytes": 6112,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l1-cell1.log"
+      ]
+    },
+    {
+      "id": "l2-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L2 cell 1: #eval transfer { a := 10, b := 0 } 3",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:27.586Z",
+      "duration_s": 0.342,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l2-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L2_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L2_cell1.lean",
+          "sha256": "61e64fbb0b5ecd2e2e3e19a316277e544ff08baebc4b14f0c54f11715f74e3d9",
+          "bytes": 227,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L2.md",
+          "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+          "bytes": 5646,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "{ a := 7, b := 3 }"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l2-cell1.log"
+      ]
+    },
+    {
+      "id": "l2-cell2",
+      "origin": "recorded",
+      "purpose": "S2.L2 cell 2: guard_gives_cover as a theorem, after the cell 1 definitions (its #eval left out)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:28.263Z",
+      "duration_s": 0.329,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l2-cell2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L2_cell2.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L2_cell2.lean",
+          "sha256": "af5b522547c00ec96ae28de388cf5dd3f106b8f80d41b424319162c2662e0351",
+          "bytes": 286,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L2.md",
+          "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+          "bytes": 5646,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l2-cell2.log"
+      ]
+    },
+    {
+      "id": "l2-cell2-def",
+      "origin": "recorded",
+      "purpose": "S2.L2 cell 2 written with def instead of theorem, as the lesson's @after describes",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:27.929Z",
+      "duration_s": 0.334,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l2-cell2-def",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L2_cell2_def.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L2_cell2_def.lean",
+          "sha256": "91dc483b0016f478887699ca6516317130e666eaec06c3b189ee8bdf88855407",
+          "bytes": 282,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L2.md",
+          "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+          "bytes": 5646,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "L2_cell2_def.lean:9:0: warning: Definition `guard_gives_cover` is a proposition; use `theorem` instead of `def`"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l2-cell2-def.log"
+      ]
+    },
+    {
+      "id": "l2-keep-a",
+      "origin": "recorded",
+      "purpose": "S2.L2 item: keep_a, after the cell 1 definitions",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:28.592Z",
+      "duration_s": 0.295,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l2-keep-a",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L2_keep_a.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L2_keep_a.lean",
+          "sha256": "8fc1c890377cd6fe371114f0ccaeb7d5e1ac57313dcf1f35130011ad344bde50",
+          "bytes": 294,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L2.md",
+          "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+          "bytes": 5646,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l2-keep-a.log"
+      ]
+    },
+    {
+      "id": "l3-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L3 cell 1: transferPos_conserves (unfold, split, simp, omega)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:28.887Z",
+      "duration_s": 0.329,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l3-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L3_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L3_cell1.lean",
+          "sha256": "a1394d0e777caf38e122d78cf0be5716500d0f653b1f83b01ba5c73a433914a5",
+          "bytes": 387,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l3-cell1.log"
+      ]
+    },
+    {
+      "id": "l4-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L4 cell 1: net_append by induction",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:29.216Z",
+      "duration_s": 0.34,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l4-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L4_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L4_cell1.lean",
+          "sha256": "97896e1629fad43574ecc5968f25ef85cdb1e2f3bf8fbf838c5f9c807acd34a3",
+          "bytes": 237,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L4.md",
+          "sha256": "6f9b2104deef6c2e263b55580864be7147d12f8af200e981973f78a6deb70890",
+          "bytes": 6660,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l4-cell1.log"
+      ]
+    },
+    {
+      "id": "l4-cell2",
+      "origin": "recorded",
+      "purpose": "S2.L4 cell 2: net_append_loop, the circular appeal on x :: xs, after cell 1 (D-07 exhibit 3)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:29.557Z",
+      "duration_s": 0.35,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l4-cell2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L4_cell2.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L4_cell2.lean",
+          "sha256": "a726f2948444eb99e9ec919125bbd7db2c2a897d9678c09512a25d0df680b055",
+          "bytes": 412,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L4.md",
+          "sha256": "6f9b2104deef6c2e263b55580864be7147d12f8af200e981973f78a6deb70890",
+          "bytes": 6660,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "L4_cell2.lean:10:8: error: fail to show termination for"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l4-cell2.log"
+      ]
+    },
+    {
+      "id": "l5-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L5 cell 1: transferPos_conserves",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:29.907Z",
+      "duration_s": 0.339,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l5-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L5_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L5_cell1.lean",
+          "sha256": "a1394d0e777caf38e122d78cf0be5716500d0f653b1f83b01ba5c73a433914a5",
+          "bytes": 387,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L5.md",
+          "sha256": "6cbc1dba2ebbc169aa0ff1952b4c2bfc5f613ae148d94f0108fdd9319d06ade4",
+          "bytes": 13849,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l5-cell1.log"
+      ]
+    },
+    {
+      "id": "l6-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L6 cell 1: transferPos_nonneg, manual proof, with #print axioms",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:30.247Z",
+      "duration_s": 0.332,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l6-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L6_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L6_cell1.lean",
+          "sha256": "77f1a7a2fd9c231071a4e9367ea17d5fc195e4b7bc4eb627b76726708237221b",
+          "bytes": 523,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L6.md",
+          "sha256": "fabf6104a29225ee14905407db43f5572ace64d9e566f9afcb6436d539da73e0",
+          "bytes": 7815,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'transferPos_nonneg' depends on axioms: [propext]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l6-cell1.log"
+      ]
+    },
+    {
+      "id": "l7-cell1",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 1: transferPos_conserves and runPos_conserves, after S2.L7's runPos and S2.L3's Ledger, total and transferPos",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:30.929Z",
+      "duration_s": 0.348,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell1.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell1.lean",
+          "sha256": "3c760dfbe162c99d19d366244e7410495ac6ad33fffdfca004026feaa3e6e8e2",
+          "bytes": 697,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell1.log"
+      ]
+    },
+    {
+      "id": "l7-alt",
+      "origin": "recorded",
+      "purpose": "S2.L7 runPos_conserves' (the ∀ s after ns form), after cell 1",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:30.580Z",
+      "duration_s": 0.349,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-alt",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_alt.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_alt.lean",
+          "sha256": "d05b7b6de4e285099f0ce5b97b569ea9bcebc93549ee068838b52bd285216e1a",
+          "bytes": 908,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-alt.log"
+      ]
+    },
+    {
+      "id": "l7-credits",
+      "origin": "recorded",
+      "purpose": "S2.L7 item: credits_eq with its sorry case",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:31.612Z",
+      "duration_s": 0.332,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-credits",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_credits.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_credits.lean",
+          "sha256": "068b24abf9b35a6f22288225ca5d3854c2e12e348e8dbf4b3381efaf47170a7d",
+          "bytes": 298,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "L7_credits.lean:5:8: warning: declaration uses `sorry`"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-credits.log"
+      ]
+    },
+    {
+      "id": "l7-cell3",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 3: runPos_conserves with the blank (sorry), after cell 1's definitions and transferPos_conserves",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:31.277Z",
+      "duration_s": 0.335,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell3.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3.lean",
+          "sha256": "cbc6c7c4414ebd0cc7d4eeccfc26c0168408c7247b6a3d0157f4ba235f5086df",
+          "bytes": 695,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "L7_cell3.lean:20:8: warning: declaration uses `sorry`"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell3.log"
+      ]
+    },
+    {
+      "id": "l7-cell3-a",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 3 with candidate A in the blank: rfl",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:33.699Z",
+      "duration_s": 0.34,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell3-a",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell3_A.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_A.lean",
+          "sha256": "03ae1a4096892f296fbe2139e48247f95f68ecaa71b4dade861ab5c9095017bd",
+          "bytes": 660,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "L7_cell3_A.lean:24:20: error: Tactic `rfl` failed: The left-hand side"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell3-a.log"
+      ]
+    },
+    {
+      "id": "l7-cell3-b",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 3 with candidate B in the blank: simp [runPos]",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:34.040Z",
+      "duration_s": 0.306,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell3-b",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell3_B.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_B.lean",
+          "sha256": "efadf7f85e8318f70ea44ffb247cb464bddff22af9a3f9bd6e3cbdbf4a3d6bf3",
+          "bytes": 670,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "L7_cell3_B.lean:24:17: error: unsolved goals"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell3-b.log"
+      ]
+    },
+    {
+      "id": "l7-cell3-c",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 3 with candidate C in the blank: simp [runPos, ih]",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:34.347Z",
+      "duration_s": 0.303,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell3-c",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell3_C.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_C.lean",
+          "sha256": "3578c0902337f8966e17307c0696f4d767a5d9f1393d4101fe37499b180fd784",
+          "bytes": 674,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "L7_cell3_C.lean:24:17: error: unsolved goals"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell3-c.log"
+      ]
+    },
+    {
+      "id": "l7-cell3-d",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 3 with candidate D in the blank: simp [runPos, ih, transferPos_conserves]",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:34.650Z",
+      "duration_s": 0.301,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-cell3-d",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_cell3_D.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3_D.lean",
+          "sha256": "3c760dfbe162c99d19d366244e7410495ac6ad33fffdfca004026feaa3e6e8e2",
+          "bytes": 697,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-cell3-d.log"
+      ]
+    },
+    {
+      "id": "l7-drain",
+      "origin": "recorded",
+      "purpose": "S2.L7 item: the drain definition",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:31.944Z",
+      "duration_s": 0.318,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l7-drain",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L7_drain.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L7_drain.lean",
+          "sha256": "e546f005575a7a808bd80f3e2fda0a8d52d8d2bb4d630c3af2f98023ef6e6bb3",
+          "bytes": 89,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L7.md",
+          "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+          "bytes": 14264,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l7-drain.log"
+      ]
+    },
+    {
+      "id": "l8-decide",
+      "origin": "recorded",
+      "purpose": "S2.L8: xferBuggy, xfer and the two decide instances mints_from_7 and fixed_from_7",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:32.263Z",
+      "duration_s": 0.315,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-l8-decide",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "L8_decide.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/L8_decide.lean",
+          "sha256": "6fab3398e9468e92b020cd81793d6713a3c49ec7210c435d2283224ef333f9a6",
+          "bytes": 653,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L8.md",
+          "sha256": "1807c6d5b8b61f35c63161f1e13fad3cdc7bdb753e7edff3199bdbf1addc08e1",
+          "bytes": 6727,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/l8-decide.log"
+      ]
+    },
+    {
+      "id": "probe-grind",
+      "origin": "recorded",
+      "purpose": "probe for S2.L6's stamp items: S2.L3's cell plus a grind proof transferPos_conserves_grind, with #print axioms for both",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:32.578Z",
+      "duration_s": 0.35,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-grind",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_grind.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_grind.lean",
+          "sha256": "3eedf3d17f70faf4b9e2f7d07d74a646e2036a975a7279b5d7e3d565159eb568",
+          "bytes": 607,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L3.md",
+          "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+          "bytes": 6189,
+          "role": "lesson"
+        },
+        {
+          "path": "content/stages/S2/S2.L6.md",
+          "sha256": "fabf6104a29225ee14905407db43f5572ace64d9e566f9afcb6436d539da73e0",
+          "bytes": 7815,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'transferPos_conserves' depends on axioms: [propext, Quot.sound]",
+        "'transferPos_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-grind.log"
+      ]
+    },
+    {
+      "id": "probe-nat-ledger",
+      "origin": "recorded",
+      "purpose": "Prove-it t3: Ledger.lean lines 1-38 with Int replaced by Nat for balances and amounts",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:33.549Z",
+      "duration_s": 0.304,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-nat-ledger",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_nat_ledger.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_nat_ledger.lean",
+          "sha256": "dba08e559e6759c55040058362bb72697a9eaa7ab6709fd8471fb8f756addcc7",
+          "bytes": 1268,
+          "role": "source"
+        },
+        {
+          "path": "research/spikes/lean/Ledger.lean",
+          "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+          "bytes": 2091,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Probe_nat_ledger.lean:18:48: warning: Variable name `ha` is not explicitly referenced.",
+        "Probe_nat_ledger.lean:18:63: warning: Variable name `hb` is not explicitly referenced.",
+        "Probe_nat_ledger.lean:24:24: error: unsolved goals",
+        "Probe_nat_ledger.lean:25:18: warning: This simp argument is unused:",
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-nat-ledger.log"
+      ]
+    },
+    {
+      "id": "probe-nat-manual",
+      "origin": "recorded",
+      "purpose": "Prove-it t3: S2.L0 cell 1's manual Int-lemma proof with Int replaced by Nat",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:33.853Z",
+      "duration_s": 0.297,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-nat-manual",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_nat_manual.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_nat_manual.lean",
+          "sha256": "06bab2db9835250e234ce286fda7ce50a08af2251a24d48a6334545d8701fc9d",
+          "bytes": 489,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L0.md",
+          "sha256": "ef022ef7c2cdb371cf6a22e7c3f60bb9992729aa62bfa7726fb7ec6e76e8c000",
+          "bytes": 7288,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Probe_nat_manual.lean:13:49: error: Application type mismatch: The argument"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-nat-manual.log"
+      ]
+    },
+    {
+      "id": "probe-unknown-id",
+      "origin": "recorded",
+      "purpose": "D-07 exhibit 4: an unknown identifier under autoImplicit false (authored probe)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:34.150Z",
+      "duration_s": 0.268,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-unknown-id",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_unknown_id.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_unknown_id.lean",
+          "sha256": "2d0adda8ffa2ac0667ed9875e740d005367567243090c42920e752c8cce674f9",
+          "bytes": 159,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Probe_unknown_id.lean:7:39: error(lean.unknownIdentifier): Unknown identifier `j`"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-unknown-id.log"
+      ]
+    },
+    {
+      "id": "probe-int-notation",
+      "origin": "recorded",
+      "purpose": "D-07 exhibit 5: ℤ in core Lean with the default autoImplicit (authored probe)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:32.928Z",
+      "duration_s": 0.312,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-int-notation",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_int_notation.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_int_notation.lean",
+          "sha256": "270ef31f788ca7fc028be5421cb72ea4938ae2a10f9e367b4ec1417b0fbec622",
+          "bytes": 37,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Probe_int_notation.lean:1:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-int-notation.log"
+      ]
+    },
+    {
+      "id": "probe-int-notation-strict",
+      "origin": "recorded",
+      "purpose": "D-07 exhibit 5: ℤ in core Lean under autoImplicit false, as the templates set it (authored probe)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:04.762Z",
+      "duration_s": 0.305,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-int-notation-strict",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_int_notation_strict.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_int_notation_strict.lean",
+          "sha256": "4542acceee3ed32ab5af732716b25f10f3554290aff0c4b2a931888af924beba",
+          "bytes": 68,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Probe_int_notation_strict.lean:3:17: error(lean.unknownIdentifier): Unknown identifier `ℤ`",
+        "Probe_int_notation_strict.lean:3:17: error(lean.unknownIdentifier): Unknown identifier `ℤ`",
+        "Probe_int_notation_strict.lean:3:22: error(lean.unknownIdentifier): Unknown identifier `ℤ`"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-int-notation-strict.log"
+      ]
+    },
+    {
+      "id": "probe-linters",
+      "origin": "recorded",
+      "purpose": "D-07 exhibit 12: a def proposition, an unused variable, an unused simp argument and a deprecated name (authored probe)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:04.444Z",
+      "duration_s": 0.317,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-linters",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_linters.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_linters.lean",
+          "sha256": "e084ba086fe5127dbc56060f4af6054f018e7e46b8c29756afc17bd043903101",
+          "bytes": 527,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "Probe_linters.lean:6:0: warning: Definition `net_nil` is a proposition; use `theorem` instead of `def`",
+        "Probe_linters.lean:9:30: warning: Variable name `h` is not explicitly referenced.",
+        "Probe_linters.lean:15:22: warning: This simp argument is unused:",
+        "Probe_linters.lean:19:37: warning: `Int.ofNat_nonneg` has been deprecated: Use `Int.natCast_nonneg` instead"
+      ],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-linters.log"
+      ]
+    },
+    {
+      "id": "probe-warmups",
+      "origin": "recorded",
+      "purpose": "D-08 warm-ups: fees k = 3 * k and 0 < grow k from S2.L1's items, proved in S2.L1 cell 1's style (authored probe)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:34.418Z",
+      "duration_s": 0.302,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-s2-cells-probe-warmups",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "Probe_warmups.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-s2-cells/inputs/Probe_warmups.lean",
+          "sha256": "96d0d5229551dc44fad552de9a4ea07db8473ec984a237302d40bf942696bd69",
+          "bytes": 390,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L1.md",
+          "sha256": "7c632f94f1d28c24fa8de9e91e10f24bc569fbd78dcaeb3cea163dafc019d56e",
+          "bytes": 6112,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-s2-cells/probe-warmups.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only; runs/RUN-lean-s2-cells/inputs/ holds those files as they ran.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md). run@1's task field admits only W<n>-S<nn>/W<n>-T<nn> IDs, so the follow-up is named in task_label instead.",
+    "Each log is the container's stdout and stderr, as lean printed them. verdict_lines are the error and warning header lines, the #print axioms lines and the #eval/#check output lines, copied from the log.",
+    "Lesson cells are copied verbatim from the lesson named in each configuration's inputs. Where a cell uses definitions from an earlier cell of the lesson (or, for S2.L7, from S2.L3's cell, whose Ledger, total and transferPos S2.L7 relies on), those lines precede it in the input file.",
+    "Configurations named probe-* are not lesson code: the lessons and drawers cite a message or an axiom list without giving the code, so a minimal file was written to produce it. Their inputs are committed beside the others.",
+    "The cell in S2.L5 cell 3 is a claim card for `statespace check`'s claim@1 validation; the bench's statespace CLI has no claim-card validator (its check command runs lab stages), so that cell is not recorded here.",
+    "D-07's deprecation exhibit uses Int.ofNat_nonneg, one of the names Lean 4.35.0's core marks deprecated."
+  ]
+}

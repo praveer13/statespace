@@ -1,0 +1,9 @@
+permutation a_begin a_read1 b_begin b_move b_commit a_read2 a_commit 
+  step a_begin: BEGIN
+  step a_read1: SELECT 1 [[100]]
+  step b_begin: BEGIN
+  step b_move: UPDATE 1; UPDATE 1
+  step b_commit: COMMIT
+  step a_read2: SELECT 1 [[100]]
+  step a_commit: COMMIT
+  check: [[1, 50], [2, 150]]; [["200"]]

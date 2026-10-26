@@ -1,0 +1,30 @@
+'spec_id' does not depend on any axioms
+4
+Impl.lean:8:26: warning: Variable name `a` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _a
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Impl.lean:8:28: warning: Variable name `b` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _b
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Impl.lean:8:38: warning: Variable name `n` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _n
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+@conserve : ∀ {a b : Nat} {n : Int} (s : State), total (transfer s a b n) = total s
+Impl.lean:13:50: error(lean.unknownIdentifier): Unknown identifier `a`
+
+Note: It is not possible to treat `a` as an implicitly bound variable here because the `autoImplicit` option is set to `false`.
+Impl.lean:13:52: error(lean.unknownIdentifier): Unknown identifier `b`
+
+Note: It is not possible to treat `b` as an implicitly bound variable here because the `autoImplicit` option is set to `false`.
+Impl.lean:13:54: error(lean.unknownIdentifier): Unknown identifier `n`
+
+Note: It is not possible to treat `n` as an implicitly bound variable here because the `autoImplicit` option is set to `false`.

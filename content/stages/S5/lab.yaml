@@ -80,8 +80,9 @@ stages:
         passes: >-
           (a) `EventuallyResolves` holds under your `SysFairness`, and the exploration is
           complete. TLA+'s parser (SANY) reads `SysFairness` and finds no action defined
-          in the environment module. `CrashesOn = FALSE` is recorded, with no `SYMMETRY`
-          and no `CONSTRAINT`. The reference is {{run:RUN-tlc-eventually}}. (b) The
+          in the environment module. `CrashesOn = FALSE` is recorded, with no `SYMMETRY`,
+          no `CONSTRAINT` and the deadlock check off, since a resolved hold has no
+          successor. The reference is {{run:RUN-tlc-eventually}}. (b) The
           starving variant's JSON trace is accepted by the lasso checker: it is a path of
           the graph, it closes, `EventuallyResolves` is false at every state of the cycle,
           and every conjunct of `SysFairness` holds on it.

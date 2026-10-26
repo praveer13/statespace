@@ -1,0 +1,222 @@
+{
+  "id": "RUN-lean-implemented-by",
+  "title": "implemented_by: the kernel proves spec n = n with no axioms while #eval spec 3 prints 4",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "A2-F13: with `@[implemented_by fastImpl] def spec (n) := n`, `spec_id : spec n = n := rfl` does not depend on any axioms, yet `#eval spec 3` prints 4",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:47.437Z",
+  "started_at": "2026-10-26T16:33:46.893Z",
+  "duration_s": 0.542,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-implemented-by-excerpt",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "ImplExcerpt.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-implemented-by-research-file",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Impl.lean"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S3/RUN-lean-implemented-by/ImplExcerpt.lean",
+      "sha256": "84bfc9f3f46d61486251a881fe448e31862ab3ebd5ddca17d4fec8eeb2c1a8ea",
+      "bytes": 176,
+      "role": "source",
+      "source": "the first five lines of research/evidence/a2r3/lean/Impl.lean, verbatim"
+    },
+    {
+      "path": "research/evidence/a2r3/lean/Impl.lean",
+      "sha256": "a34edde97f0b34f07703a4b9ab5de4ea9ed0def48cd130b6dfa637bed222603f",
+      "bytes": 628,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "'spec_id' does not depend on any axioms",
+    "4"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-implemented-by/excerpt.log",
+      "sha256": "2c5f8c19ac8c68f9dd99d0fbbf0baf56465e47b9f43faa02f414db1de18be94f",
+      "bytes": 42,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-implemented-by/research-file.log",
+      "sha256": "9a2919ddbfcd0c3e122785516d85089676d3ec46e68deef6ee40eab23c092d34",
+      "bytes": 1670,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "exit_code": 0,
+    "spec_id_axioms": "'spec_id' does not depend on any axioms",
+    "eval_spec_3": "4",
+    "research_file": {
+      "exit_code": 1,
+      "spec_id_axioms": "'spec_id' does not depend on any axioms",
+      "eval_spec_3": "4",
+      "error_lines": [
+        13,
+        13,
+        13
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "excerpt",
+  "configs": [
+    {
+      "id": "excerpt",
+      "origin": "recorded",
+      "purpose": "the implemented_by probe alone: spec_id, #print axioms, #eval spec 3",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:46.893Z",
+      "duration_s": 0.266,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-implemented-by-excerpt",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "ImplExcerpt.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-implemented-by/ImplExcerpt.lean",
+          "sha256": "84bfc9f3f46d61486251a881fe448e31862ab3ebd5ddca17d4fec8eeb2c1a8ea",
+          "bytes": 176,
+          "role": "source",
+          "source": "the first five lines of research/evidence/a2r3/lean/Impl.lean, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'spec_id' does not depend on any axioms",
+        "4"
+      ],
+      "outputs": [
+        "runs/RUN-lean-implemented-by/excerpt.log"
+      ]
+    },
+    {
+      "id": "research-file",
+      "origin": "recorded",
+      "purpose": "the research file as it is, which also holds an unrelated autoImplicit probe after line 5",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:47.160Z",
+      "duration_s": 0.276,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-implemented-by-research-file",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Impl.lean"
+      ],
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/lean/Impl.lean",
+          "sha256": "a34edde97f0b34f07703a4b9ab5de4ea9ed0def48cd130b6dfa637bed222603f",
+          "bytes": 628,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "'spec_id' does not depend on any axioms",
+        "4"
+      ],
+      "outputs": [
+        "runs/RUN-lean-implemented-by/research-file.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "The research file exits 1 because of its second probe (autoImplicit false, lines 12 to 13), whose errors are all on line 13; its first five lines print the same two lines as the excerpt.",
+    "argv holds one command line per configuration, in configs order; exit_code and verdict_lines at the top level are the primary configuration's."
+  ]
+}

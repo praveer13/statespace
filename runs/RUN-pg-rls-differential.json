@@ -1,0 +1,187 @@
+{
+  "id": "RUN-pg-rls-differential",
+  "title": "PostgreSQL 18.6: the SET ROLE differential of S7's read rule on 200 seeded worlds has zero disagreements with the matrix; the owner probe catches the bypass without FORCE and agrees with FORCE",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-7.4 and LAB-7.c4: the SET ROLE differential on n fresh worlds on the Bench's PostgreSQL, the owner probe without and with FORCE, the four policy variants, and the pg_class read-back",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "harness": {
+    "name": "scripts/spikes/W0-S08/run-node.mjs",
+    "driver": "node-postgres 8.23.1",
+    "node": "v22.22.2"
+  },
+  "recorded_at": "2026-10-26T16:43:56.498Z",
+  "started_at": "2026-10-26T16:37:19.620Z",
+  "duration_s": 3.695,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "-d",
+      "--name",
+      "ssrec-pg-rlsdiff",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_HOST_AUTH_METHOD=trust",
+      "-p",
+      "127.0.0.1::5432",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "node",
+      "scripts/spikes/W0-S08/run-node.mjs",
+      "--engine",
+      "pg",
+      "--dsn",
+      "127.0.0.1:<port>",
+      "--label",
+      "pg-18.6",
+      "--worlds",
+      "200",
+      "--out",
+      "<sandbox>/work/pg-18.6.json"
+    ],
+    [
+      "docker",
+      "rm",
+      "-f",
+      "ssrec-pg-rlsdiff"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S08/run-node.mjs",
+      "sha256": "0e714ad993fc3b14c94f02eae658093c7596974d1e9420563a42f65e8fa29d20",
+      "bytes": 3712,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/rls-spec.mjs",
+      "sha256": "d44f79164c4420029bb2b5c1cc34baf06f06ee4e23b09e03120ae840b162070c",
+      "bytes": 38645,
+      "role": "spec"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/package-lock.json",
+      "sha256": "3ac0b158f015565290ac451682b2d1cd911d9b133dbf95da5dc571480f250bbc",
+      "bytes": 6852,
+      "role": "lockfile"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/node_modules/pg/package.json",
+      "sha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "bytes": 1668,
+      "role": "driver (node-postgres 8.23.1)"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "worlds": 200
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[pg-18.6] PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[pg-18.6] part 1: 53 steps, 34/34 checks pass",
+    "[pg-18.6] part 2: world 25/200",
+    "[pg-18.6] part 2: world 50/200",
+    "[pg-18.6] part 2: world 75/200",
+    "[pg-18.6] part 2: world 100/200",
+    "[pg-18.6] part 2: world 125/200",
+    "[pg-18.6] part 2: world 150/200",
+    "[pg-18.6] part 2: world 175/200",
+    "[pg-18.6] part 2: world 200/200",
+    "[pg-18.6] done in 3.695 s, 29745 statements, wrote <sandbox>/work/pg-18.6.json"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-rls-differential/pg-18.6.json",
+      "sha256": "ef918edfb66599c04289857b630fb09da84e1ac4e9f9332dcd75c547b96f9641",
+      "bytes": 243733,
+      "kind": "harness result: part 1 specimens with checks, part 2 per-world differential, variants and owner probe"
+    },
+    {
+      "path": "runs/RUN-pg-rls-differential/stderr.log",
+      "sha256": "1bc2808505d38c710d18d2850905b03cd21916a07e872b49d4ea2f5dc41d4cf2",
+      "bytes": 503,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "worlds": 200,
+    "users_checked": 1086,
+    "user_document_cells": 6969,
+    "baseline_disagreements": 0,
+    "owner_probe": {
+      "noforce_worlds_with_disagreements": 199,
+      "noforce_disagreements": 3970,
+      "force_disagreements": 0
+    },
+    "variants_caught_worlds": {
+      "restrictive": 200,
+      "subset": 200,
+      "norevoke": 66,
+      "missing": 149
+    },
+    "generator": {
+      "teamless_users": 162,
+      "trivial_worlds": 1,
+      "nested_worlds": 70
+    },
+    "part1_checks": {
+      "pass": 34,
+      "total": 34
+    },
+    "readback": {
+      "not_forced": {
+        "relrowsecurity": true,
+        "relforcerowsecurity": false
+      },
+      "forced": {
+        "relrowsecurity": true,
+        "relforcerowsecurity": true
+      },
+      "at": "2026-10-26T16:37:19.620Z"
+    },
+    "statements": 29745
+  },
+  "checks": [
+    {
+      "id": "zero-disagreements",
+      "pass": true
+    },
+    {
+      "id": "owner-bypass-caught",
+      "pass": true
+    },
+    {
+      "id": "part1-all-pass",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "network": "default bridge, port 5432 published on 127.0.0.1 only"
+    }
+  },
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "The harness is W0-S08's, unchanged: docs/spikes/W0-S08.md asks W4-T10 to reuse rls-spec.mjs for this run. It connects as the superuser postgres over one node-postgres connection; part 1 runs S7.L4's named specimens on the reference world W0 with 34 checks, part 2 runs, for each of 200 worlds from generateWorld(seed) with seeds 1 to 200, the lesson's differential (SET ROLE u; SELECT set_config('app.user', u, false); SELECT id FROM app.documents) for every user against the matrix that canread() computes in plain code, the four policy variants, and the owner probe (SET ROLE app_owner, the table owner, with app.user set to each user) with NO FORCE and with FORCE ROW LEVEL SECURITY.",
+    "values.baseline_disagreements sums extra and missing ids over every user of every world under the baseline policies. values.owner_probe.noforce_worlds_with_disagreements counts worlds in which the owner, without FORCE, saw rows the matrix denies (the one world where it did not is the one whose matrix allows every cell); force_disagreements is that sum with FORCE on. values.variants_caught_worlds counts, per variant, the worlds whose differential disagreed. values.readback is part 1's pg_class read-back of relrowsecurity and relforcerowsecurity before and after FORCE (checks P1.04a and P1.13c); the harness does not timestamp the read, so readback.at is the run's started_at.",
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 with --memory=6g and trust authentication, its port published on 127.0.0.1 only; the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready exited 0, ran the harness with node on the host, and removed the container. Placeholders in argv: <port> is the host port docker chose; <sandbox>/work is the scratch directory the result was written to before it was copied to runs/RUN-pg-rls-differential/. The tab's PGlite rerun (n = 50) is not part of this record; RUN-pglite-rls holds W0-S08's PGlite runs."
+  ]
+}

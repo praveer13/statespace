@@ -1,0 +1,150 @@
+{
+  "id": "RUN-lean-hoist",
+  "title": "The hoisted compile's sequence arm, amt ≤ bal ⊢ amt ≤ bal − amt: omega fails and reports the counterexample constraints",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-9.1, S9.L7 cell 2: `omega` cannot prove `amt ≤ bal - amt` from `amt ≤ bal`, and reports a possible counterexample satisfying `a - 2*b ≤ -1` and `a - b ≥ 0` with a := bal, b := amt",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:47.692Z",
+  "started_at": "2026-10-26T16:33:47.438Z",
+  "duration_s": 0.253,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-lean-hoist-sequence-arm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+    "lean",
+    "HoistArm.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S9/RUN-lean-hoist/HoistArm.lean",
+      "sha256": "d06892db2c23c053ae27596249549b315b9767ebdfb98d38c29ea4c96e6dd678",
+      "bytes": 143,
+      "role": "source",
+      "source": "content/stages/S9/S9.L7.md, instrument cell 2 (INS-bench-lean), verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "HoistArm.lean:3:2: error: omega could not prove the goal:",
+    "a possible counterexample may satisfy the constraints",
+    "  a - 2*b ≤ -1",
+    "  a - b ≥ 0",
+    "where",
+    " a := bal",
+    " b := amt"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-hoist/sequence-arm.log",
+      "sha256": "cd2da97776b9971c091e7ab28604b8efa69ec018020cd227f72b411aa4e83a9e",
+      "bytes": 169,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "exit_code": 1,
+    "errors": 1,
+    "error": "omega could not prove the goal:",
+    "counterexample_constraints": [
+      "a - 2*b ≤ -1",
+      "a - b ≥ 0"
+    ],
+    "where": {
+      "a": "bal",
+      "b": "amt"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "sequence-arm",
+  "configs": [
+    {
+      "id": "sequence-arm",
+      "origin": "recorded",
+      "purpose": "S9.L7 cell 2: omega on the reduced sequence arm of the hoisted compile",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:47.438Z",
+      "duration_s": 0.253,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-hoist-sequence-arm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "HoistArm.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S9/RUN-lean-hoist/HoistArm.lean",
+          "sha256": "d06892db2c23c053ae27596249549b315b9767ebdfb98d38c29ea4c96e6dd678",
+          "bytes": 143,
+          "role": "source",
+          "source": "content/stages/S9/S9.L7.md, instrument cell 2 (INS-bench-lean), verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "HoistArm.lean:3:2: error: omega could not prove the goal:",
+        "a possible counterexample may satisfy the constraints",
+        "  a - 2*b ≤ -1",
+        "  a - b ≥ 0",
+        "where",
+        " a := bal",
+        " b := amt"
+      ],
+      "outputs": [
+        "runs/RUN-lean-hoist/sequence-arm.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "Not recorded here: the rest of what curriculum/S09-preservation.md lists for this run (the hoisted compile's failing preservation proof, the interpreter goldens at the minimal and a non-minimal witness, agreement outside the class, the non-negativity proof and the sound pair) and S9.L7 cell 1 (INS-interp, source commits and hoisted code aborts from (1, 0)). They need the S9 IR semantics and compiler (LAB-9's S9/Defs.lean and a reference compile), which the course has not built."
+  ]
+}

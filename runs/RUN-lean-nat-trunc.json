@@ -1,0 +1,146 @@
+{
+  "id": "RUN-lean-nat-trunc",
+  "title": "Draft 0's unguarded Pay on Nat balances: 30 − 50 truncates to 0, the recipient gains 50, and the total grows from 30 to 50",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-3.3: with `Nat` balances and no guard, `Pay(from, to, 50)` from from = 30, to = 0 gives (0, 50): the sender's balance is 0, non-negativity holds by type, and the total changes from 30 to 50",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:47.975Z",
+  "started_at": "2026-10-26T16:33:47.693Z",
+  "duration_s": 0.282,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-lean-nat-trunc-pay",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+    "lean",
+    "NatTrunc.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S3/RUN-lean-nat-trunc/NatTrunc.lean",
+      "sha256": "5d52532a7690e39ea6ce1949f46f83cb439cc1fc6aff406e1bf00536aa8e8696",
+      "bytes": 671,
+      "role": "source",
+      "source": "probe for the S3.L7 prequestion and SP-3.3 (curriculum/S03-semantics.md), written by the recorder: draft 0's Pay on two Nat balances"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "(0, 50)",
+    "(30, 50)",
+    "'trunc' does not depend on any axioms",
+    "'pay_witness' does not depend on any axioms"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-nat-trunc/pay.log",
+      "sha256": "7c956bbf96525744561f536718bb42d3b028395291303d3ae4b686ecf865f987",
+      "bytes": 99,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "exit_code": 0,
+    "errors": 0,
+    "eval_pay": "(0, 50)",
+    "eval_totals": "(30, 50)",
+    "from_after": 0,
+    "to_after": 50,
+    "total_before": 30,
+    "total_after": 50,
+    "created": 20,
+    "axioms": {
+      "trunc": [],
+      "pay_witness": []
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "pay",
+  "configs": [
+    {
+      "id": "pay",
+      "origin": "recorded",
+      "purpose": "evaluate and decide draft 0's unguarded Pay from (30, 0) with amount 50",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:47.693Z",
+      "duration_s": 0.282,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-nat-trunc-pay",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "NatTrunc.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-nat-trunc/NatTrunc.lean",
+          "sha256": "5d52532a7690e39ea6ce1949f46f83cb439cc1fc6aff406e1bf00536aa8e8696",
+          "bytes": 671,
+          "role": "source",
+          "source": "probe for the S3.L7 prequestion and SP-3.3 (curriculum/S03-semantics.md), written by the recorder: draft 0's Pay on two Nat balances"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "(0, 50)",
+        "(30, 50)",
+        "'trunc' does not depend on any axioms",
+        "'pay_witness' does not depend on any axioms"
+      ],
+      "outputs": [
+        "runs/RUN-lean-nat-trunc/pay.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "The lesson's prequestion has no code; the probe models draft 0's Pay as `pay fromBal toBal amount := (fromBal - amount, toBal + amount)` over Nat. trunc, pay_witness and pay_total are accepted (exit 0), the first two with no axioms. created is total_after − total_before, computed from the two #eval lines."
+  ]
+}

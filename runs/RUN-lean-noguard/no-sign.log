@@ -1,0 +1,25 @@
+LedgerNoSign.lean:21:25: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+  b + c ≤ -1
+  a ≥ 0
+  a - c ≥ 0
+where
+ a := s.a
+ b := s.b
+ c := n
+LedgerNoSign.lean:24:24: error: unsolved goals
+s : Ledger
+n : Int
+h : ¬(0 ≤ n ∧ n ≤ s.a)
+⊢ n ≤ s.a → { a := s.a - n, b := s.b + n } = s
+LedgerNoSign.lean:25:18: warning: This simp argument is unused:
+  h
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [transfer]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'transfer_conserves' depends on axioms: [propext, Quot.sound]
+'run_conserves' depends on axioms: [propext, Quot.sound]
+{ a := 15, b := -2 }

@@ -1,0 +1,62 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 88 and seed 3535628375235498793 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/OutboxReplies.tla
+Parsing file /tmp/tlc-5015822338105077989/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-5015822338105077989/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-5015822338105077989/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-5015822338105077989/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-5015822338105077989/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-5015822338105077989/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-5015822338105077989/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module OutboxReplies
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module OutboxReplies
+Starting... (2026-10-26 16:41:11)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:11.
+Error: Invariant NoCaptureAfterRelease is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ last = [status |-> "none", cost |-> 0, key |-> "none"]
+/\ hst = "held"
+/\ inbox = {}
+/\ handled = {}
+/\ captures = 0
+/\ released = FALSE
+
+State 2: <Deliver([status |-> "ok", cost |-> 80, key |-> "k1"]) line 24, col 15 to line 26, col 69 of module OutboxReplies>
+/\ last = [status |-> "none", cost |-> 0, key |-> "none"]
+/\ hst = "held"
+/\ inbox = {[status |-> "ok", cost |-> 80, key |-> "k1"]}
+/\ handled = {}
+/\ captures = 0
+/\ released = FALSE
+
+State 3: <TimerRelease line 29, col 17 to line 32, col 63 of module OutboxReplies>
+/\ last = [status |-> "none", cost |-> 0, key |-> "none"]
+/\ hst = "released"
+/\ inbox = {[status |-> "ok", cost |-> 80, key |-> "k1"]}
+/\ handled = {}
+/\ captures = 0
+/\ released = TRUE
+
+State 4: <Handle([status |-> "ok", cost |-> 80, key |-> "k1"]) line 36, col 14 to line 46, col 45 of module OutboxReplies>
+/\ last = [status |-> "ok", cost |-> 80, key |-> "k1"]
+/\ hst = "captured"
+/\ inbox = {[status |-> "ok", cost |-> 80, key |-> "k1"]}
+/\ handled = {"k1"}
+/\ captures = 1
+/\ released = TRUE
+
+43 states generated, 27 distinct states found, 16 states left on queue.
+The depth of the complete state graph search is 4.
+Finished in 00s at (2026-10-26 16:41:11)
+Trace exploration spec path: ./OutboxReplies_TTrace_1793032871.tla

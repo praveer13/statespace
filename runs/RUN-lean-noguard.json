@@ -1,0 +1,427 @@
+{
+  "id": "RUN-lean-noguard",
+  "title": "With no guard the conservation theorem still builds and non-negativity fails with omega's possible counterexample; the ledger's three guard weakenings and their witnesses",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "three guard weakenings (none; no `n ≤ s.a`; no `0 ≤ n`): which theorems build, omega's text, the negative-amount witness",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:35:55.199Z",
+  "started_at": "2026-10-26T16:32:17.859Z",
+  "duration_s": 0.34,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-leanb-lean-noguard-noguardcell",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "NoGuardCell.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-noguard/inputs/NoGuardCell.lean",
+      "sha256": "398deee3469a9a07daa448255903acba7449783f32d3315c2b6897f8f88d73de",
+      "bytes": 501,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S2/S2.L5.md",
+      "sha256": "6cbc1dba2ebbc169aa0ff1952b4c2bfc5f613ae148d94f0108fdd9319d06ade4",
+      "bytes": 13849,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/inputs/LedgerNoGuard.lean",
+      "sha256": "49b71a46055bd96174bfde2e05ef87e9c67bdeda98a4f7a4e886581c7478b58a",
+      "bytes": 1308,
+      "role": "source"
+    },
+    {
+      "path": "research/spikes/lean/Ledger.lean",
+      "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+      "bytes": 2091,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/inputs/LedgerNoCover.lean",
+      "sha256": "a2d1f3753ee6eb042cb2e57a45518bc317c611e26adebf064ba90e03b896df02",
+      "bytes": 1291,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/inputs/LedgerNoSign.lean",
+      "sha256": "0d8d7bb9c5f42eecf6fdf21a141ebbc5bda6d474fc2e626c3a9d5b46a095fe18",
+      "bytes": 1297,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "NoGuardCell.lean:19:11: error: omega could not prove the goal:",
+    "a possible counterexample may satisfy the constraints"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-noguard/cell.log",
+      "sha256": "44455707a6d0a0427f1b27edf6329477ce40a878b070377f57411a1eb76d54db",
+      "bytes": 186,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/no-guard.log",
+      "sha256": "283b251ebc7cd4cf6517feaef77ccd3706b27e37580102fe5e1f0e750c05a47e",
+      "bytes": 1236,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/no-cover.log",
+      "sha256": "734b3fd791dcf6cd31cf41010a31cc4e13556e9f8d06052788ddf5521f4b45b6",
+      "bytes": 705,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/no-sign.log",
+      "sha256": "c1fb8dbd9f6cd55f97db1839a69e090f8d97591829670bb63a98671db5015541",
+      "bytes": 709,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "cell": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "NoGuardCell.lean:19:11: error: omega could not prove the goal:",
+      "conserves_builds": true,
+      "nonneg_builds": false
+    },
+    "no_guard": {
+      "exit_code": 1,
+      "errors": 3,
+      "warnings": 1,
+      "axioms_lines": [
+        "'transfer_conserves' depends on axioms: [sorryAx]",
+        "'run_conserves' depends on axioms: [propext, sorryAx]"
+      ],
+      "eval_lines": [
+        "{ a := -1, b := 1 }",
+        "{ a := 15, b := -2 }"
+      ],
+      "first_error": "LedgerNoGuard.lean:16:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal"
+    },
+    "no_cover": {
+      "exit_code": 1,
+      "errors": 2,
+      "warnings": 1,
+      "axioms_lines": [
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]"
+      ],
+      "eval_lines": [
+        "{ a := -1, b := 1 }"
+      ],
+      "first_error": "LedgerNoCover.lean:21:25: error: omega could not prove the goal:",
+      "builds": [
+        "transfer_conserves",
+        "run_conserves"
+      ],
+      "fails": [
+        "transfer_nonneg",
+        "transfer_rejected"
+      ]
+    },
+    "no_sign": {
+      "exit_code": 1,
+      "errors": 2,
+      "warnings": 1,
+      "axioms_lines": [
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]"
+      ],
+      "eval_lines": [
+        "{ a := 15, b := -2 }"
+      ],
+      "first_error": "LedgerNoSign.lean:21:25: error: omega could not prove the goal:",
+      "builds": [
+        "transfer_conserves",
+        "run_conserves"
+      ],
+      "fails": [
+        "transfer_nonneg",
+        "transfer_rejected"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "cell",
+  "configs": [
+    {
+      "id": "cell",
+      "origin": "recorded",
+      "purpose": "S2.L5 cell 2 (noGuard_conserves, noGuard_nonneg), after the lesson's own Ledger and total from cell 1",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:17.859Z",
+      "duration_s": 0.34,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-noguard-noguardcell",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "NoGuardCell.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-noguard/inputs/NoGuardCell.lean",
+          "sha256": "398deee3469a9a07daa448255903acba7449783f32d3315c2b6897f8f88d73de",
+          "bytes": 501,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S2/S2.L5.md",
+          "sha256": "6cbc1dba2ebbc169aa0ff1952b4c2bfc5f613ae148d94f0108fdd9319d06ade4",
+          "bytes": 13849,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "NoGuardCell.lean:19:11: error: omega could not prove the goal:",
+        "a possible counterexample may satisfy the constraints"
+      ],
+      "outputs": [
+        "runs/RUN-lean-noguard/cell.log"
+      ]
+    },
+    {
+      "id": "no-guard",
+      "origin": "recorded",
+      "purpose": "Ledger.lean's four theorems with transfer's guard removed entirely, then #eval at (0, 0) with n = 1 and at (10, 3) with n = -5",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:18.201Z",
+      "duration_s": 0.332,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-noguard-ledgernoguard",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "LedgerNoGuard.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-noguard/inputs/LedgerNoGuard.lean",
+          "sha256": "49b71a46055bd96174bfde2e05ef87e9c67bdeda98a4f7a4e886581c7478b58a",
+          "bytes": 1308,
+          "role": "source"
+        },
+        {
+          "path": "research/spikes/lean/Ledger.lean",
+          "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+          "bytes": 2091,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "LedgerNoGuard.lean:16:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal",
+        "LedgerNoGuard.lean:21:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal",
+        "LedgerNoGuard.lean:24:24: error: unsolved goals",
+        "LedgerNoGuard.lean:25:18: warning: This simp argument is unused:",
+        "'transfer_conserves' depends on axioms: [sorryAx]",
+        "'run_conserves' depends on axioms: [propext, sorryAx]",
+        "{ a := -1, b := 1 }",
+        "{ a := 15, b := -2 }"
+      ],
+      "outputs": [
+        "runs/RUN-lean-noguard/no-guard.log"
+      ]
+    },
+    {
+      "id": "no-cover",
+      "origin": "recorded",
+      "purpose": "Ledger.lean's four theorems with `n ≤ s.a` dropped from the guard (Prove-it t2, CL-2.2), then #eval at (0, 0) with n = 1",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:18.533Z",
+      "duration_s": 0.365,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-noguard-ledgernocover",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "LedgerNoCover.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-noguard/inputs/LedgerNoCover.lean",
+          "sha256": "a2d1f3753ee6eb042cb2e57a45518bc317c611e26adebf064ba90e03b896df02",
+          "bytes": 1291,
+          "role": "source"
+        },
+        {
+          "path": "research/spikes/lean/Ledger.lean",
+          "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+          "bytes": 2091,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "LedgerNoCover.lean:21:25: error: omega could not prove the goal:",
+        "a possible counterexample may satisfy the constraints",
+        "LedgerNoCover.lean:24:24: error: unsolved goals",
+        "LedgerNoCover.lean:25:18: warning: This simp argument is unused:",
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]",
+        "{ a := -1, b := 1 }"
+      ],
+      "outputs": [
+        "runs/RUN-lean-noguard/no-cover.log"
+      ]
+    },
+    {
+      "id": "no-sign",
+      "origin": "recorded",
+      "purpose": "Ledger.lean's four theorems with `0 ≤ n` dropped from the guard (CL-2.3), then #eval at (10, 3) with n = -5",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:32:18.899Z",
+      "duration_s": 0.368,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-noguard-ledgernosign",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "LedgerNoSign.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-noguard/inputs/LedgerNoSign.lean",
+          "sha256": "0d8d7bb9c5f42eecf6fdf21a141ebbc5bda6d474fc2e626c3a9d5b46a095fe18",
+          "bytes": 1297,
+          "role": "source"
+        },
+        {
+          "path": "research/spikes/lean/Ledger.lean",
+          "sha256": "4ac24c5d0ae6afa568dc9cbb65410b5e1b4c9c0c7b854352326085a0d56acafb",
+          "bytes": 2091,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "LedgerNoSign.lean:21:25: error: omega could not prove the goal:",
+        "a possible counterexample may satisfy the constraints",
+        "LedgerNoSign.lean:24:24: error: unsolved goals",
+        "LedgerNoSign.lean:25:18: warning: This simp argument is unused:",
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]",
+        "{ a := 15, b := -2 }"
+      ],
+      "outputs": [
+        "runs/RUN-lean-noguard/no-sign.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only; runs/RUN-lean-noguard/inputs/ holds those files as they ran.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md). run@1's task field admits only W<n>-S<nn>/W<n>-T<nn> IDs, so the follow-up is named in task_label instead.",
+    "Each log is the container's stdout and stderr, as lean printed them. verdict_lines are the error and warning header lines, the #print axioms lines and the #eval/#check output lines, copied from the log.",
+    "NoGuardCell.lean is S2.L5's cell 2 verbatim, preceded by the lesson's own `structure Ledger` and `total` from its cell 1, which cell 2 uses.",
+    "LedgerNoGuard/NoCover/NoSign.lean are lines 1-38 of research/spikes/lean/Ledger.lean (the four ledger theorems and both #print axioms lines) with only the guard line of `transfer` changed, plus #eval lines that print the witnesses.",
+    "In no-guard the pinned conservation script's `split` fails because no `if` is left to split: a script failure, not a false statement (its axioms then list sorryAx). The lesson cell's script, without `split`, builds conservation.",
+    "builds/fails in values name the theorems with no error line in the log and the theorems with one, read from the log's line numbers against the input file."
+  ]
+}

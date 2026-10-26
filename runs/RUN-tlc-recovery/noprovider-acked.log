@@ -1,0 +1,151 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 84 and seed -8646149319328533504 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/OutboxRecovery.tla
+Parsing file /w/OutboxLive.tla
+Parsing file /tmp/tlc-1908966975488661712/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Parsing file /tmp/tlc-1908966975488661712/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /w/Outbox.tla
+Parsing file /w/OutboxIface.tla
+Parsing file /tmp/tlc-1908966975488661712/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-1908966975488661712/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-1908966975488661712/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-1908966975488661712/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-1908966975488661712/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module OutboxIface
+Semantic processing of module Outbox
+Semantic processing of module OutboxLive
+Semantic processing of module Integers
+Semantic processing of module TLC
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module OutboxRecovery
+Linting of module OutboxIface
+Linting of module Outbox
+Linting of module OutboxLive
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module OutboxRecovery
+Starting... (2026-10-26 16:42:18)
+Implied-temporal checking--satisfiability problem has 1 branches.
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:19.
+Progress(15) at 2026-10-26 16:42:19: 188 states generated, 99 distinct states found, 0 states left on queue.
+Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:19)
+Error: Temporal property EventuallyAcked was violated.
+
+Error: The following behavior constitutes a counter-example:
+
+State 1: <Initial predicate>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {}
+/\ status = (c1 :> "none")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 0
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 3: <Crash line 82, col 10 to line 88, col 92 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 1
+/\ attempts = (c1 :> 0)
+/\ up = FALSE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 4: <Recover line 90, col 12 to line 94, col 100 of module Outbox>
+/\ reqs = {}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 1
+/\ attempts = (c1 :> 0)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 5: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 1
+/\ attempts = (c1 :> 1)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 6: <Crash line 82, col 10 to line 88, col 92 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 2
+/\ attempts = (c1 :> 1)
+/\ up = FALSE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 7: <Recover line 90, col 12 to line 94, col 100 of module Outbox>
+/\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 2
+/\ attempts = (c1 :> 1)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "pending")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 8: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>
+/\ reqs = { [cmd |-> c1, key |-> <<c1, 0>>, att |-> 1],
+  [cmd |-> c1, key |-> <<c1, 0>>, att |-> 2] }
+/\ seen = {}
+/\ replies = {}
+/\ crashes = 2
+/\ attempts = (c1 :> 2)
+/\ up = TRUE
+/\ committed = {c1}
+/\ status = (c1 :> "inflight")
+/\ durable = {}
+/\ got = {}
+/\ charges = (c1 :> 0)
+
+State 9: Stuttering
+Finished checking temporal properties in 00s at 2026-10-26 16:42:19
+188 states generated, 99 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 15.
+Finished in 00s at (2026-10-26 16:42:19)
+Trace exploration spec path: ./OutboxRecovery_TTrace_1793032938.tla

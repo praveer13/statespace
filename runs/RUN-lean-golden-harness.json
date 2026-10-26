@@ -1,0 +1,498 @@
+{
+  "id": "RUN-lean-golden-harness",
+  "title": "Golden harness facts: decide reduces structural and fueled definitions, not well-founded ones; Except goals need a derived DecidableEq, after which goldens are axiom-free; a zero Amount cannot be built",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "curriculum/S03-semantics.md section 1.1 items 1 and 2, and the Lean cells of S3.L2 (cell 3) and S3.L8 (cells 1 and 2): `decide` on a well-founded `countdownWF` fails to reduce while the structural `countdown` succeeds; a fueled runner decides both bounds; without an instance `decide` cannot synthesize `Decidable` for an `Except` equation, and with `deriving instance DecidableEq for Except` the goldens depend on no axioms; `decide` proves `0 < 0` false",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:46.892Z",
+  "started_at": "2026-10-26T16:33:45.535Z",
+  "duration_s": 1.353,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-golden-harness-countdown",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Countdown.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-golden-harness-fuel",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Fuel.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-golden-harness-amount",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Amount.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-golden-harness-except-no-deq",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "ExceptNoDeq.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-golden-harness-except-deq",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "ExceptDeq.lean"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S3/RUN-lean-golden-harness/Countdown.lean",
+      "sha256": "31f71f6fca196bbeda22dd813eef39e869a31011cf8f284b9a4267ad03a2cfb3",
+      "bytes": 246,
+      "role": "source",
+      "source": "content/stages/S3/S3.L8.md, instrument cell 1 (INS-goal-replay), verbatim"
+    },
+    {
+      "path": "runs/inputs/S3/RUN-lean-golden-harness/Fuel.lean",
+      "sha256": "4cb31006bf95ab029301836015e2f91695f3d04f030a596e9d6ba74b9427a961",
+      "bytes": 315,
+      "role": "source",
+      "source": "content/stages/S3/S3.L8.md, instrument cell 2 (INS-goal-replay), verbatim"
+    },
+    {
+      "path": "runs/inputs/S3/RUN-lean-golden-harness/Amount.lean",
+      "sha256": "e393f89fbfdd07ea229c6cc298b24e02118515076d3d15943c7dffb91ded8e41",
+      "bytes": 288,
+      "role": "source",
+      "source": "content/stages/S3/S3.L2.md, instrument cell 3 (INS-goal-replay), verbatim"
+    },
+    {
+      "path": "runs/inputs/S3/RUN-lean-golden-harness/ExceptNoDeq.lean",
+      "sha256": "33a6a1dab440a09a820a47a737777ae09a006ed88c3df3b44e02aa8e2d60a39e",
+      "bytes": 400,
+      "role": "source",
+      "source": "probe for curriculum/S03-semantics.md section 1.1 item 1, written by the recorder"
+    },
+    {
+      "path": "runs/inputs/S3/RUN-lean-golden-harness/ExceptDeq.lean",
+      "sha256": "b125bc7928fb9e699d23e5a644d6e3ef8a4adcbc7b52fa096a9d7f0d4b58b381",
+      "bytes": 473,
+      "role": "source",
+      "source": "probe for curriculum/S03-semantics.md section 1.1 item 1, written by the recorder"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "Countdown.lean:10:36: error: Tactic `decide` failed to reduce",
+    "  @decide (countdownWF 3 = 0) (instDecidableEqNat (countdownWF 3) 0)",
+    "to `true` or `false`.",
+    "After unfolding the instances `instDecidableEqNat` and `Nat.decEq`, reduction got stuck at",
+    "  (countdownWF 3).beq 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-golden-harness/countdown.log",
+      "sha256": "d13a045378ededb1c707cc39d26eb3f98080ab66a8db3c44e9917ac81e7acf28",
+      "bytes": 269,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-golden-harness/fuel.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-golden-harness/amount.log",
+      "sha256": "6339854facbdb6e68bb9a70914007cbaf326ba2292ec0f68542b15d671e4bb4e",
+      "bytes": 86,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-golden-harness/except-no-deq.log",
+      "sha256": "57d6c6c6f258da447e2f170315e6849facbd578f778c58a989977da45893d9a5",
+      "bytes": 417,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-golden-harness/except-deq.log",
+      "sha256": "ef7bd6f7b96ff59beeb903975946fb99d5ff35567f5f2366194cf9b4b32a246c",
+      "bytes": 85,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "countdown": {
+      "exit_code": 1,
+      "errors": 1,
+      "error_lines": [
+        10
+      ],
+      "error": "Tactic `decide` failed to reduce",
+      "stuck_at": "(countdownWF 3).beq 0",
+      "g0": "accepted",
+      "g": "failed to reduce"
+    },
+    "fuel": {
+      "exit_code": 0,
+      "errors": 0,
+      "output": ""
+    },
+    "amount": {
+      "exit_code": 1,
+      "errors": 1,
+      "error_lines": [
+        5
+      ],
+      "error": "Tactic `decide` proved that the proposition 0 < 0 is false",
+      "proposition": "0 < 0"
+    },
+    "except_no_deq": {
+      "exit_code": 1,
+      "errors": 2,
+      "error": "failed to synthesize",
+      "unsynthesized": [
+        "Decidable (exec 3 = Except.ok 2)",
+        "Decidable (exec 0 = Except.error (Err.guardFailed \"Transfer\"))"
+      ]
+    },
+    "except_deq": {
+      "exit_code": 0,
+      "errors": 0,
+      "axioms": {
+        "golden_ok": [],
+        "golden_err": []
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "countdown",
+  "configs": [
+    {
+      "id": "countdown",
+      "origin": "recorded",
+      "purpose": "S3.L8 cell 1: decide on a structural and on a well-founded countdown",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:45.535Z",
+      "duration_s": 0.28,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-golden-harness-countdown",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Countdown.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-golden-harness/Countdown.lean",
+          "sha256": "31f71f6fca196bbeda22dd813eef39e869a31011cf8f284b9a4267ad03a2cfb3",
+          "bytes": 246,
+          "role": "source",
+          "source": "content/stages/S3/S3.L8.md, instrument cell 1 (INS-goal-replay), verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Countdown.lean:10:36: error: Tactic `decide` failed to reduce",
+        "  @decide (countdownWF 3 = 0) (instDecidableEqNat (countdownWF 3) 0)",
+        "to `true` or `false`.",
+        "After unfolding the instances `instDecidableEqNat` and `Nat.decEq`, reduction got stuck at",
+        "  (countdownWF 3).beq 0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-golden-harness/countdown.log"
+      ]
+    },
+    {
+      "id": "fuel",
+      "origin": "recorded",
+      "purpose": "S3.L8 cell 2: a fueled runner decided at fuel 3 and fuel 100",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:45.815Z",
+      "duration_s": 0.27,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-golden-harness-fuel",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Fuel.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-golden-harness/Fuel.lean",
+          "sha256": "4cb31006bf95ab029301836015e2f91695f3d04f030a596e9d6ba74b9427a961",
+          "bytes": 315,
+          "role": "source",
+          "source": "content/stages/S3/S3.L8.md, instrument cell 2 (INS-goal-replay), verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-lean-golden-harness/fuel.log"
+      ]
+    },
+    {
+      "id": "amount",
+      "origin": "recorded",
+      "purpose": "S3.L2 cell 3: building Amount values from 30 and from 0, and Amount.add",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:46.086Z",
+      "duration_s": 0.266,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-golden-harness-amount",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Amount.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-golden-harness/Amount.lean",
+          "sha256": "e393f89fbfdd07ea229c6cc298b24e02118515076d3d15943c7dffb91ded8e41",
+          "bytes": 288,
+          "role": "source",
+          "source": "content/stages/S3/S3.L2.md, instrument cell 3 (INS-goal-replay), verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "Amount.lean:5:27: error: Tactic `decide` proved that the proposition",
+        "  0 < 0",
+        "is false"
+      ],
+      "outputs": [
+        "runs/RUN-lean-golden-harness/amount.log"
+      ]
+    },
+    {
+      "id": "except-no-deq",
+      "origin": "recorded",
+      "purpose": "two goldens over an Except outcome with no DecidableEq instance for Except declared",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:46.353Z",
+      "duration_s": 0.249,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-golden-harness-except-no-deq",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "ExceptNoDeq.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-golden-harness/ExceptNoDeq.lean",
+          "sha256": "33a6a1dab440a09a820a47a737777ae09a006ed88c3df3b44e02aa8e2d60a39e",
+          "bytes": 400,
+          "role": "source",
+          "source": "probe for curriculum/S03-semantics.md section 1.1 item 1, written by the recorder"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "ExceptNoDeq.lean:9:41: error: failed to synthesize",
+        "  Decidable (exec 3 = Except.ok 2)",
+        "ExceptNoDeq.lean:10:69: error: failed to synthesize",
+        "  Decidable (exec 0 = Except.error (Err.guardFailed \"Transfer\"))"
+      ],
+      "outputs": [
+        "runs/RUN-lean-golden-harness/except-no-deq.log"
+      ]
+    },
+    {
+      "id": "except-deq",
+      "origin": "recorded",
+      "purpose": "the same goldens after `deriving instance DecidableEq for Except`, with #print axioms",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:46.603Z",
+      "duration_s": 0.288,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-golden-harness-except-deq",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "ExceptDeq.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S3/RUN-lean-golden-harness/ExceptDeq.lean",
+          "sha256": "b125bc7928fb9e699d23e5a644d6e3ef8a4adcbc7b52fa096a9d7f0d4b58b381",
+          "bytes": 473,
+          "role": "source",
+          "source": "probe for curriculum/S03-semantics.md section 1.1 item 1, written by the recorder"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'golden_ok' does not depend on any axioms",
+        "'golden_err' does not depend on any axioms"
+      ],
+      "outputs": [
+        "runs/RUN-lean-golden-harness/except-deq.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "The countdown, fuel and amount inputs are the lesson cells byte for byte. In countdown the only error is on line 10 (theorem g): g0 on line 9 is accepted. In amount the only error is on line 5 (the zero Amount); the Amount 30 on line 3 and Amount.add are accepted. Fuel prints nothing and exits 0: both goldens are accepted.",
+    "The two Except files are probes the recorder wrote for curriculum/S03-semantics.md section 1.1 item 1, which describes an unregistered scratch elaboration; they use a stand-in exec over Nat, not the course evaluator.",
+    "Not recorded here: the INS-interp cells that also cite this run (S3.L2 cells 1 and 2, S3.L3 cells 1 and 2, S3.L7 cells 1 and 3, S10.L1 cell 1) and the LAB-3.1 receipt in content/stages/S3/lab.yaml. They need the reference evaluator and typechecker (MiniPlinthRef) and the LAB-3 template, which the course has not built; their verdicts (unguardedDebit, holdNotOpen, the self-transfer and zero outcomes, overflow, assignsResource, golden_transfer_ok) are not in this record.",
+    "argv holds one command line per configuration, in configs order; exit_code and verdict_lines at the top level are the primary configuration's."
+  ]
+}

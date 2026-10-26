@@ -1,0 +1,179 @@
+{
+ "label": "cell2",
+ "server_version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+ "psycopg": "3.3.6",
+ "started_at": "2026-10-26T16:41:33Z",
+ "duration_s": 0.042,
+ "steps": {
+  "a_begin": {
+   "session": "a",
+   "sql": "BEGIN ISOLATION LEVEL SERIALIZABLE;"
+  },
+  "a_total": {
+   "session": "a",
+   "sql": "SELECT sum(bal) FROM acct WHERE team = 1;"
+  },
+  "a_debit": {
+   "session": "a",
+   "sql": "UPDATE acct SET bal = bal - 150 WHERE id = 1;"
+  },
+  "a_commit": {
+   "session": "a",
+   "sql": "COMMIT;"
+  },
+  "b_begin": {
+   "session": "b",
+   "sql": "BEGIN ISOLATION LEVEL READ COMMITTED;"
+  },
+  "b_total": {
+   "session": "b",
+   "sql": "SELECT sum(bal) FROM acct WHERE team = 1;"
+  },
+  "b_debit": {
+   "session": "b",
+   "sql": "UPDATE acct SET bal = bal - 150 WHERE id = 2;"
+  },
+  "b_commit": {
+   "session": "b",
+   "sql": "COMMIT;"
+  }
+ },
+ "setup": "CREATE TABLE acct (id int PRIMARY KEY, bal bigint NOT NULL, team int);\nINSERT INTO acct VALUES (1, 100, 1), (2, 100, 1);\n",
+ "check_sql": "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS team_total FROM acct WHERE team = 1",
+ "histories": [
+  {
+   "permutation": "a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_total",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "SELECT 1",
+       "columns": [
+        "sum"
+       ],
+       "rows": [
+        [
+         "200"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_total",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "SELECT 1",
+       "columns": [
+        "sum"
+       ],
+       "rows": [
+        [
+         "200"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 2",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        -50
+       ],
+       [
+        2,
+        -50
+       ]
+      ]
+     },
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "team_total"
+      ],
+      "rows": [
+       [
+        "-100"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

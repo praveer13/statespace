@@ -1,0 +1,772 @@
+{
+  "id": "RUN-z3-cti-pair",
+  "title": "The holds model's inductive step for bal >= 0 has a model on the good model and on its twin; a bounded search from Init separates them: the twin overdraws in 3 steps, the good model has none within 6; 0 <= held <= bal closes the step",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-4.3, CL-4.5 and AUD-4.3: S4.L4 cell 3 (the four predicates), S4.L6 cells 1 and 3 (the twin and the good model; the two-hold model), S10.L6 cell 2 as written and with the twin's Hold guard, and S4.L1 cell 2 (settle: partial and total triples under fuel)",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:21.888Z",
+  "started_at": "2026-10-26T16:36:20.576Z",
+  "duration_s": 1.307,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l6_cell1.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l4_cell3.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l6_cell3.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s10l6_cell2.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s10l6_cell2_twin.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l1_cell2_settle.py"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s4l6_cell1.py",
+      "sha256": "3315eacc3a152740825cc6d7e54820eac334cf2381442035d46a6e4bcee53f73",
+      "bytes": 1901,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L6.md, the instrument at line 71: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s4l4_cell3.py",
+      "sha256": "140380d2bb29da884c4c6a9c2115ea9fcc3fda060595161b74f75ea7d264488b",
+      "bytes": 1334,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L4.md, the instrument at line 199: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s4l6_cell3.py",
+      "sha256": "4c466285eaa1c6fd93827510b590f2377cf62641405ab7cc2496f00f84d0d4a6",
+      "bytes": 1979,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L6.md, the instrument at line 243: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s10l6_cell2.py",
+      "sha256": "d94789829941148faafdffd75f5da642539fcdc34462a0ca766c533288c952a0",
+      "bytes": 2029,
+      "role": "cell",
+      "source": "content/stages/S10/S10.L6.md, the instrument at line 151: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s10l6_cell2_twin.py",
+      "sha256": "51c979b4eeb6c885ccfc17ff5984ca72e2c4769eb17c97435ba2f46661c9ae8b",
+      "bytes": 2029,
+      "role": "cell variant",
+      "source": "content/stages/S10/S10.L6.md, the instrument at line 151: its fenced block, with the one edit the lesson asks for (\"change the guard of Hold to n <= bal\"): line 8's n <= bal - held becomes n <= bal"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/cells/s4l1_cell2_settle.py",
+      "sha256": "ac9183aac38539eb3a92a4cf29c7731361f7aeac7f2d5e96fde808490b75778c",
+      "bytes": 845,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L1.md, the instrument at line 84: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== s4l6-cell1: python -I s4l6_cell1.py",
+    "twin - inductive step: sat",
+    "  held > bal in the pre-state: True",
+    "  reachable in 3 steps: Hold, Hold, Capture",
+    "good - inductive step: sat",
+    "  held > bal in the pre-state: True",
+    "  none within 6 steps",
+    "-- exit 0",
+    "== s4l4-cell3: python -I s4l4_cell3.py",
+    "I1 | fails at Init: unsat | inductive step fails: sat | violated within 6 steps: unsat",
+    "I2 | fails at Init: unsat | inductive step fails: unsat | violated within 6 steps: unsat",
+    "I3 | fails at Init: unsat | inductive step fails: sat | violated within 6 steps: sat",
+    "I4 | fails at Init: sat | inductive step fails: unsat | violated within 6 steps: sat",
+    "-- exit 0",
+    "== s4l6-cell3: python -I s4l6_cell3.py",
+    "Init and not Inv           unsat",
+    "Inv, step, not Inv after   sat",
+    "   state: {'bal0': 0, 'h1_0': 0, 'h2_0': 1}",
+    "Inv and not Safe           unsat",
+    "none within 6 steps",
+    "-- exit 0",
+    "== s10l6-cell2: python -I s10l6_cell2.py",
+    "step of bal >= 0: sat",
+    "  the pre-state has held above bal: True",
+    "violation reachable within 6 steps: no",
+    "step of the strengthened invariant: unsat",
+    "Init implies the strengthened invariant, as a violation query: unsat",
+    "the strengthened invariant implies bal >= 0, as a violation query: unsat",
+    "-- exit 0",
+    "== s10l6-cell2-twin: python -I s10l6_cell2_twin.py",
+    "step of bal >= 0: sat",
+    "  the pre-state has held above bal: True",
+    "violation reachable within 6 steps: yes, at step 3",
+    "step of the strengthened invariant: sat",
+    "Init implies the strengthened invariant, as a violation query: unsat",
+    "the strengthened invariant implies bal >= 0, as a violation query: unsat",
+    "-- exit 0",
+    "== s4l1-cell2: python -I s4l1_cell2_settle.py",
+    "fuel 2 | finished run breaks Inv: unsat | total triple fails: sat",
+    "fuel 3 | finished run breaks Inv: unsat | total triple fails: unsat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-cti-pair/s4l6-cell1.log",
+      "sha256": "cf2233e0a47b997df26ab104424bce1b859d1136138d98202c3272958f923c86",
+      "bytes": 192,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/s4l4-cell3.log",
+      "sha256": "7b50344ddc81646e11d939e6ed12d64241a46183e69c655cc94d64da6ffa34a0",
+      "bytes": 346,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/s4l6-cell3.log",
+      "sha256": "2b4c20bc431024dcb500266fde949d145f824e19aaf3e05504ea00e136c7f6b2",
+      "bytes": 161,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/s10l6-cell2.log",
+      "sha256": "276bd33249ad3f1a2122f82298b6a2f3a898cc81d60e27c5212242e58a715d84",
+      "bytes": 286,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/s10l6-cell2-twin.log",
+      "sha256": "ac83305c467fe8d8618e1529efa15a49154831b75904e57ac049a773cd8b87b2",
+      "bytes": 296,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-cti-pair/s4l1-cell2.log",
+      "sha256": "234fefa6b3d07c57db9d9f08e76db01469ef971527218533b3ea0dc1e881e1b7",
+      "bytes": 134,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s4l6-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "twin_inductive_step": {
+            "verdict": "sat"
+          },
+          "good_inductive_step": {
+            "verdict": "sat"
+          }
+        }
+      },
+      "s4l4-cell3": {
+        "exit_code": 0,
+        "lines": {
+          "i1": {
+            "fails_at_init": {
+              "verdict": "unsat"
+            },
+            "inductive_step_fails": {
+              "verdict": "sat"
+            },
+            "violated_within_6_steps": {
+              "verdict": "unsat"
+            }
+          },
+          "i2": {
+            "fails_at_init": {
+              "verdict": "unsat"
+            },
+            "inductive_step_fails": {
+              "verdict": "unsat"
+            },
+            "violated_within_6_steps": {
+              "verdict": "unsat"
+            }
+          },
+          "i3": {
+            "fails_at_init": {
+              "verdict": "unsat"
+            },
+            "inductive_step_fails": {
+              "verdict": "sat"
+            },
+            "violated_within_6_steps": {
+              "verdict": "sat"
+            }
+          },
+          "i4": {
+            "fails_at_init": {
+              "verdict": "sat"
+            },
+            "inductive_step_fails": {
+              "verdict": "unsat"
+            },
+            "violated_within_6_steps": {
+              "verdict": "sat"
+            }
+          }
+        }
+      },
+      "s4l6-cell3": {
+        "exit_code": 0,
+        "lines": {
+          "init_and_not_inv": {
+            "verdict": "unsat"
+          },
+          "inv_step_not_inv_after": {
+            "verdict": "sat"
+          },
+          "inv_and_not_safe": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "s10l6-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "step_of_bal_0": {
+            "verdict": "sat"
+          },
+          "step_of_the_strengthened_invariant": {
+            "verdict": "unsat"
+          },
+          "init_implies_the_strengthened_invariant_as_a_violation_query": {
+            "verdict": "unsat"
+          },
+          "the_strengthened_invariant_implies_bal_0_as_a_violation_query": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "s10l6-cell2-twin": {
+        "exit_code": 0,
+        "lines": {
+          "step_of_bal_0": {
+            "verdict": "sat"
+          },
+          "step_of_the_strengthened_invariant": {
+            "verdict": "sat"
+          },
+          "init_implies_the_strengthened_invariant_as_a_violation_query": {
+            "verdict": "unsat"
+          },
+          "the_strengthened_invariant_implies_bal_0_as_a_violation_query": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "s4l1-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "fuel_2": {
+            "finished_run_breaks_inv": {
+              "verdict": "unsat"
+            },
+            "total_triple_fails": {
+              "verdict": "sat"
+            }
+          },
+          "fuel_3": {
+            "finished_run_breaks_inv": {
+              "verdict": "unsat"
+            },
+            "total_triple_fails": {
+              "verdict": "unsat"
+            }
+          }
+        }
+      }
+    },
+    "twin": {
+      "inductive_step": "sat",
+      "held_above_bal_in_pre_state": "True",
+      "reachable_in_steps": 3,
+      "trace": "Hold, Hold, Capture"
+    },
+    "good": {
+      "inductive_step": "sat",
+      "search": "none within 6 steps",
+      "bound": 6
+    },
+    "predicates": {
+      "I1": {
+        "fails_at_init": "unsat",
+        "inductive_step_fails": "sat",
+        "violated_within_6_steps": "unsat"
+      },
+      "I2": {
+        "fails_at_init": "unsat",
+        "inductive_step_fails": "unsat",
+        "violated_within_6_steps": "unsat"
+      },
+      "I3": {
+        "fails_at_init": "unsat",
+        "inductive_step_fails": "sat",
+        "violated_within_6_steps": "sat"
+      },
+      "I4": {
+        "fails_at_init": "sat",
+        "inductive_step_fails": "unsat",
+        "violated_within_6_steps": "sat"
+      }
+    },
+    "two_holds": {
+      "init_and_not_inv": "unsat",
+      "inductive_step": "sat",
+      "cti_state": "{'bal0': 0, 'h1_0': 0, 'h2_0': 1}",
+      "inv_and_not_safe": "unsat",
+      "search": "none within 6 steps"
+    },
+    "s10": {
+      "step": "sat",
+      "search": "no",
+      "strengthened_step": "unsat",
+      "init_implies_strengthened": "unsat",
+      "strengthened_implies_safe": "unsat"
+    },
+    "s10_twin": {
+      "step": "sat",
+      "search": "yes, at step 3",
+      "strengthened_step": "sat"
+    },
+    "settle": {
+      "fuel_2": {
+        "finished_run_breaks_inv": "unsat",
+        "total_triple_fails": "sat"
+      },
+      "fuel_3": {
+        "finished_run_breaks_inv": "unsat",
+        "total_triple_fails": "unsat"
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s4l6-cell1",
+      "purpose": "S4.L6 cell 1: the inductive step for bal >= 0 and a bounded search, on the twin (Hold requires n <= bal) and on the good model",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l6_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s4l6_cell1.py",
+          "sha256": "3315eacc3a152740825cc6d7e54820eac334cf2381442035d46a6e4bcee53f73",
+          "bytes": 1901,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L6.md, the instrument at line 71: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:20.576Z",
+      "duration_s": 0.221,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s4l6-cell1.log",
+          "sha256": "cf2233e0a47b997df26ab104424bce1b859d1136138d98202c3272958f923c86",
+          "bytes": 192,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s4l4-cell3",
+      "purpose": "S4.L4 cell 3: I1 to I4, each at Init, its inductive step, and a search of up to 6 steps",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l4_cell3.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s4l4_cell3.py",
+          "sha256": "140380d2bb29da884c4c6a9c2115ea9fcc3fda060595161b74f75ea7d264488b",
+          "bytes": 1334,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L4.md, the instrument at line 199: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:20.798Z",
+      "duration_s": 0.221,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s4l4-cell3.log",
+          "sha256": "7b50344ddc81646e11d939e6ed12d64241a46183e69c655cc94d64da6ffa34a0",
+          "bytes": 346,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s4l6-cell3",
+      "purpose": "S4.L6 cell 3, as written (inv is bal >= 0): two holds on one account, the three checks and a search to 6 steps",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l6_cell3.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s4l6_cell3.py",
+          "sha256": "4c466285eaa1c6fd93827510b590f2377cf62641405ab7cc2496f00f84d0d4a6",
+          "bytes": 1979,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L6.md, the instrument at line 243: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:21.020Z",
+      "duration_s": 0.251,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s4l6-cell3.log",
+          "sha256": "2b4c20bc431024dcb500266fde949d145f824e19aaf3e05504ea00e136c7f6b2",
+          "bytes": 161,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s10l6-cell2",
+      "purpose": "S10.L6 cell 2, as written: the step for bal >= 0, the search to N = 6, and the three checks for 0 <= held <= bal",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s10l6_cell2.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s10l6_cell2.py",
+          "sha256": "d94789829941148faafdffd75f5da642539fcdc34462a0ca766c533288c952a0",
+          "bytes": 2029,
+          "role": "cell",
+          "source": "content/stages/S10/S10.L6.md, the instrument at line 151: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:21.271Z",
+      "duration_s": 0.231,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s10l6-cell2.log",
+          "sha256": "276bd33249ad3f1a2122f82298b6a2f3a898cc81d60e27c5212242e58a715d84",
+          "bytes": 286,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s10l6-cell2-twin",
+      "purpose": "S10.L6 cell 2 with the twin's Hold guard, the run the lesson asks the learner to try",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s10l6_cell2_twin.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s10l6_cell2_twin.py",
+          "sha256": "51c979b4eeb6c885ccfc17ff5984ca72e2c4769eb17c97435ba2f46661c9ae8b",
+          "bytes": 2029,
+          "role": "cell variant",
+          "source": "content/stages/S10/S10.L6.md, the instrument at line 151: its fenced block, with the one edit the lesson asks for (\"change the guard of Hold to n <= bal\"): line 8's n <= bal - held becomes n <= bal"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:21.503Z",
+      "duration_s": 0.208,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s10l6-cell2-twin.log",
+          "sha256": "ac83305c467fe8d8618e1529efa15a49154831b75904e57ac049a773cd8b87b2",
+          "bytes": 296,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s4l1-cell2",
+      "purpose": "S4.L1 cell 2 (call=false): settle unrolled under fuel 2 and 3, the partial and the total triple",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l1_cell2_settle.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/cells/s4l1_cell2_settle.py",
+          "sha256": "ac9183aac38539eb3a92a4cf29c7731361f7aeac7f2d5e96fde808490b75778c",
+          "bytes": 845,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L1.md, the instrument at line 84: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:21.712Z",
+      "duration_s": 0.175,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-cti-pair/s4l1-cell2.log",
+          "sha256": "234fefa6b3d07c57db9d9f08e76db01469ef971527218533b3ea0dc1e881e1b7",
+          "bytes": 134,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s4l6-cell1",
+  "notes": [
+    "Each cell is the lesson's fenced block, copied byte for byte (scratchpad extract.py); the s10l6-cell2-twin variant differs from s10l6_cell2.py in line 8 only.",
+    "S4.L1 cell 2 (settle) cites this run with call=false; the W1 report (follow-up 1) asks for it to get a run of its own, so it is kept here as its own configuration until then.",
+    "The cells set no rlimit; budget.timeout_s is the recorder's wall-clock backstop.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-cti-pair/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

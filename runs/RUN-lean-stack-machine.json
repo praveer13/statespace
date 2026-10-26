@@ -1,0 +1,222 @@
+{
+  "id": "RUN-lean-stack-machine",
+  "title": "exec_append and exec_comp build; without generalizing stk the plus case stops at rw [ih₂]",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "pack S9A's reference accepted, axioms listed; the attempt without `generalizing stk` and its goal",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:35:55.204Z",
+  "started_at": "2026-10-26T16:33:10.520Z",
+  "duration_s": 0.366,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-leanb-lean-stack-machine-stackmachine",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "StackMachine.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-stack-machine/inputs/StackMachine.lean",
+      "sha256": "e5bd5049806b61c3605901329691343c7b95108b1aa67b4f994bb70fc7fecc69",
+      "bytes": 1606,
+      "role": "source"
+    },
+    {
+      "path": "content/stages/S9/S9.L1.md",
+      "sha256": "0075ac364d0f6a528a5f210bbc0d2a855b0a1dfaf441dababc66aba4326087e2",
+      "bytes": 8084,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-stack-machine/inputs/StackMachineAxioms.lean",
+      "sha256": "dffa78abfe0c5b6ee3e2a1a43b1256fa01bfd325e01aeeae2146e07cac8bdfac",
+      "bytes": 1657,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "StackMachine.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-stack-machine/cell.log",
+      "sha256": "1e43261551281dac6508d4de1a98358b8a1fa1d06626dc32dc9954f0ff960655",
+      "bytes": 500,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-stack-machine/axioms.log",
+      "sha256": "272bcae5aa6a503152708eb3102f865d1d3c0fd19ec8c98e4abca74d76927749",
+      "bytes": 590,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "cell": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "first_error": "StackMachine.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern"
+    },
+    "axioms": {
+      "exit_code": 1,
+      "errors": 1,
+      "warnings": 0,
+      "axioms_lines": [
+        "'exec_append' depends on axioms: [propext]",
+        "'exec_comp' depends on axioms: [propext]"
+      ],
+      "first_error": "StackMachineAxioms.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "cell",
+  "configs": [
+    {
+      "id": "cell",
+      "origin": "recorded",
+      "purpose": "S9.L1 cell 1 verbatim: exec_append, exec_comp and exec_comp_narrow",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:10.520Z",
+      "duration_s": 0.366,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-stack-machine-stackmachine",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "StackMachine.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-stack-machine/inputs/StackMachine.lean",
+          "sha256": "e5bd5049806b61c3605901329691343c7b95108b1aa67b4f994bb70fc7fecc69",
+          "bytes": 1606,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L1.md",
+          "sha256": "0075ac364d0f6a528a5f210bbc0d2a855b0a1dfaf441dababc66aba4326087e2",
+          "bytes": 8084,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "StackMachine.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern"
+      ],
+      "outputs": [
+        "runs/RUN-lean-stack-machine/cell.log"
+      ]
+    },
+    {
+      "id": "axioms",
+      "origin": "recorded",
+      "purpose": "S9.L1 cell 1 plus #print axioms exec_append and exec_comp",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:33:10.887Z",
+      "duration_s": 0.342,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-leanb-lean-stack-machine-stackmachineaxioms",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "lean",
+        "StackMachineAxioms.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-stack-machine/inputs/StackMachineAxioms.lean",
+          "sha256": "dffa78abfe0c5b6ee3e2a1a43b1256fa01bfd325e01aeeae2146e07cac8bdfac",
+          "bytes": 1657,
+          "role": "source"
+        },
+        {
+          "path": "content/stages/S9/S9.L1.md",
+          "sha256": "0075ac364d0f6a528a5f210bbc0d2a855b0a1dfaf441dababc66aba4326087e2",
+          "bytes": 8084,
+          "role": "lesson"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "StackMachineAxioms.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern",
+        "'exec_append' depends on axioms: [propext]",
+        "'exec_comp' depends on axioms: [propext]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-stack-machine/axioms.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only; runs/RUN-lean-stack-machine/inputs/ holds those files as they ran.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md). run@1's task field admits only W<n>-S<nn>/W<n>-T<nn> IDs, so the follow-up is named in task_label instead.",
+    "Each log is the container's stdout and stderr, as lean printed them. verdict_lines are the error and warning header lines, the #print axioms lines and the #eval/#check output lines, copied from the log.",
+    "The only error is in exec_comp_narrow (line 58, the rw line of its plus case); exec_append and exec_comp elaborate.",
+    "Pack S9A and its comparator check are not built yet (W1-report follow-up 5), so 'pack S9A's reference accepted' is not recorded: this is the lesson cell's elaboration with plain lean, not a comparator run."
+  ]
+}

@@ -1,0 +1,10 @@
+permutation a_begin a_total b_begin b_total a_debit b_debit a_commit b_commit 
+  step a_begin: BEGIN
+  step a_total: SELECT 1 [["200"]]
+  step b_begin: BEGIN
+  step b_total: SELECT 1 [["200"]]
+  step a_debit: UPDATE 1
+  step b_debit: UPDATE 1
+  step a_commit: COMMIT
+  step b_commit:  ERROR 40001: could not serialize access due to read/write dependencies among transactions
+  check: [[1, -50], [2, 100]]; [["50"]]

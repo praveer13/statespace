@@ -1,0 +1,9 @@
+view Search(viewer, term) =
+  hits    the documents the viewer can read whose title matches term
+  total   the number of documents whose title matches term     ; counted before the filter
+  answer  {hits, total}
+
+pair
+  call   Search(frank, "layoffs")
+  left   W0
+  right  W0 without layoffs-memo

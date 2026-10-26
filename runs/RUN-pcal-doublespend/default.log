@@ -1,0 +1,64 @@
+pcal.trans Version 1.12 of 01 July 2024
+Parsing completed.
+Translation completed.
+New file DoubleSpendPcal.tla written.
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 88 and seed 6159812908794587142 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/DoubleSpendPcal.tla
+Parsing file /tmp/tlc-10584496647342649020/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-10584496647342649020/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-10584496647342649020/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-10584496647342649020/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-10584496647342649020/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-10584496647342649020/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-10584496647342649020/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module DoubleSpendPcal
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module DoubleSpendPcal
+Starting... (2026-10-26 16:40:52)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:52.
+Error: Invariant NoOverspend is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ seen = (w1 :> 0 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "Read" @@ w2 :> "Read")
+
+State 2: <Read(w1) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>
+/\ seen = (w1 :> 100 @@ w2 :> 0)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "Write" @@ w2 :> "Read")
+
+State 3: <Read(w2) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 0
+/\ bal = 100
+/\ pc = (w1 :> "Write" @@ w2 :> "Write")
+
+State 4: <Write(w1) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 80
+/\ bal = 20
+/\ pc = (w1 :> "Done" @@ w2 :> "Write")
+
+State 5: <Write(w2) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>
+/\ seen = (w1 :> 100 @@ w2 :> 100)
+/\ spent = 160
+/\ bal = 20
+/\ pc = (w1 :> "Done" @@ w2 :> "Done")
+
+13 states generated, 11 distinct states found, 2 states left on queue.
+The depth of the complete state graph search is 5.
+Finished in 00s at (2026-10-26 16:40:52)
+Trace exploration spec path: ./DoubleSpendPcal_TTrace_1793032852.tla

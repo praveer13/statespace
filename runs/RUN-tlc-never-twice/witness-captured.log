@@ -1,0 +1,76 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 123 and seed -7177283365001466806 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/HoldsWitness.tla
+Parsing file /w/Holds.tla
+Parsing file /tmp/tlc-6476182516089086546/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /w/HoldsEnv.tla
+Parsing file /tmp/tlc-6476182516089086546/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-6476182516089086546/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-6476182516089086546/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-6476182516089086546/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-6476182516089086546/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-6476182516089086546/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module HoldsEnv
+Semantic processing of module Holds
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module HoldsWitness
+Linting of module HoldsEnv
+Linting of module Holds
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module HoldsWitness
+Starting... (2026-10-26 16:40:56)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:57.
+Error: Invariant WitnessCaptured is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs = {}
+/\ tries = 0
+/\ hst = "available"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 2: <Place line 15, col 10 to line 17, col 52 of module Holds>
+/\ msgs = {}
+/\ tries = 0
+/\ hst = "held"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 3: <Dispatch line 19, col 13 to line 25, col 42 of module Holds>
+/\ msgs = {}
+/\ tries = 1
+/\ hst = "capturing"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 4: <Reply("ok") line 22, col 13 to line 25, col 54 of module HoldsEnv>
+/\ msgs = {"ok"}
+/\ tries = 1
+/\ hst = "capturing"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 5: <Handle("ok") line 27, col 14 to line 32, col 51 of module Holds>
+/\ msgs = {"ok"}
+/\ tries = 1
+/\ hst = "captured"
+/\ up = TRUE
+/\ res = 1
+/\ sent = TRUE
+
+15 states generated, 11 distinct states found, 3 states left on queue.
+The depth of the complete state graph search is 5.
+Finished in 00s at (2026-10-26 16:40:57)
+Trace exploration spec path: ./HoldsWitness_TTrace_1793032856.tla

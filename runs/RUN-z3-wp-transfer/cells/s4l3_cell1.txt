@@ -1,0 +1,8 @@
+command  Transfer:  requires amount ≤ a;  a := a − amount;  b := b + amount
+post     Inv = a ≥ 0 ∧ b ≥ 0
+
+1  wp(b := b + amount, Inv)         =  a ≥ 0 ∧ b + amount ≥ 0                          rule: assignment
+2  wp(a := a − amount; …, Inv)      =  a − amount ≥ 0 ∧ b + amount ≥ 0                 rule: sequence, then assignment
+3  wp(requires …, Inv)              =  (amount ≤ a → line 2) ∧ (¬(amount ≤ a) → Inv)   rule: guard, reject reading
+4  candidate, assume reading        =  amount ≤ a → line 2                             rule: guard, assume reading
+5  line 4  ⇔  line 3                                                                   rule: equivalence

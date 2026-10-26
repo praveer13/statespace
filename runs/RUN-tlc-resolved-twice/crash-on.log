@@ -1,0 +1,113 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 82 and seed -1083302931648251014 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/HoldsUnsafe.tla
+Parsing file /w/HoldsEnv.tla
+Parsing file /tmp/tlc-6628483733931731905/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-6628483733931731905/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-6628483733931731905/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-6628483733931731905/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-6628483733931731905/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-6628483733931731905/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-6628483733931731905/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module HoldsEnv
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module HoldsUnsafe
+Linting of module HoldsEnv
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module HoldsUnsafe
+Starting... (2026-10-26 16:40:55)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:55.
+Error: Invariant NeverTwice is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 0
+/\ hst = "available"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 2: <Place line 9, col 10 to line 10, col 66 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 0
+/\ hst = "held"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = FALSE
+
+State 3: <Dispatch line 12, col 13 to line 14, col 56 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "none"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 4: <ExpireRead line 26, col 15 to line 28, col 69 of module HoldsUnsafe>
+/\ msgs = {}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 5: <Next line 39, col 31 to line 39, col 68 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 6: <HandleRead("ok") line 16, col 18 to line 18, col 72 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "capturing"
+/\ wseen = "ok"
+/\ up = TRUE
+/\ res = 0
+/\ sent = TRUE
+
+State 7: <HandleWrite line 20, col 16 to line 24, col 60 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "capturing"
+/\ tries = 1
+/\ hst = "captured"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 1
+/\ sent = TRUE
+
+State 8: <ExpireWrite line 30, col 16 to line 32, col 60 of module HoldsUnsafe>
+/\ msgs = {"ok"}
+/\ eseen = "none"
+/\ tries = 1
+/\ hst = "released"
+/\ wseen = "none"
+/\ up = TRUE
+/\ res = 2
+/\ sent = TRUE
+
+149 states generated, 66 distinct states found, 17 states left on queue.
+The depth of the complete state graph search is 8.
+Finished in 00s at (2026-10-26 16:40:55)
+Trace exploration spec path: ./HoldsUnsafe_TTrace_1793032855.tla

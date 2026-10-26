@@ -1,0 +1,703 @@
+{
+  "id": "RUN-tlc-hold-fairness",
+  "title": "The retrying hold under each fairness line: no fairness, +WF Capture and WF Try with SF Timeout keep a starving lasso; +SF Capture and the widened Timeout under WF hold",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "rows r1 (no fairness), r3 (+WF Capture), r4 (+SF Capture), r5 (WF Try, SF Timeout held-only) and r6 (Timeout widened, WF Timeout only); r2 is RUN-tlc-hold-lasso",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:41:02.278Z",
+  "started_at": "2026-10-26T16:41:00.274Z",
+  "duration_s": 1.993,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-hold-fairness-r3-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "Hold.cfg",
+    "Hold"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/r1/Hold.tla",
+      "sha256": "e594bc9ce3c9bb7d3dfa8871bbde13be35bd1ba0b4fa5a16741218c19b0d47c0",
+      "bytes": 661,
+      "role": "spec: S5.L6 cell 2, the hold with no fairness conjunct",
+      "source": "content/stages/S5/S5.L6.md lines 138-152 (cell 2, verbatim)"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/r3/Hold.tla",
+      "sha256": "f7db14d24653e6be9288b74d796b2e6d584d5063e090d188cb1c906eb44e9d78",
+      "bytes": 813,
+      "role": "spec",
+      "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the second Fair line uncommented and the first commented out"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/r4/Hold.tla",
+      "sha256": "ee2be040d0c05aaecb8c1ad2a64331f92ad4988b2f34f8aad8a948c1c8ec8d80",
+      "bytes": 813,
+      "role": "spec",
+      "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the third Fair line uncommented and the first commented out"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/r5/Hold.tla",
+      "sha256": "10ba26322e6a9c3ca7792916b1b4d5f31cbed7d13a857fe228e3a5087634c42e",
+      "bytes": 813,
+      "role": "spec",
+      "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the fourth Fair line uncommented and the first commented out"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/r6/HoldLive.tla",
+      "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+      "bytes": 586,
+      "role": "spec: S5.L7 cell 3, Timeout widened, WF_vars(Timeout) only",
+      "source": "content/stages/S5/S5.L7.md lines 222-236 (cell 3, verbatim)"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+      "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+      "bytes": 47,
+      "role": "config, written by the recorder from the cells' direction"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 13,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 60 and seed -1344069024117454398 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Implied-temporal checking--satisfiability problem has 1 branches.",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:00.",
+    "Progress(5) at 2026-10-26 16:41:00: 9 states generated, 8 distinct states found, 0 states left on queue.",
+    "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:00)",
+    "Error: Temporal property EventuallyResolves was violated.",
+    "Error: The following behavior constitutes a counter-example:",
+    "State 1: <Initial predicate>",
+    "State 2: <Try line 6, col 12 to line 6, col 73 of module Hold>",
+    "State 3: <Busy line 7, col 12 to line 7, col 64 of module Hold>",
+    "State 4: <Try line 6, col 12 to line 6, col 73 of module Hold>",
+    "Back to state 1: <Busy line 7, col 12 to line 7, col 64 of module Hold>",
+    "Finished checking temporal properties in 00s at 2026-10-26 16:41:01",
+    "9 states generated, 8 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 5.",
+    "Finished in 00s at (2026-10-26 16:41:01)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-hold-fairness/r1.log",
+      "sha256": "c47de5238841bb00a97afbb247e4ea958f2d8127e566cfd782a02aae077b4133",
+      "bytes": 2596,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/r3.log",
+      "sha256": "28563685bd2eb7d84af5ead6ecf32377577d6c196cd61270c607de5ef3340e6f",
+      "bytes": 2927,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/r4.log",
+      "sha256": "9ab88af285762916338ec58f7ea396852d2c672666e4b8f9b4aab99903517682",
+      "bytes": 2672,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/r5.log",
+      "sha256": "cb283f6177420f88188ae94442bf2eeda574a0752b2f01a816be03599329b1a4",
+      "bytes": 2692,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-fairness/r6.log",
+      "sha256": "7aa86f8fdd438dd209f99e22f8acc741a8acf33746a7e8d85a21f813f7be4c1a",
+      "bytes": 2686,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "r1": {
+      "result": "temporal property violated",
+      "violated": "EventuallyResolves",
+      "states_generated": 9,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 2,
+      "trace_actions": 1,
+      "trace": [
+        "Stuttering"
+      ],
+      "lasso": true,
+      "stuttering": true
+    },
+    "r3": {
+      "result": "temporal property violated",
+      "violated": "EventuallyResolves",
+      "states_generated": 9,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 4,
+      "trace_actions": 4,
+      "trace": [
+        "Try",
+        "Busy",
+        "Try",
+        "Busy"
+      ],
+      "lasso": true,
+      "back_to_state": 1
+    },
+    "r4": {
+      "result": "no error",
+      "states_generated": 9,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1
+    },
+    "r5": {
+      "result": "temporal property violated",
+      "violated": "EventuallyResolves",
+      "states_generated": 9,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 3,
+      "trace_actions": 2,
+      "trace": [
+        "Try",
+        "Stuttering"
+      ],
+      "lasso": true,
+      "stuttering": true
+    },
+    "r6": {
+      "result": "no error",
+      "states_generated": 11,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "r3",
+  "configs": [
+    {
+      "id": "r1",
+      "description": "no fairness conjunct (S5.L6 cell 2)",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:00.274Z",
+      "duration_s": 0.392,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-hold-fairness-r1-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Hold.cfg",
+        "Hold"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/r1/Hold.tla",
+          "sha256": "e594bc9ce3c9bb7d3dfa8871bbde13be35bd1ba0b4fa5a16741218c19b0d47c0",
+          "bytes": 661,
+          "role": "spec: S5.L6 cell 2, the hold with no fairness conjunct",
+          "source": "content/stages/S5/S5.L6.md lines 138-152 (cell 2, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cells' direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 4 and seed -554868196893919577 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:00.",
+        "Progress(5) at 2026-10-26 16:41:00: 9 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:00)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: Stuttering",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:00",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:00)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-hold-fairness/r1.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyResolves",
+        "states_generated": 9,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 2,
+        "trace_actions": 1,
+        "trace": [
+          "Stuttering"
+        ],
+        "lasso": true,
+        "stuttering": true
+      }
+    },
+    {
+      "id": "r3",
+      "description": "WF Try, WF Busy, WF Capture",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:00.668Z",
+      "duration_s": 0.401,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-hold-fairness-r3-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Hold.cfg",
+        "Hold"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/r3/Hold.tla",
+          "sha256": "f7db14d24653e6be9288b74d796b2e6d584d5063e090d188cb1c906eb44e9d78",
+          "bytes": 813,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the second Fair line uncommented and the first commented out"
+        },
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cells' direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 60 and seed -1344069024117454398 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:00.",
+        "Progress(5) at 2026-10-26 16:41:00: 9 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:00)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Try line 6, col 12 to line 6, col 73 of module Hold>",
+        "State 3: <Busy line 7, col 12 to line 7, col 64 of module Hold>",
+        "State 4: <Try line 6, col 12 to line 6, col 73 of module Hold>",
+        "Back to state 1: <Busy line 7, col 12 to line 7, col 64 of module Hold>",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:01",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:01)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-hold-fairness/r3.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyResolves",
+        "states_generated": 9,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 4,
+        "trace_actions": 4,
+        "trace": [
+          "Try",
+          "Busy",
+          "Try",
+          "Busy"
+        ],
+        "lasso": true,
+        "back_to_state": 1
+      }
+    },
+    {
+      "id": "r4",
+      "description": "WF Try, WF Busy, SF Capture",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:01.072Z",
+      "duration_s": 0.394,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-hold-fairness-r4-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Hold.cfg",
+        "Hold"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/r4/Hold.tla",
+          "sha256": "ee2be040d0c05aaecb8c1ad2a64331f92ad4988b2f34f8aad8a948c1c8ec8d80",
+          "bytes": 813,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the third Fair line uncommented and the first commented out"
+        },
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cells' direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 54 and seed 3020203448375115732 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:01.",
+        "Progress(5) at 2026-10-26 16:41:01: 9 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:01)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:01",
+        "Model checking completed. No error has been found.",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:01)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-hold-fairness/r4.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 9,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "r5",
+      "description": "WF Try, SF Timeout, Timeout enabled at held only",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:01.469Z",
+      "duration_s": 0.404,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-hold-fairness-r5-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Hold.cfg",
+        "Hold"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/r5/Hold.tla",
+          "sha256": "10ba26322e6a9c3ca7792916b1b4d5f31cbed7d13a857fe228e3a5087634c42e",
+          "bytes": 813,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L7.md lines 156-176 (cell 2), with the fourth Fair line uncommented and the first commented out"
+        },
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cells' direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 4 and seed -5210700567335018311 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:01.",
+        "Progress(5) at 2026-10-26 16:41:01: 9 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:01)",
+        "Error: Temporal property EventuallyResolves was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Try line 6, col 12 to line 6, col 73 of module Hold>",
+        "State 3: Stuttering",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:01",
+        "9 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:01)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-hold-fairness/r5.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyResolves",
+        "states_generated": 9,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 3,
+        "trace_actions": 2,
+        "trace": [
+          "Try",
+          "Stuttering"
+        ],
+        "lasso": true,
+        "stuttering": true
+      }
+    },
+    {
+      "id": "r6",
+      "description": "HoldLive: Timeout at held or pending, WF Timeout only (S5.L7 cell 3)",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:01.875Z",
+      "duration_s": 0.402,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-hold-fairness-r6-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Hold.cfg",
+        "HoldLive"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/r6/HoldLive.tla",
+          "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+          "bytes": 586,
+          "role": "spec: S5.L7 cell 3, Timeout widened, WF_vars(Timeout) only",
+          "source": "content/stages/S5/S5.L7.md lines 222-236 (cell 3, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-hold-fairness/inputs/Hold.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cells' direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 80 and seed 7833925918035182435 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:02.",
+        "Progress(5) at 2026-10-26 16:41:02: 11 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:02)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:02",
+        "Model checking completed. No error has been found.",
+        "11 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:02)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-hold-fairness/r6.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 11,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1
+      }
+    }
+  ],
+  "notes": [
+    "Each row's module sits in its own folder of the work dir with Hold.cfg; the rows of S5.L7 cell 2 are the cell's text with one Fair line uncommented, as the cell's comment says to do.",
+    "A resolved hold enables no action, so every row runs with -deadlock, as the spike configurations used CHECK_DEADLOCK FALSE.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

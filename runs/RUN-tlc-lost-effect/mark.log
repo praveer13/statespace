@@ -1,0 +1,78 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 34 and seed 8795863600379392538 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/Poller.tla
+Parsing file /tmp/tlc-818082962508602917/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-818082962508602917/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-818082962508602917/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-818082962508602917/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-818082962508602917/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-818082962508602917/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-818082962508602917/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module Poller
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module Poller
+Starting... (2026-10-26 16:41:12)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:12.
+Error: Invariant MarkInv is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ mark = 0
+/\ wpc = (w1 :> "idle" @@ w2 :> "idle")
+/\ nextId = 1
+/\ idOf = (w1 :> 0 @@ w2 :> 0)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 2: <Insert(w1) line 21, col 14 to line 25, col 59 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "idle")
+/\ nextId = 2
+/\ idOf = (w1 :> 1 @@ w2 :> 0)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 3: <Insert(w2) line 21, col 14 to line 25, col 59 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "inserted")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {}
+/\ committedIds = {}
+
+State 4: <CommitRow(w2) line 27, col 17 to line 30, col 62 of module Poller>
+/\ mark = 0
+/\ wpc = (w1 :> "inserted" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {}
+/\ committedIds = {2}
+
+State 5: <Poll line 35, col 9 to line 38, col 56 of module Poller>
+/\ mark = 2
+/\ wpc = (w1 :> "inserted" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {2}
+/\ committedIds = {2}
+
+State 6: <CommitRow(w1) line 27, col 17 to line 30, col 62 of module Poller>
+/\ mark = 2
+/\ wpc = (w1 :> "committed" @@ w2 :> "committed")
+/\ nextId = 3
+/\ idOf = (w1 :> 1 @@ w2 :> 2)
+/\ delivered = {2}
+/\ committedIds = {1, 2}
+
+28 states generated, 22 distinct states found, 5 states left on queue.
+The depth of the complete state graph search is 6.
+Finished in 00s at (2026-10-26 16:41:12)
+Trace exploration spec path: ./Poller_TTrace_1793032872.tla

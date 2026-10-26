@@ -1,0 +1,158 @@
+{
+  "id": "RUN-z3-inductive",
+  "title": "0 <= held <= bal is inductive for Hold, Capture and Release: the step, Init and Safe checks are unsat and the premise witness is sat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-4.4 and S4.L6 cell 2: the three checks for the strengthened invariant I2 on the good holds model, plus its premise witness; with RUN-z3-cti-pair, the S4.L4 2x2",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:22.102Z",
+  "started_at": "2026-10-26T16:36:21.888Z",
+  "duration_s": 0.214,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "s4l6_cell2.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-inductive/cells/s4l6_cell2.py",
+      "sha256": "0cc9d5b10504687e28519c4e881a916f278803be7eac9387f8a5e43136949724",
+      "bytes": 900,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L6.md, the instrument at line 166: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== s4l6-cell2: python -I s4l6_cell2.py",
+    "Inv, step, not Inv after : unsat",
+    "Init and not Inv         : unsat",
+    "Inv and not Safe         : unsat",
+    "premise: Inv and a step  : sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-inductive/s4l6-cell2.log",
+      "sha256": "4b344ddfd7377e74723d233b98c9d60388ffb773fe9f1afbd5a9d71184d9d6b3",
+      "bytes": 130,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s4l6-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "inv_step_not_inv_after": {
+            "verdict": "unsat"
+          },
+          "init_and_not_inv": {
+            "verdict": "unsat"
+          },
+          "inv_and_not_safe": {
+            "verdict": "unsat"
+          },
+          "premise_inv_and_a_step": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "inductive_step": "unsat",
+    "init_and_not_inv": "unsat",
+    "inv_and_not_safe": "unsat",
+    "premise_witness": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s4l6-cell2",
+      "purpose": "S4.L6 cell 2, as written: Inv, step, not Inv after; Init and not Inv; Inv and not Safe; the premise witness",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l6_cell2.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-inductive/cells/s4l6_cell2.py",
+          "sha256": "0cc9d5b10504687e28519c4e881a916f278803be7eac9387f8a5e43136949724",
+          "bytes": 900,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L6.md, the instrument at line 166: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:21.888Z",
+      "duration_s": 0.214,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-inductive/s4l6-cell2.log",
+          "sha256": "4b344ddfd7377e74723d233b98c9d60388ffb773fe9f1afbd5a9d71184d9d6b3",
+          "bytes": 130,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s4l6-cell2",
+  "notes": [
+    "The cell is the lesson's fenced block, copied byte for byte. It sets no rlimit.",
+    "S4.L4 cell 3 (in RUN-z3-cti-pair, configuration s4l4-cell3) also checks I2 at Init, its step and a search to 6 steps.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-inductive/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

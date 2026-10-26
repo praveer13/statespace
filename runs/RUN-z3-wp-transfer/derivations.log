@@ -1,0 +1,15 @@
+S4.L2 cell 1
+  line 1-2 substitute, a state where line 2 differs from the substitution: unsat
+  line 3 consequence, claim => line 2 fails: unsat
+  line 4 consequence reverse, line 2 => claim fails: sat [('fee', '8')]
+S4.L2 cell 2
+  line 3 equivalence, a state where wp(A) and wp(B) disagree: sat [('S', '28100'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]
+  the same, with f != t: unsat
+  the same, with f == t: sat [('S', '0'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]
+S4.L3 cell 1
+  line 1 assignment, a state where line 1 differs from the substitution: unsat
+  line 2 sequence then assignment, a state where line 2 differs from the substitution: unsat
+  line 5 equivalence, a state where line 4 and line 3 disagree: sat [('a', '-1'), ('amount', '0')]
+  line 5, a disagreement where the guard holds: unsat
+  line 5, a disagreement where Inv holds: unsat
+  line 5, a disagreement where the guard fails and Inv fails: sat [('a', '-1'), ('amount', '0'), ('b', '0')]

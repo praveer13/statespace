@@ -1,0 +1,272 @@
+{
+  "id": "RUN-check-fragment",
+  "title": "Transfer's obligation on the three-account fragment, by substitution and forward: the reduction holds, the obligation and the reject branch are unsat, the premise witness is sat, and the two routes never differ",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S4.L4 cells 1 and 2 (the obligation backward with the reject branch, and forward with the frame), and the Z3 half of CL-4.2's fragment",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:37:15.195Z",
+  "started_at": "2026-10-26T16:37:14.823Z",
+  "duration_s": 0.371,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l4_cell1.py"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-I",
+      "s4l4_cell2.py"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-check-fragment/cells/s4l4_cell1.py",
+      "sha256": "98e0d5ec5f58345346ffe865a59c153398c18f4ff134de20a50f7198b61f21d6",
+      "bytes": 1014,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L4.md, the instrument at line 63: its fenced block, verbatim"
+    },
+    {
+      "path": "runs/RUN-check-fragment/cells/s4l4_cell2.py",
+      "sha256": "27cf2450374f5fc0ff0dc6c33292bcfd13df511621e46fb0bf6f42ad02507b35",
+      "bytes": 703,
+      "role": "cell",
+      "source": "content/stages/S4/S4.L4.md, the instrument at line 128: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== s4l4-cell1: python -I s4l4_cell1.py",
+    "1 reduction     : unsat",
+    "2 obligation    : unsat",
+    "3 premise       : sat",
+    "4 reject branch : unsat",
+    "-- exit 0",
+    "== s4l4-cell2: python -I s4l4_cell2.py",
+    "routes differ   : unsat",
+    "obligation      : unsat",
+    "premise witness : sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-check-fragment/s4l4-cell1.log",
+      "sha256": "8693cdf02c77947844f36a525d06279af05dc3e29e41ea377c2cc170f7450662",
+      "bytes": 94,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-check-fragment/s4l4-cell2.log",
+      "sha256": "e67e51d81648ad1ca90d60af03f1ad4c9d5af8462f4a6ad61bedcc8efdd5de32",
+      "bytes": 70,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s4l4-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "1_reduction": {
+            "verdict": "unsat"
+          },
+          "2_obligation": {
+            "verdict": "unsat"
+          },
+          "3_premise": {
+            "verdict": "sat"
+          },
+          "4_reject_branch": {
+            "verdict": "unsat"
+          }
+        }
+      },
+      "s4l4-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "routes_differ": {
+            "verdict": "unsat"
+          },
+          "obligation": {
+            "verdict": "unsat"
+          },
+          "premise_witness": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "backward": {
+      "reduction": "unsat",
+      "obligation": "unsat",
+      "premise": "sat",
+      "reject_branch": "unsat"
+    },
+    "forward": {
+      "routes_differ": "unsat",
+      "obligation": "unsat",
+      "premise_witness": "sat"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s4l4-cell1",
+      "purpose": "S4.L4 cell 1, as written: the reduction, the obligation, the premise witness and the reject branch",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l4_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-check-fragment/cells/s4l4_cell1.py",
+          "sha256": "98e0d5ec5f58345346ffe865a59c153398c18f4ff134de20a50f7198b61f21d6",
+          "bytes": 1014,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L4.md, the instrument at line 63: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:37:14.823Z",
+      "duration_s": 0.189,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-check-fragment/s4l4-cell1.log",
+          "sha256": "8693cdf02c77947844f36a525d06279af05dc3e29e41ea377c2cc170f7450662",
+          "bytes": 94,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "s4l4-cell2",
+      "purpose": "S4.L4 cell 2, as written: the two routes compared, the forward obligation and its premise witness",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s4l4_cell2.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-check-fragment/cells/s4l4_cell2.py",
+          "sha256": "27cf2450374f5fc0ff0dc6c33292bcfd13df511621e46fb0bf6f42ad02507b35",
+          "bytes": 703,
+          "role": "cell",
+          "source": "content/stages/S4/S4.L4.md, the instrument at line 128: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:37:15.013Z",
+      "duration_s": 0.182,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-check-fragment/s4l4-cell2.log",
+          "sha256": "e67e51d81648ad1ca90d60af03f1ad4c9d5af8462f4a6ad61bedcc8efdd5de32",
+          "bytes": 70,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s4l4-cell1",
+  "notes": [
+    "Both cells are the lesson's fenced blocks, copied byte for byte. They set no rlimit.",
+    "curriculum/S04-obligations.md gives CL-4.2 the stamp \"Z3 5.3.1 and cvc5 1.4.2 agree\"; this run is Z3 only: the cells are Python API scripts and no cvc5 form of them is written in the course. The learner's miniplinth check (LAB-4) is not part of this run.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-check-fragment/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

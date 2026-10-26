@@ -1,0 +1,8 @@
+command  fee := fee + 2
+post     fee ≤ 10
+claim    fee ≤ 7
+
+1  wp(fee := fee + 2, fee ≤ 10)  =  (fee ≤ 10)[fee ↦ fee + 2]    rule: assignment
+2                                 =  fee + 2 ≤ 10                 rule: substitute
+3  claim ⇒ line 2:  fee ≤ 7  ⇒  fee + 2 ≤ 10                      rule: consequence
+4  line 2 ⇒ claim:  fee + 2 ≤ 10  ⇒  fee ≤ 7                      rule: consequence, reverse

@@ -1,0 +1,589 @@
+{
+  "id": "RUN-pg-conditional-concurrent",
+  "title": "PostgreSQL 18.6: two concurrent conditional debits at READ COMMITTED never overspend in 126 recorded histories over the 9-cell amount grid; every refusal is UPDATE 0",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-6.2 (S6.L6, TESTED [T] · n histories): every interleaving of the two conditional debits of S6.L6 cell 1 that can run, over the grid of three balances and three amount pairs, at READ COMMITTED",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "harness": {
+    "name": "iso_driver.py",
+    "driver": "psycopg 3.3.6",
+    "python": "3.13.12",
+    "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a"
+  },
+  "recorded_at": "2026-10-26T16:49:40.346Z",
+  "started_at": "2026-10-26T16:35:06Z",
+  "duration_s": 852.258,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-cond"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-cond",
+      "--network",
+      "ssrec-net-cond",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-cond",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-cond",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "sh",
+      "run_grid.sh"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-cond"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-cond"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S6/RUN-pg-conditional-concurrent/iso_driver.py",
+      "sha256": "8952dfbae3a23ee1193f8f7bd37c478607cfb93a3c8b47c1ccc293ec1dd31557",
+      "bytes": 7398,
+      "role": "harness",
+      "source": "written by the recorder"
+    },
+    {
+      "path": "runs/inputs/S6/RUN-pg-conditional-concurrent/run_grid.sh",
+      "sha256": "e1a36a2905c354ddc38226cf4571e3b52c60ed8aafa6483a0cb5364e45accb32",
+      "bytes": 947,
+      "role": "harness",
+      "source": "written by the recorder"
+    },
+    {
+      "path": "runs/inputs/S6/RUN-pg-conditional-concurrent/S6.L6-cell1.spec",
+      "sha256": "cc0ad1a717b2889304dd0a4ee26d713d3613a0255215a7b53cd10ba9995e4dec",
+      "bytes": 1332,
+      "role": "spec",
+      "source": "content/stages/S6/S6.L6.md, instrument cell=1, verbatim (sessions a and b, the conditional UPDATE)"
+    },
+    {
+      "path": "runs/inputs/S6/RUN-pg-conditional-concurrent/grid.json",
+      "sha256": "b77f69eca66cba8d25e3181e81dff8897f7e126be14beaef11b0de433ad2d9a9",
+      "bytes": 700,
+      "role": "config",
+      "source": "the cells of pattern cond2 from scripts/spikes/W0-S09/patterns.py (PATTERNS['cond2'], seed statespace/GEN-anomaly-id/grid/1), the grid behind RUN-pg-catalog"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "permutation a_begin a_debit a_commit b_begin b_debit b_commit",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step a_commit: COMMIT",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin a_debit b_begin a_commit b_debit b_commit",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_begin: BEGIN",
+    "  step a_commit: COMMIT",
+    "  step b_debit: UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin a_debit b_begin b_debit a_commit b_commit",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_begin: BEGIN",
+    "  step b_debit: <waiting ...>",
+    "  step a_commit: COMMIT",
+    "  step b_debit: <... completed> UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin a_debit b_begin b_debit b_commit a_commit (not runnable)",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_begin: BEGIN",
+    "  step b_debit: <waiting ...>",
+    "  step b_commit: not issued: session b is still waiting on b_debit",
+    "permutation a_begin b_begin a_debit a_commit b_debit b_commit",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step a_commit: COMMIT",
+    "  step b_debit: UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin b_begin a_debit b_debit a_commit b_commit",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_debit: <waiting ...>",
+    "  step a_commit: COMMIT",
+    "  step b_debit: <... completed> UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin b_begin a_debit b_debit b_commit a_commit (not runnable)",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_debit: <waiting ...>",
+    "  step b_commit: not issued: session b is still waiting on b_debit",
+    "permutation a_begin b_begin b_debit a_debit a_commit b_commit (not runnable)",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_debit: <waiting ...>",
+    "  step a_commit: not issued: session a is still waiting on a_debit",
+    "permutation a_begin b_begin b_debit a_debit b_commit a_commit",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_debit: <waiting ...>",
+    "  step b_commit: COMMIT",
+    "  step a_debit: <... completed> UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation a_begin b_begin b_debit b_commit a_debit a_commit",
+    "  step a_begin: BEGIN",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step b_commit: COMMIT",
+    "  step a_debit: UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin a_begin a_debit a_commit b_debit b_commit",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step a_commit: COMMIT",
+    "  step b_debit: UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin a_begin a_debit b_debit a_commit b_commit",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_debit: <waiting ...>",
+    "  step a_commit: COMMIT",
+    "  step b_debit: <... completed> UPDATE 0",
+    "  step b_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin a_begin a_debit b_debit b_commit a_commit (not runnable)",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 1",
+    "  step b_debit: <waiting ...>",
+    "  step b_commit: not issued: session b is still waiting on b_debit",
+    "permutation b_begin a_begin b_debit a_debit a_commit b_commit (not runnable)",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_debit: <waiting ...>",
+    "  step a_commit: not issued: session a is still waiting on a_debit",
+    "permutation b_begin a_begin b_debit a_debit b_commit a_commit",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_debit: <waiting ...>",
+    "  step b_commit: COMMIT",
+    "  step a_debit: <... completed> UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin a_begin b_debit b_commit a_debit a_commit",
+    "  step b_begin: BEGIN",
+    "  step a_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step b_commit: COMMIT",
+    "  step a_debit: UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin b_debit a_begin a_debit a_commit b_commit (not runnable)",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_begin: BEGIN",
+    "  step a_debit: <waiting ...>",
+    "  step a_commit: not issued: session a is still waiting on a_debit",
+    "permutation b_begin b_debit a_begin a_debit b_commit a_commit",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_begin: BEGIN",
+    "  step a_debit: <waiting ...>",
+    "  step b_commit: COMMIT",
+    "  step a_debit: <... completed> UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin b_debit a_begin b_commit a_debit a_commit",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step a_begin: BEGIN",
+    "  step b_commit: COMMIT",
+    "  step a_debit: UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]",
+    "permutation b_begin b_debit b_commit a_begin a_debit a_commit",
+    "  step b_begin: BEGIN",
+    "  step b_debit: UPDATE 1",
+    "  step b_commit: COMMIT",
+    "  step a_begin: BEGIN",
+    "  step a_debit: UPDATE 0",
+    "  step a_commit: COMMIT",
+    "  check: [[1, 20]]"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-contend.json",
+      "sha256": "c269e701ade5c1bfae23f74361477d5bb70b7ae2d18948abd36452b5b8294e6a",
+      "bytes": 24314,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-contend.log",
+      "sha256": "d18462d0ebd53ef115e59ab351b8bd81af65e2b00f56f4f3133e6b55ace97b80",
+      "bytes": 4863,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b60-contend.sql",
+      "sha256": "a39f87d8a6b4cc30105c48a789c32c7f4183529ca99c18d4fbc5e58266a311dc",
+      "bytes": 94,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-exact.json",
+      "sha256": "111823190a221e7cb7d0f04cce01aef744d3edf52730f9de696230b6cfab0780",
+      "bytes": 24305,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-exact.log",
+      "sha256": "e25b8a377d0c83ff481f0ad535d8b8460fdb0a07d1c42f5aae32fec0449bc3dd",
+      "bytes": 4856,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b60-exact.sql",
+      "sha256": "a39f87d8a6b4cc30105c48a789c32c7f4183529ca99c18d4fbc5e58266a311dc",
+      "bytes": 94,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-fit.json",
+      "sha256": "f0f902fd01193c37f491b1915c151244d432dae8a3cadf85983152de99a69684",
+      "bytes": 24315,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b60-fit.log",
+      "sha256": "9c34f032158d32e3efcd3e5b26147fa255fdbe3ef0f0912ff26c74cc409e52fc",
+      "bytes": 4870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b60-fit.sql",
+      "sha256": "a39f87d8a6b4cc30105c48a789c32c7f4183529ca99c18d4fbc5e58266a311dc",
+      "bytes": 94,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-contend.json",
+      "sha256": "9cdb97c09eb4367b5b521648a4bdf50a020542e2647ac02e91ddf5896648dbbd",
+      "bytes": 24323,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-contend.log",
+      "sha256": "8c7ce927f4d048e63b8ac8aebd0bde1d28f5738c62d395b322709b2f8e5ab90d",
+      "bytes": 4870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b100-contend.sql",
+      "sha256": "d76d6362fd810d0e0d817fb8c623f0fcb8c6420c435bb7d5d553aa72e88bc340",
+      "bytes": 95,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-exact.json",
+      "sha256": "6ace1cfa84c16984d6f9f6b5ab5fb4d71fbc529de755b17f0bf2878a2dcd5e90",
+      "bytes": 24307,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-exact.log",
+      "sha256": "e25b8a377d0c83ff481f0ad535d8b8460fdb0a07d1c42f5aae32fec0449bc3dd",
+      "bytes": 4856,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b100-exact.sql",
+      "sha256": "d76d6362fd810d0e0d817fb8c623f0fcb8c6420c435bb7d5d553aa72e88bc340",
+      "bytes": 95,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-fit.json",
+      "sha256": "8e9efe20a7749e8b3dcf6b31365e58fc67510d5454e8d8f5078a116ca7fb1419",
+      "bytes": 24319,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b100-fit.log",
+      "sha256": "b298d0d3149815c0fb82a4bfae0a0c198c27c34bb9ac92dd19eb48c4c8175f00",
+      "bytes": 4870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b100-fit.sql",
+      "sha256": "d76d6362fd810d0e0d817fb8c623f0fcb8c6420c435bb7d5d553aa72e88bc340",
+      "bytes": 95,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-contend.json",
+      "sha256": "6b57bc1f1b2ae0945b7003ccbd031b5b48a761e3625af8178bd54561c82ca371",
+      "bytes": 24327,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-contend.log",
+      "sha256": "5c7be422866afd050cdbcf1f6cf82bd680c582c41fded2dce87ffb88fad13de6",
+      "bytes": 4870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b180-contend.sql",
+      "sha256": "11bc10d50968abb1afa843ea99a3ea1cb49d0ad47e3dea1ff45d38eaecd19728",
+      "bytes": 95,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-exact.json",
+      "sha256": "fe4386c5bd9be92abb5b67468597b2a08fe32e49695b31ac4b76c8298e672d0a",
+      "bytes": 24309,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-exact.log",
+      "sha256": "e25b8a377d0c83ff481f0ad535d8b8460fdb0a07d1c42f5aae32fec0449bc3dd",
+      "bytes": 4856,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b180-exact.sql",
+      "sha256": "11bc10d50968abb1afa843ea99a3ea1cb49d0ad47e3dea1ff45d38eaecd19728",
+      "bytes": 95,
+      "kind": "generated setup"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-fit.json",
+      "sha256": "cfd19a4ef84308ba202cb13866ae3e6184d98818cb17ed7026a2889544da154b",
+      "bytes": 24318,
+      "kind": "driver result"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/b180-fit.log",
+      "sha256": "1b0504426d2ada3ed7dbac20a4c4639006c7c4f62e1fb249317bfa5eebc13e22",
+      "bytes": 4870,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-conditional-concurrent/setup-b180-fit.sql",
+      "sha256": "11bc10d50968abb1afa843ea99a3ea1cb49d0ad47e3dea1ff45d38eaecd19728",
+      "bytes": 95,
+      "kind": "generated setup"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "level": "READ COMMITTED",
+    "grid_cells": 9,
+    "interleavings_per_cell": 20,
+    "histories": 126,
+    "not_runnable": 54,
+    "lock_waits_observed": 54,
+    "refusals": 42,
+    "refusals_zero_rows": 42,
+    "errors": 0,
+    "never_overspends": true,
+    "cells": {
+      "b60-contend": {
+        "balance": 60,
+        "amounts": [
+          45,
+          55
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 55,
+        "min_final_balance": 5,
+        "all_ok": true
+      },
+      "b60-exact": {
+        "balance": 60,
+        "amounts": [
+          40,
+          20
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 60,
+        "min_final_balance": 0,
+        "all_ok": true
+      },
+      "b60-fit": {
+        "balance": 60,
+        "amounts": [
+          20,
+          15
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 35,
+        "min_final_balance": 25,
+        "all_ok": true
+      },
+      "b100-contend": {
+        "balance": 100,
+        "amounts": [
+          80,
+          80
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 80,
+        "min_final_balance": 20,
+        "all_ok": true
+      },
+      "b100-exact": {
+        "balance": 100,
+        "amounts": [
+          55,
+          45
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 100,
+        "min_final_balance": 0,
+        "all_ok": true
+      },
+      "b100-fit": {
+        "balance": 100,
+        "amounts": [
+          20,
+          50
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 70,
+        "min_final_balance": 30,
+        "all_ok": true
+      },
+      "b180-contend": {
+        "balance": 180,
+        "amounts": [
+          105,
+          130
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 130,
+        "min_final_balance": 50,
+        "all_ok": true
+      },
+      "b180-exact": {
+        "balance": 180,
+        "amounts": [
+          25,
+          155
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 180,
+        "min_final_balance": 0,
+        "all_ok": true
+      },
+      "b180-fit": {
+        "balance": 180,
+        "amounts": [
+          70,
+          65
+        ],
+        "histories": 14,
+        "not_runnable": 6,
+        "max_committed_total": 135,
+        "min_final_balance": 45,
+        "all_ok": true
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "never-overspends",
+      "pass": true
+    },
+    {
+      "id": "refusals-are-zero-rows",
+      "pass": true
+    },
+    {
+      "id": "all-cells",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "harness_image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "ssrec-net-cond (a user network for the server and the driver only)"
+    }
+  },
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "The cell is in isolationtester format; isolationtester itself was not run (it is built from the PostgreSQL source tree, as W0-S09 did for RUN-pg-catalog). iso_driver.py, written by the recorder, replays it with psycopg 3.3.6 on Python 3.13.12 in the bench image: one connection per session in autocommit mode (BEGIN and COMMIT are steps), each step sent with the simple query protocol so a step of two statements returns both results, a step reported as waiting once pg_isolation_test_session_is_blocked says so (the function isolationtester uses), a permutation not run when it needs a step from a session that is still waiting, a fresh setup before each permutation, and the check query on a separate connection after both sessions finish. The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on its own user network with --memory=6g; before the driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0 (at most 120 polls, 0.5 s apart). argv lists the commands in order; started_at, duration_s and exit_code are those of the driver's run.",
+    "run_grid.sh runs iso_driver.py once per grid cell with --sessions a,b (the cell's conditional-UPDATE sessions; c and d, the read-modify-write, are RUN-pg-claims's) and --all-interleavings (all 20 orders of a_begin a_debit a_commit with b_begin b_debit b_commit). Per cell it writes the setup with the cell's balance in place of 100 and substitutes the cell's two amounts for 80 in a_debit and b_debit (--subst on `- 80` and `>= 80`); the b100-contend cell is the lesson's numbers, 100 and 80/80, unchanged. The generated setups are outputs.",
+    "values.histories counts the interleavings that ran to completion; values.not_runnable those that needed a step from a session still waiting on the other's row lock (isolationtester cannot run them either), rolled back after their blocked step was cancelled (their steps are in the driver results, and they count in no value but not_runnable). A history is ok when its final balance is at least 0, the amounts whose debit reported UPDATE 1 total at most the starting balance, and the final balance equals the start less that total. values.refusals counts debits that did not apply; refusals_zero_rows those that reported UPDATE 0. values.lock_waits_observed counts debits that were seen waiting and completed after the other session ended. verdict_lines are the log of the b100-contend cell; values.cells summarises each cell.",
+    "started_at is that of the first cell, and duration_s the sum of the nine driver runs (each permutation not runnable waits 15 s for its blocked step before it is cancelled)."
+  ]
+}

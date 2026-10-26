@@ -1,0 +1,37 @@
+.decl world(w: symbol, a1: symbol, a2: symbol, nested: symbol)
+.decl tenant_of_team(w: symbol, t: symbol, a: symbol)
+.decl tenant_of_user(w: symbol, u: symbol, a: symbol)
+.decl member(w: symbol, u: symbol, t: symbol)
+.decl owns(w: symbol, t: symbol, d: symbol)
+.decl subteam(w: symbol, s: symbol, t: symbol)
+.decl inteam(w: symbol, u: symbol, t: symbol)
+.decl canread(w: symbol, u: symbol, d: symbol)
+.decl violation(w: symbol)
+.decl wf2_broken(w: symbol)
+.output violation
+.output wf2_broken
+
+// the scope: two teams, two tenants, one user in t1, one document owned by t2,
+// and t1 nested in t2 or not. Every such world is one row.
+world("w1", "acme", "acme", "no").    world("w2", "acme", "acme", "yes").
+world("w3", "acme", "birch", "no").   world("w4", "acme", "birch", "yes").
+world("w5", "birch", "acme", "no").   world("w6", "birch", "acme", "yes").
+world("w7", "birch", "birch", "no").  world("w8", "birch", "birch", "yes").
+
+// each world's facts
+tenant_of_team(w, "t1", a) :- world(w, a, _, _).
+tenant_of_team(w, "t2", a) :- world(w, _, a, _).
+tenant_of_user(w, "u", a) :- world(w, a, _, _).
+member(w, "u", "t1") :- world(w, _, _, _).
+owns(w, "t2", "d") :- world(w, _, _, _).
+subteam(w, "t1", "t2") :- world(w, _, _, "yes").
+
+// the policy: rule 1 with nesting (the worlds hold no shares)
+inteam(w, u, t) :- member(w, u, t).
+inteam(w, u, t) :- inteam(w, u, s), subteam(w, s, t).
+canread(w, u, d) :- inteam(w, u, t), owns(w, t, d).
+
+// a violation: a read across tenants
+violation(w) :- canread(w, u, d), tenant_of_user(w, u, a), owns(w, t, d), tenant_of_team(w, t, b), a != b.
+// WF2: a subteam belongs to its parent's tenant
+wf2_broken(w) :- subteam(w, s, t), tenant_of_team(w, s, a), tenant_of_team(w, t, b), a != b.

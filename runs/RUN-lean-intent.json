@@ -1,0 +1,289 @@
+{
+  "id": "RUN-lean-intent",
+  "title": "The idle transfer satisfies the four pinned statements and fails transfer_moves; the pinned transfer proves all five",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-2.9: for a transfer that returns its input, transfer_conserves, transfer_rejected, transfer_nonneg and run_conserves are all proved, and transfer_moves leaves `s = { a := s.a - n, b := s.b + n }` unsolved; `decide` refutes it at (1, 0) with amount 1; the pinned transfer proves all five",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:45.236Z",
+  "started_at": "2026-10-26T16:33:44.650Z",
+  "duration_s": 0.585,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-intent-idle",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Idle.lean"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-lean-intent-pinned",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w",
+      "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "lean",
+      "Pinned.lean"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S2/RUN-lean-intent/Idle.lean",
+      "sha256": "86c862d1ff5ffec05116222acd2f67a8010a5811b260774aa3c08454623a6e39",
+      "bytes": 1507,
+      "role": "source",
+      "source": "recorded for S2.L10 cells 2 and 3 (INS-interp): the four pinned statements and transfer_moves, verbatim from content/stages/S2/S2.L10.md and curriculum/S02-proof.md \"Statement pins\", over a transfer that returns its input; the proofs are the recorder's"
+    },
+    {
+      "path": "runs/inputs/S2/RUN-lean-intent/Pinned.lean",
+      "sha256": "f4cb319c9376022de23b601b5a4289c332869b597da04a608846b86b5633fb73",
+      "bytes": 1457,
+      "role": "source",
+      "source": "recorded for S2.L10 cell 3: definitions and the four proofs of research/spikes/lean/Ledger.lean, plus transfer_moves as pinned in curriculum/S02-proof.md; the transfer_moves proof is the recorder's"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "'transfer_conserves' depends on axioms: [propext]",
+    "'transfer_rejected' depends on axioms: [propext]",
+    "'transfer_nonneg' depends on axioms: [propext]",
+    "'run_conserves' depends on axioms: [propext]",
+    "Idle.lean:41:53: error: unsolved goals",
+    "s : Ledger",
+    "n : Int",
+    "h : 0 ≤ n ∧ n ≤ s.a",
+    "⊢ s = { a := s.a - n, b := s.b + n }"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-intent/idle.log",
+      "sha256": "6654c2095ddb32ea45d22e60502528607953da28f6d0a92bf642f4d14635d811",
+      "bytes": 648,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-intent/pinned.log",
+      "sha256": "2c53eb8bf48f58039644fc5043c6d9617ddf84059e3342a849b067afeb0064c5",
+      "bytes": 273,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "idle": {
+      "exit_code": 1,
+      "proved": [
+        "transfer_conserves",
+        "transfer_rejected",
+        "transfer_nonneg",
+        "run_conserves"
+      ],
+      "proved_count": 4,
+      "axioms": {
+        "transfer_conserves": [
+          "propext"
+        ],
+        "transfer_rejected": [
+          "propext"
+        ],
+        "transfer_nonneg": [
+          "propext"
+        ],
+        "run_conserves": [
+          "propext"
+        ]
+      },
+      "transfer_moves": "unsolved goals",
+      "transfer_moves_goal": "s = { a := s.a - n, b := s.b + n }",
+      "errors": 1,
+      "eval_amount_1_from_1_0": "{ a := 1, b := 0 }"
+    },
+    "pinned": {
+      "exit_code": 0,
+      "proved": [
+        "transfer_conserves",
+        "transfer_rejected",
+        "transfer_nonneg",
+        "run_conserves",
+        "transfer_moves"
+      ],
+      "proved_count": 5,
+      "axioms": {
+        "transfer_conserves": [
+          "propext",
+          "Quot.sound"
+        ],
+        "transfer_rejected": [
+          "propext"
+        ],
+        "transfer_nonneg": [
+          "propext",
+          "Quot.sound"
+        ],
+        "run_conserves": [
+          "propext",
+          "Quot.sound"
+        ],
+        "transfer_moves": [
+          "propext"
+        ]
+      },
+      "errors": 0
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "idle",
+  "configs": [
+    {
+      "id": "idle",
+      "origin": "recorded",
+      "purpose": "the idle transfer against the five statements: four proofs with #print axioms, the transfer_moves attempt, and a decide refutation at (1, 0), amount 1",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:44.650Z",
+      "duration_s": 0.293,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-intent-idle",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Idle.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S2/RUN-lean-intent/Idle.lean",
+          "sha256": "86c862d1ff5ffec05116222acd2f67a8010a5811b260774aa3c08454623a6e39",
+          "bytes": 1507,
+          "role": "source",
+          "source": "recorded for S2.L10 cells 2 and 3 (INS-interp): the four pinned statements and transfer_moves, verbatim from content/stages/S2/S2.L10.md and curriculum/S02-proof.md \"Statement pins\", over a transfer that returns its input; the proofs are the recorder's"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "'transfer_conserves' depends on axioms: [propext]",
+        "'transfer_rejected' depends on axioms: [propext]",
+        "'transfer_nonneg' depends on axioms: [propext]",
+        "'run_conserves' depends on axioms: [propext]",
+        "Idle.lean:41:53: error: unsolved goals",
+        "s : Ledger",
+        "n : Int",
+        "h : 0 ≤ n ∧ n ≤ s.a",
+        "⊢ s = { a := s.a - n, b := s.b + n }"
+      ],
+      "outputs": [
+        "runs/RUN-lean-intent/idle.log"
+      ]
+    },
+    {
+      "id": "pinned",
+      "origin": "recorded",
+      "purpose": "the pinned transfer against the same five statements, with #print axioms",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:44.944Z",
+      "duration_s": 0.292,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-intent-pinned",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "Pinned.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S2/RUN-lean-intent/Pinned.lean",
+          "sha256": "f4cb319c9376022de23b601b5a4289c332869b597da04a608846b86b5633fb73",
+          "bytes": 1457,
+          "role": "source",
+          "source": "recorded for S2.L10 cell 3: definitions and the four proofs of research/spikes/lean/Ledger.lean, plus transfer_moves as pinned in curriculum/S02-proof.md; the transfer_moves proof is the recorder's"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "'transfer_rejected' depends on axioms: [propext]",
+        "'transfer_nonneg' depends on axioms: [propext, Quot.sound]",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]",
+        "'transfer_moves' depends on axioms: [propext]"
+      ],
+      "outputs": [
+        "runs/RUN-lean-intent/pinned.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "The idle file elaborates past the failed transfer_moves: its one error is that theorem's unsolved goal, the anonymous `example ... ≠ ... := by decide` at (1, 0) with amount 1 raises no error (it is accepted), and `#eval transfer ⟨1, 0⟩ 1` prints the unchanged state. The warning about the unused hypothesis h is the idle transfer_rejected, whose proof never needs it.",
+    "Not recorded here: the `--paranoid` (comparator) check of the four theorems that curriculum/S02-proof.md lists for this run. It needs the LAB-2 challenge project and comparator, which this run did not use; the lesson cells cite only the Lean verdicts recorded here.",
+    "argv holds one command line per configuration, in configs order; exit_code and verdict_lines at the top level are the primary configuration's."
+  ]
+}

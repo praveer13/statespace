@@ -1,0 +1,1015 @@
+{
+  "id": "RUN-tlc-recovery",
+  "title": "Recovery assumptions for the outbox's progress: with a finite crash budget and fair Recover both properties hold; without provider fairness EventuallyAcked fails; with unbounded crashes (MaxAttempts = 3) EventuallyAcked fails under weak and under strong worker fairness",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "stated fairness at MaxCrashes = 2; no provider fairness; unbounded crashes (MaxCrashes = -1) under weak and then strong worker fairness, MaxAttempts = 3",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:42:20.567Z",
+  "started_at": "2026-10-26T16:42:17.838Z",
+  "duration_s": 2.709,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-recovery-stated-acked-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "stated-acked.cfg",
+    "OutboxRecovery"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+      "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+      "bytes": 4304,
+      "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+      "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+      "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+      "bytes": 3474,
+      "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+      "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+      "bytes": 888,
+      "role": "spec: WorkerFair, ProviderFair and the properties"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+      "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+      "bytes": 735,
+      "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/stated-acked.cfg",
+      "sha256": "adce1ca332d1f6a1e3afda66c04c27c980e56af7cbde4de50bd74455f50eb5df",
+      "bytes": 227,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/stated-dispatched.cfg",
+      "sha256": "709dfdf4311010ca2854d7693beb7a0bae45ef366f3b3c80ac760ce01ea896c9",
+      "bytes": 232,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/noprovider-acked.cfg",
+      "sha256": "2ef8c1d91f01ad8838bc042c1b1bda1d4065a0f58993d2993ae8ff1f416868cf",
+      "bytes": 236,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/noprovider-dispatched.cfg",
+      "sha256": "03a30f1e76f8bf13a9d8e4e90c40359148459dd06f0a6ea434c87f749c1af508",
+      "bytes": 241,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/unbounded-weak.cfg",
+      "sha256": "59754a5281217005120669986ca8a3dae262870232e375b61134a7117bd0e19c",
+      "bytes": 236,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/inputs/unbounded-strong.cfg",
+      "sha256": "a6db3d73017acfaf3de44c8d75ad596448ebacbb7b5dbed8d40e3309a0d01b6b",
+      "bytes": 236,
+      "role": "config, written by the recorder"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 19 and seed -49728555856256805 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Implied-temporal checking--satisfiability problem has 1 branches.",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:18.",
+    "Progress(15) at 2026-10-26 16:42:18: 188 states generated, 99 distinct states found, 0 states left on queue.",
+    "Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:18)",
+    "Finished checking temporal properties in 00s at 2026-10-26 16:42:18",
+    "Model checking completed. No error has been found.",
+    "188 states generated, 99 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 15.",
+    "Finished in 00s at (2026-10-26 16:42:18)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-recovery/stated-acked.log",
+      "sha256": "6a93f9c90c64eaaf1ad99897963c86087f6c4765d3bc591698436b04e483b432",
+      "bytes": 3011,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/stated-dispatched.log",
+      "sha256": "631d665c00d3d128d7eaf3344ce1d0635789b9ec90f010292fc917f53d3a98a3",
+      "bytes": 3013,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/noprovider-acked.log",
+      "sha256": "f4ecdfe0ac6616c13b4e8728a5f7c6e44f8e017874fa10297df30738dc05e304",
+      "bytes": 5194,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/noprovider-dispatched.log",
+      "sha256": "d1f4dbd4d94209431cf330b6910e36a24349c48e521612490b9a00d7b6205546",
+      "bytes": 3012,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/unbounded-weak.log",
+      "sha256": "2256364a4273f764e2ab160b147da768b6ffd48cf834308d44bc37db30eb03b5",
+      "bytes": 8257,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-recovery/unbounded-strong.log",
+      "sha256": "11e98d41fe9f7cff0d78d75fd9fcf52bdd9538360303596f404d2efeb3205f0b",
+      "bytes": 7747,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "stated-acked": {
+      "result": "no error",
+      "states_generated": 188,
+      "distinct_states": 99,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1
+    },
+    "stated-dispatched": {
+      "result": "no error",
+      "states_generated": 188,
+      "distinct_states": 99,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1
+    },
+    "noprovider-acked": {
+      "result": "temporal property violated",
+      "violated": "EventuallyAcked",
+      "states_generated": 188,
+      "distinct_states": 99,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1,
+      "trace_states": 9,
+      "trace_actions": 8,
+      "trace": [
+        "Commit(c1)",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Stuttering"
+      ],
+      "lasso": true,
+      "stuttering": true
+    },
+    "noprovider-dispatched": {
+      "result": "no error",
+      "states_generated": 188,
+      "distinct_states": 99,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1
+    },
+    "unbounded-weak": {
+      "result": "temporal property violated",
+      "violated": "EventuallyAcked",
+      "states_generated": 283,
+      "distinct_states": 103,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1,
+      "trace_states": 15,
+      "trace_actions": 15,
+      "trace": [
+        "Commit(c1)",
+        "Dispatch(c1)",
+        "Next",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Next",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Next",
+        "Receive(c1)",
+        "Persist(c1)",
+        "Crash",
+        "Recover"
+      ],
+      "lasso": true,
+      "back_to_state": 14
+    },
+    "unbounded-strong": {
+      "result": "temporal property violated",
+      "violated": "EventuallyAcked",
+      "states_generated": 283,
+      "distinct_states": 103,
+      "states_left": 0,
+      "depth": 15,
+      "initial_states": 1,
+      "trace_states": 15,
+      "trace_actions": 14,
+      "trace": [
+        "Commit(c1)",
+        "Dispatch(c1)",
+        "Crash",
+        "Next",
+        "Recover",
+        "Dispatch(c1)",
+        "Next",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Crash",
+        "Next",
+        "Recover",
+        "Stuttering"
+      ],
+      "lasso": true,
+      "stuttering": true
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "stated-acked",
+  "configs": [
+    {
+      "id": "stated-acked",
+      "description": "MaxCrashes = 2, LiveSpec2 (WF worker, WF provider, WF Recover), -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:17.838Z",
+      "duration_s": 0.432,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-stated-acked-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "stated-acked.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/stated-acked.cfg",
+          "sha256": "adce1ca332d1f6a1e3afda66c04c27c980e56af7cbde4de50bd74455f50eb5df",
+          "bytes": 227,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 19 and seed -49728555856256805 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:18.",
+        "Progress(15) at 2026-10-26 16:42:18: 188 states generated, 99 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:18)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:18",
+        "Model checking completed. No error has been found.",
+        "188 states generated, 99 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:18)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/stated-acked.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 188,
+        "distinct_states": 99,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "stated-dispatched",
+      "description": "MaxCrashes = 2, LiveSpec2, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:18.274Z",
+      "duration_s": 0.429,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-stated-dispatched-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "stated-dispatched.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/stated-dispatched.cfg",
+          "sha256": "709dfdf4311010ca2854d7693beb7a0bae45ef366f3b3c80ac760ce01ea896c9",
+          "bytes": 232,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 54 and seed -6462792614456766318 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:18.",
+        "Progress(15) at 2026-10-26 16:42:18: 188 states generated, 99 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:18)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:18",
+        "Model checking completed. No error has been found.",
+        "188 states generated, 99 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:18)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/stated-dispatched.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 188,
+        "distinct_states": 99,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "noprovider-acked",
+      "description": "MaxCrashes = 2, no provider fairness, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:18.706Z",
+      "duration_s": 0.456,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-noprovider-acked-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "noprovider-acked.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/noprovider-acked.cfg",
+          "sha256": "2ef8c1d91f01ad8838bc042c1b1bda1d4065a0f58993d2993ae8ff1f416868cf",
+          "bytes": 236,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 84 and seed -8646149319328533504 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:19.",
+        "Progress(15) at 2026-10-26 16:42:19: 188 states generated, 99 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:19)",
+        "Error: Temporal property EventuallyAcked was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 4: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 5: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 6: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 7: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 8: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 9: Stuttering",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:19",
+        "188 states generated, 99 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:19)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/noprovider-acked.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyAcked",
+        "states_generated": 188,
+        "distinct_states": 99,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1,
+        "trace_states": 9,
+        "trace_actions": 8,
+        "trace": [
+          "Commit(c1)",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Stuttering"
+        ],
+        "lasso": true,
+        "stuttering": true
+      }
+    },
+    {
+      "id": "noprovider-dispatched",
+      "description": "MaxCrashes = 2, no provider fairness, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:19.166Z",
+      "duration_s": 0.442,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-noprovider-dispatched-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "noprovider-dispatched.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/noprovider-dispatched.cfg",
+          "sha256": "03a30f1e76f8bf13a9d8e4e90c40359148459dd06f0a6ea434c87f749c1af508",
+          "bytes": 241,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 35 and seed -933165220175323123 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:19.",
+        "Progress(15) at 2026-10-26 16:42:19: 188 states generated, 99 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 99 total distinct states at (2026-10-26 16:42:19)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:19",
+        "Model checking completed. No error has been found.",
+        "188 states generated, 99 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:19)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/noprovider-dispatched.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 188,
+        "distinct_states": 99,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "unbounded-weak",
+      "description": "S8.L5 cell 2: MaxCrashes = -1, LiveSpec2, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:19.612Z",
+      "duration_s": 0.469,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-unbounded-weak-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "unbounded-weak.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/unbounded-weak.cfg",
+          "sha256": "59754a5281217005120669986ca8a3dae262870232e375b61134a7117bd0e19c",
+          "bytes": 236,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 122 and seed -5071234681561625815 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:19.",
+        "Progress(15) at 2026-10-26 16:42:19: 283 states generated, 103 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 103 total distinct states at (2026-10-26 16:42:19)",
+        "Error: Temporal property EventuallyAcked was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 4: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 5: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 6: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 7: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 9: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 10: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 11: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 12: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 13: <Receive(c1) line 48, col 15 to line 54, col 110 of module Outbox>",
+        "State 14: <Persist(c1) line 56, col 15 to line 60, col 101 of module Outbox>",
+        "State 15: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "Back to state 14: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:20",
+        "283 states generated, 103 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:20)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/unbounded-weak.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyAcked",
+        "states_generated": 283,
+        "distinct_states": 103,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1,
+        "trace_states": 15,
+        "trace_actions": 15,
+        "trace": [
+          "Commit(c1)",
+          "Dispatch(c1)",
+          "Next",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Next",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Next",
+          "Receive(c1)",
+          "Persist(c1)",
+          "Crash",
+          "Recover"
+        ],
+        "lasso": true,
+        "back_to_state": 14
+      }
+    },
+    {
+      "id": "unbounded-strong",
+      "description": "S8.L5 cell 3: MaxCrashes = -1, LiveSpec3 (SF worker, WF provider, WF Recover), -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:42:20.085Z",
+      "duration_s": 0.481,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-recovery-unbounded-strong-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "unbounded-strong.cfg",
+        "OutboxRecovery"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxLive.tla",
+          "sha256": "f87dfb18e06fc3d8b87859d6d29fb19803121cb0e4069647b3f988f20fb3ad2a",
+          "bytes": 888,
+          "role": "spec: WorkerFair, ProviderFair and the properties"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/OutboxRecovery.tla",
+          "sha256": "5f70628113e90fa17a3fa34bcff95070b837b20f0ea44e2f2be1fb638fa67709",
+          "bytes": 735,
+          "role": "spec, written by the recorder: S8.L5 cells 2 and 3 verbatim (their `Here` comment lines dropped) over OutboxLive, plus LiveSpecNoProvider"
+        },
+        {
+          "path": "runs/RUN-tlc-recovery/inputs/unbounded-strong.cfg",
+          "sha256": "a6db3d73017acfaf3de44c8d75ad596448ebacbb7b5dbed8d40e3309a0d01b6b",
+          "bytes": 236,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 13,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 94 and seed -2971182825098825765 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:42:20.",
+        "Progress(15) at 2026-10-26 16:42:20: 283 states generated, 103 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 103 total distinct states at (2026-10-26 16:42:20)",
+        "Error: Temporal property EventuallyAcked was violated.",
+        "Error: The following behavior constitutes a counter-example:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 5: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 6: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 7: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 9: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 10: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 11: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 12: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 13: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 14: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 15: Stuttering",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:42:20",
+        "283 states generated, 103 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 15.",
+        "Finished in 00s at (2026-10-26 16:42:20)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-recovery/unbounded-strong.log"
+      ],
+      "values": {
+        "result": "temporal property violated",
+        "violated": "EventuallyAcked",
+        "states_generated": 283,
+        "distinct_states": 103,
+        "states_left": 0,
+        "depth": 15,
+        "initial_states": 1,
+        "trace_states": 15,
+        "trace_actions": 14,
+        "trace": [
+          "Commit(c1)",
+          "Dispatch(c1)",
+          "Crash",
+          "Next",
+          "Recover",
+          "Dispatch(c1)",
+          "Next",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Crash",
+          "Next",
+          "Recover",
+          "Stuttering"
+        ],
+        "lasso": true,
+        "stuttering": true
+      }
+    }
+  ],
+  "notes": [
+    "Outbox.tla is S8.L2 cell 1 verbatim. OutboxIface.tla, the supplied read-only module, appears in no lesson; the W0-S04 spike module is used, whose Accept, Forget, CanForget and properties are the ones S8.L3, S8.L4 and S8.L7 quote.",
+    "MaxCrashes = -1 is the model's unbounded crash budget (Crash leaves the counter at 0). Sends stay bounded by MaxAttempts = 3: the model has no configuration with unbounded sends, which S8.L5 cell 2's text describes.",
+    "unbounded-strong is violated in this model: its lasso spends the three attempts across crash and recover cycles, after which Dispatch is disabled for good and strong fairness has nothing to force. S8.L5 cell 3 expects Holds, which needs sends with no bound; at any finite MaxAttempts the attempt budget can run out first.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

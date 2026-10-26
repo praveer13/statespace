@@ -1,0 +1,155 @@
+{
+  "id": "RUN-z3-hierarchy-unknown",
+  "title": "A team hierarchy as quantified transitive closure with acyclicity returns unknown under rlimit 1000000; unconstrained it is a spurious sat; grounded on the footprint it is unsat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-7.7 and S7.L3 cell 2: the unconstrained, quantified and grounded encodings",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:24.636Z",
+  "started_at": "2026-10-26T16:36:24.142Z",
+  "duration_s": 0.494,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "s7l3_cell2.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-hierarchy-unknown/cells/s7l3_cell2.py",
+      "sha256": "63279c5a26d2dbd3b64cf67ee551357ebc1c409f65ab0ed132ffdef0ddbd3547",
+      "bytes": 2475,
+      "role": "cell",
+      "source": "content/stages/S7/S7.L3.md, the instrument at line 100: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the cell sets rlimit 1000000 on every solver"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== s7l3-cell2: python -I s7l3_cell2.py",
+    "unconstrained: sat",
+    "quantified   : unknown (push canceled)",
+    "grounded     : unsat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-hierarchy-unknown/s7l3-cell2.log",
+      "sha256": "c37f2c0b642656d9aa8a84fa98572cea7e2e3556d518eabb50db7af90722e474",
+      "bytes": 79,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s7l3-cell2": {
+        "exit_code": 0,
+        "lines": {
+          "unconstrained": {
+            "verdict": "sat"
+          },
+          "quantified": {
+            "verdict": "unknown",
+            "detail": "(push canceled)"
+          },
+          "grounded": {
+            "verdict": "unsat"
+          }
+        }
+      }
+    },
+    "unconstrained": "sat",
+    "quantified": "unknown",
+    "quantified_reason": "push canceled",
+    "grounded": "unsat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s7l3-cell2",
+      "purpose": "S7.L3 cell 2, as written",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s7l3_cell2.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-hierarchy-unknown/cells/s7l3_cell2.py",
+          "sha256": "63279c5a26d2dbd3b64cf67ee551357ebc1c409f65ab0ed132ffdef0ddbd3547",
+          "bytes": 2475,
+          "role": "cell",
+          "source": "content/stages/S7/S7.L3.md, the instrument at line 100: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 1000000
+      },
+      "started_at": "2026-10-26T16:36:24.142Z",
+      "duration_s": 0.494,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-hierarchy-unknown/s7l3-cell2.log",
+          "sha256": "c37f2c0b642656d9aa8a84fa98572cea7e2e3556d518eabb50db7af90722e474",
+          "bytes": 79,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s7l3-cell2",
+  "notes": [
+    "The cell is the lesson's fenced block, copied byte for byte.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-hierarchy-unknown/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

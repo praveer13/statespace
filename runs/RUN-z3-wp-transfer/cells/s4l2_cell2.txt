@@ -1,0 +1,8 @@
+command  A, sequential:    bal := bal[f ↦ bal(f) − amt];  bal := bal[t ↦ bal(t) + amt]
+command  B, simultaneous:  bal := bal[f ↦ bal(f) − amt][t ↦ bal(t) + amt]
+post     bal(x) + bal(y) + bal(z) = S
+given    f and t are among x, y, z;  amt > 0
+
+1  wp(A, post)  =  post with the first update substituted, then the second    rule: assignment, twice
+2  wp(B, post)  =  post with the combined update substituted                   rule: assignment
+3  line 1  ⇔  line 2                                                           rule: equivalence

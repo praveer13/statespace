@@ -1,0 +1,9 @@
+command  Debit(k, amt):  bal := bal[k ↦ bal(k) − amt]
+post     ∀k. bal(k) ≥ 0
+given    amt > 0
+
+1  naive          ∀k. bal(k) − amt ≥ 0                                   rule: substitute, no renaming
+2  capture-free   bal(k) − amt ≥ 0  ∧  ∀j. j ≠ k → bal(j) ≥ 0           rule: rename the bound k to j, then substitute
+3  line 1  ⇔  line 2                                                       rule: equivalence
+4  line 1  ⇒  line 2                                                       rule: consequence
+5  line 2  ⇒  line 1                                                       rule: consequence, reverse

@@ -1,0 +1,662 @@
+{
+  "id": "RUN-tlc-lifecycle",
+  "title": "The one-hold lifecycle: TypeOK and NeverTwice hold with the deadlock check off, both outcomes are reachable, and StaysResolved holds",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S5.L4's HoldsLifecycle: the invariants with -deadlock, the default-flags deadlock, LAB-5.c3's two witness invariants, and the action property",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:40:55.508Z",
+  "started_at": "2026-10-26T16:40:53.536Z",
+  "duration_s": 1.959,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-lifecycle-deadlock-off-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "HoldsLifecycle.cfg",
+    "HoldsLifecycle"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+      "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+      "bytes": 762,
+      "role": "spec",
+      "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.cfg",
+      "sha256": "eff4f22b3f3790f1a73f27a55c548ae46bf9c77499d6ea35028c79fab232b606",
+      "bytes": 58,
+      "role": "config, written by the recorder from the cell's comment line"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycleWitness.tla",
+      "sha256": "92e007a93f13fa2eb664309053817055c8876121ad90b58bfc0f8aacf8af7b77",
+      "bytes": 139,
+      "role": "witness module, written by the recorder: LAB-5.c3's two witness operators"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/WitnessCaptured.cfg",
+      "sha256": "27c423e76b722f5bd0dfd8dd761b24dae689b4151c20cb393d9846bac2340e6f",
+      "bytes": 46,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/WitnessReleased.cfg",
+      "sha256": "954035ad9b124c666aa4a0edcbe061f848ef477400b69c05c29d47048238fd76",
+      "bytes": 46,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/inputs/StaysResolved.cfg",
+      "sha256": "a207b983c9a13d0d2b917ffd4cc8a12499fe5e2607df3f310aad40039e3e1e4a",
+      "bytes": 42,
+      "role": "config, written by the recorder: the action property the lesson says TLC checks"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 73 and seed 9055057256513487122 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:53.",
+    "Model checking completed. No error has been found.",
+    "4 states generated, 4 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 3.",
+    "Finished in 00s at (2026-10-26 16:40:53)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-lifecycle/deadlock-off.log",
+      "sha256": "2b864651fcd0efb32f1fc6fd2b3668b900686cab832423f0db9831276497c2a4",
+      "bytes": 2354,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/default.log",
+      "sha256": "dfbb3e48e9b93ae8a125518c9a29385401b586aa4d82563b37fc1de073e1bec1",
+      "bytes": 2424,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/witness-captured.log",
+      "sha256": "a2c00b4c4febdc768f5a6e809cfe655f5cfaf1e318a5cd0f061bf287545a6ad2",
+      "bytes": 2587,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/witness-released.log",
+      "sha256": "ec5f961955a7522039f242fbbf02e9c2bdfa6469b8572f016601898fc188333d",
+      "bytes": 2594,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-lifecycle/stays-resolved.log",
+      "sha256": "8b996f1bcf023ea3315013f369b47d2385fd790d23f9ef03ba36d52158af9fff",
+      "bytes": 2348,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "deadlock-off": {
+      "result": "no error",
+      "states_generated": 4,
+      "distinct_states": 4,
+      "states_left": 0,
+      "depth": 3,
+      "initial_states": 1
+    },
+    "default": {
+      "result": "deadlock",
+      "states_generated": 4,
+      "distinct_states": 4,
+      "states_left": 1,
+      "depth": 3,
+      "initial_states": 1,
+      "trace_states": 3,
+      "trace_actions": 2,
+      "trace": [
+        "Place",
+        "Capture"
+      ]
+    },
+    "witness-captured": {
+      "result": "invariant violated",
+      "violated": "WitnessCaptured",
+      "states_generated": 3,
+      "distinct_states": 3,
+      "states_left": 0,
+      "depth": 3,
+      "initial_states": 1,
+      "trace_states": 3,
+      "trace_actions": 2,
+      "trace": [
+        "Place",
+        "Capture"
+      ]
+    },
+    "witness-released": {
+      "result": "invariant violated",
+      "violated": "WitnessReleased",
+      "states_generated": 4,
+      "distinct_states": 4,
+      "states_left": 1,
+      "depth": 3,
+      "initial_states": 1,
+      "trace_states": 3,
+      "trace_actions": 2,
+      "trace": [
+        "Place",
+        "Release"
+      ]
+    },
+    "stays-resolved": {
+      "result": "no error",
+      "states_generated": 4,
+      "distinct_states": 4,
+      "states_left": 0,
+      "depth": 3,
+      "initial_states": 1
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "deadlock-off",
+  "configs": [
+    {
+      "id": "deadlock-off",
+      "description": "TypeOK and NeverTwice, -deadlock (the cell's configuration)",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:53.536Z",
+      "duration_s": 0.402,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-lifecycle-deadlock-off-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "HoldsLifecycle.cfg",
+        "HoldsLifecycle"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+          "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+          "bytes": 762,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.cfg",
+          "sha256": "eff4f22b3f3790f1a73f27a55c548ae46bf9c77499d6ea35028c79fab232b606",
+          "bytes": 58,
+          "role": "config, written by the recorder from the cell's comment line"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 73 and seed 9055057256513487122 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:53.",
+        "Model checking completed. No error has been found.",
+        "4 states generated, 4 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:53)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-lifecycle/deadlock-off.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 4,
+        "distinct_states": 4,
+        "states_left": 0,
+        "depth": 3,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "default",
+      "description": "the same with default flags",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:53.941Z",
+      "duration_s": 0.4,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-lifecycle-default-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "HoldsLifecycle.cfg",
+        "HoldsLifecycle"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+          "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+          "bytes": 762,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.cfg",
+          "sha256": "eff4f22b3f3790f1a73f27a55c548ae46bf9c77499d6ea35028c79fab232b606",
+          "bytes": 58,
+          "role": "config, written by the recorder from the cell's comment line"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 11,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 96 and seed 2735369874155167010 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:54.",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Place line 11, col 12 to line 11, col 66 of module HoldsLifecycle>",
+        "State 3: <Capture line 12, col 12 to line 12, col 67 of module HoldsLifecycle>",
+        "4 states generated, 4 distinct states found, 1 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:54)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-lifecycle/default.log"
+      ],
+      "values": {
+        "result": "deadlock",
+        "states_generated": 4,
+        "distinct_states": 4,
+        "states_left": 1,
+        "depth": 3,
+        "initial_states": 1,
+        "trace_states": 3,
+        "trace_actions": 2,
+        "trace": [
+          "Place",
+          "Capture"
+        ]
+      }
+    },
+    {
+      "id": "witness-captured",
+      "description": "hst # \"captured\" as an invariant, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:54.344Z",
+      "duration_s": 0.388,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-lifecycle-witness-captured-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "WitnessCaptured.cfg",
+        "HoldsLifecycleWitness"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+          "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+          "bytes": 762,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycleWitness.tla",
+          "sha256": "92e007a93f13fa2eb664309053817055c8876121ad90b58bfc0f8aacf8af7b77",
+          "bytes": 139,
+          "role": "witness module, written by the recorder: LAB-5.c3's two witness operators"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/WitnessCaptured.cfg",
+          "sha256": "27c423e76b722f5bd0dfd8dd761b24dae689b4151c20cb393d9846bac2340e6f",
+          "bytes": 46,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 73 and seed -2978346433335797116 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:54.",
+        "Error: Invariant WitnessCaptured is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Place line 11, col 12 to line 11, col 66 of module HoldsLifecycle>",
+        "State 3: <Capture line 12, col 12 to line 12, col 67 of module HoldsLifecycle>",
+        "3 states generated, 3 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:54)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-lifecycle/witness-captured.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WitnessCaptured",
+        "states_generated": 3,
+        "distinct_states": 3,
+        "states_left": 0,
+        "depth": 3,
+        "initial_states": 1,
+        "trace_states": 3,
+        "trace_actions": 2,
+        "trace": [
+          "Place",
+          "Capture"
+        ]
+      }
+    },
+    {
+      "id": "witness-released",
+      "description": "hst # \"released\" as an invariant, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:54.735Z",
+      "duration_s": 0.379,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-lifecycle-witness-released-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "WitnessReleased.cfg",
+        "HoldsLifecycleWitness"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+          "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+          "bytes": 762,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycleWitness.tla",
+          "sha256": "92e007a93f13fa2eb664309053817055c8876121ad90b58bfc0f8aacf8af7b77",
+          "bytes": 139,
+          "role": "witness module, written by the recorder: LAB-5.c3's two witness operators"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/WitnessReleased.cfg",
+          "sha256": "954035ad9b124c666aa4a0edcbe061f848ef477400b69c05c29d47048238fd76",
+          "bytes": 46,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 126 and seed -123336966138609188 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:55.",
+        "Error: Invariant WitnessReleased is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Place line 11, col 12 to line 11, col 66 of module HoldsLifecycle>",
+        "State 3: <Release line 13, col 12 to line 13, col 67 of module HoldsLifecycle>",
+        "4 states generated, 4 distinct states found, 1 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:55)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-lifecycle/witness-released.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WitnessReleased",
+        "states_generated": 4,
+        "distinct_states": 4,
+        "states_left": 1,
+        "depth": 3,
+        "initial_states": 1,
+        "trace_states": 3,
+        "trace_actions": 2,
+        "trace": [
+          "Place",
+          "Release"
+        ]
+      }
+    },
+    {
+      "id": "stays-resolved",
+      "description": "PROPERTY StaysResolved, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:55.117Z",
+      "duration_s": 0.39,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-lifecycle-stays-resolved-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "StaysResolved.cfg",
+        "HoldsLifecycle"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/HoldsLifecycle.tla",
+          "sha256": "e79aa365059dc5e2d5cff14440e1da30f4bdbb0aa3d508370bd4517003f1373d",
+          "bytes": 762,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L4.md lines 35-56 (cell 1, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-lifecycle/inputs/StaysResolved.cfg",
+          "sha256": "a207b983c9a13d0d2b917ffd4cc8a12499fe5e2607df3f310aad40039e3e1e4a",
+          "bytes": 42,
+          "role": "config, written by the recorder: the action property the lesson says TLC checks"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 115 and seed 2720393011545230930 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:55.",
+        "Model checking completed. No error has been found.",
+        "4 states generated, 4 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:55)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-lifecycle/stays-resolved.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 4,
+        "distinct_states": 4,
+        "states_left": 0,
+        "depth": 3,
+        "initial_states": 1
+      }
+    }
+  ],
+  "notes": [
+    "The cell's last line is a comment after the module end; its configuration (INIT Init, NEXT Next, INVARIANT TypeOK, INVARIANT NeverTwice, deadlock check off) is written out as HoldsLifecycle.cfg, and the deadlock check is turned off with -deadlock.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

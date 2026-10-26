@@ -1,0 +1,21 @@
+.decl member(u: symbol, t: symbol, r: symbol)
+.decl owns(t: symbol, d: symbol)
+.decl share_user(d: symbol, u: symbol)
+.decl share_team(d: symbol, t: symbol)
+.decl revoked(d: symbol, u: symbol)
+.decl canread(u: symbol, d: symbol)
+.output canread
+
+member("dana", "payments", "editor").  member("frank", "growth", "viewer").
+member("gia", "legal", "admin").       member("hal", "legal", "viewer").
+owns("payments", "q3-plan").  owns("growth", "roadmap").
+owns("legal", "contract").    owns("legal", "layoffs-memo").
+share_user("contract", "dana").
+share_team("roadmap", "payments").
+
+// rule 1: a member of the owning team
+canread(u, d) :- member(u, t, _), owns(t, d).
+// rule 2: shared with the user, and not revoked
+canread(u, d) :- share_user(d, u), !revoked(d, u).
+// rule 3: shared with one of the user's teams
+canread(u, d) :- member(u, t, _), share_team(d, t).

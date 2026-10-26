@@ -1,0 +1,177 @@
+{
+  "id": "RUN-z3-count-channel",
+  "title": "Search(frank, \"layoffs\") with total counted before the filter: worlds differing only in Birch's private layoffs-memo give equal hits and different totals (sat); counted after the filter, unsat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-7.2, AUD-7.1 and S7.L7 cell 3: the self-composition query for Search, the lesson's pair, and the cure (count after the filter)",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:25.758Z",
+  "started_at": "2026-10-26T16:36:25.538Z",
+  "duration_s": 0.22,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "count_channel.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-count-channel/cells/count_channel.py",
+      "sha256": "3583f4a9e33097cbf706484fc5784513867c33e57f9accbd20ef73b1ccaaeacc",
+      "bytes": 2625,
+      "role": "script",
+      "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell3.txt (content/stages/S7/S7.L7.md line 109); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-count-channel/cells/s7l7_cell3.txt",
+      "sha256": "49d8d443af4e41400f085bb9c8656e5ff87d059f0f67e9cc8bdf8f754f64aa8a",
+      "bytes": 297,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== selfcomp: python -I count_channel.py",
+    "self-composition, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0",
+    "the lesson pair, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0",
+    "the lesson pair, total counted after the filter: unsat",
+    "self-composition, total counted after the filter: unsat",
+    "premise witness: Rel and the lesson pair, layoffs-memo in one world only: sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-count-channel/selfcomp.log",
+      "sha256": "2178c7dd1cde19e9ad03d734c2b7e995ff4b6bb6f3f5fead2b699f1ef0f917ee",
+      "bytes": 360,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "selfcomp": {
+        "exit_code": 0,
+        "lines": {
+          "self_composition_total_counted_before_the_filter": {
+            "verdict": "sat"
+          },
+          "the_lesson_pair_total_counted_before_the_filter": {
+            "verdict": "sat"
+          },
+          "the_lesson_pair_total_counted_after_the_filter": {
+            "verdict": "unsat"
+          },
+          "self_composition_total_counted_after_the_filter": {
+            "verdict": "unsat"
+          },
+          "premise_witness_rel_and_the_lesson_pair_layoffs_memo_in_one_world_only": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "selfcomp": "sat",
+    "lesson_pair": "sat",
+    "lesson_pair_hits": "L=0 R=0",
+    "lesson_pair_total": "L=1 R=0",
+    "lesson_pair_after_filter": "unsat",
+    "selfcomp_after_filter": "unsat",
+    "premise_witness": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "selfcomp",
+      "purpose": "the view and pair of S7.L7 cell 3 over three document slots, encoded as S7.L6 cell 2 encodes Open",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "count_channel.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-count-channel/cells/count_channel.py",
+          "sha256": "3583f4a9e33097cbf706484fc5784513867c33e57f9accbd20ef73b1ccaaeacc",
+          "bytes": 2625,
+          "role": "script",
+          "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell3.txt (content/stages/S7/S7.L7.md line 109); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+        },
+        {
+          "path": "runs/RUN-z3-count-channel/cells/s7l7_cell3.txt",
+          "sha256": "49d8d443af4e41400f085bb9c8656e5ff87d059f0f67e9cc8bdf8f754f64aa8a",
+          "bytes": 297,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 5000000
+      },
+      "started_at": "2026-10-26T16:36:25.538Z",
+      "duration_s": 0.22,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-count-channel/selfcomp.log",
+          "sha256": "2178c7dd1cde19e9ad03d734c2b7e995ff4b6bb6f3f5fead2b699f1ef0f917ee",
+          "bytes": 360,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "selfcomp",
+  "notes": [
+    "The cell is in the pair notation for INS-pairs, which is not built yet; count_channel.py states the cell's view and pair in Z3 over three document slots (slot 0 is layoffs-memo), and the cell is committed verbatim beside it. The viewer's replay is not part of this run.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-count-channel/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

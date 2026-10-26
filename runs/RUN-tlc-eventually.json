@@ -1,0 +1,311 @@
+{
+  "id": "RUN-tlc-eventually",
+  "title": "CL-5.3: EventuallyResolves holds on HoldLive under weak fairness on Timeout alone, with no symmetry and no constraint",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S5.L7 cell 3's HoldLive, SPECIFICATION Spec, PROPERTY EventuallyResolves, crash actions absent; with -deadlock and with default flags",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:41:03.065Z",
+  "started_at": "2026-10-26T16:41:02.281Z",
+  "duration_s": 0.781,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-eventually-deadlock-off-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "HoldLive.cfg",
+    "HoldLive"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-eventually/inputs/HoldLive.tla",
+      "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+      "bytes": 586,
+      "role": "spec",
+      "source": "content/stages/S5/S5.L7.md lines 222-236 (cell 3, verbatim)"
+    },
+    {
+      "path": "runs/RUN-tlc-eventually/inputs/HoldLive.cfg",
+      "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+      "bytes": 47,
+      "role": "config, written by the recorder from the cell's direction"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 118 and seed 5878188294326135883 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Implied-temporal checking--satisfiability problem has 1 branches.",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:02.",
+    "Progress(5) at 2026-10-26 16:41:02: 11 states generated, 8 distinct states found, 0 states left on queue.",
+    "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:02)",
+    "Finished checking temporal properties in 00s at 2026-10-26 16:41:02",
+    "Model checking completed. No error has been found.",
+    "11 states generated, 8 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 5.",
+    "Finished in 00s at (2026-10-26 16:41:02)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-eventually/deadlock-off.log",
+      "sha256": "14e509d8541acc0b6ef57d6f620f59deeb3588835f144b364511e7a3a3300b19",
+      "bytes": 2694,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-eventually/default.log",
+      "sha256": "6227017188bf60f630d2e39776359580ada9a2e100a96097021e1b04666f922f",
+      "bytes": 2350,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "deadlock-off": {
+      "result": "no error",
+      "states_generated": 11,
+      "distinct_states": 8,
+      "states_left": 0,
+      "depth": 5,
+      "initial_states": 1
+    },
+    "default": {
+      "result": "deadlock",
+      "states_generated": 6,
+      "distinct_states": 6,
+      "states_left": 3,
+      "depth": 3,
+      "initial_states": 1,
+      "trace_states": 2,
+      "trace_actions": 1,
+      "trace": [
+        "Timeout"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "deadlock-off",
+  "configs": [
+    {
+      "id": "deadlock-off",
+      "description": "-deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:02.281Z",
+      "duration_s": 0.397,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-eventually-deadlock-off-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "HoldLive.cfg",
+        "HoldLive"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-eventually/inputs/HoldLive.tla",
+          "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+          "bytes": 586,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L7.md lines 222-236 (cell 3, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-eventually/inputs/HoldLive.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cell's direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 118 and seed 5878188294326135883 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:02.",
+        "Progress(5) at 2026-10-26 16:41:02: 11 states generated, 8 distinct states found, 0 states left on queue.",
+        "Checking temporal properties for the complete state space with 8 total distinct states at (2026-10-26 16:41:02)",
+        "Finished checking temporal properties in 00s at 2026-10-26 16:41:02",
+        "Model checking completed. No error has been found.",
+        "11 states generated, 8 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:41:02)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-eventually/deadlock-off.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 11,
+        "distinct_states": 8,
+        "states_left": 0,
+        "depth": 5,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "default",
+      "description": "default flags",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:02.680Z",
+      "duration_s": 0.384,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-eventually-default-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "HoldLive.cfg",
+        "HoldLive"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-eventually/inputs/HoldLive.tla",
+          "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+          "bytes": 586,
+          "role": "spec",
+          "source": "content/stages/S5/S5.L7.md lines 222-236 (cell 3, verbatim)"
+        },
+        {
+          "path": "runs/RUN-tlc-eventually/inputs/HoldLive.cfg",
+          "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+          "bytes": 47,
+          "role": "config, written by the recorder from the cell's direction"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 11,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 24 and seed 4147987241394176893 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Implied-temporal checking--satisfiability problem has 1 branches.",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:02.",
+        "Error: Deadlock reached.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Timeout line 9, col 12 to line 9, col 76 of module HoldLive>",
+        "6 states generated, 6 distinct states found, 3 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:41:03)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-eventually/default.log"
+      ],
+      "values": {
+        "result": "deadlock",
+        "states_generated": 6,
+        "distinct_states": 6,
+        "states_left": 3,
+        "depth": 3,
+        "initial_states": 1,
+        "trace_states": 2,
+        "trace_actions": 1,
+        "trace": [
+          "Timeout"
+        ]
+      }
+    }
+  ],
+  "notes": [
+    "HoldLive has no crash actions, so the run is the crashes-off check LAB-5.c5 asks for; it is S5.L7's worked example, whose SysFairness is WF_vars(Timeout) (curriculum S05, LAB-5.c5's hint ladder). The learner's own HoldLive.tla over HoldsEnv is not built.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

@@ -231,7 +231,7 @@ export const SPECS = [
       { prefix: '[1.5 BitVec64 conservation mod 2^64]' },
       { prefix: '[1.5 BitVec64 unsigned guard, signed check]' },
     ),
-    values: { sender: 'unsat', recipient: 'sat', recipient_witness: { A: '9223372036854775806', B: '9223372036850581504', X: '4194304' }, conservation_mod_2_64: 'proved', unsigned_guard_signed_check: 'sat' },
+    values: { sender: 'unsat', recipient: 'sat', recipient_witness: { A: '9223372036854775806', B: '9223372036850581504', X: '4194304' }, conservation_mod_2_64: 'proved', unsigned_guard_signed_check: 'sat', unsigned_guard_witness: { A: '13835060254305419776', X: '4611686018427387904' } },
     unrecorded: Z3_UNRECORDED,
     configs: [
       {
@@ -271,8 +271,8 @@ export const SPECS = [
     binary: Z3_WHEEL,
     inputs: [[E('a2r3/scripts/z3_unknown.py'), 'script'], [E('A5r3/scripts/z3unk.mjs'), 'script']],
     outputs: [E('a2r3/out/z3_unknown.txt'), PYO_LOG],
-    verdict_lines: pick(E('a2r3/out/z3_unknown.txt'), '=== z3-solver 5.3.1.0', { prefix: '[Int x**y == 8, y>1]' }, { prefix: '[Quantified: forall k. f(k) > f(k+1), f(0)=0]' }, { prefix: '[Quantified: forall k. k*k != y]' }),
-    values: { verdict: 'unknown', reason_unknown: 'smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))', quantifier_reason: 'incomplete quantifiers', k_squared_witness: '[y = 2]' },
+    verdict_lines: pick(E('a2r3/out/z3_unknown.txt'), '=== z3-solver 5.3.1.0', { prefix: '[Int 2**x == y, x>=0, y==5]' }, { prefix: '[Int x**y == 8, y>1]' }, { prefix: '[Quantified: forall k. f(k) > f(k+1), f(0)=0]' }, { prefix: '[Quantified: forall k. k*k != y]' }),
+    values: { verdict: 'unknown', reason_unknown: 'smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))', quantifier_reason: 'incomplete quantifiers', k_squared_witness: '[y = 2]', neighbour_query: 'Int 2**x == y, x>=0, y==5', neighbour_verdict: 'unsat' },
     unrecorded: { ...Z3_UNRECORDED, argv: "the log holds the output; the script's docstring gives no usage line, and the log's sections name the wheel versions it ran" },
     configs: [
       { id: 'native-4.15.4', purpose: 'the same script on z3-solver 4.15.4.0', version: '4.15.4', verdict_lines: (() => { const all = read(E('a2r3/out/z3_unknown.txt')).split('\n'); const i = all.indexOf('=== z3-solver 4.15.4.0'); return [all[i], ...all.slice(i).filter((l) => l.startsWith('[Int x**y == 8, y>1]') || l.startsWith('[Quantified: forall k. f(k)'))]; })() },
@@ -821,7 +821,7 @@ export const SPECS = [
     inputs: [[E('a2r3/scripts/pg_claims.py'), 'script']],
     outputs: [E('a2r3/out/pg_claims.txt')],
     verdict_lines: (() => { const all = read(E('a2r3/out/pg_claims.txt')).split('\n'); const i = all.indexOf('server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)'); const j = all.indexOf('server: PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2)'); return all.slice(i, j).filter((l) => l !== ''); })(),
-    values: { e3_holds_write_skew_rr: 'both commit; total held 160 vs bal 100', e4_sqlstate: '40P01', e6_overflow_sqlstate: '22003', e6_sum_type: 'numeric', e7_case_self_transfer_final: 70, e7_two_updates_final: 100 },
+    values: { e3_holds_write_skew_rr: 'both commit; total held 160 vs bal 100', e1_sqlstate: { read_committed: 'B -> 0 row(s)', repeatable_read: '40001', serializable: '40001' }, e2_sqlstate_repeatable_read: '40001', e3_sqlstate_serializable: '40001', e4_sqlstate: '40P01', e6_overflow_sqlstate: '22003', e6_sum_type: 'numeric', e7_case_self_transfer_final: 70, e7_two_updates_final: 100 },
     primary_config: '18.6',
     configs: [
       { id: '18.6', purpose: 'the experiments on PostgreSQL 18.6', version: '18.6', verdict_lines: pick(E('a2r3/out/pg_claims.txt'), 'server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)') },

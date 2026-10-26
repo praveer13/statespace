@@ -1,0 +1,252 @@
+{
+  "id": "RUN-z3-wp-transfer",
+  "title": "The S4.L2 and S4.L3 Derivation Board cells, line by line in Z3: fee <= 7 is sufficient and not the weakest (fee = 8); the two updates differ only at f = t; the assume reading differs from the reject reading only where the guard and Inv both fail",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-4.1 and the authored S4.L2 to S4.L3 cells: S4.L2 cell 1 (fee), S4.L2 cell 2 (sequential and simultaneous update), S4.L3 cell 1 (Transfer's weakest precondition, reject and assume readings)",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:25.137Z",
+  "started_at": "2026-10-26T16:36:24.961Z",
+  "duration_s": 0.175,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "wp_transfer.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-wp-transfer/cells/wp_transfer.py",
+      "sha256": "59746643409037cb76033e781d7f57d521c935c203a1e968c39a8ff6be1a83b0",
+      "bytes": 3513,
+      "role": "script",
+      "source": "written for this record from the three cells, committed verbatim beside it as s4l2_cell1.txt (content/stages/S4/S4.L2.md line 62), s4l2_cell2.txt (line 120) and s4l3_cell1.txt (content/stages/S4/S4.L3.md line 51); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+    },
+    {
+      "path": "runs/RUN-z3-wp-transfer/cells/s4l2_cell1.txt",
+      "sha256": "73f0507f561af41d481b4c3325e4752bd0800f7856d034a7d991bf5ac41138b9",
+      "bytes": 430,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    },
+    {
+      "path": "runs/RUN-z3-wp-transfer/cells/s4l2_cell2.txt",
+      "sha256": "e531bf22c66aa6edc028a5a3e3e861c1c52d46cdbc47f680a3a698761bb0d1e6",
+      "bytes": 554,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    },
+    {
+      "path": "runs/RUN-z3-wp-transfer/cells/s4l3_cell1.txt",
+      "sha256": "16b06440bb0e38ce5ca6c2eb3568635efcd238e02c466455cdc3b6ea4feda80d",
+      "bytes": 711,
+      "role": "lesson cell, verbatim; the script states it and does not read the file"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== derivations: python -I wp_transfer.py",
+    "S4.L2 cell 1",
+    "  line 1-2 substitute, a state where line 2 differs from the substitution: unsat",
+    "  line 3 consequence, claim => line 2 fails: unsat",
+    "  line 4 consequence reverse, line 2 => claim fails: sat [('fee', '8')]",
+    "S4.L2 cell 2",
+    "  line 3 equivalence, a state where wp(A) and wp(B) disagree: sat [('S', '28100'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]",
+    "  the same, with f != t: unsat",
+    "  the same, with f == t: sat [('S', '0'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]",
+    "S4.L3 cell 1",
+    "  line 1 assignment, a state where line 1 differs from the substitution: unsat",
+    "  line 2 sequence then assignment, a state where line 2 differs from the substitution: unsat",
+    "  line 5 equivalence, a state where line 4 and line 3 disagree: sat [('a', '-1'), ('amount', '0')]",
+    "  line 5, a disagreement where the guard holds: unsat",
+    "  line 5, a disagreement where Inv holds: unsat",
+    "  line 5, a disagreement where the guard fails and Inv fails: sat [('a', '-1'), ('amount', '0'), ('b', '0')]",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-wp-transfer/derivations.log",
+      "sha256": "4d9b4da2fe132c61f17f31c19c84da8c2bd5a67525e8890d6c92e50001961c43",
+      "bytes": 1029,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "derivations": {
+        "exit_code": 0,
+        "lines": {
+          "line_1_2_substitute_a_state_where_line_2_differs_from_the_substitution": {
+            "verdict": "unsat"
+          },
+          "line_3_consequence_claim_line_2_fails": {
+            "verdict": "unsat"
+          },
+          "line_4_consequence_reverse_line_2_claim_fails": {
+            "verdict": "sat",
+            "detail": "[('fee', '8')]"
+          },
+          "line_3_equivalence_a_state_where_wp_a_and_wp_b_disagree": {
+            "verdict": "sat",
+            "detail": "[('S', '28100'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]"
+          },
+          "the_same_with_f_t": {
+            "verdict": "unsat"
+          },
+          "the_same_with_f_t_2": {
+            "verdict": "sat",
+            "detail": "[('S', '0'), ('amt', '1'), ('f', '2'), ('t', '2'), ('x', '2'), ('y', '3'), ('z', '4')]"
+          },
+          "line_1_assignment_a_state_where_line_1_differs_from_the_substitution": {
+            "verdict": "unsat"
+          },
+          "line_2_sequence_then_assignment_a_state_where_line_2_differs_from_the_substitution": {
+            "verdict": "unsat"
+          },
+          "line_5_equivalence_a_state_where_line_4_and_line_3_disagree": {
+            "verdict": "sat",
+            "detail": "[('a', '-1'), ('amount', '0')]"
+          },
+          "line_5_a_disagreement_where_the_guard_holds": {
+            "verdict": "unsat"
+          },
+          "line_5_a_disagreement_where_inv_holds": {
+            "verdict": "unsat"
+          },
+          "line_5_a_disagreement_where_the_guard_fails_and_inv_fails": {
+            "verdict": "sat",
+            "detail": "[('a', '-1'), ('amount', '0'), ('b', '0')]"
+          }
+        }
+      }
+    },
+    "fee": {
+      "substitution": "unsat",
+      "claim_implies_wp": "unsat",
+      "wp_implies_claim": "sat",
+      "wp_implies_claim_witness": "[('fee', '8')]"
+    },
+    "updates": {
+      "disagree": "sat",
+      "disagree_f_ne_t": "unsat",
+      "disagree_f_eq_t": "sat"
+    },
+    "transfer": {
+      "line1": "unsat",
+      "line2": "unsat",
+      "assume_vs_reject": "sat",
+      "assume_vs_reject_witness": "[('a', '-1'), ('amount', '0')]",
+      "disagree_where_guard_holds": "unsat",
+      "disagree_where_inv_holds": "unsat",
+      "disagree_where_guard_and_inv_fail": "sat"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "derivations",
+      "purpose": "every line of the three derivations as a Z3 query, substitution by Z3's substitute()",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "wp_transfer.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-wp-transfer/cells/wp_transfer.py",
+          "sha256": "59746643409037cb76033e781d7f57d521c935c203a1e968c39a8ff6be1a83b0",
+          "bytes": 3513,
+          "role": "script",
+          "source": "written for this record from the three cells, committed verbatim beside it as s4l2_cell1.txt (content/stages/S4/S4.L2.md line 62), s4l2_cell2.txt (line 120) and s4l3_cell1.txt (content/stages/S4/S4.L3.md line 51); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+        },
+        {
+          "path": "runs/RUN-z3-wp-transfer/cells/s4l2_cell1.txt",
+          "sha256": "73f0507f561af41d481b4c3325e4752bd0800f7856d034a7d991bf5ac41138b9",
+          "bytes": 430,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        },
+        {
+          "path": "runs/RUN-z3-wp-transfer/cells/s4l2_cell2.txt",
+          "sha256": "e531bf22c66aa6edc028a5a3e3e861c1c52d46cdbc47f680a3a698761bb0d1e6",
+          "bytes": 554,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        },
+        {
+          "path": "runs/RUN-z3-wp-transfer/cells/s4l3_cell1.txt",
+          "sha256": "16b06440bb0e38ce5ca6c2eb3568635efcd238e02c466455cdc3b6ea4feda80d",
+          "bytes": 711,
+          "role": "lesson cell, verbatim; the script states it and does not read the file"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300,
+        "rlimit": 5000000
+      },
+      "started_at": "2026-10-26T16:36:24.961Z",
+      "duration_s": 0.175,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-wp-transfer/derivations.log",
+          "sha256": "4d9b4da2fe132c61f17f31c19c84da8c2bd5a67525e8890d6c92e50001961c43",
+          "bytes": 1029,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "derivations",
+  "notes": [
+    "The three cells are plain-text derivations for the Derivation Board (INS-derivation), which is not built yet; wp_transfer.py states each line as the cells' @direction describes it, and the cells are committed verbatim beside it.",
+    "In S4.L2 cell 2 the post bal(x) + bal(y) + bal(z) = S is a formula in a free S, so \"the weakest preconditions disagree\" is a state and an S where one sum equals S and the other does not; x, y and z are not assumed distinct. S4.L2 cell 2's @call cites RUN-z3-selftransfer; its instrument cites this run.",
+    "S4.L3 cell 1 states no amount > 0, so none is assumed; the disagreement's witness may have amount = 0.",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-wp-transfer/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

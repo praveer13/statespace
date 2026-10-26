@@ -1,0 +1,1505 @@
+{
+ "label": "b100-contend",
+ "server_version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+ "psycopg": "3.3.6",
+ "started_at": "2026-10-26T16:39:50Z",
+ "duration_s": 94.689,
+ "steps": {
+  "a_begin": {
+   "session": "a",
+   "sql": "BEGIN ISOLATION LEVEL READ COMMITTED;"
+  },
+  "a_debit": {
+   "session": "a",
+   "sql": "UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80;"
+  },
+  "a_commit": {
+   "session": "a",
+   "sql": "COMMIT;"
+  },
+  "b_begin": {
+   "session": "b",
+   "sql": "BEGIN ISOLATION LEVEL READ COMMITTED;"
+  },
+  "b_debit": {
+   "session": "b",
+   "sql": "UPDATE acct SET bal = bal - 80 WHERE id = 1 AND bal >= 80;"
+  },
+  "b_commit": {
+   "session": "b",
+   "sql": "COMMIT;"
+  }
+ },
+ "setup": "CREATE TABLE acct (id int PRIMARY KEY, bal bigint NOT NULL); INSERT INTO acct VALUES (1, 100);\n",
+ "check_sql": "SELECT id, bal FROM acct ORDER BY id",
+ "histories": [
+  {
+   "permutation": "a_begin a_debit a_commit b_begin b_debit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin a_debit b_begin a_commit b_debit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin a_debit b_begin b_debit a_commit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin a_debit b_begin b_debit b_commit a_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "not_issued": "session b is still waiting on b_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "a_begin b_begin a_debit a_commit b_debit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin b_begin a_debit b_debit a_commit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin b_begin a_debit b_debit b_commit a_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "not_issued": "session b is still waiting on b_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "a_begin b_begin b_debit a_debit a_commit b_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "not_issued": "session a is still waiting on a_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "a_begin b_begin b_debit a_debit b_commit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "a_begin b_begin b_debit b_commit a_debit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin a_begin a_debit a_commit b_debit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin a_begin a_debit b_debit a_commit b_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin a_begin a_debit b_debit b_commit a_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "not_issued": "session b is still waiting on b_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "b_begin a_begin b_debit a_debit a_commit b_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "not_issued": "session a is still waiting on a_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "b_begin a_begin b_debit a_debit b_commit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin a_begin b_debit b_commit a_debit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin b_debit a_begin a_debit a_commit b_commit",
+   "runnable": false,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "a_commit",
+     "not_issued": "session a is still waiting on a_debit"
+    }
+   ],
+   "check": null
+  },
+  {
+   "permutation": "b_begin b_debit a_begin a_debit b_commit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "waiting": true
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": true,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin b_debit a_begin b_commit a_debit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "permutation": "b_begin b_debit b_commit a_begin a_debit a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_debit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_debit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 0"
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        20
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

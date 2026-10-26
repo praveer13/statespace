@@ -1,0 +1,274 @@
+{
+  "id": "RUN-pg-enforce-commit",
+  "title": "PostgreSQL 18.6: the fixed deferred checks on acct and postings roll back the mint and the one-legged command at COMMIT and let a two-legged transfer commit",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S6.L5 cell 2 (CL-6.4, ENFORCED [E] · deferred constraint triggers on acct and postings, at commit): the same mint, a proper transfer, and a one-legged command",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T16:41:03.945Z",
+  "started_at": "2026-10-26T16:32:36.931Z",
+  "duration_s": 0.074,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "-d",
+      "--name",
+      "ssrec-pg-pg-enforce-commit-cell2",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-e",
+      "POSTGRES_HOST_AUTH_METHOD=trust",
+      "-v",
+      "<sandbox>/work:/q:ro",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-pg-pg-enforce-commit-cell2",
+      "sh",
+      "-c",
+      "psql -X -U postgres -v VERBOSITY=verbose -f /q/S6.L5-cell2.sql 2>&1"
+    ],
+    [
+      "docker",
+      "rm",
+      "-f",
+      "ssrec-pg-pg-enforce-commit-cell2"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S6/RUN-pg-enforce-commit/S6.L5-cell2.sql",
+      "sha256": "3052da7ba32b18aef5894173bdfd1d4b7bc53e2c852efc677b4206db202a1fdb",
+      "bytes": 1678,
+      "role": "script",
+      "source": "content/stages/S6/S6.L5.md, instrument cell=2, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "CREATE TABLE",
+    "CREATE TABLE",
+    "INSERT 0 2",
+    "INSERT 0 1",
+    "CREATE FUNCTION",
+    "CREATE FUNCTION",
+    "CREATE TRIGGER",
+    "CREATE TRIGGER",
+    "BEGIN",
+    "UPDATE 1",
+    "psql:/q/S6.L5-cell2.sql:31: ERROR:  P0001: balance 500 does not match its postings",
+    "CONTEXT:  PL/pgSQL function check_balance() line 4 at RAISE",
+    "LOCATION:  exec_stmt_raise, pl_exec.c:3909",
+    "BEGIN",
+    "INSERT 0 2",
+    "UPDATE 1",
+    "UPDATE 1",
+    "COMMIT",
+    "BEGIN",
+    "INSERT 0 1",
+    "UPDATE 1",
+    "psql:/q/S6.L5-cell2.sql:44: ERROR:  P0001: command 2 posts a nonzero total",
+    "CONTEXT:  PL/pgSQL function check_zero_sum() line 4 at RAISE",
+    "LOCATION:  exec_stmt_raise, pl_exec.c:3909",
+    " id | bal",
+    "----+-----",
+    "  1 |  70",
+    "  3 |  30",
+    "(2 rows)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-enforce-commit/cell2.log",
+      "sha256": "6c05911b377ce58ddd4b94862690d223a11b4f65031a2fc9a95d697f4cb037c1",
+      "bytes": 610,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "commands": {
+      "adjust": {
+        "raised_at_line": 31,
+        "statement": "COMMIT",
+        "sqlstate": "P0001",
+        "error": "balance 500 does not match its postings",
+        "committed": false
+      },
+      "transfer": {
+        "committed": true,
+        "sqlstate": null,
+        "error": null
+      },
+      "one_legged": {
+        "raised_at_line": 44,
+        "statement": "COMMIT",
+        "sqlstate": "P0001",
+        "error": "command 2 posts a nonzero total",
+        "committed": false
+      }
+    },
+    "final_balances": {
+      "1": 70,
+      "3": 30
+    }
+  },
+  "checks": [
+    {
+      "id": "adjust-rolled-back-at-commit",
+      "pass": true
+    },
+    {
+      "id": "one-legged-rolled-back-at-commit",
+      "pass": true
+    },
+    {
+      "id": "transfer-committed",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "network": "none"
+    }
+  },
+  "primary_config": "cell2",
+  "configs": [
+    {
+      "id": "cell2",
+      "purpose": "S6.L5 cell 2, verbatim; the primary configuration",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:32:36.931Z",
+      "duration_s": 0.074,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-pg-pg-enforce-commit-cell2",
+        "sh",
+        "-c",
+        "psql -X -U postgres -v VERBOSITY=verbose -f /q/S6.L5-cell2.sql 2>&1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S6/RUN-pg-enforce-commit/S6.L5-cell2.sql",
+          "sha256": "3052da7ba32b18aef5894173bdfd1d4b7bc53e2c852efc677b4206db202a1fdb",
+          "bytes": 1678,
+          "role": "script",
+          "source": "content/stages/S6/S6.L5.md, instrument cell=2, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "CREATE TABLE",
+        "CREATE TABLE",
+        "INSERT 0 2",
+        "INSERT 0 1",
+        "CREATE FUNCTION",
+        "CREATE FUNCTION",
+        "CREATE TRIGGER",
+        "CREATE TRIGGER",
+        "BEGIN",
+        "UPDATE 1",
+        "psql:/q/S6.L5-cell2.sql:31: ERROR:  P0001: balance 500 does not match its postings",
+        "CONTEXT:  PL/pgSQL function check_balance() line 4 at RAISE",
+        "LOCATION:  exec_stmt_raise, pl_exec.c:3909",
+        "BEGIN",
+        "INSERT 0 2",
+        "UPDATE 1",
+        "UPDATE 1",
+        "COMMIT",
+        "BEGIN",
+        "INSERT 0 1",
+        "UPDATE 1",
+        "psql:/q/S6.L5-cell2.sql:44: ERROR:  P0001: command 2 posts a nonzero total",
+        "CONTEXT:  PL/pgSQL function check_zero_sum() line 4 at RAISE",
+        "LOCATION:  exec_stmt_raise, pl_exec.c:3909",
+        " id | bal",
+        "----+-----",
+        "  1 |  70",
+        "  3 |  30",
+        "(2 rows)"
+      ],
+      "outputs": [
+        "runs/RUN-pg-enforce-commit/cell2.log"
+      ],
+      "environment": {
+        "server_binary": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "psql": "psql (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "container_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      },
+      "commands": [
+        [
+          "docker",
+          "run",
+          "-d",
+          "--name",
+          "ssrec-pg-pg-enforce-commit-cell2",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-e",
+          "POSTGRES_HOST_AUTH_METHOD=trust",
+          "-v",
+          "<sandbox>/work:/q:ro",
+          "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+        ],
+        [
+          "docker",
+          "exec",
+          "ssrec-pg-pg-enforce-commit-cell2",
+          "sh",
+          "-c",
+          "psql -X -U postgres -v VERBOSITY=verbose -f /q/S6.L5-cell2.sql 2>&1"
+        ],
+        [
+          "docker",
+          "rm",
+          "-f",
+          "ssrec-pg-pg-enforce-commit-cell2"
+        ]
+      ],
+      "command_exit_codes": {
+        "start": 0,
+        "psql": 0,
+        "remove": 0
+      }
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "Each configuration ran in its own fresh server: docker run -d of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 with --network none, --memory=6g and trust authentication, the work directory mounted read-only at /q; the recorder waited until docker logs showed \"PostgreSQL init process complete\" and \"database system is ready to accept connections\" twice and pg_isready exited 0 (at most 120 polls, 0.5 s apart), then ran psql through docker exec and sh with stdout and stderr merged by 2>&1, so the log is in the order psql wrote it, and removed the container. argv lists the commands in order (start, prelude when there is one, psql, removal); started_at, duration_s and exit_code are the psql command's. psql ran with -X and -v VERBOSITY=verbose, so each ERROR line carries its SQLSTATE; the SQL files ran unchanged, several -f files in one psql session.",
+    "values.commands.<command>.raised_at_line is the line of S6.L5-cell2.sql that psql names in the ERROR line; lines 31 and 44 are the two `COMMIT;` statements, so both raises came from the deferred triggers at commit, and each transaction rolled back. The transfer's COMMIT printed COMMIT. P0001 is the SQLSTATE of a PL/pgSQL RAISE EXCEPTION without a code. Final balances 70 and 30 are the opening 100 less the transfer of 30, with the mint and the one-legged debit rolled back.",
+    "The tab runs this cell on PGlite; PGlite was not run for this record. Placeholder in argv: <sandbox>/work is a scratch copy of the inputs this record lists, mounted at /q."
+  ]
+}

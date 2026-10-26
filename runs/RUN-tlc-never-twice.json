@@ -1,0 +1,675 @@
+{
+  "id": "RUN-tlc-never-twice",
+  "title": "The fixed holds model (CL-5.2): with crashes on, TLC finds no error, every action is covered, and both outcomes are reachable",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "the M5 fix (one compare-and-set Handle and Expire) over HoldsEnv: crashes on with coverage, crashes off, and LAB-5.c3's witness invariants with crashes on",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:40:57.519Z",
+  "started_at": "2026-10-26T16:40:55.918Z",
+  "duration_s": 1.593,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-never-twice-crash-on-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-coverage",
+    "1",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "Holds_crash.cfg",
+    "Holds"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/Holds.tla",
+      "sha256": "03326a6f6285478b3007bb1edac8dd43b762990f4721c490669e30b8d59b6803",
+      "bytes": 1565,
+      "role": "spec: the fixed module (W0-S04's representative of LAB-5.4 fixed/), whose Handle and Expire are S5.L5's fixed actions"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla",
+      "sha256": "f7a89260635f918709691f51e3b58caf4aacbabce6b686ce48e7a35137a31f75",
+      "bytes": 1359,
+      "role": "the read-only environment module"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/Holds_crash.cfg",
+      "sha256": "5c3a6f9f5579b889d20c0c0c26ab3b4cb28bb9383b99151d86be156d16bbfbe8",
+      "bytes": 99,
+      "role": "config, CrashesOn = TRUE"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/Holds.cfg",
+      "sha256": "5f3482f22d75eabd17187d23898b47a61a69434bb29e88dfb47d3ba8af62fb31",
+      "bytes": 100,
+      "role": "config, CrashesOn = FALSE"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/inputs/HoldsWitness.tla",
+      "sha256": "a9a0fbdc7fcc019d25f3f7b6288849997314dfb66bf4c05944f6d5d39d16ae50",
+      "bytes": 121,
+      "role": "witness module, written by the recorder: LAB-5.c3's witness operators"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/inputs/WitnessCaptured.cfg",
+      "sha256": "ef5a2bd1d6efb49ac5f456b050d88d4572ae3b2c566bb81dba56f1e7c58b1295",
+      "bytes": 87,
+      "role": "config, written by the recorder"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/inputs/WitnessReleased.cfg",
+      "sha256": "b403d20814068f5ed276d37d1ac5718633128f0787d7df0873f1c83b0b7694a0",
+      "bytes": 87,
+      "role": "config, written by the recorder"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 8 and seed 538734191595516622 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:56.",
+    "Model checking completed. No error has been found.",
+    "83 states generated, 40 distinct states found, 0 states left on queue.",
+    "The depth of the complete state graph search is 10.",
+    "Finished in 00s at (2026-10-26 16:40:56)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-never-twice/crash-on.log",
+      "sha256": "ef91be88b8616cd6813ed0ec89f1ec4d56356de5c5d9d1417109edde4248636a",
+      "bytes": 6856,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/crash-off.log",
+      "sha256": "0bcaafcdc79d63b6a6a9095b0a00fac338e511751825a1cbd1004fd7584b4f12",
+      "bytes": 2421,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/witness-captured.log",
+      "sha256": "b0aaf3ca3c9dac6101034f781100dc1812f9330560e3694d8b4af2703ededa84",
+      "bytes": 3103,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-never-twice/witness-released.log",
+      "sha256": "f300c30348ff075fae9c7d4a743a72ab431426dee3820bdbe92b5b158302accd",
+      "bytes": 2765,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "crash-on": {
+      "coverage": {
+        "Init": {
+          "module": "Holds",
+          "distinct_states": 1,
+          "states_found": 1
+        },
+        "Place": {
+          "module": "Holds",
+          "distinct_states": 1,
+          "states_found": 2
+        },
+        "Dispatch": {
+          "module": "Holds",
+          "distinct_states": 3,
+          "states_found": 3
+        },
+        "Handle": {
+          "module": "Holds",
+          "distinct_states": 6,
+          "states_found": 7
+        },
+        "Expire": {
+          "module": "Holds",
+          "distinct_states": 5,
+          "states_found": 10
+        },
+        "Restart": {
+          "module": "Holds",
+          "distinct_states": 0,
+          "states_found": 20
+        },
+        "Reply": {
+          "module": "HoldsEnv",
+          "distinct_states": 4,
+          "states_found": 20
+        },
+        "Crash": {
+          "module": "HoldsEnv",
+          "distinct_states": 20,
+          "states_found": 20
+        }
+      },
+      "result": "no error",
+      "states_generated": 83,
+      "distinct_states": 40,
+      "states_left": 0,
+      "depth": 10,
+      "initial_states": 1
+    },
+    "crash-off": {
+      "result": "no error",
+      "states_generated": 27,
+      "distinct_states": 20,
+      "states_left": 0,
+      "depth": 9,
+      "initial_states": 1
+    },
+    "witness-captured": {
+      "result": "invariant violated",
+      "violated": "WitnessCaptured",
+      "states_generated": 15,
+      "distinct_states": 11,
+      "states_left": 3,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 5,
+      "trace_actions": 4,
+      "trace": [
+        "Place",
+        "Dispatch",
+        "Reply(\"ok\")",
+        "Handle(\"ok\")"
+      ]
+    },
+    "witness-released": {
+      "result": "invariant violated",
+      "violated": "WitnessReleased",
+      "states_generated": 5,
+      "distinct_states": 5,
+      "states_left": 2,
+      "depth": 3,
+      "initial_states": 1,
+      "trace_states": 3,
+      "trace_actions": 2,
+      "trace": [
+        "Place",
+        "Expire"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "crash-on",
+  "configs": [
+    {
+      "id": "crash-on",
+      "description": "CrashesOn = TRUE, default flags, -coverage 1",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:55.918Z",
+      "duration_s": 0.4,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-never-twice-crash-on-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-coverage",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Holds_crash.cfg",
+        "Holds"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds.tla",
+          "sha256": "03326a6f6285478b3007bb1edac8dd43b762990f4721c490669e30b8d59b6803",
+          "bytes": 1565,
+          "role": "spec: the fixed module (W0-S04's representative of LAB-5.4 fixed/), whose Handle and Expire are S5.L5's fixed actions"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla",
+          "sha256": "f7a89260635f918709691f51e3b58caf4aacbabce6b686ce48e7a35137a31f75",
+          "bytes": 1359,
+          "role": "the read-only environment module"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds_crash.cfg",
+          "sha256": "5c3a6f9f5579b889d20c0c0c26ab3b4cb28bb9383b99151d86be156d16bbfbe8",
+          "bytes": 99,
+          "role": "config, CrashesOn = TRUE"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 8 and seed 538734191595516622 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:56.",
+        "Model checking completed. No error has been found.",
+        "83 states generated, 40 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 10.",
+        "Finished in 00s at (2026-10-26 16:40:56)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-never-twice/crash-on.log"
+      ],
+      "values": {
+        "coverage": {
+          "Init": {
+            "module": "Holds",
+            "distinct_states": 1,
+            "states_found": 1
+          },
+          "Place": {
+            "module": "Holds",
+            "distinct_states": 1,
+            "states_found": 2
+          },
+          "Dispatch": {
+            "module": "Holds",
+            "distinct_states": 3,
+            "states_found": 3
+          },
+          "Handle": {
+            "module": "Holds",
+            "distinct_states": 6,
+            "states_found": 7
+          },
+          "Expire": {
+            "module": "Holds",
+            "distinct_states": 5,
+            "states_found": 10
+          },
+          "Restart": {
+            "module": "Holds",
+            "distinct_states": 0,
+            "states_found": 20
+          },
+          "Reply": {
+            "module": "HoldsEnv",
+            "distinct_states": 4,
+            "states_found": 20
+          },
+          "Crash": {
+            "module": "HoldsEnv",
+            "distinct_states": 20,
+            "states_found": 20
+          }
+        },
+        "result": "no error",
+        "states_generated": 83,
+        "distinct_states": 40,
+        "states_left": 0,
+        "depth": 10,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "crash-off",
+      "description": "CrashesOn = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:56.321Z",
+      "duration_s": 0.38,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-never-twice-crash-off-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Holds.cfg",
+        "Holds"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds.tla",
+          "sha256": "03326a6f6285478b3007bb1edac8dd43b762990f4721c490669e30b8d59b6803",
+          "bytes": 1565,
+          "role": "spec: the fixed module (W0-S04's representative of LAB-5.4 fixed/), whose Handle and Expire are S5.L5's fixed actions"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla",
+          "sha256": "f7a89260635f918709691f51e3b58caf4aacbabce6b686ce48e7a35137a31f75",
+          "bytes": 1359,
+          "role": "the read-only environment module"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds.cfg",
+          "sha256": "5f3482f22d75eabd17187d23898b47a61a69434bb29e88dfb47d3ba8af62fb31",
+          "bytes": 100,
+          "role": "config, CrashesOn = FALSE"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 2 and seed -7589449609578512942 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:56.",
+        "Model checking completed. No error has been found.",
+        "27 states generated, 20 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 9.",
+        "Finished in 00s at (2026-10-26 16:40:56)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-never-twice/crash-off.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 27,
+        "distinct_states": 20,
+        "states_left": 0,
+        "depth": 9,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "witness-captured",
+      "description": "hst # \"captured\" as an invariant, crashes on",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:56.704Z",
+      "duration_s": 0.408,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-never-twice-witness-captured-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "WitnessCaptured.cfg",
+        "HoldsWitness"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds.tla",
+          "sha256": "03326a6f6285478b3007bb1edac8dd43b762990f4721c490669e30b8d59b6803",
+          "bytes": 1565,
+          "role": "spec: the fixed module (W0-S04's representative of LAB-5.4 fixed/), whose Handle and Expire are S5.L5's fixed actions"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla",
+          "sha256": "f7a89260635f918709691f51e3b58caf4aacbabce6b686ce48e7a35137a31f75",
+          "bytes": 1359,
+          "role": "the read-only environment module"
+        },
+        {
+          "path": "runs/RUN-tlc-never-twice/inputs/HoldsWitness.tla",
+          "sha256": "a9a0fbdc7fcc019d25f3f7b6288849997314dfb66bf4c05944f6d5d39d16ae50",
+          "bytes": 121,
+          "role": "witness module, written by the recorder: LAB-5.c3's witness operators"
+        },
+        {
+          "path": "runs/RUN-tlc-never-twice/inputs/WitnessCaptured.cfg",
+          "sha256": "ef5a2bd1d6efb49ac5f456b050d88d4572ae3b2c566bb81dba56f1e7c58b1295",
+          "bytes": 87,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 123 and seed -7177283365001466806 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:57.",
+        "Error: Invariant WitnessCaptured is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Place line 15, col 10 to line 17, col 52 of module Holds>",
+        "State 3: <Dispatch line 19, col 13 to line 25, col 42 of module Holds>",
+        "State 4: <Reply(\"ok\") line 22, col 13 to line 25, col 54 of module HoldsEnv>",
+        "State 5: <Handle(\"ok\") line 27, col 14 to line 32, col 51 of module Holds>",
+        "15 states generated, 11 distinct states found, 3 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:40:57)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-never-twice/witness-captured.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WitnessCaptured",
+        "states_generated": 15,
+        "distinct_states": 11,
+        "states_left": 3,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 5,
+        "trace_actions": 4,
+        "trace": [
+          "Place",
+          "Dispatch",
+          "Reply(\"ok\")",
+          "Handle(\"ok\")"
+        ]
+      }
+    },
+    {
+      "id": "witness-released",
+      "description": "hst # \"released\" as an invariant, crashes on",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:57.114Z",
+      "duration_s": 0.405,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-never-twice-witness-released-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "WitnessReleased.cfg",
+        "HoldsWitness"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/Holds.tla",
+          "sha256": "03326a6f6285478b3007bb1edac8dd43b762990f4721c490669e30b8d59b6803",
+          "bytes": 1565,
+          "role": "spec: the fixed module (W0-S04's representative of LAB-5.4 fixed/), whose Handle and Expire are S5.L5's fixed actions"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/HoldsEnv.tla",
+          "sha256": "f7a89260635f918709691f51e3b58caf4aacbabce6b686ce48e7a35137a31f75",
+          "bytes": 1359,
+          "role": "the read-only environment module"
+        },
+        {
+          "path": "runs/RUN-tlc-never-twice/inputs/HoldsWitness.tla",
+          "sha256": "a9a0fbdc7fcc019d25f3f7b6288849997314dfb66bf4c05944f6d5d39d16ae50",
+          "bytes": 121,
+          "role": "witness module, written by the recorder: LAB-5.c3's witness operators"
+        },
+        {
+          "path": "runs/RUN-tlc-never-twice/inputs/WitnessReleased.cfg",
+          "sha256": "b403d20814068f5ed276d37d1ac5718633128f0787d7df0873f1c83b0b7694a0",
+          "bytes": 87,
+          "role": "config, written by the recorder"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 119 and seed 5161739474092037932 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:57.",
+        "Error: Invariant WitnessReleased is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Place line 15, col 10 to line 17, col 52 of module Holds>",
+        "State 3: <Expire line 34, col 11 to line 37, col 48 of module Holds>",
+        "5 states generated, 5 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 3.",
+        "Finished in 00s at (2026-10-26 16:40:57)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-never-twice/witness-released.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "WitnessReleased",
+        "states_generated": 5,
+        "distinct_states": 5,
+        "states_left": 2,
+        "depth": 3,
+        "initial_states": 1,
+        "trace_states": 3,
+        "trace_actions": 2,
+        "trace": [
+          "Place",
+          "Expire"
+        ]
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "tlc-never-twice-check-1",
+      "name": "S5.L5's fixed Handle and Expire occur in Holds.tla (whitespace-normalised)",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "S5.L5 shows only the fixed Handle and Expire; the whole module is the W0-S04 spike's Holds.tla, checked to contain both definitions.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

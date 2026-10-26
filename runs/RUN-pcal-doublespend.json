@@ -1,0 +1,436 @@
+{
+  "id": "RUN-pcal-doublespend",
+  "title": "M1 in PlusCal: pcal.trans adds a Terminating action, so default flags report the NoOverspend violation and no deadlock",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "the course's PlusCal M1 translated by pcal.trans 1.8.0, then TLC with default flags and with -deadlock",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:40:53.532Z",
+  "started_at": "2026-10-26T16:40:52.347Z",
+  "duration_s": 1.18,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-pcal-doublespend-default-0",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java",
+      "-cp",
+      "/opt/tla2tools/tla2tools-1.8.0.jar",
+      "pcal.trans",
+      "-nocfg",
+      "DoubleSpendPcal.tla"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-run-pcal-doublespend-default-1",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java",
+      "-XX:+UseParallelGC",
+      "-cp",
+      "/opt/tla2tools/tla2tools-1.8.0.jar",
+      "tlc2.TLC",
+      "-workers",
+      "1",
+      "-metadir",
+      "/tmp/tlc-states",
+      "-config",
+      "DoubleSpendPcal.cfg",
+      "DoubleSpendPcal"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.tla",
+      "sha256": "258fceacd9ea51e54d25195314e83019691dc8055d429a1145309b8f073d90cf",
+      "bytes": 888,
+      "role": "PlusCal source, translated in the work dir before TLC runs"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.cfg",
+      "sha256": "b30fbc6abdd3bfeea197291c283026a60185cac8039bbfe7bae2234571ad5a12",
+      "bytes": 99,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 12,
+  "verdict_lines": [
+    "pcal.trans Version 1.12 of 01 July 2024",
+    "Parsing completed.",
+    "Translation completed.",
+    "New file DoubleSpendPcal.tla written.",
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 88 and seed 6159812908794587142 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:52.",
+    "Error: Invariant NoOverspend is violated.",
+    "Error: The behavior up to this point is:",
+    "State 1: <Initial predicate>",
+    "State 2: <Read(w1) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+    "State 3: <Read(w2) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+    "State 4: <Write(w1) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+    "State 5: <Write(w2) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+    "13 states generated, 11 distinct states found, 2 states left on queue.",
+    "The depth of the complete state graph search is 5.",
+    "Finished in 00s at (2026-10-26 16:40:52)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pcal-doublespend/default.log",
+      "sha256": "859c2873ffd79612ac306399dc10bf7ad782ea09a6655bdd35e34b71ae6f6b70",
+      "bytes": 3155,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pcal-doublespend/default-DoubleSpendPcal.tla",
+      "sha256": "56ca9caf0d9d1a1bec0dc75e835745efaee6619a9b16079ecac3038291bf38d3",
+      "bytes": 2047,
+      "kind": "translated spec"
+    },
+    {
+      "path": "runs/RUN-pcal-doublespend/deadlock-off.log",
+      "sha256": "4a4ddff255d808bf9df15d5aa19941d7fc0e06852081454797f13c9d29f835e0",
+      "bytes": 3149,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "default": {
+      "result": "invariant violated",
+      "violated": "NoOverspend",
+      "states_generated": 13,
+      "distinct_states": 11,
+      "states_left": 2,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 5,
+      "trace_actions": 4,
+      "trace": [
+        "Read(w1)",
+        "Read(w2)",
+        "Write(w1)",
+        "Write(w2)"
+      ]
+    },
+    "deadlock-off": {
+      "result": "invariant violated",
+      "violated": "NoOverspend",
+      "states_generated": 13,
+      "distinct_states": 11,
+      "states_left": 2,
+      "depth": 5,
+      "initial_states": 1,
+      "trace_states": 5,
+      "trace_actions": 4,
+      "trace": [
+        "Read(w1)",
+        "Read(w2)",
+        "Write(w1)",
+        "Write(w2)"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "default",
+  "configs": [
+    {
+      "id": "default",
+      "description": "pcal.trans, then TLC with default flags (deadlock check on)",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:52.347Z",
+      "duration_s": 0.598,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-pcal-doublespend-default-1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendPcal.cfg",
+        "DoubleSpendPcal"
+      ],
+      "argv_before": [
+        [
+          "docker",
+          "run",
+          "--rm",
+          "--name",
+          "ssrec-run-pcal-doublespend-default-0",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-v",
+          "<sandbox>/work:/w",
+          "-w",
+          "/w",
+          "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+          "java",
+          "-cp",
+          "/opt/tla2tools/tla2tools-1.8.0.jar",
+          "pcal.trans",
+          "-nocfg",
+          "DoubleSpendPcal.tla"
+        ]
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.tla",
+          "sha256": "258fceacd9ea51e54d25195314e83019691dc8055d429a1145309b8f073d90cf",
+          "bytes": 888,
+          "role": "PlusCal source, translated in the work dir before TLC runs"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.cfg",
+          "sha256": "b30fbc6abdd3bfeea197291c283026a60185cac8039bbfe7bae2234571ad5a12",
+          "bytes": 99,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "pcal.trans Version 1.12 of 01 July 2024",
+        "Parsing completed.",
+        "Translation completed.",
+        "New file DoubleSpendPcal.tla written.",
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 88 and seed 6159812908794587142 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:52.",
+        "Error: Invariant NoOverspend is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Read(w1) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+        "State 3: <Read(w2) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+        "State 4: <Write(w1) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+        "State 5: <Write(w2) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+        "13 states generated, 11 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:40:52)"
+      ],
+      "outputs": [
+        "runs/RUN-pcal-doublespend/default.log",
+        "runs/RUN-pcal-doublespend/default-DoubleSpendPcal.tla"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoOverspend",
+        "states_generated": 13,
+        "distinct_states": 11,
+        "states_left": 2,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 5,
+        "trace_actions": 4,
+        "trace": [
+          "Read(w1)",
+          "Read(w2)",
+          "Write(w1)",
+          "Write(w2)"
+        ]
+      }
+    },
+    {
+      "id": "deadlock-off",
+      "description": "pcal.trans, then TLC with -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:40:52.949Z",
+      "duration_s": 0.582,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-pcal-doublespend-deadlock-off-1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "DoubleSpendPcal.cfg",
+        "DoubleSpendPcal"
+      ],
+      "argv_before": [
+        [
+          "docker",
+          "run",
+          "--rm",
+          "--name",
+          "ssrec-run-pcal-doublespend-deadlock-off-0",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-v",
+          "<sandbox>/work:/w",
+          "-w",
+          "/w",
+          "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+          "java",
+          "-cp",
+          "/opt/tla2tools/tla2tools-1.8.0.jar",
+          "pcal.trans",
+          "-nocfg",
+          "DoubleSpendPcal.tla"
+        ]
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.tla",
+          "sha256": "258fceacd9ea51e54d25195314e83019691dc8055d429a1145309b8f073d90cf",
+          "bytes": 888,
+          "role": "PlusCal source, translated in the work dir before TLC runs"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s5/DoubleSpendPcal.cfg",
+          "sha256": "b30fbc6abdd3bfeea197291c283026a60185cac8039bbfe7bae2234571ad5a12",
+          "bytes": 99,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "pcal.trans Version 1.12 of 01 July 2024",
+        "Parsing completed.",
+        "Translation completed.",
+        "New file DoubleSpendPcal.tla written.",
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 102 and seed -336869539367058456 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:53.",
+        "Error: Invariant NoOverspend is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Read(w1) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+        "State 3: <Read(w2) line 39, col 15 to line 44, col 43 of module DoubleSpendPcal>",
+        "State 4: <Write(w1) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+        "State 5: <Write(w2) line 46, col 16 to line 50, col 30 of module DoubleSpendPcal>",
+        "13 states generated, 11 distinct states found, 2 states left on queue.",
+        "The depth of the complete state graph search is 5.",
+        "Finished in 00s at (2026-10-26 16:40:53)"
+      ],
+      "outputs": [
+        "runs/RUN-pcal-doublespend/deadlock-off.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoOverspend",
+        "states_generated": 13,
+        "distinct_states": 11,
+        "states_left": 2,
+        "depth": 5,
+        "initial_states": 1,
+        "trace_states": 5,
+        "trace_actions": 4,
+        "trace": [
+          "Read(w1)",
+          "Read(w2)",
+          "Write(w1)",
+          "Write(w2)"
+        ]
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "pcal-doublespend-check-1",
+      "name": "the translation TLC read defines Terminating and puts it in Next",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "The PlusCal source is the W0-S04 spike module that RUN-spectacle-s5s8 also translated; no lesson cell holds the PlusCal text (S5.L2 and D-09 describe it). The translated module TLC read is saved as an output of the default configuration.",
+    "Each configuration runs two commands in one work dir: pcal.trans -nocfg, then TLC. A configuration's argv is the TLC command and argv_before the translation; the top-level argv lists both, in order, for the primary configuration. The exit code is TLC's.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

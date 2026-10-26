@@ -1,0 +1,44 @@
+TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+Running breadth-first search Model-Checking with fp 62 and seed -8605459382868205055 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /w/Lifecycle.tla
+Parsing file /tmp/tlc-1460065144099472296/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-1460065144099472296/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-1460065144099472296/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-1460065144099472296/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-1460065144099472296/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-1460065144099472296/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-1460065144099472296/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module Lifecycle
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module Lifecycle
+Starting... (2026-10-26 16:40:58)
+Warning: The formula Avail is a state-level formula, but it was used as a PROPERTY (or PROPERTIES), where a temporal formula is typically expected. State-level formulas used as PROPERTY or PROPERTIES are only checked in the initial state. To verify that the formula Avail holds in all states of every behavior, use INVARIANT Avail instead. Alternatively, applying the "always" temporal operator ([]) to the state-level formula Avail changes it into a temporal formula, asserting that Avail holds in all states of every behavior. See https://explain.tlapl.us/invariants-and-properties for additional details.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-26 16:40:59.
+Error: Deadlock reached.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ hst = "available"
+/\ res = 0
+
+State 2: <Place line 6, col 12 to line 6, col 66 of module Lifecycle>
+/\ hst = "held"
+/\ res = 0
+
+State 3: <Capture line 7, col 12 to line 7, col 67 of module Lifecycle>
+/\ hst = "captured"
+/\ res = 1
+
+4 states generated, 4 distinct states found, 1 states left on queue.
+The depth of the complete state graph search is 3.
+Finished in 00s at (2026-10-26 16:40:59)
+Trace exploration spec path: ./Lifecycle_TTrace_1793032858.tla

@@ -1,0 +1,34 @@
+LedgerNoGuard.lean:16:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+
+s : Ledger
+n : Int
+⊢ { a := s.a - n, b := s.b + n }.a + { a := s.a - n, b := s.b + n }.b = s.a + s.b
+LedgerNoGuard.lean:21:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+
+Hint: If you meant to destruct this conjunction, use the `cases` tactic instead
+
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+
+s : Ledger
+n : Int
+ha : 0 ≤ s.a
+hb : 0 ≤ s.b
+⊢ 0 ≤ { a := s.a - n, b := s.b + n }.a ∧ 0 ≤ { a := s.a - n, b := s.b + n }.b
+LedgerNoGuard.lean:24:24: error: unsolved goals
+s : Ledger
+n : Int
+h : ¬(0 ≤ n ∧ n ≤ s.a)
+⊢ { a := s.a - n, b := s.b + n } = s
+LedgerNoGuard.lean:25:18: warning: This simp argument is unused:
+  h
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [transfer]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'transfer_conserves' depends on axioms: [sorryAx]
+'run_conserves' depends on axioms: [propext, sorryAx]
+{ a := -1, b := 1 }
+{ a := 15, b := -2 }

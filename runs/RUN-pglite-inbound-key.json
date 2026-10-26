@@ -1,0 +1,478 @@
+{
+  "id": "RUN-pglite-inbound-key",
+  "title": "PGlite 0.5.11 and PostgreSQL 18.6: the inbound-key handler captures the same reply once and answers the duplicate 'duplicate: already applied'; both engines have uuidv7()",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "S8.L4 cell 1 (duplicate delivery; the re-run after a dropped COMMIT is the same second call with the same key) and uuidv7() on PGlite (LAB-8.5)",
+  "engine": "PGlite",
+  "version": "0.5.11",
+  "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "binary": "pglite.wasm in @electric-sql/pglite@0.5.11 (scripts/spikes/W0-S08/node_modules)",
+  "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+  "image": null,
+  "recorded_at": "2026-10-26T16:43:56.475Z",
+  "started_at": "2026-10-26T16:42:50.298Z",
+  "duration_s": 0.009,
+  "argv": [
+    "node",
+    "<sandbox>/work/pglite-run.mjs",
+    "<sandbox>/work",
+    "pglite-cell1",
+    "whole",
+    "S8.L4-cell1.sql"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S8/RUN-pglite-inbound-key/pglite-run.mjs",
+      "sha256": "bd3d161aacee161c1dbf1654dac15e33bf7ab82d4e8b04a54a805ca68f2fae00",
+      "bytes": 2259,
+      "role": "harness",
+      "source": "written by the recorder"
+    },
+    {
+      "path": "runs/inputs/S8/RUN-pglite-inbound-key/S8.L4-cell1.sql",
+      "sha256": "31b732bfb6e3cf2e6964eb549a8bb80b20193d99770b5276b307027d7c8b479c",
+      "bytes": 888,
+      "role": "script",
+      "source": "content/stages/S8/S8.L4.md, instrument cell=1, verbatim"
+    },
+    {
+      "path": "runs/inputs/S8/RUN-pglite-inbound-key/uuidv7-probe.sql",
+      "sha256": "08e0f8245e52950bdc67461ac318c0ee29cd3b9cb86bacea2dd4f709278bce74",
+      "bytes": 445,
+      "role": "script",
+      "source": "written by the recorder: uuidv7() and a key minted once with the intent (S8.L4 cell 3's @after; curriculum/S08-effects.md line 473)"
+    },
+    {
+      "path": "scripts/spikes/W0-S08/node_modules/@electric-sql/pglite/dist/pglite.wasm",
+      "sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "bytes": 10123263,
+      "role": "engine"
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "affectedRows 0",
+    "affectedRows 0",
+    "affectedRows 0",
+    "affectedRows 1",
+    "affectedRows 1",
+    "handle",
+    "captured",
+    "(1 rows)",
+    "handle",
+    "duplicate: already applied",
+    "(1 rows)",
+    "captures",
+    "1",
+    "(1 rows)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pglite-inbound-key/pglite-cell1.log",
+      "sha256": "3b2817ec83d4645dc095b2d4a2aa436839e71cb3c29efbfa9b7f0089e72f3817",
+      "bytes": 163,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pglite-inbound-key/pglite-uuidv7.log",
+      "sha256": "1d493a1dc1127cdfae3552814e72580c84ef86344f836a7d91fdd52c8016749f",
+      "bytes": 72,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pglite-inbound-key/pg-cell1.log",
+      "sha256": "e19b7cfe22510295ee9c8c74690857810e445ff1ac43133758d112bb3bab4d96",
+      "bytes": 243,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pglite-inbound-key/pg-uuidv7.log",
+      "sha256": "5355d42a0eb4cc3b9f067b57d2deaefcb19ee41fece0771741a286dfb1979626",
+      "bytes": 112,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "pglite": {
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "handle_results": [
+        "captured",
+        "duplicate: already applied"
+      ],
+      "captures": 1,
+      "uuidv7_version": 7,
+      "minted_key_version": 7
+    },
+    "postgresql": {
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "handle_results": [
+        "captured",
+        "duplicate: already applied"
+      ],
+      "captures": 1,
+      "uuidv7_version": 7,
+      "minted_key_version": 7
+    },
+    "captures": 1,
+    "uuidv7_supported_on_pglite": true
+  },
+  "checks": [
+    {
+      "id": "pglite-one-capture",
+      "pass": true
+    },
+    {
+      "id": "pg-one-capture",
+      "pass": true
+    },
+    {
+      "id": "uuidv7-both",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2"
+  },
+  "primary_config": "pglite-cell1",
+  "configs": [
+    {
+      "id": "pglite-cell1",
+      "purpose": "S8.L4 cell 1, verbatim, on PGlite 0.5.11 under Node, one db.exec of the cell as the tab runs it; the primary configuration",
+      "origin": "recorded",
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "image": null,
+      "started_at": "2026-10-26T16:42:50.298Z",
+      "duration_s": 0.009,
+      "argv": [
+        "node",
+        "<sandbox>/work/pglite-run.mjs",
+        "<sandbox>/work",
+        "pglite-cell1",
+        "whole",
+        "S8.L4-cell1.sql"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/pglite-run.mjs",
+          "sha256": "bd3d161aacee161c1dbf1654dac15e33bf7ab82d4e8b04a54a805ca68f2fae00",
+          "bytes": 2259,
+          "role": "harness",
+          "source": "written by the recorder"
+        },
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/S8.L4-cell1.sql",
+          "sha256": "31b732bfb6e3cf2e6964eb549a8bb80b20193d99770b5276b307027d7c8b479c",
+          "bytes": 888,
+          "role": "script",
+          "source": "content/stages/S8/S8.L4.md, instrument cell=1, verbatim"
+        },
+        {
+          "path": "scripts/spikes/W0-S08/node_modules/@electric-sql/pglite/dist/pglite.wasm",
+          "sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+          "bytes": 10123263,
+          "role": "engine"
+        }
+      ],
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "affectedRows 0",
+        "affectedRows 0",
+        "affectedRows 0",
+        "affectedRows 1",
+        "affectedRows 1",
+        "handle",
+        "captured",
+        "(1 rows)",
+        "handle",
+        "duplicate: already applied",
+        "(1 rows)",
+        "captures",
+        "1",
+        "(1 rows)"
+      ],
+      "outputs": [
+        "runs/RUN-pglite-inbound-key/pglite-cell1.log"
+      ],
+      "environment": {
+        "node": "v22.22.2",
+        "package": "@electric-sql/pglite@0.5.11",
+        "sql_errors": 0
+      }
+    },
+    {
+      "id": "pglite-uuidv7",
+      "purpose": "uuidv7() on PGlite 0.5.11, one db.query per statement",
+      "origin": "recorded",
+      "engine": "PGlite",
+      "version": "0.5.11",
+      "version_string": "PostgreSQL 18.6 (PGlite 0.5.11) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+      "binary_sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+      "image": null,
+      "started_at": "2026-10-26T16:42:51.286Z",
+      "duration_s": 0.003,
+      "argv": [
+        "node",
+        "<sandbox>/work/pglite-run.mjs",
+        "<sandbox>/work",
+        "pglite-uuidv7",
+        "split",
+        "uuidv7-probe.sql"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/pglite-run.mjs",
+          "sha256": "bd3d161aacee161c1dbf1654dac15e33bf7ab82d4e8b04a54a805ca68f2fae00",
+          "bytes": 2259,
+          "role": "harness",
+          "source": "written by the recorder"
+        },
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/uuidv7-probe.sql",
+          "sha256": "08e0f8245e52950bdc67461ac318c0ee29cd3b9cb86bacea2dd4f709278bce74",
+          "bytes": 445,
+          "role": "script",
+          "source": "written by the recorder: uuidv7() and a key minted once with the intent (S8.L4 cell 3's @after; curriculum/S08-effects.md line 473)"
+        },
+        {
+          "path": "scripts/spikes/W0-S08/node_modules/@electric-sql/pglite/dist/pglite.wasm",
+          "sha256": "6b290789f89aabf0052a975eee03cf97430f2a082938fe18137b246aaf1136b5",
+          "bytes": 10123263,
+          "role": "engine"
+        }
+      ],
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "version",
+        "7",
+        "(1 rows)",
+        "affectedRows 0",
+        "affectedRows 1",
+        "key_version",
+        "7",
+        "(1 rows)"
+      ],
+      "outputs": [
+        "runs/RUN-pglite-inbound-key/pglite-uuidv7.log"
+      ],
+      "environment": {
+        "node": "v22.22.2",
+        "package": "@electric-sql/pglite@0.5.11",
+        "sql_errors": 0
+      }
+    },
+    {
+      "id": "pg-cell1",
+      "purpose": "S8.L4 cell 1, verbatim, on PostgreSQL 18.6 through psql, the Bench reference",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:33:06.993Z",
+      "duration_s": 0.065,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-pg-pglite-inbound-key-pg-cell1",
+        "sh",
+        "-c",
+        "psql -X -U postgres -v VERBOSITY=verbose -f /q/S8.L4-cell1.sql 2>&1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/S8.L4-cell1.sql",
+          "sha256": "31b732bfb6e3cf2e6964eb549a8bb80b20193d99770b5276b307027d7c8b479c",
+          "bytes": 888,
+          "role": "script",
+          "source": "content/stages/S8/S8.L4.md, instrument cell=1, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "CREATE TABLE",
+        "CREATE TABLE",
+        "CREATE TABLE",
+        "INSERT 0 1",
+        "CREATE FUNCTION",
+        "  handle",
+        "----------",
+        " captured",
+        "(1 row)",
+        "           handle",
+        "----------------------------",
+        " duplicate: already applied",
+        "(1 row)",
+        " captures",
+        "----------",
+        "        1",
+        "(1 row)"
+      ],
+      "outputs": [
+        "runs/RUN-pglite-inbound-key/pg-cell1.log"
+      ],
+      "environment": {
+        "server_binary": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "psql": "psql (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "container_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      },
+      "commands": [
+        [
+          "docker",
+          "run",
+          "-d",
+          "--name",
+          "ssrec-pg-pglite-inbound-key-pg-cell1",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-e",
+          "POSTGRES_HOST_AUTH_METHOD=trust",
+          "-v",
+          "<sandbox>/work:/q:ro",
+          "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+        ],
+        [
+          "docker",
+          "exec",
+          "ssrec-pg-pglite-inbound-key-pg-cell1",
+          "sh",
+          "-c",
+          "psql -X -U postgres -v VERBOSITY=verbose -f /q/S8.L4-cell1.sql 2>&1"
+        ],
+        [
+          "docker",
+          "rm",
+          "-f",
+          "ssrec-pg-pglite-inbound-key-pg-cell1"
+        ]
+      ],
+      "command_exit_codes": {
+        "start": 0,
+        "psql": 0,
+        "remove": 0
+      }
+    },
+    {
+      "id": "pg-uuidv7",
+      "purpose": "the uuidv7() probe on PostgreSQL 18.6 through psql",
+      "origin": "recorded",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T16:33:08.597Z",
+      "duration_s": 0.069,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-pg-pglite-inbound-key-pg-uuidv7",
+        "sh",
+        "-c",
+        "psql -X -U postgres -v VERBOSITY=verbose -f /q/uuidv7-probe.sql 2>&1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S8/RUN-pglite-inbound-key/uuidv7-probe.sql",
+          "sha256": "08e0f8245e52950bdc67461ac318c0ee29cd3b9cb86bacea2dd4f709278bce74",
+          "bytes": 445,
+          "role": "script",
+          "source": "written by the recorder: uuidv7() and a key minted once with the intent (S8.L4 cell 3's @after; curriculum/S08-effects.md line 473)"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        " version",
+        "---------",
+        "       7",
+        "(1 row)",
+        "CREATE TABLE",
+        "INSERT 0 1",
+        " key_version",
+        "-------------",
+        "           7",
+        "(1 row)"
+      ],
+      "outputs": [
+        "runs/RUN-pglite-inbound-key/pg-uuidv7.log"
+      ],
+      "environment": {
+        "server_binary": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "psql": "psql (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+        "container_image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+      },
+      "commands": [
+        [
+          "docker",
+          "run",
+          "-d",
+          "--name",
+          "ssrec-pg-pglite-inbound-key-pg-uuidv7",
+          "--memory=6g",
+          "--network",
+          "none",
+          "-e",
+          "POSTGRES_HOST_AUTH_METHOD=trust",
+          "-v",
+          "<sandbox>/work:/q:ro",
+          "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+        ],
+        [
+          "docker",
+          "exec",
+          "ssrec-pg-pglite-inbound-key-pg-uuidv7",
+          "sh",
+          "-c",
+          "psql -X -U postgres -v VERBOSITY=verbose -f /q/uuidv7-probe.sql 2>&1"
+        ],
+        [
+          "docker",
+          "rm",
+          "-f",
+          "ssrec-pg-pglite-inbound-key-pg-uuidv7"
+        ]
+      ],
+      "command_exit_codes": {
+        "start": 0,
+        "psql": 0,
+        "remove": 0
+      }
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the PGlite configurations ran under Node on the host, in no container (the PostgreSQL configurations name theirs)"
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "pglite-run.mjs (the recorder's) opens a fresh in-memory PGlite from the copy W0-S08 installed under scripts/spikes/W0-S08/node_modules, reads version(), and runs the file: mode whole is one db.exec of the whole cell, which is how a tab cell runs several statements; mode split runs one db.query per statement. Its log prints, per statement, the column names, the rows and a row count, or affectedRows for a statement without rows (PGlite's own count); environment.sql_errors is 0 when no statement raised. The process exit code is exit_code.",
+    "values.pglite.handle_results are the two results of handle('k1', 'i1', 80) in order, and values.pglite.captures the final count(*) of captures; values.postgresql the same on PostgreSQL 18.6. A re-run after a dropped COMMIT is the second call: the key row committed with the capture, so the handler answers \"duplicate: already applied\". values.*.uuidv7_version is uuid_extract_version(uuidv7()), and minted_key_version that of a key defaulted to uuidv7() in an intents table.",
+    "Each PostgreSQL configuration ran in its own fresh server: docker run -d of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 with --network none, --memory=6g and trust authentication, the work directory mounted read-only at /q; the recorder waited until docker logs showed \"PostgreSQL init process complete\" and \"database system is ready to accept connections\" twice and pg_isready exited 0 (at most 120 polls, 0.5 s apart), then ran psql through docker exec and sh with stdout and stderr merged by 2>&1, so the log is in the order psql wrote it, and removed the container. argv lists the commands in order (start, prelude when there is one, psql, removal); started_at, duration_s and exit_code are the psql command's. psql ran with -X and -v VERBOSITY=verbose, so each ERROR line carries its SQLSTATE; the SQL files ran unchanged, several -f files in one psql session.",
+    "Placeholder in argv: <sandbox>/work is a scratch copy of the inputs this record lists (mounted at /q for the PostgreSQL configurations).",
+    "Placeholder in the committed harness: pglite-run.mjs as it ran named the PGlite module by an absolute path into the host checkout of this repository; the committed copy writes that checkout root as <sandbox>, and inputs[].sha256 and bytes are the committed copy's. The file as it ran had SHA-256 c3648a9e0e91373a344735306a4b571769b4d5acccea0aabbf00b6992237164d and 2285 bytes; the substitution is its only difference."
+  ]
+}

@@ -131,3 +131,94 @@ A learner can open the site, press "Start the course" and walk all 84 lessons in
    - S2.L3's Build this card names LAB-2.2, which comes after S2.L5.
    - The shape of the open `extra` fields in S9's stage and lab data.
    - Claim and specimen names belong in the registry. The site reads them from SPINE.md through `scripts/site/build-names.mjs`.
+
+## Phase 2 — recorded runs (2026-10-26)
+
+Follow-up 1 ("Record the runs") and part of follow-up 2. Every value below is what a tool printed into a record under `runs/`; where a lesson had said more than its run shows, the lesson changed, not the record.
+
+### Runs recorded
+
+- **56 new records**, all with argv, hashed inputs and outputs, and containers named by digest where a container ran:
+  - Lean (12): RUN-lean-s2-cells, -noguard, -ih-ungeneralised, -intent, -stuck, -nat-trunc, -implemented-by, -golden-harness, -finmap, -stack-machine, -preservation-frag, -hoist [X RUN-lean-s2-cells, RUN-lean-noguard, RUN-lean-ih-ungeneralised, RUN-lean-intent, RUN-lean-stuck, RUN-lean-nat-trunc, RUN-lean-implemented-by, RUN-lean-golden-harness, RUN-lean-finmap, RUN-lean-stack-machine, RUN-lean-preservation-frag, RUN-lean-hoist].
+  - Z3 (14): RUN-z3-cti-pair (with the S4.L1 settle cell as its own configuration), -wp-transfer, -missing-frame, -nat-trunc, -inductive, -inductive-param, -vacuity-trap, -capture, -cross-tenant, -hierarchy-unknown, -selfcomp, -leaky-field, -count-channel, and RUN-check-fragment [X RUN-z3-cti-pair, RUN-z3-wp-transfer, RUN-z3-missing-frame, RUN-z3-nat-trunc, RUN-z3-inductive, RUN-z3-inductive-param, RUN-z3-vacuity-trap, RUN-z3-capture, RUN-z3-cross-tenant, RUN-z3-hierarchy-unknown, RUN-z3-selfcomp, RUN-z3-leaky-field, RUN-z3-count-channel, RUN-check-fragment].
+  - TLC and PlusCal (16): RUN-pcal-doublespend, RUN-tlc-lifecycle, -never-twice, -resolved-twice, -starbucks15, -bare-property, -hold-fairness, -eventually, -inductive, -double-charge, -outbox-safety, -lost-effect, -fresh-key, -key-ttl, -crash-liveness, -recovery [X RUN-pcal-doublespend, RUN-tlc-lifecycle, RUN-tlc-never-twice, RUN-tlc-resolved-twice, RUN-tlc-starbucks15, RUN-tlc-bare-property, RUN-tlc-hold-fairness, RUN-tlc-eventually, RUN-tlc-inductive, RUN-tlc-double-charge, RUN-tlc-outbox-safety, RUN-tlc-lost-effect, RUN-tlc-fresh-key, RUN-tlc-key-ttl, RUN-tlc-crash-liveness, RUN-tlc-recovery].
+  - PostgreSQL and PGlite (12): RUN-pg-sql-semantics, -sum-null, -enforce-commit, -conditional-concurrent, -read-skew, -mixed-levels, -rls-semantics, -rls-owner, -rls-covert, -rls-differential, -one-db, and RUN-pglite-inbound-key [X RUN-pg-sql-semantics, RUN-pg-sum-null, RUN-pg-enforce-commit, RUN-pg-conditional-concurrent, RUN-pg-read-skew, RUN-pg-mixed-levels, RUN-pg-rls-semantics, RUN-pg-rls-owner, RUN-pg-rls-covert, RUN-pg-rls-differential, RUN-pg-one-db, RUN-pglite-inbound-key].
+  - Soufflé (1): RUN-datalog-matrix [X RUN-datalog-matrix]. Twin pins (1): RUN-twin-pins, one `git ls-remote` per pinned repository [X RUN-twin-pins].
+- **Named values added to three imported records** (copied from their logs, which they already hash), through `scripts/runs/import-research.mjs` so `--check` still holds:
+  - RUN-z3-unknown-pow: the neighbouring query's line is now a verdict line, with `values.neighbour_query` and `values.neighbour_verdict`, which is unsat [X RUN-z3-unknown-pow#values.neighbour_verdict].
+  - RUN-z3-bv64: `values.unsigned_guard_witness.{A,X}`, with A = 13835060254305419776 [X RUN-z3-bv64#values.unsigned_guard_witness.A].
+  - RUN-pg-claims: the SQLSTATE per isolation level, `values.e1_sqlstate.{read_committed,repeatable_read,serializable}`, `values.e2_sqlstate_repeatable_read`, `values.e3_sqlstate_serializable`; under repeatable read the second writer gets 40001 [X RUN-pg-claims#values.e1_sqlstate.repeatable_read].
+- **Registry repairs:**
+  - `runs/index.json` was stale (the new records were not in it); rebuilt, 153 records.
+  - The recorders named the follow-up in four different fields (`task_label`, `task_ref`, `follow_up`, `recorded_for`) because run@1's `task` pattern rejects `W1-followup-1`. All 56 now use `task_label`, and their notes say so.
+  - RUN-pglite-inbound-key's committed harness held a private host path. It now reads `<sandbox>/…`; the record's input hash and size are the committed copy's, and a note keeps the hash of the file as it ran.
+  - RUN-twin-pins had a null `image` with no reason; `unrecorded` now gives one (git ran on the host).
+
+### Lessons changed to match the runs
+
+One call key changed; every other edit is prose or a citation.
+
+- **S8.L5 cell 3, key A to B:** with sends bounded, EventuallyAcked is violated under strong worker fairness and unlimited crashes; TLC's lasso spends the attempts across crash/recover cycles [X RUN-tlc-recovery].
+- S8.L5 cell 2: setup says sends are bounded at three attempts, and the whys say the crash lands before Ack, not that Dispatch starves [X RUN-tlc-recovery].
+- S8.L4 cell 3: states that both engines mint the key with `uuidv7()` [X RUN-pglite-inbound-key].
+- S8.L7: Stripe card drops the pin citation (no repository to pin) [X RUN-twin-pins].
+- S1.L0 cell 2: @after cites the run that executed that query [X RUN-z3-boot-variant].
+- S1.L2 cell 1: @after names the neighbouring query the run printed [X RUN-z3-unknown-pow].
+- S1.L3: an item stem prints the verdict, unsat, from the record instead of typing it [X RUN-z3-starter#values.guarded].
+- S2.L0: "goal displayed at each step, recorded" now says only that the proof builds; goal states are another run's [X RUN-lean-s2-cells, RUN-lean-plaingoal].
+- S2.L10: "accepted by every checker" became "Lean proves every one": the comparator was not run [X RUN-lean-intent].
+- S2.L5 cell 3: the call no longer claims a run; the record says no claim-card validator ran [X RUN-lean-s2-cells].
+- S3.L2, S3.L3, S3.L7 (six interpreter cells): moved from RUN-lean-golden-harness, whose notes say it does not back them, to the pending RUN-interp-goldens [X RUN-lean-golden-harness].
+- S3.L8 cell 1: @after quotes the message Lean printed [X RUN-lean-stuck].
+- S3.L7 footnote: the truncation example cites the Lean run that shows it [X RUN-lean-nat-trunc].
+- S3 `lab.yaml` LAB-3.c1: cites the golden harness only for what it shows [X RUN-lean-golden-harness].
+- S3.L6 and `stage.yaml` Cedar cards: the pin is on the repository, not the paper [X RUN-twin-pins].
+- S4.L5 cell 1: @after says the query returns its verdict and then the model print fails, as the run exited [X RUN-z3-missing-frame].
+- S4.L2 cell 2: the call cites the run that executed the cell [X RUN-z3-wp-transfer].
+- S4.L4 cell 3 and S4.L6 step 1: no longer say a model was printed; the cells print only verdicts and checks [X RUN-z3-cti-pair].
+- S5.L5 item: the hand-written trace became the trace TLC printed [X RUN-tlc-resolved-twice].
+- S5.L7 cell 3: cites its own run and says the deadlock check is off [X RUN-tlc-eventually]; S5 `lab.yaml` LAB-5.c5(a) says the same.
+- S5.L6 cell 3: adds how TLC reports the bare property [X RUN-tlc-bare-property].
+- S5.L9: adds the CTI TLC found [X RUN-tlc-inductive].
+- S6.L6: "n histories" now prints the measured count, 126 [X RUN-pg-conditional-concurrent#values.histories].
+- S6.L9 cells 1 and 2: cite their own runs instead of catalog rows [X RUN-pg-read-skew, RUN-pg-mixed-levels].
+- S7.L2 cell 2: @after quotes Soufflé's provenance tree and its missing negated premise [X RUN-datalog-matrix].
+- S7.L3 cells 1 and 2: no printed model claimed; the unknown reason is the recorded one [X RUN-z3-cross-tenant, RUN-z3-hierarchy-unknown].
+- S7.L6 cells 2 and 3: @after states only the recorded verdicts [X RUN-z3-selfcomp].
+- S7.L7 cell 1: the cure "drop the field" is incomplete; the general query still leaks through another field [X RUN-z3-leaky-field].
+- S7.L1, S7.L8, S7 `stage.yaml` Zanzibar cards: pin citation replaced by the read date (a paper has no commit) [X RUN-twin-pins].
+- S9.L4: "one line" became "three short tactics" [X RUN-lean-preservation-frag].
+- S9.L6 cell 1: no longer claims a recorded elaboration the record lacks [X RUN-lean-preservation-frag].
+- S9.L7 cell 2: @after quotes the constraints `omega` printed [X RUN-lean-hoist].
+- S9.L8: cites the one-database run and its recorded command tags [X RUN-pg-one-db].
+- S9.L9 card and S9 `lab.yaml` LAB-9.c2: the pin is CompCert's repository; the proofs ran in plain Lean, without the comparator [X RUN-twin-pins, RUN-lean-stack-machine].
+- S10.L1: moved off RUN-lean-golden-harness to the pending RUN-interp-goldens; the verdict rests on rule R-set [X RUN-lean-golden-harness].
+- S10.L6, S10.L7 Cedar cards: print the pinned commit, 301bdd22df134786a8a1312e24138afcd3f8bffe [X RUN-twin-pins#values.pins.cedar-spec.sha].
+
+### Runs still pending
+
+22 registered runs are cited and not recorded (77 before this phase). Each waits for something not built yet:
+
+- **Reference interpreter and typechecker** (LAB-3 template, mini-plinth-core): RUN-interp-goldens (S3, S10), RUN-interp-revocation and RUN-interp-new-enemy (S7).
+- **LAB-3 reference semantics in Lean:** RUN-lean-step-invariant, -progress, -preservation, -bigsmall, -unsafe-cmd, -golden-redef, -postings-refine (S3).
+- **Pair checker:** RUN-pairs-reference (S7).
+- **LAB-9 template, the S9 IR semantics and the validators:** RUN-tv-reference, RUN-lean-abort-blind, RUN-lean-leaky-compile, RUN-sql-shape-validator, RUN-sql-validation (S9).
+- **History checker and fixtures** (INS-history, the LAB-6.7 manifest): RUN-history-g2item, RUN-serializability-fixtures; the differential generator: RUN-drt-transfers (S6).
+- **Reference simulator and `statespace trace validate`:** RUN-tlc-trace-validation, RUN-sim-determinism (S8).
+- **`statespace demo` (W5-T07):** RUN-core-demo (S10).
+
+### Pending cells
+
+- **38 of the 174 cells** now cite a run that is not recorded (117 before), in 25 lessons; 37 of them show "run not yet recorded" in place of the output, and one only behind its call key. Counted from the built pages in `apps/site/public/content`.
+- 39 `{{run:}}` references in lesson prose still render the pending marker; with stage and lab data and one drawer, the content build reports 118 `run-pending` warnings.
+
+### Still open from this phase
+
+- **Re-record before release:** RUN-lean-s2-cells, RUN-lean-noguard and RUN-lean-preservation-frag hash whole lesson files that later prose edits changed (S2.L0, S2.L5, S9.L4); their cell code is unchanged, and the release lane fails on them until they are re-run.
+- **Citations that resolve to records that don't back them:** S9.L6 cells 1–3 and LAB-9.c10 (RUN-lean-preservation-frag), S9.L7 cell 1 (RUN-lean-hoist), S4.L7 cell 1 and LAB-4.c1 (RUN-check-fragment). Each needs its own pending ID in the spine or an extended record.
+- **Runs not yet given their own record:** RUN-z3-selftransfer for S2.L8's cell; the settle cell (S4.L1) is a configuration of RUN-z3-cti-pair; the S8.L5 segment item (EventuallyDispatched) was never run.
+- **New named values not yet printed:** S1.L2 and S1.L5 can now print the values added above.
+- **Schema:** decide whether run@1's `task` pattern admits follow-up labels, or whether `task_label` joins the schema.
+- **Curriculum drift:** `curriculum/S08-*.md` still holds the old S8.L5 key and the strong-fairness remedy; `curriculum/S03-semantics.md` line 308 and the S6 claim CL-6.2 also predate these runs.
+- **Gates the reconcilers met:** GATE-calls reads the first verdict line of a multi-line cell (S4.L4#3, S7.L3#2) and compares recorded older releases with today's Z3 (S4.L9#1); cvc5 needs `--arrays-exp` for S5.L9 cell 1.
+- **Lesson animations, interactive tools and games** (the owner's request): not part of the reconcile or the registry; it needs its own task in `apps/site` and the lesson pages.

@@ -1,0 +1,11 @@
+view Open(viewer, id) =
+  if no document has this id        then error not_found
+  else if not canread(viewer, id)   then error not_found
+  else the page of id, with title, body, owner_team and internal_notes
+
+release  title and body of documents shared with Acme
+
+pair
+  call   Open(dana, contract)
+  left   W0
+  right  W0 with a different contract.internal_notes

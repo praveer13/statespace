@@ -1,0 +1,168 @@
+{
+ "label": "reader-rr",
+ "server_version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+ "psycopg": "3.3.6",
+ "started_at": "2026-10-26T16:41:32Z",
+ "duration_s": 0.037,
+ "steps": {
+  "a_begin": {
+   "session": "a",
+   "sql": "BEGIN ISOLATION LEVEL REPEATABLE READ;"
+  },
+  "a_read1": {
+   "session": "a",
+   "sql": "SELECT bal FROM acct WHERE id = 1;"
+  },
+  "a_read2": {
+   "session": "a",
+   "sql": "SELECT bal FROM acct WHERE id = 2;"
+  },
+  "a_commit": {
+   "session": "a",
+   "sql": "COMMIT;"
+  },
+  "b_begin": {
+   "session": "b",
+   "sql": "BEGIN ISOLATION LEVEL READ COMMITTED;"
+  },
+  "b_move": {
+   "session": "b",
+   "sql": "UPDATE acct SET bal = bal - 50 WHERE id = 1; UPDATE acct SET bal = bal + 50 WHERE id = 2;"
+  },
+  "b_commit": {
+   "session": "b",
+   "sql": "COMMIT;"
+  }
+ },
+ "setup": "CREATE TABLE acct(id int PRIMARY KEY, bal bigint NOT NULL, team int);\nINSERT INTO acct VALUES (1, 100, 1), (2, 100, 1);\n",
+ "check_sql": "SELECT id, bal FROM acct ORDER BY id; SELECT sum(bal) AS total FROM acct",
+ "histories": [
+  {
+   "permutation": "a_begin a_read1 b_begin b_move b_commit a_read2 a_commit",
+   "runnable": true,
+   "events": [
+    {
+     "step": "a_begin",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "a_read1",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "SELECT 1",
+       "columns": [
+        "bal"
+       ],
+       "rows": [
+        [
+         100
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "step": "b_begin",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "BEGIN"
+      }
+     ]
+    },
+    {
+     "step": "b_move",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "UPDATE 1"
+      },
+      {
+       "status": "UPDATE 1"
+      }
+     ]
+    },
+    {
+     "step": "b_commit",
+     "session": "b",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    },
+    {
+     "step": "a_read2",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "SELECT 1",
+       "columns": [
+        "bal"
+       ],
+       "rows": [
+        [
+         100
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "step": "a_commit",
+     "session": "a",
+     "completed_after_wait": false,
+     "results": [
+      {
+       "status": "COMMIT"
+      }
+     ]
+    }
+   ],
+   "check": {
+    "results": [
+     {
+      "status": "SELECT 2",
+      "columns": [
+       "id",
+       "bal"
+      ],
+      "rows": [
+       [
+        1,
+        50
+       ],
+       [
+        2,
+        150
+       ]
+      ]
+     },
+     {
+      "status": "SELECT 1",
+      "columns": [
+       "total"
+      ],
+      "rows": [
+       [
+        "200"
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

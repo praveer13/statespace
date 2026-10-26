@@ -1,0 +1,1177 @@
+{
+  "id": "RUN-tlc-double-charge",
+  "title": "One crash per window, provider idempotency off: CW2 and CW3 double-charge, CW1 and CW4 do not; with idempotency on none does; a timer re-send double-charges with no crash",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "Outbox, one command, one crash allowed only in each window CW1 to CW4, Dedup off and on; and timeouts with no crash, Dedup off",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image (labs/TOOLS.md section 1)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:41:08.604Z",
+  "started_at": "2026-10-26T16:41:04.878Z",
+  "duration_s": 3.703,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-double-charge-cw2-nodedup-0",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "java",
+    "-XX:+UseParallelGC",
+    "-cp",
+    "/opt/tla2tools/tla2tools-1.8.0.jar",
+    "tlc2.TLC",
+    "-workers",
+    "1",
+    "-deadlock",
+    "-metadir",
+    "/tmp/tlc-states",
+    "-config",
+    "Outbox_cw2_nodedup.cfg",
+    "Outbox"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+      "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+      "bytes": 4304,
+      "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+      "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+      "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+      "bytes": 3474,
+      "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw1_nodedup.cfg",
+      "sha256": "bdc3e9588d0e08d73c07e72ec162aab59038cc4921aebefc54756cbe0df52a4f",
+      "bytes": 268,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw2_nodedup.cfg",
+      "sha256": "316d832aa3cc04ed5c03c6efdac51787f522ca42f6cb6e2f54925aa2e16144ec",
+      "bytes": 268,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw3_nodedup.cfg",
+      "sha256": "12773afeac42497995eb6785aaac428295c579f68feead29e40a4b305e6115a1",
+      "bytes": 268,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw4_nodedup.cfg",
+      "sha256": "afa0656450414e111fbcda95c6111fb1ca23645fe7faffa1f222f97e097fff69",
+      "bytes": 268,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw1_dedup.cfg",
+      "sha256": "4734a4743f96f3b68c296939d08cb25a4b2bdd54b6b5f3daf536d6c94179e657",
+      "bytes": 267,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw2_dedup.cfg",
+      "sha256": "68afbdd3b62c668ed7943d09b08a1a1fb5e97925a0e0d12f064408e3f7f9a5a2",
+      "bytes": 267,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw3_dedup.cfg",
+      "sha256": "61c2d6bb728d819bb07004713b0423f3596e6609ffc519bfa43cad3b38b8f1e9",
+      "bytes": 267,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw4_dedup.cfg",
+      "sha256": "9b68c09db2ba9382b554f0f482acd58f429e91e764cdfb85f7e15beba1e844aa",
+      "bytes": 267,
+      "role": "config"
+    },
+    {
+      "path": "scripts/spikes/W0-S04/specs/s8/Outbox_timeouts.cfg",
+      "sha256": "5e256b65f35df4fd6ce3234526974db68511a65f69fd0d2feb0a70df5c8e7089",
+      "bytes": 262,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 600
+  },
+  "exit_code": 12,
+  "verdict_lines": [
+    "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "Running breadth-first search Model-Checking with fp 55 and seed -2319135425004305995 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+    "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:05.",
+    "Error: Invariant NoDoubleCharge is violated.",
+    "Error: The behavior up to this point is:",
+    "State 1: <Initial predicate>",
+    "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+    "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+    "State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+    "State 5: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+    "State 6: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+    "State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+    "State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+    "18 states generated, 16 distinct states found, 3 states left on queue.",
+    "The depth of the complete state graph search is 8.",
+    "Finished in 00s at (2026-10-26 16:41:05)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-double-charge/cw1-nodedup.log",
+      "sha256": "10f53826c897cda889994e814de1534f5f3405982542ce35726b84b1602d9a10",
+      "bytes": 2430,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw2-nodedup.log",
+      "sha256": "e7437ad99a83589988f59b2c27b99e23edb6d806187ce313f8e8d614ef700c05",
+      "bytes": 4754,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw3-nodedup.log",
+      "sha256": "95ce13b872f6e51a06061087fbc0454ef8c741ccc47c7158a764f0d2a025f961",
+      "bytes": 4740,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw4-nodedup.log",
+      "sha256": "870f86dd45e674c3ec02f6c6f58ece81917d2c3df14cb713aeb8f8b1987c5cb1",
+      "bytes": 2430,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw1-dedup.log",
+      "sha256": "7eb24162c0cdec6d812ac78af058e36bffcc91382c2d69dbf6f89e7bf853c02d",
+      "bytes": 2429,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw2-dedup.log",
+      "sha256": "195fdd6d89a4004e9ccda9c2b7bf266b81f34ea693dde27f2f3a19622198629e",
+      "bytes": 2434,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw3-dedup.log",
+      "sha256": "94ddc86763884a97b36d4fbee47694978e1b0e2531a65d32aa5a3ac4d5da0283",
+      "bytes": 2443,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/cw4-dedup.log",
+      "sha256": "16430ac50edde87288ad0702b93b712b25f2ab6f1b2018cca65ec670017e8419",
+      "bytes": 2436,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-double-charge/timeouts.log",
+      "sha256": "7021eaa9b4d19a5feaef034ab4ddc15c34a1328c8533d4cb776d4e6e1ce8ce07",
+      "bytes": 4448,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "cw1-nodedup": {
+      "result": "no error",
+      "states_generated": 14,
+      "distinct_states": 14,
+      "states_left": 0,
+      "depth": 9,
+      "initial_states": 1
+    },
+    "cw2-nodedup": {
+      "result": "invariant violated",
+      "violated": "NoDoubleCharge",
+      "states_generated": 18,
+      "distinct_states": 16,
+      "states_left": 3,
+      "depth": 8,
+      "initial_states": 1,
+      "trace_states": 8,
+      "trace_actions": 7,
+      "trace": [
+        "Commit(c1)",
+        "Dispatch(c1)",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Next",
+        "Next"
+      ]
+    },
+    "cw3-nodedup": {
+      "result": "invariant violated",
+      "violated": "NoDoubleCharge",
+      "states_generated": 13,
+      "distinct_states": 12,
+      "states_left": 1,
+      "depth": 8,
+      "initial_states": 1,
+      "trace_states": 8,
+      "trace_actions": 7,
+      "trace": [
+        "Commit(c1)",
+        "Dispatch(c1)",
+        "Next",
+        "Crash",
+        "Recover",
+        "Dispatch(c1)",
+        "Next"
+      ]
+    },
+    "cw4-nodedup": {
+      "result": "no error",
+      "states_generated": 10,
+      "distinct_states": 10,
+      "states_left": 0,
+      "depth": 9,
+      "initial_states": 1
+    },
+    "cw1-dedup": {
+      "result": "no error",
+      "states_generated": 14,
+      "distinct_states": 14,
+      "states_left": 0,
+      "depth": 9,
+      "initial_states": 1
+    },
+    "cw2-dedup": {
+      "result": "no error",
+      "states_generated": 34,
+      "distinct_states": 24,
+      "states_left": 0,
+      "depth": 11,
+      "initial_states": 1
+    },
+    "cw3-dedup": {
+      "result": "no error",
+      "states_generated": 22,
+      "distinct_states": 17,
+      "states_left": 0,
+      "depth": 11,
+      "initial_states": 1
+    },
+    "cw4-dedup": {
+      "result": "no error",
+      "states_generated": 10,
+      "distinct_states": 10,
+      "states_left": 0,
+      "depth": 9,
+      "initial_states": 1
+    },
+    "timeouts": {
+      "result": "invariant violated",
+      "violated": "NoDoubleCharge",
+      "states_generated": 19,
+      "distinct_states": 16,
+      "states_left": 5,
+      "depth": 7,
+      "initial_states": 1,
+      "trace_states": 7,
+      "trace_actions": 6,
+      "trace": [
+        "Commit(c1)",
+        "Dispatch(c1)",
+        "Timeout(c1)",
+        "Dispatch(c1)",
+        "Next",
+        "Next"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "cw2-nodedup",
+  "configs": [
+    {
+      "id": "cw1-nodedup",
+      "description": "crash only in CW1, Dedup = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:04.878Z",
+      "duration_s": 0.425,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw1-nodedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw1_nodedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw1_nodedup.cfg",
+          "sha256": "bdc3e9588d0e08d73c07e72ec162aab59038cc4921aebefc54756cbe0df52a4f",
+          "bytes": 268,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 72 and seed -2275022551442700630 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:05.",
+        "Model checking completed. No error has been found.",
+        "14 states generated, 14 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 9.",
+        "Finished in 00s at (2026-10-26 16:41:05)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw1-nodedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 14,
+        "distinct_states": 14,
+        "states_left": 0,
+        "depth": 9,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "cw2-nodedup",
+      "description": "crash only in CW2, Dedup = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:05.305Z",
+      "duration_s": 0.443,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw2-nodedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw2_nodedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw2_nodedup.cfg",
+          "sha256": "316d832aa3cc04ed5c03c6efdac51787f522ca42f6cb6e2f54925aa2e16144ec",
+          "bytes": 268,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 55 and seed -2319135425004305995 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:05.",
+        "Error: Invariant NoDoubleCharge is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 5: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 6: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "18 states generated, 16 distinct states found, 3 states left on queue.",
+        "The depth of the complete state graph search is 8.",
+        "Finished in 00s at (2026-10-26 16:41:05)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw2-nodedup.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoDoubleCharge",
+        "states_generated": 18,
+        "distinct_states": 16,
+        "states_left": 3,
+        "depth": 8,
+        "initial_states": 1,
+        "trace_states": 8,
+        "trace_actions": 7,
+        "trace": [
+          "Commit(c1)",
+          "Dispatch(c1)",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Next",
+          "Next"
+        ]
+      }
+    },
+    {
+      "id": "cw3-nodedup",
+      "description": "crash only in CW3, Dedup = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:05.751Z",
+      "duration_s": 0.408,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw3-nodedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw3_nodedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw3_nodedup.cfg",
+          "sha256": "12773afeac42497995eb6785aaac428295c579f68feead29e40a4b305e6115a1",
+          "bytes": 268,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 102 and seed 3054275819288632588 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:06.",
+        "Error: Invariant NoDoubleCharge is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 4: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 5: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "State 6: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "State 7: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "13 states generated, 12 distinct states found, 1 states left on queue.",
+        "The depth of the complete state graph search is 8.",
+        "Finished in 00s at (2026-10-26 16:41:06)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw3-nodedup.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoDoubleCharge",
+        "states_generated": 13,
+        "distinct_states": 12,
+        "states_left": 1,
+        "depth": 8,
+        "initial_states": 1,
+        "trace_states": 8,
+        "trace_actions": 7,
+        "trace": [
+          "Commit(c1)",
+          "Dispatch(c1)",
+          "Next",
+          "Crash",
+          "Recover",
+          "Dispatch(c1)",
+          "Next"
+        ]
+      }
+    },
+    {
+      "id": "cw4-nodedup",
+      "description": "crash only in CW4, Dedup = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:06.162Z",
+      "duration_s": 0.396,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw4-nodedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw4_nodedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw4_nodedup.cfg",
+          "sha256": "afa0656450414e111fbcda95c6111fb1ca23645fe7faffa1f222f97e097fff69",
+          "bytes": 268,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 99 and seed -3473571171979836045 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:06.",
+        "Model checking completed. No error has been found.",
+        "10 states generated, 10 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 9.",
+        "Finished in 00s at (2026-10-26 16:41:06)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw4-nodedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 10,
+        "distinct_states": 10,
+        "states_left": 0,
+        "depth": 9,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "cw1-dedup",
+      "description": "crash only in CW1, Dedup = TRUE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:06.561Z",
+      "duration_s": 0.392,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw1-dedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw1_dedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw1_dedup.cfg",
+          "sha256": "4734a4743f96f3b68c296939d08cb25a4b2bdd54b6b5f3daf536d6c94179e657",
+          "bytes": 267,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 95 and seed 6502841425943456923 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:06.",
+        "Model checking completed. No error has been found.",
+        "14 states generated, 14 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 9.",
+        "Finished in 00s at (2026-10-26 16:41:06)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw1-dedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 14,
+        "distinct_states": 14,
+        "states_left": 0,
+        "depth": 9,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "cw2-dedup",
+      "description": "crash only in CW2, Dedup = TRUE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:06.956Z",
+      "duration_s": 0.405,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw2-dedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw2_dedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw2_dedup.cfg",
+          "sha256": "68afbdd3b62c668ed7943d09b08a1a1fb5e97925a0e0d12f064408e3f7f9a5a2",
+          "bytes": 267,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 46 and seed 1580252334188451093 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:07.",
+        "Model checking completed. No error has been found.",
+        "34 states generated, 24 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 11.",
+        "Finished in 00s at (2026-10-26 16:41:07)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw2-dedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 34,
+        "distinct_states": 24,
+        "states_left": 0,
+        "depth": 11,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "cw3-dedup",
+      "description": "crash only in CW3, Dedup = TRUE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:07.364Z",
+      "duration_s": 0.41,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw3-dedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw3_dedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw3_dedup.cfg",
+          "sha256": "61c2d6bb728d819bb07004713b0423f3596e6609ffc519bfa43cad3b38b8f1e9",
+          "bytes": 267,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 127 and seed -8953962218039121356 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:07.",
+        "Model checking completed. No error has been found.",
+        "22 states generated, 17 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 11.",
+        "Finished in 00s at (2026-10-26 16:41:07)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw3-dedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 22,
+        "distinct_states": 17,
+        "states_left": 0,
+        "depth": 11,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "cw4-dedup",
+      "description": "crash only in CW4, Dedup = TRUE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:07.776Z",
+      "duration_s": 0.406,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-cw4-dedup-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_cw4_dedup.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_cw4_dedup.cfg",
+          "sha256": "9b68c09db2ba9382b554f0f482acd58f429e91e764cdfb85f7e15beba1e844aa",
+          "bytes": 267,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 81 and seed 6100602128145742656 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:08.",
+        "Model checking completed. No error has been found.",
+        "10 states generated, 10 distinct states found, 0 states left on queue.",
+        "The depth of the complete state graph search is 9.",
+        "Finished in 00s at (2026-10-26 16:41:08)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/cw4-dedup.log"
+      ],
+      "values": {
+        "result": "no error",
+        "states_generated": 10,
+        "distinct_states": 10,
+        "states_left": 0,
+        "depth": 9,
+        "initial_states": 1
+      }
+    },
+    {
+      "id": "timeouts",
+      "description": "no crashes, Timeouts = TRUE, Dedup = FALSE, -deadlock",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T16:41:08.185Z",
+      "duration_s": 0.418,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-double-charge-timeouts-0",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "java",
+        "-XX:+UseParallelGC",
+        "-cp",
+        "/opt/tla2tools/tla2tools-1.8.0.jar",
+        "tlc2.TLC",
+        "-workers",
+        "1",
+        "-deadlock",
+        "-metadir",
+        "/tmp/tlc-states",
+        "-config",
+        "Outbox_timeouts.cfg",
+        "Outbox"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-double-charge/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: S8.L2 cell 1, the learner-visible Outbox",
+          "source": "content/stages/S8/S8.L2.md lines 39-146 (cell 1, verbatim)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "the supplied interface module Outbox EXTENDS (W0-S04's representative of LAB-8's spec/OutboxIface.tla)"
+        },
+        {
+          "path": "scripts/spikes/W0-S04/specs/s8/Outbox_timeouts.cfg",
+          "sha256": "5e256b65f35df4fd6ce3234526974db68511a65f69fd0d2feb0a70df5c8e7089",
+          "bytes": 262,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 600
+      },
+      "exit_code": 12,
+      "verdict_lines": [
+        "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "Running breadth-first search Model-Checking with fp 63 and seed 6008527683840650860 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 1] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).",
+        "Finished computing initial states: 1 distinct state generated at 2026-10-26 16:41:08.",
+        "Error: Invariant NoDoubleCharge is violated.",
+        "Error: The behavior up to this point is:",
+        "State 1: <Initial predicate>",
+        "State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 4: <Timeout(c1) line 39, col 15 to line 45, col 107 of module Outbox>",
+        "State 5: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "State 6: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "19 states generated, 16 distinct states found, 5 states left on queue.",
+        "The depth of the complete state graph search is 7.",
+        "Finished in 00s at (2026-10-26 16:41:08)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-double-charge/timeouts.log"
+      ],
+      "values": {
+        "result": "invariant violated",
+        "violated": "NoDoubleCharge",
+        "states_generated": 19,
+        "distinct_states": 16,
+        "states_left": 5,
+        "depth": 7,
+        "initial_states": 1,
+        "trace_states": 7,
+        "trace_actions": 6,
+        "trace": [
+          "Commit(c1)",
+          "Dispatch(c1)",
+          "Timeout(c1)",
+          "Dispatch(c1)",
+          "Next",
+          "Next"
+        ]
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "tlc-double-charge-check-1",
+      "name": "S8.L3 cell 1's InWindow, Crash and Recover occur in Outbox.tla",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "Outbox.tla is S8.L2 cell 1 verbatim. OutboxIface.tla, the supplied read-only module, appears in no lesson; the W0-S04 spike module is used, whose Accept, Forget, CanForget and properties are the ones S8.L3, S8.L4 and S8.L7 quote.",
+    "The configurations are the W0-S04 spike files; S8.L3 runs TLC with one worker and the deadlock check off.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of the configuration's inputs, mounted read-write at /w because TLC writes its *_TTrace_* files beside the spec; its state queue goes under -metadir /tmp/tlc-states inside the container.",
+    "The bench image runs as uid 1000; the jar it holds has the pinned SHA-256 above, and its version line is the 1.8.0 pre-release banner, copied as printed.",
+    "Recorded for W1 follow-up 1 (docs/waves/W1-report.md, \"Record the runs\"). The run@1 task field only accepts a task id of the form W<n>-T<nn> or W<n>-S<nn>, so the follow-up is named in task_label instead."
+  ]
+}

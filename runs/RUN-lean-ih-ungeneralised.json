@@ -1,0 +1,151 @@
+{
+  "id": "RUN-lean-ih-ungeneralised",
+  "title": "run_conserves by induction on ns without generalizing s: the cons case stays open, and the linter reports ih unused",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "SP-2.3: `induction ns` without `generalizing s` leaves the `cons` goal `total (run (transfer s n) ns) = total s` open beside `ih : total (run s ns) = total s`, and the unused-simp-argument linter names `ih`",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the ss-lean:4.35.0 image (elan resolves /opt/elan/bin/lean to it)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+  "recorded_at": "2026-10-26T16:33:44.649Z",
+  "started_at": "2026-10-26T16:33:44.363Z",
+  "duration_s": 0.285,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-lean-ih-ungeneralised-without-generalizing",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+    "lean",
+    "RunConserves.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S2/RUN-lean-ih-ungeneralised/RunConserves.lean",
+      "sha256": "9aed637d52a060f73cd2cbb7c740c3676cfbb90ff9567323f124a84a4db94c31",
+      "bytes": 486,
+      "role": "source",
+      "source": "content/stages/S2/S2.L7.md, instrument cell 2 (INS-goal-replay), verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 1,
+  "verdict_lines": [
+    "RunConserves.lean:19:17: error: unsolved goals",
+    "case cons",
+    "s : Ledger",
+    "n : Int",
+    "ns : List Int",
+    "ih : total (run s ns) = total s",
+    "⊢ total (run (transfer s n) ns) = total s",
+    "RunConserves.lean:19:31: warning: This simp argument is unused:",
+    "  ih"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-ih-ungeneralised/without-generalizing.log",
+      "sha256": "53e0e622c7bdd20d2d4795fc1cbc5b21f1cd90a374b6750af9eca9b9d8d6a2fa",
+      "bytes": 381,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "exit_code": 1,
+    "errors": 1,
+    "error_kind": "unsolved goals",
+    "open_case": "cons",
+    "ih": "total (run s ns) = total s",
+    "goal": "total (run (transfer s n) ns) = total s",
+    "linter": "This simp argument is unused:",
+    "linter_unused_arg": "ih"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3"
+    }
+  },
+  "primary_config": "without-generalizing",
+  "configs": [
+    {
+      "id": "without-generalizing",
+      "origin": "recorded",
+      "purpose": "S2.L7 cell 2 as the lesson prints it: run_conserves by `induction ns with` and `simp [run, ih]` in the cons case, no `generalizing s`",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+      "started_at": "2026-10-26T16:33:44.363Z",
+      "duration_s": 0.285,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-lean-ih-ungeneralised-without-generalizing",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "ss-lean:4.35.0@sha256:58d9eb9929bf5489dc7dab509ebc9d861cf3cf5bda968b8255c37a71ca740cb3",
+        "lean",
+        "RunConserves.lean"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S2/RUN-lean-ih-ungeneralised/RunConserves.lean",
+          "sha256": "9aed637d52a060f73cd2cbb7c740c3676cfbb90ff9567323f124a84a4db94c31",
+          "bytes": 486,
+          "role": "source",
+          "source": "content/stages/S2/S2.L7.md, instrument cell 2 (INS-goal-replay), verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "RunConserves.lean:19:17: error: unsolved goals",
+        "case cons",
+        "s : Ledger",
+        "n : Int",
+        "ns : List Int",
+        "ih : total (run s ns) = total s",
+        "⊢ total (run (transfer s n) ns) = total s",
+        "RunConserves.lean:19:31: warning: This simp argument is unused:",
+        "  ih"
+      ],
+      "outputs": [
+        "runs/RUN-lean-ih-ungeneralised/without-generalizing.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1 follow-up 1 (task_label W1-followup-1); the task field is left out because run@1 accepts only W<n>-S<nn> or W<n>-T<nn> there.",
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in inputs, mounted read-only.",
+    "Version printed by `lean --version` in the image before the runs: Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); binary_sha256 is sha256sum of the file elan resolves lean to in the same image.",
+    "The input is the lesson cell byte for byte (staged with a final newline). Exit code 1 with one error, the unsolved cons goal, and one linter warning naming ih: the nil case closed by rfl."
+  ]
+}

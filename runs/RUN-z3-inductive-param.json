@@ -1,0 +1,158 @@
+{
+  "id": "RUN-z3-inductive-param",
+  "title": "With workers as an uninterpreted sort and Init and Amount symbolic, Inv /\\ Step /\\ ~Inv' is unsat, Init => Inv and Inv => NoOverspend hold, and the premise witness is sat",
+  "task_label": "W1-followup-1",
+  "origin": "recorded",
+  "records": "CL-5.4, S5.L9 cell 1 and D-18: the parametric inductive step of the atomic transfer, for every number of workers",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T16:36:22.284Z",
+  "started_at": "2026-10-26T16:36:22.102Z",
+  "duration_s": 0.181,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-I",
+    "s5l9_cell1.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-inductive-param/cells/s5l9_cell1.py",
+      "sha256": "6481fac12be2d219db93aad91e6839814f2de50bf386637f9b828098942ef802",
+      "bytes": 1095,
+      "role": "cell",
+      "source": "content/stages/S5/S5.L9.md, the instrument at line 37: its fenced block, verbatim"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "timeout_s": 300,
+    "rlimit_note": "the lesson cells set no rlimit unless a configuration lists one"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== s5l9-cell1: python -I s5l9_cell1.py",
+    "Init => Inv          unsat",
+    "Inv & Step & ~Inv2   unsat",
+    "Inv => NoOverspend   unsat",
+    "premise: Inv & Step  sat",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-inductive-param/s5l9-cell1.log",
+      "sha256": "2ef0e1485ec73bd998952c77218745ed72b544ab28a073d2952a558532590832",
+      "bytes": 106,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "s5l9-cell1": {
+        "exit_code": 0,
+        "lines": {
+          "init_inv": {
+            "verdict": "unsat"
+          },
+          "inv_step_inv2": {
+            "verdict": "unsat"
+          },
+          "inv_nooverspend": {
+            "verdict": "unsat"
+          },
+          "premise_inv_step": {
+            "verdict": "sat"
+          }
+        }
+      }
+    },
+    "init_implies_inv": "unsat",
+    "inductive_step": "unsat",
+    "inv_implies_no_overspend": "unsat",
+    "premise_witness": "sat"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "s5l9-cell1",
+      "purpose": "S5.L9 cell 1, as written",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "5.3.1",
+      "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-I",
+        "s5l9_cell1.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-inductive-param/cells/s5l9_cell1.py",
+          "sha256": "6481fac12be2d219db93aad91e6839814f2de50bf386637f9b828098942ef802",
+          "bytes": 1095,
+          "role": "cell",
+          "source": "content/stages/S5/S5.L9.md, the instrument at line 37: its fenced block, verbatim"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "timeout_s": 300
+      },
+      "started_at": "2026-10-26T16:36:22.102Z",
+      "duration_s": 0.181,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-z3-inductive-param/s5l9-cell1.log",
+          "sha256": "2ef0e1485ec73bd998952c77218745ed72b544ab28a073d2952a558532590832",
+          "bytes": 106,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "s5l9-cell1",
+  "notes": [
+    "The cell is the lesson's fenced block, copied byte for byte. It sets no rlimit.",
+    "This is the Z3 half of CL-5.4; the translation from the TLA+ spec is not checked by this run (the claim's open defeater).",
+    "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-inductive-param/cells/.",
+    "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
+    "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+  ]
+}

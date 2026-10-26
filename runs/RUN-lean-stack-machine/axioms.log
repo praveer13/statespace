@@ -1,0 +1,14 @@
+StackMachineAxioms.lean:58:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  exec s (comp e₂) stk
+in the target expression
+  exec s [Instr.add] (exec s (comp e₂) (aval e₁ s :: stk)) = aval (e₁.plus e₂) s :: stk
+
+case plus
+s : Store
+stk : List Int
+e₁ e₂ : AExp
+ih₁ : exec s (comp e₁) stk = aval e₁ s :: stk
+ih₂ : exec s (comp e₂) stk = aval e₂ s :: stk
+⊢ exec s [Instr.add] (exec s (comp e₂) (aval e₁ s :: stk)) = aval (e₁.plus e₂) s :: stk
+'exec_append' depends on axioms: [propext]
+'exec_comp' depends on axioms: [propext]
