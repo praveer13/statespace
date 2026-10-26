@@ -13,6 +13,7 @@ import { InlineMd, Markdown } from '../../components/markdown/Markdown.tsx'
 import { Failed, Loading, Missing } from '../../components/page/states.tsx'
 import { CoverArt } from '../../components/volume/CoverArt.tsx'
 import { splitTitle, volumeOf } from '../../components/volume/volumes.ts'
+import { StageDefence } from '../defence/StageDefence.tsx'
 import { question, sizeLine, summarize } from './summary.ts'
 import '../../components/page/page.css'
 import '../../components/volume/volume.css'
@@ -165,6 +166,8 @@ export function StageScreen() {
           </ol>
         </section>
       ) : null}
+
+      <StageDefence stage={stage.id} lab={stage.lab?.id ?? null} />
 
       {stage.drawers.length > 0 ? (
         <section aria-labelledby="stage-drawers">

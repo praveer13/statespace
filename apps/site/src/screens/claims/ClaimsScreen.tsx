@@ -111,6 +111,15 @@ export function ClaimsScreen() {
         )
       ) : null}
 
+      <section aria-labelledby="claims-report" className="claims-more">
+        <h2 id="claims-report">Your report</h2>
+        <p className="claims-more-text">
+          Your claims sorted into proved, model-checked, tested, enforced, configured, assumed and not covered, each with its tool versions and
+          limits, with the erosions your record has met. <Link to="/report">Open your report</Link>, or read{' '}
+          <Link to="/assurance">what the course claims about itself</Link>.
+        </p>
+      </section>
+
       <section aria-labelledby="claims-specimens" className="claims-more">
         <h2 id="claims-specimens">Specimens</h2>
         <p className="claims-more-text">

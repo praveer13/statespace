@@ -21,6 +21,7 @@ import { lazyToy, toysFor } from '../toys/index.ts'
 import type { ToyPlacement } from '../toys/index.ts'
 import { CardBlock, ClaimBlock, InstrumentBlock, ItemBlock, ProseBlock, SpecimenBlock, Waiting } from './blocks.tsx'
 import type { BlockContext } from './blocks.tsx'
+import { AgentPanel } from '../agent/AgentPanel.tsx'
 import '../volume/volume.css'
 import './page.css'
 
@@ -407,6 +408,7 @@ export function PageView({ page, kind, stage, builtAt, store, events, drawerTitl
                 <Link to={`/stages/${stage.id}`}>Back to {stage.id} · {stage.title}</Link>
               </p>
             ) : null}
+            <AgentPanel id={page.id} title={page.title} kind={kind} />
             <Pager prev={prev} next={next} />
           </div>
         </div>

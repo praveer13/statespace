@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router'
+import { Scroll } from './Scroll.tsx'
 
 // The shell (DESIGN.md section 7.2): "Skip to content" first; a top bar with the wordmark, and from 900 px the five
 // destinations as text links; below 900 px the destinations move to a bottom bar of 56-px targets with an icon and a
@@ -26,7 +27,7 @@ const DESTINATIONS: readonly Destination[] = [
   {
     to: '/today',
     label: 'Today',
-    owns: ['/today', '/mirror', '/week'],
+    owns: ['/today', '/mirror', '/week', '/world', '/clearinghouse'],
     icon: svg(
       <>
         <rect x="4" y="5" width="16" height="15" rx="1" />
@@ -37,7 +38,7 @@ const DESTINATIONS: readonly Destination[] = [
   {
     to: '/stages',
     label: 'Stages',
-    owns: ['/stages', '/lessons', '/drawers'],
+    owns: ['/stages', '/lessons', '/drawers', '/defence'],
     icon: svg(
       <>
         <path d="M6 4v16" />
@@ -66,15 +67,17 @@ const DESTINATIONS: readonly Destination[] = [
     owns: ['/audit'],
     icon: svg(
       <>
-        <circle cx="10.5" cy="10.5" r="5.5" />
-        <path d="M15 15l5 5" />
+        <path d="M12 21H5V3h10l4 4v5" />
+        <path d="M8 8h5M8 12h4" />
+        <circle cx="16" cy="16" r="3" />
+        <path d="M18.2 18.2L21 21" />
       </>,
     ),
   },
   {
     to: '/claims',
     label: 'Claims',
-    owns: ['/claims', '/specimens'],
+    owns: ['/claims', '/specimens', '/report'],
     icon: svg(
       <>
         <rect x="5" y="3" width="14" height="18" rx="1" />
@@ -136,6 +139,38 @@ function GoTo() {
   )
 }
 
+/** Search and settings: quiet links beside Go to, drawn in the same 1.5-px stroke as the destination icons. */
+function Tools({ where }: { readonly where: string }) {
+  return (
+    <ul className="tools" aria-label="Search and settings">
+      <li>
+        <Link to="/search" className="tool" aria-current={where === '/search' ? 'page' : undefined} aria-keyshortcuts="Control+K Meta+K">
+          {svg(
+            <>
+              <circle cx="10.5" cy="10.5" r="5.5" />
+              <path d="M15 15l5 5" />
+            </>,
+          )}
+          <span className="tool-label">Search</span>
+          <kbd className="tool-key">Ctrl K</kbd>
+        </Link>
+      </li>
+      <li>
+        <Link to="/settings" className="tool" aria-current={where === '/settings' ? 'page' : undefined}>
+          {svg(
+            <>
+              <path d="M4 7h10M18 7h2M4 17h2M10 17h10" />
+              <rect x="14" y="5" width="4" height="4" />
+              <rect x="6" y="15" width="4" height="4" />
+            </>,
+          )}
+          <span className="tool-label">Settings</span>
+        </Link>
+      </li>
+    </ul>
+  )
+}
+
 const owner = (path: string): Destination | undefined => DESTINATIONS.find((d) => d.owns.some((p) => path === p || path.startsWith(`${p}/`)))
 
 function Destinations({ where, className }: { readonly where: string; readonly className: string }) {
@@ -174,11 +209,29 @@ export function App() {
           <Destinations where={pathname} className="nav-list" />
         </nav>
         <GoTo />
+        <Tools where={pathname} />
       </header>
       <main id="main" className="shell-main" tabIndex={-1} data-bleed={pathname === '/' || pathname === '/stages' || pathname.startsWith('/stages/') || pathname.startsWith('/lessons/') || pathname.startsWith('/drawers/') ? 'true' : undefined}>
         <Outlet />
       </main>
       <footer className="shell-foot">
+        <ul className="foot-links">
+          <li>
+            <Link to="/assurance">What the course claims about itself</Link>
+          </li>
+          <li>
+            <Link to="/report">Your report</Link>
+          </li>
+          <li>
+            <Link to="/week">Your week</Link>
+          </li>
+          <li>
+            <Link to="/settings">Settings</Link>
+          </li>
+          <li>
+            <a href={`${import.meta.env.BASE_URL}llms.txt`}>llms.txt for your agent</a>
+          </li>
+        </ul>
         <p>
           Code under the MIT license, content under CC BY 4.0.{' '}
           <a href="https://github.com/praveer13/statespace">Source on GitHub</a>.
@@ -187,7 +240,7 @@ export function App() {
       <nav aria-label="Main" className="nav-bottom">
         <Destinations where={pathname} className="nav-list" />
       </nav>
-      <ScrollRestoration />
+      <Scroll />
     </div>
   )
 }

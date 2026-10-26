@@ -368,31 +368,224 @@
   transition: none;
 }
 
-/* ------------------------------------------------------------------ practice, drawn fresh: generated questions set as exercises */
+/* ------------------------------------------------------------------ today's set: the plan, Start, the cards */
 
-.td-due {
+.td-session {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-5);
   max-width: var(--measure);
   min-width: 0;
 }
 
-.today .td-due h2 {
-  margin-bottom: 0;
+.td-plan {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
 }
 
-.td-due-lede {
+.today .td-plan h2 {
   margin: 0;
+  font-family: var(--font-structure);
+  font-size: clamp(30px, 3.4vw, 48px);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.td-plan-lede {
+  margin: 0;
+  max-width: 34em;
   font-family: var(--font-reading);
   font-size: var(--fs-prose);
-  line-height: 1.5;
+  line-height: var(--lh-prose);
+  color: var(--ink);
+}
+
+.td-composition {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+  line-height: var(--lh-interface);
+  color: var(--pencil);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.today .td-start {
+  min-height: 48px;
+  min-width: 10rem;
+}
+
+@media (max-width: 599px) {
+  .today .td-start {
+    width: 100%;
+  }
+  .td-plan .td-actions {
+    width: 100%;
+  }
+}
+
+/* the set as a ruled list: one row per card, the current one marked by the ink pointer */
+
+.td-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px solid var(--ink);
+}
+
+.td-card-row {
+  border-bottom: 1px solid var(--rule);
+}
+
+.td-card-pick {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--space-3) 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.td-card-pick:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.td-card-n {
+  font-family: var(--font-structure);
+  font-size: var(--fs-subsection);
+  font-weight: 300;
+  color: var(--pencil);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.td-card-row[data-current] .td-card-n {
+  font-weight: 600;
+  color: var(--here);
+}
+
+.td-card-row[data-current] .td-card-n::before {
+  content: '▸';
+  margin-left: -1.1em;
+  margin-right: 0.25em;
+}
+
+.td-card-what {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.td-card-kind {
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+  line-height: var(--lh-interface);
+}
+
+.td-card-skill {
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.td-card-state {
+  font-family: var(--font-structure);
+  font-size: var(--fs-sidenote);
+  color: var(--pencil);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.td-card-pick:hover .td-card-kind {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.td-step {
+  display: grid;
+  gap: var(--space-4);
+  padding-top: var(--space-5);
+  border-top: 3px solid var(--ink);
+  min-width: 0;
+}
+
+.td-step:focus {
+  outline: none;
+}
+
+.td-step:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.td-of {
+  font-family: var(--font-structure);
+  font-weight: 400;
   color: var(--pencil);
 }
 
-.td-due-items {
-  display: grid;
+.td-card-why {
+  margin: 0;
+  max-width: 34em;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}
+
+.td-step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.td-week-link {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-structure);
+}
+
+/* the resume card in the side column keeps its phone composition at every width */
+
+.td-side .td-hero {
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  grid-template-rows: none;
+  grid-template-areas:
+    'cover title'
+    'body body';
+  gap: var(--space-4);
+  align-items: end;
+}
+
+.td-side .td-hero .td-cover {
+  padding: 8px;
+}
+
+.td-side .td-hero .td-cover .mini-cover-n {
+  font-size: 26px;
+}
+
+.td-side .td-hero .td-name {
+  font-size: clamp(24px, 2.2vw, 30px);
+}
+
+.td-side .td-hero-end {
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-7);
-  min-width: 0;
+  grid-template-areas:
+    'title'
+    'body';
 }

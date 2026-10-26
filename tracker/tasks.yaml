@@ -1020,9 +1020,14 @@ tasks:
     status: in-progress
     started: 2026-10-26
     notes: >-
-      Happy path, 2026-10-26: Shell, navigation, stage and lesson routes are live
-      (scripts/site/smoke.sh). Missing: the service worker and its kill-switch test, search at 360
-      px, static pages for every screen route (GATE-bundle routes.present), and the deploy.
+      Happy path, 2026-10-26 (Phase 6): the shell carries search and settings in the masthead (icons in
+      the destinations' stroke, labels from 1280 px), footer links to /assurance, /report, /week,
+      /settings and llms.txt, and its own scroll restoration that never decodes the fragment. SCR-search
+      is live with Ctrl K, ⌘K and '/'. The service worker registers in production, with ?nosw=1 and the
+      kill switch. postbuild writes a static index.html for every static screen route. GATE-bundle now
+      passes nav, routes.present, every route test, sw.register, sw.offline, sw.nosw, sw.kill and
+      fragment.canary. Missing: the 640-px desktop search palette, the deploy, and the Today and lesson
+      route budgets (docs/waves/W1-report.md, Phase 6). budget.fonts is still red.
     owner_review: true
     review_h: 0.5
   - id: W1-T03
@@ -1255,9 +1260,12 @@ tasks:
     status: in-progress
     started: 2026-10-26
     notes: >-
-      Happy path, 2026-10-26: Today shows where you stopped and a "Practice, drawn fresh" set of
-      generated items. Missing: the scheduler and its property test, the Keep block, Set your week,
-      and RUN-lz-today-w1.
+      Happy path, 2026-10-26 (Phase 6): planToday composes the session (due items on fresh seeds, at most
+      one audit case, re-finds, sure-and-wrong returns, change cards, welcome-back), with a 60-day dose-
+      floor property test. Today links the Defence, the Clearinghouse and the next erosion forecast. SCR-
+      week has ranges, the computed Keep block, rhythm with repair, reserves and breaks, reviews and stage
+      plans. Missing: settled probes on Today, the Lean keep-alive and Clearinghouse cards, the stage
+      table built from budget.yaml, RUN-lz-today-w1, and the Today route budget.
     owner_review: true
     review_h: 1
   - id: W1-T09
@@ -1632,7 +1640,13 @@ tasks:
     model: sonnet
     model_reason: "Extends a vendored, tested kit to a fixed fixture matrix."
     depends_on: [W1-T13, W1-T36, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): scripts/site/build-llms.mjs writes llms.txt plus
+      agent/TUTORING.md, AGENTS.md, 10 lab files and 120 audit-case files with no keys, and runs in the
+      site's content and dev scripts. Every lesson and drawer ends with the 'Ask your own agent' panel.
+      Missing: GATE-guardrails, the hook fixture matrix, and GATE-a11y at 360 and 320 px.
     owner_review: true
     review_h: 1
   - id: W1-T19
@@ -1683,7 +1697,14 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W1-T03, W1-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): /settings has theme and motion, the 7-day backup card, bundle@1
+      export, merge-import with preview and undo, the comparisons seed switch, offline-copy state with
+      turn off/on, and the OD-8 statement. Missing: replace-import, the per-engine downloads list, the
+      TLA+ notation and shortcut toggles, the Path section, and schemas/bundle.schema.json with GATE-
+      schema tests.
     owner_review: true
     review_h: 0.5
   - id: W1-T21
@@ -2989,7 +3010,14 @@ tasks:
     model: opus
     model_reason: "Sign-off is the course's credit rule; derivation, Wilson display and retakes must be exact."
     depends_on: [W2-T11]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): packages/learner/src/signoff derives standing, sign-off, retake
+      dates, relearning and settling at read time (7 tests). /defence and /defence/S{n} serve Parts A-D,
+      and each stage page carries the standing. Missing: content/stages/S{n}/defence.yaml (plan.ts stands
+      in), S9's mini-Defences, a [T] stamp kind for a passed Defence (the line is prose for now), and a
+      browser pass through to sign-off (only the unit tests cover it).
     owner_review: true
     review_h: 1.5
   - id: W2-T13
@@ -4483,7 +4511,12 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T15, W3-T34, W3-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): packages/ledger/src/erosion.ts reads seams and erosions from the
+      record (9 tests), and /report/erosions/:id runs the forecast and crack. Today surfaces the next
+      fired forecast. Missing: the restamp after a crack, remedy re-minting, and retiring defeaters.
     owner_review: true
     review_h: 0.25
   - id: W3-T13
@@ -4551,7 +4584,12 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T08, W1-T17, W3-T39, W3-T40, W3-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): packages/world and /world (also at /clearinghouse) are the v0
+      Clearinghouse. Missing: RUN-docket-baselines, GATE-audit-blind over its stream, the Lane A module
+      host, ER-12, and the traffic, access, effects and plans phases.
     owner_review: true
     review_h: 0.25
   - id: W3-T15
@@ -5369,7 +5407,13 @@ tasks:
     model: opus
     model_reason: "World design: incident families, baselines and keys must neither leak nor mislead."
     depends_on: [W2-T08, W3-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): packages/world has the edition seed, a standing world on INS-
+      interp, 24 seeded calls a week, ledger rules checked at every step, chained weeks and sha256 state
+      hashes (6 tests). It lives in packages/world, not the planned packages/generators/src/world, and is
+      not yet in the determinism lint's SEEDED_PATHS.
     owner_review: true
     review_h: 0.5
   - id: W3-T40
@@ -5395,7 +5439,12 @@ tasks:
     model: opus
     model_reason: "World design: incident families, baselines and keys must neither leak nor mislead."
     depends_on: [W3-T39, W1-T25, W3-T17]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): three proposal twin families (G1, G2, G8) and a gate-batch gap-
+      class family, admitted only when the reference key matches. Missing: the 'pair never shares a block
+      of 10' rule and class-due weighting.
     owner_review: true
     review_h: 0.5
   - id: W3-T41
@@ -5420,7 +5469,12 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W3-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): /world shows incidents filed through the five-step desk, the
+      ledger board, rules, traffic, holds, plug-in slots and weeks with seeds. Linked from Today. Missing:
+      Set your week sizing, NDJSON export, and change cards on an engine bump.
     owner_review: true
     review_h: 0.25
   - id: W3-T42
@@ -7192,7 +7246,12 @@ tasks:
     model: opus
     model_reason: "Architecture: a contract that many later tasks build on."
     depends_on: [W3-T12]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): /report sorts the claim graph into seven sections and exports
+      Markdown and JSON (statespace/report@1 draft, sha256). Linked from Claims and the footer. Missing:
+      schemas/report.schema.json with GATE-schema, and bench `statespace export` report output.
     owner_review: true
     review_h: 1
   - id: W5-T07
@@ -7259,7 +7318,14 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W0-S11]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26 (Phase 6): /assurance shows 17 course claims stamped by deriveStamp from raw
+      outputs with run tags, the course erosion log CE-1 to CE-5 (CE-5 a labelled simulated entry),
+      edition pins, limits and the honor system. Linked from the footer and Claims. Its five gate runs are
+      proposed in packages/ids/proposals.json. Missing: status/nightly.json from the nightly lane, GATE-
+      erosions, and a check that course.json numbers match the runs.
     owner_review: true
     review_h: 1
   - id: W5-T09

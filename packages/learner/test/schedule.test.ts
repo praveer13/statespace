@@ -47,10 +47,10 @@ describe('the recorded reference', () => {
           assert.ok(near(got, r), `sequence ${i} step ${k}: R ${got} vs ${r}`)
         }
         memory = nextMemory(memory, t, g)
-        worst = Math.max(worst, Math.abs(memory.stability - s), Math.abs(memory.difficulty - d))
-        assert.ok(near(memory.stability, s), `sequence ${i} step ${k}: S ${memory.stability} vs ${s}`)
-        assert.ok(near(memory.difficulty, d), `sequence ${i} step ${k}: D ${memory.difficulty} vs ${d}`)
-        assert.equal(intervalDays(memory.stability, retention), interval, `sequence ${i} step ${k}: interval`)
+        worst = Math.max(worst, Math.abs(memory!.stability - s), Math.abs(memory!.difficulty - d))
+        assert.ok(near(memory!.stability, s), `sequence ${i} step ${k}: S ${memory!.stability} vs ${s}`)
+        assert.ok(near(memory!.difficulty, d), `sequence ${i} step ${k}: D ${memory!.difficulty} vs ${d}`)
+        assert.equal(intervalDays(memory!.stability, retention), interval, `sequence ${i} step ${k}: interval`)
         steps++
       }
     }

@@ -1,0 +1,408 @@
+{
+  "$comment": "The seams and erosion events of spine sections 5.3 and 5.4, as data for M-seam-erosion and M-erosion-forecast. A seam is an ASSUMED field planted on purpose; twelve erode and three are held (tested, expected to hold). plantedIn lists the lessons whose events plant the seam in a learner's record; cashedIn is the lesson whose events bring the cracking specimen (null for ER-12, whose second endpoint is a Clearinghouse week after S9). forecast.key is the segment spine section 5.4 says cracks: proposition, correspondence, requirement or assumption (an assumption record).",
+  "seams": [
+    {
+      "id": "SEAM-1",
+      "assumption": "Balances are unbounded integers",
+      "plantedIn": [
+        "S1.L3",
+        "S1.L4"
+      ],
+      "claims": [
+        "CL-1.1",
+        "CL-1.2",
+        "CL-1.3",
+        "CL-1.4",
+        "CL-2.1",
+        "CL-2.2",
+        "CL-2.3",
+        "CL-2.4",
+        "CL-2.5",
+        "CL-3.3",
+        "CL-3.4",
+        "CL-4.1",
+        "CL-4.2",
+        "CL-4.4",
+        "CL-4.5"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-1",
+      "testedBy": "SP-6.4"
+    },
+    {
+      "id": "SEAM-2",
+      "assumption": "Transfers run one at a time",
+      "plantedIn": [
+        "S2.L7"
+      ],
+      "claims": [
+        "CL-2.4",
+        "CL-4.2",
+        "CL-4.4",
+        "CL-4.5"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-2",
+      "testedBy": "SP-5.1"
+    },
+    {
+      "id": "SEAM-3",
+      "assumption": "A \"correct\" step needs no observer",
+      "plantedIn": [
+        "S3.L6"
+      ],
+      "claims": [
+        "CL-3.3"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-3",
+      "testedBy": "SP-7.1"
+    },
+    {
+      "id": "SEAM-4",
+      "assumption": "Effect dispatch is atomic with the hold's commit",
+      "plantedIn": [
+        "S5.L5"
+      ],
+      "claims": [
+        "CL-5.2"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-4",
+      "testedBy": "SP-8.1"
+    },
+    {
+      "id": "SEAM-5",
+      "assumption": "Obligations checked on the source carry to the running code",
+      "plantedIn": [
+        "S4.L7"
+      ],
+      "claims": [
+        "CL-4.2"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-5",
+      "testedBy": "SP-9.1"
+    },
+    {
+      "id": "SEAM-6",
+      "assumption": "`Nat` balances cannot go negative",
+      "plantedIn": [
+        "S3.L1"
+      ],
+      "claims": [],
+      "fate": "erodes",
+      "erosion": "ER-6",
+      "testedBy": "SP-3.3"
+    },
+    {
+      "id": "SEAM-7",
+      "assumption": "The solver is sound",
+      "plantedIn": [
+        "S1.L3"
+      ],
+      "claims": [
+        "CL-1.1"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-7",
+      "testedBy": "SP-4.5"
+    },
+    {
+      "id": "SEAM-8",
+      "assumption": "The worker keeps running under weak fairness",
+      "plantedIn": [
+        "S5.L7"
+      ],
+      "claims": [
+        "CL-5.3"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-8",
+      "testedBy": "SP-8.6"
+    },
+    {
+      "id": "SEAM-9",
+      "assumption": "Nothing reads a replica; PostgreSQL behaves as documented; every writer is SERIALIZABLE",
+      "plantedIn": [
+        "S6.L9"
+      ],
+      "claims": [
+        "CL-6.2",
+        "CL-6.3"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-9",
+      "testedBy": "SP-7.6"
+    },
+    {
+      "id": "SEAM-10",
+      "assumption": "The observer sees only the response body: the view's returned value, error codes included",
+      "plantedIn": [
+        "S7.L6"
+      ],
+      "claims": [
+        "CL-7.3"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-10",
+      "testedBy": "SP-9.6"
+    },
+    {
+      "id": "SEAM-11",
+      "assumption": "One database's agreement stands for the compiler",
+      "plantedIn": [
+        "S6.L3"
+      ],
+      "claims": [
+        "CL-6.1"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-11",
+      "testedBy": "SP-9.4"
+    },
+    {
+      "id": "SEAM-12",
+      "assumption": "Every copy of every attempt is delivered or dropped before the provider can forget the key",
+      "plantedIn": [
+        "S8.L7"
+      ],
+      "claims": [
+        "CL-8.2"
+      ],
+      "fate": "erodes",
+      "erosion": "ER-12",
+      "testedBy": "SP-8.5"
+    },
+    {
+      "id": "SEAM-13",
+      "assumption": "INS-interp, the TypeScript port, agrees with the Lean reference semantics on the fragments its kernel-checked goldens cover",
+      "plantedIn": [
+        "S3.L9"
+      ],
+      "claims": [],
+      "fate": "held",
+      "testedBy": "GATE-interp and GATE-conformance in the fast lane"
+    },
+    {
+      "id": "SEAM-14",
+      "assumption": "PostgreSQL 18.6's SERIALIZABLE gives serializable outcomes for committed SERIALIZABLE transactions",
+      "plantedIn": [
+        "S6.L6"
+      ],
+      "claims": [
+        "CL-6.3"
+      ],
+      "fate": "held",
+      "testedBy": "GATE-specimens nightly, with the upstream update-conflict-out spec"
+    },
+    {
+      "id": "SEAM-15",
+      "assumption": "The Lean 4.35.0 kernel accepts only well-typed terms",
+      "plantedIn": [
+        "S2.L9"
+      ],
+      "claims": [
+        "CL-2.1",
+        "CL-2.2",
+        "CL-2.3",
+        "CL-2.4",
+        "CL-2.5"
+      ],
+      "fate": "held",
+      "testedBy": "lake comparator --paranoid at every Lean Defence"
+    }
+  ],
+  "erosions": [
+    {
+      "id": "ER-1",
+      "seam": "SEAM-1",
+      "cashedIn": "S6.L4",
+      "specimen": "SP-6.4",
+      "segment": "correspondence",
+      "claim": "CL-2.1",
+      "reason": "\"allowed implies succeeds\" fails: PostgreSQL refuses with SQLSTATE 22003 a step the model takes. Refinement CL-6.1 gains a defeater; conservation is untouched.",
+      "remedies": [
+        "Bound the semantics and prove again.",
+        "Make `Except Overflow` observable in R(S, D).",
+        "Use `numeric` with a stated bound."
+      ],
+      "drawer": "D-30",
+      "runs": [
+        "RUN-pg-anomalies"
+      ]
+    },
+    {
+      "id": "ER-2",
+      "seam": "SEAM-2",
+      "cashedIn": "S5.L3",
+      "specimen": "SP-5.1",
+      "segment": "correspondence",
+      "claim": "CL-2.4",
+      "reason": "a sequential proof meets a concurrent system: two reads, then two writes, spend 160 from 100.",
+      "remedies": [
+        "Make the transfer one atomic action.",
+        "Rely on isolation, stated as an assumption until S6 checks it."
+      ],
+      "runs": [
+        "RUN-tlc-doublespend"
+      ]
+    },
+    {
+      "id": "ER-3",
+      "seam": "SEAM-3",
+      "cashedIn": "S7.L7",
+      "specimen": "SP-7.1",
+      "segment": "requirement",
+      "claim": "CL-3.3",
+      "reason": "a step can keep the invariant and still leak: confidentiality was never in the model, so it becomes NOT COVERED.",
+      "remedies": [
+        "Name an observer.",
+        "Define an equivalence relation over states.",
+        "Write a declassification list."
+      ],
+      "runs": []
+    },
+    {
+      "id": "ER-4",
+      "seam": "SEAM-4",
+      "cashedIn": "S8.L3",
+      "specimen": "SP-8.1",
+      "segment": "assumption",
+      "claim": "CL-5.2",
+      "reason": "dispatch is not atomic with commit: a crash between them loses the effect or sends it twice.",
+      "remedies": [
+        "Add an outbox.",
+        "Give inbound requests keys.",
+        "State the provider's idempotency as an assumption."
+      ],
+      "runs": []
+    },
+    {
+      "id": "ER-5",
+      "seam": "SEAM-5",
+      "cashedIn": "S9.L7",
+      "specimen": "SP-9.1",
+      "segment": "correspondence",
+      "claim": "CL-4.2",
+      "reason": "the obligations hold for the source commands, and a compiler step does not carry them to the target.",
+      "remedies": [
+        "Prove semantic preservation.",
+        "Validate each command's translation."
+      ],
+      "runs": []
+    },
+    {
+      "id": "ER-6",
+      "seam": "SEAM-6",
+      "cashedIn": "S3.L7",
+      "specimen": "SP-3.3",
+      "segment": "correspondence",
+      "claim": null,
+      "restate": "your first AST draft's choice: balances as `Nat`",
+      "reason": "`Nat` is not the intended arithmetic: truncated subtraction turns an overdraft into a zero balance.",
+      "remedies": [
+        "Use `Int` plus a guard.",
+        "Refine an `Amount` type that cannot be zero or negative."
+      ],
+      "runs": [
+        "RUN-lean-nat-trunc"
+      ]
+    },
+    {
+      "id": "ER-7",
+      "seam": "SEAM-7",
+      "cashedIn": "S4.L9",
+      "specimen": "SP-4.5",
+      "segment": "assumption",
+      "claim": "CL-1.1",
+      "reason": "the solver can be wrong: on two satisfiable inputs an earlier Z3 release answered unsat.",
+      "remedies": [
+        "Cross-check with cvc5.",
+        "Keep the \"uncertified\" qualifier on every solver PROVED."
+      ],
+      "drawer": "D-32",
+      "runs": [
+        "RUN-z3-11179"
+      ]
+    },
+    {
+      "id": "ER-8",
+      "seam": "SEAM-8",
+      "cashedIn": "S8.L5",
+      "specimen": "SP-8.6",
+      "segment": "assumption",
+      "claim": "CL-5.3",
+      "reason": "progress needs recovery: a crash that leaves the worker down is a fair lasso, and the property fails.",
+      "remedies": [
+        "State recovery as an assumption.",
+        "Check with the crash actions on."
+      ],
+      "runs": [
+        "RUN-tlc-crash-liveness"
+      ]
+    },
+    {
+      "id": "ER-9",
+      "seam": "SEAM-9",
+      "cashedIn": "S7.L8",
+      "specimen": "SP-7.6",
+      "segment": "assumption",
+      "claim": "CL-6.3",
+      "reason": "a replica read breaks the clause \"nothing reads a replica\". CL-6.2 does not rest on that clause and stands.",
+      "remedies": [
+        "Route reads that need your writes to the primary.",
+        "Carry read-your-writes tokens, stated as assumed or enforced."
+      ],
+      "runs": [
+        "RUN-interp-new-enemy"
+      ]
+    },
+    {
+      "id": "ER-10",
+      "seam": "SEAM-10",
+      "cashedIn": "S9.L9",
+      "specimen": "SP-9.6",
+      "segment": "assumption",
+      "claim": "CL-7.3",
+      "reason": "the observer omits size and timing: the compiled view's step count differs between the two worlds.",
+      "remedies": [
+        "Widen the observer.",
+        "State the channel as NOT COVERED."
+      ],
+      "runs": []
+    },
+    {
+      "id": "ER-11",
+      "seam": "SEAM-11",
+      "cashedIn": "S9.L8",
+      "specimen": "SP-9.4",
+      "segment": "correspondence",
+      "claim": "CL-6.1",
+      "reason": "agreement on one database is TESTED on one instance, not the compiler: two compilations agree on the fixture and differ on another state.",
+      "remedies": [
+        "Validate each command's translation.",
+        "Use a query-equivalence prover, or refute with a witness."
+      ],
+      "runs": [
+        "RUN-pg-one-db"
+      ]
+    },
+    {
+      "id": "ER-12",
+      "seam": "SEAM-12",
+      "cashedIn": null,
+      "clearinghouseAfter": "S9",
+      "specimen": "SP-8.5",
+      "segment": "assumption",
+      "claim": "CL-8.2",
+      "reason": "the provider's horizon: a copy of an attempt can still be in flight after the provider forgets its key, and the charge happens twice.",
+      "remedies": [
+        "Bound how long any copy of an attempt can stay in flight, below the provider's retention.",
+        "Reconcile by key.",
+        "State the loss."
+      ],
+      "runs": []
+    }
+  ]
+}

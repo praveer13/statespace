@@ -1,0 +1,583 @@
+/* SCR-clearinghouse: the Clearinghouse, in the series black. It reuses the Audit Desk's exercises, figures and ruled
+   tables (screens/audit/audit.css, scoped under .audit) and adds the week's layout, the incident cards, the ledger
+   board, the plug-in schematic and the world's tools. Ink on newsprint; 3-px ink rules for sections, 1-px rules for
+   rows; no shadows, gradients or rounded boxes. The violation line comes only from .line-violation (tokens.css). */
+
+.world {
+  gap: var(--space-7);
+}
+
+.wearly {
+  margin: 0;
+  max-width: 44em;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ the three columns */
+
+.wgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  min-width: 0;
+}
+
+.wmain,
+.wside,
+.wplugged {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: var(--space-7);
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .wgrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    column-gap: var(--space-7);
+  }
+  .wmain {
+    grid-row: span 2;
+  }
+}
+
+@media (min-width: 1240px) {
+  .wgrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem) minmax(0, 15rem);
+    column-gap: var(--space-6);
+  }
+  .wmain {
+    grid-row: auto;
+  }
+}
+
+/* ------------------------------------------------------------------ the incident cards */
+
+.wcards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 3px solid var(--ink);
+}
+
+.wcard {
+  border-bottom: 1px solid var(--rule);
+}
+
+.wcard-button {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-3) 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.wcard-button:hover .wcard-subject {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.wcard-button:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.wcard-n {
+  font-family: var(--font-structure);
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--vol-type);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.wcard-body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wcard-kind {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.wcard-subject {
+  font-family: var(--font-structure);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.wcard-state {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+  white-space: nowrap;
+}
+
+.wcard[data-open] .wcard-subject {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+}
+
+.wcard[data-open] .wcard-state {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.wcase {
+  margin-top: var(--space-6);
+  max-width: none;
+}
+
+.wevent {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+}
+
+.woffered {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-reading);
+  color: var(--pencil);
+}
+
+.woffered .areq-key,
+.wevent .areq-key {
+  margin-right: var(--space-2);
+}
+
+/* ------------------------------------------------------------------ the world's tools */
+
+.wtool {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule);
+  min-width: 0;
+}
+
+.wtool .afield-legend {
+  margin: 0;
+}
+
+.wtool-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.wtool-field {
+  display: grid;
+  gap: var(--space-1);
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.wtool-field select,
+.wtool-field input {
+  min-height: 44px;
+  min-width: 7.5rem;
+  max-width: 100%;
+  padding: 0 var(--space-2);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-code);
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.wtool-field input {
+  width: 6rem;
+  min-width: 0;
+}
+
+.wtool-field select:focus-visible,
+.wtool-field input:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.wtool-out {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.wtool-out p {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ the reveal */
+
+.wreveal {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.wcounts {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.wverdicts {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 3px solid var(--ink);
+}
+
+.wverdict {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.wwit {
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+/* The witnessed violation: the first step at which a rule fires, in the heavy violation line. */
+.wtable tr.wfire {
+  border-bottom-width: 3px;
+}
+
+.wtable tr.wfire th,
+.wtable tr.wfire td {
+  border-bottom: 0;
+  font-weight: 700;
+}
+
+.wfire-note {
+  margin: 0;
+  font-family: var(--font-reading);
+}
+
+.wscen-key {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  font-family: var(--font-structure);
+}
+
+.wscen-key code {
+  font-size: 14px;
+}
+
+.wjoin {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ the ledger board */
+
+.wfig {
+  margin: 0;
+  min-width: 0;
+}
+
+.wfig-body {
+  padding: var(--space-4);
+  border: 1.5px solid var(--ink);
+  border-top: 0;
+  background: var(--paper);
+}
+
+.wl {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.wl-tenant {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--pencil);
+}
+
+.wl-name {
+  font-family: var(--font-code);
+  font-size: 14px;
+  fill: var(--ink);
+}
+
+.wl-note {
+  font-family: var(--font-reading);
+  font-size: 14px;
+  font-style: italic;
+  fill: var(--pencil);
+}
+
+.wl-num {
+  font-family: var(--font-code);
+  font-size: 13px;
+  fill: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.wl-sum {
+  font-family: var(--font-structure);
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.wl-rule {
+  stroke: var(--rule-hair);
+  stroke-width: 1px;
+}
+
+.wl-rule-heavy {
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+.wl-bar {
+  fill: var(--ink);
+}
+
+.wl-held {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.25px;
+}
+
+.wl-tick {
+  stroke: var(--ink);
+  stroke-width: 2px;
+}
+
+.wl-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-structure);
+  font-size: 14px;
+  color: var(--pencil);
+}
+
+.wl-key li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.wl-key-bar,
+.wl-key-held {
+  display: inline-block;
+  width: 22px;
+  height: 11px;
+  background: var(--ink);
+}
+
+.wl-key-held {
+  background: var(--paper);
+  border: 1.25px solid var(--ink);
+  box-sizing: border-box;
+}
+
+.wl-key-tick {
+  display: inline-block;
+  width: 2px;
+  height: 16px;
+  background: var(--ink);
+}
+
+.wrun {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-structure);
+  font-size: 14px;
+  color: var(--pencil);
+}
+
+.wrun code {
+  font-family: var(--font-code);
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------ the side columns */
+
+.wtable-frame {
+  max-height: 30rem;
+  overflow: auto;
+  min-width: 0;
+}
+
+.wtable-frame:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.wtable {
+  font-size: 14px;
+}
+
+.wtable code {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.wtenant {
+  color: var(--pencil);
+  font-size: 13px;
+}
+
+.wrules {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  border-top: 3px solid var(--ink);
+}
+
+.wrules li {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.wrule-text {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.wplug {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.wplug-svg {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+}
+
+.wplug-box {
+  fill: var(--sheet);
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+.wplug-link {
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+
+.wplug-name {
+  font-family: var(--font-structure);
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.wplug-lab {
+  font-family: var(--font-code);
+  font-size: 12px;
+  fill: var(--pencil);
+}
+
+.wplug-status {
+  font-family: var(--font-structure);
+  font-size: 12.5px;
+  fill: var(--pencil);
+}
+
+.wweeks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 3px solid var(--ink);
+}
+
+.wweeks li {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-structure);
+}
+
+.wweeks a[aria-current] {
+  font-weight: 700;
+}
+
+.wabout {
+  border-top: 3px solid var(--ink);
+  padding-top: var(--space-3);
+}
+
+.wabout summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-structure);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wabout summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.wabout ul {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  font-family: var(--font-reading);
+  font-size: 15px;
+  line-height: 1.45;
+}

@@ -1,0 +1,315 @@
+/* SCR-search, in the Little Library's working-screen head: the title and a Source Serif lede over a 3-px ink rule, then
+   the field (JuliaMono on paper in a 1.5-px ink frame, like the Go-to field), then ruled groups of results. A group head
+   is set in the rubric; a result is a ruled row whose ID sits beside a small square of its volume's ink, with the stage in
+   text too. The marked result is set by an ink bar and weight, never by colour alone. Every value comes from
+   styles/tokens.css, and every rule names one of this screen's own classes. */
+
+.search {
+  --vol: var(--vol-10);
+  gap: var(--space-6);
+  max-width: 920px;
+}
+
+.search-head {
+  display: grid;
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  border-bottom: 3px solid var(--ink);
+}
+
+.screen.search .search-head h1 {
+  font-family: var(--font-structure);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.search-lede {
+  margin: 0;
+  max-width: 38em;
+  font-family: var(--font-reading);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.search-box {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.search-label {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.search-field {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 var(--space-3);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: 18px;
+  caret-color: var(--ink);
+}
+
+.search-field::placeholder {
+  color: var(--pencil);
+}
+
+.search-field:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.search-field::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-keys {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+}
+
+.search-keys kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0 4px;
+  border: 1px solid var(--rule);
+  font-family: var(--font-code);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.search-count {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.search-idle {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.search-idle-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.screen.search .search-idle h2,
+.screen.search .search-group-h {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--rubric);
+}
+
+.search-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-chip,
+.search-forget,
+.search-more {
+  min-height: var(--target);
+  padding: 0 var(--space-3);
+  background: var(--sheet);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.search-forget,
+.search-more {
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.search-more {
+  justify-self: start;
+  margin-top: var(--space-3);
+}
+
+.search-chip:hover,
+.search-forget:hover,
+.search-more:hover {
+  background: var(--band);
+}
+
+.search-chip:focus-visible,
+.search-forget:focus-visible,
+.search-more:focus-visible,
+.search-hit:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.search-none {
+  margin: 0;
+  max-width: var(--measure);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+}
+
+.search-results {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.search-group {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.search-group-n {
+  font-weight: 300;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--pencil);
+}
+
+.search-hits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 3px solid var(--ink);
+}
+
+.search-hits > li {
+  border-bottom: 1px solid var(--rule);
+}
+
+.search-hit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px var(--space-4);
+  box-sizing: border-box;
+  min-height: var(--target);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border-left: 3px solid transparent;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.search-hit[data-active] {
+  border-left-color: var(--ink);
+  background: var(--sheet);
+}
+
+.search-hit[data-active] .search-hit-title {
+  font-weight: 700;
+}
+
+.search-hit:hover .search-hit-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.search-hit-id {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-code);
+  font-size: 14px;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.search-hit-id code {
+  font-family: inherit;
+}
+
+.search-ink {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  background: var(--hit-ink, var(--vol-10));
+}
+
+.search-hit-title {
+  font-family: var(--font-structure);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--link);
+  overflow-wrap: break-word;
+}
+
+.search-hit-text {
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+  overflow-wrap: break-word;
+}
+
+.search-hit-stage {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+@media (min-width: 900px) {
+  .search-hit {
+    grid-template-columns: 9rem minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+
+  .search-hit-id {
+    grid-row: 1 / span 2;
+  }
+
+  .search-hit-title {
+    grid-column: 2;
+  }
+
+  .search-hit-text {
+    grid-column: 2;
+  }
+
+  .search-hit-stage {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* The key hints are for a keyboard; a phone has none to press. */
+@media (max-width: 599px) {
+  .search-keys {
+    display: none;
+  }
+}

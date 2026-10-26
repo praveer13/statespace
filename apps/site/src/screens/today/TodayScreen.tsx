@@ -1,15 +1,18 @@
-// SCR-today, the happy path's version: continue where you left off. The lesson of the most recent answer in the practice
-// record is where the learner was; if every question there is answered, the next lesson in course order that is not
-// finished is next. With nothing in the record, the course starts with Start here (S1.L0). Derived at read time (I2).
-// Below it, a short set of generated questions on the KCs the learner has met (DueSet.tsx); the scheduled plan of due
-// items, re-finds and audit cases (DESIGN.md SCR-today) arrives with the scheduler.
+// SCR-today (DESIGN.md SCR-today; M-today, M-welcome-back): the home for return visits. Today's set comes first: a
+// 10-12-minute session composed by the scheduler in packages/learner/src/schedule (due items on fresh seeds from the KC
+// graph and the record, at most one audit case, re-finds of mounted specimens at least 7 days later, sure-and-wrong
+// returns), or a welcome-back set after a week or more away. Beside it: where you stopped (the resume card), cards for
+// anything that has changed, and the week in one gain-framed line. All of it is derived at read time (I2).
 //
-// In the Little Library world the place you stopped is the page's hero: the volume it belongs to as a small cover in
-// that volume's ink, the lesson's title, its colophon and one primary action. The week is told in ranges, never as a
-// count to keep up with. The page itself belongs to no volume, so its accent is the series black (--vol-10).
+// In the Little Library world the place you stopped is a small cover in that volume's ink, the lesson's title, its
+// colophon and one action. The week is told in ranges, never as a count to keep up with. The page itself belongs to no
+// volume, so its accent is the series black (--vol-10).
 
+import { useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router'
+import { deriveRhythm, planToday } from '@statespace/learner/schedule'
+import type { Rhythm } from '@statespace/learner/schedule'
 import { tierFormat } from '@statespace/content'
 import type { Tier } from '@statespace/content'
 import type { LedgerEvent } from '@statespace/ledger'
@@ -19,7 +22,9 @@ import { answers, lastLesson, progressOf } from '../../app/progress.ts'
 import { useTitle } from '../../app/title.ts'
 import { Loading } from '../../components/page/states.tsx'
 import { CoverArt } from '../../components/volume/CoverArt.tsx'
-import { DueSet } from './DueSet.tsx'
+import { Session, composition } from './Session.tsx'
+import { changesOf, introductionsOf, loadSources, refindsOf } from './sources.ts'
+import { localToday, useWeekPlan } from '../week/plan.ts'
 import { splitTitle, volumeOf } from '../../components/volume/volumes.ts'
 import '../../components/volume/volume.css'
 import './today.css'
@@ -103,46 +108,120 @@ export function TodayScreen() {
   const store = useStore()
   const events = useEvents(store)
   const record = events.status === 'ready' ? events.events : events.status === 'unavailable' ? [] : null
-  const next = useLoaded(async () => (record === null ? null : whereNext(record)), [record === null ? 'wait' : record.length, record?.[record.length - 1]?.id ?? ''])
-  const now = new Date()
+  const recordKey = [record === null ? 'wait' : record.length, record?.[record.length - 1]?.id ?? '']
+  const next = useLoaded(async () => (record === null ? null : whereNext(record)), recordKey)
+  const [today] = useState(localToday)
+  const srcs = useLoaded(loadSources, [])
+  const changes = useLoaded(async () => (record === null ? null : changesOf(record)), recordKey)
+  const [week] = useWeekPlan(store)
   const ready = next.status === 'ready' && next.value !== null ? next.value : null
+  const plan = useMemo(() => {
+    if (record === null || srcs.status !== 'ready') return null
+    const { templates, callTemplates, audits } = srcs.value
+    return planToday({
+      events: record,
+      today,
+      introduced: introductionsOf(record),
+      templatesOf: (kc) => templates.get(kc) ?? [],
+      callTemplates,
+      audits,
+      refinds: refindsOf(record, today),
+      changes: changes.status === 'ready' && changes.value !== null ? changes.value : [],
+    })
+  }, [record, srcs, changes, today])
+  const rhythm = useMemo(() => (record === null ? null : deriveRhythm(record, today, week.plan)), [record, today, week.plan])
+  // One erosion forecast a session at most (spine section 5.4): the fired erosion on the oldest open seam. The seams
+  // load lazily, so they do not weigh on Today's first paint.
+  const erosions = useLoaded(async () => (record === null ? null : (await import('../report/useErosions.ts')).erosionsOf(record)), recordKey)
+  const fired = erosions.status === 'ready' ? erosions.value?.next : undefined
+  const forecast = fired !== undefined && fired.status === 'fired' ? fired : undefined
+  const defenceStage = ready?.stage ?? 'S1'
 
   return (
     <article className="screen today">
       <header className="screen-head td-head">
         <h1>Today</h1>
-        <p className="lede td-lede">Pick up where you left off. Stop after any step and nothing is lost.</p>
         <p className="td-date">
-          <time dateTime={`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`}>
-            {now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
-          </time>
+          <time dateTime={today}>{new Date(`${today}T12:00:00`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}</time>
         </p>
+        <p className="lede td-lede td-composition">{plan !== null && plan.cards.length > 0 ? composition(plan) : 'A 10 to 12 minute session, three to five times a week. Stop after any step and nothing is lost.'}</p>
       </header>
 
       <div className="td-layout">
         <div className="td-main">
-          {next.status === 'error' ? <p className="status">Where you left off could not be worked out ({next.message}).</p> : null}
-          {next.status === 'loading' || (next.status === 'ready' && next.value === null) ? <Loading what="where you left off" /> : null}
-          {ready !== null ? <NextCard next={ready} unavailable={events.status === 'unavailable'} /> : null}
-          {record !== null ? <DueSet events={record} store={store} /> : null}
+          {srcs.status === 'error' ? <p className="status">Today's set could not be put together ({srcs.message}).</p> : null}
+          {plan === null && srcs.status !== 'error' ? <Loading what="today's set" /> : null}
+          {plan !== null && record !== null ? <Session plan={plan} events={record} store={store} /> : null}
+          {plan !== null && plan.mode === 'bench' ? <BenchExtras /> : null}
         </div>
 
         <div className="td-side">
-          {ready !== null ? <Week next={ready} /> : null}
+          {next.status === 'error' ? <p className="status">Where you left off could not be worked out ({next.message}).</p> : null}
+          {ready !== null ? <NextCard next={ready} unavailable={events.status === 'unavailable'} /> : null}
+
+          {plan !== null && plan.changes.length > 0 ? (
+            <section className="td-section" aria-labelledby="today-changes">
+              <h2 id="today-changes">This has changed</h2>
+              <ul className="td-rows">
+                {plan.changes.map((c) => (
+                  <li key={c.id}>
+                    <Link to={c.href} className="td-row">
+                      <span className="td-row-title">{c.title}</span>
+                      <span className="td-row-meta">{c.detail}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
+          {forecast !== undefined ? (
+            <section className="td-section" aria-labelledby="today-erosion">
+              <h2 id="today-erosion">An earlier assumption is in question</h2>
+              <ul className="td-rows">
+                <li>
+                  <Link to={`/report/erosions/${forecast.id}`} className="td-row">
+                    <span className="td-row-title">{forecast.id} · forecast which part cracks</span>
+                    <span className="td-row-meta">a specimen from your record meets {forecast.seam}; make your call before you read it</span>
+                  </Link>
+                </li>
+              </ul>
+            </section>
+          ) : null}
+
+          {rhythm !== null ? <WeekLine rhythm={rhythm} hours={week.plan.hours} /> : null}
 
           <section className="td-section" aria-labelledby="today-more">
             <h2 id="today-more">Also here</h2>
             <ul className="td-rows">
               <li>
-                <Link to="/stages" className="td-row">
-                  <span className="td-row-title">All stages</span>
-                  <span className="td-row-meta">every lesson, lab and drawer, in order</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/mirror" className="td-row">
                   <span className="td-row-title">The Mirror</span>
                   <span className="td-row-meta">how your calls compare with how sure you said you were</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/week" className="td-row">
+                  <span className="td-row-title">Your week</span>
+                  <span className="td-row-meta">your range of hours, the Keep block and the weekly rhythm</span>
+                </Link>
+              </li>
+              <li>
+                <Link to={`/defence/${defenceStage}`} className="td-row">
+                  <span className="td-row-title">The {defenceStage} Defence</span>
+                  <span className="td-row-meta">the four-part sign-off, open whenever you want to take it, over two sessions or more</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/world" className="td-row">
+                  <span className="td-row-title">The Clearinghouse</span>
+                  <span className="td-row-meta">this week's incidents in the shared ledger world</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/stages" className="td-row">
+                  <span className="td-row-title">All stages</span>
+                  <span className="td-row-meta">every lesson, lab and drawer, in order</span>
                 </Link>
               </li>
               <li>
@@ -156,6 +235,64 @@ export function TodayScreen() {
         </div>
       </div>
     </article>
+  )
+}
+
+/** "Back at the bench" adds the last claim card and the next artifact restated (DESIGN.md SCR-today). */
+function BenchExtras() {
+  return (
+    <section className="td-section" aria-labelledby="today-bench">
+      <h2 id="today-bench">Then, at the bench</h2>
+      <ul className="td-rows">
+        <li>
+          <Link to="/claims" className="td-row">
+            <span className="td-row-title">Read your last claim card</span>
+            <span className="td-row-meta">restate what it says before you read it, then compare</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/stages" className="td-row">
+            <span className="td-row-title">Restate the next piece of your lab</span>
+            <span className="td-row-meta">in a sentence of your own, before you open the Bench</span>
+          </Link>
+        </li>
+      </ul>
+    </section>
+  )
+}
+
+/** The week in one line, gain-framed: met weeks out of the weeks counted so far, never a count of what was missed. */
+function WeekLine({ rhythm, hours }: { readonly rhythm: Rhythm; readonly hours: readonly [number, number] }) {
+  return (
+    <section className="td-section" aria-labelledby="today-week">
+      <h2 id="today-week">This week</h2>
+      <dl className="td-colophon td-week">
+        <div>
+          <dt>Rhythm</dt>
+          <dd>
+            {rhythm.onBreak !== undefined
+              ? `On a break until ${rhythm.onBreak.to}; the window is paused.`
+              : rhythm.starting
+                ? 'Starts counting this week.'
+                : `Met in ${rhythm.met} of the last ${rhythm.of} ${rhythm.of === 1 ? 'week' : 'weeks'}.`}
+            {rhythm.current.status === 'met' ? ' This week is met.' : ''}
+          </dd>
+        </div>
+        <div>
+          <dt>Your range</dt>
+          <dd>
+            {hours[0]} to {hours[1]} hours a week
+          </dd>
+        </div>
+        <div>
+          <dt>A session</dt>
+          <dd>10 to 12 minutes, 3 to 5 times a week, inside the Keep block</dd>
+        </div>
+      </dl>
+      <p className="td-week-link">
+        <Link to="/week">Your week</Link>
+      </p>
+    </section>
   )
 }
 
@@ -257,35 +394,5 @@ function Answered({ answered, total }: { readonly answered: number; readonly tot
         <span key={i} className={i < answered ? 'td-mark td-mark-done' : 'td-mark'} />
       ))}
     </p>
-  )
-}
-
-/** The week, told in ranges: the session's length, how often, and what is left of this volume at its printed minutes. */
-function Week({ next }: { readonly next: Next }) {
-  const left = next.left
-  const v = next.stage !== undefined ? volumeOf(next.stage) : undefined
-  return (
-    <section className="td-section" aria-labelledby="today-week">
-      <h2 id="today-week">This week</h2>
-      <dl className="td-colophon td-week">
-        <div>
-          <dt>A session</dt>
-          <dd>10 to 12 minutes, and you can stop after any step</dd>
-        </div>
-        <div>
-          <dt>How often</dt>
-          <dd>3 to 5 sessions a week</dd>
-        </div>
-        {left !== undefined && left.minutes > 0 && v !== undefined ? (
-          <div>
-            <dt>Volume {v.n}</dt>
-            <dd>
-              {left.lessons} {left.lessons === 1 ? 'lesson' : 'lessons'} from here, {left.minutes} to {Math.ceil(left.minutes * 1.6)} minutes
-              <span className="td-why">The high end allows 1.6 times the printed minutes, because plans run long.</span>
-            </dd>
-          </div>
-        ) : null}
-      </dl>
-    </section>
   )
 }

@@ -630,3 +630,99 @@ The screenshots are in the session scratchpad's `phase5-shots/` and are not comm
 - **Imported receipts from LAB-6, LAB-7 and LAB-10** list no tools at the top level: the PostgreSQL facts sit in
   `ext`, and the tab has no deriver for souffle, cargo or postgres runs.
 - **The spine registers no run or check for:** the gate runs, LAB-3.12, LAB-3.13 and LAB-4.c9.
+
+## Phase 6 — assessment, world, platform (2026-10-26)
+
+Six builders, then an integration pass. A learner can now use each capability below end to end on the site. Nothing
+locks, nothing is graded by a language model, and stamps come only from `deriveStamp`. Nothing is committed.
+
+### What is live
+
+| Capability | Routes | Where it is reached from |
+|---|---|---|
+| The Defence: Parts A–D, standing, sign-off, retake, relearning (W2-T12) | `/defence`, `/defence/S{n}` | each stage page (its Defence section), Today ("The S{n} Defence"); highlights Stages |
+| The Clearinghouse v0: seeded world, weekly incidents, the five-step desk (W3-T14, T39–T41) | `/world`, `/clearinghouse` | Today ("The Clearinghouse"); highlights Today |
+| Seams and erosions, forecast and crack (W3-T12) | `/report/erosions/:id` | Today (the next fired forecast, one at most), `/report` |
+| The report export, Markdown and `report@1` JSON (W5-T06) | `/report` | Claims ("Your report"), the footer; highlights Claims |
+| The course's own claims and erosion log (W5-T08) | `/assurance` | the footer, Claims |
+| Today's scheduler and *Set your week* (W1-T08) | `/today`, `/week` | the Today destination, Today's week line, the footer |
+| Settings: theme, motion, export, merge-import with undo, offline copy (W1-T20) | `/settings` | the masthead (icon), the footer |
+| Search with Ctrl K, ⌘K and `/` (W1-T02) | `/search?q=` | the masthead (icon, with "Search" and the shortcut from 1280 px) |
+| `llms.txt`, the agent kit pages, the "Ask your own agent" panel (W1-T18) | `/llms.txt`, `/agent/**`, end of every lesson and drawer | the footer, each lesson and drawer |
+| The offline copy (W1-T02) | `sw.js` in production, `?nosw=1` | Settings |
+
+### Integration
+
+- **Shell.** The five destinations are unchanged. Search and Settings sit in the masthead beside Go to, at every width,
+  as icons drawn in the destinations' 1.5-px stroke; their labels and the Ctrl K hint show from 1280 px. The Audit
+  icon was redrawn (a page under a loupe), so the magnifier means only search. The footer is a plain list (no second
+  navigation landmark): the course's claims, your report, your week, settings and `llms.txt`.
+- **Owns lists.** Stages owns `/defence`; Today owns `/world` and `/clearinghouse`; Claims owns `/report`.
+- **main.tsx** installs the preferences, the service worker and the search shortcut before the first paint. The route
+  files no longer carry side effects.
+- **Router.** Every lazy screen route gets a `HydrateFallback`, so a deep link paints the shell at once with a quiet
+  "Loading this page…".
+- **Scroll.** React Router's `<ScrollRestoration>` passed `location.hash` to `decodeURIComponent`, and that was the
+  cause of the fragment canary failing since Phase 1. `app/Scroll.tsx` replaces it. It restores positions on back
+  and forward, finds `#id` anchors by their raw text, and decodes nothing.
+- **Build.** `apps/site` depends on `@statespace/world`, and the lockfile now links it. The `content` and `dev`
+  scripts run `build-llms.mjs` after the content build. `build` ends with `src/sw/build-sw.mjs`.
+  `scripts/site/postbuild.mjs` writes `<route>/index.html` for each of the 16 static screen routes. `public/agent/` is
+  gitignored, and `public/llms.txt` is kept.
+- **Gate fixes.** GATE-stamps: the Defence's passed line no longer types a `[T]` by hand (it is prose until
+  `packages/stamps` has a Defence kind); the settings segmented control's spans are class-scoped; the week grid no
+  longer uses a gradient or a dash (made-up weeks fill half the cell, reserve weeks carry a level bar).
+  GATE-links: the five gate runs `/assurance` cites are proposed in `packages/ids/proposals.json`. Ten tracker rows
+  are synced in `docs/TRACKER.md`. `sw.nosw`: retiring the worker now sweeps the caches twice more after short
+  waits [D], because a request the old worker answered before it read `kill` could refill a cache.
+
+### Checks
+
+| Check | Result |
+|---|---|
+| tsc, every app and package | green |
+| `npm test` | red only on GATE-kc (the same 7 dose findings) and GATE-facts (the same 27 copy findings), both older than this phase; GATE-stamps holds only S8.L7:104. learner 103/103, ledger 70/70, world 6/6 |
+| `npm run build -w @statespace/site` | green; 16 static route pages; `sw.js` with 165 precached files |
+| verify-stamps | 1 finding, S8.L7:104 |
+| verify-privacy | ok (no hashed term list locally; 3 identity terms) |
+| verify-links | green, 36 pending proposals |
+| verify-runs | PASS; 45 changed inputs flagged for the release lane |
+| verify-numbers | PASS |
+| verify-bundle | 31 passed, 3 failed, 14 pending, up from 12 passed and 6 failed before integration |
+
+GATE-bundle now passes `nav`, `routes.present`, the route test of every static route, `sw.register`, `sw.offline`,
+`sw.nosw`, `sw.kill` and `fragment.canary`. Three checks still fail, all of them older than this phase: the two route budgets
+and `budget.fonts` (the metric-override fallback faces are named "Jost fallback" and so on). The budget lines:
+
+```text
+before Phase 6  FAIL  budget.route.today   Today route: 249.6 KB against 200 KB
+after           FAIL  budget.route.today   Today route: 274.9 KB against 200 KB
+before Phase 6  FAIL  budget.route.lesson  a lesson route, excluding instrument engines: 364.3 KB against 250 KB
+after           FAIL  budget.route.lesson  a lesson route, excluding instrument engines: 370.3 KB against 250 KB
+```
+
+The Today growth is the scheduler and its sources, which load every generator family module to build the KC-to-
+template map. A generated KC index would remove most of it. The erosion reading on Today loads lazily.
+
+### Screenshots
+
+Chromium 149 against the dev server on :5181 at 1440 and 390 px, light and dark: `/defence/S1`, `/assurance`,
+`/report`, `/world`, `/today`, `/week`, `/settings`, `/search?q=witness`, `/lessons/S1.L1` with the agent panel,
+`/claims` and `/stages/S1`. Every page has `scrollWidth` equal to the viewport, and none logs a console error or
+warning. The masthead was also checked at 920 px. The shots are in the session scratchpad's `phase6-shots/final/`
+and are not committed. The builders' end-to-end passes (Defence days 1, 2 and 5; the erosion crack; a filed
+Clearinghouse incident; Today's session; export, import and undo; offline reads) are in the sibling folders.
+
+### Follow-ups
+
+- **Content:** `content/stages/S{n}/defence.yaml` to replace `screens/defence/plan.ts`; S9's mini-Defences; LAB-3's
+  Prove-it list; the S1 audit anchors' KCs so Today can draw a case; LAB-2's title carries a bare "verified" into
+  `llms.txt`.
+- **Stamps:** a Defence kind in `packages/stamps`, so a passed Defence prints a real `[T]` stamp.
+- **Bench:** `statespace defend` (W2-T31) emitting `ext.defend`; `statespace export` report output.
+- **Schemas:** `report@1`, `bundle@1`, and an `audit:clearinghouse/…` ref form in `event@1`.
+- **Gates:** GATE-erosions, `status/nightly.json`, RUN-docket-baselines, GATE-audit-blind over the Clearinghouse, and
+  `packages/world/src` in the determinism lint's seeded paths.
+- **Platform:** the 640-px desktop search palette; the Today and lesson route budgets; `budget.fonts`; Today's
+  backup card; `scripts/site/smoke.sh` copying `agent/` and `llms.txt` for a CONTENT_DIR run.
+- **Clearinghouse:** the Lane A module host, the remaining world phases, ER-12, and sizing from Set your week.

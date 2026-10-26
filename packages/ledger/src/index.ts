@@ -69,3 +69,5 @@ export {
 export type { InstantKey } from './time.ts'
 export { isFresh, isGenerated, weigh, WEIGHTS } from './weights.ts'
 export type { CountsToward, EvidenceTier, Weighing } from './weights.ts'
+export { CRACK_SEGMENTS, FORECAST_OPTIONS, forecastRef, readErosions } from './erosion.ts'
+export type { CrackSegment, ErosionReading, ErosionSpec, ErosionState, ErosionStatus, ForecastAnswer, SeamSpec, SeamState } from './erosion.ts'

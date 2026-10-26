@@ -19,16 +19,26 @@ export interface MirrorScreenProps {
   readonly vrk: Vrk30View | null
   /** The idea in words for a KC, or undefined for one the graph does not hold. */
   readonly ideaName: (kc: string) => string | undefined
+  /** The "sure" misses, each already re-queued in Today (ASSESSMENT.md section 5.6, item 4). */
+  readonly sureWrong?: readonly SureWrongRow[]
 }
 
-export function MirrorScreen({ record, mirror, vrk, ideaName }: MirrorScreenProps) {
+export interface SureWrongRow {
+  readonly id: string
+  readonly kc: string
+  readonly day: string
+  /** The days its returns open in Today; empty once both are answered. */
+  readonly returns: readonly string[]
+}
+
+export function MirrorScreen({ record, mirror, vrk, ideaName, sureWrong = [] }: MirrorScreenProps) {
   return (
     <div className="mirror">
       <header className="mr-head">
         <h1>{COPY.title}</h1>
         <p className="mr-lede">{COPY.lede}</p>
         <p className="mr-back">
-          <Link to="/today">{COPY.backToToday}</Link>
+          <Link to="/today">{COPY.backToToday}</Link> · <Link to="/week">Your week</Link>
         </p>
       </header>
       {record === 'loading' ? (
@@ -42,6 +52,7 @@ export function MirrorScreen({ record, mirror, vrk, ideaName }: MirrorScreenProp
           <div className="mr-column">
             <Calibration mirror={mirror} />
             <Counts mirror={mirror} />
+            {sureWrong.length > 0 ? <SureWrong rows={sureWrong} ideaName={ideaName} /> : null}
           </div>
           <div className="mr-column">
             <Vrk30 vrk={vrk} ideaName={ideaName} />
@@ -223,6 +234,27 @@ function HowToRead() {
           <p key={p}>{p}</p>
         ))}
       </details>
+    </section>
+  )
+}
+
+function SureWrong({ rows, ideaName }: { readonly rows: readonly SureWrongRow[]; readonly ideaName: (kc: string) => string | undefined }) {
+  return (
+    <section className="mr-section">
+      <h2>Sure, and it missed</h2>
+      <p className="mr-note">Each of these comes back in Today as a fresh variant, about a day and about a week after the miss.</p>
+      <ul className="mr-ideas">
+        {rows.map((r) => (
+          <li key={r.id}>
+            <span className="mr-idea">
+              <Inline text={ideaName(r.kc) ?? COPY.unknownIdea} codeClass="mr-code" runClass="mr-code" />
+            </span>
+            <span className="mr-note mr-since">
+              missed {r.day} · {r.returns.length === 0 ? 'both returns answered' : `returns from ${r.returns.join(' and ')}`}
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

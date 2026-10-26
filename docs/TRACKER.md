@@ -185,8 +185,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 ### Platform
 
 - [~] W1-T02 · App shell, navigation, service worker · M · sonnet · W0-S12, W1-T36, W1-T41
-- [ ] W1-T18 · Agent kit, `llms.txt`, phone layouts · M · sonnet · W1-T13, W1-T36, W1-T41
-- [ ] W1-T20 · Settings: export, merge-import with undo, 7-day backup nudge · M · sonnet · W1-T03, W1-T35
+- [~] W1-T18 · Agent kit, `llms.txt`, phone layouts · M · sonnet · W1-T13, W1-T36, W1-T41
+- [~] W1-T20 · Settings: export, merge-import with undo, 7-day backup nudge · M · sonnet · W1-T03, W1-T35
 - [~] W1-T31 · SCR-lab and SCR-bench (part of W1-T13) · M · sonnet · W1-T02, W1-T14, W1-T41
 - [~] W1-T35 · Instrument bus and host (added) · M · opus · W0-S01, W0-T02, W1-T41
 - [=] W1-T36 · Content pipeline (added) · M · sonnet · W0-S12, W0-T03, W0-S11
@@ -312,7 +312,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 ### Learning engine
 
 - [ ] W2-T06 · Hint ladders and the explanation gate · M · opus · W2-T02, W2-T25, W2-T26, W2-T27
-- [ ] W2-T12 · Defence engine, sign-off and retake · M · opus · W2-T11
+- [~] W2-T12 · Defence engine, sign-off and retake · M · opus · W2-T11
 - [ ] W2-T14 · Stuck protocol and parked goals · S · sonnet · W2-T01
 - [ ] W2-T15 · Notes composer; learner-zero sign-off · S · sonnet · W2-T12, W2-T40
 - [ ] W2-T16 · Welcome-back, re-entry, test-out and placement · M · sonnet · W1-T08, W2-T12
@@ -417,16 +417,16 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Erosions, assurance and the report
 
-- [ ] W3-T12 · Claim graph, seams and erosion forecasts (milestone) · S · opus · W1-T15, W3-T34, W3-T35
+- [~] W3-T12 · Claim graph, seams and erosion forecasts (milestone) · S · opus · W1-T15, W3-T34, W3-T35
 - [ ] W3-T34 · Typed claim graph and erosion propagation (part of W3-T12) · M · opus · W1-T15, W2-T42
 - [ ] W3-T35 · ER-2 and ER-7 content (part of W3-T12) · S · opus · W3-T34, W3-T29, W3-T20
 
 ### Clearinghouse
 
-- [ ] W3-T14 · Clearinghouse v0 (milestone) · S · opus · W2-T08, W1-T17, W3-T39, W3-T40, W3-T41
-- [ ] W3-T39 · Clearinghouse world core (part of W3-T14) · M · opus · W2-T08, W3-T21
-- [ ] W3-T40 · Clearinghouse incident families v0 (part of W3-T14) · M · opus · W3-T39, W1-T25, W3-T17
-- [ ] W3-T41 · SCR-clearinghouse v0 (part of W3-T14) · M · sonnet · W3-T39
+- [~] W3-T14 · Clearinghouse v0 (milestone) · S · opus · W2-T08, W1-T17, W3-T39, W3-T40, W3-T41
+- [~] W3-T39 · Clearinghouse world core (part of W3-T14) · M · opus · W2-T08, W3-T21
+- [~] W3-T40 · Clearinghouse incident families v0 (part of W3-T14) · M · opus · W3-T39, W1-T25, W3-T17
+- [~] W3-T41 · SCR-clearinghouse v0 (part of W3-T14) · M · sonnet · W3-T39
 
 ### Stage S4: lessons and LAB-4
 
@@ -600,8 +600,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Erosions, assurance and the report
 
-- [ ] W5-T06 · Report export from the claim graph · M · opus · W3-T12
-- [ ] W5-T08 · `/assurance` and the course erosion log · M · sonnet · W0-S11
+- [~] W5-T06 · Report export from the claim graph · M · opus · W3-T12
+- [~] W5-T08 · `/assurance` and the course erosion log · M · sonnet · W0-S11
 - [ ] W5-T10 · Erosions ER-4, ER-5, ER-8, ER-10, ER-11 · M · opus · W3-T12, W5-T03, W5-T16, W5-T17, W5-T25
 - [ ] W5-T12 · Private overlay and learner-zero report · M · opus · W5-T06
 
