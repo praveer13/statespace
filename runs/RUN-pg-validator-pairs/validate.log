@@ -1,0 +1,66 @@
+PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[q1 replay] 9 databases, 0 differ
+[q2 shape] credit: table acct, key 2, bal + 30 | rewrite: table acct, key 2, bal + 30 | accepted
+[q2 replay] 9 databases, 3 differ
+[q2 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30
+[q3 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q4 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q3 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30
+[q5 replay] 9 databases, 0 differ
+[q6 shape] debit: table acct, key 1, bal - 30 | credit: table acct, key 1, bal + 30 | accepted
+[q6 replay] 9 databases, 6 differ
+[q6 first difference] database (1,30),(2,0): source commit | 1:0 2:30; plan commit | 1:30 2:0
+[q1 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q1 s2] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q1 s3] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q1 s4] same: credit commit | 2:30; rewrite commit | 2:30
+[q2 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q2 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30
+[q2 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30
+[q2 s4] same: credit commit | 2:30; rewrite commit | 2:30
+[q3 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q3 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30
+[q3 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30
+[q3 s4] same: credit commit | 2:30; rewrite commit | 2:30
+[q4 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80
+[q4 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30
+[q4 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30
+[q4 s4] same: credit commit | 2:30; rewrite commit | 2:30
+[q5 s1] same: source commit | 1:70 2:30; plan commit | 1:70 2:30
+[q5 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged
+[q5 s3] same: source commit | 1:0 2:80; plan commit | 1:0 2:80
+[q5 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged
+[q6 s1] differ: source commit | 1:70 2:30; plan commit | 1:100 2:0
+[q6 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged
+[q6 s3] differ: source commit | 1:0 2:80; plan commit | 1:30 2:50
+[q6 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged
+[q7 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q8 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q7 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q7 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q7 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0
+[q7 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q8 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q8 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+[q8 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0
+[q8 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q10 tried] 3 databases, 0 differ
+[q9 tried] 3 databases, 0 differ
+[q10 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30
+[q10 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q10 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q10 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30
+[q9 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30
+[q9 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q9 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged
+[q9 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30
+[q11 fixture] same: compiled result 150; rewrite result 150
+[q12 fixture] same: compiled result 150; rewrite result 150
+[q11 s1] same: compiled result 150; rewrite result 150
+[q11 s2] differ: compiled result 0; rewrite result NULL
+[q11 s3] same: compiled result 100; rewrite result 100
+[q11 s4] differ: compiled result 0; rewrite result NULL
+[q12 s1] same: compiled result 150; rewrite result 150
+[q12 s2] differ: compiled result 0; rewrite result NULL
+[q12 s3] same: compiled result 100; rewrite result 100
+[q12 s4] differ: compiled result 0; rewrite result NULL

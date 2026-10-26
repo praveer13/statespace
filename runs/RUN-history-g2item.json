@@ -1,0 +1,196 @@
+{
+  "id": "RUN-history-g2item",
+  "title": "Souffle 2.5 reads three transaction histories as dependency graphs: the toy G2-item history of Jepsen's PostgreSQL 12.3 report (h1) and AUD-6.3's two recorded PostgreSQL 18.6 histories, read committed (h2) and serializable (h3); it finds a cycle of anti-dependencies in h1 and h2 and none in h3",
+  "task": "W3-T13",
+  "task_label": "W4-T13 (AUD-6.3)",
+  "origin": "recorded",
+  "records": "SP-6.11 (the dated-incident toy history) and AUD-6.3 (content/audit/AUD-6.3.yaml): the history checks behind the flawed member's key",
+  "engine": "souffle",
+  "version": "2.5",
+  "version_string": "2.5 (2.5)",
+  "binary": "souffle in the statespace-bench image (/usr/bin/souffle)",
+  "binary_sha256": "e8e4d8bff0b8377d2d42ae30886121a61061ec0c8bb948f1f5129e09aecfa9a1",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:00:52.965Z",
+  "started_at": "2026-10-26T18:00:52.521Z",
+  "duration_s": 0.154,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-s5s6-history-g2item",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-history-g2item/inputs/g2.dl",
+      "sha256": "4194dbe72959037727a25395b9964f329d209223dcd2522f44e5d4b11404954c",
+      "bytes": 1372,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h1/committed.facts",
+      "sha256": "848205cc220c2d0b9fa7ac34da35cc7b97cfd3546736e483e4e1c30e7152941a",
+      "bytes": 6,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h1/read.facts",
+      "sha256": "134687c12886c29d098ae7f4728f5b1e919366e274abc75601befc7141c2ca73",
+      "bytes": 28,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h1/write.facts",
+      "sha256": "0dbc4d983e05544093b76a7e1215f196c6537ff7fbc50450e7f59bd5f6051287",
+      "bytes": 14,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h2/committed.facts",
+      "sha256": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+      "bytes": 4,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h2/read.facts",
+      "sha256": "79874bb6e0dc0e5f6e9027ff21a9522f15e0baf8ea0ad692260533183b2b8d0c",
+      "bytes": 40,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h2/write.facts",
+      "sha256": "803d2bfed2ad7aa8302c3d6a462811d1e03dde15dfec1538262f9440a331c3ab",
+      "bytes": 20,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h3/committed.facts",
+      "sha256": "87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7",
+      "bytes": 2,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h3/read.facts",
+      "sha256": "79874bb6e0dc0e5f6e9027ff21a9522f15e0baf8ea0ad692260533183b2b8d0c",
+      "bytes": 40,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/h3/write.facts",
+      "sha256": "803d2bfed2ad7aa8302c3d6a462811d1e03dde15dfec1538262f9440a331c3ab",
+      "bytes": 20,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/history.md",
+      "sha256": "20ab0fb6fe2a8ff013fba1fed19792fab16930b56086985f7c99be0bdd9f28e2",
+      "bytes": 1863,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-history-g2item/inputs/run.sh",
+      "sha256": "fcafd0cc51436cea95cc253aabee9404dddd3dcf58dd92d2fda2d95ac6dea3d3",
+      "bytes": 223,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "souffle 2.5 (2.5)",
+    "[h1] ---------------",
+    "[h1] rw",
+    "[h1] a\tb",
+    "[h1] ===============",
+    "[h1] T1\tT2",
+    "[h1] T2\tT1",
+    "[h1] ===============",
+    "[h1] ---------------",
+    "[h1] g2item",
+    "[h1] a\tb",
+    "[h1] ===============",
+    "[h1] T1\tT2",
+    "[h1] T2\tT1",
+    "[h1] ===============",
+    "[h1] ---------------",
+    "[h1] verdict",
+    "[h1] v",
+    "[h1] ===============",
+    "[h1] G2-item: a cycle of dependencies with an anti-dependency edge",
+    "[h1] ===============",
+    "[h2] ---------------",
+    "[h2] rw",
+    "[h2] a\tb",
+    "[h2] ===============",
+    "[h2] a\tb",
+    "[h2] b\ta",
+    "[h2] ===============",
+    "[h2] ---------------",
+    "[h2] g2item",
+    "[h2] a\tb",
+    "[h2] ===============",
+    "[h2] a\tb",
+    "[h2] b\ta",
+    "[h2] ===============",
+    "[h2] ---------------",
+    "[h2] verdict",
+    "[h2] v",
+    "[h2] ===============",
+    "[h2] G2-item: a cycle of dependencies with an anti-dependency edge",
+    "[h2] ===============",
+    "[h3] ---------------",
+    "[h3] rw",
+    "[h3] a\tb",
+    "[h3] ===============",
+    "[h3] ===============",
+    "[h3] ---------------",
+    "[h3] g2item",
+    "[h3] a\tb",
+    "[h3] ===============",
+    "[h3] ===============",
+    "[h3] ---------------",
+    "[h3] verdict",
+    "[h3] v",
+    "[h3] ===============",
+    "[h3] no cycle among committed transactions",
+    "[h3] ==============="
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-history-g2item/souffle.log",
+      "sha256": "013badf3b465ee329d99ad6570860cacfa3705872713ad25d7e158147270f3b0",
+      "bytes": 1016,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "notes": [
+    "The facts are written by hand, one file per history (inputs/hN/), each line traced in a comment of history.md to the run log it comes from: h1 to the shape of the G2-item anomaly Jepsen reported (https://jepsen.io/analyses/postgresql-12.3), not to Jepsen's own history files; h2 and h3 to RUN-pg-pool-levels q2-p1 and q1-p1.",
+    "g2.dl derives write-read, write-write and read-write (anti-dependency) edges between committed transactions from the reads and the version order of the writes (Adya's direct serialization graph), and reports a cycle that contains a read-write edge as g2item. run.sh runs souffle once per history and prefixes each output line with \"[hN] \"."
+  ]
+}

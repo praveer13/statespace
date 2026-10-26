@@ -1,0 +1,165 @@
+# AUD-6.3 · S6 · G6e Hidden trust: a trusted-base bug (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. The pair's receipts and scenarios are keyed by RUN-pg-pool-levels: the guarded team debit
+# on PostgreSQL 18.6 with both writer pools at serializable (q1) and with session b's pool at read committed (q2),
+# interleaved (p1) and one after the other (p2), each session's level read back. The flawed member's key is the
+# spine's run, RUN-history-g2item: Souffle finds the G2-item cycle in the q2-p1 history (h2), as in the toy history of
+# Jepsen's PostgreSQL 12.3 report (h1), and none in q1-p1 (h3). Variant pair v1 is the holds transaction at
+# serializable and at repeatable read, keyed by RUN-pg-claims (E1, E3).
+id: AUD-6.3
+stage: S6
+class: G6e
+medium: sql
+artifact: writer-pool-isolation
+subject: "a service's writer pools (SQL)"
+claim: "Serializable by construction; the database guarantees it."
+requirement: >-
+  No two team debits commit together when, run one after the other, the second would be refused: the team total
+  never ends below zero, however the writers interleave.
+scenario_question: "Does the configuration, as written, rule out this outcome?"
+scheduled_after: [LAB-6, S6.L9]
+kcs: [KC-6.db-as-assumption, KC-6.serializable-retries]
+based_on:
+  incident: "Jepsen, PostgreSQL 12.3: transactions at SERIALIZABLE exhibited G2-item, an anomaly that isolation level forbids."
+  date: "2020-06-12"
+  date_marks: "the analysis was published"
+  source: https://jepsen.io/analyses/postgresql-12.3
+
+cases:
+  - id: sound
+    key: none
+    description: "Sets the team-limits pool's isolation level, which the migration left at repeatable read. The debit tests pass."
+    statement: |
+      -- db/pool.spec: the two writer pools, each setting its level when it opens a connection (PostgreSQL 18.6)
+      session a  -- pool payments
+      step a_pool   { SET default_transaction_isolation = 'serializable'; }
+      step a_debit  { UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; }
+      session b  -- pool team_limits
+      step b_pool   { SET default_transaction_isolation = 'serializable'; }
+      step b_debit  { UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; }
+      -- the service retries a whole command on SQLSTATE 40001 and 40P01
+    diff: |
+      --- a/db/pool.spec
+      +++ b/db/pool.spec
+      @@ -5,2 +5,2 @@
+       session b  -- pool team_limits
+      -step b_pool   { SET default_transaction_isolation = 'repeatable read'; }
+      +step b_pool   { SET default_transaction_isolation = 'serializable'; }
+    receipt: |
+      [q1 p2]   step b_level: SHOW [["serializable"]]
+      [q1 p2]   step b_debit: UPDATE 0
+      [q1 p2]   check: [[1, -50], [2, 100]]; [["50"]]
+    restatement:
+      run: RUN-pg-pool-levels
+      scenarios: &sound-scenarios
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: true, key_line: "[q1 p1]   step b_commit:  ERROR 40001: could not serialize access due to read/write dependencies among transactions", why: "Both sessions are serializable, so PostgreSQL refuses b's commit with 40001 and the team total stays at 50." }
+        - { id: s2, text: "One debit commits and the team total ends at 50", answer: false, key_line: '[q1 p1]   check: [[1, -50], [2, 100]]; [["50"]]', why: "That is the intended outcome, and the run shows it." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q1 p2]   step b_debit: UPDATE 0", why: "The second debit's guard sees a total of 50 and updates no row." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-pg-pool-levels
+    key_lines:
+      - { config: q1-p1, line: "[q1 p1]   step b_level: SHOW [[\"serializable\"]]" }
+      - { config: q1-p1, line: "[q1 p1]   step b_commit:  ERROR 40001: could not serialize access due to read/write dependencies among transactions" }
+    explain: "Every writer reads back serializable, and the interleaving that would end at -100 fails at b's commit with 40001, which the statement says the service retries (the retry is not part of this run). The result still rests on an [A] clause, PostgreSQL 18.6's SERIALIZABLE behaving as documented; Jepsen found a version where it did not."
+
+  - id: flawed
+    key: { class: G6e, also: [G7, G8] }
+    description: "Sets the team-limits pool's isolation level, which the migration left at repeatable read. The debit tests pass."
+    statement: |
+      -- db/pool.spec: the two writer pools, each setting its level when it opens a connection (PostgreSQL 18.6)
+      session a  -- pool payments
+      step a_pool   { SET default_transaction_isolation = 'serializable'; }
+      step a_debit  { UPDATE acct SET bal = bal - 150 WHERE id = 1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; }
+      session b  -- pool team_limits
+      step b_pool   { SET default_transaction_isolation = 'read committed'; }
+      step b_debit  { UPDATE acct SET bal = bal - 150 WHERE id = 2 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; }
+      -- the service retries a whole command on SQLSTATE 40001 and 40P01
+    diff: |
+      --- a/db/pool.spec
+      +++ b/db/pool.spec
+      @@ -5,2 +5,2 @@
+       session b  -- pool team_limits
+      -step b_pool   { SET default_transaction_isolation = 'repeatable read'; }
+      +step b_pool   { SET default_transaction_isolation = 'read committed'; }
+    receipt: |
+      [q2 p2]   step b_level: SHOW [["read committed"]]
+      [q2 p2]   step b_debit: UPDATE 0
+      [q2 p2]   check: [[1, -50], [2, 100]]; [["50"]]
+    restatement:
+      run: RUN-pg-pool-levels
+      scenarios:
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: false, key_line: '[q2 p1]   check: [[1, -50], [2, -50]]; [["-100"]]', why: "b runs at read committed, so PostgreSQL does not track its reads for serializability: both guards saw 200, both commit, and the team ends at -100." }
+        - { id: s2, text: "One debit commits and the team total ends at 50", answer: false, key_line: '[q2 p2]   check: [[1, -50], [2, 100]]; [["50"]]', why: "Run one after the other, it behaves: that is the test the receipt shows." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q2 p2]   step b_debit: UPDATE 0", why: "The second guard sees 50 and updates no row." }
+    evidence: { type: declaration, load_bearing: ["statement:6", "receipt:1"] }
+    key_run: RUN-history-g2item
+    key_lines: ["[h2] G2-item: a cycle of dependencies with an anti-dependency edge", "[h3] no cycle among committed transactions"]
+    explain: "The read-back says read committed for the team-limits pool. Mixed levels void SERIALIZABLE's guarantee: with one writer below it, the two debits commit together and the history holds the same G2-item cycle of anti-dependencies that Jepsen reported for PostgreSQL 12.3 (h2, against h1). \"Every writer is SERIALIZABLE\" is an [A] clause the claim dropped (G7), and the deployed pool is not the configuration the claim names (G8)."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: change-isolation-level
+    artifact: holds-isolation
+    key: none
+    claim: "Holds are serializable by construction; the database guarantees it."
+    description: "Pins the holds transaction's isolation level instead of relying on the server default. The holds tests pass."
+    statement: |
+      -- db/holds.sql: place a hold of 80 on account 1 (PostgreSQL 18.6)
+      BEGIN ISOLATION LEVEL SERIALIZABLE;
+      select a.bal - coalesce((select sum(amt) from holds h where h.acct = 1),0) from acct a where a.id = 1;
+      insert into holds values (1, 80);  -- only when the select returned at least 80
+      COMMIT;  -- the service retries the whole hold on SQLSTATE 40001
+    diff: |
+      --- a/db/holds.sql
+      +++ b/db/holds.sql
+      @@ -1,2 +1,2 @@
+       -- db/holds.sql: place a hold of 80 on account 1 (PostgreSQL 18.6)
+      -BEGIN;
+      +BEGIN ISOLATION LEVEL SERIALIZABLE;
+    receipt: |
+      server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+      [E1 conditional UPDATE, SERIALIZABLE] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20
+    restatement:
+      run: RUN-pg-claims
+      scenarios: &v1-sound-scenarios
+        - { id: h1, text: "Two holds of 80 against a balance of 100 both commit", answer: true, key_line: "[E3 holds write-skew, SERIALIZABLE] avail seen 100,100; A commit=ok ; B commit=ERR SerializationFailure [40001] could not serialize access due to read/write dependencies among transactions; total held=80 vs bal 100", why: "The second commit fails with 40001; one hold of 80 stands." }
+        - { id: h2, text: "Both transactions see 100 available before either commits", answer: false, key_line: "[E3 holds write-skew, SERIALIZABLE] avail seen 100,100", why: "They do: each reads its own snapshot. SERIALIZABLE stops the second commit, not the read." }
+        - { id: h3, text: "Two concurrent conditional debits of 80 from 100 both succeed", answer: true, key_line: "[E1 conditional UPDATE, SERIALIZABLE] A=1 row(s); B blocked=True; B -> SerializationFailure [40001]", why: "The second debit waits for the first and then fails with 40001." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-pg-claims
+    key_lines: ["[E3 holds write-skew, SERIALIZABLE] avail seen 100,100; A commit=ok ; B commit=ERR SerializationFailure [40001] could not serialize access due to read/write dependencies among transactions; total held=80 vs bal 100"]
+    explain: "At SERIALIZABLE, PostgreSQL 18.6 refuses the second of two holds that each read the same available balance, with 40001. The claim still rests on the database behaving as documented, an [A] clause."
+
+  - id: v1-flawed
+    pair: v1
+    operator: change-isolation-level
+    artifact: holds-isolation
+    key: { class: G6e, also: [G7, G9] }
+    claim: "Holds are serializable by construction; the database guarantees it."
+    description: "Pins the holds transaction's isolation level instead of relying on the server default. The holds tests pass."
+    statement: |
+      -- db/holds.sql: place a hold of 80 on account 1 (PostgreSQL 18.6)
+      BEGIN ISOLATION LEVEL REPEATABLE READ;
+      select a.bal - coalesce((select sum(amt) from holds h where h.acct = 1),0) from acct a where a.id = 1;
+      insert into holds values (1, 80);  -- only when the select returned at least 80
+      COMMIT;  -- the service retries the whole hold on SQLSTATE 40001
+    diff: |
+      --- a/db/holds.sql
+      +++ b/db/holds.sql
+      @@ -1,2 +1,2 @@
+       -- db/holds.sql: place a hold of 80 on account 1 (PostgreSQL 18.6)
+      -BEGIN;
+      +BEGIN ISOLATION LEVEL REPEATABLE READ;
+    receipt: |
+      server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+      [E1 conditional UPDATE, REPEATABLE READ] A=1 row(s); B blocked=True; B -> SerializationFailure [40001] could not serialize access due to concurrent update; final bal=20
+    restatement:
+      run: RUN-pg-claims
+      scenarios:
+        - { id: h1, text: "Two holds of 80 against a balance of 100 both commit", answer: false, key_line: "[E3 holds write-skew, REPEATABLE READ] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100", why: "Both read 100 available, both insert, both commit: 160 held against 100." }
+        - { id: h2, text: "Both transactions see 100 available before either commits", answer: false, key_line: "[E3 holds write-skew, REPEATABLE READ] avail seen 100,100", why: "Each reads its own snapshot." }
+        - { id: h3, text: "Two concurrent conditional debits of 80 from 100 both succeed", answer: true, key_line: "[E1 conditional UPDATE, REPEATABLE READ] A=1 row(s); B blocked=True; B -> SerializationFailure [40001]", why: "Two writes to one row conflict even here: that is what the receipt's test exercised, and why it passed." }
+    evidence: { type: declaration, load_bearing: ["statement:2", "diff:5"] }
+    key_run: RUN-pg-claims
+    key_lines: ["[E3 holds write-skew, REPEATABLE READ] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100"]
+    explain: "PostgreSQL's REPEATABLE READ is snapshot isolation, not SERIALIZABLE: two holds that each insert a new row never write the same row, so nothing conflicts and both commit, 160 held against 100. The receipt's test updates one row twice, the conflict REPEATABLE READ does catch, so it passes."

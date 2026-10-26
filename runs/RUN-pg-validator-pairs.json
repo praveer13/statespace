@@ -1,0 +1,382 @@
+{
+  "id": "RUN-pg-validator-pairs",
+  "title": "AUD-9.2's validation methods on PostgreSQL 18.6: the shape checks accept both non-equivalent rewrites, a bounded replay finds 3 and 6 differing databases where the honest rewrite and plan differ on none of 9, and three more rewrites agree on the databases their reports tried and differ on others",
+  "task": "W5-T33",
+  "origin": "recorded",
+  "records": "AUD-9.2 (content/audit/AUD-9.2.yaml): each case's validation method (template shape check, the fixture database, or a replay over a bounded family of databases), its first distinguishing database, and the step-3 scenarios",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "postgres, the server binary of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T18:04:50.265Z",
+  "started_at": "2026-10-26T18:04:50.095Z",
+  "duration_s": 0.113,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "-d",
+      "--name",
+      "ssrec-aud9-pg-validator-pairs-validate",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-e",
+      "POSTGRES_HOST_AUTH_METHOD=trust",
+      "-v",
+      "<sandbox>/work:/q:ro",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-aud9-pg-validator-pairs-validate",
+      "sh",
+      "-c",
+      "until pg_isready -U postgres -q && psql -X -U postgres -c \"select 1\" >/dev/null 2>&1; do sleep 0.5; done"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-aud9-pg-validator-pairs-validate",
+      "sh",
+      "-c",
+      "psql -X -U postgres -q -f /q/validate.sql 2>&1"
+    ],
+    [
+      "docker",
+      "rm",
+      "-f",
+      "ssrec-aud9-pg-validator-pairs-validate"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-validator-pairs/inputs/validate.sql",
+      "sha256": "d5ac12654a6f845bf189d71ec431b669b0fda3114655dfaf24fbc4d89938005f",
+      "bytes": 13533,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[q1 replay] 9 databases, 0 differ",
+    "[q2 shape] credit: table acct, key 2, bal + 30 | rewrite: table acct, key 2, bal + 30 | accepted",
+    "[q2 replay] 9 databases, 3 differ",
+    "[q2 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+    "[q3 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q4 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q3 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+    "[q5 replay] 9 databases, 0 differ",
+    "[q6 shape] debit: table acct, key 1, bal - 30 | credit: table acct, key 1, bal + 30 | accepted",
+    "[q6 replay] 9 databases, 6 differ",
+    "[q6 first difference] database (1,30),(2,0): source commit | 1:0 2:30; plan commit | 1:30 2:0",
+    "[q1 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q1 s2] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q1 s3] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q1 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+    "[q2 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q2 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+    "[q2 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+    "[q2 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+    "[q3 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q3 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+    "[q3 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+    "[q3 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+    "[q4 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+    "[q4 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+    "[q4 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+    "[q4 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+    "[q5 s1] same: source commit | 1:70 2:30; plan commit | 1:70 2:30",
+    "[q5 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+    "[q5 s3] same: source commit | 1:0 2:80; plan commit | 1:0 2:80",
+    "[q5 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+    "[q6 s1] differ: source commit | 1:70 2:30; plan commit | 1:100 2:0",
+    "[q6 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+    "[q6 s3] differ: source commit | 1:0 2:80; plan commit | 1:30 2:50",
+    "[q6 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+    "[q7 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q8 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q7 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q7 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q7 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0",
+    "[q7 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q8 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q8 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+    "[q8 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0",
+    "[q8 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q10 tried] 3 databases, 0 differ",
+    "[q9 tried] 3 databases, 0 differ",
+    "[q10 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30",
+    "[q10 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q10 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q10 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30",
+    "[q9 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30",
+    "[q9 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q9 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+    "[q9 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30",
+    "[q11 fixture] same: compiled result 150; rewrite result 150",
+    "[q12 fixture] same: compiled result 150; rewrite result 150",
+    "[q11 s1] same: compiled result 150; rewrite result 150",
+    "[q11 s2] differ: compiled result 0; rewrite result NULL",
+    "[q11 s3] same: compiled result 100; rewrite result 100",
+    "[q11 s4] differ: compiled result 0; rewrite result NULL",
+    "[q12 s1] same: compiled result 150; rewrite result 150",
+    "[q12 s2] differ: compiled result 0; rewrite result NULL",
+    "[q12 s3] same: compiled result 100; rewrite result 100",
+    "[q12 s4] differ: compiled result 0; rewrite result NULL"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-validator-pairs/validate.log",
+      "sha256": "5e80ace96b8e1537a89c8184477a25970dfb8fd3da399bce566ad38f8a60df17",
+      "bytes": 5149,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "replay": {
+      "q1": {
+        "databases": 9,
+        "differ": 0
+      },
+      "q2": {
+        "databases": 9,
+        "differ": 3
+      },
+      "q5": {
+        "databases": 9,
+        "differ": 0
+      },
+      "q6": {
+        "databases": 9,
+        "differ": 6
+      },
+      "q10": {
+        "databases": 3,
+        "differ": 0
+      },
+      "q9": {
+        "databases": 3,
+        "differ": 0
+      }
+    },
+    "shape": {
+      "q2": "accepted",
+      "q6": "accepted"
+    },
+    "scenarios": {
+      "q1": {
+        "s1": true,
+        "s2": true,
+        "s3": true,
+        "s4": true
+      },
+      "q2": {
+        "s1": true,
+        "s2": false,
+        "s3": false,
+        "s4": true
+      },
+      "q3": {
+        "s1": true,
+        "s2": false,
+        "s3": false,
+        "s4": true
+      },
+      "q4": {
+        "s1": true,
+        "s2": false,
+        "s3": false,
+        "s4": true
+      },
+      "q5": {
+        "s1": true,
+        "s2": true,
+        "s3": true,
+        "s4": true
+      },
+      "q6": {
+        "s1": false,
+        "s2": true,
+        "s3": false,
+        "s4": true
+      },
+      "q7": {
+        "fixture": true,
+        "s1": true,
+        "s2": true,
+        "s3": false,
+        "s4": true
+      },
+      "q8": {
+        "fixture": true,
+        "s1": true,
+        "s2": true,
+        "s3": false,
+        "s4": true
+      },
+      "q10": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      },
+      "q9": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      },
+      "q11": {
+        "fixture": true,
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": false
+      },
+      "q12": {
+        "fixture": true,
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": false
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "network": "none"
+    }
+  },
+  "primary_config": "validate",
+  "configs": [
+    {
+      "id": "validate",
+      "origin": "recorded",
+      "purpose": "validate.sql: the twelve cases tagged q1 to q12, their replays, shape checks, tried databases and scenarios",
+      "engine": "postgresql",
+      "version": "18.6",
+      "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T18:04:50.095Z",
+      "duration_s": 0.113,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-aud9-pg-validator-pairs-validate",
+        "sh",
+        "-c",
+        "psql -X -U postgres -q -f /q/validate.sql 2>&1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-validator-pairs/inputs/validate.sql",
+          "sha256": "d5ac12654a6f845bf189d71ec431b669b0fda3114655dfaf24fbc4d89938005f",
+          "bytes": 13533,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+        "[q1 replay] 9 databases, 0 differ",
+        "[q2 shape] credit: table acct, key 2, bal + 30 | rewrite: table acct, key 2, bal + 30 | accepted",
+        "[q2 replay] 9 databases, 3 differ",
+        "[q2 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+        "[q3 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q4 fixture] database (1,100),(2,50): credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q3 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+        "[q5 replay] 9 databases, 0 differ",
+        "[q6 shape] debit: table acct, key 1, bal - 30 | credit: table acct, key 1, bal + 30 | accepted",
+        "[q6 replay] 9 databases, 6 differ",
+        "[q6 first difference] database (1,30),(2,0): source commit | 1:0 2:30; plan commit | 1:30 2:0",
+        "[q1 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q1 s2] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q1 s3] same: credit abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q1 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+        "[q2 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q2 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+        "[q2 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+        "[q2 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+        "[q3 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q3 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+        "[q3 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+        "[q3 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+        "[q4 s1] same: credit commit | 1:100 2:80; rewrite commit | 1:100 2:80",
+        "[q4 s2] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:100 2:30",
+        "[q4 s3] differ: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30",
+        "[q4 s4] same: credit commit | 2:30; rewrite commit | 2:30",
+        "[q5 s1] same: source commit | 1:70 2:30; plan commit | 1:70 2:30",
+        "[q5 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+        "[q5 s3] same: source commit | 1:0 2:80; plan commit | 1:0 2:80",
+        "[q5 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+        "[q6 s1] differ: source commit | 1:70 2:30; plan commit | 1:100 2:0",
+        "[q6 s2] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+        "[q6 s3] differ: source commit | 1:0 2:80; plan commit | 1:30 2:50",
+        "[q6 s4] same: source abort | unchanged; plan abort (statement 1 touched 0 rows) | unchanged",
+        "[q7 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q8 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q7 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q7 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q7 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0",
+        "[q7 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q8 s1] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q8 s2] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0",
+        "[q8 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0",
+        "[q8 s4] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q10 tried] 3 databases, 0 differ",
+        "[q9 tried] 3 databases, 0 differ",
+        "[q10 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30",
+        "[q10 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q10 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q10 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30",
+        "[q9 s1] same: compiled commit | 1:70 2:30; rewrite commit | 1:70 2:30",
+        "[q9 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q9 s3] same: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite abort (statement 1 touched 0 rows) | unchanged",
+        "[q9 s4] same: compiled commit | 1:1 2:30; rewrite commit | 1:1 2:30",
+        "[q11 fixture] same: compiled result 150; rewrite result 150",
+        "[q12 fixture] same: compiled result 150; rewrite result 150",
+        "[q11 s1] same: compiled result 150; rewrite result 150",
+        "[q11 s2] differ: compiled result 0; rewrite result NULL",
+        "[q11 s3] same: compiled result 100; rewrite result 100",
+        "[q11 s4] differ: compiled result 0; rewrite result NULL",
+        "[q12 s1] same: compiled result 150; rewrite result 150",
+        "[q12 s2] differ: compiled result 0; rewrite result NULL",
+        "[q12 s3] same: compiled result 100; rewrite result 100",
+        "[q12 s4] differ: compiled result 0; rewrite result NULL"
+      ],
+      "outputs": [
+        "runs/RUN-pg-validator-pairs/validate.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the run's inputs/ folder, which holds the files as they ran.",
+    "Each log is the container's output. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-aud9.mjs), copied in log order.",
+    "A plan's outcome is a commit with the table after it, or an abort when a statement touches other than one row (the plan's rowcount check, S9.L8), which rolls back; aborts compare by class. Every database is loaded, run and rolled back inside one function call.",
+    "source() is the source command transfer 30 1 2, transcribed by hand into PL/pgSQL from S9's runS for this run, because the reference interpreter is not built yet (LAB-9.11). When it is, RUN-sql-shape-validator re-records q5 and q6 with the interpreter as the source side.",
+    "shape() is the agent's template check: it reads a write's table, key literal and increment from the statement text with regular expressions, and never runs the statement.",
+    "q7 to q12 are three rewrites checked only on the databases their reports name (the fixture, or three databases), and then on the step-3 scenarios: a hold guard (NOT IN rewritten as NOT EXISTS, with holds.acct_id nullable), a funds guard (bal >= 30 rewritten as bal - 30 > 0) and a balance report (coalesce(sum(bal), 0) rewritten as sum(bal)).",
+    "The credit family is every database with ids in {1, 2}, each absent, at 0 or at 50 (9 databases); the plan family has accounts 1 and 2, each at 0, 30 or 50 (9 databases)."
+  ]
+}

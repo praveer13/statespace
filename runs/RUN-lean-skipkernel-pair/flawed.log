@@ -1,0 +1,18 @@
+info: ledger: no previous manifest, creating one from scratch
+info: toolchain not updated; no toolchain information found
+✔ [2/6] Built Ledger.Transfer (132ms)
+✔ [3/6] Built Ledger.Fast (536ms)
+✔ [4/6] Built Ledger.Conserve (448ms)
+✔ [5/6] Built Ledger (502ms)
+Build completed successfully (6 jobs).
+lake exit=0
+'conserves' does not depend on any axioms
+report exit=0
+--- leanchecker Ledger
+leanchecker found a problem in Ledger.Fast
+uncaught exception: while replaying declaration 'conserves_fast':
+(kernel) declaration type mismatch, 'conserves_fast' has type
+  True
+but it is expected to have type
+  ∀ (a b amt : Int), Eq (instHAdd.hAdd (transfer a b amt).fst (transfer a b amt).snd) (instHAdd.hAdd a b)
+leanchecker exit=1

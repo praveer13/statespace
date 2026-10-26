@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS acct;
+CREATE TABLE acct (id int PRIMARY KEY, bal bigint NOT NULL);
+INSERT INTO acct VALUES (1, 100);

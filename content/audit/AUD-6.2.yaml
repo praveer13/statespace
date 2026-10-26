@@ -1,0 +1,158 @@
+# AUD-6.2 · S6 · G10 Observer too weak (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Every case is keyed by RUN-drt-transfers, the spine's key run: the same 200 seeded commands through the reference
+# semantics (reference.py, standing in for the reference interpreter, which is not built yet) and through the shipped
+# compiler and five mutants (m1-m5) on PostgreSQL 18.6, each pair of results then compared by four observers. q1 and
+# q2 are the pair's observers; q3 and q4 are variant pair v1's. A step-3 scenario is a compiler bug, and its answer
+# is what that observer printed for that mutant.
+id: AUD-6.2
+stage: S6
+class: G10
+medium: sql
+artifact: differential-observer
+subject: "a differential harness's comparison (Python, SQL)"
+claim: "The compiled transfers match the interpreter on every generated command."
+requirement: >-
+  The harness reports a disagreement whenever a client could tell the compiled transfer from the reference: a
+  different balance, or a different outcome class (applied, refused with no rows changed, or a SQLSTATE error).
+scenario_question: "Would this harness report a disagreement for this compiler bug?"
+scheduled_after: [LAB-6.4]
+kcs: [KC-6.differential-testing, KC-6.rowcount-as-guard]
+based_on:
+  incident: "Cedar: differential random testing against the Lean reference model found 21 bugs, against 4 found by the proofs."
+  date: "2024-07"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2407.01688
+
+cases:
+  - id: sound
+    key: none
+    description: "Adds the observer the differential harness uses to compare the reference with the database. 200 of 200 generated commands agree."
+    statement: |
+      # compiled.py: how the compiled transfer's outcome is read
+      def outcome_of(rowcount):
+          return 'ok' if rowcount == 2 else 'zero-rows' if rowcount == 0 else 'partial'
+
+      # observers.py: m is the reference's result, d the database's
+      def agree_q1(m, d):
+          return (m.outcome, m.balances) == (d.outcome, d.balances)
+    diff: |
+      --- a/tests/observers.py
+      +++ b/tests/observers.py
+      @@ -0,0 +1,3 @@
+      +# observers.py: m is the reference's result, d the database's
+      +def agree_q1(m, d):
+      +    return (m.outcome, m.balances) == (d.outcome, d.balances)
+    receipt: |
+      generator n=200 seed=7: ok 22, insufficient 46, no-such-account 74, self-transfer 27, bad-amount 31
+      [q1 shipped] agree 200 of 200
+    restatement:
+      run: RUN-drt-transfers
+      scenarios: &sound-scenarios
+        - { id: s1, text: "The compiled transfer reports success whatever the rowcount", answer: true, key_line: "[q1 m1] agree 22 of 200", why: "A transfer from account 9 changes no rows; the reference refuses it, the mutant calls it ok, and the outcome classes differ on the first command." }
+        - { id: s2, text: "The compiled transfer credits the receiver twice", answer: true, key_line: "[q1 m2] agree 5 of 200", why: "The balances differ from the first applied transfer on." }
+        - { id: s3, text: "The WHERE conditions are listed in another order", answer: false, key_line: "[q1 m4] agree 200 of 200", why: "Not a bug: the same statement in another order, and the harness rightly stays quiet." }
+        - { id: s4, text: "A refused transfer raises an error instead of updating no rows", answer: true, key_line: "[q1 m5] agree 194 of 200", why: "A NULL amount ends in SQLSTATE 22012 on the database and in a refusal in the reference: different outcome classes, equal balances." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-drt-transfers
+    key_lines: ["[q1 shipped] agree 200 of 200", "[q1 m1] agree 22 of 200"]
+    explain: "The observer compares outcome classes and balances, so a client-visible difference of either kind shows up as a disagreement, and the shipped compiler still agrees on all 200 commands. The result is a test, [T] · n = 200, with the generator's statistics."
+
+  - id: flawed
+    key: { class: G10, also: [G11] }
+    description: "Adds the observer the differential harness uses to compare the reference with the database. 200 of 200 generated commands agree."
+    statement: |
+      # compiled.py: how the compiled transfer's outcome is read
+      def outcome_of(rowcount):
+          return 'ok' if rowcount == 2 else 'zero-rows' if rowcount == 0 else 'partial'
+
+      # observers.py: m is the reference's result, d the database's
+      def agree_q2(m, d):
+          return m.balances == d.balances
+    diff: |
+      --- a/tests/observers.py
+      +++ b/tests/observers.py
+      @@ -0,0 +1,3 @@
+      +# observers.py: m is the reference's result, d the database's
+      +def agree_q2(m, d):
+      +    return m.balances == d.balances
+    receipt: |
+      generator n=200 seed=7: ok 22, insufficient 46, no-such-account 74, self-transfer 27, bad-amount 31
+      [q2 shipped] agree 200 of 200
+    restatement:
+      run: RUN-drt-transfers
+      scenarios:
+        - { id: s1, text: "The compiled transfer reports success whatever the rowcount", answer: false, key_line: "[q2 m1] agree 200 of 200", why: "A refused transfer changes no balance either way, so a harness that reads only balances cannot tell \"refused\" from \"ok, nothing moved\"." }
+        - { id: s2, text: "The compiled transfer credits the receiver twice", answer: true, key_line: "[q2 m2] agree 5 of 200", why: "This bug changes a balance, and balances are what this observer reads." }
+        - { id: s3, text: "The WHERE conditions are listed in another order", answer: false, key_line: "[q2 m4] agree 200 of 200", why: "Not a bug, and no disagreement." }
+        - { id: s4, text: "A refused transfer raises an error instead of updating no rows", answer: false, key_line: "[q2 m5] agree 200 of 200", why: "An error and a refusal leave the same balances; the observer never looks at the outcome." }
+    evidence: { type: paired-states, load_bearing: ["statement:7", "diff:6"], reference: "RUN-drt-transfers [q1 m1], command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}; [q2 m1] counts it as agreement" }
+    key_run: RUN-drt-transfers
+    key_lines: ["[q2 m1] agree 200 of 200", "[q1 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}"]
+    explain: "The two results of command 1 under m1 have equal balances, {1: 100, 2: 50, 3: 0}, and different outcome classes: the reference refuses a transfer from account 9, the database says ok. A client sees the difference; this observer does not, and agrees on all 200 commands for a compiler that never refuses anything. PostgreSQL itself reports an UPDATE that matches no row as a success with 0 rows (RUN-pg-claims, its unknown-account case E5: ('ok', 0)), which is why the outcome class must be compared."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: outcome-flag-observer
+    key: none
+    claim: "The compiled transfers match the interpreter: the same commands succeed and fail in both."
+    description: "Rewrites the harness's observer as one boolean expression. 200 of 200 generated commands agree."
+    statement: |
+      # observers.py: m is the reference's result, d the database's;
+      # an outcome is ok, zero-rows, partial or sqlstate:<code>
+      def agree_q3(m, d):
+          return m.outcome == d.outcome and m.balances == d.balances
+    diff: |
+      --- a/tests/observers.py
+      +++ b/tests/observers.py
+      @@ -3,2 +3,2 @@
+      -def agree(m, d):
+      -    return (m.outcome, m.balances) == (d.outcome, d.balances)
+      +def agree_q3(m, d):
+      +    return m.outcome == d.outcome and m.balances == d.balances
+    receipt: |
+      [q3 shipped] agree 200 of 200
+    restatement:
+      run: RUN-drt-transfers
+      scenarios: &v1-sound-scenarios
+        - { id: t1, text: "A refused transfer raises an error instead of updating no rows", answer: true, key_line: "[q3 m5] agree 194 of 200", why: "sqlstate:22012 and zero-rows are different outcomes." }
+        - { id: t2, text: "The compiled transfer reports success whatever the rowcount", answer: true, key_line: "[q3 m1] agree 22 of 200", why: "ok against zero-rows on every refused command." }
+        - { id: t3, text: "The balance guard is written as > instead of >=", answer: false, key_line: "[q3 m3] agree 200 of 200", why: "A real bug the observer could see, but no generated command moves a whole balance, so nothing differs: a limit of the generator, not the observer." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-drt-transfers
+    key_lines: ["[q3 shipped] agree 200 of 200", "[q3 m5] agree 194 of 200"]
+    explain: "The observer compares the whole outcome class, so an error where the reference refuses is a disagreement."
+
+  - id: v1-flawed
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: outcome-flag-observer
+    key: { class: G10, also: [G11] }
+    claim: "The compiled transfers match the interpreter: the same commands succeed and fail in both."
+    description: "Rewrites the harness's observer as one boolean expression. 200 of 200 generated commands agree."
+    statement: |
+      # observers.py: m is the reference's result, d the database's;
+      # an outcome is ok, zero-rows, partial or sqlstate:<code>
+      def agree_q4(m, d):
+          return (m.outcome == "ok") == (d.outcome == "ok") and m.balances == d.balances
+    diff: |
+      --- a/tests/observers.py
+      +++ b/tests/observers.py
+      @@ -3,2 +3,2 @@
+      -def agree(m, d):
+      -    return (m.outcome, m.balances) == (d.outcome, d.balances)
+      +def agree_q4(m, d):
+      +    return (m.outcome == "ok") == (d.outcome == "ok") and m.balances == d.balances
+    receipt: |
+      [q4 shipped] agree 200 of 200
+    restatement:
+      run: RUN-drt-transfers
+      scenarios:
+        - { id: t1, text: "A refused transfer raises an error instead of updating no rows", answer: false, key_line: "[q4 m5] agree 200 of 200", why: "Both are \"not ok\" to this observer, so an error and a refusal look the same." }
+        - { id: t2, text: "The compiled transfer reports success whatever the rowcount", answer: true, key_line: "[q4 m1] agree 22 of 200", why: "ok against not ok: the flag does tell those apart." }
+        - { id: t3, text: "The balance guard is written as > instead of >=", answer: false, key_line: "[q4 m3] agree 200 of 200", why: "No generated command moves a whole balance, so nothing differs." }
+    evidence: { type: paired-states, load_bearing: ["statement:4", "diff:7"], reference: "RUN-drt-transfers [q3 m5], command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}; [q4 m5] counts it as agreement" }
+    key_run: RUN-drt-transfers
+    key_lines: ["[q4 m5] agree 200 of 200", "[q3 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}"]
+    explain: "Collapsing the outcome to ok or not ok equates a refusal with an error. Command 8 under m5 has equal balances and different outcome classes, zero-rows against sqlstate:22012; a client that retries on errors behaves differently, and this observer agrees on all 200 commands."

@@ -1,0 +1,559 @@
+# AUD-1.3 · S1 · G5 Bounded or inconclusive presented as proof (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Variant pair v4's flawed form is the tab's own budget query, keyed by RUN-z3-budget-pyodide
+# (spine section 6.2's key run). The pair, the other variant pairs, every receipt and every scenario are keyed by
+# RUN-z3-inconclusive-pairs, recorded in the Bench image (content/audit/tools/record-keys-s1s2.mjs), which runs each
+# case's query exactly as the case states it, budget included. Its tags are neutral: q1 sound member, q2 flawed
+# member, q3/q4 variant pair v1 (sound/flawed), q5/q6 v2 (sound/flawed), q7/q8 v3 (sound/flawed), q9/q10 v4
+# (flawed/sound).
+id: AUD-1.3
+stage: S1
+class: G5
+medium: z3py
+artifact: fee-overdraft-budget
+subject: "an overdraft query with a fee (Z3Py)"
+claim: "Z3 found no counterexample, so the property holds."
+requirement: >-
+  No transfer the service accepts leaves the sender below zero once the fee is taken, and the check that says so has
+  answered: an unsat for the stated premises, not a result that ran out of budget or gave up.
+scenario_question: "Does the recorded result establish the property for these values: did the check answer unsat, and do the values meet every premise?"
+scheduled_after: [LAB-1, S1.L2]
+kcs: [KC-1.three-answers, KC-1.unknown-fails-closed]
+based_on:
+  incident: "AWS's S3 Block Public Access: a policy whose SMT-based analysis returns unknown because of a time-out is treated as failing the check, so an inconclusive result fails closed instead of passing."
+  date: "2020-11"
+  date_marks: "the paper was presented at ESEC/FSE 2020"
+  source: https://doi.org/10.1145/3368089.3409728
+
+cases:
+  - id: sound
+    key: none
+    description: "Sets a resource limit on the overdraft query so the CI step stays fast. Z3 found no counterexample."
+    statement: |
+      a, amount, rate, fee = Ints('a amount rate fee')
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(a >= 0, amount > 0)
+      s.add(rate >= 0, rate <= 500)                    # the rate in basis points
+      s.add(fee * 10000 <= amount * rate)              # fee = floor(amount * rate / 10000)
+      s.add(amount * rate < fee * 10000 + 10000)
+      s.add(amount + fee <= a)                         # the guard: the sender covers amount and fee
+      s.add(a - amount - fee < 0)                      # the violation: the sender ends below zero
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/fee_query.py
+      +++ b/checks/fee_query.py
+      @@ -1,3 +1,4 @@
+       a, amount, rate, fee = Ints('a amount rate fee')
+       s = Solver()
+      +s.set('rlimit', 5000000)
+       s.add(a >= 0, amount > 0)
+    receipt: |
+      z3 5.3.1
+      [q1 violation] unsat
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios: &sound-scenarios
+        - id: s1
+          text: "a = 1000, amount = 400, rate = 250"
+          answer: true
+          key_line: "[q1 s1 a=1000 amount=400 rate=250] established"
+          why: "The check answered unsat, and these values meet every premise: the fee is 10 and the sender ends at 590."
+        - id: s2
+          text: "a = 100, amount = 100, rate = 100"
+          answer: false
+          key_line: "[q1 s2 a=100 amount=100 rate=100] not established (the values fail a premise)"
+          why: "The fee is 1, so amount plus fee is 101, over the balance: the guard refuses it and the unsat says nothing about it."
+        - id: s3
+          text: "a = 5000, amount = 5000, rate = 0"
+          answer: true
+          key_line: "[q1 s3 a=5000 amount=5000 rate=0] established"
+          why: "No fee, the whole balance: within the guard, and the unsat covers it."
+        - id: s4
+          text: "a = 10, amount = 20, rate = 0"
+          answer: false
+          key_line: "[q1 s4 a=10 amount=20 rate=0] not established (the values fail a premise)"
+          why: "An overdraft the guard refuses: outside the premises."
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q1 violation] unsat", "[q1 premises] sat"]
+    explain: "Within its budget Z3 answered unsat, and the premises alone are sat, so the unsat is about real transfers. The honest stamp names the budget: unsat under rlimit 5000000, uncertified."
+
+  - id: flawed
+    key: G5
+    description: "Sets a resource limit on the overdraft query so the CI step stays fast. Z3 found no counterexample."
+    statement: |
+      a, amount, rate, fee = Ints('a amount rate fee')
+      s = Solver()
+      s.set('rlimit', 20000)
+      s.add(a >= 0, amount > 0)
+      s.add(rate >= 0, rate <= 500)                    # the rate in basis points
+      s.add(fee * 10000 <= amount * rate)              # fee = floor(amount * rate / 10000)
+      s.add(amount * rate < fee * 10000 + 10000)
+      s.add(amount + fee <= a)                         # the guard: the sender covers amount and fee
+      s.add(a - amount - fee < 0)                      # the violation: the sender ends below zero
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/fee_query.py
+      +++ b/checks/fee_query.py
+      @@ -1,3 +1,4 @@
+       a, amount, rate, fee = Ints('a amount rate fee')
+       s = Solver()
+      +s.set('rlimit', 20000)
+       s.add(a >= 0, amount > 0)
+    receipt: |
+      z3 5.3.1
+      [q2 violation] unknown canceled
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios:
+        - id: s1
+          text: "a = 1000, amount = 400, rate = 250"
+          answer: false
+          key_line: "[q2 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)"
+          why: "The values meet every premise, but the check answered unknown: it established nothing about any transfer."
+        - id: s2
+          text: "a = 100, amount = 100, rate = 100"
+          answer: false
+          key_line: "[q2 s2 a=100 amount=100 rate=100] not established (the check answered unknown)"
+          why: "Outside the guard, and the check answered unknown anyway."
+        - id: s3
+          text: "a = 5000, amount = 5000, rate = 0"
+          answer: false
+          key_line: "[q2 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)"
+          why: "Within the premises, but an unknown is not an unsat."
+        - id: s4
+          text: "a = 10, amount = 20, rate = 0"
+          answer: false
+          key_line: "[q2 s4 a=10 amount=20 rate=0] not established (the check answered unknown)"
+          why: "Outside the guard, and nothing was established."
+    evidence: { type: verdict-line, load_bearing: ["statement:3", "receipt:2"] }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q2 violation] unknown canceled"]
+    explain: "The budget of 20000 ran out before Z3 decided the query: the raw answer is unknown, reason canceled. The agent read the absence of a model as the absence of a counterexample. Reported honestly it is [?] with its reason, and an unknown that guards a release fails closed."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: report-inconclusive-as-verdict
+    artifact: shard-count
+    key: none
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Adds config.toml's bounds to the shard-count query: no accepted configuration makes exactly 8 shards. Z3 found no counterexample."
+    statement: |
+      fanout, depth = Ints('fanout depth')     # the batcher makes fanout ** depth shards
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(depth > 3)                         # config.toml: depth is at least 4
+      s.add(fanout >= 2)                       # config.toml: fanout is at least 2
+      s.add(fanout ** depth == 8)              # the violation: exactly 8 shards
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/shard_query.py
+      +++ b/checks/shard_query.py
+      @@ -3,2 +3,4 @@
+       s.set('rlimit', 5000000)
+      +s.add(depth > 3)                         # config.toml: depth is at least 4
+      +s.add(fanout >= 2)                       # config.toml: fanout is at least 2
+       s.add(fanout ** depth == 8)              # the violation: exactly 8 shards
+    receipt: |
+      z3 5.3.1
+      [q3 violation] unsat
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios: &v1-sound-scenarios
+        - id: s1
+          text: "fanout = 2, depth = 4"
+          answer: true
+          key_line: "[q3 s1 fanout=2 depth=4] established"
+          why: "The check answered unsat and the values meet both premises: 16 shards, not 8."
+        - id: s2
+          text: "fanout = 3, depth = 5"
+          answer: true
+          key_line: "[q3 s2 fanout=3 depth=5] established"
+          why: "Within the premises, and covered by the unsat."
+        - id: s3
+          text: "fanout = 1, depth = 6"
+          answer: false
+          key_line: "[q3 s3 fanout=1 depth=6] not established (the values fail a premise)"
+          why: "fanout >= 2 leaves it out."
+        - id: s4
+          text: "fanout = 2, depth = 3"
+          answer: false
+          key_line: "[q3 s4 fanout=2 depth=3] not established (the values fail a premise)"
+          why: "depth > 3 leaves it out; it would make exactly 8."
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q3 violation] unsat"]
+    explain: "With fanout at least 2 and depth at least 4 Z3 decided the query: unsat, within the budget. The property holds for every configuration the premises admit."
+
+  - id: v1-flawed
+    pair: v1
+    operator: report-inconclusive-as-verdict
+    artifact: shard-count
+    key: G5
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Adds config.toml's bounds to the shard-count query: no accepted configuration makes exactly 8 shards. Z3 found no counterexample."
+    statement: |
+      fanout, depth = Ints('fanout depth')     # the batcher makes fanout ** depth shards
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(depth > 3)                         # config.toml: depth is at least 4
+      s.add(fanout != 0)                       # config.toml: fanout is not zero
+      s.add(fanout ** depth == 8)              # the violation: exactly 8 shards
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/shard_query.py
+      +++ b/checks/shard_query.py
+      @@ -3,2 +3,4 @@
+       s.set('rlimit', 5000000)
+      +s.add(depth > 3)                         # config.toml: depth is at least 4
+      +s.add(fanout != 0)                       # config.toml: fanout is not zero
+       s.add(fanout ** depth == 8)              # the violation: exactly 8 shards
+    receipt: |
+      z3 5.3.1
+      [q4 violation] unknown smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios:
+        - id: s1
+          text: "fanout = 2, depth = 4"
+          answer: false
+          key_line: "[q4 s1 fanout=2 depth=4] not established (the check answered unknown)"
+          why: "The values meet the premises, but the check answered unknown."
+        - id: s2
+          text: "fanout = 3, depth = 5"
+          answer: false
+          key_line: "[q4 s2 fanout=3 depth=5] not established (the check answered unknown)"
+          why: "Nothing was established for any configuration."
+        - id: s3
+          text: "fanout = 1, depth = 6"
+          answer: false
+          key_line: "[q4 s3 fanout=1 depth=6] not established (the check answered unknown)"
+          why: "Within these premises, yet unknown establishes nothing."
+        - id: s4
+          text: "fanout = 2, depth = 3"
+          answer: false
+          key_line: "[q4 s4 fanout=2 depth=3] not established (the check answered unknown)"
+          why: "Outside depth > 3, and the check answered unknown anyway."
+    evidence: { type: verdict-line, load_bearing: ["statement:6", "receipt:2"] }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q4 violation] unknown smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))"]
+    explain: "With fanout only nonzero, the power with two unknowns is outside what Z3's arithmetic decides: the answer is unknown, reason incomplete (theory arithmetic), not a budget stop. The property may well hold; the run does not say so. Honestly reported: [?] with that reason."
+
+  - id: v2-sound
+    pair: v2
+    operator: report-inconclusive-as-verdict
+    artifact: fee-schedule
+    key: none
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Encodes the fee schedule's rule and checks that no day has a negative fee. Z3 found no counterexample."
+    statement: |
+      fee_on = Function('fee_on', IntSort(), IntSort())
+      k, d = Ints('k d')
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(ForAll([k], Implies(k >= 0, fee_on(k) >= fee_on(0))))       # the schedule's rule
+      s.add(fee_on(0) >= 0, d >= 0)
+      s.add(fee_on(d) < 0)                     # the violation: some day's fee is negative
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/schedule_query.py
+      +++ b/checks/schedule_query.py
+      @@ -4,2 +4,3 @@
+       s.set('rlimit', 5000000)
+      +s.add(ForAll([k], Implies(k >= 0, fee_on(k) >= fee_on(0))))       # the schedule's rule
+       s.add(fee_on(0) >= 0, d >= 0)
+    receipt: |
+      z3 5.3.1
+      [q5 violation] unsat
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios: &v2-sound-scenarios
+        - id: s1
+          text: "d = 0"
+          answer: true
+          key_line: "[q5 s1 d=0] established"
+          why: "The check answered unsat and day 0 meets the premises."
+        - id: s2
+          text: "d = 30"
+          answer: true
+          key_line: "[q5 s2 d=30] established"
+          why: "Every day from 0 on is covered by the rule and the unsat."
+        - id: s3
+          text: "d = -1"
+          answer: false
+          key_line: "[q5 s3 d=-1] not established (the values fail a premise)"
+          why: "d >= 0 leaves it out."
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q5 violation] unsat"]
+    explain: "The rule ties every day directly to day 0, so one instantiation of the quantifier refutes the violation: Z3 answered unsat within the budget."
+
+  - id: v2-flawed
+    pair: v2
+    operator: report-inconclusive-as-verdict
+    artifact: fee-schedule
+    key: G5
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Encodes the fee schedule's rule and checks that no day has a negative fee. Z3 found no counterexample."
+    statement: |
+      fee_on = Function('fee_on', IntSort(), IntSort())
+      k, d = Ints('k d')
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(ForAll([k], Implies(k >= 0, fee_on(k + 1) >= fee_on(k))))   # the schedule's rule
+      s.add(fee_on(0) >= 0, d >= 0)
+      s.add(fee_on(d) < 0)                     # the violation: some day's fee is negative
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/schedule_query.py
+      +++ b/checks/schedule_query.py
+      @@ -4,2 +4,3 @@
+       s.set('rlimit', 5000000)
+      +s.add(ForAll([k], Implies(k >= 0, fee_on(k + 1) >= fee_on(k))))   # the schedule's rule
+       s.add(fee_on(0) >= 0, d >= 0)
+    receipt: |
+      z3 5.3.1
+      [q6 violation] unknown canceled
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios:
+        - id: s1
+          text: "d = 0"
+          answer: false
+          key_line: "[q6 s1 d=0] not established (the check answered unknown)"
+          why: "The check answered unknown: it established nothing, even for day 0."
+        - id: s2
+          text: "d = 30"
+          answer: false
+          key_line: "[q6 s2 d=30] not established (the check answered unknown)"
+          why: "Nothing was established for any day."
+        - id: s3
+          text: "d = -1"
+          answer: false
+          key_line: "[q6 s3 d=-1] not established (the check answered unknown)"
+          why: "Outside d >= 0, and the check answered unknown anyway."
+    evidence: { type: verdict-line, load_bearing: ["statement:5", "receipt:2"] }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q6 violation] unknown canceled"]
+    explain: "A rule from one day to the next needs induction to reach day d, which Z3's quantifier instantiation does not do: it spent the budget and answered unknown, reason canceled. The property is true, but this run does not establish it."
+
+  - id: v3-sound
+    pair: v3
+    operator: report-inconclusive-as-verdict
+    artifact: fee-overdraft-budget-smt
+    medium: smt-lib
+    key: none
+    description: "Sets a resource limit on the overdraft query so the CI step stays fast. Z3 found no counterexample."
+    statement: |
+      (set-option :rlimit 5000000)
+      (declare-const a Int)
+      (declare-const amount Int)
+      (declare-const rate Int)
+      (declare-const fee Int)
+      (assert (and (>= a 0) (> amount 0)))
+      (assert (and (>= rate 0) (<= rate 500)))                 ; the rate in basis points
+      (assert (<= (* fee 10000) (* amount rate)))              ; fee = floor(amount * rate / 10000)
+      (assert (< (* amount rate) (+ (* fee 10000) 10000)))
+      (assert (<= (+ amount fee) a))                           ; the guard: the sender covers amount and fee
+      (assert (< (- a amount fee) 0))                          ; the violation: the sender ends below zero
+      (check-sat)
+      (get-info :reason-unknown)
+    diff: |
+      --- a/checks/fee_query.smt2
+      +++ b/checks/fee_query.smt2
+      @@ -1,2 +1,3 @@
+      +(set-option :rlimit 5000000)
+       (declare-const a Int)
+       (declare-const amount Int)
+    receipt: |
+      [q7 cli] unsat (:reason-unknown "")
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios: &v3-sound-scenarios
+        - id: s1
+          text: "a = 1000, amount = 400, rate = 250"
+          answer: true
+          key_line: "[q7 s1 a=1000 amount=400 rate=250] established"
+          why: "The file's check answered unsat and the values meet every premise."
+        - id: s2
+          text: "a = 100, amount = 100, rate = 100"
+          answer: false
+          key_line: "[q7 s2 a=100 amount=100 rate=100] not established (the values fail a premise)"
+          why: "Amount plus fee is over the balance: the guard leaves it out."
+        - id: s3
+          text: "a = 5000, amount = 5000, rate = 0"
+          answer: true
+          key_line: "[q7 s3 a=5000 amount=5000 rate=0] established"
+          why: "No fee, the whole balance: covered."
+        - id: s4
+          text: "a = 10, amount = 20, rate = 0"
+          answer: false
+          key_line: "[q7 s4 a=10 amount=20 rate=0] not established (the values fail a premise)"
+          why: "An overdraft the guard refuses."
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q7 cli] unsat", "[q7 violation] unsat"]
+    explain: "The command line answered unsat within an rlimit of 5000000, and the reason line is empty because the answer is not unknown. Stamped with its budget, the claim stands."
+
+  - id: v3-flawed
+    pair: v3
+    operator: report-inconclusive-as-verdict
+    artifact: fee-overdraft-budget-smt
+    medium: smt-lib
+    key: G5
+    description: "Sets a resource limit on the overdraft query so the CI step stays fast. Z3 found no counterexample."
+    statement: |
+      (set-option :rlimit 20000)
+      (declare-const a Int)
+      (declare-const amount Int)
+      (declare-const rate Int)
+      (declare-const fee Int)
+      (assert (and (>= a 0) (> amount 0)))
+      (assert (and (>= rate 0) (<= rate 500)))                 ; the rate in basis points
+      (assert (<= (* fee 10000) (* amount rate)))              ; fee = floor(amount * rate / 10000)
+      (assert (< (* amount rate) (+ (* fee 10000) 10000)))
+      (assert (<= (+ amount fee) a))                           ; the guard: the sender covers amount and fee
+      (assert (< (- a amount fee) 0))                          ; the violation: the sender ends below zero
+      (check-sat)
+      (get-info :reason-unknown)
+    diff: |
+      --- a/checks/fee_query.smt2
+      +++ b/checks/fee_query.smt2
+      @@ -1,2 +1,3 @@
+      +(set-option :rlimit 20000)
+       (declare-const a Int)
+       (declare-const amount Int)
+    receipt: |
+      [q8 cli] unknown (:reason-unknown "canceled")
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios:
+        - id: s1
+          text: "a = 1000, amount = 400, rate = 250"
+          answer: false
+          key_line: "[q8 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)"
+          why: "Within the premises, but the check answered unknown."
+        - id: s2
+          text: "a = 100, amount = 100, rate = 100"
+          answer: false
+          key_line: "[q8 s2 a=100 amount=100 rate=100] not established (the check answered unknown)"
+          why: "Outside the guard, and nothing was established anyway."
+        - id: s3
+          text: "a = 5000, amount = 5000, rate = 0"
+          answer: false
+          key_line: "[q8 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)"
+          why: "An unknown covers no transfer."
+        - id: s4
+          text: "a = 10, amount = 20, rate = 0"
+          answer: false
+          key_line: "[q8 s4 a=10 amount=20 rate=0] not established (the check answered unknown)"
+          why: "Outside the guard, and the check answered unknown."
+    evidence: { type: verdict-line, load_bearing: ["statement:1", "receipt:1"] }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q8 cli] unknown (:reason-unknown \"canceled\")"]
+    explain: "(check-sat) printed unknown and the reason line says canceled: the rlimit of 20000 stopped Z3 before it decided. No counterexample was found because none was looked for to the end."
+
+  - id: v4-flawed
+    pair: v4
+    operator: report-inconclusive-as-verdict
+    artifact: cube-sum
+    key: G5
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Adds the cube-sum check from the puzzle set to CI, with a budget. Z3 found no counterexample."
+    statement: |
+      x, y, z = Ints('x y z')
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(x > 2, y > 2)
+      s.add(z > 2)
+      s.add(x*x*x + y*y*y == z*z*z)            # the violation: a cube that is a sum of two cubes
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/cube_query.py
+      +++ b/checks/cube_query.py
+      @@ -2,2 +2,3 @@
+       s = Solver()
+      +s.set('rlimit', 5000000)
+       s.add(x > 2, y > 2)
+    receipt: |
+      z3 5.3.1
+      [q9 violation] unknown canceled
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios:
+        - id: s1
+          text: "x = 3, y = 3, z = 3"
+          answer: false
+          key_line: "[q9 s1 x=3 y=3 z=3] not established (the check answered unknown)"
+          why: "The check answered unknown, so it established nothing about these values."
+        - id: s2
+          text: "x = 3, y = 4, z = 5"
+          answer: false
+          key_line: "[q9 s2 x=3 y=4 z=5] not established (the check answered unknown)"
+          why: "Within the premises, yet nothing was established."
+        - id: s3
+          text: "x = 1, y = 2, z = 9"
+          answer: false
+          key_line: "[q9 s3 x=1 y=2 z=9] not established (the check answered unknown)"
+          why: "Outside x > 2, and the check answered unknown anyway."
+    evidence: { type: verdict-line, load_bearing: ["statement:6", "receipt:2"] }
+    key_run: RUN-z3-budget-pyodide
+    key_lines: [{ config: rlimit, line: "rlimit-case unknown canceled" }]
+    explain: "This is the query the S1 tab ran: under rlimit 5000000 Z3 answered unknown, reason canceled, in Pyodide and natively in the Bench (RUN-z3-inconclusive-pairs, q9). The property is a theorem of number theory, but this run is not evidence for it. Reported honestly: [?] with its reason."
+
+  - id: v4-sound
+    pair: v4
+    operator: report-inconclusive-as-verdict
+    artifact: cube-sum
+    key: none
+    claim: "Z3 found no counterexample, so the property holds."
+    description: "Adds the cube-sum check from the puzzle set to CI, with a budget. Z3 found no counterexample."
+    statement: |
+      x, y, z = Ints('x y z')
+      s = Solver()
+      s.set('rlimit', 5000000)
+      s.add(x > 2, y > 2)
+      s.add(z <= 3)
+      s.add(x*x*x + y*y*y == z*z*z)            # the violation: a cube that is a sum of two cubes
+      r = s.check()
+      print(r, s.reason_unknown() if r == unknown else '')
+    diff: |
+      --- a/checks/cube_query.py
+      +++ b/checks/cube_query.py
+      @@ -2,2 +2,3 @@
+       s = Solver()
+      +s.set('rlimit', 5000000)
+       s.add(x > 2, y > 2)
+    receipt: |
+      z3 5.3.1
+      [q10 violation] unsat
+    restatement:
+      run: RUN-z3-inconclusive-pairs
+      scenarios: &v4-sound-scenarios
+        - id: s1
+          text: "x = 3, y = 3, z = 3"
+          answer: true
+          key_line: "[q10 s1 x=3 y=3 z=3] established"
+          why: "The check answered unsat and the values meet every premise."
+        - id: s2
+          text: "x = 3, y = 4, z = 5"
+          answer: false
+          key_line: "[q10 s2 x=3 y=4 z=5] not established (the values fail a premise)"
+          why: "z <= 3 leaves it out: this statement only speaks about z up to 3."
+        - id: s3
+          text: "x = 1, y = 2, z = 9"
+          answer: false
+          key_line: "[q10 s3 x=1 y=2 z=9] not established (the values fail a premise)"
+          why: "Outside x > 2 and z <= 3."
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-z3-inconclusive-pairs
+    key_lines: ["[q10 violation] unsat"]
+    explain: "With z at most 3 the bounds decide it: x and y above 2 make the left side too large, and Z3 answered unsat within the budget. The claim holds for what this statement states, z up to 3, and no further."

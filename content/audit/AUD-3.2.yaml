@@ -1,0 +1,187 @@
+# AUD-3.2 · S3 · G4 Encoding and type-semantics slip (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. The flawed member is keyed by RUN-lean-nat-trunc (spine section 6.2's Key run): draft 0's
+# unguarded pay on Nat balances, where 30 - 50 truncates to 0 and the total goes from 30 to 50. Receipts, the sound
+# member, the variant pair and every step-3 scenario are keyed by RUN-lean-nat-pair, recorded in the Bench image: four
+# projects, each built and then evaluated on its own model. Scenario tags are neutral: q1 flawed, q2 sound,
+# q3 v1-sound, q4 v1-flawed.
+id: AUD-3.2
+stage: S3
+class: G4
+medium: lean
+artifact: pay-balances
+subject: "a payment's balance theorem (Lean)"
+claim: "Balances can't go negative."
+requirement: >-
+  The service keeps balances as signed 64-bit integers. A payment never leaves the payer below zero, and it keeps
+  every unit of money: what leaves one balance arrives in the other, or the payment is refused and nothing moves.
+scenario_question: "Under the model as written, does this operation keep every unit of money: nothing created and nothing lost?"
+scheduled_after: [LAB-3, S3.L7]
+kcs: [KC-3.nat-truncation, KC-1.encoding-is-the-claim]
+based_on:
+  incident: "Kimina-Prover issue #11: a released solution proves a statement without its (1/4 : ℝ) ascription, and over ℕ \"the content is 0 = 0\". No maintainer has replied, so the course rates it medium confidence."
+  date: "2026-09-13"
+  date_marks: "the issue was opened"
+  source: https://github.com/MoonshotAI/Kimina-Prover-Preview/issues/11
+
+cases:
+  - id: sound
+    key: none
+    description: "Rules out negative balances in pay and proves pay_nonneg. The build is green."
+    statement: |
+      def pay (fromBal toBal amount : Int) : Int × Int :=
+        if amount ≤ fromBal then (fromBal - amount, toBal + amount) else (fromBal, toBal)
+
+      theorem pay_nonneg (fromBal toBal amount : Int) (h : 0 ≤ fromBal) :
+          0 ≤ (pay fromBal toBal amount).1
+    diff: |
+      --- a/Pay.lean
+      +++ b/Pay.lean
+      @@ -3,6 +3,6 @@
+       def pay (fromBal toBal amount : Int) : Int × Int :=
+      -  (fromBal - amount, toBal + amount)
+      +  if amount ≤ fromBal then (fromBal - amount, toBal + amount) else (fromBal, toBal)
+
+       theorem pay_nonneg (fromBal toBal amount : Int) (h : 0 ≤ fromBal) :
+           0 ≤ (pay fromBal toBal amount).1 := by
+      -  sorry
+      +  unfold pay; split <;> simp <;> omega
+    receipt: |
+      'pay_nonneg' depends on axioms: [propext]
+      lean exit=0
+    restatement:
+      run: RUN-lean-nat-pair
+      scenarios: &sound-scenarios
+        - { id: s1, text: "pay 30 0 50: the payer holds 30 and pays 50", answer: true, key_line: "[q2 s1 pay 30 0 50] returns (30, 0) kept=true", why: "The guard refuses the overdraft and nothing moves: 30 before, 30 after." }
+        - { id: s2, text: "pay 30 0 20", answer: true, key_line: "[q2 s2 pay 30 0 20] returns (10, 20) kept=true", why: "20 leaves the payer and arrives at the payee." }
+        - { id: s3, text: "pay 30 0 30", answer: true, key_line: "[q2 s3 pay 30 0 30] returns (0, 30) kept=true", why: "The whole balance moves; the payer ends at exactly 0." }
+        - { id: s4, text: "pay 0 5 1: the payer holds nothing and pays 1", answer: true, key_line: "[q2 s4 pay 0 5 1] returns (0, 5) kept=true", why: "Refused: 1 is more than 0, so nothing moves." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-lean-nat-pair
+    key_lines:
+      - { config: sound, line: "lean exit=0" }
+      - { config: sound, line: "[q2 s1 pay 30 0 50] returns (30, 0) kept=true" }
+    explain: "Balances are Int, the arithmetic of the shipped code, and pay refuses any amount above the payer's balance. pay_nonneg uses the hypothesis 0 ≤ fromBal and the guard, and the model keeps every unit on every payment the scenarios try."
+
+  - id: flawed
+    key: G4
+    description: "Rules out negative balances in pay and proves pay_nonneg. The build is green."
+    statement: |
+      def pay (fromBal toBal amount : Nat) : Nat × Nat :=
+        (fromBal - amount, toBal + amount)
+
+      theorem pay_nonneg (fromBal toBal amount : Nat) (h : 0 ≤ fromBal) :
+          0 ≤ (pay fromBal toBal amount).1
+    diff: |
+      --- a/Pay.lean
+      +++ b/Pay.lean
+      @@ -3,6 +3,6 @@
+      -def pay (fromBal toBal amount : Int) : Int × Int :=
+      +def pay (fromBal toBal amount : Nat) : Nat × Nat :=
+         (fromBal - amount, toBal + amount)
+
+      -theorem pay_nonneg (fromBal toBal amount : Int) (h : 0 ≤ fromBal) :
+      +theorem pay_nonneg (fromBal toBal amount : Nat) (h : 0 ≤ fromBal) :
+           0 ≤ (pay fromBal toBal amount).1 := by
+      -  sorry
+      +  unfold pay; simp
+    receipt: |
+      'pay_nonneg' depends on axioms: [propext]
+      lean exit=0
+    restatement:
+      run: RUN-lean-nat-pair
+      scenarios:
+        - { id: s1, text: "pay 30 0 50: the payer holds 30 and pays 50", answer: false, key_line: "[q1 s1 pay 30 0 50] returns (0, 50) kept=false", why: "Nat subtraction stops at 0: 30 - 50 is 0, the payee gains 50, and the total grows from 30 to 50." }
+        - { id: s2, text: "pay 30 0 20", answer: true, key_line: "[q1 s2 pay 30 0 20] returns (10, 20) kept=true", why: "Within the balance, Nat and Int agree." }
+        - { id: s3, text: "pay 30 0 30", answer: true, key_line: "[q1 s3 pay 30 0 30] returns (0, 30) kept=true", why: "Exactly the balance: no truncation." }
+        - { id: s4, text: "pay 0 5 1: the payer holds nothing and pays 1", answer: false, key_line: "[q1 s4 pay 0 5 1] returns (0, 6) kept=false", why: "0 - 1 is 0 on Nat, and the payee still gains 1: a unit appears from nowhere." }
+    evidence: { type: witness, load_bearing: ["statement:1", "statement:2"], reference: { run: RUN-lean-nat-pair, line: "[q1 s1 pay 30 0 50] returns (0, 50) kept=false" } }
+    key_run: RUN-lean-nat-trunc
+    key_lines: ["(0, 50)", "(30, 50)", "'pay_witness' does not depend on any axioms"]
+    explain: "The theorem holds by type: every Nat is at least 0, so pay_nonneg says nothing about money. The overdraft is still there. Nat subtraction truncates, so pay 30 0 50 returns (0, 50), the total grows from 30 to 50, and nothing reports an error. The shipped balances are signed integers, where the same payment leaves the payer at -20."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: change-arithmetic
+    artifact: fee-payout
+    claim: "Payouts can't go negative."
+    key: none
+    description: "Moves payout to Nat, since amounts are never negative, and proves payout_nonneg. The build is green."
+    statement: |
+      def payout (charge fee : Nat) : Option Nat :=
+        if fee ≤ charge then some (charge - fee) else none
+
+      theorem payout_nonneg (charge fee p : Nat) (h : payout charge fee = some p) :
+          0 ≤ p
+    diff: |
+      --- a/Pay.lean
+      +++ b/Pay.lean
+      @@ -3,6 +3,6 @@
+      -def payout (charge fee : Int) : Option Int :=
+      +def payout (charge fee : Nat) : Option Nat :=
+         if fee ≤ charge then some (charge - fee) else none
+
+      -theorem payout_nonneg (charge fee p : Int) (h : payout charge fee = some p) :
+      +theorem payout_nonneg (charge fee p : Nat) (h : payout charge fee = some p) :
+           0 ≤ p := by
+      -  sorry
+      +  omega
+    receipt: |
+      'payout_nonneg' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-nat-pair
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "payout 30 50: a fee of 50 on a charge of 30", answer: true, key_line: "[q3 s1 payout 30 50] returns none kept=true", why: "The fee is larger than the charge, so the payout is refused." }
+        - { id: s2, text: "payout 30 5", answer: true, key_line: "[q3 s2 payout 30 5] returns (some 25) kept=true", why: "25 plus the fee of 5 is the charge." }
+        - { id: s3, text: "payout 30 30", answer: true, key_line: "[q3 s3 payout 30 30] returns (some 0) kept=true", why: "The fee takes the whole charge: a payout of 0." }
+        - { id: s4, text: "payout 0 1", answer: true, key_line: "[q3 s4 payout 0 1] returns none kept=true", why: "Refused: a fee on nothing." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-lean-nat-pair
+    key_lines:
+      - { config: v1-sound, line: "lean exit=0" }
+      - { config: v1-sound, line: "[q3 s1 payout 30 50] returns none kept=true" }
+    explain: "Every subtraction is guarded, so truncation never happens: Nat subtraction runs only when fee ≤ charge. On Nat the theorem is easy, and here that loses nothing."
+
+  - id: v1-flawed
+    pair: v1
+    operator: change-arithmetic
+    artifact: fee-payout
+    claim: "Payouts can't go negative."
+    key: G4
+    description: "Moves payout to Nat, since amounts are never negative, and proves payout_nonneg. The build is green."
+    statement: |
+      def payout (charge fee : Nat) : Option Nat :=
+        some (charge - fee)
+
+      theorem payout_nonneg (charge fee p : Nat) (h : payout charge fee = some p) :
+          0 ≤ p
+    diff: |
+      --- a/Pay.lean
+      +++ b/Pay.lean
+      @@ -3,6 +3,6 @@
+      -def payout (charge fee : Int) : Option Int :=
+      +def payout (charge fee : Nat) : Option Nat :=
+         some (charge - fee)
+
+      -theorem payout_nonneg (charge fee p : Int) (h : payout charge fee = some p) :
+      +theorem payout_nonneg (charge fee p : Nat) (h : payout charge fee = some p) :
+           0 ≤ p := by
+      -  sorry
+      +  omega
+    receipt: |
+      'payout_nonneg' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-nat-pair
+      scenarios:
+        - { id: s1, text: "payout 30 50: a fee of 50 on a charge of 30", answer: false, key_line: "[q4 s1 payout 30 50] returns (some 0) kept=false", why: "30 - 50 truncates to 0: the payout is 0 and the fee of 50 is more than the charge." }
+        - { id: s2, text: "payout 30 5", answer: true, key_line: "[q4 s2 payout 30 5] returns (some 25) kept=true", why: "No truncation: 25 plus 5 is 30." }
+        - { id: s3, text: "payout 30 30", answer: true, key_line: "[q4 s3 payout 30 30] returns (some 0) kept=true", why: "Exactly the charge: no truncation." }
+        - { id: s4, text: "payout 0 1", answer: false, key_line: "[q4 s4 payout 0 1] returns (some 0) kept=false", why: "0 - 1 is 0 on Nat: a payout of 0 and a fee taken from nothing." }
+    evidence: { type: witness, load_bearing: ["statement:1", "statement:2"], reference: { run: RUN-lean-nat-pair, line: "[q4 s1 payout 30 50] returns (some 0) kept=false" } }
+    key_run: RUN-lean-nat-pair
+    key_lines:
+      - { config: v1-flawed, line: "lean exit=0" }
+      - { config: v1-flawed, line: "[q4 s1 payout 30 50] returns (some 0) kept=false" }
+    explain: "On Int, payout_nonneg would be false: a fee above the charge gives a negative payout. Moving to Nat makes the theorem hold by type and hides the case. 30 - 50 becomes 0, and the missing 20 disappears without an error."

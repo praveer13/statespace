@@ -1,0 +1,312 @@
+{
+  "id": "RUN-pg-observer-pairs",
+  "title": "AUD-7.1's SQL variant pair: under a rows-only observer frank's two worlds look equal while his insert fails with 23505 in one and succeeds in the other; with a per-tenant unique key both inserts succeed and the whole-response observer sees equal worlds",
+  "task": "W4-T13",
+  "origin": "recorded",
+  "records": "AUD-7.1 (content/audit/AUD-7.1.yaml) variant pair v2: the pair check of q5 and q6 in PostgreSQL 18.6 with row security, and the step-3 scenarios under each case's observer",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server binary in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T18:04:13.194Z",
+  "started_at": "2026-10-26T18:04:12.692Z",
+  "duration_s": 0.429,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "-d",
+      "--name",
+      "ssrec-audit-pg-observer-pairs-2354436",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-e",
+      "POSTGRES_HOST_AUTH_METHOD=trust",
+      "-v",
+      "<sandbox>/work:/q:ro",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "exec",
+      "ssrec-audit-pg-observer-pairs-2354436",
+      "sh",
+      "/q/run.sh"
+    ],
+    [
+      "docker",
+      "rm",
+      "-f",
+      "ssrec-audit-pg-observer-pairs-2354436"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/frank.sql",
+      "sha256": "18e6e5501a5f991653ce451573c8d2233f774852efd16478017a8590b60828ad",
+      "bytes": 228,
+      "role": "sql"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/run.sh",
+      "sha256": "ba9ee899f26be445ed0c7669cf68d5cb2ac1b064514d2afb84e4febb7ff38453",
+      "bytes": 1535,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s1-L.txt",
+      "sha256": "67f7325bd3e32b6ab800c962c90067b6a6ef0d4f89f279574bf101d4be981e56",
+      "bytes": 70,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s1-R.txt",
+      "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+      "bytes": 19,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s2-L.txt",
+      "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+      "bytes": 19,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s2-R.txt",
+      "sha256": "ab4567e73da2ac2f6632263361530af4667a57fce404b7aabde6648f934affcc",
+      "bytes": 27,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s3-L.txt",
+      "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+      "bytes": 19,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s3-R.txt",
+      "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+      "bytes": 19,
+      "role": "scenario response"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/schema_q5.sql",
+      "sha256": "01560f1eb574a83986183c97309dfa9ba73f362d7a6941aefe0247d4d3f017d3",
+      "bytes": 379,
+      "role": "sql"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/schema_q6.sql",
+      "sha256": "877c034e483321afa71e96abc50100b5799eda06a3e96281d55da73d617d7b84",
+      "bytes": 416,
+      "role": "sql"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/world_w1.sql",
+      "sha256": "4564f31237e47708ef33e056c9711e9a9da0b4251965041defc55c0e545a4587",
+      "bytes": 165,
+      "role": "sql"
+    },
+    {
+      "path": "runs/RUN-pg-observer-pairs/inputs/world_w2.sql",
+      "sha256": "89443867a1d42cd7da5540cb16d0e1a4ba362bb33a5e9397f1d176c97b9062bc",
+      "bytes": 141,
+      "role": "sql"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q5 w1] roadmap",
+    "[q5 w1] ERROR:  23505: duplicate key value violates unique constraint \"documents_slug_key\"",
+    "[q5 w1] SCHEMA NAME:  public",
+    "[q5 w1] TABLE NAME:  documents",
+    "[q5 w1] CONSTRAINT NAME:  documents_slug_key",
+    "[q5 w1] LOCATION:  _bt_check_unique, nbtinsert.c:666",
+    "[q5 w2] roadmap",
+    "[q5 w2] INSERT 0 1",
+    "[q5 pair] w1 and w2 observations equal",
+    "[q5 s1] equal",
+    "[q5 s2] apart",
+    "[q5 s3] equal",
+    "[q6 w1] roadmap",
+    "[q6 w1] INSERT 0 1",
+    "[q6 w2] roadmap",
+    "[q6 w2] INSERT 0 1",
+    "[q6 pair] w1 and w2 observations equal",
+    "[q6 s1] apart",
+    "[q6 s2] apart",
+    "[q6 s3] equal"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-observer-pairs/pairs.log",
+      "sha256": "a35f2299693339a36ca03611404c25f41eb981bea2aa371aa9e014f143571771",
+      "bytes": 532,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q5": {
+      "pair": "equal",
+      "s1": "equal",
+      "s2": "apart",
+      "s3": "equal"
+    },
+    "q6": {
+      "pair": "equal",
+      "s1": "apart",
+      "s2": "apart",
+      "s3": "equal"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "user": "postgres (the image's superuser), via docker exec"
+    }
+  },
+  "primary_config": "pairs",
+  "configs": [
+    {
+      "id": "pairs",
+      "origin": "recorded",
+      "purpose": "run.sh: each case's schema in two worlds, frank's two commands, the pair check under the case's observer, and the step-3 scenarios",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T18:04:12.692Z",
+      "duration_s": 0.429,
+      "argv": [
+        "docker",
+        "exec",
+        "ssrec-audit-pg-observer-pairs-2354436",
+        "sh",
+        "/q/run.sh"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/frank.sql",
+          "sha256": "18e6e5501a5f991653ce451573c8d2233f774852efd16478017a8590b60828ad",
+          "bytes": 228,
+          "role": "sql"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/run.sh",
+          "sha256": "ba9ee899f26be445ed0c7669cf68d5cb2ac1b064514d2afb84e4febb7ff38453",
+          "bytes": 1535,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s1-L.txt",
+          "sha256": "67f7325bd3e32b6ab800c962c90067b6a6ef0d4f89f279574bf101d4be981e56",
+          "bytes": 70,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s1-R.txt",
+          "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+          "bytes": 19,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s2-L.txt",
+          "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+          "bytes": 19,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s2-R.txt",
+          "sha256": "ab4567e73da2ac2f6632263361530af4667a57fce404b7aabde6648f934affcc",
+          "bytes": 27,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s3-L.txt",
+          "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+          "bytes": 19,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/scenarios/s3-R.txt",
+          "sha256": "795b50f6a2bb588bb8919187383835d28555d0df37e679b9a1d46cf2f574a78a",
+          "bytes": 19,
+          "role": "scenario response"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/schema_q5.sql",
+          "sha256": "01560f1eb574a83986183c97309dfa9ba73f362d7a6941aefe0247d4d3f017d3",
+          "bytes": 379,
+          "role": "sql"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/schema_q6.sql",
+          "sha256": "877c034e483321afa71e96abc50100b5799eda06a3e96281d55da73d617d7b84",
+          "bytes": 416,
+          "role": "sql"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/world_w1.sql",
+          "sha256": "4564f31237e47708ef33e056c9711e9a9da0b4251965041defc55c0e545a4587",
+          "bytes": 165,
+          "role": "sql"
+        },
+        {
+          "path": "runs/RUN-pg-observer-pairs/inputs/world_w2.sql",
+          "sha256": "89443867a1d42cd7da5540cb16d0e1a4ba362bb33a5e9397f1d176c97b9062bc",
+          "bytes": 141,
+          "role": "sql"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q5 w1] roadmap",
+        "[q5 w1] ERROR:  23505: duplicate key value violates unique constraint \"documents_slug_key\"",
+        "[q5 w1] SCHEMA NAME:  public",
+        "[q5 w1] TABLE NAME:  documents",
+        "[q5 w1] CONSTRAINT NAME:  documents_slug_key",
+        "[q5 w1] LOCATION:  _bt_check_unique, nbtinsert.c:666",
+        "[q5 w2] roadmap",
+        "[q5 w2] INSERT 0 1",
+        "[q5 pair] w1 and w2 observations equal",
+        "[q5 s1] equal",
+        "[q5 s2] apart",
+        "[q5 s3] equal",
+        "[q6 w1] roadmap",
+        "[q6 w1] INSERT 0 1",
+        "[q6 w2] roadmap",
+        "[q6 w2] INSERT 0 1",
+        "[q6 pair] w1 and w2 observations equal",
+        "[q6 s1] apart",
+        "[q6 s2] apart",
+        "[q6 s3] equal"
+      ],
+      "outputs": [
+        "runs/RUN-pg-observer-pairs/pairs.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s7-s8.mjs), copied in log order.",
+    "One fresh server: docker run -d of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 with --network none, --memory=6g and trust authentication, the inputs mounted read-only at /q; the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready exited 0, ran run.sh through docker exec as the superuser postgres, and removed the container. argv lists the three commands (the configuration's argv is the docker exec); started_at, duration_s and exit_code are run.sh's.",
+    "run.sh creates one database per case and world, runs frank.sql as the role frank with app.tenant = acme and psql -v VERBOSITY=verbose (so an error carries its SQLSTATE), and prefixes each output line with the case and world. The pair check and the scenarios compare the case's observation of two responses: q5 keeps the rows only, q6 every line.",
+    "The worlds follow RUN-pg-rls-covert's specimen (SP-7.5): Birch's private layoffs-memo exists in world 1 only. The schema is written for this record, smaller than scripts/spikes/W0-S08/rls-spec.mjs's."
+  ]
+}

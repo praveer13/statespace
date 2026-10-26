@@ -1,0 +1,61 @@
+[q1] 
+[q1] running 2 tests
+[q1] test tests::every_committed_intent_is_acked ... ok
+[q1] test tests::provider_is_charged_once ... ok
+[q1] 
+[q1] test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+[q1] 
+[q1] seed 1: 7 trace lines written to q1-seed-1.ndjson
+[q1] trace q1-seed-1.ndjson:
+[q1]      1	{"event":"Commit","cmd":"c1"}
+[q1]      2	{"event":"TimerArmed","cmd":"c1"}
+[q1]      3	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+[q1]      4	{"event":"Receive","cmd":"c1"}
+[q1]      5	{"event":"Persist","cmd":"c1"}
+[q1]      6	{"event":"Ack","cmd":"c1"}
+[q1]      7	{"event":"End"}
+[q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+[q1] Running breadth-first search Model-Checking with fp 52 and seed 2656686127844464300 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 7] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+[q1] Parsing file /w/OutboxTrace.tla
+[q1] Parsing file /w/Outbox.tla
+[q1] Parsing file /w/TraceValidation.tla
+[q1] Parsing file /tmp/tlc-16318584837770435506/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+[q1] Parsing file /w/OutboxIface.tla
+[q1] Parsing file /tmp/tlc-16318584837770435506/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/Json.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Json.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+[q1] Parsing file /tmp/tlc-16318584837770435506/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+[q1] Semantic processing of module Naturals
+[q1] Semantic processing of module Sequences
+[q1] Semantic processing of module FiniteSets
+[q1] Semantic processing of module OutboxIface
+[q1] Semantic processing of module Outbox
+[q1] Semantic processing of module TLC
+[q1] Semantic processing of module Json
+[q1] Semantic processing of module Integers
+[q1] Semantic processing of module TLCExt
+[q1] Semantic processing of module TraceValidation
+[q1] Semantic processing of module _TLCTrace
+[q1] Semantic processing of module OutboxTrace
+[q1] Linting of module OutboxIface
+[q1] Linting of module Outbox
+[q1] Linting of module Json
+[q1] Linting of module TLCExt
+[q1] Linting of module TraceValidation
+[q1] Linting of module _TLCTrace
+[q1] Linting of module OutboxTrace
+[q1] Starting... (2026-10-26 18:04:09)
+[q1] Computing initial states...
+[q1] Finished computing initial states: 1 distinct state generated at 2026-10-26 18:04:09.
+[q1] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted", lines |-> 7, matched |-> 7, first_unmatched |-> 0, end_record |-> TRUE, paper_accepted |-> FALSE]>>
+[q1] Model checking completed. No error has been found.
+[q1]   Estimates of the probability that TLC did not check all reachable states
+[q1]   because two distinct states had the same fingerprint:
+[q1]   calculated (optimistic):  val = 0.0
+[q1] 9 states generated, 9 distinct states found, 0 states left on queue.
+[q1] The depth of the complete state graph search is 9.
+[q1] The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 1 and the 95th percentile is 1).
+[q1] Finished in 00s at (2026-10-26 18:04:09)

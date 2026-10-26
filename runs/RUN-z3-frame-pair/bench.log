@@ -1,0 +1,29 @@
+z3 5.3.1
+[q1 check] sat
+[q1 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1
+[q1 replay] ok, ends a=0 b=1 c=0: no run of the command breaks Inv here
+[q2 check] sat
+[q2 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1
+[q2 replay] ok, ends a=0 b=1 c=-1: a run of the command that breaks Inv
+[q1 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=0: below zero no
+[q1 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=3: below zero no
+[q1 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=0: below zero no
+[q1 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no
+[q2 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=-1: below zero yes
+[q2 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=2: below zero no
+[q2 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=-1: below zero yes
+[q2 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no
+[q3 check] sat
+[q3 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1
+[q3 replay] ok, ends cust=1 merch=0 fees=-1: a run of the command that breaks Inv
+[q4 check] sat
+[q4 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1
+[q4 replay] ok, ends cust=1 merch=0 fees=0: no run of the command breaks Inv here
+[q3 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=-1: below zero yes
+[q3 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=1: below zero no
+[q3 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no
+[q3 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=-1: below zero yes
+[q4 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=0: below zero no
+[q4 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=2: below zero no
+[q4 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no
+[q4 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=0: below zero no

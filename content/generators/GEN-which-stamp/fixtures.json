@@ -1,0 +1,255 @@
+{
+  "schema": "statespace/which-stamp-fixtures@1",
+  "fixtures": [
+    {
+      "id": "t1-z3-guard-unsat",
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": [
+        "[1.3 guard added] unsat (0.00s) "
+      ],
+      "context": {
+        "direction": "violation"
+      },
+      "key": "PROVED [P] · Z3 5.3.1 unsat · uncertified",
+      "note": "CL-1.1's violation query. The research harness set no rlimit, so the qualifier prints none; a receipt always carries one (receipt@1 z3.rlimit)."
+    },
+    {
+      "id": "t1-z3-overdraft-sat-replayed",
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": [
+        "[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]"
+      ],
+      "context": {
+        "direction": "violation",
+        "replay": "replayed",
+        "witness": {
+          "length": 1,
+          "unit": "steps"
+        }
+      },
+      "key": "REFUTED [R] · 1 step",
+      "note": "SP-1.1. The query is one transfer, so the witness is one step; the model replays because a − amount = −1 violates a − amount ≥ 0."
+    },
+    {
+      "id": "t1-z3-overdraft-sat-not-yet-replayed",
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": [
+        "[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]"
+      ],
+      "context": {
+        "direction": "violation"
+      },
+      "key": "none (replay-pending)",
+      "note": "Before the witness replays there is no [R]."
+    },
+    {
+      "id": "t1-z3-unknown-theory-arithmetic",
+      "run": "RUN-z3-unknown-pow",
+      "config": "RUN-z3-unknown-pow",
+      "parser": "solver",
+      "lines": [
+        "[Int x**y == 8, y>1] unknown (0.00s) smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic)) "
+      ],
+      "context": {},
+      "key": "UNKNOWN [?] · incomplete (theory arithmetic)",
+      "note": "SP-1.7. Z3 5.3.1's line, the record's own; the native-4.15.4 configuration prints the same line, so the fixture names the configuration it quotes."
+    },
+    {
+      "id": "t1-z3-unknown-canceled-at-rlimit",
+      "run": "RUN-z3-budget-pyodide",
+      "parser": "solver",
+      "lines": [
+        "2806ms py: rlimit-case unknown canceled 1.1 s"
+      ],
+      "context": {
+        "rlimit": 5000000,
+        "guardsEnforcement": true
+      },
+      "key": "UNKNOWN [?] · canceled at rlimit 5e6",
+      "note": "SP-1.8; the rlimit is the run record's budget. On a deploy gate the [?] fails closed (S1.L2's exit item)."
+    },
+    {
+      "id": "t1-tlc-atomic-complete",
+      "run": "RUN-tlc-atomic",
+      "parser": "tlc",
+      "lines": [
+        "Model checking completed. No error has been found.",
+        "5 states generated, 4 distinct states found, 0 states left on queue."
+      ],
+      "context": {
+        "constantsFrom": "research/spikes/tla/DoubleSpendAtomic.cfg"
+      },
+      "key": "MODEL-CHECKED [M] · Init = 100, Amount = 80, Workers = {w1, w2} · complete · 4 distinct states",
+      "note": "CL-5.1; the constants are parsed from the run's own configuration file."
+    },
+    {
+      "id": "t1-tlc-doublespend-deadlock",
+      "run": "RUN-tlc-doublespend",
+      "config": "1.8.0-default",
+      "parser": "tlc",
+      "lines": [
+        "Error: Deadlock reached.",
+        "11 states generated, 10 distinct states found, 3 states left on queue."
+      ],
+      "context": {
+        "constantsFrom": "research/evidence/A5r3/tla/DoubleSpend.cfg",
+        "deadlockFreedom": false
+      },
+      "key": "UNKNOWN [?] · stopped at deadlock, 10 distinct states",
+      "note": "SP-5.2 and GEN-which-stamp's worked example (ASSESSMENT.md section 4.13): the invariant NoOverspend, not deadlock freedom, was under check. TLC 1.8.0's default-flags configuration; 1.7.4 prints the same two lines, so the fixture names the configuration it quotes."
+    },
+    {
+      "id": "t1-tlc-rtw3-violation",
+      "run": "RUN-tlc-rtw3",
+      "parser": "tlc",
+      "lines": [
+        "Error: Invariant NoOverspend is violated.",
+        "State 1: <Initial predicate>",
+        "State 2: <Read(w1) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 3: <Check(w1) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 4: <Read(w2) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 5: <Write(w1) line 15, col 13 to line 16, col 64 of module RTW3>",
+        "State 6: <Check(w2) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>"
+      ],
+      "context": {
+        "constantsFrom": "research/evidence/a2r3/tla/rtw3/RTW3.cfg"
+      },
+      "key": "REFUTED [R] · 6 actions (7 states)",
+      "note": "The read/check/write split: a 7-state, 6-action trace (spine section 9.5)."
+    },
+    {
+      "id": "t1-lean-comparator-okay",
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": [
+        "== good comparator(no-sandbox) rc=0 :: Your solution is okay! "
+      ],
+      "context": {},
+      "key": "PROVED [P] · Lean 4.35.0 kernel · axioms listed"
+    },
+    {
+      "id": "t1-lean-comparator-paranoid",
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": [
+        "Lean paranoid kernel accepts the solution",
+        "lean4lean kernel accepts the solution",
+        "nanoda kernel accepts the solution",
+        "con-leche kernel accepts the solution",
+        "con-ron kernel accepts the solution",
+        "Lean default kernel accepts the solution"
+      ],
+      "context": {
+        "paranoid": true
+      },
+      "key": "PROVED [P] · Lean 4.35.0 kernel · axioms listed · 6 checkers",
+      "note": "--paranoid runs six checkers; the qualifier counts the ones that accepted."
+    },
+    {
+      "id": "t1-lean-sorry",
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": [
+        "warning: Ledger/Bad.lean:4:8: declaration uses `sorry`",
+        "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]"
+      ],
+      "context": {},
+      "key": "PROVED modulo 1 assumed lemma"
+    },
+    {
+      "id": "t1-lean-custom-axiom",
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": [
+        "info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]"
+      ],
+      "context": {},
+      "key": "PROVED modulo 1 assumed axiom"
+    },
+    {
+      "id": "t1-lean-native-not-permitted",
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": [
+        "error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'",
+        "Lean default kernel accepts the solution"
+      ],
+      "context": {},
+      "key": "none (checker-rejected)",
+      "note": "The check-bad configuration, both of its lines: lake check logs that the default kernel accepts while it errors that the native axiom is not permitted. The error line is a rejection, as spine section 3.2's Defence B and section 15's M8 read this run (statespace check rejects a native_decide mutant as not permitted), so the accept line beside it earns nothing: an acceptance needs no error line (section 9.6)."
+    },
+    {
+      "id": "t1-lean-statement-mismatch",
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": [
+        "== weak comparator(no-sandbox) rc=1 :: error: Challenge and solution theorem statement do not match: 'transfer_conserves' "
+      ],
+      "context": {},
+      "key": "UNKNOWN [?] · statement mismatch",
+      "note": "SP-2.7."
+    },
+    {
+      "id": "t1-lean-constant-mismatch",
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": [
+        "== redef comparator(no-sandbox) rc=1 :: error: Const does not match between challenge and target 'transfer' "
+      ],
+      "context": {},
+      "key": "UNKNOWN [?] · statement mismatch (a constant differs)"
+    },
+    {
+      "id": "t1-lean-checker-rejects",
+      "run": "RUN-lean-skipkernel",
+      "parser": "lean",
+      "lines": [
+        "'oops' does not depend on any axioms",
+        "leanchecker found a problem in Probe.Bypass"
+      ],
+      "context": {},
+      "key": "none (checker-rejected)",
+      "note": "A debug.skipKernelTC proof of False builds with exit 0; only leanchecker rejects it."
+    },
+    {
+      "id": "t1-trace-validation-safety",
+      "run": "RUN-tlc-tracemodule",
+      "parser": "trace",
+      "lines": [
+        "<<\"trace-validation\", [diameter |-> 15, verdict |-> \"accepted\", lines |-> 11, matched |-> 11, first_unmatched |-> 0, end_record |-> TRUE, paper_accepted |-> FALSE]>>",
+        "<<\"trace-validation\", [diameter |-> 11, verdict |-> \"rejected\", lines |-> 11, matched |-> 7, first_unmatched |-> 8, end_record |-> TRUE, paper_accepted |-> FALSE]>>",
+        "<<\"trace-validation\", [diameter |-> 12, verdict |-> \"partial\", lines |-> 8, matched |-> 8, first_unmatched |-> 0, end_record |-> FALSE, paper_accepted |-> FALSE]>>"
+      ],
+      "context": {
+        "traces": [
+          "accepted",
+          "rejected",
+          "partial"
+        ],
+        "property": "safety"
+      },
+      "key": "TESTED [T] · 1 seed · TLC 1.8.0 trace validation",
+      "note": "Only the accepted trace counts; the rejected one is a witness, the partial one counts for nothing."
+    },
+    {
+      "id": "t1-trace-validation-liveness",
+      "run": "RUN-tlc-tracemodule",
+      "parser": "trace",
+      "lines": [
+        "<<\"trace-validation\", [diameter |-> 15, verdict |-> \"accepted\", lines |-> 11, matched |-> 11, first_unmatched |-> 0, end_record |-> TRUE, paper_accepted |-> FALSE]>>"
+      ],
+      "context": {
+        "traces": [
+          "accepted"
+        ],
+        "property": "liveness"
+      },
+      "key": "none (liveness-untestable)",
+      "note": "Finite traces cannot test eventuality: a liveness claim keeps its correspondence [A]."
+    }
+  ]
+}

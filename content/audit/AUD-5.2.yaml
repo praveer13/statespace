@@ -1,0 +1,214 @@
+# AUD-5.2 · S5 · G7 Unstated environment assumption (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Receipts, scenarios and the variant pair are keyed by RUN-tlc-hold-env (TLC 1.8.0 in the
+# Bench image): q1 sound member, q2 flawed member, q3/q4 variant pair v1 (sound/flawed). A scenario is an environment:
+# the case's module with some actions defined as FALSE, so they are never enabled and fairness on them asks for
+# nothing; x1 is the flawed member with the provider's fairness removed. The sound member's spec is RUN-tlc-eventually's
+# HoldLive verbatim, which the spine's run RUN-tlc-hold-fairness checks as r6.
+id: AUD-5.2
+stage: S5
+class: G7
+medium: tla
+artifact: hold-fairness
+subject: "a hold's liveness check (TLA+)"
+claim: "Liveness proved: every hold eventually resolves."
+requirement: >-
+  Every hold resolves, captured or released, whatever the payment provider does: the provider may answer busy every
+  time, or never answer.
+scenario_question: "In this environment, does the check still report no error?"
+scheduled_after: [LAB-5.5]
+kcs: [KC-5.fairness]
+based_on:
+  incident: "SysMoBench: reviewers of TLA+ specifications written by language models found their fairness choices \"overly technical or random\"."
+  date: "2025-09"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2509.23130
+
+cases:
+  - id: sound
+    key: none
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC, run with -deadlock because a resolved hold has no next step, reports no error."
+    statement: |
+      ---- MODULE HoldLive ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "held" /\ tries = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ tries' = (tries + 1) % 2
+      Busy    == st = "pending" /\ st' = "held"     /\ UNCHANGED tries
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED tries
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED tries
+      Next == Try \/ Busy \/ Capture \/ Timeout
+      Fair == WF_vars(Timeout)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* Hold.cfg, checked with tlc -deadlock
+      SPECIFICATION Spec
+      PROPERTY EventuallyResolves
+    diff: |
+      --- a/specs/HoldLive.tla
+      +++ b/specs/HoldLive.tla
+      @@ -10,4 +10,4 @@
+       Next == Try \/ Busy \/ Capture \/ Timeout
+      -Fair == TRUE
+      +Fair == WF_vars(Timeout)
+       Spec == Init /\ [][Next]_vars /\ Fair
+       Resolved == st \in {"captured", "released"}
+    receipt: |
+      [q1] Model checking completed. No error has been found.
+      [q1] 11 states generated, 8 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-env
+      scenarios: &sound-scenarios
+        - { id: s1, text: "The provider never confirms a capture: Capture is never enabled", answer: true, key_line: "[q1 s1] Model checking completed. No error has been found.", why: "Timeout is the service's own action, enabled while the hold is held or pending, and weak fairness makes it happen." }
+        - { id: s2, text: "The provider never replies: Busy and Capture are never enabled", answer: true, key_line: "[q1 s2] Model checking completed. No error has been found.", why: "A pending hold still times out: nothing here waits on the provider." }
+        - { id: s3, text: "The provider confirms every capture: Busy is never enabled", answer: true, key_line: "[q1 s3] Model checking completed. No error has been found.", why: "Captured or timed out, every hold resolves." }
+        - { id: s4, text: "The service's own timeout is switched off: Timeout is never enabled", answer: false, key_line: "[q1 s4] Error: Temporal property EventuallyResolves was violated.", why: "This is the assumption the result rests on, and it is the service's own: without Timeout, TLC prints the lasso Try, Busy, Try, Busy." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-tlc-hold-fairness
+    key_lines: [{ config: r6, line: "Model checking completed. No error has been found." }]
+    explain: "Fairness sits only on Timeout, an action the service controls, so the result holds whatever the provider does (s1 to s3). It rests on the timeout firing, and the claim's [A] clause should say so; the stamp is [M] · constants."
+
+  - id: flawed
+    key: G7
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC, run with -deadlock because a resolved hold has no next step, reports no error."
+    statement: |
+      ---- MODULE HoldLive ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "held" /\ tries = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ tries' = (tries + 1) % 2
+      Busy    == st = "pending" /\ st' = "held"     /\ UNCHANGED tries
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED tries
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED tries
+      Next == Try \/ Busy \/ Capture \/ Timeout
+      Fair == WF_vars(Try) /\ SF_vars(Capture)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* Hold.cfg, checked with tlc -deadlock
+      SPECIFICATION Spec
+      PROPERTY EventuallyResolves
+    diff: |
+      --- a/specs/HoldLive.tla
+      +++ b/specs/HoldLive.tla
+      @@ -10,4 +10,4 @@
+       Next == Try \/ Busy \/ Capture \/ Timeout
+      -Fair == TRUE
+      +Fair == WF_vars(Try) /\ SF_vars(Capture)
+       Spec == Init /\ [][Next]_vars /\ Fair
+       Resolved == st \in {"captured", "released"}
+    receipt: |
+      [q2] Model checking completed. No error has been found.
+      [q2] 11 states generated, 8 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-env
+      scenarios:
+        - { id: s1, text: "The provider never confirms a capture: Capture is never enabled", answer: false, key_line: "[q2 s1] Error: Temporal property EventuallyResolves was violated.", why: "TLC prints the lasso Try, Busy, Try, then Busy back to state 1: the result needed the provider to confirm in the end." }
+        - { id: s2, text: "The provider never replies: Busy and Capture are never enabled", answer: false, key_line: "[q2 s2] Error: Temporal property EventuallyResolves was violated.", why: "The hold goes pending and stays there: nothing in Fair makes the service time out." }
+        - { id: s3, text: "The provider confirms every capture: Busy is never enabled", answer: true, key_line: "[q2 s3] Model checking completed. No error has been found.", why: "With a provider that always confirms, every hold is captured." }
+        - { id: s4, text: "The service's own timeout is switched off: Timeout is never enabled", answer: true, key_line: "[q2 s4] Model checking completed. No error has been found.", why: "The result never leaned on Timeout: strong fairness on Capture already forces a capture." }
+    evidence: { type: witness, load_bearing: ["statement:11", "diff:6"], reference: "RUN-tlc-hold-env [q2 x1]: with Fair == WF_vars(Try), Try, Busy, Try, then Busy back to state 1; Temporal property EventuallyResolves was violated" }
+    key_run: RUN-tlc-hold-env
+    key_lines: ["[q2] Model checking completed. No error has been found.", "[q2 x1] Error: Temporal property EventuallyResolves was violated.", "[q2 s1] Error: Temporal property EventuallyResolves was violated."]
+    explain: "SF_vars(Capture) says the provider confirms a capture if it is asked often enough. Capture is the provider's reply, an action the environment controls, and the claim never states that assumption. Remove it and TLC prints a hold retried forever (x1); a provider that only answers busy does the same (s1)."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: drop-or-misplace-fairness
+    artifact: payout-fairness
+    key: none
+    claim: "Liveness proved: every payout settles or is abandoned."
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC reports no error."
+    statement: |
+      ---- MODULE Payout ----
+      VARIABLES st
+      Init == st = "queued"
+      Send    == st = "queued" /\ st' = "sent"
+      Bounce  == st = "sent"   /\ st' = "queued"
+      Settle  == st = "sent"   /\ st' = "settled"
+      Abandon == st \in {"queued", "sent"} /\ st' = "abandoned"
+      Done    == st \in {"settled", "abandoned"} /\ UNCHANGED st
+      Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      Fair == WF_st(Abandon)
+      Spec == Init /\ [][Next]_st /\ Fair
+      NeverLost == st \in {"queued", "sent", "settled", "abandoned"}
+      Finished == st \in {"settled", "abandoned"}
+      EventuallyFinished == <>Finished
+      ====
+      \* Payout.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY EventuallyFinished
+    diff: |
+      --- a/specs/Payout.tla
+      +++ b/specs/Payout.tla
+      @@ -9,3 +9,3 @@
+       Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      -Fair == TRUE
+      +Fair == WF_st(Abandon)
+       Spec == Init /\ [][Next]_st /\ Fair
+    receipt: |
+      [q3] Model checking completed. No error has been found.
+      [q3] 8 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-env
+      scenarios: &v1-sound-scenarios
+        - { id: t1, text: "The bank never settles: Settle is never enabled", answer: true, key_line: "[q3 t1] Model checking completed. No error has been found.", why: "The service abandons the payout itself; nothing waits on the bank." }
+        - { id: t2, text: "Abandoning is switched off: Abandon is never enabled", answer: false, key_line: "[q3 t2] Error: Temporal property EventuallyFinished was violated.", why: "The result rests on the service's own Abandon, and says so in its one fairness conjunct." }
+        - { id: t3, text: "The bank settles every payout it is sent: Bounce is never enabled", answer: true, key_line: "[q3 t3] Model checking completed. No error has been found.", why: "Settled or abandoned, every payout finishes." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-tlc-hold-env
+    key_lines: ["[q3] Model checking completed. No error has been found.", "[q3 t1] Model checking completed. No error has been found."]
+    explain: "Weak fairness on Abandon, an action the service controls: the result holds whatever the bank does, and rests on an assumption the service can keep."
+
+  - id: v1-flawed
+    pair: v1
+    operator: drop-or-misplace-fairness
+    artifact: payout-fairness
+    key: G7
+    claim: "Liveness proved: every payout settles or is abandoned."
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC reports no error."
+    statement: |
+      ---- MODULE Payout ----
+      VARIABLES st
+      Init == st = "queued"
+      Send    == st = "queued" /\ st' = "sent"
+      Bounce  == st = "sent"   /\ st' = "queued"
+      Settle  == st = "sent"   /\ st' = "settled"
+      Abandon == st \in {"queued", "sent"} /\ st' = "abandoned"
+      Done    == st \in {"settled", "abandoned"} /\ UNCHANGED st
+      Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      Fair == WF_st(Send) /\ SF_st(Settle)
+      Spec == Init /\ [][Next]_st /\ Fair
+      NeverLost == st \in {"queued", "sent", "settled", "abandoned"}
+      Finished == st \in {"settled", "abandoned"}
+      EventuallyFinished == <>Finished
+      ====
+      \* Payout.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY EventuallyFinished
+    diff: |
+      --- a/specs/Payout.tla
+      +++ b/specs/Payout.tla
+      @@ -9,3 +9,3 @@
+       Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      -Fair == TRUE
+      +Fair == WF_st(Send) /\ SF_st(Settle)
+       Spec == Init /\ [][Next]_st /\ Fair
+    receipt: |
+      [q4] Model checking completed. No error has been found.
+      [q4] 8 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-env
+      scenarios:
+        - { id: t1, text: "The bank never settles: Settle is never enabled", answer: false, key_line: "[q4 t1] Error: Temporal property EventuallyFinished was violated.", why: "TLC prints Send, then Bounce back to state 1: the payout bounces forever." }
+        - { id: t2, text: "Abandoning is switched off: Abandon is never enabled", answer: true, key_line: "[q4 t2] Model checking completed. No error has been found.", why: "The result never leaned on Abandon; it leaned on the bank." }
+        - { id: t3, text: "The bank settles every payout it is sent: Bounce is never enabled", answer: true, key_line: "[q4 t3] Model checking completed. No error has been found.", why: "With a bank that always settles, every payout settles." }
+    evidence: { type: witness, load_bearing: ["statement:10", "diff:6"], reference: "RUN-tlc-hold-env [q4 t1]: Send, then Bounce back to state 1; Temporal property EventuallyFinished was violated" }
+    key_run: RUN-tlc-hold-env
+    key_lines: ["[q4] Model checking completed. No error has been found.", "[q4 t1] Error: Temporal property EventuallyFinished was violated."]
+    explain: "SF_st(Settle) assumes the bank settles a payout it is sent often enough. Settle is the bank's action, not the service's, and the claim leaves the assumption out; with a bank that never settles, TLC finds a payout that bounces forever."

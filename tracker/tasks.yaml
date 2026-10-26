@@ -3,7 +3,7 @@
 # Task IDs from spine section 13 keep their meaning; refined and added tasks extend each
 # wave's sequence. Never renumber a task.
 schema: statespace/tracker@1
-updated: 2026-10-25
+updated: 2026-10-26
 spine: "docs/spine/SPINE.md, revision 3, section 13"
 rules:
   wave_entry: "A wave starts only when the previous wave's exit task is done, with its gates green, and the owner's review queue is under 10 h (OD-7)."
@@ -979,7 +979,11 @@ tasks:
     model: opus
     model_reason: "Stamp derivation is a verdict-to-claim mapping; decision 24 makes stamp derivers opus."
     depends_on: [W0-S12]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Stamps, strip and tokens are live on the site and GATE-codes is green.
+      Missing: GATE-stamps still has one content finding (S8.L7:104, PROVED in requirement fit).
     owner_review: true
     review_h: 1
   - id: W1-T02
@@ -1013,7 +1017,12 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W0-S12, W1-T36, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Shell, navigation, stage and lesson routes are live
+      (scripts/site/smoke.sh). Missing: the service worker and its kill-switch test, search at 360
+      px, static pages for every screen route (GATE-bundle routes.present), and the deploy.
     owner_review: true
     review_h: 0.5
   - id: W1-T03
@@ -1044,7 +1053,12 @@ tasks:
     model: opus
     model_reason: "Architecture: a contract that many later tasks build on."
     depends_on: [W0-T02]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The site writes event@1 events to the device store and every screen
+      reads them. Missing: the double-import, merge and stale-tab property tests and the expSeed
+      allocation (not verified in this build).
     owner_review: true
     review_h: 1
   - id: W1-T04
@@ -1076,7 +1090,12 @@ tasks:
     model: opus
     model_reason: "The KC graph and its path checks underpin dosing, ordering and both published paths."
     depends_on: [W0-T03]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The KC graph drives lessons, drawers, generators and Today;
+      GATE-coverage is green. Missing: GATE-kc is red with 7 dose failures (first lessons without a
+      prequestion or exit item for a KC).
     owner_review: true
     review_h: 3
   - id: W1-T05
@@ -1119,7 +1138,12 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T04, W0-S01, W1-T21, W1-T22, W1-T23, W1-T24, W1-T25, W1-T26, W1-T37]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on all five families. Missing: GATE-calls
+      red, native Z3 = Pyodide Z3 not shown, M-layered-feedback and M-class-hint do not read their
+      keep/kill arms, and the children W1-T22 to W1-T25 are open.
     owner_review: false
     review_h: 0
   - id: W1-T06
@@ -1155,7 +1179,11 @@ tasks:
     model: sonnet
     model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
     depends_on: [W0-S01, W0-S02, W1-T35, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Recorded runs render as numbered figures in lessons. Missing: the live
+      INS-z3 cell with the download loader and its GATE-bundle checks.
     owner_review: true
     review_h: 0.5
   - id: W1-T07
@@ -1183,7 +1211,11 @@ tasks:
     model: sonnet
     model_reason: "Learning-engine logic specified in the spine and ASSESSMENT.md."
     depends_on: [W1-T03, W1-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Call It and the Mirror are live (126 site unit tests pass, including
+      the commit test). Missing: GATE-items reports 8 call findings on the fixtures.
     owner_review: true
     review_h: 1
   - id: W1-T08
@@ -1214,7 +1246,12 @@ tasks:
     model: sonnet
     model_reason: "Learning-engine logic specified in the spine and ASSESSMENT.md."
     depends_on: [W1-T05]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Today shows where you stopped and a "Practice, drawn fresh" set of
+      generated items. Missing: the scheduler and its property test, the Keep block, Set your week,
+      and RUN-lz-today-w1.
     owner_review: true
     review_h: 1
   - id: W1-T09
@@ -1247,7 +1284,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41, W1-T45]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S1.L0 (Boot) is live. Missing: GATE-calls finding on S1.L0 cell 1, the
+      GATE-bundle timing gate at 360 px, RUN-lz-boot-w1 and RUN-boot-firstsuccess.
     owner_review: true
     review_h: 1.5
   - id: W1-T10
@@ -1282,7 +1323,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T05, W1-T06, W1-T12, W1-T27, W1-T28]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S1.L1 to S1.L5 are live; RUN-twin-pins is recorded. Open: W1-T27 and
+      W1-T28.
     owner_review: true
     review_h: 0.25
   - id: W1-T11
@@ -1317,7 +1362,12 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W1-T04, W1-T12, W1-T36, W1-T38, W1-T01, W1-T21, W1-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-01 to D-06 and D-13 are live, with generated items in place;
+      GATE-links, GATE-numbers, GATE-runs and GATE-codes are green. Missing: GATE-items findings on
+      the generated families the drawers serve, and GATE-kc red.
     owner_review: true
     review_h: 1.75
   - id: W1-T12
@@ -1354,7 +1404,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W0-S11]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Every S1 run that lessons, drawers and the stage cite is recorded;
+      GATE-runs passes and the content build reports no run-pending warning on S1 (2026-10-26).
     owner_review: true
     review_h: 0.5
   - id: W1-T13
@@ -1387,7 +1441,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W0-S11, W1-T29, W1-T30, W1-T31, W1-T43]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: false
     review_h: 0
   - id: W1-T14
@@ -1453,7 +1511,11 @@ tasks:
     model: opus
     model_reason: "Claim validation decides what a card may assert; the 'if weakened' check is subtle."
     depends_on: [W1-T14, W1-T12]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The Claims screen lists minted claims. Missing:
+      scripts/verify-claims.mjs (GATE-claims) and its run on CL-1.1 to CL-1.5.
     owner_review: true
     review_h: 1
   - id: W1-T16
@@ -1478,7 +1540,12 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W1-T03, W1-T12, W1-T42]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-specimens reproduces SP-1.1 to SP-1.10 from their runs (each
+      mounted with run ids); the cabinet screen is live. GATE-specimens still fails overall on
+      SP-4.2, SP-7.1 and SP-7.2, outside this task.
     owner_review: true
     review_h: 1.5
   - id: W1-T17
@@ -1513,7 +1580,12 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T05, W1-T12, W1-T32, W1-T33, W1-T34, W1-T40]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The Audit Desk is live with 25 anchors and 120 cases, sessions,
+      five-step cases and audit accuracy. Missing: GATE-audit (key-run on AUD-2.2 and AUD-2.3, G2
+      exemplars 3 of 6, no GEN-spot-the-gap battery) and scheduling after LAB-2 and LAB-5.
     owner_review: false
     review_h: 0
   - id: W1-T18
@@ -1625,7 +1697,11 @@ tasks:
     model: opus
     model_reason: "Architecture: a contract that many later tasks build on."
     depends_on: [W1-T04, W0-T02]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the fixture family with determinism read
+      from three browser engines; 15 families now build on the core.
     owner_review: true
     review_h: 0.7
   - id: W1-T22
@@ -1653,7 +1729,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T21, W1-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 5 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine. Only pick mode is built (V2-26 progression open).
     owner_review: true
     review_h: 0.35
   - id: W1-T23
@@ -1681,7 +1763,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T21, W1-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 18 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.35
   - id: W1-T24
@@ -1708,7 +1796,14 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T21, W1-T07, W1-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 6 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine. GATE-items fails its blind majority-verdict and
+      centroid strategies; t3 waits for W4-T20.
     owner_review: true
     review_h: 0.35
   - id: W1-T25
@@ -1736,7 +1831,11 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T21, W1-T40]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on four templates (determinism recorded).
+      Missing: the auditBattery export, so GATE-audit cannot re-key the 120 Desk cases.
     owner_review: true
     review_h: 0.35
   - id: W1-T26
@@ -1762,7 +1861,11 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T21, W1-T01, W1-T39]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-which-stamp (3 templates, determinism
+      recorded); GATE-stamps: 18 of 18 fixture keys agree with the deriver.
     owner_review: true
     review_h: 0.2
   - id: W1-T27
@@ -1791,7 +1894,12 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T37, W1-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S1.L1 and S1.L2 pass GATE-lessons, GATE-numbers and GATE-runs.
+      Missing: GATE-kc (S1.L1 has no exit item for KC-1.only-if-direction and no prequestion for
+      KC-1.witness-class).
     owner_review: true
     review_h: 2
   - id: W1-T28
@@ -1821,7 +1929,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T15, W1-T19, W1-T37, W1-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S1.L3 to S1.L5 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-claims (not built).
     owner_review: true
     review_h: 2.5
   - id: W1-T29
@@ -1885,7 +1997,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W1-T29, W1-T12, W1-T15, W1-T43]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1.25
   - id: W1-T31
@@ -1912,7 +2028,11 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W1-T02, W1-T14, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The Bench and lab screens are live. Missing: GATE-bundle route tests
+      and GATE-a11y at 360, 320 and 1280 px.
     owner_review: true
     review_h: 0.25
   - id: W1-T32
@@ -1941,7 +2061,13 @@ tasks:
     model: opus
     model_reason: "Scoring formulas, the seeded sound share and derived Judgment must be exactly right."
     depends_on: [W1-T03, W1-T25]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The five-step case flow, sessions and audit accuracy (derived at read
+      time from audit events) are live. Missing: the judgment property tests (move
+      screens/audit/judgment.ts to packages/learner), and the call as its own event (event@1 call
+      refs do not admit AUD refs).
     owner_review: true
     review_h: 0.25
   - id: W1-T33
@@ -1969,7 +2095,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W1-T25, W1-T12, W1-T40]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-1.1 to AUD-1.3 with variants are live and GATE-audit-blind is
+      green. Missing for GATE-audit: G2 has 3 of 6 exemplars, and the GEN-spot-the-gap battery.
     owner_review: true
     review_h: 0.9
   - id: W1-T34
@@ -1999,7 +2129,12 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W1-T32, W1-T40]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-2.1 to AUD-2.4 and AUD-5.3 are keyed by executed runs. Missing:
+      GATE-audit key-run on AUD-2.2 and AUD-2.3 (spine 6.2 names the imported runs), and the
+      scheduler test that none is served before LAB-2 or LAB-5.
     owner_review: true
     review_h: 1.35
   - id: W1-T35
@@ -2058,7 +2193,11 @@ tasks:
     model: sonnet
     model_reason: "A build transform specified in ARCHITECTURE.md section 3.3."
     depends_on: [W0-S12, W0-T03, W0-S11]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-schema passes (22 checks); packages/content tests (170) cover the
+      fixture lesson built to JSON and Markdown and the segment-title rail.
     owner_review: true
     review_h: 0.25
   - id: W1-T37
@@ -2085,7 +2224,11 @@ tasks:
     model: opus
     model_reason: "Cross-engine verdict gate with cvc5 cross-checks; correctness-critical."
     depends_on: [W1-T12]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-calls runs on every authored cell. Missing: green on S1 (S1.L0
+      cell 1 key-read finding) and on S10 cells.
     owner_review: true
     review_h: 0.2
   - id: W1-T38
@@ -2110,7 +2253,11 @@ tasks:
     model: sonnet
     model_reason: "A lint specified rule by rule in spine section 11.2."
     depends_on: [W1-T36]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-lessons self-check: all 300 planted faults caught. The gate
+      itself still reports 2 anatomy findings on S7.L7 and S7.L8 (content).
     owner_review: true
     review_h: 0.25
   - id: W1-T39
@@ -2137,7 +2284,12 @@ tasks:
     model: opus
     model_reason: "Validity statistics with subtle baselines; a wrong gate lets bad items pass."
     depends_on: [W1-T21]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-items: 197 of 197 planted fixtures held, and the pool of the
+      fixture family is green. The gate is red on the authored stage items and on the generated
+      families (their own tasks).
     owner_review: true
     review_h: 0.25
   - id: W1-T40
@@ -2164,7 +2316,11 @@ tasks:
     model: opus
     model_reason: "Validity statistics with subtle baselines; a wrong gate lets bad items pass."
     depends_on: [W1-T21]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-audit self-check green (136 cases held), GATE-audit-blind
+      self-check green (73 cases held); GATE-audit-blind prints its bound.
     owner_review: true
     review_h: 0.25
   - id: W1-T41
@@ -2230,7 +2386,11 @@ tasks:
     model: sonnet
     model_reason: "Gate harness specified in ARCHITECTURE.md section 13; mostly wiring."
     depends_on: [W0-S11, W0-T04]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-specimens reproduces SP-1.1 to SP-1.10. Missing: GATE-conformance
+      Pyodide Z3 = native Z3 (11 differences) and the planted red night.
     owner_review: true
     review_h: 0.25
   - id: W1-T43
@@ -2282,7 +2442,11 @@ tasks:
     model: sonnet
     model_reason: "Short templated cards from a written spec."
     depends_on: [W1-T11]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-30 to D-40 are on the site; GATE-links is green and GATE-lessons
+      reports nothing on the cards.
     owner_review: true
     review_h: 0.25
   - id: W1-T45
@@ -2490,7 +2654,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T03, W2-T10, W2-T05, W2-T19, W2-T20, W2-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2.L0 to S2.L10 are live and pass GATE-lessons, GATE-numbers and
+      GATE-runs; RUN-twin-pins is recorded. Open: its children.
     owner_review: true
     review_h: 0.5
   - id: W2-T05
@@ -2520,7 +2688,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: []
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2.L0 is live and passes GATE-lessons. Missing:
+      content/third-party/self-explanation/ with its license, credit and change note.
     owner_review: true
     review_h: 1
   - id: W2-T06
@@ -2684,7 +2856,10 @@ tasks:
     model: sonnet
     model_reason: "Integration of clearly specified children."
     depends_on: [W2-T01, W2-T38, W2-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2 runs recorded; S3 runs pending (W2-T39).
     owner_review: false
     review_h: 0
   - id: W2-T11
@@ -2713,7 +2888,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T05, W2-T29, W2-T30, W2-T31]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-spec-it, GEN-proof-structure and
+      GEN-defend. Open: W2-T29 to W2-T31.
     owner_review: false
     review_h: 0
   - id: W2-T12
@@ -2769,7 +2948,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W1-T17, W2-T01, W2-T10, W2-T39]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-3.1 and AUD-3.2 are live with variants and raise no GATE-audit
+      finding of their own. Missing: variants of AUD-2.1 to AUD-2.4 (declared pending).
     owner_review: true
     review_h: 1.5
   - id: W2-T14
@@ -2937,7 +3120,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T03, W2-T30, W2-T38, W2-T18]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2.L1 to S2.L4 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-replay (not built) and the Q-1 check.
     owner_review: true
     review_h: 2
   - id: W2-T20
@@ -2974,7 +3161,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T03, W2-T30, W2-T38, W2-T01]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2.L5 to S2.L7 pass GATE-lessons, GATE-numbers and GATE-runs; SP-2.2
+      reproduces. Missing: GATE-claims, SP-2.3 reproduced (recorded only), and the Q-1 check.
     owner_review: true
     review_h: 3.5
   - id: W2-T21
@@ -3012,7 +3203,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T03, W2-T30, W2-T38, W2-T01, W2-T08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S2.L8 to S2.L10 pass GATE-lessons, GATE-numbers and GATE-runs; SP-2.1
+      reproduces. Missing: SP-2.4 to SP-2.9 reproduced (recorded only) and the Q-1 check.
     owner_review: true
     review_h: 3.5
   - id: W2-T22
@@ -3042,7 +3237,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T08, W2-T39, W2-T30]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S3.L1 to S3.L3 are live. Missing: their pending interpreter runs and
+      GATE-interp.
     owner_review: true
     review_h: 2.5
   - id: W2-T23
@@ -3073,7 +3272,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T08, W2-T39, W2-T30]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S3.L4 to S3.L6 are live. Missing: pending reference-semantics runs and
+      GATE-claims.
     owner_review: true
     review_h: 2.5
   - id: W2-T24
@@ -3104,7 +3307,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W2-T08, W2-T39, W2-T42]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S3.L7 to S3.L9 are live. Missing: pending runs and GATE-erosions for
+      ER-6.
     owner_review: true
     review_h: 2.5
   - id: W2-T25
@@ -3132,7 +3339,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T07, W2-T33]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.6
   - id: W2-T26
@@ -3162,7 +3373,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T25]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.8
   - id: W2-T27
@@ -3190,7 +3405,12 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T26, W2-T08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L1 and S10.L2
+      are live, S10.L1 with pending runs.
     owner_review: true
     review_h: 0.8
   - id: W2-T28
@@ -3214,7 +3434,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.3
   - id: W2-T29
@@ -3240,7 +3464,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W1-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 10 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W2-T30
@@ -3269,7 +3499,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W2-T03, W2-T01]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 16 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine. GATE-replay is not built.
     owner_review: true
     review_h: 0.5
   - id: W2-T31
@@ -3298,7 +3534,14 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W2-T01, W1-T29, W2-T36, W2-T37]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 16 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine. GATE-labs over LAB-1 and LAB-2 mutants is not built;
+      `statespace defend` does not exist.
     owner_review: true
     review_h: 0.5
   - id: W2-T32
@@ -3442,7 +3685,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T33]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W2-T37
@@ -3471,7 +3718,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T36]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W2-T38
@@ -3498,7 +3749,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W2-T33]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Every S2 run that the lessons cite is recorded (Phase 2, Lean in the
+      Bench image); GATE-runs passes with no run-pending warning on S2.
     owner_review: true
     review_h: 0.25
   - id: W2-T39
@@ -3536,7 +3791,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W2-T07, W2-T08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Some S3 runs are recorded; the reference-semantics and interpreter
+      runs are pending (see W1-report, Phase 2).
     owner_review: true
     review_h: 0.25
   - id: W2-T40
@@ -3644,7 +3903,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W2-T38, W1-T11]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-07, D-08 and D-15 are live; GATE-links, GATE-numbers and GATE-runs
+      green. Missing: GATE-items findings on the generated families they serve.
     owner_review: true
     review_h: 0.75
   - id: W2-T44
@@ -3673,7 +3936,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W2-T08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-14, D-22 and D-23 are live; GATE-links green. Missing: GATE-items on
+      the generated families they serve.
     owner_review: true
     review_h: 0.75
   - id: W2-T45
@@ -3776,7 +4043,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W3-T01, W3-T16, W3-T17]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-wp-it and GEN-cti-or-bug, bounds printed
+      on every grade. Missing: the CTI workbench, and W3-T16 and W3-T17.
     owner_review: false
     review_h: 0
   - id: W3-T03
@@ -3815,7 +4086,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W3-T02, W3-T07, W3-T18, W3-T19, W3-T20]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S4.L1 to S4.L9 pass GATE-lessons, GATE-numbers and GATE-runs. Open:
+      W3-T18 to W3-T20.
     owner_review: true
     review_h: 0.25
   - id: W3-T04
@@ -3842,7 +4117,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T08, W3-T21, W3-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: false
     review_h: 0
   - id: W3-T05
@@ -3936,7 +4215,10 @@ tasks:
     model: sonnet
     model_reason: "Integration of clearly specified children."
     depends_on: [W3-T05, W3-T25, W3-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Its children W3-T25 and W3-T26 are in review.
     owner_review: false
     review_h: 0
   - id: W3-T08
@@ -4018,7 +4300,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W3-T09, W3-T27, W3-T28]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-trace-allowed and GEN-lasso-or-not. Open:
+      W3-T27 and W3-T28.
     owner_review: false
     review_h: 0
   - id: W3-T11
@@ -4060,7 +4346,10 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W3-T06, W3-T07, W3-T29, W3-T30, W3-T31, W3-T32, W3-T33]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S5 lessons are live. Missing: LAB-5 (GATE-labs).
     owner_review: true
     review_h: 0.25
   - id: W3-T12
@@ -4121,7 +4410,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T17, W3-T05, W3-T07, W3-T36, W3-T37, W3-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-4.1 to 4.3, 5.1, 5.2, 5.4 and AUD-5.3 variants are live. Missing:
+      GATE-audit exemplar counts (G1, G3, G7, G9, G13), and the Lean keep-alive sessions.
     owner_review: false
     review_h: 0
   - id: W3-T14
@@ -4203,7 +4496,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W3-T01]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 24 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W3-T17
@@ -4233,7 +4532,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W3-T01, W3-T05]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 48 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine. The CTI workbench is not built.
     owner_review: true
     review_h: 1
   - id: W3-T18
@@ -4265,7 +4570,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T01, W3-T16, W3-T25]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S4.L1 to S4.L3 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      the Derivation Board and GATE-a11y on it; GATE-kc dose finding on S4.L2.
     owner_review: true
     review_h: 2.5
   - id: W3-T19
@@ -4297,7 +4606,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T16, W3-T17, W3-T25, W3-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S4.L4 to S4.L6 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-claims.
     owner_review: true
     review_h: 3.5
   - id: W3-T20
@@ -4329,7 +4642,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T25, W3-T21, W3-T22, W0-S07]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S4.L7 to S4.L9 pass GATE-lessons, GATE-numbers and GATE-runs; SP-4.5
+      reproduces. Missing: SP-4.4, SP-4.6 and SP-4.7 reproduced.
     owner_review: true
     review_h: 1.5
   - id: W3-T21
@@ -4360,7 +4677,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T08, W1-T29]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W3-T22
@@ -4389,7 +4710,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W3-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L3 is live.
     owner_review: true
     review_h: 1.5
   - id: W3-T23
@@ -4475,7 +4800,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W3-T21]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Every S4 run that the lessons cite is recorded; GATE-runs passes with
+      no run-pending warning on S4.
     owner_review: true
     review_h: 0.25
   - id: W3-T26
@@ -4508,7 +4837,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W3-T05]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Every S5 run that the lessons cite is recorded; GATE-runs passes with
+      no run-pending warning on S5.
     owner_review: true
     review_h: 0.25
   - id: W3-T27
@@ -4534,7 +4867,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W3-T05, W3-T23]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 25 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W3-T28
@@ -4559,7 +4898,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W3-T09]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 37 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W3-T29
@@ -4592,7 +4937,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T23, W3-T08, W3-T26, W3-T27]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S5.L1 to S5.L3 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-conformance Spectacle = TLC (Spectacle not built).
     owner_review: true
     review_h: 2.5
   - id: W3-T30
@@ -4622,7 +4971,12 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T23, W3-T08, W3-T09, W3-T26, W3-T27, W3-T28]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-lessons, GATE-numbers and GATE-runs green on S5.L4 to S5.L6.
+      Learner-zero has not studied them (draft label stays). GATE-kc reports S5.L6 has no
+      prequestion for KC-5.temporal-operators and KC-5.lasso-reading.
     owner_review: true
     review_h: 2.5
   - id: W3-T31
@@ -4653,7 +5007,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W3-T09, W3-T25, W3-T26, W3-T28, W3-T17]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-lessons, GATE-numbers and GATE-runs green on S5.L7 to S5.L9;
+      GATE-stamps finds no TLC inductive check stamped [P]. Learner-zero has not studied them.
     owner_review: true
     review_h: 2.5
   - id: W3-T32
@@ -4681,7 +5039,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W3-T05, W3-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W3-T33
@@ -4710,7 +5072,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W3-T32, W3-T09, W3-T25]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W3-T34
@@ -4797,7 +5163,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W3-T22, W3-T25]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-4.1 to AUD-4.3 are live; GATE-audit-blind green. Missing:
+      GATE-audit exemplars (G1 3 of 6, G13 2 of 6).
     owner_review: true
     review_h: 0.9
   - id: W3-T37
@@ -4826,7 +5196,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W3-T05, W3-T25, W3-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-5.1, 5.2, 5.4 and AUD-5.3 variants are live; no key-run finding.
+      Missing: GATE-audit exemplars (G3 2, G7 4, G9 2 of 6).
     owner_review: true
     review_h: 0.9
   - id: W3-T38
@@ -4984,7 +5358,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W3-T25, W3-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-09, D-10 and D-18 are live with generated items. Missing: GATE-items
+      findings on GEN-wp-it and GEN-cti-or-bug.
     owner_review: true
     review_h: 0.75
   - id: W3-T44
@@ -5181,7 +5559,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W4-T03, W4-T10, W4-T20, W4-T21, W4-T22, W4-T23]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-anomaly-id; S6 lessons live. Open: W4-T20
+      to W4-T23.
     owner_review: true
     review_h: 0.25
   - id: W4-T06
@@ -5209,7 +5591,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W4-T04, W4-T24, W4-T25, W4-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: false
     review_h: 0
   - id: W4-T07
@@ -5261,7 +5647,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T08, W4-T27, W4-T28]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators green on GEN-leaks-to-observer. Missing: INS-pairs
+      (W4-T27) and W4-T28.
     owner_review: false
     review_h: 0
   - id: W4-T09
@@ -5302,7 +5692,10 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W4-T07, W4-T08, W4-T10, W4-T29, W4-T30, W4-T31, W4-T32, W4-T33]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S7 lessons live. Missing: LAB-7 and the open lesson tasks.
     owner_review: true
     review_h: 0.25
   - id: W4-T10
@@ -5347,7 +5740,11 @@ tasks:
     model: sonnet
     model_reason: "Integration of clearly specified children."
     depends_on: [W4-T01, W4-T34, W4-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Most S6 and S7 runs recorded; RUN-serializability-fixtures,
+      RUN-interp-revocation, RUN-interp-new-enemy and RUN-pairs-reference pending.
     owner_review: false
     review_h: 0
   - id: W4-T11
@@ -5430,7 +5827,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T17, W4-T01, W4-T10, W4-T36, W4-T37, W4-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-6.1 to 6.3, 7.1 and 7.2 are live. Missing: GATE-audit (AUD-7.2
+      key-run, G6 and G12 exemplars) and the sibling bridge cards.
     owner_review: false
     review_h: 0
   - id: W4-T14
@@ -5616,7 +6017,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W4-T18, W0-S09]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 36 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W4-T21
@@ -5648,7 +6055,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T04, W4-T34, W2-T08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S6.L1 to S6.L3 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-conformance PGlite = PostgreSQL on their cells.
     owner_review: true
     review_h: 2.5
   - id: W4-T22
@@ -5678,7 +6089,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T04, W4-T19, W4-T20, W4-T34, W4-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S6.L4 to S6.L6 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      the S6 specimens reproduced (recorded only).
     owner_review: true
     review_h: 2.5
   - id: W4-T23
@@ -5712,7 +6127,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T18, W4-T19, W4-T20, W4-T34, W4-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S6.L7 to S6.L9 pass GATE-lessons and GATE-numbers. Missing: one
+      pending run in S6.L8.
     owner_review: true
     review_h: 2.5
   - id: W4-T24
@@ -5766,7 +6185,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T24, W4-T16, W4-T34]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1
   - id: W4-T26
@@ -5797,7 +6220,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T25, W4-T18]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L4 is live.
     owner_review: true
     review_h: 1
   - id: W4-T27
@@ -5848,7 +6275,13 @@ tasks:
     model: opus
     model_reason: "Grader whose keys come from checkers; spine decision 24 assigns every grader to opus."
     depends_on: [W4-T27]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-generators is green on the family (determinism recorded in three
+      browser engines) and it serves pick-mode items in drawers and Today. Missing: GATE-items
+      reports 43 option-balance and cue findings on the family's generated pool; keys come from an
+      in-tab checker, not the spine's engine.
     owner_review: true
     review_h: 0.5
   - id: W4-T29
@@ -5886,7 +6319,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T07, W4-T35, W4-T04]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S7.L1 to S7.L4 pass GATE-lessons, GATE-numbers and GATE-runs. Missing:
+      GATE-conformance tab Datalog = Soufflé.
     owner_review: true
     review_h: 3
   - id: W4-T30
@@ -5916,7 +6353,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T27, W4-T28, W4-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S7.L5 and S7.L6 are live. Missing: 12 pending run references and
+      GATE-claims.
     owner_review: true
     review_h: 3
   - id: W4-T31
@@ -5945,7 +6386,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W4-T27, W4-T28, W4-T35, W4-T38]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S7.L7 and S7.L8 are live. Missing: GATE-lessons anatomy (two
+      prequestions on a bridge lesson) and 8 pending run references.
     owner_review: true
     review_h: 1
   - id: W4-T32
@@ -5974,7 +6419,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T07, W4-T35, W4-T16]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1.25
   - id: W4-T33
@@ -6004,7 +6453,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T32, W4-T27]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1.25
   - id: W4-T34
@@ -6035,7 +6488,10 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W4-T16, W4-T18, W4-T04, W4-T24]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S6 runs recorded except RUN-serializability-fixtures.
     owner_review: true
     review_h: 0.5
   - id: W4-T35
@@ -6074,7 +6530,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W4-T07, W4-T27, W4-T16]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S7 runs recorded except RUN-interp-revocation, RUN-interp-new-enemy
+      and RUN-pairs-reference.
     owner_review: true
     review_h: 0.5
   - id: W4-T36
@@ -6102,7 +6562,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W4-T34, W4-T17]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-6.1 to AUD-6.3 are live; GATE-audit-blind green. Missing:
+      GATE-audit G6 exemplars (4 of 6).
     owner_review: true
     review_h: 0.9
   - id: W4-T37
@@ -6127,7 +6591,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W4-T35, W4-T27]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-7.1 and AUD-7.2 are live. Missing: GATE-audit key-run on AUD-7.2
+      (spine names RUN-z3-selfcomp) and G12 exemplars (2 of 6).
     owner_review: true
     review_h: 0.6
   - id: W4-T38
@@ -6156,7 +6624,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W1-T11]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-11 and D-21 resolve (GATE-links green). Missing: the sibling bridge
+      cards, a GATE-items finding on D-11, and D-21 cites a pending run.
     owner_review: true
     review_h: 0.5
   - id: W4-T39
@@ -6287,7 +6759,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W4-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-16, D-17 and D-20 are live with generated items. Missing: GATE-items
+      findings on the generated families they serve.
     owner_review: true
     review_h: 0.75
   - id: W4-T44
@@ -6405,7 +6881,10 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W5-T01, W5-T03, W5-T16, W5-T17, W5-T18, W5-T19, W5-T20]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S8 lessons live. Missing: LAB-8 and the open lesson tasks.
     owner_review: true
     review_h: 0.25
   - id: W5-T03
@@ -6443,7 +6922,11 @@ tasks:
     model: sonnet
     model_reason: "Integration of clearly specified children."
     depends_on: [W5-T01, W5-T04, W5-T21, W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: Most S8 and S9 runs recorded; trace validation, simulator and
+      validator runs pending.
     owner_review: false
     review_h: 0
   - id: W5-T04
@@ -6517,7 +7000,10 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W5-T04, W5-T03, W5-T23, W5-T24, W5-T25, W5-T26, W5-T27, W5-T28]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S9 lessons live. Missing: LAB-9, the mini-Defences and pending runs.
     owner_review: true
     review_h: 0.5
   - id: W5-T06
@@ -6576,7 +7062,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W5-T06, W5-T29, W5-T30, W5-T31]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.25
   - id: W5-T08
@@ -6685,7 +7175,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W1-T17, W5-T01, W5-T03, W5-T32, W5-T33, W5-T34]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-8.1 to AUD-9.2 are live and keyed from runs recorded in the Bench
+      image. Missing: GATE-audit key-run on AUD-8.2 and AUD-9.2, and `statespace audit`.
     owner_review: false
     review_h: 0
   - id: W5-T12
@@ -6827,7 +7321,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T21, W5-T39]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: GATE-lessons, GATE-numbers and GATE-runs green on S8.L1 to S8.L3, with
+      no pending run. Learner-zero has not studied them.
     owner_review: true
     review_h: 2.5
   - id: W5-T17
@@ -6857,7 +7355,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S8.L4 and S8.L5 pass GATE-lessons, GATE-numbers and GATE-runs.
+      Missing: GATE-claims; GATE-kc dose finding on S8.L4.
     owner_review: true
     review_h: 1
   - id: W5-T18
@@ -6887,7 +7389,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T21, W5-T01]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S8.L6 and S8.L7 are live. Missing: 8 pending run references in S8.L6;
+      GATE-stamps finding on S8.L7:104.
     owner_review: true
     review_h: 2
   - id: W5-T19
@@ -6917,7 +7423,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T01, W5-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1.25
   - id: W5-T20
@@ -6945,7 +7455,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T19]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L5 is live.
     owner_review: true
     review_h: 1.25
   - id: W5-T21
@@ -6981,7 +7495,11 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W3-T05, W5-T15]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S8 runs recorded except RUN-tlc-trace-validation and
+      RUN-sim-determinism.
     owner_review: true
     review_h: 0.5
   - id: W5-T22
@@ -7012,7 +7530,12 @@ tasks:
     model: sonnet
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W5-T04]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S9 runs partly recorded (RUN-lean-abort-blind now recorded);
+      RUN-tv-reference, RUN-lean-leaky-compile, RUN-sql-shape-validator and RUN-sql-validation
+      pending.
     owner_review: true
     review_h: 0.5
   - id: W5-T23
@@ -7044,7 +7567,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T04, W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S9.L1 to S9.L4 are live. Missing: pending run references in S9.L2 to
+      S9.L4.
     owner_review: true
     review_h: 3
   - id: W5-T24
@@ -7074,7 +7601,10 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T04, W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S9.L5 and S9.L6 are live. Missing: pending runs and GATE-replay.
     owner_review: true
     review_h: 3
   - id: W5-T25
@@ -7104,7 +7634,11 @@ tasks:
     model: opus
     model_reason: "Hard content: checker-keyed items, run-cited facts and misconception distractors."
     depends_on: [W5-T04, W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: S9.L7 to S9.L9 are live. Missing: pending run references in S9.L8 and
+      S9.L9.
     owner_review: true
     review_h: 1.5
   - id: W5-T26
@@ -7133,7 +7667,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T04, W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.75
   - id: W5-T27
@@ -7162,7 +7700,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W5-T26]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 1.5
   - id: W5-T28
@@ -7190,7 +7732,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T27]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.75
   - id: W5-T29
@@ -7217,7 +7763,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T06, W5-T15]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built.
     owner_review: true
     review_h: 0.75
   - id: W5-T30
@@ -7246,7 +7796,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T29, W3-T40]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L6 is live.
     owner_review: true
     review_h: 1
   - id: W5-T31
@@ -7274,7 +7828,11 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T30, W5-T06]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
+      the template, the reference solution, the rungs and GATE-labs are not built. S10.L7 is live.
     owner_review: true
     review_h: 0.75
   - id: W5-T32
@@ -7299,7 +7857,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W5-T21, W5-T14]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-8.1 and AUD-8.2 are live. Missing: GATE-audit key-run on AUD-8.2
+      (RUN-tlc-trace-validation not recorded).
     owner_review: true
     review_h: 0.6
   - id: W5-T33
@@ -7326,7 +7888,11 @@ tasks:
     model: opus
     model_reason: "Audit anchors need real sound and flawed pairs, typed evidence and run keys."
     depends_on: [W5-T22]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: AUD-9.1 and AUD-9.2 are live; G10 and G11 meet six exemplars. Missing:
+      GATE-audit key-run on AUD-9.2 (RUN-sql-shape-validator not recorded).
     owner_review: true
     review_h: 0.6
   - id: W5-T34
@@ -7483,7 +8049,11 @@ tasks:
     model: opus
     model_reason: "Teaching content with run-cited facts and graded items."
     depends_on: [W5-T21]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Happy path, 2026-10-26: D-12 and D-19 are live. Missing: GATE-items findings on the generated
+      families they serve.
     owner_review: true
     review_h: 0.5
   - id: W5-T40

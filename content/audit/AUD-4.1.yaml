@@ -1,0 +1,193 @@
+# AUD-4.1 · S4 · G8 Model–implementation drift (docs/AUDIT-DESK.md section 3.2; spine section 6.2's row). The format
+# is content/audit/README.md's. Spine 6.2 sets the flawed form: a VC generator that forgets an unchanged account
+# reports REFUTED, or a "fix", on a witness that does not replay. A missing frame cannot support a false PROVED
+# (S4.L5). The flawed member's query is S4.L5 cell 1 as RUN-z3-missing-frame (spine 6.2's Key run) prints it, and
+# that run keys it. Receipts, the sound member, the variant pair and every step-3 scenario are keyed by
+# RUN-z3-frame-pair, recorded in the Bench image. Its tags are neutral: q1 flawed, q2 sound, q3 v1-sound,
+# q4 v1-flawed. In each pair the two queries differ in one line: the sound one's command writes the account
+# (a fee), the flawed one's command never touches it and the generator dropped its frame.
+id: AUD-4.1
+stage: S4
+class: G8
+medium: smt-lib
+artifact: transfer-obligation
+subject: "a generated obligation and a fix (SMT-LIB)"
+claim: "miniplinth check refutes Transfer: c can end below zero, so Transfer needs a guard on c."
+requirement: >-
+  A REFUTED verdict, and any fix made because of it, stands only for a run of the command: the counterexample,
+  replayed in the interpreter, is a step of the command as it ships, from a state that meets Inv (every account at
+  zero or above) to one that breaks it.
+scenario_question: "Is this a run of the command, as the interpreter runs it, that ends with an account below zero?"
+scheduled_after: [LAB-4.4]
+kcs: [KC-4.frame-condition, KC-4.trust-stack]
+based_on:
+  incident: "SymCert: verifying five production analyses took one work day in total, and its proofs caught encoder bugs."
+  date: "2026"
+  date_marks: "the FMCAD 2026 proceedings"
+  source: https://doi.org/10.34727/2026/isbn.978-3-85448-093-8_30
+
+cases:
+  - id: sound
+    key: none
+    description: "miniplinth check reports Transfer REFUTED, with c ending at -1. Adds the guard the counterexample asks for."
+    statement: |
+      (declare-fun c () Int)
+      (declare-fun b () Int)
+      (declare-fun a () Int)
+      (declare-fun p_amount () Int)
+      (declare-fun b_p () Int)
+      (declare-fun a_p () Int)
+      (declare-fun c_p () Int)
+      (assert (and (>= a 0) (>= b 0) (>= c 0)))
+      (assert (and (> p_amount 0) (<= p_amount a)))
+      (assert (and (= a_p (- a p_amount)) (= b_p (+ b p_amount))))
+      (assert (= c_p (- c 1)))
+      (assert (not (and (>= a_p 0) (>= b_p 0) (>= c_p 0))))
+      (check-sat)
+    diff: |
+      --- a/commands/transfer.mp
+      +++ b/commands/transfer.mp
+      @@ -1,5 +1,5 @@
+       command Transfer:
+      -  requires amount ≤ a;
+      +  requires amount ≤ a ∧ 1 ≤ c;
+         a := a − amount;
+         b := b + amount;
+         c := c − 1        -- the fee, from the sender's fee wallet
+    receipt: |
+      z3 5.3.1
+      [q2 check] sat
+      [q2 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1
+    restatement:
+      run: RUN-z3-frame-pair
+      scenarios: &sound-scenarios
+        - { id: s1, text: "a = 1, b = 0, c = 0, amount = 1", answer: true, key_line: "[q2 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=-1: below zero yes", why: "The transfer is accepted and its fee takes c from 0 to -1: the counterexample is a real run." }
+        - { id: s2, text: "a = 5, b = 0, c = 3, amount = 2", answer: false, key_line: "[q2 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=2: below zero no", why: "c covers the fee: every account ends at zero or above." }
+        - { id: s3, text: "a = 3, b = 2, c = 0, amount = 3", answer: true, key_line: "[q2 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=-1: below zero yes", why: "The whole balance moves, and the fee again takes c below zero." }
+        - { id: s4, text: "a = 0, b = 0, c = 0, amount = 1", answer: false, key_line: "[q2 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no", why: "The guard refuses it, and a refused transfer changes nothing." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-frame-pair
+    key_lines: ["[q2 check] sat", "[q2 replay] ok, ends a=0 b=1 c=-1: a run of the command that breaks Inv"]
+    explain: "Transfer really writes c: its fee takes 1 from c with no guard, and the query states that write. The model replays in the interpreter as a step of Transfer that leaves c at -1, so the REFUTED is about the command, and the guard on c is a real fix."
+
+  - id: flawed
+    key: { class: G8, also: [G1] }
+    description: "miniplinth check reports Transfer REFUTED, with c ending at -1. Adds the guard the counterexample asks for."
+    statement: |
+      (declare-fun c () Int)
+      (declare-fun b () Int)
+      (declare-fun a () Int)
+      (declare-fun p_amount () Int)
+      (declare-fun b_p () Int)
+      (declare-fun a_p () Int)
+      (declare-fun c_p () Int)
+      (assert (and (>= a 0) (>= b 0) (>= c 0)))
+      (assert (and (> p_amount 0) (<= p_amount a)))
+      (assert (and (= a_p (- a p_amount)) (= b_p (+ b p_amount))))
+      (assert (not (and (>= a_p 0) (>= b_p 0) (>= c_p 0))))
+      (check-sat)
+    diff: |
+      --- a/commands/transfer.mp
+      +++ b/commands/transfer.mp
+      @@ -1,4 +1,4 @@
+       command Transfer:
+      -  requires amount ≤ a;
+      +  requires amount ≤ a ∧ 1 ≤ c;
+         a := a − amount;
+         b := b + amount
+    receipt: |
+      z3 5.3.1
+      [q1 check] sat
+      [q1 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1
+    restatement:
+      run: RUN-z3-frame-pair
+      scenarios:
+        - { id: s1, text: "a = 1, b = 0, c = 0, amount = 1", answer: false, key_line: "[q1 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=0: below zero no", why: "This is the model's own pre-state. Transfer leaves c at 0; c_p = -1 is a value the query let float, not a step." }
+        - { id: s2, text: "a = 5, b = 0, c = 3, amount = 2", answer: false, key_line: "[q1 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=3: below zero no", why: "Within the guard; nothing ends below zero." }
+        - { id: s3, text: "a = 3, b = 2, c = 0, amount = 3", answer: false, key_line: "[q1 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=0: below zero no", why: "The whole balance moves; a ends at exactly 0 and c is untouched." }
+        - { id: s4, text: "a = 0, b = 0, c = 0, amount = 1", answer: false, key_line: "[q1 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no", why: "The guard refuses it." }
+    evidence: { type: witness, load_bearing: ["statement:10", "receipt:3"], reference: { run: RUN-z3-frame-pair, line: "[q1 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1" } }
+    key_run: RUN-z3-missing-frame
+    key_lines: ["without the frame: sat", "no stamp: the witness does not replay", "the witness against the step relation with frame_c stated: unsat"]
+    explain: "The step says what a and b become and nothing about c, so c_p is free: any integer fits, and Z3 picks -1. That model is no step of Transfer, which never touches c, and the replay refuses it. The frame c_p = c was dropped by the generator. The new guard on c changes a command that needed no change, to answer a false alarm."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: drop-frame-conjunct
+    medium: z3py
+    artifact: refund-obligation
+    claim: "miniplinth check refutes Refund: fees can end below zero, so Refund needs a guard on fees."
+    key: none
+    description: "miniplinth check reports Refund REFUTED, with fees ending at -1. Adds the guard the counterexample asks for."
+    statement: |
+      s = Solver()
+      s.add(And(cust >= 0, merch >= 0, fees >= 0))                  # Inv before
+      s.add(And(n > 0, n <= merch))                                 # typing and guard
+      s.add(And(cust_p == cust + n, merch_p == merch - n))          # the step
+      s.add(fees_p == fees - 1)                                     # the refund fee
+      s.add(Not(And(cust_p >= 0, merch_p >= 0, fees_p >= 0)))       # Inv after, negated
+    diff: |
+      --- a/commands/refund.mp
+      +++ b/commands/refund.mp
+      @@ -1,5 +1,5 @@
+       command Refund:
+      -  requires n ≤ merch;
+      +  requires n ≤ merch ∧ 1 ≤ fees;
+         merch := merch − n;
+         cust := cust + n;
+         fees := fees − 1      -- the refund fee
+    receipt: |
+      z3 5.3.1
+      [q3 check] sat
+      [q3 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1
+    restatement:
+      run: RUN-z3-frame-pair
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "cust = 0, merch = 4, fees = 0, n = 2", answer: true, key_line: "[q3 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=-1: below zero yes", why: "The refund is accepted and its fee takes fees from 0 to -1." }
+        - { id: s2, text: "cust = 1, merch = 5, fees = 2, n = 5", answer: false, key_line: "[q3 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=1: below zero no", why: "fees covers the refund fee." }
+        - { id: s3, text: "cust = 0, merch = 1, fees = 0, n = 3", answer: false, key_line: "[q3 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no", why: "More than the merchant holds: refused, nothing changes." }
+        - { id: s4, text: "cust = 2, merch = 3, fees = 0, n = 3", answer: true, key_line: "[q3 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=-1: below zero yes", why: "Accepted, and the fee takes fees below zero." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-frame-pair
+    key_lines: ["[q3 check] sat", "[q3 replay] ok, ends cust=1 merch=0 fees=-1: a run of the command that breaks Inv"]
+    explain: "Refund writes fees, and the query states the write. The model replays as a real refund that leaves fees at -1, so the guard is a real fix."
+
+  - id: v1-flawed
+    pair: v1
+    operator: drop-frame-conjunct
+    medium: z3py
+    artifact: refund-obligation
+    claim: "miniplinth check refutes Refund: fees can end below zero, so Refund needs a guard on fees."
+    key: { class: G8, also: [G1] }
+    description: "miniplinth check reports Refund REFUTED, with fees ending at -1. Adds the guard the counterexample asks for."
+    statement: |
+      s = Solver()
+      s.add(And(cust >= 0, merch >= 0, fees >= 0))                  # Inv before
+      s.add(And(n > 0, n <= merch))                                 # typing and guard
+      s.add(And(cust_p == cust + n, merch_p == merch - n))          # the step
+      s.add(Not(And(cust_p >= 0, merch_p >= 0, fees_p >= 0)))       # Inv after, negated
+    diff: |
+      --- a/commands/refund.mp
+      +++ b/commands/refund.mp
+      @@ -1,4 +1,4 @@
+       command Refund:
+      -  requires n ≤ merch;
+      +  requires n ≤ merch ∧ 1 ≤ fees;
+         merch := merch − n;
+         cust := cust + n
+    receipt: |
+      z3 5.3.1
+      [q4 check] sat
+      [q4 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1
+    restatement:
+      run: RUN-z3-frame-pair
+      scenarios:
+        - { id: s1, text: "cust = 0, merch = 4, fees = 0, n = 2", answer: false, key_line: "[q4 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=0: below zero no", why: "Refund never touches fees, so it stays at 0." }
+        - { id: s2, text: "cust = 1, merch = 5, fees = 2, n = 5", answer: false, key_line: "[q4 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=2: below zero no", why: "The whole merchant balance is refunded; merch ends at exactly 0." }
+        - { id: s3, text: "cust = 0, merch = 1, fees = 0, n = 3", answer: false, key_line: "[q4 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no", why: "Refused by the guard." }
+        - { id: s4, text: "cust = 2, merch = 3, fees = 0, n = 3", answer: false, key_line: "[q4 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=0: below zero no", why: "Accepted, and fees is untouched." }
+    evidence: { type: witness, load_bearing: ["statement:4", "receipt:3"], reference: { run: RUN-z3-frame-pair, line: "[q4 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1" } }
+    key_run: RUN-z3-frame-pair
+    key_lines: ["[q4 check] sat", "[q4 replay] ok, ends cust=1 merch=0 fees=0: no run of the command breaks Inv here"]
+    explain: "fees_p appears only in the negated Inv: no line says what it becomes, so the model sets it to -1. Refund never writes fees, the replay leaves it at 0, and the counterexample is no run of Refund. The frame fees_p == fees is missing, and the guard on fees answers a false alarm."

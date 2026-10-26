@@ -1,0 +1,389 @@
+{
+  "id": "RUN-tlc-hold-env",
+  "title": "AUD-5.2's cases: EventuallyResolves under fairness on Timeout (q1) and on Try and the provider's Capture (q2), the Payout variant (q3, q4), each re-checked with environment actions removed",
+  "task": "W3-T13",
+  "task_label": "W3-T13 (AUD-5.x anchors)",
+  "origin": "recorded",
+  "records": "AUD-5.2 (content/audit/AUD-5.2.yaml): the pair, variant pair v1, the removed-assumption check x1, and every step-3 scenario",
+  "engine": "tlc",
+  "version": "1.8.0",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools-1.8.0.jar in the statespace-bench image (/opt/tla2tools/tla2tools-1.8.0.jar)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T17:58:01.932Z",
+  "started_at": "2026-10-26T17:57:56.374Z",
+  "duration_s": 5.403,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-s5s6-tlc-hold-env",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/Hold.cfg",
+      "sha256": "b30a3fc01013894d19d763a2968a655cb48aee26058783697835ddbe27fadb3a",
+      "bytes": 47,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/Payout.cfg",
+      "sha256": "8fcfe097c1b97ab02a43d1601d82520fb2c06b70afd924c0c051facd4915901e",
+      "bytes": 47,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/jobs.txt",
+      "sha256": "584edc1ce3404a07b5b807e1d1f1ec3c19d498df828d4c128c140681385652ba",
+      "bytes": 721,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q1/HoldLive.tla",
+      "sha256": "6bfa6dec480e88f7a7c88f7ffa5bc416bf5cfcb822a938dae7fc0984b5f1f6b3",
+      "bytes": 586,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q1-s1/HoldLive.tla",
+      "sha256": "a91d9f1ac620ced47fd3e0f2e0e7d794793dc8c8b1393f6ea5f3aa8d2ca34de2",
+      "bytes": 538,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q1-s2/HoldLive.tla",
+      "sha256": "349770732484c888282f8f5bf650b469dd5717de98b93e1a98b2dfae495e5d34",
+      "bytes": 490,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q1-s3/HoldLive.tla",
+      "sha256": "ff11786c29cb820d6a6e6da1ecd56a9d6172627ca86da1a25be1092fb893654c",
+      "bytes": 538,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q1-s4/HoldLive.tla",
+      "sha256": "8d064a713fa67e714767a74715a21839bb9370c152a14045846ee56f42ba41a0",
+      "bytes": 526,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2/HoldLive.tla",
+      "sha256": "13bde93a847e8db0263d14d5e03872808d104870affd60fe146a3544b44ef327",
+      "bytes": 602,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2-s1/HoldLive.tla",
+      "sha256": "e6146481148dd0afdb44fbefe79023072a78fea8141f673db3a2d294a86fe45d",
+      "bytes": 554,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2-s2/HoldLive.tla",
+      "sha256": "b602e5d9775b981ea7a9738c19ef3d4ec76cce5d48df2241579e48bd72c6e1b2",
+      "bytes": 506,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2-s3/HoldLive.tla",
+      "sha256": "fdadb21024d970fba29c7cdcf9a6311cfd441c1e5817cd785681f27df7e0720a",
+      "bytes": 554,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2-s4/HoldLive.tla",
+      "sha256": "7306af5ecd8d8cdee9b235c7671f341910527b4dae9d1bc05d16a01639566422",
+      "bytes": 542,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q2-x1/HoldLive.tla",
+      "sha256": "0b02e2f9f37105e428865a6c154ec049231d24e6f81fddf8308a703fe349baf6",
+      "bytes": 582,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q3/Payout.tla",
+      "sha256": "44a7ffad42e21de07f8af15f0c9e5862ffe9b34261176457f981b11ca9e8cb99",
+      "bytes": 560,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q3-t1/Payout.tla",
+      "sha256": "4e5005eeeb9be0c726f356da88014ff65c0281df771a830294a9d201d7cdbab9",
+      "bytes": 533,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q3-t2/Payout.tla",
+      "sha256": "867336f0035dc0f6435dab55b0442e16af9c90445855243336dd1210feff5107",
+      "bytes": 519,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q3-t3/Payout.tla",
+      "sha256": "eb09e98735f4bc144402e94d1f2c1201596a8dfe97e78568621afa6b9617e6b3",
+      "bytes": 534,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q4/Payout.tla",
+      "sha256": "e7b50f69e4f391c2a29cf88be6eebe44ecdd0f279bab7dfa0e88e213e9696dfa",
+      "bytes": 574,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q4-t1/Payout.tla",
+      "sha256": "81fce7f542b263b1705f84256a0bc82389a9f637388f6a60a1334e4c6f2cdca9",
+      "bytes": 547,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q4-t2/Payout.tla",
+      "sha256": "1c39906d30fd55e054840e75fe165c390d4b1fe2a5d9aee5c1156e7f76ddcc5b",
+      "bytes": 533,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/q4-t3/Payout.tla",
+      "sha256": "38b199f4cea9131bc6d6e002fbe32947f8e1f10a3ddd35b138f580cec7099c0a",
+      "bytes": 548,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-hold-env/inputs/run.sh",
+      "sha256": "2013180d6caab960ad81b74599ca8472cbf7df3fbe7929f652304746e1c38960",
+      "bytes": 547,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "workers": 1
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1] Model checking completed. No error has been found.",
+    "[q1] 11 states generated, 8 distinct states found, 0 states left on queue.",
+    "[q1] exit=0",
+    "[q2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2] Model checking completed. No error has been found.",
+    "[q2] 11 states generated, 8 distinct states found, 0 states left on queue.",
+    "[q2] exit=0",
+    "[q1 s1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1 s1] Model checking completed. No error has been found.",
+    "[q1 s1] 9 states generated, 6 distinct states found, 0 states left on queue.",
+    "[q1 s1] exit=0",
+    "[q2 s1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2 s1] Error: Temporal property EventuallyResolves was violated.",
+    "[q2 s1] Error: The following behavior constitutes a counter-example:",
+    "[q2 s1] State 1: <Initial predicate>",
+    "[q2 s1] State 2: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q2 s1] State 3: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q2 s1] State 4: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q2 s1] Back to state 1: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q2 s1] 9 states generated, 6 distinct states found, 0 states left on queue.",
+    "[q2 s1] exit=13",
+    "[q1 s2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1 s2] Model checking completed. No error has been found.",
+    "[q1 s2] 4 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q1 s2] exit=0",
+    "[q2 s2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2 s2] Error: Temporal property EventuallyResolves was violated.",
+    "[q2 s2] Error: The following behavior constitutes a counter-example:",
+    "[q2 s2] State 1: <Initial predicate>",
+    "[q2 s2] State 2: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q2 s2] State 3: Stuttering",
+    "[q2 s2] 4 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q2 s2] exit=13",
+    "[q1 s3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1 s3] Model checking completed. No error has been found.",
+    "[q1 s3] 5 states generated, 5 distinct states found, 0 states left on queue.",
+    "[q1 s3] exit=0",
+    "[q2 s3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2 s3] Model checking completed. No error has been found.",
+    "[q2 s3] 5 states generated, 5 distinct states found, 0 states left on queue.",
+    "[q2 s3] exit=0",
+    "[q1 s4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1 s4] Error: Temporal property EventuallyResolves was violated.",
+    "[q1 s4] Error: The following behavior constitutes a counter-example:",
+    "[q1 s4] State 1: <Initial predicate>",
+    "[q1 s4] State 2: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q1 s4] State 3: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q1 s4] State 4: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q1 s4] Back to state 1: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q1 s4] 7 states generated, 6 distinct states found, 0 states left on queue.",
+    "[q1 s4] exit=13",
+    "[q2 s4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2 s4] Model checking completed. No error has been found.",
+    "[q2 s4] 7 states generated, 6 distinct states found, 0 states left on queue.",
+    "[q2 s4] exit=0",
+    "[q2 x1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2 x1] Error: Temporal property EventuallyResolves was violated.",
+    "[q2 x1] Error: The following behavior constitutes a counter-example:",
+    "[q2 x1] State 1: <Initial predicate>",
+    "[q2 x1] State 2: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q2 x1] State 3: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q2 x1] State 4: <Try line 6, col 12 to line 6, col 73 of module HoldLive>",
+    "[q2 x1] Back to state 1: <Busy line 7, col 12 to line 7, col 64 of module HoldLive>",
+    "[q2 x1] 11 states generated, 8 distinct states found, 0 states left on queue.",
+    "[q2 x1] exit=13",
+    "[q3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q3] Model checking completed. No error has been found.",
+    "[q3] 8 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q3] exit=0",
+    "[q4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q4] Model checking completed. No error has been found.",
+    "[q4] 8 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q4] exit=0",
+    "[q3 t1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q3 t1] Model checking completed. No error has been found.",
+    "[q3 t1] 6 states generated, 3 distinct states found, 0 states left on queue.",
+    "[q3 t1] exit=0",
+    "[q4 t1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q4 t1] Error: Temporal property EventuallyFinished was violated.",
+    "[q4 t1] Error: The following behavior constitutes a counter-example:",
+    "[q4 t1] State 1: <Initial predicate>",
+    "[q4 t1] State 2: <Send line 4, col 12 to line 4, col 40 of module Payout>",
+    "[q4 t1] Back to state 1: <Bounce line 5, col 12 to line 5, col 42 of module Payout>",
+    "[q4 t1] 6 states generated, 3 distinct states found, 0 states left on queue.",
+    "[q4 t1] exit=13",
+    "[q3 t2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q3 t2] Error: Temporal property EventuallyFinished was violated.",
+    "[q3 t2] Error: The following behavior constitutes a counter-example:",
+    "[q3 t2] State 1: <Initial predicate>",
+    "[q3 t2] State 2: Stuttering",
+    "[q3 t2] 5 states generated, 3 distinct states found, 0 states left on queue.",
+    "[q3 t2] exit=13",
+    "[q4 t2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q4 t2] Model checking completed. No error has been found.",
+    "[q4 t2] 5 states generated, 3 distinct states found, 0 states left on queue.",
+    "[q4 t2] exit=0",
+    "[q3 t3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q3 t3] Model checking completed. No error has been found.",
+    "[q3 t3] 7 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q3 t3] exit=0",
+    "[q4 t3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q4 t3] Model checking completed. No error has been found.",
+    "[q4 t3] 7 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q4 t3] exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-hold-env/tlc.log",
+      "sha256": "e0823b6d127940cd4bd8236092922b07059418a3a8646ddb0d6be1c2789ed6d7",
+      "bytes": 57846,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "result": "no error",
+      "distinct": 8
+    },
+    "q2": {
+      "result": "no error",
+      "distinct": 8
+    },
+    "q1 s1": {
+      "result": "no error",
+      "distinct": 6
+    },
+    "q2 s1": {
+      "result": "violated: EventuallyResolves",
+      "distinct": 6
+    },
+    "q1 s2": {
+      "result": "no error",
+      "distinct": 4
+    },
+    "q2 s2": {
+      "result": "violated: EventuallyResolves",
+      "distinct": 4
+    },
+    "q1 s3": {
+      "result": "no error",
+      "distinct": 5
+    },
+    "q2 s3": {
+      "result": "no error",
+      "distinct": 5
+    },
+    "q1 s4": {
+      "result": "violated: EventuallyResolves",
+      "distinct": 6
+    },
+    "q2 s4": {
+      "result": "no error",
+      "distinct": 6
+    },
+    "q2 x1": {
+      "result": "violated: EventuallyResolves",
+      "distinct": 8
+    },
+    "q3": {
+      "result": "no error",
+      "distinct": 4
+    },
+    "q4": {
+      "result": "no error",
+      "distinct": 4
+    },
+    "q3 t1": {
+      "result": "no error",
+      "distinct": 3
+    },
+    "q4 t1": {
+      "result": "violated: EventuallyFinished",
+      "distinct": 3
+    },
+    "q3 t2": {
+      "result": "violated: EventuallyFinished",
+      "distinct": 3
+    },
+    "q4 t2": {
+      "result": "no error",
+      "distinct": 3
+    },
+    "q3 t3": {
+      "result": "no error",
+      "distinct": 4
+    },
+    "q4 t3": {
+      "result": "no error",
+      "distinct": 4
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-write at /w (TLC writes trace files beside the specs).",
+    "run.sh runs TLC once per line of jobs.txt (tag|dir|module|cfg|flags) and prefixes every line TLC prints with \"[tag] \", then the exit status as \"[tag] exit=N\". verdict_lines are the log lines content/audit/tools/record-s5s6.mjs keeps, in log order.",
+    "Tags are neutral: q1, q2, ... name a case's check; a second word (s1, t1, c1, x1) names a scenario's edit of that case's module, which content/audit/tools/s5s6-inputs.mjs applies and the inputs folder holds as it ran."
+  ]
+}

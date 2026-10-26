@@ -1,0 +1,329 @@
+# AUD-7.1 · S7 · G10 Observer too weak (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Pair members are keyed by RUN-z3-count-channel (spine section 6.2's key run, SP-7.2): the same Search model, three
+# document slots and the same Rel. The receipts, the variant pair and every step-3 scenario are keyed by
+# RUN-z3-observer-pairs, recorded in the Bench image by content/audit/tools/record-keys-s7-s8.mjs. Its tags are
+# neutral: q1 sound member, q2 flawed member, q3/q4 variant pair v1 (flawed/sound). Each statement is the case's
+# query as observer.py runs it, with world(), rel() and count() as in that file.
+id: AUD-7.1
+stage: S7
+class: G10
+medium: z3py
+artifact: search-result-count
+subject: "a search view's noninterference check (Z3Py)"
+claim: "Noninterference proved for the document view."
+requirement: >-
+  A client of an Acme user cannot tell apart two worlds that differ only in another tenant's private documents, by
+  anything the response carries: its JSON body, its result count, its status code.
+scenario_question: "Does the statement's observer tell these two responses apart?"
+scheduled_after: [LAB-7, S7.L6]
+kcs: [KC-7.observer-equivalence, KC-7.side-channels]
+based_on:
+  incident: "The PostgreSQL 18 row-security documentation warns that integrity checks such as unique constraints bypass row security, so an error can tell a user about rows they cannot see: a covert channel."
+  date: "2026-10-23"
+  date_marks: "the page was read"
+  source: https://www.postgresql.org/docs/18/ddl-rowsecurity.html
+
+cases:
+  - id: sound
+    key: none
+    description: "Adds a result count to the search response, then re-runs the noninterference check. Z3 answers unsat."
+    statement: |
+      def search(W):                                       # Search(frank, "layoffs")
+          hits  = count([And(e, r, m) for e, r, m in W])   # readable matches: the JSON body
+          total = count([And(e, r, m) for e, r, m in W])   # the result count
+          return hits, total
+
+      def observe(hits, total):                            # what the proof compares
+          return [hits, total]
+
+      L, R = world('L'), world('R')                        # three document slots each
+      s = Solver()
+      s.add(rel(L, R))                                     # Rel: the worlds agree on what Acme may know
+      s.add(Or([a != b for a, b in zip(observe(*search(L)), observe(*search(R)))]))
+      print(s.check())
+    diff: |
+      --- a/checks/search_ni.py
+      +++ b/checks/search_ni.py
+      @@ -1,6 +1,7 @@
+       def search(W):                                       # Search(frank, "layoffs")
+           hits  = count([And(e, r, m) for e, r, m in W])   # readable matches: the JSON body
+      -    return hits
+      +    total = count([And(e, r, m) for e, r, m in W])   # the result count
+      +    return hits, total
+
+      -def observe(hits):                                   # what the proof compares
+      -    return [hits]
+      +def observe(hits, total):                            # what the proof compares
+      +    return [hits, total]
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q1 proof] unsat
+      [q1 premises] sat
+    restatement:
+      run: RUN-z3-observer-pairs
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Left: no hits, a count of 1. Right: no hits, a count of 0.", answer: true, key_line: "[q1 s1 L hits=0 total=1 R hits=0 total=0] apart", why: "The observer compares the count as well as the hits, and the counts differ." }
+        - { id: s2, text: "Left: 1 hit, a count of 1. Right: no hits, a count of 0.", answer: true, key_line: "[q1 s2 L hits=1 total=1 R hits=0 total=0] apart", why: "The hits differ, and so do the counts." }
+        - { id: s3, text: "Left: 1 hit, a count of 2. Right: 1 hit, a count of 2.", answer: false, key_line: "[q1 s3 L hits=1 total=2 R hits=1 total=2] equal", why: "Identical responses: no observer tells them apart." }
+        - { id: s4, text: "Left: 2 hits, a count of 3. Right: 2 hits, a count of 2.", answer: true, key_line: "[q1 s4 L hits=2 total=3 R hits=2 total=2] apart", why: "Equal hits, different counts: this observer sees the count." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-count-channel
+    key_lines: ["self-composition, total counted after the filter: unsat", "premise witness: Rel and the lesson pair, layoffs-memo in one world only: sat"]
+    explain: "The observer is the whole response, hits and count, and the count is taken after the read filter. Pairs that differ only in Birch's private documents give equal responses (unsat), and such pairs exist (the premise query is sat), so the unsat is about real pairs. Timing is outside both the model and the requirement; it would need its own check."
+
+  - id: flawed
+    key: G10
+    description: "Adds a result count to the search response, then re-runs the noninterference check. Z3 answers unsat."
+    statement: |
+      def search(W):                                       # Search(frank, "layoffs")
+          hits  = count([And(e, r, m) for e, r, m in W])   # readable matches: the JSON body
+          total = count([And(e, m) for e, r, m in W])      # the result count
+          return hits, total
+
+      def observe(hits, total):                            # what the proof compares
+          return [hits]
+
+      L, R = world('L'), world('R')                        # three document slots each
+      s = Solver()
+      s.add(rel(L, R))                                     # Rel: the worlds agree on what Acme may know
+      s.add(Or([a != b for a, b in zip(observe(*search(L)), observe(*search(R)))]))
+      print(s.check())
+    diff: |
+      --- a/checks/search_ni.py
+      +++ b/checks/search_ni.py
+      @@ -1,6 +1,7 @@
+       def search(W):                                       # Search(frank, "layoffs")
+           hits  = count([And(e, r, m) for e, r, m in W])   # readable matches: the JSON body
+      -    return hits
+      +    total = count([And(e, m) for e, r, m in W])      # the result count
+      +    return hits, total
+
+      -def observe(hits):                                   # what the proof compares
+      -    return [hits]
+      +def observe(hits, total):                            # what the proof compares
+      +    return [hits]
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q2 proof] unsat
+      [q2 premises] sat
+    restatement:
+      run: RUN-z3-observer-pairs
+      scenarios:
+        - { id: s1, text: "Left: no hits, a count of 1. Right: no hits, a count of 0.", answer: false, key_line: "[q2 s1 L hits=0 total=1 R hits=0 total=0] equal", why: "The observer compares hits only, and the hits are equal. A client reading the count sees 1 and 0." }
+        - { id: s2, text: "Left: 1 hit, a count of 1. Right: no hits, a count of 0.", answer: true, key_line: "[q2 s2 L hits=1 total=1 R hits=0 total=0] apart", why: "The hits differ, so even this observer sees it." }
+        - { id: s3, text: "Left: 1 hit, a count of 2. Right: 1 hit, a count of 2.", answer: false, key_line: "[q2 s3 L hits=1 total=2 R hits=1 total=2] equal", why: "Identical responses." }
+        - { id: s4, text: "Left: 2 hits, a count of 3. Right: 2 hits, a count of 2.", answer: false, key_line: "[q2 s4 L hits=2 total=3 R hits=2 total=2] equal", why: "Equal hits; the observer never looks at the count." }
+    evidence:
+      type: paired-states
+      load_bearing: ["statement:3", "statement:7"]
+      reference: "RUN-z3-count-channel: the lesson pair (Birch's private layoffs-memo in the left world only), hits L=0 R=0, total L=1 R=0"
+    key_run: RUN-z3-count-channel
+    key_lines: ["the lesson pair, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0", "self-composition, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0"]
+    explain: "The response now carries a count taken before the read filter, but the proof's observer still compares the hits alone. The unsat is about an observer no client has. Compare the whole response and the query is sat: two worlds that differ only in Birch's private layoffs-memo give frank the same hits and counts of 1 and 0."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: open-refusal-code
+    key: G10
+    description: "Adds a response code to Open, then re-runs the noninterference check. Z3 answers unsat."
+    statement: |
+      def open_doc(exists, mayread, body):                 # Open(frank, "layoffs-memo")
+          code = If(Not(exists), 0, If(Not(mayread), 1, 2))   # 0 not_found, 1 forbidden, 2 page
+          return code, If(code == 2, body, 0)
+
+      def observe(code, body):                             # what the proof compares
+          return [body]
+
+      (L, R), rel = related()                              # exists, mayread, body in each world
+      s = Solver()
+      s.add(rel)                                           # Rel: the worlds agree on what Acme may know
+      s.add(Or([a != b for a, b in zip(observe(*open_doc(*L)), observe(*open_doc(*R)))]))
+      print(s.check())
+    diff: |
+      --- a/checks/open_ni.py
+      +++ b/checks/open_ni.py
+      @@ -1,6 +1,7 @@
+       def open_doc(exists, mayread, body):                 # Open(frank, "layoffs-memo")
+      -    return If(And(exists, mayread), body, 0)
+      +    code = If(Not(exists), 0, If(Not(mayread), 1, 2))   # 0 not_found, 1 forbidden, 2 page
+      +    return code, If(code == 2, body, 0)
+
+      -def observe(body):                                   # what the proof compares
+      -    return [body]
+      +def observe(code, body):                             # what the proof compares
+      +    return [body]
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q3 proof] unsat
+      [q3 premises] sat
+    restatement:
+      run: RUN-z3-observer-pairs
+      scenarios:
+        - { id: s1, text: "Left: code 1 (forbidden), no body. Right: code 0 (not_found), no body.", answer: false, key_line: "[q3 s1 L code=1 body=0 R code=0 body=0] equal", why: "The observer compares the body only, and both bodies are empty. The client sees two different codes." }
+        - { id: s2, text: "Left: code 2, body 7. Right: code 2, body 7.", answer: false, key_line: "[q3 s2 L code=2 body=7 R code=2 body=7] equal", why: "Identical responses." }
+        - { id: s3, text: "Left: code 2, body 7. Right: code 0 (not_found), no body.", answer: true, key_line: "[q3 s3 L code=2 body=7 R code=0 body=0] apart", why: "The bodies differ, so even this observer sees it." }
+    evidence:
+      type: paired-states
+      load_bearing: ["statement:2", "statement:6"]
+      reference: "RUN-z3-observer-pairs [q3 client]: code L=0 R=1, body L=0 R=0"
+    key_run: RUN-z3-observer-pairs
+    key_lines: ["[q3 proof] unsat", "[q3 premises] sat", "[q3 client] sat | code L=0 R=1 | body L=0 R=0"]
+    explain: "Open now answers forbidden for a document that exists and not_found for one that does not, but the proof compares bodies only. Compare the whole response and Z3 finds the pair: code 0 in one world and 1 in the other, both bodies empty. The code tells frank whether Birch's layoffs-memo exists."
+
+  - id: v1-sound
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: open-refusal-code
+    key: none
+    description: "Adds a response code to Open, then re-runs the noninterference check. Z3 answers unsat."
+    statement: |
+      def open_doc(exists, mayread, body):                 # Open(frank, "layoffs-memo")
+          code = If(And(exists, mayread), 2, 0)            # 0 not_found, 2 page
+          return code, If(code == 2, body, 0)
+
+      def observe(code, body):                             # what the proof compares
+          return [code, body]
+
+      (L, R), rel = related()                              # exists, mayread, body in each world
+      s = Solver()
+      s.add(rel)                                           # Rel: the worlds agree on what Acme may know
+      s.add(Or([a != b for a, b in zip(observe(*open_doc(*L)), observe(*open_doc(*R)))]))
+      print(s.check())
+    diff: |
+      --- a/checks/open_ni.py
+      +++ b/checks/open_ni.py
+      @@ -1,6 +1,7 @@
+       def open_doc(exists, mayread, body):                 # Open(frank, "layoffs-memo")
+      -    return If(And(exists, mayread), body, 0)
+      +    code = If(And(exists, mayread), 2, 0)            # 0 not_found, 2 page
+      +    return code, If(code == 2, body, 0)
+
+      -def observe(body):                                   # what the proof compares
+      -    return [body]
+      +def observe(code, body):                             # what the proof compares
+      +    return [code, body]
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q4 proof] unsat
+      [q4 premises] sat
+    restatement:
+      run: RUN-z3-observer-pairs
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "Left: code 1 (forbidden), no body. Right: code 0 (not_found), no body.", answer: true, key_line: "[q4 s1 L code=1 body=0 R code=0 body=0] apart", why: "This observer compares codes, and they differ. (This Open never answers 1; the observer still tells the pair apart.)" }
+        - { id: s2, text: "Left: code 2, body 7. Right: code 2, body 7.", answer: false, key_line: "[q4 s2 L code=2 body=7 R code=2 body=7] equal", why: "Identical responses." }
+        - { id: s3, text: "Left: code 2, body 7. Right: code 0 (not_found), no body.", answer: true, key_line: "[q4 s3 L code=2 body=7 R code=0 body=0] apart", why: "Codes and bodies both differ." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-observer-pairs
+    key_lines: ["[q4 proof] unsat", "[q4 premises] sat", "[q4 client] unsat"]
+    explain: "Both refusals give one answer, not_found, and the observer is the whole response, code and body. Related worlds give equal responses (unsat), with the premises satisfiable. This is S7.L6's version 1."
+
+  - id: v2-flawed
+    pair: v2
+    operator: widen-or-narrow-observer
+    artifact: slug-uniqueness
+    medium: sql
+    key: G10
+    description: "Makes document slugs unique, then re-runs the pair check. frank's observations are equal in both worlds."
+    statement: |
+      CREATE TABLE documents (
+        tenant text NOT NULL,
+        slug   text NOT NULL UNIQUE,              -- one document per slug
+        title  text NOT NULL
+      );
+      ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+      CREATE POLICY own_tenant ON documents
+        USING (tenant = current_setting('app.tenant'))
+        WITH CHECK (tenant = current_setting('app.tenant'));
+
+      -- the pair check: frank (Acme) runs his SELECT and his INSERT in world 1, where Birch has
+      -- a private layoffs-memo, and in world 2, where it does not
+      -- observe := the rows his SELECT returns
+    diff: |
+      --- a/db/documents.sql
+      +++ b/db/documents.sql
+      @@ -1,5 +1,5 @@
+       CREATE TABLE documents (
+         tenant text NOT NULL,
+      -  slug   text NOT NULL,
+      +  slug   text NOT NULL UNIQUE,              -- one document per slug
+         title  text NOT NULL
+       );
+      @@ -11,3 +11,3 @@
+       -- a private layoffs-memo, and in world 2, where it does not
+      --- observe := what his client shows
+      +-- observe := the rows his SELECT returns
+    receipt: |
+      [q5 w1] roadmap
+      [q5 w2] roadmap
+      [q5 pair] w1 and w2 observations equal
+    receipt_run: RUN-pg-observer-pairs
+    restatement:
+      run: RUN-pg-observer-pairs
+      scenarios:
+        - { id: s1, text: "World 1: frank's SELECT returns roadmap, and his INSERT fails with 23505. World 2: the SELECT returns roadmap, and the INSERT succeeds.", answer: false, key_line: "[q5 s1] equal", why: "The observer keeps the rows only, and the rows are equal. frank's client sees an error in one world and success in the other." }
+        - { id: s2, text: "World 1: the SELECT returns roadmap, and the INSERT succeeds. World 2: the SELECT returns q3-plan and roadmap, and the INSERT succeeds.", answer: true, key_line: "[q5 s2] apart", why: "The rows differ." }
+        - { id: s3, text: "Both worlds: the SELECT returns roadmap, and the INSERT succeeds.", answer: false, key_line: "[q5 s3] equal", why: "Identical responses." }
+    evidence:
+      type: paired-states
+      load_bearing: ["statement:3", "statement:13"]
+      reference: "RUN-pg-rls-covert (cell3): frank's insert of slug layoffs-memo fails with 23505 against Birch's invisible row; in the paired world without that row it inserts"
+    key_run: RUN-pg-rls-covert
+    key_lines:
+      - { config: cell3, line: 'psql:/q/S7.L4-cell3.sql:6: ERROR:  23505: duplicate key value violates unique constraint "documents_slug_key"' }
+      - { config: cell3, line: "INSERT 0 1" }
+    explain: "A unique constraint is checked against every row, including rows row security hides. frank's INSERT of layoffs-memo fails with 23505 in the world where Birch has that slug and succeeds where Birch does not, so the error tells him Birch's private document exists. The pair check compared his SELECT rows only, an observer blind to command outcomes. The PostgreSQL documentation names this covert channel."
+
+  - id: v2-sound
+    pair: v2
+    operator: widen-or-narrow-observer
+    artifact: slug-uniqueness
+    medium: sql
+    key: none
+    description: "Makes document slugs unique, then re-runs the pair check. frank's observations are equal in both worlds."
+    statement: |
+      CREATE TABLE documents (
+        tenant text NOT NULL,
+        slug   text NOT NULL,
+        title  text NOT NULL,
+        UNIQUE (tenant, slug)                     -- one document per slug, per tenant
+      );
+      ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+      CREATE POLICY own_tenant ON documents
+        USING (tenant = current_setting('app.tenant'))
+        WITH CHECK (tenant = current_setting('app.tenant'));
+
+      -- the pair check: frank (Acme) runs his SELECT and his INSERT in world 1, where Birch has
+      -- a private layoffs-memo, and in world 2, where it does not
+      -- observe := the rows his SELECT returns, and each command's outcome
+    diff: |
+      --- a/db/documents.sql
+      +++ b/db/documents.sql
+      @@ -1,5 +1,6 @@
+       CREATE TABLE documents (
+         tenant text NOT NULL,
+         slug   text NOT NULL,
+      -  title  text NOT NULL
+      +  title  text NOT NULL,
+      +  UNIQUE (tenant, slug)                     -- one document per slug, per tenant
+       );
+      @@ -11,3 +12,3 @@
+       -- a private layoffs-memo, and in world 2, where it does not
+      --- observe := what his client shows
+      +-- observe := the rows his SELECT returns, and each command's outcome
+    receipt: |
+      [q6 w1] roadmap
+      [q6 w2] roadmap
+      [q6 pair] w1 and w2 observations equal
+    receipt_run: RUN-pg-observer-pairs
+    restatement:
+      run: RUN-pg-observer-pairs
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "World 1: frank's SELECT returns roadmap, and his INSERT fails with 23505. World 2: the SELECT returns roadmap, and the INSERT succeeds.", answer: true, key_line: "[q6 s1] apart", why: "This observer keeps each command's outcome, and the outcomes differ." }
+        - { id: s2, text: "World 1: the SELECT returns roadmap, and the INSERT succeeds. World 2: the SELECT returns q3-plan and roadmap, and the INSERT succeeds.", answer: true, key_line: "[q6 s2] apart", why: "The rows differ." }
+        - { id: s3, text: "Both worlds: the SELECT returns roadmap, and the INSERT succeeds.", answer: false, key_line: "[q6 s3] equal", why: "Identical responses." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-pg-observer-pairs
+    key_lines: ["[q6 w1] INSERT 0 1", "[q6 w2] INSERT 0 1", "[q6 pair] w1 and w2 observations equal"]
+    explain: "The slug is unique per tenant, so Birch's rows never collide with frank's: his INSERT succeeds in both worlds. The observer keeps rows and command outcomes, and the two worlds still look the same to frank. One pair of worlds and two commands is a test, not a proof over all worlds; it is evidence for this channel."

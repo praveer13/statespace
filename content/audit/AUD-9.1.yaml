@@ -1,0 +1,378 @@
+# AUD-9.1 · S9 · G10 Observer too weak (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Every case is keyed by RUN-lean-abort-blind (spine section 6.2's key run), recorded in the Bench image by
+# content/audit/tools/record-aud9.mjs: each case's compile, obs and preservation elaborated against one shared model
+# (inputs/Defs.lean), with #print axioms, plus a probe that evaluates each case's run pair and step-3 scenarios. The
+# run tags its cases q1 to q8 so a receipt line never names a key: q1 sound member, q2 flawed member, q3/q4 variant
+# pair v1 (flawed/sound), q5/q6 variant pair v2 (sound/flawed), q7/q8 variant pair v3 (flawed/sound). The probe's
+# pair lines p1 to p8 follow the same order.
+id: AUD-9.1
+stage: S9
+class: G10
+medium: lean
+artifact: transfer-compiler
+subject: "a compiler's preservation theorem (Lean)"
+claim: "The compiler preserves meaning; proved in Lean."
+requirement: >-
+  A client sees each command's outcome: whether it committed or aborted, the error code of an abort, and every
+  balance after it. On every store and every amount, the compiled code gives the client what the source gives.
+scenario_question: "Does the theorem, as written, rule out this pair of runs?"
+scheduled_after: [S9.L4, LAB-9.4]
+kcs: [KC-9.observations]
+based_on:
+  incident: "Csmith (PLDI 2011): random differential testing of C compilers found that CompCert's silent wrong-code bugs sat in its unverified front end, plus one gap in its specification; the proved middle end had none."
+  date: "2011-06"
+  date_marks: "the paper's presentation at PLDI 2011"
+  source: https://users.cs.utah.edu/~regehr/papers/pldi11-preprint.pdf
+
+cases:
+  - id: sound
+    key: none
+    description: "Optimizes the transfer's compiled code. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- In the IR, writeIf rc ra a r writes only when regs rc ≥ regs ra.
+      def obs (s : Store) (r : Outcome) : Option Err × Store := (r.err?, view s r)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -1,10 +1,10 @@
+       def compile (amt : Int) : List Instr :=
+         [.ldi 0 amt,
+          .assertPos 0 .nonPositive,
+          .read 1 .a1,
+          .assertLe 0 1 .insufficient,
+      -   .sub 2 1 0,
+      -   .write .a1 2,
+      +   .sub 1 1 0,
+      +   .write .a1 1,
+          .read 3 .a2,
+          .add 3 3 0,
+          .write .a2 3]
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios: &sound-scenarios
+        - { id: s1, text: "From (0, 0), transfer 1: the source aborts with insufficient; the compiled code commits with (0, 0).", answer: true, key_line: "[q1 s1] ruled out", why: "obs sees the error code: none for the commit, insufficient for the abort. The observations differ, so the theorem forbids this pair." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q1 s2] not ruled out", why: "Equal outcomes and equal balances: this is what the theorem asks for." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (10, 0).", answer: true, key_line: "[q1 s3] ruled out", why: "The balances differ, and obs sees them." }
+        - { id: s4, text: "From (3, 0), transfer 5: both abort with insufficient.", answer: false, key_line: "[q1 s4] not ruled out", why: "The same abort with the same code, and the starting balances in both." }
+        - { id: s5, text: "From (10, 0), transfer 0: the source aborts with nonPositive; the compiled code aborts with insufficient.", answer: true, key_line: "[q1 s5] ruled out", why: "obs keeps the error code, so two different codes are two different observations." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q1, line: "lean exit=0" }
+      - { config: q1, line: "'preservation' depends on axioms: [propext, Quot.sound]" }
+      - { config: probe, line: "[p1 store (0, 0) amt 1] outcomes equal: true" }
+    explain: "obs carries the error code and the balances, which is everything the requirement names, and preservation builds under it with standard axioms only. Reusing register 1 for the debited balance changes no outcome: from (0, 0) with amount 1, the source and the compiled code both abort with insufficient."
+
+  - id: flawed
+    key: { class: G10, also: [G1] }
+    description: "Optimizes the transfer's compiled code. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- In the IR, writeIf rc ra a r writes only when regs rc ≥ regs ra.
+      def obs (s : Store) (r : Outcome) : Store := view s r
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -1,10 +1,9 @@
+       def compile (amt : Int) : List Instr :=
+         [.ldi 0 amt,
+          .assertPos 0 .nonPositive,
+          .read 1 .a1,
+      -   .assertLe 0 1 .insufficient,
+          .sub 2 1 0,
+      -   .write .a1 2,
+      +   .writeIf 1 0 .a1 2,
+          .read 3 .a2,
+          .add 3 3 0,
+      -   .write .a2 3]
+      +   .writeIf 1 0 .a2 3]
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios:
+        - { id: s1, text: "From (0, 0), transfer 1: the source aborts with insufficient; the compiled code commits with (0, 0).", answer: false, key_line: "[q2 s1] not ruled out", why: "obs is the balances alone, and an abort leaves (0, 0), as the commit does. The theorem cannot tell an error from a success." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q2 s2] not ruled out", why: "Equal balances: allowed." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (10, 0).", answer: true, key_line: "[q2 s3] ruled out", why: "The balances differ, and the balances are all obs sees." }
+        - { id: s4, text: "From (3, 0), transfer 5: both abort with insufficient.", answer: false, key_line: "[q2 s4] not ruled out", why: "Both leave the starting balances." }
+        - { id: s5, text: "From (10, 0), transfer 0: the source aborts with nonPositive; the compiled code aborts with insufficient.", answer: false, key_line: "[q2 s5] not ruled out", why: "obs drops the error code, so the two aborts look the same." }
+    evidence: { type: paired-states, load_bearing: ["statement:4", "diff:8", "diff:11"], reference: "RUN-lean-abort-blind [p2 store (0, 0) amt 1]: source Outcome.abort (Err.insufficient), compiled Outcome.commit (0, 0); the statement's obs equal, outcomes not" }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q2, line: "lean exit=0" }
+      - { config: q2, line: "'preservation' depends on axioms: [propext, Quot.sound]" }
+      - { config: probe, line: "[p2 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.commit (0, 0)" }
+      - { config: probe, line: "[p2 store (0, 0) amt 1] the statement's obs equal: true" }
+      - { config: probe, line: "[p2 store (0, 0) amt 1] outcomes equal: false" }
+    explain: "obs keeps only the balances, and an abort leaves the starting balances, so it cannot see whether a command failed. The edit drops the funds check and makes both writes conditional. From (0, 0) with amount 1, the source aborts with insufficient and the compiled code commits with (0, 0): the observations are equal and the outcomes are not. The theorem builds because it asks too little. A client sees an error from one run and success from the other."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: error-code-observer
+    key: { class: G10, also: [G1] }
+    description: "Simplifies the compiled guards. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.isAbort is true when r aborts; r.err? is its error code, or none for a commit.
+      def obs (s : Store) (r : Outcome) : Bool × Store := (r.isAbort, view s r)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -1,4 +1,4 @@
+       def compile (amt : Int) : List Instr :=
+         [.ldi 0 amt,
+      -   .assertPos 0 .nonPositive,
+      +   .assertPos 0 .insufficient,
+          .read 1 .a1,
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios:
+        - { id: s1, text: "From (10, 0), transfer 0: the source aborts with nonPositive; the compiled code aborts with insufficient.", answer: false, key_line: "[q3 s1] not ruled out", why: "obs records that both aborted, and nothing about why." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q3 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q3 s3] ruled out", why: "This observer does see whether a command aborted." }
+        - { id: s4, text: "From (3, 0), transfer 5: both abort with insufficient.", answer: false, key_line: "[q3 s4] not ruled out", why: "The same abort." }
+    evidence: { type: paired-states, load_bearing: ["statement:4", "diff:7"], reference: "RUN-lean-abort-blind [p3 store (10, 0) amt 0]: source Outcome.abort (Err.nonPositive), compiled Outcome.abort (Err.insufficient); the statement's obs equal, outcomes not" }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q3, line: "lean exit=0" }
+      - { config: probe, line: "[p3 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.insufficient)" }
+      - { config: probe, line: "[p3 store (10, 0) amt 0] the statement's obs equal: true" }
+      - { config: probe, line: "[p3 store (10, 0) amt 0] outcomes equal: false" }
+    explain: "obs merges the error codes: it sees that a command aborted, not which check failed. The edit reports insufficient for a non-positive amount. From (10, 0) with amount 0, the source says nonPositive and the compiled code says insufficient, and obs equates the two runs, so the theorem still builds. A client that reads the code is told the wrong reason."
+
+  - id: v1-sound
+    pair: v1
+    operator: widen-or-narrow-observer
+    artifact: error-code-observer
+    key: none
+    description: "Simplifies the compiled guards. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.isAbort is true when r aborts; r.err? is its error code, or none for a commit.
+      def obs (s : Store) (r : Outcome) : Option Err × Store := (r.err?, view s r)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -2,4 +2,4 @@
+         [.ldi 0 amt,
+      -   .assertPos 0 .nonPositive,
+          .read 1 .a1,
+      +   .assertPos 0 .nonPositive,
+          .assertLe 0 1 .insufficient,
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "From (10, 0), transfer 0: the source aborts with nonPositive; the compiled code aborts with insufficient.", answer: true, key_line: "[q4 s1] ruled out", why: "obs keeps the error code, so the two aborts differ." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q4 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q4 s3] ruled out", why: "An abort and a commit are different observations." }
+        - { id: s4, text: "From (3, 0), transfer 5: both abort with insufficient.", answer: false, key_line: "[q4 s4] not ruled out", why: "The same abort with the same code." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q4, line: "lean exit=0" }
+      - { config: probe, line: "[p4 store (10, 0) amt 0] outcomes equal: true" }
+    explain: "obs carries the error code. The edit moves the positivity check after a read, which writes nothing, so every run aborts or commits as before, with the same code; preservation builds under the wide observer."
+
+  - id: v2-sound
+    pair: v2
+    operator: widen-or-narrow-observer
+    artifact: sender-only-observer
+    key: none
+    description: "Drops a redundant instruction from the credit path. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.err? is r's error code, or none for a commit; (view s r).1 is a1's balance.
+      def obs (s : Store) (r : Outcome) : Option Err × Store := (r.err?, view s r)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -7,5 +7,4 @@
+          .write .a1 2,
+      -   .read 4 .a2,
+          .read 3 .a2,
+          .add 3 3 0,
+          .write .a2 3]
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (5, 0).", answer: true, key_line: "[q5 s1] ruled out", why: "obs sees both balances, and a2's differs." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q5 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (6, 4).", answer: true, key_line: "[q5 s3] ruled out", why: "Both balances differ." }
+        - { id: s4, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q5 s4] ruled out", why: "obs sees the error code, so an abort and a commit differ." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q5, line: "lean exit=0" }
+      - { config: probe, line: "[p5 store (10, 0) amt 5] outcomes equal: true" }
+    explain: "The dropped read loaded a2 into a register nothing used, so no write changes. obs sees the error code and both balances, and preservation builds under it."
+
+  - id: v2-flawed
+    pair: v2
+    operator: widen-or-narrow-observer
+    artifact: sender-only-observer
+    key: { class: G10, also: [G1] }
+    description: "Drops a redundant instruction from the credit path. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.err? is r's error code, or none for a commit; (view s r).1 is a1's balance.
+      def obs (s : Store) (r : Outcome) : Option Err × Int := (r.err?, (view s r).1)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -7,5 +7,4 @@
+          .write .a1 2,
+          .read 4 .a2,
+          .read 3 .a2,
+      -   .add 3 3 0,
+          .write .a2 3]
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios:
+        - { id: s1, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (5, 0).", answer: false, key_line: "[q6 s1] not ruled out", why: "obs sees a1 alone, and a1 is 5 in both runs. The missing credit is invisible to it." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q6 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (6, 4).", answer: true, key_line: "[q6 s3] ruled out", why: "a1 differs: 5 against 6." }
+        - { id: s4, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q6 s4] ruled out", why: "obs sees the error code, so an abort and a commit differ." }
+    evidence: { type: paired-states, load_bearing: ["statement:4", "diff:7"], reference: "RUN-lean-abort-blind [p6 store (10, 0) amt 5]: source Outcome.commit (5, 5), compiled Outcome.commit (5, 0); the statement's obs equal, outcomes not" }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q6, line: "lean exit=0" }
+      - { config: probe, line: "[p6 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 0)" }
+      - { config: probe, line: "[p6 store (10, 0) amt 5] the statement's obs equal: true" }
+      - { config: probe, line: "[p6 store (10, 0) amt 5] outcomes equal: false" }
+    explain: "obs keeps the error code and a1's balance, and drops a2's. The dropped add was the credit itself: the compiled code writes a2's old balance back. From (10, 0) with amount 5, the source leaves (5, 5) and the compiled code (5, 0); obs sees 5 in both, so the theorem builds while the recipient never receives the 5."
+
+  - id: v3-flawed
+    pair: v3
+    operator: widen-or-narrow-observer
+    artifact: total-only-observer
+    key: { class: G10, also: [G1] }
+    description: "Rewrites the transfer's arithmetic in the compiled code. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.err? is r's error code, or none for a commit; (view s r).1 + (view s r).2 is the total.
+      def obs (s : Store) (r : Outcome) : Option Err × Int := (r.err?, (view s r).1 + (view s r).2)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -5,5 +5,5 @@
+          .assertLe 0 1 .insufficient,
+      -   .sub 2 1 0,
+      +   .add 2 1 0,
+          .write .a1 2,
+          .read 3 .a2,
+      -   .add 3 3 0,
+      +   .sub 3 3 0,
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios:
+        - { id: s1, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (15, -5).", answer: false, key_line: "[q7 s1] not ruled out", why: "obs sees the total, 10 in both runs. Money moved the wrong way and the total did not change." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q7 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (6, 5).", answer: true, key_line: "[q7 s3] ruled out", why: "The totals differ: 10 against 11." }
+        - { id: s4, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q7 s4] ruled out", why: "obs sees the error code, so an abort and a commit differ." }
+    evidence: { type: paired-states, load_bearing: ["statement:4", "diff:6", "diff:10"], reference: "RUN-lean-abort-blind [p7 store (10, 0) amt 5]: source Outcome.commit (5, 5), compiled Outcome.commit (15, -5); the statement's obs equal, outcomes not" }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q7, line: "lean exit=0" }
+      - { config: probe, line: "[p7 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (15, -5)" }
+      - { config: probe, line: "[p7 store (10, 0) amt 5] the statement's obs equal: true" }
+      - { config: probe, line: "[p7 store (10, 0) amt 5] outcomes equal: false" }
+    explain: "obs keeps the error code and the total of the balances: conservation, not the transfer. The edit swaps the debit and the credit, so the money moves from a2 to a1. From (10, 0) with amount 5, the source leaves (5, 5) and the compiled code (15, -5); the totals are both 10, so the theorem builds."
+
+  - id: v3-sound
+    pair: v3
+    operator: widen-or-narrow-observer
+    artifact: total-only-observer
+    key: none
+    description: "Rewrites the transfer's arithmetic in the compiled code. preservation still builds, with standard axioms only."
+    statement: |
+      -- S9/Statement.lean. A store is (a1, a2); runS is the source transfer of amt from a1 to a2.
+      -- view s r: the balances after outcome r; an abort leaves the starting store s.
+      -- r.err? is r's error code, or none for a commit; (view s r).1 + (view s r).2 is the total.
+      def obs (s : Store) (r : Outcome) : Option Err × Store := (r.err?, view s r)
+
+      theorem preservation (amt : Int) (s : Store) (regs : Regs) :
+          obs s (runT (compile amt) regs s) = obs s (runS amt s)
+    diff: |
+      --- a/S9/Compile.lean
+      +++ b/S9/Compile.lean
+      @@ -5,5 +5,5 @@
+          .assertLe 0 1 .insufficient,
+          .sub 2 1 0,
+          .write .a1 2,
+          .read 3 .a2,
+      -   .add 3 3 0,
+      +   .add 3 0 3,
+    receipt: |
+      'preservation' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    receipt_run: RUN-lean-abort-blind
+    restatement:
+      run: RUN-lean-abort-blind
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (15, -5).", answer: true, key_line: "[q8 s1] ruled out", why: "obs sees both balances, and both differ." }
+        - { id: s2, text: "From (10, 0), transfer 5: both commit with (5, 5).", answer: false, key_line: "[q8 s2] not ruled out", why: "Equal outcomes: allowed." }
+        - { id: s3, text: "From (10, 0), transfer 5: the source commits with (5, 5); the compiled code commits with (6, 5).", answer: true, key_line: "[q8 s3] ruled out", why: "a1 differs: 5 against 6." }
+        - { id: s4, text: "From (3, 0), transfer 5: the source aborts with insufficient; the compiled code commits with (3, 0).", answer: true, key_line: "[q8 s4] ruled out", why: "obs sees the error code, so an abort and a commit differ." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-lean-abort-blind
+    key_lines:
+      - { config: q8, line: "lean exit=0" }
+      - { config: probe, line: "[p8 store (10, 0) amt 5] outcomes equal: true" }
+    explain: "The edit swaps the operands of an addition, which changes no value. obs sees the error code and both balances, and preservation builds under it."

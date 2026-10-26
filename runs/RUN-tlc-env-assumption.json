@@ -1,0 +1,1112 @@
+{
+  "id": "RUN-tlc-env-assumption",
+  "title": "AUD-8.1's cases: the outbox model passes TLC with the provider's idempotency and horizon set in the configuration, whether or not the claim states them; the same model double-charges under a provider that prunes a key at ack or does not dedup, and the crash-free model double-charges once a crash or a timer re-send is allowed",
+  "task": "W5-T11",
+  "origin": "recorded",
+  "records": "AUD-8.1 (content/audit/AUD-8.1.yaml): TLC on each case's own configuration (q1 to q4) and on the step-3 scenarios' environments (e1 to e4 for the pair, f1 to f4 for variant pair v1)",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools-1.8.0.jar in the statespace-bench image (/opt/tla2tools/tla2tools-1.8.0.jar)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:08.595Z",
+  "started_at": "2026-10-26T18:04:03.501Z",
+  "duration_s": 0.425,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-tlc-env-assumption-q1",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh",
+    "q1"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+      "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+      "bytes": 4304,
+      "role": "spec"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+      "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+      "bytes": 3474,
+      "role": "spec"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+      "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+      "bytes": 520,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/q1.cfg",
+      "sha256": "754342beb111654ea9a6027065bcafb91312ca925c3e797c1c55a6d34ba9333e",
+      "bytes": 531,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/q2.cfg",
+      "sha256": "41504e67285ffe39ab0c80c8525cbb9168de7dd55754e16f1d13c9af81868d1d",
+      "bytes": 518,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/q3.cfg",
+      "sha256": "352c6d0972c11a92182f10d016a15cd51fb569b15527de237d32a71a04820f06",
+      "bytes": 392,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/q4.cfg",
+      "sha256": "a95917cb45a4db953012c1d718dcbd1e1d48b8d9474b8392348c9b2d134035de",
+      "bytes": 388,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/e1.cfg",
+      "sha256": "b3063b786588dd241640f3ff72efe8c99a1004e7e382c387769a6f4082074848",
+      "bytes": 325,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/e2.cfg",
+      "sha256": "a99a5d34e84c9b7435f3a693aaa7fada24af4a074af3c2a7aff978c537eef31b",
+      "bytes": 350,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/e3.cfg",
+      "sha256": "25987cf1d5bacf98f5aac1c1790717885965317b962eee3428c283920f78640d",
+      "bytes": 328,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/e4.cfg",
+      "sha256": "62ceaa855421b6d37118096e8a798da35c465fb0b3dcefa66e0654dbc3928959",
+      "bytes": 353,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/f1.cfg",
+      "sha256": "47b840984e9bf6e6fbddef5aa7a87f1eef1d1c81d64bde2c099ee2fe651b822f",
+      "bytes": 288,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/f2.cfg",
+      "sha256": "28d463e5336068c01e68eafea5b0a0087d67838674876833a18a6155d4e47de8",
+      "bytes": 337,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/f3.cfg",
+      "sha256": "581ff6db6deff02d0050232a3b5f296f84792cd23a80f4d5d0098c172ba8f178",
+      "bytes": 311,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/inputs/f4.cfg",
+      "sha256": "60b022761f92c00feca0990ec3490268646bffe2c61410557c958932802fef85",
+      "bytes": 315,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1] Model checking completed. No error has been found.",
+    "[q1] 194 states generated, 105 distinct states found, 0 states left on queue.",
+    "[q1] The depth of the complete state graph search is 16."
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-env-assumption/q1.log",
+      "sha256": "c788244cb50bc3b8a16fd3c3856cb550283a3a1f1697bee8a00e1c7b6dad33d8",
+      "bytes": 2606,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/q2.log",
+      "sha256": "edd116c489f90ccfacf22ccec216b814bfd98487f89e2b61fd3732fd797f6024",
+      "bytes": 2611,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/q3.log",
+      "sha256": "ba3ad8709f199d5557aec205f4a6917655797b0dc816c58e077d6c89e679b04d",
+      "bytes": 2604,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/q4.log",
+      "sha256": "3ee32c8624eab1b6fe990845b5f2b7488940f2fcbd63b76688f61f247e0da00a",
+      "bytes": 2595,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/e1.log",
+      "sha256": "7ee9cae04f29c961b515daf1d258c835a29c0c4df4139df55b2fc0446a657c71",
+      "bytes": 2610,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/e2.log",
+      "sha256": "94206a90a92a9a1d6f5ac1f7bc4aefddd4a9d839e2859fe8b220c25f3858c4ba",
+      "bytes": 7160,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/e3.log",
+      "sha256": "5bfe7e3e743c5be2cb8aa07b8ddbd1d67e77f5e63f0995d0141837d6b0e969b1",
+      "bytes": 5449,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/e4.log",
+      "sha256": "60aecba2de24de7af342527451dd6fb01b30e222e403075265f8e8a4faa94db7",
+      "bytes": 2611,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/f1.log",
+      "sha256": "caaf8c593a0cd5d2b4b5b1e18a269261ac27f9d0a0a19d7be22228c9867e1302",
+      "bytes": 2610,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/f2.log",
+      "sha256": "3735cb30ee2846b5a3de1e4cd39f24b16a3441c51011d2e58100ea12198da994",
+      "bytes": 5457,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/f3.log",
+      "sha256": "806c216ebffbd6a436ae7533b6b7a5c07c666afb9b20a3ea9ecaee51ba7d63e2",
+      "bytes": 2604,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-env-assumption/f4.log",
+      "sha256": "12dd872a3fdcb12863879d540dbec0a20acb25018277b5993d236669502cd55d",
+      "bytes": 5084,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": "no error",
+    "q2": "no error",
+    "q3": "no error",
+    "q4": "no error",
+    "e1": "no error",
+    "e2": "NoDoubleCharge violated",
+    "e3": "NoDoubleCharge violated",
+    "e4": "no error",
+    "f1": "no error",
+    "f2": "NoDoubleCharge violated",
+    "f3": "no error",
+    "f4": "NoDoubleCharge violated"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "q1",
+  "configs": [
+    {
+      "id": "q1",
+      "origin": "recorded",
+      "purpose": "run.sh q1: TLC on q1.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:03.501Z",
+      "duration_s": 0.425,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-q1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/q1.cfg",
+          "sha256": "754342beb111654ea9a6027065bcafb91312ca925c3e797c1c55a6d34ba9333e",
+          "bytes": 531,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[q1] Model checking completed. No error has been found.",
+        "[q1] 194 states generated, 105 distinct states found, 0 states left on queue.",
+        "[q1] The depth of the complete state graph search is 16."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/q1.log"
+      ]
+    },
+    {
+      "id": "q2",
+      "origin": "recorded",
+      "purpose": "run.sh q2: TLC on q2.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:03.930Z",
+      "duration_s": 0.43,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-q2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/q2.cfg",
+          "sha256": "41504e67285ffe39ab0c80c8525cbb9168de7dd55754e16f1d13c9af81868d1d",
+          "bytes": 518,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[q2] Model checking completed. No error has been found.",
+        "[q2] 194 states generated, 105 distinct states found, 0 states left on queue.",
+        "[q2] The depth of the complete state graph search is 16."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/q2.log"
+      ]
+    },
+    {
+      "id": "q3",
+      "origin": "recorded",
+      "purpose": "run.sh q3: TLC on q3.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:04.364Z",
+      "duration_s": 0.395,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-q3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q3"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/q3.cfg",
+          "sha256": "352c6d0972c11a92182f10d016a15cd51fb569b15527de237d32a71a04820f06",
+          "bytes": 392,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[q3] Model checking completed. No error has been found.",
+        "[q3] 7 states generated, 7 distinct states found, 0 states left on queue.",
+        "[q3] The depth of the complete state graph search is 7."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/q3.log"
+      ]
+    },
+    {
+      "id": "q4",
+      "origin": "recorded",
+      "purpose": "run.sh q4: TLC on q4.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:04.763Z",
+      "duration_s": 0.397,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-q4",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q4"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/q4.cfg",
+          "sha256": "a95917cb45a4db953012c1d718dcbd1e1d48b8d9474b8392348c9b2d134035de",
+          "bytes": 388,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[q4] Model checking completed. No error has been found.",
+        "[q4] 7 states generated, 7 distinct states found, 0 states left on queue.",
+        "[q4] The depth of the complete state graph search is 7."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/q4.log"
+      ]
+    },
+    {
+      "id": "e1",
+      "origin": "recorded",
+      "purpose": "run.sh e1: TLC on e1.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:05.164Z",
+      "duration_s": 0.415,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-e1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "e1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/e1.cfg",
+          "sha256": "b3063b786588dd241640f3ff72efe8c99a1004e7e382c387769a6f4082074848",
+          "bytes": 325,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[e1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[e1] Model checking completed. No error has been found.",
+        "[e1] 188 states generated, 99 distinct states found, 0 states left on queue.",
+        "[e1] The depth of the complete state graph search is 15."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/e1.log"
+      ]
+    },
+    {
+      "id": "e2",
+      "origin": "recorded",
+      "purpose": "run.sh e2: TLC on e2.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:05.583Z",
+      "duration_s": 0.43,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-e2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "e2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/e2.cfg",
+          "sha256": "a99a5d34e84c9b7435f3a693aaa7fada24af4a074af3c2a7aff978c537eef31b",
+          "bytes": 350,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[e2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[e2] Error: Invariant NoDoubleCharge is violated.",
+        "[e2] Error: The behavior up to this point is:",
+        "[e2] State 1: <Initial predicate>",
+        "[e2] State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "[e2] State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[e2] State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "[e2] State 5: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "[e2] State 6: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[e2] State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[e2] State 8: <Receive(c1) line 48, col 15 to line 54, col 110 of module Outbox>",
+        "[e2] State 9: <Persist(c1) line 56, col 15 to line 60, col 101 of module Outbox>",
+        "[e2] State 10: <Ack(c1) line 63, col 11 to line 67, col 103 of module Outbox>",
+        "[e2] State 11: <Next line 105, col 12 to line 105, col 36 of module Outbox>",
+        "[e2] State 12: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[e2] 150 states generated, 89 distinct states found, 14 states left on queue.",
+        "[e2] The depth of the complete state graph search is 12."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/e2.log"
+      ]
+    },
+    {
+      "id": "e3",
+      "origin": "recorded",
+      "purpose": "run.sh e3: TLC on e3.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:06.017Z",
+      "duration_s": 0.43,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-e3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "e3"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/e3.cfg",
+          "sha256": "25987cf1d5bacf98f5aac1c1790717885965317b962eee3428c283920f78640d",
+          "bytes": 328,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[e3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[e3] Error: Invariant NoDoubleCharge is violated.",
+        "[e3] Error: The behavior up to this point is:",
+        "[e3] State 1: <Initial predicate>",
+        "[e3] State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "[e3] State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[e3] State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "[e3] State 5: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "[e3] State 6: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[e3] State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[e3] State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[e3] 44 states generated, 34 distinct states found, 12 states left on queue.",
+        "[e3] The depth of the complete state graph search is 8."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/e3.log"
+      ]
+    },
+    {
+      "id": "e4",
+      "origin": "recorded",
+      "purpose": "run.sh e4: TLC on e4.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:06.450Z",
+      "duration_s": 0.449,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-e4",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "e4"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/e4.cfg",
+          "sha256": "62ceaa855421b6d37118096e8a798da35c465fb0b3dcefa66e0654dbc3928959",
+          "bytes": 353,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[e4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[e4] Model checking completed. No error has been found.",
+        "[e4] 194 states generated, 105 distinct states found, 0 states left on queue.",
+        "[e4] The depth of the complete state graph search is 16."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/e4.log"
+      ]
+    },
+    {
+      "id": "f1",
+      "origin": "recorded",
+      "purpose": "run.sh f1: TLC on f1.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:06.903Z",
+      "duration_s": 0.405,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-f1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "f1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/f1.cfg",
+          "sha256": "47b840984e9bf6e6fbddef5aa7a87f1eef1d1c81d64bde2c099ee2fe651b822f",
+          "bytes": 288,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[f1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[f1] Model checking completed. No error has been found.",
+        "[f1] 7 states generated, 7 distinct states found, 0 states left on queue.",
+        "[f1] The depth of the complete state graph search is 7."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/f1.log"
+      ]
+    },
+    {
+      "id": "f2",
+      "origin": "recorded",
+      "purpose": "run.sh f2: TLC on f2.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:07.312Z",
+      "duration_s": 0.446,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-f2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "f2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/f2.cfg",
+          "sha256": "28d463e5336068c01e68eafea5b0a0087d67838674876833a18a6155d4e47de8",
+          "bytes": 337,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[f2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[f2] Error: Invariant NoDoubleCharge is violated.",
+        "[f2] Error: The behavior up to this point is:",
+        "[f2] State 1: <Initial predicate>",
+        "[f2] State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "[f2] State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[f2] State 4: <Crash line 82, col 10 to line 88, col 92 of module Outbox>",
+        "[f2] State 5: <Recover line 90, col 12 to line 94, col 100 of module Outbox>",
+        "[f2] State 6: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[f2] State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[f2] State 8: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[f2] 18 states generated, 16 distinct states found, 3 states left on queue.",
+        "[f2] The depth of the complete state graph search is 8."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/f2.log"
+      ]
+    },
+    {
+      "id": "f3",
+      "origin": "recorded",
+      "purpose": "run.sh f3: TLC on f3.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:07.761Z",
+      "duration_s": 0.407,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-f3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "f3"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/f3.cfg",
+          "sha256": "581ff6db6deff02d0050232a3b5f296f84792cd23a80f4d5d0098c172ba8f178",
+          "bytes": 311,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[f3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[f3] Model checking completed. No error has been found.",
+        "[f3] 14 states generated, 14 distinct states found, 0 states left on queue.",
+        "[f3] The depth of the complete state graph search is 9."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/f3.log"
+      ]
+    },
+    {
+      "id": "f4",
+      "origin": "recorded",
+      "purpose": "run.sh f4: TLC on f4.cfg",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:08.170Z",
+      "duration_s": 0.423,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-tlc-env-assumption-f4",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "f4"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "spec"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/run.sh",
+          "sha256": "4c3bed304c8199b28c95360ade1f16df1468897874d9e05858ac16f81b21bd04",
+          "bytes": 520,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-tlc-env-assumption/inputs/f4.cfg",
+          "sha256": "60b022761f92c00feca0990ec3490268646bffe2c61410557c958932802fef85",
+          "bytes": 315,
+          "role": "config"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[f4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+        "[f4] Error: Invariant NoDoubleCharge is violated.",
+        "[f4] Error: The behavior up to this point is:",
+        "[f4] State 1: <Initial predicate>",
+        "[f4] State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>",
+        "[f4] State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[f4] State 4: <Timeout(c1) line 39, col 15 to line 45, col 107 of module Outbox>",
+        "[f4] State 5: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>",
+        "[f4] State 6: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[f4] State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>",
+        "[f4] 19 states generated, 16 distinct states found, 5 states left on queue.",
+        "[f4] The depth of the complete state graph search is 7."
+      ],
+      "outputs": [
+        "runs/RUN-tlc-env-assumption/f4.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s7-s8.mjs), copied in log order.",
+    "Outbox.tla is S8.L2 cell 1 verbatim (as in RUN-tlc-double-charge); OutboxIface.tla is the W0-S04 spike module those runs use. Each configuration is a TLC .cfg file whose leading \\* comment lines are the case's claim text; TLC ignores them.",
+    "run.sh runs TLC 1.8.0 with one worker and -deadlock (the deadlock check off), as S8.L3 does, and prefixes each output line with the configuration's tag."
+  ]
+}

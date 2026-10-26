@@ -1,0 +1,274 @@
+{
+  "id": "RUN-drt-transfers",
+  "title": "Differential random testing of the compiled transfer on PostgreSQL 18.6 against the reference semantics in reference.py: 200 seeded commands under the outcome-class observer and the balance-only observer, for the shipped compiler and five mutants, and the one-command fixture test",
+  "task": "W3-T13",
+  "task_label": "W4-T13 (AUD-6.1, AUD-6.2)",
+  "origin": "recorded",
+  "records": "AUD-6.1 and AUD-6.2 (content/audit/AUD-6.1.yaml, AUD-6.2.yaml): the pair members' receipts, keys and step-3 scenarios, and their variant pairs",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T18:01:20.467Z",
+  "started_at": "2026-10-26T18:01:19.487Z",
+  "duration_s": 0.473,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-drt"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-drt",
+      "--network",
+      "ssrec-net-drt",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-drt-drt",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-drt",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-drt",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "drt.py"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-drt"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-drt"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-drt-transfers/inputs/compiled.py",
+      "sha256": "d83373e93577080bf59000bb798460e9791260df4536eeebffe757ff2fdad148",
+      "bytes": 1951,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-drt-transfers/inputs/drt.py",
+      "sha256": "c06101d043601bdbdd54cb5e4198eff09850ef83e0de14382e219919883fad49",
+      "bytes": 4148,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-drt-transfers/inputs/observers.py",
+      "sha256": "a673b0fd944d50c6b80a2d1920836b8ba1492a017315ffa8c9e3a77e2a3bc458",
+      "bytes": 536,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-drt-transfers/inputs/reference.py",
+      "sha256": "7153de6acbeb905863e3c38ff3643c1506d5d7637cad24e24938062fa477cba0",
+      "bytes": 729,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-net-drt"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "generator n=200 seed=7: ok 22, insufficient 46, no-such-account 74, self-transfer 27, bad-amount 31",
+    "generator outcome classes: ok 22, zero-rows 178",
+    "[q1 shipped] agree 200 of 200",
+    "[q2 shipped] agree 200 of 200",
+    "[q3 shipped] agree 200 of 200",
+    "[q4 shipped] agree 200 of 200",
+    "[m1] compiler: reports success whatever the rowcount",
+    "[q1 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+    "[q2 m1] agree 200 of 200",
+    "[q3 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+    "[q4 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+    "[m2] compiler: credits the receiver twice",
+    "[q1 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+    "[q2 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+    "[q3 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+    "[q4 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+    "[m3] compiler: writes the balance guard as > instead of >=",
+    "[q1 m3] agree 200 of 200",
+    "[q2 m3] agree 200 of 200",
+    "[q3 m3] agree 200 of 200",
+    "[q4 m3] agree 200 of 200",
+    "[m4] compiler: lists the WHERE conditions in another order",
+    "[q1 m4] agree 200 of 200",
+    "[q2 m4] agree 200 of 200",
+    "[q3 m4] agree 200 of 200",
+    "[q4 m4] agree 200 of 200",
+    "[m5] compiler: refuses by raising an error instead of updating no rows",
+    "[q1 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}",
+    "[q2 m5] agree 200 of 200",
+    "[q3 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}",
+    "[q4 m5] agree 200 of 200",
+    "[fixture] transfer(1 -> 2, 30) on {1: 100, 2: 50}: reference ok {1: 70, 2: 80}, database ok {1: 70, 2: 80}; agree 1 of 1"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-drt-transfers/drt.log",
+      "sha256": "e0f4f2928fb6e1d652dab7a113b0631d321f2be6816fc21a03d5a1e6a2686275",
+      "bytes": 2505,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "server": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "client": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "client_user": "uid 1000 (learner)",
+      "driver": "psycopg 3.3.6 on the Bench image's Python 3.13"
+    }
+  },
+  "primary_config": "drt",
+  "configs": [
+    {
+      "id": "drt",
+      "origin": "recorded",
+      "purpose": "drt.py: every observer against every compiler, n = 200, seed 7; then the fixture test",
+      "engine": "postgresql",
+      "version": "18.6",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T18:01:19.487Z",
+      "duration_s": 0.473,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-drt-drt",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-drt",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "-e",
+        "PGHOST=ssrec-pg-drt",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "drt.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-drt-transfers/inputs/compiled.py",
+          "sha256": "d83373e93577080bf59000bb798460e9791260df4536eeebffe757ff2fdad148",
+          "bytes": 1951,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-drt-transfers/inputs/drt.py",
+          "sha256": "c06101d043601bdbdd54cb5e4198eff09850ef83e0de14382e219919883fad49",
+          "bytes": 4148,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-drt-transfers/inputs/observers.py",
+          "sha256": "a673b0fd944d50c6b80a2d1920836b8ba1492a017315ffa8c9e3a77e2a3bc458",
+          "bytes": 536,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-drt-transfers/inputs/reference.py",
+          "sha256": "7153de6acbeb905863e3c38ff3643c1506d5d7637cad24e24938062fa477cba0",
+          "bytes": 729,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-drt"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+        "generator n=200 seed=7: ok 22, insufficient 46, no-such-account 74, self-transfer 27, bad-amount 31",
+        "generator outcome classes: ok 22, zero-rows 178",
+        "[q1 shipped] agree 200 of 200",
+        "[q2 shipped] agree 200 of 200",
+        "[q3 shipped] agree 200 of 200",
+        "[q4 shipped] agree 200 of 200",
+        "[m1] compiler: reports success whatever the rowcount",
+        "[q1 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+        "[q2 m1] agree 200 of 200",
+        "[q3 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+        "[q4 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}",
+        "[m2] compiler: credits the receiver twice",
+        "[q1 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+        "[q2 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+        "[q3 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+        "[q4 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}",
+        "[m3] compiler: writes the balance guard as > instead of >=",
+        "[q1 m3] agree 200 of 200",
+        "[q2 m3] agree 200 of 200",
+        "[q3 m3] agree 200 of 200",
+        "[q4 m3] agree 200 of 200",
+        "[m4] compiler: lists the WHERE conditions in another order",
+        "[q1 m4] agree 200 of 200",
+        "[q2 m4] agree 200 of 200",
+        "[q3 m4] agree 200 of 200",
+        "[q4 m4] agree 200 of 200",
+        "[m5] compiler: refuses by raising an error instead of updating no rows",
+        "[q1 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}",
+        "[q2 m5] agree 200 of 200",
+        "[q3 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}",
+        "[q4 m5] agree 200 of 200",
+        "[fixture] transfer(1 -> 2, 30) on {1: 100, 2: 50}: reference ok {1: 70, 2: 80}, database ok {1: 70, 2: 80}; agree 1 of 1"
+      ],
+      "outputs": [
+        "runs/RUN-drt-transfers/drt.log"
+      ]
+    }
+  ],
+  "notes": [
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on the user network ssrec-net-drt with --memory=6g; before the first driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0 (at most 120 polls, 0.5 s apart). argv lists the commands in order; each configuration's argv, started_at, duration_s and exit_code are its driver's.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted read-write at /w.",
+    "reference.py stands in for the course's reference interpreter, which is not built yet: a transfer of amt from src to dst is refused (bad-amount, no-such-account, self-transfer, insufficient) or moves amt; the harness maps a refusal to the outcome class zero-rows, the class the compiled statement gives a refused transfer.",
+    "The compiled transfer is one UPDATE (compiled.py, shipped) whose rowcount is 2 for a transfer it applies and 0 for one it refuses; m1 to m5 are mutants of the compiler, named in compiled.py, used to show what each observer can see. Commands run in one sequence, each on the state the previous left, in both the reference and the database."
+  ]
+}

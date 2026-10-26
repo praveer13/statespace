@@ -1,0 +1,360 @@
+{
+  "id": "RUN-pg-withdraw-split",
+  "title": "AUD-5.4's pair on PostgreSQL 18.6 at READ COMMITTED: withdraw as one conditional UPDATE (q1) and as SELECT, check, UPDATE (q2), each run by two sessions interleaved (p1) and one after the other (p2)",
+  "task": "W3-T13",
+  "task_label": "W3-T13 (AUD-5.4)",
+  "origin": "recorded",
+  "records": "AUD-5.4 (content/audit/AUD-5.4.yaml): the pair members' receipts, keys and step-3 scenarios",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T18:01:18.175Z",
+  "started_at": "2026-10-26T18:01:14.955Z",
+  "duration_s": 1.354,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-wsplit"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-wsplit",
+      "--network",
+      "ssrec-net-wsplit",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-wsplit-q1",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-wsplit",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-wsplit",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "withdraw_q1",
+      "q1"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-wsplit-q2",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-wsplit",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "-e",
+      "PGHOST=ssrec-pg-wsplit",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "withdraw_q2",
+      "q2"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-wsplit"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-wsplit"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-withdraw-split/inputs/gated.py",
+      "sha256": "6fda2da12f70a2db941a44ec3065687ec8100dea4b4824d378cbae3efa7cb460",
+      "bytes": 5529,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-withdraw-split/inputs/setup.sql",
+      "sha256": "d4478833892c24c58f8ebb0b84938c848b24be9519771a1769c5876d2754f15a",
+      "bytes": 122,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q1.py",
+      "sha256": "c4b2bd267612adb328643e4e341bd0b7a5c9048ae69ecdd66e927f8d86a63a47",
+      "bytes": 234,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q2.py",
+      "sha256": "fa166344288346f789643861e9db9dc926275f865510cfd2430597c0e59cc92a",
+      "bytes": 319,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-net-wsplit"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q1] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+    "[q1 p1] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1",
+    "[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <waiting ...>",
+    "[q1 p1] a: COMMIT -> COMMIT",
+    "[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <... completed> -> UPDATE 0",
+    "[q1 p1] b: COMMIT -> COMMIT",
+    "[q1 p1] a returned True, b returned False",
+    "[q1 p1] final bal=20; spent=80 of 100",
+    "[q1 p2] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1",
+    "[q1 p2] a: COMMIT -> COMMIT",
+    "[q1 p2] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 0",
+    "[q1 p2] b: COMMIT -> COMMIT",
+    "[q1 p2] a returned True, b returned False",
+    "[q1 p2] final bal=20; spent=80 of 100"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-withdraw-split/q1.log",
+      "sha256": "0fac1c0d11540743784442a215db39d8cc80b0b9e9fea72ba229530cf3997024",
+      "bytes": 782,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-withdraw-split/q2.log",
+      "sha256": "71c3419feccf58605f141954c115324b4c69e801c8f6d9e8a847eb4284799d83",
+      "bytes": 883,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "server": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "client": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "client_user": "uid 1000 (learner)",
+      "driver": "psycopg 3.3.6 on the Bench image's Python 3.13"
+    }
+  },
+  "primary_config": "q1",
+  "configs": [
+    {
+      "id": "q1",
+      "origin": "recorded",
+      "purpose": "withdraw_q1.py: the conditional UPDATE, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T18:01:14.955Z",
+      "duration_s": 1.354,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-wsplit-q1",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-wsplit",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "-e",
+        "PGHOST=ssrec-pg-wsplit",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "withdraw_q1",
+        "q1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/gated.py",
+          "sha256": "6fda2da12f70a2db941a44ec3065687ec8100dea4b4824d378cbae3efa7cb460",
+          "bytes": 5529,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/setup.sql",
+          "sha256": "d4478833892c24c58f8ebb0b84938c848b24be9519771a1769c5876d2754f15a",
+          "bytes": 122,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q1.py",
+          "sha256": "c4b2bd267612adb328643e4e341bd0b7a5c9048ae69ecdd66e927f8d86a63a47",
+          "bytes": 234,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q2.py",
+          "sha256": "fa166344288346f789643861e9db9dc926275f865510cfd2430597c0e59cc92a",
+          "bytes": 319,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-wsplit"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q1] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q1 p1] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1",
+        "[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <waiting ...>",
+        "[q1 p1] a: COMMIT -> COMMIT",
+        "[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <... completed> -> UPDATE 0",
+        "[q1 p1] b: COMMIT -> COMMIT",
+        "[q1 p1] a returned True, b returned False",
+        "[q1 p1] final bal=20; spent=80 of 100",
+        "[q1 p2] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1",
+        "[q1 p2] a: COMMIT -> COMMIT",
+        "[q1 p2] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 0",
+        "[q1 p2] b: COMMIT -> COMMIT",
+        "[q1 p2] a returned True, b returned False",
+        "[q1 p2] final bal=20; spent=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-withdraw-split/q1.log"
+      ]
+    },
+    {
+      "id": "q2",
+      "origin": "recorded",
+      "purpose": "withdraw_q2.py: SELECT, check in Python, UPDATE, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-26T18:01:16.313Z",
+      "duration_s": 1.341,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-wsplit-q2",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-wsplit",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "-e",
+        "PGHOST=ssrec-pg-wsplit",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "withdraw_q2",
+        "q2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/gated.py",
+          "sha256": "6fda2da12f70a2db941a44ec3065687ec8100dea4b4824d378cbae3efa7cb460",
+          "bytes": 5529,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/setup.sql",
+          "sha256": "d4478833892c24c58f8ebb0b84938c848b24be9519771a1769c5876d2754f15a",
+          "bytes": 122,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q1.py",
+          "sha256": "c4b2bd267612adb328643e4e341bd0b7a5c9048ae69ecdd66e927f8d86a63a47",
+          "bytes": 234,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-withdraw-split/inputs/withdraw_q2.py",
+          "sha256": "fa166344288346f789643861e9db9dc926275f865510cfd2430597c0e59cc92a",
+          "bytes": 319,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-wsplit"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q2] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q2 p1] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q2 p1] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q2 p1] a: UPDATE acct SET bal = %s WHERE id = %s -> UPDATE 1",
+        "[q2 p1] b: UPDATE acct SET bal = %s WHERE id = %s <waiting ...>",
+        "[q2 p1] a: COMMIT -> COMMIT",
+        "[q2 p1] b: UPDATE acct SET bal = %s WHERE id = %s <... completed> -> UPDATE 1",
+        "[q2 p1] b: COMMIT -> COMMIT",
+        "[q2 p1] a returned True, b returned True",
+        "[q2 p1] final bal=20; spent=160 of 100",
+        "[q2 p2] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q2 p2] a: UPDATE acct SET bal = %s WHERE id = %s -> UPDATE 1",
+        "[q2 p2] a: COMMIT -> COMMIT",
+        "[q2 p2] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[20]]",
+        "[q2 p2] b: COMMIT -> COMMIT",
+        "[q2 p2] a returned True, b returned False",
+        "[q2 p2] final bal=20; spent=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-withdraw-split/q2.log"
+      ]
+    }
+  ],
+  "notes": [
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on the user network ssrec-net-wsplit with --memory=6g; before the first driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0 (at most 120 polls, 0.5 s apart). argv lists the commands in order; each configuration's argv, started_at, duration_s and exit_code are its driver's.",
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted read-write at /w.",
+    "gated.py runs the module's withdraw(conn, acct, amount) unchanged in two threads, a and b, each with its own connection at READ COMMITTED, and gates every statement and every commit on a schedule: p1 interleaves the two sessions statement by statement, p2 runs a to its commit and then b. A step still running after 1 s is reported as waiting and the schedule moves on, as isolationtester does. spent is the sum of the amounts whose withdraw returned True."
+  ]
+}

@@ -1,0 +1,209 @@
+# AUD-5.1 · S5 · G3 Wrong property kind (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Receipts, scenarios and the variant pair are keyed by RUN-tlc-hold-kind (TLC 1.8.0 in the Bench image), whose tags
+# are neutral: q1 sound member, q2 flawed member, q3/q4 variant pair v1 (sound/flawed); s1-s4 and t1-t3 are the
+# scenarios' edits of the case's module, checked with the case's own configuration. The flawed member is keyed by the
+# spine's run, RUN-tlc-hold-lasso: a deadlock-free hold spec that loops forever.
+id: AUD-5.1
+stage: S5
+class: G3
+medium: tla
+artifact: hold-lifecycle
+subject: "a hold lifecycle model (TLA+)"
+claim: "TLC finds no deadlock and no error, so every hold resolves."
+requirement: >-
+  Every hold the service places is eventually resolved, captured or released, however often the provider answers
+  busy.
+scenario_question: "If the spec had this change, would this check, as configured, report an error?"
+scheduled_after: [LAB-5, S5.L6]
+kcs: [KC-5.safety-vs-liveness, KC-5.lasso-reading]
+based_on:
+  incident: "SysMoBench: TLA+ specifications written by language models violated 41.9% of the liveness properties checked, against 8.3% of the safety properties."
+  date: "2025-09"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2509.23130
+
+cases:
+  - id: sound
+    key: none
+    description: "Adds the TLC configuration for the hold lifecycle model and runs TLC with its default flags. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE HoldLive ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "held" /\ tries = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ tries' = (tries + 1) % 2
+      Busy    == st = "pending" /\ st' = "held"     /\ UNCHANGED tries
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED tries
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED tries
+      Done    == st \in {"captured", "released"} /\ UNCHANGED vars
+      Next == Try \/ Busy \/ Capture \/ Timeout \/ Done
+      Fair == WF_vars(Timeout)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      TypeOK == st \in {"held", "pending", "captured", "released"} /\ tries \in {0, 1}
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* HoldLive.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY EventuallyResolves
+    diff: |
+      --- /dev/null
+      +++ b/specs/HoldLive.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +PROPERTY EventuallyResolves
+    receipt: |
+      [q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q1] Model checking completed. No error has been found.
+      [q1] 15 states generated, 8 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-kind
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Fair is deleted from Spec, so nothing makes Timeout happen", answer: true, key_line: "[q1 s1] Error: Temporal property EventuallyResolves was violated.", why: "TLC's counterexample is a hold that stays held forever: nothing forces any step, and EventuallyResolves fails." }
+        - { id: s2, text: "Timeout fires only on a held hold, not on a pending one", answer: true, key_line: "[q1 s2] Error: Temporal property EventuallyResolves was violated.", why: "TLC prints a lasso, Try, Busy, Try, then Busy back to state 1: Timeout is never enabled for long enough for weak fairness to force it." }
+        - { id: s3, text: 'Capture sets st to "capturd", a typo', answer: true, key_line: "[q1 s3] Error: Deadlock reached.", why: "The misspelled state has no next step, so TLC stops at a deadlock: an error either way." }
+        - { id: s4, text: "Busy is deleted: the provider never answers busy", answer: false, key_line: "[q1 s4] Model checking completed. No error has been found.", why: "Every hold still resolves, through Capture or Timeout; there is nothing to report." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-tlc-hold-kind
+    key_lines: ["[q1] Model checking completed. No error has been found.", "[q1 s2] Error: Temporal property EventuallyResolves was violated."]
+    explain: "The check is a temporal property over whole behaviors, so it can see a hold that loops forever: when the spec is edited to allow one, TLC prints the lasso. With fairness on Timeout, the service's own action, it finds none in 8 distinct states. The stamp is [M] · constants, with the fairness as an [A] clause."
+
+  - id: flawed
+    key: G3
+    description: "Adds the TLC configuration for the hold lifecycle model and runs TLC with its default flags. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE HoldLive ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "held" /\ tries = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ tries' = (tries + 1) % 2
+      Busy    == st = "pending" /\ st' = "held"     /\ UNCHANGED tries
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED tries
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED tries
+      Done    == st \in {"captured", "released"} /\ UNCHANGED vars
+      Next == Try \/ Busy \/ Capture \/ Timeout \/ Done
+      Fair == WF_vars(Timeout)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      TypeOK == st \in {"held", "pending", "captured", "released"} /\ tries \in {0, 1}
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* HoldLive.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      INVARIANT TypeOK
+    diff: |
+      --- /dev/null
+      +++ b/specs/HoldLive.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +INVARIANT TypeOK
+    receipt: |
+      [q2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q2] Model checking completed. No error has been found.
+      [q2] 15 states generated, 8 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-kind
+      scenarios:
+        - { id: s1, text: "Fair is deleted from Spec, so nothing makes Timeout happen", answer: false, key_line: "[q2 s1] Model checking completed. No error has been found.", why: "Every state is still well typed and none is stuck, so the invariant and the deadlock check pass, while the hold may now stay held forever." }
+        - { id: s2, text: "Timeout fires only on a held hold, not on a pending one", answer: false, key_line: "[q2 s2] Model checking completed. No error has been found.", why: "The same states, each well typed: the loop Try, Busy, Try, Busy is a behavior, and no check of single states can see it." }
+        - { id: s3, text: 'Capture sets st to "capturd", a typo', answer: true, key_line: "[q2 s3] Error: Invariant TypeOK is violated.", why: "This one it sees: the misspelled state breaks TypeOK." }
+        - { id: s4, text: "Busy is deleted: the provider never answers busy", answer: false, key_line: "[q2 s4] Model checking completed. No error has been found.", why: "Nothing breaks, so nothing to report." }
+    evidence: { type: witness, load_bearing: ["statement:20", "diff:5"], reference: "RUN-tlc-hold-lasso: Try, Busy, Try, then Busy back to state 1; Temporal property EventuallyResolves was violated" }
+    key_run: RUN-tlc-hold-lasso
+    key_lines: ["Error: Temporal property EventuallyResolves was violated.", "Back to state 1: <Busy line 8, col 12 to line 8, col 64 of module Hold>"]
+    explain: "TypeOK and deadlock freedom are properties of single states; \"every hold resolves\" is a property of whole behaviors. The check passes whether or not a hold can loop: in the Hold spec, which is deadlock-free, TLC finds EventuallyResolves violated by the lasso Try, Busy, Try, then Busy back to state 1, and this configuration stays silent on the same edit (s2). The claim needs PROPERTY EventuallyResolves under stated fairness."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: restate-property-kind
+    artifact: payout-retry
+    key: none
+    claim: "TLC finds no deadlock and no error: every payout settles or is abandoned."
+    description: "Adds the TLC configuration for the payout retry model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Payout ----
+      VARIABLES st
+      Init == st = "queued"
+      Send    == st = "queued" /\ st' = "sent"
+      Bounce  == st = "sent"   /\ st' = "queued"
+      Settle  == st = "sent"   /\ st' = "settled"
+      Abandon == st \in {"queued", "sent"} /\ st' = "abandoned"
+      Done    == st \in {"settled", "abandoned"} /\ UNCHANGED st
+      Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      Fair == WF_st(Abandon)
+      Spec == Init /\ [][Next]_st /\ Fair
+      NeverLost == st \in {"queued", "sent", "settled", "abandoned"}
+      Finished == st \in {"settled", "abandoned"}
+      EventuallyFinished == <>Finished
+      ====
+      \* Payout.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY EventuallyFinished
+    diff: |
+      --- /dev/null
+      +++ b/specs/Payout.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +PROPERTY EventuallyFinished
+    receipt: |
+      [q3] Model checking completed. No error has been found.
+      [q3] 8 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-kind
+      scenarios: &v1-sound-scenarios
+        - { id: t1, text: "Fair is deleted from Spec", answer: true, key_line: "[q3 t1] Error: Temporal property EventuallyFinished was violated.", why: "Without fairness a payout may sit queued forever; the temporal property catches it." }
+        - { id: t2, text: "Settle is deleted from Next: the bank never settles", answer: false, key_line: "[q3 t2] Model checking completed. No error has been found.", why: "Every payout is still abandoned in the end, which the requirement allows." }
+        - { id: t3, text: 'Bounce sends the payout to "queud", a typo', answer: true, key_line: "[q3 t3] Error: Deadlock reached.", why: "The misspelled state has no next step: TLC stops at a deadlock." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-tlc-hold-kind
+    key_lines: ["[q3] Model checking completed. No error has been found.", "[q3 t1] Error: Temporal property EventuallyFinished was violated."]
+    explain: "EventuallyFinished is checked as a temporal property, so a payout that loops or waits forever would show up as a counterexample. With weak fairness on Abandon, the service's own action, there is none in 4 distinct states."
+
+  - id: v1-flawed
+    pair: v1
+    operator: restate-property-kind
+    artifact: payout-retry
+    key: G3
+    claim: "TLC finds no deadlock and no error: every payout settles or is abandoned."
+    description: "Adds the TLC configuration for the payout retry model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Payout ----
+      VARIABLES st
+      Init == st = "queued"
+      Send    == st = "queued" /\ st' = "sent"
+      Bounce  == st = "sent"   /\ st' = "queued"
+      Settle  == st = "sent"   /\ st' = "settled"
+      Abandon == st \in {"queued", "sent"} /\ st' = "abandoned"
+      Done    == st \in {"settled", "abandoned"} /\ UNCHANGED st
+      Next == Send \/ Bounce \/ Settle \/ Abandon \/ Done
+      Fair == WF_st(Abandon)
+      Spec == Init /\ [][Next]_st /\ Fair
+      NeverLost == st \in {"queued", "sent", "settled", "abandoned"}
+      Finished == st \in {"settled", "abandoned"}
+      EventuallyFinished == <>Finished
+      ====
+      \* Payout.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      INVARIANT NeverLost
+    diff: |
+      --- /dev/null
+      +++ b/specs/Payout.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +INVARIANT NeverLost
+    receipt: |
+      [q4] Model checking completed. No error has been found.
+      [q4] 8 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-hold-kind
+      scenarios:
+        - { id: t1, text: "Fair is deleted from Spec", answer: false, key_line: "[q4 t1] Model checking completed. No error has been found.", why: "Every state is still one of the four named, so NeverLost holds, though a payout may now wait forever." }
+        - { id: t2, text: "Settle is deleted from Next: the bank never settles", answer: false, key_line: "[q4 t2] Model checking completed. No error has been found.", why: "Nothing breaks, so nothing to report." }
+        - { id: t3, text: 'Bounce sends the payout to "queud", a typo', answer: true, key_line: "[q4 t3] Error: Invariant NeverLost is violated.", why: "The misspelled state is not one of the four, so the invariant catches it." }
+    evidence: { type: witness, load_bearing: ["statement:18", "diff:5"], reference: "RUN-tlc-hold-kind [q3 t1]: State 1, then Stuttering; Temporal property EventuallyFinished was violated, where [q4 t1] reports no error" }
+    key_run: RUN-tlc-hold-kind
+    key_lines: ["[q4] Model checking completed. No error has been found.", "[q3 t1] Error: Temporal property EventuallyFinished was violated.", "[q4 t1] Model checking completed. No error has been found."]
+    explain: "NeverLost is a check of single states. On the spec with its fairness deleted, TLC finds EventuallyFinished violated by a payout that stutters forever, and this configuration reports no error on the same spec: it cannot see whether a payout finishes."

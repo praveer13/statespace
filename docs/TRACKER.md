@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** as of 2026-10-25, 23 of the 263 tasks are `done`: every W0 task except the exit review, W0-T11. The owner accepted the twenty W0 tasks the wave workflow verified on the review page, and W0-T09, W0-T10, W0-S13 and the OD-6 addenda of W0-S01, W0-S02 and W0-S08 in conversation (see [the W0 wave report](waves/W0-report.md), sections 9 and 10). The other 240 are `todo`. The owner's review queue is 0 hours, under the 10-hour gate (OD-7). **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-26, 23 of the 263 tasks are `done` (every W0 task except the exit review, W0-T11), 15 are in `review` and 119 are `in-progress`; the other 106 are `todo`. The happy-path build (Phases 0 to 3: the site and its screens, all 84 lessons and 34 drawers, the specimen cabinet, Claims, Today, the Mirror, the Audit Desk with 25 anchors, 14 generator families and the recorded runs) moved a task to `review` only where its acceptance passed on 2026-10-26, and to `in-progress` with a note in tasks.yaml naming what is missing; see [the W1 report](waves/W1-report.md). No task the owner reviews is `done` yet. The owner's review queue is 12.4 hours, over the 10-hour gate (OD-7), so no new task with owner review starts until the queue drops. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -184,34 +184,34 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Platform
 
-- [ ] W1-T02 · App shell, navigation, service worker · M · sonnet · W0-S12, W1-T36, W1-T41
+- [~] W1-T02 · App shell, navigation, service worker · M · sonnet · W0-S12, W1-T36, W1-T41
 - [ ] W1-T18 · Agent kit, `llms.txt`, phone layouts · M · sonnet · W1-T13, W1-T36, W1-T41
 - [ ] W1-T20 · Settings: export, merge-import with undo, 7-day backup nudge · M · sonnet · W1-T03, W1-T35
-- [ ] W1-T31 · SCR-lab and SCR-bench (part of W1-T13) · M · sonnet · W1-T02, W1-T14, W1-T41
+- [~] W1-T31 · SCR-lab and SCR-bench (part of W1-T13) · M · sonnet · W1-T02, W1-T14, W1-T41
 - [ ] W1-T35 · Instrument bus and host (added) · M · opus · W0-S01, W0-T02, W1-T41
-- [ ] W1-T36 · Content pipeline (added) · M · sonnet · W0-S12, W0-T03, W0-S11
+- [=] W1-T36 · Content pipeline (added) · M · sonnet · W0-S12, W0-T03, W0-S11
 
 ### Gates
 
-- [ ] W1-T37 · GATE-calls (part of W1-T05) · M · opus · W1-T12
-- [ ] W1-T38 · GATE-lessons (added) · S · sonnet · W1-T36
-- [ ] W1-T39 · GATE-items (added) · M · opus · W1-T21
-- [ ] W1-T40 · GATE-audit and GATE-audit-blind (added) · M · opus · W1-T21
+- [~] W1-T37 · GATE-calls (part of W1-T05) · M · opus · W1-T12
+- [=] W1-T38 · GATE-lessons (added) · S · sonnet · W1-T36
+- [=] W1-T39 · GATE-items (added) · M · opus · W1-T21
+- [=] W1-T40 · GATE-audit and GATE-audit-blind (added) · M · opus · W1-T21
 - [ ] W1-T41 · GATE-bundle and GATE-a11y harness (added) · M · sonnet · W0-S12, W0-S02
-- [ ] W1-T42 · GATE-specimens and GATE-conformance harnesses (added) · M · sonnet · W0-S11, W0-T04
+- [~] W1-T42 · GATE-specimens and GATE-conformance harnesses (added) · M · sonnet · W0-S11, W0-T04
 - [ ] W1-T43 · GATE-labs harness (added) · M · opus · W0-T04, W1-T29
 
 ### Evidence and claims
 
-- [ ] W1-T01 · Stamps, strip and tokens · M · opus · W0-S12
-- [ ] W1-T03 · Event log and provenance · M · opus · W0-T02
+- [~] W1-T01 · Stamps, strip and tokens · M · opus · W0-S12
+- [~] W1-T03 · Event log and provenance · M · opus · W0-T02
 - [ ] W1-T14 · Receipt import and claim minting · M · opus · W0-S11, W1-T35, W1-T41
-- [ ] W1-T15 · Claim cards and GATE-claims · M · opus · W1-T14, W1-T12
-- [ ] W1-T16 · Specimen cabinet · M · sonnet · W1-T03, W1-T12, W1-T42
+- [~] W1-T15 · Claim cards and GATE-claims · M · opus · W1-T14, W1-T12
+- [=] W1-T16 · Specimen cabinet · M · sonnet · W1-T03, W1-T12, W1-T42
 
 ### Runs
 
-- [ ] W1-T12 · Record the S1 runs · S · sonnet · W0-S11
+- [=] W1-T12 · Record the S1 runs · S · sonnet · W0-S11
 
 ### Bench lanes
 
@@ -219,42 +219,42 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Instruments
 
-- [ ] W1-T06 · INS-z3 cell with the download loader and recorded fallback · M · sonnet · W0-S01, W0-S02, W1-T35, W1-T41
+- [~] W1-T06 · INS-z3 cell with the download loader and recorded fallback · M · sonnet · W0-S01, W0-S02, W1-T35, W1-T41
 - [ ] W1-T19 · Pocket checkers · M · opus · W1-T05, W1-T42
 
 ### Generators
 
-- [ ] W1-T05 · Generator framework and the first five families (milestone) · S · opus · W1-T04, W0-S01, W1-T21, W1-T22, W1-T23, W1-T24, W1-T25, W1-T26, W1-T37
-- [ ] W1-T21 · Generator framework core (part of W1-T05) · M · opus · W1-T04, W0-T02
-- [ ] W1-T22 · GEN-negate-it (part of W1-T05) · M · opus · W1-T21, W1-T39
-- [ ] W1-T23 · GEN-find-the-witness (part of W1-T05) · M · opus · W1-T21, W1-T39
-- [ ] W1-T24 · GEN-call-it (part of W1-T05) · M · opus · W1-T21, W1-T07, W1-T39
-- [ ] W1-T25 · GEN-spot-the-gap (part of W1-T05) · M · opus · W1-T21, W1-T40
-- [ ] W1-T26 · GEN-which-stamp (part of W1-T05) · S · opus · W1-T21, W1-T01, W1-T39
+- [~] W1-T05 · Generator framework and the first five families (milestone) · S · opus · W1-T04, W0-S01, W1-T21, W1-T22, W1-T23, W1-T24, W1-T25, W1-T26, W1-T37
+- [=] W1-T21 · Generator framework core (part of W1-T05) · M · opus · W1-T04, W0-T02
+- [~] W1-T22 · GEN-negate-it (part of W1-T05) · M · opus · W1-T21, W1-T39
+- [~] W1-T23 · GEN-find-the-witness (part of W1-T05) · M · opus · W1-T21, W1-T39
+- [~] W1-T24 · GEN-call-it (part of W1-T05) · M · opus · W1-T21, W1-T07, W1-T39
+- [~] W1-T25 · GEN-spot-the-gap (part of W1-T05) · M · opus · W1-T21, W1-T40
+- [=] W1-T26 · GEN-which-stamp (part of W1-T05) · S · opus · W1-T21, W1-T01, W1-T39
 
 ### Learning engine
 
-- [ ] W1-T04 · KC graph v0 (105 KCs) · M · opus · W0-T03
-- [ ] W1-T07 · Call It and Mirror v0 · M · sonnet · W1-T03, W1-T39
-- [ ] W1-T08 · Today, the Keep block and *Set your week* · M · sonnet · W1-T05
+- [~] W1-T04 · KC graph v0 (105 KCs) · M · opus · W0-T03
+- [~] W1-T07 · Call It and Mirror v0 · M · sonnet · W1-T03, W1-T39
+- [~] W1-T08 · Today, the Keep block and *Set your week* · M · sonnet · W1-T05
 
 ### Audit Desk
 
-- [ ] W1-T17 · Audit Desk v1 with eight anchors (milestone) · S · opus · W1-T05, W1-T12, W1-T32, W1-T33, W1-T34, W1-T40
-- [ ] W1-T32 · Audit Desk flow and scoring (part of W1-T17) · M · opus · W1-T03, W1-T25
-- [ ] W1-T33 · Anchors AUD-1.1–AUD-1.3 with variants (part of W1-T17) · M · opus · W1-T25, W1-T12, W1-T40
-- [ ] W1-T34 · Anchors AUD-2.1–AUD-2.4 and AUD-5.3 keyed by executed runs (part of W1-T17) · S · opus · W1-T32, W1-T40
+- [~] W1-T17 · Audit Desk v1 with eight anchors (milestone) · S · opus · W1-T05, W1-T12, W1-T32, W1-T33, W1-T34, W1-T40
+- [~] W1-T32 · Audit Desk flow and scoring (part of W1-T17) · M · opus · W1-T03, W1-T25
+- [~] W1-T33 · Anchors AUD-1.1–AUD-1.3 with variants (part of W1-T17) · M · opus · W1-T25, W1-T12, W1-T40
+- [~] W1-T34 · Anchors AUD-2.1–AUD-2.4 and AUD-5.3 keyed by executed runs (part of W1-T17) · S · opus · W1-T32, W1-T40
 
 ### Stage S1: Boot, lessons, LAB-1, drawers
 
-- [ ] W1-T09 · Boot · M · opus · W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41, W1-T45
-- [ ] W1-T10 · S1 lessons S1.L1–S1.L5 (milestone) · S · opus · W1-T05, W1-T06, W1-T12, W1-T27, W1-T28
-- [ ] W1-T11 · Drawers D-01–D-06 and D-13 · M · opus · W1-T04, W1-T12, W1-T36, W1-T38, W1-T01, W1-T21, W1-T39
-- [ ] W1-T13 · LAB-1 and `statespace check` for Z3 (milestone) · S · opus · W0-S11, W1-T29, W1-T30, W1-T31, W1-T43
-- [ ] W1-T27 · S1 lessons S1.L1–S1.L2 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T37, W1-T38
-- [ ] W1-T28 · S1 lessons S1.L3–S1.L5 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T15, W1-T19, W1-T37, W1-T38
-- [ ] W1-T30 · LAB-1 stages LAB-1.1–LAB-1.6 (part of W1-T13) · M · opus · W1-T29, W1-T12, W1-T15, W1-T43
-- [ ] W1-T44 · Deferred drawer cards D-30–D-40 (added) · S · sonnet · W1-T11
+- [~] W1-T09 · Boot · M · opus · W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41, W1-T45
+- [~] W1-T10 · S1 lessons S1.L1–S1.L5 (milestone) · S · opus · W1-T05, W1-T06, W1-T12, W1-T27, W1-T28
+- [~] W1-T11 · Drawers D-01–D-06 and D-13 · M · opus · W1-T04, W1-T12, W1-T36, W1-T38, W1-T01, W1-T21, W1-T39
+- [~] W1-T13 · LAB-1 and `statespace check` for Z3 (milestone) · S · opus · W0-S11, W1-T29, W1-T30, W1-T31, W1-T43
+- [~] W1-T27 · S1 lessons S1.L1–S1.L2 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T37, W1-T38
+- [~] W1-T28 · S1 lessons S1.L3–S1.L5 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T15, W1-T19, W1-T37, W1-T38
+- [~] W1-T30 · LAB-1 stages LAB-1.1–LAB-1.6 (part of W1-T13) · M · opus · W1-T29, W1-T12, W1-T15, W1-T43
+- [=] W1-T44 · Deferred drawer cards D-30–D-40 (added) · S · sonnet · W1-T11
 - [ ] W1-T45 · S1 placement walk (added) · S · opus · W1-T22, W1-T23, W1-T24, W1-T11, W1-T38
 
 ### Accessibility
@@ -281,9 +281,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Runs
 
-- [ ] W2-T10 · Record the S2–S3 runs (milestone) · S · sonnet · W2-T01, W2-T38, W2-T39
-- [ ] W2-T38 · Record the S2 runs (part of W2-T10) · S · sonnet · W2-T33
-- [ ] W2-T39 · Record the S3 runs (part of W2-T10) · S · sonnet · W2-T07, W2-T08
+- [~] W2-T10 · Record the S2–S3 runs (milestone) · S · sonnet · W2-T01, W2-T38, W2-T39
+- [=] W2-T38 · Record the S2 runs (part of W2-T10) · S · sonnet · W2-T33
+- [~] W2-T39 · Record the S3 runs (part of W2-T10) · S · sonnet · W2-T07, W2-T08
 
 ### Bench lanes
 
@@ -304,10 +304,10 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Generators
 
-- [ ] W2-T11 · GEN-spec-it, GEN-proof-structure, GEN-defend (milestone) · S · opus · W1-T05, W2-T29, W2-T30, W2-T31
-- [ ] W2-T29 · GEN-spec-it (part of W2-T11) · M · opus · W1-T22
-- [ ] W2-T30 · GEN-proof-structure (part of W2-T11) · M · opus · W2-T03, W2-T01
-- [ ] W2-T31 · GEN-defend and statespace defend (part of W2-T11) · M · opus · W2-T01, W1-T29, W2-T36, W2-T37
+- [~] W2-T11 · GEN-spec-it, GEN-proof-structure, GEN-defend (milestone) · S · opus · W1-T05, W2-T29, W2-T30, W2-T31
+- [~] W2-T29 · GEN-spec-it (part of W2-T11) · M · opus · W1-T22
+- [~] W2-T30 · GEN-proof-structure (part of W2-T11) · M · opus · W2-T03, W2-T01
+- [~] W2-T31 · GEN-defend and statespace defend (part of W2-T11) · M · opus · W2-T01, W1-T29, W2-T36, W2-T37
 
 ### Learning engine
 
@@ -321,7 +321,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Audit Desk
 
-- [ ] W2-T13 · Anchors AUD-3.1–AUD-3.2; variants of AUD-2.1–AUD-2.4 · M · opus · W1-T17, W2-T01, W2-T10, W2-T39
+- [~] W2-T13 · Anchors AUD-3.1–AUD-3.2; variants of AUD-2.1–AUD-2.4 · M · opus · W1-T17, W2-T01, W2-T10, W2-T39
 
 ### Erosions, assurance and the report
 
@@ -330,28 +330,28 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 ### Stage S2: lessons, LAB-2, Defence, drawers
 
 - [ ] W2-T02 · LAB-2 challenge pack and template (milestone) · S · opus · W2-T01, W2-T36, W2-T37
-- [ ] W2-T04 · S2 lessons S2.L0–S2.L10 (milestone) · S · opus · W2-T03, W2-T10, W2-T05, W2-T19, W2-T20, W2-T21
-- [ ] W2-T05 · Self-explanation unit (OD-10) · S · opus · —
-- [ ] W2-T19 · S2 lessons S2.L1–S2.L4 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T18
-- [ ] W2-T20 · S2 lessons S2.L5–S2.L7 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01
-- [ ] W2-T21 · S2 lessons S2.L8–S2.L10 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01, W2-T08
-- [ ] W2-T36 · LAB-2 stages LAB-2.1–LAB-2.4 with the challenge pack (part of W2-T02) · M · opus · W2-T33
-- [ ] W2-T37 · LAB-2 stages LAB-2.5–LAB-2.8 (part of W2-T02) · M · opus · W2-T36
+- [~] W2-T04 · S2 lessons S2.L0–S2.L10 (milestone) · S · opus · W2-T03, W2-T10, W2-T05, W2-T19, W2-T20, W2-T21
+- [~] W2-T05 · Self-explanation unit (OD-10) · S · opus · —
+- [~] W2-T19 · S2 lessons S2.L1–S2.L4 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T18
+- [~] W2-T20 · S2 lessons S2.L5–S2.L7 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01
+- [~] W2-T21 · S2 lessons S2.L8–S2.L10 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01, W2-T08
+- [~] W2-T36 · LAB-2 stages LAB-2.1–LAB-2.4 with the challenge pack (part of W2-T02) · M · opus · W2-T33
+- [~] W2-T37 · LAB-2 stages LAB-2.5–LAB-2.8 (part of W2-T02) · M · opus · W2-T36
 - [ ] W2-T40 · Defence content for S1 and S2 (added) · M · opus · W2-T12, W2-T31, W1-T13, W2-T02, W2-T13, W1-T17
-- [ ] W2-T43 · Drawers D-07, D-08 and D-15 (added) · S · opus · W2-T38, W1-T11
+- [~] W2-T43 · Drawers D-07, D-08 and D-15 (added) · S · opus · W2-T38, W1-T11
 
 ### Stage S3: lessons, LAB-3, Defence, drawers
 
 - [ ] W2-T09 · S3 lessons and LAB-3 with capstone stages (milestone) · S · opus · W2-T08, W2-T10, W2-T06, W2-T42, W2-T22, W2-T23, W2-T24, W2-T25, W2-T26, W2-T27, W2-T28
-- [ ] W2-T22 · S3 lessons S3.L1–S3.L3 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
-- [ ] W2-T23 · S3 lessons S3.L4–S3.L6 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
-- [ ] W2-T24 · S3 lessons S3.L7–S3.L9 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T42
-- [ ] W2-T25 · LAB-3 stages LAB-3.1–LAB-3.3 (part of W2-T09) · M · opus · W2-T07, W2-T33
-- [ ] W2-T26 · LAB-3 stages LAB-3.4–LAB-3.7 (part of W2-T09) · M · opus · W2-T25
-- [ ] W2-T27 · LAB-3 capstone stages LAB-3.8–LAB-3.11 (part of W2-T09) · M · opus · W2-T26, W2-T08
-- [ ] W2-T28 · LAB-3 stretch stages LAB-3.12–LAB-3.13 (part of W2-T09) · S · opus · W2-T26
+- [~] W2-T22 · S3 lessons S3.L1–S3.L3 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
+- [~] W2-T23 · S3 lessons S3.L4–S3.L6 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
+- [~] W2-T24 · S3 lessons S3.L7–S3.L9 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T42
+- [~] W2-T25 · LAB-3 stages LAB-3.1–LAB-3.3 (part of W2-T09) · M · opus · W2-T07, W2-T33
+- [~] W2-T26 · LAB-3 stages LAB-3.4–LAB-3.7 (part of W2-T09) · M · opus · W2-T25
+- [~] W2-T27 · LAB-3 capstone stages LAB-3.8–LAB-3.11 (part of W2-T09) · M · opus · W2-T26, W2-T08
+- [~] W2-T28 · LAB-3 stretch stages LAB-3.12–LAB-3.13 (part of W2-T09) · S · opus · W2-T26
 - [ ] W2-T41 · Defence content for S3 (added) · S · opus · W2-T12, W2-T31, W2-T25, W2-T26, W2-T27, W2-T13
-- [ ] W2-T44 · Drawers D-14, D-22 and D-23 (added) · S · opus · W2-T08
+- [~] W2-T44 · Drawers D-14, D-22 and D-23 (added) · S · opus · W2-T08
 
 ### Accessibility
 
@@ -378,9 +378,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Runs
 
-- [ ] W3-T07 · Record the S4–S5 runs (milestone) · S · sonnet · W3-T05, W3-T25, W3-T26
-- [ ] W3-T25 · Record the S4 runs (part of W3-T07) · S · sonnet · W3-T21
-- [ ] W3-T26 · Record the S5 runs (part of W3-T07) · S · sonnet · W3-T05
+- [~] W3-T07 · Record the S4–S5 runs (milestone) · S · sonnet · W3-T05, W3-T25, W3-T26
+- [=] W3-T25 · Record the S4 runs (part of W3-T07) · S · sonnet · W3-T21
+- [=] W3-T26 · Record the S5 runs (part of W3-T07) · S · sonnet · W3-T05
 
 ### Bench lanes
 
@@ -397,12 +397,12 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Generators
 
-- [ ] W3-T02 · GEN-wp-it, GEN-cti-or-bug, CTI workbench (milestone) · S · opus · W3-T01, W3-T16, W3-T17
-- [ ] W3-T10 · GEN-trace-allowed and GEN-lasso-or-not (milestone) · S · opus · W3-T09, W3-T27, W3-T28
-- [ ] W3-T16 · GEN-wp-it (part of W3-T02) · M · opus · W3-T01
-- [ ] W3-T17 · GEN-cti-or-bug and the CTI workbench (part of W3-T02) · M · opus · W3-T01, W3-T05
-- [ ] W3-T27 · GEN-trace-allowed (part of W3-T10) · M · opus · W3-T05, W3-T23
-- [ ] W3-T28 · GEN-lasso-or-not (part of W3-T10) · M · opus · W3-T09
+- [~] W3-T02 · GEN-wp-it, GEN-cti-or-bug, CTI workbench (milestone) · S · opus · W3-T01, W3-T16, W3-T17
+- [~] W3-T10 · GEN-trace-allowed and GEN-lasso-or-not (milestone) · S · opus · W3-T09, W3-T27, W3-T28
+- [~] W3-T16 · GEN-wp-it (part of W3-T02) · M · opus · W3-T01
+- [~] W3-T17 · GEN-cti-or-bug and the CTI workbench (part of W3-T02) · M · opus · W3-T01, W3-T05
+- [~] W3-T27 · GEN-trace-allowed (part of W3-T10) · M · opus · W3-T05, W3-T23
+- [~] W3-T28 · GEN-lasso-or-not (part of W3-T10) · M · opus · W3-T09
 
 ### Learning engine
 
@@ -411,9 +411,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Audit Desk
 
-- [ ] W3-T13 · Anchors AUD-4.1–4.3, 5.1, 5.2, 5.4; AUD-5.3 variants; Lean keep-alive (milestone) · S · opus · W1-T17, W3-T05, W3-T07, W3-T36, W3-T37, W3-T38
-- [ ] W3-T36 · Anchors AUD-4.1–AUD-4.3 (part of W3-T13) · M · opus · W3-T22, W3-T25
-- [ ] W3-T37 · Anchors AUD-5.1, AUD-5.2, AUD-5.4 and AUD-5.3's variants (part of W3-T13) · M · opus · W3-T05, W3-T25, W3-T26
+- [~] W3-T13 · Anchors AUD-4.1–4.3, 5.1, 5.2, 5.4; AUD-5.3 variants; Lean keep-alive (milestone) · S · opus · W1-T17, W3-T05, W3-T07, W3-T36, W3-T37, W3-T38
+- [~] W3-T36 · Anchors AUD-4.1–AUD-4.3 (part of W3-T13) · M · opus · W3-T22, W3-T25
+- [~] W3-T37 · Anchors AUD-5.1, AUD-5.2, AUD-5.4 and AUD-5.3's variants (part of W3-T13) · M · opus · W3-T05, W3-T25, W3-T26
 
 ### Erosions, assurance and the report
 
@@ -430,24 +430,24 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Stage S4: lessons and LAB-4
 
-- [ ] W3-T03 · S4 lessons (milestone) · S · opus · W3-T02, W3-T07, W3-T18, W3-T19, W3-T20
-- [ ] W3-T04 · LAB-4 with the cvc5 cross-check (milestone) · S · opus · W2-T08, W3-T21, W3-T22
-- [ ] W3-T18 · S4 lessons S4.L1–S4.L3 (part of W3-T03) · M · opus · W3-T01, W3-T16, W3-T25
-- [ ] W3-T19 · S4 lessons S4.L4–S4.L6 (part of W3-T03) · M · opus · W3-T16, W3-T17, W3-T25, W3-T21
-- [ ] W3-T20 · S4 lessons S4.L7–S4.L9 (part of W3-T03) · M · opus · W3-T25, W3-T21, W3-T22, W0-S07
-- [ ] W3-T21 · LAB-4 stages LAB-4.1–LAB-4.4 with the template and ABI (part of W3-T04) · M · opus · W2-T08, W1-T29
-- [ ] W3-T22 · LAB-4 stages LAB-4.5–LAB-4.9 (part of W3-T04) · M · opus · W3-T21
+- [~] W3-T03 · S4 lessons (milestone) · S · opus · W3-T02, W3-T07, W3-T18, W3-T19, W3-T20
+- [~] W3-T04 · LAB-4 with the cvc5 cross-check (milestone) · S · opus · W2-T08, W3-T21, W3-T22
+- [~] W3-T18 · S4 lessons S4.L1–S4.L3 (part of W3-T03) · M · opus · W3-T01, W3-T16, W3-T25
+- [~] W3-T19 · S4 lessons S4.L4–S4.L6 (part of W3-T03) · M · opus · W3-T16, W3-T17, W3-T25, W3-T21
+- [~] W3-T20 · S4 lessons S4.L7–S4.L9 (part of W3-T03) · M · opus · W3-T25, W3-T21, W3-T22, W0-S07
+- [~] W3-T21 · LAB-4 stages LAB-4.1–LAB-4.4 with the template and ABI (part of W3-T04) · M · opus · W2-T08, W1-T29
+- [~] W3-T22 · LAB-4 stages LAB-4.5–LAB-4.9 (part of W3-T04) · M · opus · W3-T21
 
 ### Stage S5: lessons, LAB-5, Defence, drawers
 
-- [ ] W3-T11 · S5 lessons and LAB-5 (milestone) · S · opus · W3-T06, W3-T07, W3-T29, W3-T30, W3-T31, W3-T32, W3-T33
-- [ ] W3-T29 · S5 lessons S5.L1–S5.L3 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T26, W3-T27
-- [ ] W3-T30 · S5 lessons S5.L4–S5.L6 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T09, W3-T26, W3-T27, W3-T28
-- [ ] W3-T31 · S5 lessons S5.L7–S5.L9 (part of W3-T11) · M · opus · W3-T09, W3-T25, W3-T26, W3-T28, W3-T17
-- [ ] W3-T32 · LAB-5 stages LAB-5.1–LAB-5.4 (part of W3-T11) · M · opus · W3-T05, W3-T26
-- [ ] W3-T33 · LAB-5 stages LAB-5.5–LAB-5.7 (part of W3-T11) · M · opus · W3-T32, W3-T09, W3-T25
+- [~] W3-T11 · S5 lessons and LAB-5 (milestone) · S · opus · W3-T06, W3-T07, W3-T29, W3-T30, W3-T31, W3-T32, W3-T33
+- [~] W3-T29 · S5 lessons S5.L1–S5.L3 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T26, W3-T27
+- [=] W3-T30 · S5 lessons S5.L4–S5.L6 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T09, W3-T26, W3-T27, W3-T28
+- [=] W3-T31 · S5 lessons S5.L7–S5.L9 (part of W3-T11) · M · opus · W3-T09, W3-T25, W3-T26, W3-T28, W3-T17
+- [~] W3-T32 · LAB-5 stages LAB-5.1–LAB-5.4 (part of W3-T11) · M · opus · W3-T05, W3-T26
+- [~] W3-T33 · LAB-5 stages LAB-5.5–LAB-5.7 (part of W3-T11) · M · opus · W3-T32, W3-T09, W3-T25
 - [ ] W3-T42 · Defence content for S4 and S5 (added) · M · opus · W2-T12, W2-T31, W3-T22, W3-T33, W3-T36, W3-T37
-- [ ] W3-T43 · Drawers D-09, D-10 and D-18 (added) · S · opus · W3-T25, W3-T26
+- [~] W3-T43 · Drawers D-09, D-10 and D-18 (added) · S · opus · W3-T25, W3-T26
 
 ### Accessibility
 
@@ -481,9 +481,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Runs
 
-- [ ] W4-T10 · Record the S6–S7 runs (milestone) · S · sonnet · W4-T01, W4-T34, W4-T35
-- [ ] W4-T34 · Record the S6 runs (part of W4-T10) · S · sonnet · W4-T16, W4-T18, W4-T04, W4-T24
-- [ ] W4-T35 · Record the S7 runs (part of W4-T10) · S · sonnet · W4-T07, W4-T27, W4-T16
+- [~] W4-T10 · Record the S6–S7 runs (milestone) · S · sonnet · W4-T01, W4-T34, W4-T35
+- [~] W4-T34 · Record the S6 runs (part of W4-T10) · S · sonnet · W4-T16, W4-T18, W4-T04, W4-T24
+- [~] W4-T35 · Record the S7 runs (part of W4-T10) · S · sonnet · W4-T07, W4-T27, W4-T16
 
 ### Bench lanes
 
@@ -500,7 +500,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [ ] W4-T03 · History viewer and serializability checker (milestone) · S · opus · W4-T01, W4-T18, W4-T19
 - [ ] W4-T04 · PGlite instrument · M · sonnet · W0-S08
 - [ ] W4-T07 · Datalog pair · M · sonnet · W0-S03
-- [ ] W4-T08 · Paired-state evaluator and GEN-leaks-to-observer (milestone) · S · opus · W2-T08, W4-T27, W4-T28
+- [~] W4-T08 · Paired-state evaluator and GEN-leaks-to-observer (milestone) · S · opus · W2-T08, W4-T27, W4-T28
 - [ ] W4-T15 · Spec duels by URL · M · opus · W0-S01
 - [ ] W4-T18 · Abstract-serializability checker (part of W4-T03) · M · opus · W4-T16, W2-T08
 - [ ] W4-T19 · INS-history viewer and replayer (part of W4-T03) · M · sonnet · W4-T18
@@ -508,14 +508,14 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Generators
 
-- [ ] W4-T20 · GEN-anomaly-id (part of W4-T05) · M · opus · W4-T18, W0-S09
-- [ ] W4-T28 · GEN-leaks-to-observer (part of W4-T08) · M · opus · W4-T27
+- [~] W4-T20 · GEN-anomaly-id (part of W4-T05) · M · opus · W4-T18, W0-S09
+- [~] W4-T28 · GEN-leaks-to-observer (part of W4-T08) · M · opus · W4-T27
 
 ### Audit Desk
 
-- [ ] W4-T13 · Anchors AUD-6.1–6.3, 7.1, 7.2; sibling bridge cards (milestone) · S · opus · W1-T17, W4-T01, W4-T10, W4-T36, W4-T37, W4-T38
-- [ ] W4-T36 · Anchors AUD-6.1–AUD-6.3 (part of W4-T13) · M · opus · W4-T34, W4-T17
-- [ ] W4-T37 · Anchors AUD-7.1–AUD-7.2 (part of W4-T13) · M · opus · W4-T35, W4-T27
+- [~] W4-T13 · Anchors AUD-6.1–6.3, 7.1, 7.2; sibling bridge cards (milestone) · S · opus · W1-T17, W4-T01, W4-T10, W4-T36, W4-T37, W4-T38
+- [~] W4-T36 · Anchors AUD-6.1–AUD-6.3 (part of W4-T13) · M · opus · W4-T34, W4-T17
+- [~] W4-T37 · Anchors AUD-7.1–AUD-7.2 (part of W4-T13) · M · opus · W4-T35, W4-T27
 
 ### Erosions, assurance and the report
 
@@ -529,26 +529,26 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Stage S6: lessons, LAB-6, siblings
 
-- [ ] W4-T05 · GEN-anomaly-id and S6 lessons (milestone) · S · opus · W4-T03, W4-T10, W4-T20, W4-T21, W4-T22, W4-T23
-- [ ] W4-T06 · LAB-6 with its capstone stage (milestone) · S · opus · W4-T04, W4-T24, W4-T25, W4-T26
-- [ ] W4-T21 · S6 lessons S6.L1–S6.L3 (part of W4-T05) · M · opus · W4-T04, W4-T34, W2-T08
-- [ ] W4-T22 · S6 lessons S6.L4–S6.L6 (part of W4-T05) · M · opus · W4-T04, W4-T19, W4-T20, W4-T34, W4-T38
-- [ ] W4-T23 · S6 lessons S6.L7–S6.L9 (part of W4-T05) · M · opus · W4-T18, W4-T19, W4-T20, W4-T34, W4-T38
+- [~] W4-T05 · GEN-anomaly-id and S6 lessons (milestone) · S · opus · W4-T03, W4-T10, W4-T20, W4-T21, W4-T22, W4-T23
+- [~] W4-T06 · LAB-6 with its capstone stage (milestone) · S · opus · W4-T04, W4-T24, W4-T25, W4-T26
+- [~] W4-T21 · S6 lessons S6.L1–S6.L3 (part of W4-T05) · M · opus · W4-T04, W4-T34, W2-T08
+- [~] W4-T22 · S6 lessons S6.L4–S6.L6 (part of W4-T05) · M · opus · W4-T04, W4-T19, W4-T20, W4-T34, W4-T38
+- [~] W4-T23 · S6 lessons S6.L7–S6.L9 (part of W4-T05) · M · opus · W4-T18, W4-T19, W4-T20, W4-T34, W4-T38
 - [ ] W4-T24 · Reference compiler and reference R(S, D) (part of W4-T06) · M · opus · W2-T08, W4-T04, W4-T18
-- [ ] W4-T25 · LAB-6 stages LAB-6.1–LAB-6.5 (part of W4-T06) · M · opus · W4-T24, W4-T16, W4-T34
-- [ ] W4-T26 · LAB-6 stages LAB-6.6–LAB-6.9 (part of W4-T06) · M · opus · W4-T25, W4-T18
-- [ ] W4-T38 · Sibling bridge cards; D-11 and D-21 (part of W4-T13) · S · opus · W1-T11
+- [~] W4-T25 · LAB-6 stages LAB-6.1–LAB-6.5 (part of W4-T06) · M · opus · W4-T24, W4-T16, W4-T34
+- [~] W4-T26 · LAB-6 stages LAB-6.6–LAB-6.9 (part of W4-T06) · M · opus · W4-T25, W4-T18
+- [~] W4-T38 · Sibling bridge cards; D-11 and D-21 (part of W4-T13) · S · opus · W1-T11
 
 ### Stage S7: lessons, LAB-7, Defence, drawers
 
-- [ ] W4-T09 · S7 lessons and LAB-7 with the RLS differential (milestone) · S · opus · W4-T07, W4-T08, W4-T10, W4-T29, W4-T30, W4-T31, W4-T32, W4-T33
-- [ ] W4-T29 · S7 lessons S7.L1–S7.L4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T04
-- [ ] W4-T30 · S7 lessons S7.L5–S7.L6 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35
-- [ ] W4-T31 · S7 lessons S7.L7–S7.L8 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35, W4-T38
-- [ ] W4-T32 · LAB-7 stages LAB-7.1–LAB-7.4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T16
-- [ ] W4-T33 · LAB-7 stages LAB-7.5–LAB-7.8 (part of W4-T09) · M · opus · W4-T32, W4-T27
+- [~] W4-T09 · S7 lessons and LAB-7 with the RLS differential (milestone) · S · opus · W4-T07, W4-T08, W4-T10, W4-T29, W4-T30, W4-T31, W4-T32, W4-T33
+- [~] W4-T29 · S7 lessons S7.L1–S7.L4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T04
+- [~] W4-T30 · S7 lessons S7.L5–S7.L6 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35
+- [~] W4-T31 · S7 lessons S7.L7–S7.L8 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35, W4-T38
+- [~] W4-T32 · LAB-7 stages LAB-7.1–LAB-7.4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T16
+- [~] W4-T33 · LAB-7 stages LAB-7.5–LAB-7.8 (part of W4-T09) · M · opus · W4-T32, W4-T27
 - [ ] W4-T42 · Defence content for S6 and S7 (added) · M · opus · W2-T12, W2-T31, W4-T26, W4-T33, W4-T36, W4-T37
-- [ ] W4-T43 · Drawers D-16, D-17 and D-20 (added) · S · opus · W4-T35
+- [~] W4-T43 · Drawers D-16, D-17 and D-20 (added) · S · opus · W4-T35
 
 ### Accessibility
 
@@ -578,9 +578,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Runs
 
-- [ ] W5-T03 · Record the S8–S9 runs (milestone) · S · sonnet · W5-T01, W5-T04, W5-T21, W5-T22
-- [ ] W5-T21 · Record the S8 runs (part of W5-T03) · S · sonnet · W3-T05, W5-T15
-- [ ] W5-T22 · Record the S9 runs (part of W5-T03) · S · sonnet · W5-T04
+- [~] W5-T03 · Record the S8–S9 runs (milestone) · S · sonnet · W5-T01, W5-T04, W5-T21, W5-T22
+- [~] W5-T21 · Record the S8 runs (part of W5-T03) · S · sonnet · W3-T05, W5-T15
+- [~] W5-T22 · Record the S9 runs (part of W5-T03) · S · sonnet · W5-T04
 
 ### Bench lanes
 
@@ -593,9 +593,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Audit Desk
 
-- [ ] W5-T11 · Anchors AUD-8.1–AUD-9.2 and `statespace audit` (milestone) · S · opus · W1-T17, W5-T01, W5-T03, W5-T32, W5-T33, W5-T34
-- [ ] W5-T32 · Anchors AUD-8.1–AUD-8.2 (part of W5-T11) · M · opus · W5-T21, W5-T14
-- [ ] W5-T33 · Anchors AUD-9.1–AUD-9.2 (part of W5-T11) · M · opus · W5-T22
+- [~] W5-T11 · Anchors AUD-8.1–AUD-9.2 and `statespace audit` (milestone) · S · opus · W1-T17, W5-T01, W5-T03, W5-T32, W5-T33, W5-T34
+- [~] W5-T32 · Anchors AUD-8.1–AUD-8.2 (part of W5-T11) · M · opus · W5-T21, W5-T14
+- [~] W5-T33 · Anchors AUD-9.1–AUD-9.2 (part of W5-T11) · M · opus · W5-T22
 - [ ] W5-T34 · statespace audit: your repo is the Audit Desk (part of W5-T11) · M · opus · W1-T25, W1-T29
 
 ### Erosions, assurance and the report
@@ -613,32 +613,32 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Stage S8: lessons, LAB-8, Defence, drawers
 
-- [ ] W5-T02 · S8 lessons and LAB-8 (milestone) · S · opus · W5-T01, W5-T03, W5-T16, W5-T17, W5-T18, W5-T19, W5-T20
-- [ ] W5-T16 · S8 lessons S8.L1–S8.L3 (part of W5-T02) · M · opus · W5-T21, W5-T39
-- [ ] W5-T17 · S8 lessons S8.L4–S8.L5 (part of W5-T02) · M · opus · W5-T21
-- [ ] W5-T18 · S8 lessons S8.L6–S8.L7 (part of W5-T02) · M · opus · W5-T21, W5-T01
-- [ ] W5-T19 · LAB-8 stages LAB-8.1–LAB-8.4 (part of W5-T02) · M · opus · W5-T01, W5-T21
-- [ ] W5-T20 · LAB-8 stages LAB-8.5–LAB-8.9 (part of W5-T02) · M · opus · W5-T19
+- [~] W5-T02 · S8 lessons and LAB-8 (milestone) · S · opus · W5-T01, W5-T03, W5-T16, W5-T17, W5-T18, W5-T19, W5-T20
+- [=] W5-T16 · S8 lessons S8.L1–S8.L3 (part of W5-T02) · M · opus · W5-T21, W5-T39
+- [~] W5-T17 · S8 lessons S8.L4–S8.L5 (part of W5-T02) · M · opus · W5-T21
+- [~] W5-T18 · S8 lessons S8.L6–S8.L7 (part of W5-T02) · M · opus · W5-T21, W5-T01
+- [~] W5-T19 · LAB-8 stages LAB-8.1–LAB-8.4 (part of W5-T02) · M · opus · W5-T01, W5-T21
+- [~] W5-T20 · LAB-8 stages LAB-8.5–LAB-8.9 (part of W5-T02) · M · opus · W5-T19
 - [ ] W5-T37 · Defence content for S8 (added) · S · opus · W2-T12, W2-T31, W5-T20, W5-T32
-- [ ] W5-T39 · Drawers D-12 and D-19 (added) · S · opus · W5-T21
+- [~] W5-T39 · Drawers D-12 and D-19 (added) · S · opus · W5-T21
 
 ### Stage S9: lessons, LAB-9, challenge packs
 
 - [ ] W5-T04 · Stack-machine warm-up, S9 challenge packs, reference translation validator · M · opus · W2-T01
-- [ ] W5-T05 · S9 lessons and LAB-9 (milestone) · S · opus · W5-T04, W5-T03, W5-T23, W5-T24, W5-T25, W5-T26, W5-T27, W5-T28
-- [ ] W5-T23 · S9 lessons S9.L1–S9.L4 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [ ] W5-T24 · S9 lessons S9.L5–S9.L6 (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [ ] W5-T25 · S9 lessons S9.L7–S9.L9 (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [ ] W5-T26 · LAB-9 stages LAB-9.1–LAB-9.3 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [ ] W5-T27 · LAB-9 preservation stages LAB-9.4–LAB-9.10 (part of W5-T05) · L · opus · W5-T26
-- [ ] W5-T28 · LAB-9 stages LAB-9.11–LAB-9.12 (part of W5-T05) · M · opus · W5-T27
+- [~] W5-T05 · S9 lessons and LAB-9 (milestone) · S · opus · W5-T04, W5-T03, W5-T23, W5-T24, W5-T25, W5-T26, W5-T27, W5-T28
+- [~] W5-T23 · S9 lessons S9.L1–S9.L4 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
+- [~] W5-T24 · S9 lessons S9.L5–S9.L6 (part of W5-T05) · M · opus · W5-T04, W5-T22
+- [~] W5-T25 · S9 lessons S9.L7–S9.L9 (part of W5-T05) · M · opus · W5-T04, W5-T22
+- [~] W5-T26 · LAB-9 stages LAB-9.1–LAB-9.3 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
+- [~] W5-T27 · LAB-9 preservation stages LAB-9.4–LAB-9.10 (part of W5-T05) · L · opus · W5-T26
+- [~] W5-T28 · LAB-9 stages LAB-9.11–LAB-9.12 (part of W5-T05) · M · opus · W5-T27
 
 ### Stage S10: LAB-10, Defence, triggers
 
-- [ ] W5-T07 · LAB-10 and the demonstration recorder (milestone) · S · opus · W5-T06, W5-T29, W5-T30, W5-T31
-- [ ] W5-T29 · LAB-10 stages LAB-10.1–LAB-10.3 (part of W5-T07) · M · opus · W5-T06, W5-T15
-- [ ] W5-T30 · LAB-10 stages LAB-10.4–LAB-10.7 and the demonstration (part of W5-T07) · M · opus · W5-T29, W3-T40
-- [ ] W5-T31 · LAB-10 stages LAB-10.8–LAB-10.10 (part of W5-T07) · M · opus · W5-T30, W5-T06
+- [~] W5-T07 · LAB-10 and the demonstration recorder (milestone) · S · opus · W5-T06, W5-T29, W5-T30, W5-T31
+- [~] W5-T29 · LAB-10 stages LAB-10.1–LAB-10.3 (part of W5-T07) · M · opus · W5-T06, W5-T15
+- [~] W5-T30 · LAB-10 stages LAB-10.4–LAB-10.7 and the demonstration (part of W5-T07) · M · opus · W5-T29, W3-T40
+- [~] W5-T31 · LAB-10 stages LAB-10.8–LAB-10.10 (part of W5-T07) · M · opus · W5-T30, W5-T06
 - [ ] W5-T38 · Defence content for S10, over the report (added) · S · opus · W2-T12, W5-T31, W5-T34
 - [ ] W5-T40 · Deferred-drawer triggers D-31 and D-33–D-40 (added) · S · sonnet · W5-T06, W3-T34
 

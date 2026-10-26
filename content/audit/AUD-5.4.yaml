@@ -1,0 +1,222 @@
+# AUD-5.4 · S5 · G9 Granularity (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's. The pair
+# is keyed on PostgreSQL 18.6 by RUN-pg-withdraw-split: q1 sound member (one conditional UPDATE), q2 flawed member
+# (SELECT, a check in Python, then UPDATE), each run unchanged by two sessions at READ COMMITTED, interleaved (p1) and
+# one after the other (p2). The flawed member's key is the spine's run, RUN-tlc-rtw3: the read, check and write split
+# in TLA+. Variant pair v1 is the same split inside TLA+ (RUN-tlc-split-guard: q1 sound, q2 flawed; c1-c3 constants),
+# with the agent's receipt copied from the atomic model's run, RUN-tlc-atomic.
+id: AUD-5.4
+stage: S5
+class: G9
+medium: sql
+artifact: withdraw-implementation
+subject: "a withdrawal implementing a TLA+ action (Python, SQL)"
+claim: "Implements the atomic Transfer action."
+requirement: >-
+  A withdrawal behaves as the model's one atomic step: it happens only when the balance covers the amount, and
+  however two withdrawals interleave, no more is spent than the account held.
+scenario_question: "Does the implementation, as written, rule out this outcome?"
+scheduled_after: [LAB-5, S5.L3]
+kcs: [KC-5.interleaving-granularity]
+based_on:
+  incident: "The gift-card race: concurrent redemption requests spent one gift-card balance more than once."
+  date: "2015-05-21"
+  date_marks: "the write-up was published"
+  source: https://sakurity.com/blog/2015/05/21/starbucks.html
+
+cases:
+  - id: sound
+    key: none
+    description: "Implements withdraw for the model's Transfer action. The tests pass: a withdrawal of 80 from 100 succeeds, and a second one after it is refused."
+    statement: |
+      \* specs/Transfer.tla: the model's action, one atomic step
+      Transfer(w) == /\ pc[w] = "go" /\ bal >= Amount
+                     /\ bal' = bal - Amount /\ spent' = spent + Amount
+                     /\ pc' = [pc EXCEPT ![w] = "done"]
+
+      # service/withdraw.py, on PostgreSQL 18.6 at READ COMMITTED
+      def withdraw(conn, acct, amount):
+          with conn.transaction():
+              cur = conn.execute(
+                  "UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s",
+                  (amount, acct, amount))
+              return cur.rowcount == 1
+    diff: |
+      --- a/service/withdraw.py
+      +++ b/service/withdraw.py
+      @@ -1,2 +1,6 @@
+       def withdraw(conn, acct, amount):
+      -    raise NotImplementedError
+      +    with conn.transaction():
+      +        cur = conn.execute(
+      +            "UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s",
+      +            (amount, acct, amount))
+      +        return cur.rowcount == 1
+    receipt: |
+      [q1] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed
+      [q1 p2] a returned True, b returned False
+      [q1 p2] final bal=20; spent=80 of 100
+    restatement:
+      run: RUN-pg-withdraw-split
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Two withdrawals of 80 from 100 run at the same time, and both succeed", answer: true, key_line: "[q1 p1] a returned True, b returned False", why: "b's UPDATE waits for a's row lock, then re-checks its WHERE clause against the new balance of 20 and updates 0 rows." }
+        - { id: s2, text: "160 is spent from a balance of 100", answer: true, key_line: "[q1 p1] final bal=20; spent=80 of 100", why: "The guard and the write are one statement, so the second withdrawal is refused." }
+        - { id: s3, text: "One withdrawal of 80 succeeds, and the next, run after it, is refused", answer: false, key_line: "[q1 p2] a returned True, b returned False", why: "That is the intended behaviour, and the run shows it." }
+        - { id: s4, text: "The balance ends below zero", answer: true, key_line: "[q1 p1] final bal=20; spent=80 of 100", why: "The guard bal >= amount is checked on the row the UPDATE writes." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-pg-withdraw-split
+    key_lines: ["[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <... completed> -> UPDATE 0", "[q1 p1] final bal=20; spent=80 of 100"]
+    explain: "One conditional UPDATE is one step, like the model's action: the guard is evaluated on the row being written. At READ COMMITTED the second session waits for the first, re-evaluates its WHERE clause and updates 0 rows, so the rowcount check refuses it. This is what PostgreSQL 18.6 did in this run: [T] · 2 interleavings."
+
+  - id: flawed
+    key: G9
+    description: "Implements withdraw for the model's Transfer action. The tests pass: a withdrawal of 80 from 100 succeeds, and a second one after it is refused."
+    statement: |
+      \* specs/Transfer.tla: the model's action, one atomic step
+      Transfer(w) == /\ pc[w] = "go" /\ bal >= Amount
+                     /\ bal' = bal - Amount /\ spent' = spent + Amount
+                     /\ pc' = [pc EXCEPT ![w] = "done"]
+
+      # service/withdraw.py, on PostgreSQL 18.6 at READ COMMITTED
+      def withdraw(conn, acct, amount):
+          with conn.transaction():
+              (bal,) = conn.execute(
+                  "SELECT bal FROM acct WHERE id = %s", (acct,)).fetchone()
+              if bal < amount:
+                  return False
+              conn.execute("UPDATE acct SET bal = %s WHERE id = %s", (bal - amount, acct))
+              return True
+    diff: |
+      --- a/service/withdraw.py
+      +++ b/service/withdraw.py
+      @@ -1,2 +1,8 @@
+       def withdraw(conn, acct, amount):
+      -    raise NotImplementedError
+      +    with conn.transaction():
+      +        (bal,) = conn.execute(
+      +            "SELECT bal FROM acct WHERE id = %s", (acct,)).fetchone()
+      +        if bal < amount:
+      +            return False
+      +        conn.execute("UPDATE acct SET bal = %s WHERE id = %s", (bal - amount, acct))
+      +        return True
+    receipt: |
+      [q2] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed
+      [q2 p2] a returned True, b returned False
+      [q2 p2] final bal=20; spent=80 of 100
+    restatement:
+      run: RUN-pg-withdraw-split
+      scenarios:
+        - { id: s1, text: "Two withdrawals of 80 from 100 run at the same time, and both succeed", answer: false, key_line: "[q2 p1] a returned True, b returned True", why: "Both sessions read 100 before either writes, both pass the check, and both write 20." }
+        - { id: s2, text: "160 is spent from a balance of 100", answer: false, key_line: "[q2 p1] final bal=20; spent=160 of 100", why: "Two withdrawals of 80 succeed against one balance of 100." }
+        - { id: s3, text: "One withdrawal of 80 succeeds, and the next, run after it, is refused", answer: false, key_line: "[q2 p2] a returned True, b returned False", why: "Run one after the other, it behaves: that is all the tests ran." }
+        - { id: s4, text: "The balance ends below zero", answer: true, key_line: "[q2 p1] final bal=20; spent=160 of 100", why: "Both writes set the balance to 20, the value each computed from its read: a lost update, not a negative balance." }
+    evidence: { type: witness, load_bearing: ["statement:10", "statement:13"], reference: "RUN-pg-withdraw-split [q2 p1]: a SELECT 100, b SELECT 100, a UPDATE, a COMMIT, b UPDATE, b COMMIT; spent=160 of 100" }
+    key_run: RUN-tlc-rtw3
+    key_lines: ["Error: Invariant NoOverspend is violated.", "State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>"]
+    explain: "The model's Transfer is one step: check and write together. The code takes three, a SELECT, a check in Python, and an UPDATE of the value it read, and another session can run between them. At READ COMMITTED two such withdrawals spent 160 from 100, and the same read, check and write split in TLA+ breaks NoOverspend in a 6-action trace. The tests ran the withdrawals one after the other, where the split cannot show."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: split-atomic-action
+    medium: tla
+    artifact: transfer-split-model
+    key: none
+    claim: "The two-step Transfer implements the atomic action, which TLC checks."
+    description: "Splits Transfer into Read and Write, the two steps the service takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Transfer ----
+      EXTENDS Naturals
+      CONSTANTS Init, Amt, Workers
+      VARIABLES bal, spent, pc, seen
+      vars == <<bal, spent, pc, seen>>
+      Initial == /\ bal = Init /\ spent = 0
+                 /\ pc = [w \in Workers |-> "read"] /\ seen = [w \in Workers |-> 0]
+      Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+                  /\ pc' = [pc EXCEPT ![w] = IF bal >= Amt THEN "write" ELSE "done"]
+                  /\ UNCHANGED <<bal, spent>>
+      Write(w) == /\ pc[w] = "write" /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+                  /\ IF bal >= Amt THEN bal' = bal - Amt /\ spent' = spent + Amt ELSE UNCHANGED <<bal, spent>>
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Read(w) \/ Write(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      NoOverspend == spent <= Init
+      ====
+    diff: |
+      --- a/specs/Transfer.tla
+      +++ b/specs/Transfer.tla
+      @@ -8,3 +8,5 @@
+      -Transfer(w) == /\ pc[w] = "go" /\ bal >= Amt
+      -               /\ bal' = bal - Amt /\ spent' = spent + Amt
+      -               /\ pc' = [pc EXCEPT ![w] = "done"]
+      +Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+      +            /\ pc' = [pc EXCEPT ![w] = IF bal >= Amt THEN "write" ELSE "done"]
+      +            /\ UNCHANGED <<bal, spent>>
+      +Write(w) == /\ pc[w] = "write" /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+      +            /\ IF bal >= Amt THEN bal' = bal - Amt /\ spent' = spent + Amt ELSE UNCHANGED <<bal, spent>>
+    receipt: |
+      Model checking completed. No error has been found.
+      5 states generated, 4 distinct states found, 0 states left on queue.
+    receipt_run: RUN-tlc-atomic
+    restatement:
+      run: RUN-tlc-split-guard
+      scenarios: &v1-sound-scenarios
+        - { id: c1, text: "Init = 100, Amt = 80, two workers: more than 100 is spent", answer: true, key_line: "[q1 c1] Model checking completed. No error has been found.", why: "Write re-checks the balance it writes, so the second worker spends nothing." }
+        - { id: c2, text: "Init = 100, Amt = 40, two workers: more than 100 is spent", answer: true, key_line: "[q1 c2] Model checking completed. No error has been found.", why: "Two withdrawals of 40 fit in 100 however they interleave." }
+        - { id: c3, text: "Init = 100, Amt = 40, three workers: more than 100 is spent", answer: true, key_line: "[q1 c3] Model checking completed. No error has been found.", why: "The third Write finds 20 and spends nothing; 78 distinct states, no error." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-tlc-split-guard
+    key_lines: ["[q1 c1] Model checking completed. No error has been found.", "[q1 c3] Model checking completed. No error has been found."]
+    explain: "The split keeps the guard inside the write, so a Write has the atomic action's effect: it spends only when the balance it writes covers the amount. TLC finds no overspend at any of the three sets of constants."
+
+  - id: v1-flawed
+    pair: v1
+    operator: split-atomic-action
+    medium: tla
+    artifact: transfer-split-model
+    key: G9
+    claim: "The two-step Transfer implements the atomic action, which TLC checks."
+    description: "Splits Transfer into Read and Write, the two steps the service takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Transfer ----
+      EXTENDS Naturals
+      CONSTANTS Init, Amt, Workers
+      VARIABLES bal, spent, pc, seen
+      vars == <<bal, spent, pc, seen>>
+      Initial == /\ bal = Init /\ spent = 0
+                 /\ pc = [w \in Workers |-> "read"] /\ seen = [w \in Workers |-> 0]
+      Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+                  /\ pc' = [pc EXCEPT ![w] = IF bal >= Amt THEN "write" ELSE "done"]
+                  /\ UNCHANGED <<bal, spent>>
+      Write(w) == /\ pc[w] = "write" /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+                  /\ bal' = seen[w] - Amt /\ spent' = spent + Amt
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Read(w) \/ Write(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      NoOverspend == spent <= Init
+      ====
+    diff: |
+      --- a/specs/Transfer.tla
+      +++ b/specs/Transfer.tla
+      @@ -8,3 +8,5 @@
+      -Transfer(w) == /\ pc[w] = "go" /\ bal >= Amt
+      -               /\ bal' = bal - Amt /\ spent' = spent + Amt
+      -               /\ pc' = [pc EXCEPT ![w] = "done"]
+      +Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+      +            /\ pc' = [pc EXCEPT ![w] = IF bal >= Amt THEN "write" ELSE "done"]
+      +            /\ UNCHANGED <<bal, spent>>
+      +Write(w) == /\ pc[w] = "write" /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+      +            /\ bal' = seen[w] - Amt /\ spent' = spent + Amt
+    receipt: |
+      Model checking completed. No error has been found.
+      5 states generated, 4 distinct states found, 0 states left on queue.
+    receipt_run: RUN-tlc-atomic
+    restatement:
+      run: RUN-tlc-split-guard
+      scenarios:
+        - { id: c1, text: "Init = 100, Amt = 80, two workers: more than 100 is spent", answer: false, key_line: "[q2 c1] Error: Invariant NoOverspend is violated.", why: "Read(w1), Read(w2), Write(w1), Write(w2): both read 100, both write." }
+        - { id: c2, text: "Init = 100, Amt = 40, two workers: more than 100 is spent", answer: true, key_line: "[q2 c2] Model checking completed. No error has been found.", why: "Two writes of 40 spend 80 at most, so the race does not show at these constants." }
+        - { id: c3, text: "Init = 100, Amt = 40, three workers: more than 100 is spent", answer: false, key_line: "[q2 c3] Error: Invariant NoOverspend is violated.", why: "Three workers read before the last two write, and 120 is spent." }
+    evidence: { type: witness, load_bearing: ["statement:12", "diff:11"], reference: "RUN-tlc-split-guard [q2 c1]: Read(w1), Read(w2), Write(w1), Write(w2); Invariant NoOverspend is violated" }
+    key_run: RUN-tlc-split-guard
+    key_lines: ["[q2 c1] Error: Invariant NoOverspend is violated.", "[q2 c3] Error: Invariant NoOverspend is violated."]
+    explain: "The receipt is the atomic model's run, 4 distinct states and no error; it says nothing about the split. The split writes the balance it read, so a Write can follow another worker's Write: TLC on the split itself finds NoOverspend violated by Read(w1), Read(w2), Write(w1), Write(w2)."

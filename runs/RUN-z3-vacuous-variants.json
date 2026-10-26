@@ -1,0 +1,262 @@
+{
+  "id": "RUN-z3-vacuous-variants",
+  "title": "AUD-1.1's cases keyed by premise queries: every violation query is unsat, the flawed cases' premises are unsat with their cores, and each step-3 scenario is covered or not",
+  "task": "W1-T32",
+  "origin": "recorded",
+  "records": "AUD-1.1 (content/audit/AUD-1.1.yaml): the violation, premise and core queries of the pair and its two variant pairs, and the premise-plus-values query of each step-3 scenario",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T17:28:47.145Z",
+  "started_at": "2026-10-26T17:28:46.938Z",
+  "duration_s": 0.205,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-vacuous-variants-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "variants.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-vacuous-variants/inputs/variants.py",
+      "sha256": "5ff0c0381c22f0fd8dedd0dd61fe84db129f9d0a0e9985586279efe731c59c8c",
+      "bytes": 3416,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[q1 violation] unsat",
+    "[q1 premises] sat [a = 1, amount = 1, b = 0]",
+    "[q1 s1 a=10 b=0 amount=3] sat (covered)",
+    "[q1 s2 a=10 b=0 amount=150] unsat (not covered)",
+    "[q1 s3 a=2 b=0 amount=5] unsat (not covered)",
+    "[q1 s4 a=500 b=7 amount=100] sat (covered)",
+    "[q2 violation] unsat",
+    "[q2 premises] unsat",
+    "[q2 core] unsat_core=['amount <= MAX_TRANSFER (0)', 'amount > 0']",
+    "[q2 s1 a=10 b=0 amount=3] unsat (not covered)",
+    "[q2 s2 a=10 b=0 amount=150] unsat (not covered)",
+    "[q2 s3 a=2 b=0 amount=5] unsat (not covered)",
+    "[q2 s4 a=500 b=7 amount=100] unsat (not covered)",
+    "[q4 violation] unsat",
+    "[q4 premises] sat [a = 1, amount = 1, b = 0]",
+    "[q4 s1 a=10 b=0 amount=3] sat (covered)",
+    "[q4 s2 a=2 b=0 amount=5] unsat (not covered)",
+    "[q4 s3 a=4 b=4 amount=4] sat (covered)",
+    "[q3 violation] unsat",
+    "[q3 premises] unsat",
+    "[q3 core] unsat_core=['a < amount', 'amount <= a']",
+    "[q3 s1 a=10 b=0 amount=3] unsat (not covered)",
+    "[q3 s2 a=2 b=0 amount=5] unsat (not covered)",
+    "[q3 s3 a=4 b=4 amount=4] unsat (not covered)",
+    "[q5 violation] unsat",
+    "[q5 premises] sat [amount = 1, bal = 1, w = 0]",
+    "[q5 s1 bal=100 w=0 amount=50] sat (covered)",
+    "[q5 s2 bal=100 w=480 amount=50] unsat (not covered)",
+    "[q5 s3 bal=20 w=0 amount=50] unsat (not covered)",
+    "[q5 s4 bal=1000 w=499 amount=1] sat (covered)",
+    "[q6 violation] unsat",
+    "[q6 premises] unsat",
+    "[q6 core] unsat_core=['amount > 0', 'w + amount <= 500', 'w >= 500']",
+    "[q6 s1 bal=100 w=0 amount=50] unsat (not covered)",
+    "[q6 s2 bal=100 w=480 amount=50] unsat (not covered)",
+    "[q6 s3 bal=20 w=0 amount=50] unsat (not covered)",
+    "[q6 s4 bal=1000 w=499 amount=1] unsat (not covered)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-vacuous-variants/bench.log",
+      "sha256": "07f09e3776a0548deb09188dcee8c86854bc4264d088b77b0545778b49479690",
+      "bytes": 1551,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "violation": "unsat",
+      "premises": "sat",
+      "covered": {
+        "s1": true,
+        "s2": false,
+        "s3": false,
+        "s4": true
+      }
+    },
+    "q2": {
+      "violation": "unsat",
+      "premises": "unsat",
+      "core": "unsat_core=['amount <= MAX_TRANSFER (0)', 'amount > 0']",
+      "covered": {
+        "s1": false,
+        "s2": false,
+        "s3": false,
+        "s4": false
+      }
+    },
+    "q4": {
+      "violation": "unsat",
+      "premises": "sat",
+      "covered": {
+        "s1": true,
+        "s2": false,
+        "s3": true
+      }
+    },
+    "q3": {
+      "violation": "unsat",
+      "premises": "unsat",
+      "core": "unsat_core=['a < amount', 'amount <= a']",
+      "covered": {
+        "s1": false,
+        "s2": false,
+        "s3": false
+      }
+    },
+    "q5": {
+      "violation": "unsat",
+      "premises": "sat",
+      "covered": {
+        "s1": true,
+        "s2": false,
+        "s3": false,
+        "s4": true
+      }
+    },
+    "q6": {
+      "violation": "unsat",
+      "premises": "unsat",
+      "core": "unsat_core=['amount > 0', 'w + amount <= 500', 'w >= 500']",
+      "covered": {
+        "s1": false,
+        "s2": false,
+        "s3": false,
+        "s4": false
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "variants.py: the queries of AUD-1.1's six cases",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T17:28:46.938Z",
+      "duration_s": 0.205,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-vacuous-variants-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "variants.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-vacuous-variants/inputs/variants.py",
+          "sha256": "5ff0c0381c22f0fd8dedd0dd61fe84db129f9d0a0e9985586279efe731c59c8c",
+          "bytes": 3416,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[q1 violation] unsat",
+        "[q1 premises] sat [a = 1, amount = 1, b = 0]",
+        "[q1 s1 a=10 b=0 amount=3] sat (covered)",
+        "[q1 s2 a=10 b=0 amount=150] unsat (not covered)",
+        "[q1 s3 a=2 b=0 amount=5] unsat (not covered)",
+        "[q1 s4 a=500 b=7 amount=100] sat (covered)",
+        "[q2 violation] unsat",
+        "[q2 premises] unsat",
+        "[q2 core] unsat_core=['amount <= MAX_TRANSFER (0)', 'amount > 0']",
+        "[q2 s1 a=10 b=0 amount=3] unsat (not covered)",
+        "[q2 s2 a=10 b=0 amount=150] unsat (not covered)",
+        "[q2 s3 a=2 b=0 amount=5] unsat (not covered)",
+        "[q2 s4 a=500 b=7 amount=100] unsat (not covered)",
+        "[q4 violation] unsat",
+        "[q4 premises] sat [a = 1, amount = 1, b = 0]",
+        "[q4 s1 a=10 b=0 amount=3] sat (covered)",
+        "[q4 s2 a=2 b=0 amount=5] unsat (not covered)",
+        "[q4 s3 a=4 b=4 amount=4] sat (covered)",
+        "[q3 violation] unsat",
+        "[q3 premises] unsat",
+        "[q3 core] unsat_core=['a < amount', 'amount <= a']",
+        "[q3 s1 a=10 b=0 amount=3] unsat (not covered)",
+        "[q3 s2 a=2 b=0 amount=5] unsat (not covered)",
+        "[q3 s3 a=4 b=4 amount=4] unsat (not covered)",
+        "[q5 violation] unsat",
+        "[q5 premises] sat [amount = 1, bal = 1, w = 0]",
+        "[q5 s1 bal=100 w=0 amount=50] sat (covered)",
+        "[q5 s2 bal=100 w=480 amount=50] unsat (not covered)",
+        "[q5 s3 bal=20 w=0 amount=50] unsat (not covered)",
+        "[q5 s4 bal=1000 w=499 amount=1] sat (covered)",
+        "[q6 violation] unsat",
+        "[q6 premises] unsat",
+        "[q6 core] unsat_core=['amount > 0', 'w + amount <= 500', 'w >= 500']",
+        "[q6 s1 bal=100 w=0 amount=50] unsat (not covered)",
+        "[q6 s2 bal=100 w=480 amount=50] unsat (not covered)",
+        "[q6 s3 bal=20 w=0 amount=50] unsat (not covered)",
+        "[q6 s4 bal=1000 w=499 amount=1] unsat (not covered)"
+      ],
+      "outputs": [
+        "runs/RUN-z3-vacuous-variants/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys.mjs), copied in log order.",
+    "A scenario is covered when the premises plus its values are sat: the statement speaks about that transfer. Every query runs under rlimit 5000000."
+  ]
+}

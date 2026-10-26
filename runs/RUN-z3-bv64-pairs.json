@@ -1,0 +1,305 @@
+{
+  "id": "RUN-z3-bv64-pairs",
+  "title": "AUD-1.2's cases: each Int query answers unsat, and its rendering over signed 64-bit bit-vectors, the arithmetic of the int64 code it stands for, is unsat for the sound forms and sat with a wrapping witness for the flawed ones",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-1.2 (content/audit/AUD-1.2.yaml): the Int violation query of the pair and its three variant pairs, the same premises and violation over 64-bit bit-vectors with a witness, and each step-3 scenario with the int64 results it computes",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so); the command-line lines come from /opt/venv/bin/z3 of the same wheel",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:09.478Z",
+  "started_at": "2026-10-26T18:04:09.034Z",
+  "duration_s": 0.432,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-bv64-pairs-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-bv64-pairs/inputs/pairs.py",
+      "sha256": "bf3a91c506fbd20ca9d187296867b5105dc0323ef5c1da2a88aea0abf7859b81",
+      "bytes": 7609,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-pairs/inputs/run.sh",
+      "sha256": "f0d451cd34aebdb8783578c0cbf9bb0c83ef3f5d3d2a7a5a57e1489b7881248b",
+      "bytes": 220,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-pairs/inputs/v2-q5.smt2",
+      "sha256": "9027f96df1565d90ad9c88988503661804c395cbbc6d2c14033d9eab7d351100",
+      "bytes": 426,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-pairs/inputs/v2-q6.smt2",
+      "sha256": "35f33a9126d1e79ea82bcf3cb1423a830332119cf9959a94c7a9978918949fbf",
+      "bytes": 331,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[q1 violation] unsat",
+    "[q1 violation i64] unsat",
+    "[q1 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+    "[q1 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+    "[q1 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+    "[q1 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+    "[q2 violation] unsat",
+    "[q2 violation i64] sat",
+    "[q2 witness i64] a=9223372036586340139 b=9223372036854775795 amount=9223372036586340133: a-amount=6 b+amount=-268435688",
+    "[q2 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+    "[q2 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+    "[q2 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+    "[q2 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+    "[q3 violation] unsat",
+    "[q3 violation i64] sat",
+    "[q3 witness i64] a=9079256848778919935 b=0 amount=-9223372036854775807: a-amount=-144115188075855874",
+    "[q3 s1 a=10 amount=3] sat (covered); int64: a-amount = 7",
+    "[q3 s2 a=10 amount=-5] sat (covered); int64: a-amount = 15",
+    "[q3 s3 a=10 amount=-9223372036854775808] sat (covered); int64: a-amount = -9223372036854775798",
+    "[q3 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3",
+    "[q4 violation] unsat",
+    "[q4 violation i64] unsat",
+    "[q4 s1 a=10 amount=3] sat (covered); int64: a-amount = 7",
+    "[q4 s2 a=10 amount=-5] unsat (not covered); int64: a-amount = 15",
+    "[q4 s3 a=10 amount=-9223372036854775808] unsat (not covered); int64: a-amount = -9223372036854775798",
+    "[q4 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3",
+    "[q5 violation] unsat",
+    "[q5 violation i64] unsat",
+    "[q5 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+    "[q5 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+    "[q5 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+    "[q5 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+    "[q6 violation] unsat",
+    "[q6 violation i64] sat",
+    "[q6 witness i64] a=9223372036854775800 b=9223372036854775590 amount=9223372036586340265: a-amount=268435535 b+amount=-268435761",
+    "[q6 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+    "[q6 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+    "[q6 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+    "[q6 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+    "[q7 violation] unsat",
+    "[q7 violation i64] sat",
+    "[q7 witness i64] amount=7753720574186094592 rate=8191: amount*rate=-1414622623685410816 fee=-141462262368541",
+    "[q7 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50",
+    "[q7 s2 amount=1000000000000000 rate=10000] sat (covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955",
+    "[q7 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000",
+    "[q7 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10",
+    "[q8 violation] unsat",
+    "[q8 violation i64] unsat",
+    "[q8 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50",
+    "[q8 s2 amount=1000000000000000 rate=10000] unsat (not covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955",
+    "[q8 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000",
+    "[q8 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10",
+    "[q5 cli] unsat",
+    "[q6 cli] unsat"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-bv64-pairs/bench.log",
+      "sha256": "a538c5fd3b77ce1ea02faa100e617d9f7845716b353c13b701f0276e23be572f",
+      "bytes": 3782,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "violation": "unsat",
+      "violation_i64": "unsat"
+    },
+    "q2": {
+      "violation": "unsat",
+      "violation_i64": "sat"
+    },
+    "q3": {
+      "violation": "unsat",
+      "violation_i64": "sat"
+    },
+    "q4": {
+      "violation": "unsat",
+      "violation_i64": "unsat"
+    },
+    "q5": {
+      "violation": "unsat",
+      "violation_i64": "unsat",
+      "cli": "unsat"
+    },
+    "q6": {
+      "violation": "unsat",
+      "violation_i64": "sat",
+      "cli": "unsat"
+    },
+    "q7": {
+      "violation": "unsat",
+      "violation_i64": "sat"
+    },
+    "q8": {
+      "violation": "unsat",
+      "violation_i64": "unsat"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "run.sh: the Z3Py queries (pairs.py), then the SMT-LIB files through the z3 command line",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:09.034Z",
+      "duration_s": 0.432,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-bv64-pairs-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-bv64-pairs/inputs/pairs.py",
+          "sha256": "bf3a91c506fbd20ca9d187296867b5105dc0323ef5c1da2a88aea0abf7859b81",
+          "bytes": 7609,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-pairs/inputs/run.sh",
+          "sha256": "f0d451cd34aebdb8783578c0cbf9bb0c83ef3f5d3d2a7a5a57e1489b7881248b",
+          "bytes": 220,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-pairs/inputs/v2-q5.smt2",
+          "sha256": "9027f96df1565d90ad9c88988503661804c395cbbc6d2c14033d9eab7d351100",
+          "bytes": 426,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-pairs/inputs/v2-q6.smt2",
+          "sha256": "35f33a9126d1e79ea82bcf3cb1423a830332119cf9959a94c7a9978918949fbf",
+          "bytes": 331,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[q1 violation] unsat",
+        "[q1 violation i64] unsat",
+        "[q1 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+        "[q1 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+        "[q1 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+        "[q1 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+        "[q2 violation] unsat",
+        "[q2 violation i64] sat",
+        "[q2 witness i64] a=9223372036586340139 b=9223372036854775795 amount=9223372036586340133: a-amount=6 b+amount=-268435688",
+        "[q2 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+        "[q2 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+        "[q2 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+        "[q2 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+        "[q3 violation] unsat",
+        "[q3 violation i64] sat",
+        "[q3 witness i64] a=9079256848778919935 b=0 amount=-9223372036854775807: a-amount=-144115188075855874",
+        "[q3 s1 a=10 amount=3] sat (covered); int64: a-amount = 7",
+        "[q3 s2 a=10 amount=-5] sat (covered); int64: a-amount = 15",
+        "[q3 s3 a=10 amount=-9223372036854775808] sat (covered); int64: a-amount = -9223372036854775798",
+        "[q3 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3",
+        "[q4 violation] unsat",
+        "[q4 violation i64] unsat",
+        "[q4 s1 a=10 amount=3] sat (covered); int64: a-amount = 7",
+        "[q4 s2 a=10 amount=-5] unsat (not covered); int64: a-amount = 15",
+        "[q4 s3 a=10 amount=-9223372036854775808] unsat (not covered); int64: a-amount = -9223372036854775798",
+        "[q4 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3",
+        "[q5 violation] unsat",
+        "[q5 violation i64] unsat",
+        "[q5 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+        "[q5 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+        "[q5 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+        "[q5 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+        "[q6 violation] unsat",
+        "[q6 violation i64] sat",
+        "[q6 witness i64] a=9223372036854775800 b=9223372036854775590 amount=9223372036586340265: a-amount=268435535 b+amount=-268435761",
+        "[q6 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3",
+        "[q6 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806",
+        "[q6 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5",
+        "[q6 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807",
+        "[q7 violation] unsat",
+        "[q7 violation i64] sat",
+        "[q7 witness i64] amount=7753720574186094592 rate=8191: amount*rate=-1414622623685410816 fee=-141462262368541",
+        "[q7 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50",
+        "[q7 s2 amount=1000000000000000 rate=10000] sat (covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955",
+        "[q7 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000",
+        "[q7 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10",
+        "[q8 violation] unsat",
+        "[q8 violation i64] unsat",
+        "[q8 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50",
+        "[q8 s2 amount=1000000000000000 rate=10000] unsat (not covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955",
+        "[q8 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000",
+        "[q8 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10",
+        "[q5 cli] unsat",
+        "[q6 cli] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-pairs/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s1s2.mjs), copied in log order.",
+    "A scenario is covered when the Int premises plus its values are sat: the statement speaks about that transfer. The int64 results are the same expressions evaluated over 64-bit two's complement, the arithmetic of ledger.go's int64 (Go integer overflow wraps).",
+    "Witness values are printed as signed 64-bit integers. Every Z3Py query runs under rlimit 5000000.",
+    "q5 and q6 are the SMT-LIB files v2-q5.smt2 and v2-q6.smt2: their Int verdicts are read with Solver.from_file and again through the z3 command line ([q5 cli], [q6 cli])."
+  ]
+}

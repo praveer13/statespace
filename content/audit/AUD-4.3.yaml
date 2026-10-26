@@ -1,0 +1,201 @@
+# AUD-4.3 · S4 · G13 Induction failure confused with a bug (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Both members are keyed by RUN-z3-cti-pair (spine section 6.2's Key run): S10.L6 cell 2
+# on the holds model and on its twin, whose Hold(n) forgets holds already placed. Both inductive steps for bal >= 0
+# are sat with held above bal in the pre-state; a bounded search from Init (N = 6) reaches a violation on the twin
+# and none on the good model. The receipts are copied from that run. The step-3 scenarios and the variant pair (the
+# merchant model of S4.L6 and its twin) are keyed by RUN-z3-cti-variants, recorded in the Bench image. Its tags are
+# neutral: q1 the good holds model, q2 its twin, q3 the merchant twin, q4 the good merchant model. The sound form is
+# the "reachable" template (AUDIT-DESK 4.2): the same edit, where the command really is wrong.
+id: AUD-4.3
+stage: S4
+class: G13
+medium: z3py
+artifact: holds-capture
+subject: "a fix after a satisfiable inductive step (Z3Py)"
+claim: "Z3 found a bug in Capture; fixed."
+requirement: >-
+  A fix answers a bug: a state the commands can reach from Init, from which one of them breaks the invariant. A
+  satisfiable inductive step alone is not one. When its pre-state cannot be reached, the invariant needs
+  strengthening, and the command stays as it is.
+scenario_question: "Can the commands, as written before the edit, reach this state from Init within 6 steps?"
+scheduled_after: [LAB-4.6]
+kcs: [KC-4.cti-or-bug, KC-4.invariant-vs-inductive]
+based_on:
+  incident: "Spec-Harness: 5.6% of verifier-accepted specifications \"come with code that the model changed\", on SpecGenBench."
+  date: "2026-03-31"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2604.00280
+
+cases:
+  - id: sound
+    key: none
+    description: "Z3's inductive step for bal >= 0 is sat, and the step that breaks it is a Capture. Makes Capture check that the balance covers n."
+    statement: |
+      # Init: bal >= 0 and held == 0. The invariant to keep: bal >= 0.
+      def step(s, t, n):                               # the agent's commands: one step from s to t
+          (bal, held), (bal2, held2) = s, t
+          return And(n > 0, Or(
+              And(n <= bal, held2 == held + n, bal2 == bal),           # Hold(n)
+              And(n <= held, held2 == held - n, bal2 == bal - n),      # Capture(n)
+              And(n <= held, held2 == held - n, bal2 == bal)))         # Release(n)
+
+      bal, held, bal2, held2, n = Ints('bal held bal2 held2 n')
+
+      # The inductive step for bal >= 0: from any state that meets it, can one step break it?
+      q = Solver()
+      q.add(bal >= 0, step((bal, held), (bal2, held2), n), bal2 < 0)
+      print('step of bal >= 0:', q.check())
+      m = q.model()
+      print('  the pre-state has held above bal:', m[held].as_long() > m[bal].as_long())
+    diff: |
+      --- a/models/holds.py
+      +++ b/models/holds.py
+      @@ -4,3 +4,3 @@
+               And(n <= bal, held2 == held + n, bal2 == bal),           # Hold(n)
+      -        And(n <= held, held2 == held - n, bal2 == bal - n),      # Capture(n)
+      +        And(n <= held, n <= bal, held2 == held - n, bal2 == bal - n),   # Capture(n): cover checked
+               And(n <= held, held2 == held - n, bal2 == bal)))         # Release(n)
+    receipt: |
+      step of bal >= 0: sat
+        the pre-state has held above bal: True
+    receipt_run: RUN-z3-cti-pair
+    restatement:
+      run: RUN-z3-cti-variants
+      scenarios: &sound-scenarios
+        - { id: s1, text: "bal = 1, held = 2", answer: true, key_line: "[q2 s1 bal=1 held=2] reachable within 6: yes, in 2 steps", why: "Hold(1) twice from bal = 1: Hold checks only n <= bal, so holds can pile up past the balance." }
+        - { id: s2, text: "bal = 5, held = 2", answer: true, key_line: "[q2 s2 bal=5 held=2] reachable within 6: yes, in 1 steps", why: "One Hold(2) from Init." }
+        - { id: s3, text: "bal = -1, held = 0", answer: true, key_line: "[q2 s3 bal=-1 held=0] reachable within 6: yes, in 3 steps", why: "Hold, Hold, then Capture(2) from bal = 1: the violation is reachable." }
+        - { id: s4, text: "bal = 3, held = 3", answer: true, key_line: "[q2 s4 bal=3 held=3] reachable within 6: yes, in 1 steps", why: "One Hold(3) from Init." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-cti-pair
+    key_lines: ["violation reachable within 6 steps: yes, at step 3", "reachable in 3 steps: Hold, Hold, Capture"]
+    explain: "Here the step's pre-state can be reached: the search finds bal < 0 at step 3 (Hold, Hold, Capture). That is a bug, and a Capture that checks cover removes it: after the edit, the inductive step for bal >= 0 is unsat."
+
+  - id: flawed
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for bal >= 0 is sat, and the step that breaks it is a Capture. Makes Capture check that the balance covers n."
+    statement: |
+      # Init: bal >= 0 and held == 0. The invariant to keep: bal >= 0.
+      def step(s, t, n):                               # the agent's commands: one step from s to t
+          (bal, held), (bal2, held2) = s, t
+          return And(n > 0, Or(
+              And(n <= bal - held, held2 == held + n, bal2 == bal),    # Hold(n)
+              And(n <= held, held2 == held - n, bal2 == bal - n),      # Capture(n)
+              And(n <= held, held2 == held - n, bal2 == bal)))         # Release(n)
+
+      bal, held, bal2, held2, n = Ints('bal held bal2 held2 n')
+
+      # The inductive step for bal >= 0: from any state that meets it, can one step break it?
+      q = Solver()
+      q.add(bal >= 0, step((bal, held), (bal2, held2), n), bal2 < 0)
+      print('step of bal >= 0:', q.check())
+      m = q.model()
+      print('  the pre-state has held above bal:', m[held].as_long() > m[bal].as_long())
+    diff: |
+      --- a/models/holds.py
+      +++ b/models/holds.py
+      @@ -4,3 +4,3 @@
+               And(n <= bal - held, held2 == held + n, bal2 == bal),    # Hold(n)
+      -        And(n <= held, held2 == held - n, bal2 == bal - n),      # Capture(n)
+      +        And(n <= held, n <= bal, held2 == held - n, bal2 == bal - n),   # Capture(n): cover checked
+               And(n <= held, held2 == held - n, bal2 == bal)))         # Release(n)
+    receipt: |
+      step of bal >= 0: sat
+        the pre-state has held above bal: True
+    receipt_run: RUN-z3-cti-pair
+    restatement:
+      run: RUN-z3-cti-variants
+      scenarios:
+        - { id: s1, text: "bal = 1, held = 2", answer: false, key_line: "[q1 s1 bal=1 held=2] reachable within 6: no", why: "Hold(n) requires n <= bal - held, so held never passes bal. This is the step's pre-state, and it cannot be reached." }
+        - { id: s2, text: "bal = 5, held = 2", answer: true, key_line: "[q1 s2 bal=5 held=2] reachable within 6: yes, in 1 steps", why: "One Hold(2) from Init." }
+        - { id: s3, text: "bal = -1, held = 0", answer: false, key_line: "[q1 s3 bal=-1 held=0] reachable within 6: no", why: "No run within the bound breaks bal >= 0." }
+        - { id: s4, text: "bal = 3, held = 3", answer: true, key_line: "[q1 s4 bal=3 held=3] reachable within 6: yes, in 1 steps", why: "One Hold(3): held may equal bal." }
+    evidence: { type: witness, load_bearing: ["statement:5", "diff:5", "receipt:2"], reference: { run: RUN-z3-cti-variants, line: "[q1 s1 bal=1 held=2] reachable within 6: no" } }
+    key_run: RUN-z3-cti-pair
+    key_lines: ["violation reachable within 6 steps: no", "none within 6 steps", "step of the strengthened invariant: unsat"]
+    explain: "The sat step is a counterexample to induction: its pre-state has held above bal, which this Hold never allows, and the search finds no violation within 6 steps. Strengthening the invariant to 0 <= held <= bal makes the step unsat, with Capture unchanged. The edit changes a command that needed no change, to answer an unreachable state."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: edit-code-to-fit-proof
+    artifact: merchant-refund
+    claim: "Z3 found a bug in Refund; fixed."
+    key: none
+    description: "Z3's inductive step for merch >= 0 is sat, and the step that breaks it is a Refund. Makes Refund check that the merchant covers n."
+    statement: |
+      # Init: cust >= 0, merch == 0 and paid == 0. The invariant to keep: merch >= 0.
+      def step(s, t, n):
+          (cust, merch, paid), (cust2, merch2, paid2) = s, t
+          return And(n > 0, Or(
+              And(n <= cust, cust2 == cust - n, merch2 == merch + n, paid2 == paid + n),   # Pay(n)
+              And(n <= paid, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n)
+              And(n <= merch, cust2 == cust, merch2 == merch - n, paid2 == paid)))         # Payout(n)
+
+      # The inductive step for merch >= 0
+      q = Solver()
+      q.add(merch >= 0, step((cust, merch, paid), (cust2, merch2, paid2), n), merch2 < 0)
+    diff: |
+      --- a/models/merchant.py
+      +++ b/models/merchant.py
+      @@ -4,3 +4,3 @@
+               And(n <= cust, cust2 == cust - n, merch2 == merch + n, paid2 == paid + n),   # Pay(n)
+      -        And(n <= paid, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n)
+      +        And(n <= paid, n <= merch, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n): cover checked
+               And(n <= merch, cust2 == cust, merch2 == merch - n, paid2 == paid)))         # Payout(n)
+    receipt: |
+      [q3 step of merch >= 0] sat
+      [q3 pre-state] paid above merch: True
+    restatement:
+      run: RUN-z3-cti-variants
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "cust = 0, merch = 0, paid = 1", answer: true, key_line: "[q3 s1 cust=0 merch=0 paid=1] reachable within 6: yes, in 2 steps", why: "Pay(1), then Payout(1): Payout checks only n <= merch, so the merchant can pay out money it may still refund." }
+        - { id: s2, text: "cust = 2, merch = 1, paid = 1", answer: true, key_line: "[q3 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps", why: "One Pay(1) from cust = 3." }
+        - { id: s3, text: "cust = 1, merch = -1, paid = 0", answer: true, key_line: "[q3 s3 cust=1 merch=-1 paid=0] reachable within 6: yes, in 3 steps", why: "Pay, Payout, then Refund: the violation is reachable." }
+        - { id: s4, text: "cust = 0, merch = 2, paid = 2", answer: true, key_line: "[q3 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps", why: "One Pay(2) from cust = 2." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-cti-variants
+    key_lines: ["[q3 search] violation reachable within 6 steps: yes, at step 3", "[q3 edited, step of merch >= 0] unsat", "[q3 edited, search] violation reachable within 6 steps: no"]
+    explain: "The violation is reachable at step 3 (Pay, Payout, Refund), so this is a bug. With Refund checking cover, the inductive step for merch >= 0 is unsat and the search finds nothing."
+
+  - id: v1-flawed
+    pair: v1
+    operator: edit-code-to-fit-proof
+    artifact: merchant-refund
+    claim: "Z3 found a bug in Refund; fixed."
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for merch >= 0 is sat, and the step that breaks it is a Refund. Makes Refund check that the merchant covers n."
+    statement: |
+      # Init: cust >= 0, merch == 0 and paid == 0. The invariant to keep: merch >= 0.
+      def step(s, t, n):
+          (cust, merch, paid), (cust2, merch2, paid2) = s, t
+          return And(n > 0, Or(
+              And(n <= cust, cust2 == cust - n, merch2 == merch + n, paid2 == paid + n),   # Pay(n)
+              And(n <= paid, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n)
+              And(n <= merch - paid, cust2 == cust, merch2 == merch - n, paid2 == paid)))  # Payout(n)
+
+      # The inductive step for merch >= 0
+      q = Solver()
+      q.add(merch >= 0, step((cust, merch, paid), (cust2, merch2, paid2), n), merch2 < 0)
+    diff: |
+      --- a/models/merchant.py
+      +++ b/models/merchant.py
+      @@ -4,3 +4,3 @@
+               And(n <= cust, cust2 == cust - n, merch2 == merch + n, paid2 == paid + n),   # Pay(n)
+      -        And(n <= paid, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n)
+      +        And(n <= paid, n <= merch, cust2 == cust + n, merch2 == merch - n, paid2 == paid - n),   # Refund(n): cover checked
+               And(n <= merch - paid, cust2 == cust, merch2 == merch - n, paid2 == paid)))  # Payout(n)
+    receipt: |
+      [q4 step of merch >= 0] sat
+      [q4 pre-state] paid above merch: True
+    restatement:
+      run: RUN-z3-cti-variants
+      scenarios:
+        - { id: s1, text: "cust = 0, merch = 0, paid = 1", answer: false, key_line: "[q4 s1 cust=0 merch=0 paid=1] reachable within 6: no", why: "Payout keeps merch at or above paid, so paid never passes merch. This is the step's pre-state, and it cannot be reached." }
+        - { id: s2, text: "cust = 2, merch = 1, paid = 1", answer: true, key_line: "[q4 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps", why: "One Pay(1) from cust = 3." }
+        - { id: s3, text: "cust = 1, merch = -1, paid = 0", answer: false, key_line: "[q4 s3 cust=1 merch=-1 paid=0] reachable within 6: no", why: "No run within the bound breaks merch >= 0." }
+        - { id: s4, text: "cust = 0, merch = 2, paid = 2", answer: true, key_line: "[q4 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps", why: "One Pay(2) from cust = 2." }
+    evidence: { type: witness, load_bearing: ["statement:7", "diff:5", "receipt:2"], reference: { run: RUN-z3-cti-variants, line: "[q4 s1 cust=0 merch=0 paid=1] reachable within 6: no" } }
+    key_run: RUN-z3-cti-variants
+    key_lines: ["[q4 search] violation reachable within 6 steps: no", "[q4 step of 0 <= paid <= merch] unsat", "[q4 edited, step of merch >= 0] sat"]
+    explain: "A counterexample to induction: paid above merch, which this Payout never allows, and no violation within 6 steps. Strengthening to 0 <= paid <= merch makes the step unsat with Refund unchanged. The edit changes a command that needed no change, and its inductive step is still sat after the edit: the induction was never closed."

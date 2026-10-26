@@ -1,0 +1,293 @@
+{
+  "id": "RUN-z3-inconclusive-pairs",
+  "title": "AUD-1.3's cases: the same kind of query answers unsat for the sound forms and unknown, with its reason, for the flawed ones (an rlimit budget cancelled, incomplete theory arithmetic, a quantified rule cancelled); an unknown establishes no scenario",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-1.3 (content/audit/AUD-1.3.yaml): the violation query of the pair and its three variant pairs, with its reason when unknown, and each step-3 scenario: established only when the check answered unsat and the values meet every premise",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so); the command-line lines come from /opt/venv/bin/z3 of the same wheel",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:05:28.092Z",
+  "started_at": "2026-10-26T18:05:26.737Z",
+  "duration_s": 1.343,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-inconclusive-pairs-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-inconclusive-pairs/inputs/pairs.py",
+      "sha256": "2c6da2383c4821d166f9994c8563107af77bca5929bdaeaff4024167bd413dae",
+      "bytes": 4936,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-inconclusive-pairs/inputs/run.sh",
+      "sha256": "63c8e2b467c77cd5ff2ad95e61b1350b95bf88a2b1a75388ae9f2811946c1cbf",
+      "bytes": 225,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-inconclusive-pairs/inputs/v3-q7.smt2",
+      "sha256": "faf1d8d9390b9f0fdf9a645bce26573f4b73ddeecb73db9914846d2cfdd30d79",
+      "bytes": 638,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-inconclusive-pairs/inputs/v3-q8.smt2",
+      "sha256": "caa6091b8689a6cb8cea2ff5bab9c0bfb5cc5066874094cbc2f8db2f3892db56",
+      "bytes": 636,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1",
+    "[q1 violation] unsat",
+    "[q1 premises] sat",
+    "[q1 s1 a=1000 amount=400 rate=250] established",
+    "[q1 s2 a=100 amount=100 rate=100] not established (the values fail a premise)",
+    "[q1 s3 a=5000 amount=5000 rate=0] established",
+    "[q1 s4 a=10 amount=20 rate=0] not established (the values fail a premise)",
+    "[q2 violation] unknown canceled",
+    "[q2 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)",
+    "[q2 s2 a=100 amount=100 rate=100] not established (the check answered unknown)",
+    "[q2 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)",
+    "[q2 s4 a=10 amount=20 rate=0] not established (the check answered unknown)",
+    "[q3 violation] unsat",
+    "[q3 s1 fanout=2 depth=4] established",
+    "[q3 s2 fanout=3 depth=5] established",
+    "[q3 s3 fanout=1 depth=6] not established (the values fail a premise)",
+    "[q3 s4 fanout=2 depth=3] not established (the values fail a premise)",
+    "[q4 violation] unknown smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+    "[q4 s1 fanout=2 depth=4] not established (the check answered unknown)",
+    "[q4 s2 fanout=3 depth=5] not established (the check answered unknown)",
+    "[q4 s3 fanout=1 depth=6] not established (the check answered unknown)",
+    "[q4 s4 fanout=2 depth=3] not established (the check answered unknown)",
+    "[q5 violation] unsat",
+    "[q5 s1 d=0] established",
+    "[q5 s2 d=30] established",
+    "[q5 s3 d=-1] not established (the values fail a premise)",
+    "[q6 violation] unknown canceled",
+    "[q6 s1 d=0] not established (the check answered unknown)",
+    "[q6 s2 d=30] not established (the check answered unknown)",
+    "[q6 s3 d=-1] not established (the check answered unknown)",
+    "[q7 violation] unsat",
+    "[q7 s1 a=1000 amount=400 rate=250] established",
+    "[q7 s2 a=100 amount=100 rate=100] not established (the values fail a premise)",
+    "[q7 s3 a=5000 amount=5000 rate=0] established",
+    "[q7 s4 a=10 amount=20 rate=0] not established (the values fail a premise)",
+    "[q8 violation] unknown canceled",
+    "[q8 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)",
+    "[q8 s2 a=100 amount=100 rate=100] not established (the check answered unknown)",
+    "[q8 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)",
+    "[q8 s4 a=10 amount=20 rate=0] not established (the check answered unknown)",
+    "[q9 violation] unknown canceled",
+    "[q9 s1 x=3 y=3 z=3] not established (the check answered unknown)",
+    "[q9 s2 x=3 y=4 z=5] not established (the check answered unknown)",
+    "[q9 s3 x=1 y=2 z=9] not established (the check answered unknown)",
+    "[q10 violation] unsat",
+    "[q10 s1 x=3 y=3 z=3] established",
+    "[q10 s2 x=3 y=4 z=5] not established (the values fail a premise)",
+    "[q10 s3 x=1 y=2 z=9] not established (the values fail a premise)",
+    "[q7 cli] unsat (:reason-unknown \"\") ",
+    "[q8 cli] unknown (:reason-unknown \"canceled\") "
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-inconclusive-pairs/bench.log",
+      "sha256": "8b9cf7f731e69efac5ee41795c70ad56860b9d674ec972dddf6795f0105afbf4",
+      "bytes": 2693,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "violation": "unsat",
+      "premises": "sat"
+    },
+    "q2": {
+      "violation": "unknown"
+    },
+    "q3": {
+      "violation": "unsat"
+    },
+    "q4": {
+      "violation": "unknown"
+    },
+    "q5": {
+      "violation": "unsat"
+    },
+    "q6": {
+      "violation": "unknown"
+    },
+    "q7": {
+      "violation": "unsat",
+      "cli": "unsat"
+    },
+    "q8": {
+      "violation": "unknown",
+      "cli": "unknown"
+    },
+    "q9": {
+      "violation": "unknown"
+    },
+    "q10": {
+      "violation": "unsat"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "run.sh: the Z3Py queries (pairs.py), then the SMT-LIB files through the z3 command line",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:05:26.737Z",
+      "duration_s": 1.343,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-inconclusive-pairs-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-inconclusive-pairs/inputs/pairs.py",
+          "sha256": "2c6da2383c4821d166f9994c8563107af77bca5929bdaeaff4024167bd413dae",
+          "bytes": 4936,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-inconclusive-pairs/inputs/run.sh",
+          "sha256": "63c8e2b467c77cd5ff2ad95e61b1350b95bf88a2b1a75388ae9f2811946c1cbf",
+          "bytes": 225,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-inconclusive-pairs/inputs/v3-q7.smt2",
+          "sha256": "faf1d8d9390b9f0fdf9a645bce26573f4b73ddeecb73db9914846d2cfdd30d79",
+          "bytes": 638,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-inconclusive-pairs/inputs/v3-q8.smt2",
+          "sha256": "caa6091b8689a6cb8cea2ff5bab9c0bfb5cc5066874094cbc2f8db2f3892db56",
+          "bytes": 636,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "[q1 violation] unsat",
+        "[q1 premises] sat",
+        "[q1 s1 a=1000 amount=400 rate=250] established",
+        "[q1 s2 a=100 amount=100 rate=100] not established (the values fail a premise)",
+        "[q1 s3 a=5000 amount=5000 rate=0] established",
+        "[q1 s4 a=10 amount=20 rate=0] not established (the values fail a premise)",
+        "[q2 violation] unknown canceled",
+        "[q2 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)",
+        "[q2 s2 a=100 amount=100 rate=100] not established (the check answered unknown)",
+        "[q2 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)",
+        "[q2 s4 a=10 amount=20 rate=0] not established (the check answered unknown)",
+        "[q3 violation] unsat",
+        "[q3 s1 fanout=2 depth=4] established",
+        "[q3 s2 fanout=3 depth=5] established",
+        "[q3 s3 fanout=1 depth=6] not established (the values fail a premise)",
+        "[q3 s4 fanout=2 depth=3] not established (the values fail a premise)",
+        "[q4 violation] unknown smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+        "[q4 s1 fanout=2 depth=4] not established (the check answered unknown)",
+        "[q4 s2 fanout=3 depth=5] not established (the check answered unknown)",
+        "[q4 s3 fanout=1 depth=6] not established (the check answered unknown)",
+        "[q4 s4 fanout=2 depth=3] not established (the check answered unknown)",
+        "[q5 violation] unsat",
+        "[q5 s1 d=0] established",
+        "[q5 s2 d=30] established",
+        "[q5 s3 d=-1] not established (the values fail a premise)",
+        "[q6 violation] unknown canceled",
+        "[q6 s1 d=0] not established (the check answered unknown)",
+        "[q6 s2 d=30] not established (the check answered unknown)",
+        "[q6 s3 d=-1] not established (the check answered unknown)",
+        "[q7 violation] unsat",
+        "[q7 s1 a=1000 amount=400 rate=250] established",
+        "[q7 s2 a=100 amount=100 rate=100] not established (the values fail a premise)",
+        "[q7 s3 a=5000 amount=5000 rate=0] established",
+        "[q7 s4 a=10 amount=20 rate=0] not established (the values fail a premise)",
+        "[q8 violation] unknown canceled",
+        "[q8 s1 a=1000 amount=400 rate=250] not established (the check answered unknown)",
+        "[q8 s2 a=100 amount=100 rate=100] not established (the check answered unknown)",
+        "[q8 s3 a=5000 amount=5000 rate=0] not established (the check answered unknown)",
+        "[q8 s4 a=10 amount=20 rate=0] not established (the check answered unknown)",
+        "[q9 violation] unknown canceled",
+        "[q9 s1 x=3 y=3 z=3] not established (the check answered unknown)",
+        "[q9 s2 x=3 y=4 z=5] not established (the check answered unknown)",
+        "[q9 s3 x=1 y=2 z=9] not established (the check answered unknown)",
+        "[q10 violation] unsat",
+        "[q10 s1 x=3 y=3 z=3] established",
+        "[q10 s2 x=3 y=4 z=5] not established (the values fail a premise)",
+        "[q10 s3 x=1 y=2 z=9] not established (the values fail a premise)",
+        "[q7 cli] unsat (:reason-unknown \"\") ",
+        "[q8 cli] unknown (:reason-unknown \"canceled\") "
+      ],
+      "outputs": [
+        "runs/RUN-z3-inconclusive-pairs/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s1s2.mjs), copied in log order.",
+    "Each query runs under the rlimit its case states (5000000, or 20000 for the budget-cut forms). A scenario's premise check runs under rlimit 5000000.",
+    "q7 and q8 are the SMT-LIB files v3-q7.smt2 and v3-q8.smt2, read with Solver.from_file under their own rlimit and again through the z3 command line ([q7 cli], [q8 cli]), where (get-info :reason-unknown) prints the reason."
+  ]
+}

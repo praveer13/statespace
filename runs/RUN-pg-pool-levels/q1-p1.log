@@ -1,0 +1,12 @@
+[q1 p1] permutation a_pool b_pool a_begin a_level b_begin b_level a_debit b_debit a_commit b_commit 
+[q1 p1]   step a_pool: SET
+[q1 p1]   step b_pool: SET
+[q1 p1]   step a_begin: BEGIN
+[q1 p1]   step a_level: SHOW [["serializable"]]
+[q1 p1]   step b_begin: BEGIN
+[q1 p1]   step b_level: SHOW [["serializable"]]
+[q1 p1]   step a_debit: UPDATE 1
+[q1 p1]   step b_debit: UPDATE 1
+[q1 p1]   step a_commit: COMMIT
+[q1 p1]   step b_commit:  ERROR 40001: could not serialize access due to read/write dependencies among transactions
+[q1 p1]   check: [[1, -50], [2, 100]]; [["50"]]

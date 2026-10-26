@@ -1,0 +1,31 @@
+// g2.dl: a history as Adya's direct serialization graph over its committed transactions. A read names the version
+// it saw; versions of a key are numbered in commit order, 0 for the initial value.
+.decl committed(t: symbol)
+.decl read(t: symbol, k: symbol, v: number)
+.decl write(t: symbol, k: symbol, v: number)
+.input committed, read, write
+
+.decl ww(a: symbol, b: symbol)   // b overwrote a's version
+.decl wr(a: symbol, b: symbol)   // b read a's version
+.decl rw(a: symbol, b: symbol)   // a read a version that b overwrote: an anti-dependency
+ww(a, b) :- write(a, k, v), write(b, k, v + 1), committed(a), committed(b), a != b.
+wr(a, b) :- write(a, k, v), read(b, k, v), committed(a), committed(b), a != b.
+rw(a, b) :- read(a, k, v), write(b, k, v + 1), committed(a), committed(b), a != b.
+
+.decl edge(a: symbol, b: symbol)
+edge(a, b) :- ww(a, b).
+edge(a, b) :- wr(a, b).
+edge(a, b) :- rw(a, b).
+.decl path(a: symbol, b: symbol)
+path(a, b) :- edge(a, b).
+path(a, c) :- path(a, b), edge(b, c).
+
+// G2-item: a cycle with at least one anti-dependency edge
+.decl g2item(a: symbol, b: symbol)
+g2item(a, b) :- rw(a, b), path(b, a).
+.decl found()
+found() :- g2item(_, _).
+.decl verdict(v: symbol)
+verdict("G2-item: a cycle of dependencies with an anti-dependency edge") :- found().
+verdict("no cycle among committed transactions") :- !found().
+.output rw, g2item, verdict

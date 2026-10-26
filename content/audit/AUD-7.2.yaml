@@ -1,0 +1,205 @@
+# AUD-7.2 · S7 · G12 Requirement mismatch (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Every case is keyed by RUN-z3-declassify-pairs, recorded in the Bench image by
+# content/audit/tools/record-keys-s7-s8.mjs. Its tags are neutral: q1 sound member, q2 flawed member, q3/q4 variant
+# pair v1 (sound/flawed). Each statement is the case's query as declassify.py runs it, with World, Usage,
+# shares_agree() and count() as in that file. Spine section 6.2's key run cell names RUN-z3-selfcomp, which keys
+# S7.L6's Open and none of these statements; content/audit/README.md lists the cell as an open item.
+id: AUD-7.2
+stage: S7
+class: G12
+medium: z3py
+artifact: shared-documents
+subject: "a tenant-isolation check for a sharing release (Z3Py)"
+claim: "No tenant can ever observe any change in another tenant."
+requirement: >-
+  Acme sees nothing of Birch's beyond what the product releases on purpose: the title and body of each document Birch
+  shares with Acme, as Birch edits them, for as long as the share lasts; and the platform-wide document count on every
+  tenant's usage panel. Everything else of Birch's stays out of Acme's view.
+scenario_question: "Does the statement allow this behavior?"
+scheduled_after: [LAB-7, S7.L7]
+kcs: [KC-7.declassification, KC-2.kernel-not-requirement]
+based_on:
+  incident: "AuthV2, the authorization engine Amazon checks with formal proofs: all seven mismatches its shadow testing found came from the specification, and \"no issues were found with tools or proofs\"."
+  date: "2025"
+  date_marks: "the year the paper appeared at ICSE 2025"
+  source: https://www.amazon.science/publications/formally-verified-cloud-scale-authorization
+
+cases:
+  - id: sound
+    key: none
+    description: "Restates tenant isolation for the sharing release, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # what Acme's client receives
+          return [W.own_A] + [If(sh, c, HIDDEN) for c, sh in W.docs_B]
+
+      def rel(L, R):                                   # what Acme may know
+          return And(L.own_A == R.own_A, shares_agree(L, R))   # DCL-7.1: what Birch shares with Acme
+
+      L, R = World('L'), World('R')                    # Acme's document; two of Birch's, each maybe shared
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/isolation.py
+      +++ b/checks/isolation.py
+      @@ -1,5 +1,5 @@
+       def view_A(W):                                   # what Acme's client receives
+      -    return [W.own_A]
+      +    return [W.own_A] + [If(sh, c, HIDDEN) for c, sh in W.docs_B]
+
+       def rel(L, R):                                   # what Acme may know
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A, shares_agree(L, R))   # DCL-7.1: what Birch shares with Acme
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q1 proof] unsat
+      [q1 premises] sat
+    restatement:
+      run: RUN-z3-declassify-pairs
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Birch edits contract, which Birch has shared with Acme, and Acme's view shows the new body.", answer: true, key_line: "[q1 s1] allows", why: "The worlds differ in a shared document's body, which DCL-7.1 releases to Acme: they are not related, so Acme may see the change." }
+        - { id: s2, text: "Birch edits a private document, and Acme's view changes.", answer: false, key_line: "[q1 s2] forbids", why: "A private document is not released: the worlds are related, so Acme's view must stay the same." }
+        - { id: s3, text: "Birch shares a second document with Acme, and Acme's view now lists it.", answer: true, key_line: "[q1 s3] allows", why: "Whether a document is shared is part of the release, so the worlds are not related." }
+        - { id: s4, text: "Acme edits its own document, and Acme's view changes.", answer: true, key_line: "[q1 s4] allows", why: "Acme's own document differs, so the worlds are not related." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-declassify-pairs
+    key_lines: ["[q1 proof] unsat", "[q1 premises] sat", "[q1 s1] allows", "[q1 s2] forbids"]
+    explain: "Noninterference modulo the declassified share: worlds that agree on Acme's own document and on what Birch shares with Acme give Acme equal views (unsat), and such worlds can still differ in Birch's private data (the premise query is sat). The statement allows the share the requirement wants and forbids everything else. DCL-7.1 is the release record: what (title and body), who (Acme), where (the view), when (while shared)."
+
+  - id: flawed
+    key: { class: G12, also: [G1] }
+    description: "Restates tenant isolation for the sharing release, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # what Acme's client receives
+          return [W.own_A] + [HIDDEN for c, sh in W.docs_B]
+
+      def rel(L, R):                                   # what Acme may know
+          return And(L.own_A == R.own_A)               # every tenant: nothing of Birch's reaches Acme
+
+      L, R = World('L'), World('R')                    # Acme's document; two of Birch's, each maybe shared
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/isolation.py
+      +++ b/checks/isolation.py
+      @@ -1,5 +1,5 @@
+       def view_A(W):                                   # what Acme's client receives
+      -    return [W.own_A]
+      +    return [W.own_A] + [HIDDEN for c, sh in W.docs_B]
+
+       def rel(L, R):                                   # what Acme may know
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A)               # every tenant: nothing of Birch's reaches Acme
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q2 proof] unsat
+      [q2 premises] sat
+    restatement:
+      run: RUN-z3-declassify-pairs
+      scenarios:
+        - { id: s1, text: "Birch edits contract, which Birch has shared with Acme, and Acme's view shows the new body.", answer: false, key_line: "[q2 s1] forbids", why: "The worlds agree on Acme's own document, so they are related, and the statement requires Acme's view to stay the same. The requirement wants this change shown." }
+        - { id: s2, text: "Birch edits a private document, and Acme's view changes.", answer: false, key_line: "[q2 s2] forbids", why: "Related worlds: forbidden, as the requirement also says." }
+        - { id: s3, text: "Birch shares a second document with Acme, and Acme's view now lists it.", answer: false, key_line: "[q2 s3] forbids", why: "Related worlds again: the statement forbids the share itself." }
+        - { id: s4, text: "Acme edits its own document, and Acme's view changes.", answer: true, key_line: "[q2 s4] allows", why: "Acme's own document differs, so the worlds are not related." }
+    evidence:
+      type: scenario
+      load_bearing: ["statement:2", "statement:5"]
+      reference: "RUN-z3-declassify-pairs [q2 s1] forbids: Birch edits a document shared with Acme, and the statement requires Acme's view to stay the same"
+    key_run: RUN-z3-declassify-pairs
+    key_lines: ["[q2 proof] unsat", "[q2 premises] sat", "[q2 s1] forbids", "[q2 s3] forbids"]
+    explain: "The proof goes through, and it is the wrong statement. The relation drops the declassification, so any change of Birch's must leave Acme's view alone; the check passes only because the view hides every shared document. Sharing is a feature the requirement wants: the statement forbids it (s1, s3), and the code it checks no longer delivers it. Restore the release with its record, DCL-7.1."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: drop-declassification
+    artifact: usage-panel-count
+    key: none
+    description: "Restates tenant isolation for the usage panel, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # Acme's usage panel
+          return [W.own_A, 1 + count(W.exists_B)]      # its document, and the platform-wide document count
+
+      def rel(L, R):                                   # what Acme may know
+          return And(L.own_A == R.own_A, count(L.exists_B) == count(R.exists_B))   # DCL-7.2: the platform-wide count
+
+      L, R = Usage('L'), Usage('R')                    # Acme's document; two of Birch's private ones
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/usage_isolation.py
+      +++ b/checks/usage_isolation.py
+      @@ -1,5 +1,5 @@
+       def view_A(W):                                   # Acme's usage panel
+      -    return [W.own_A]
+      +    return [W.own_A, 1 + count(W.exists_B)]      # its document, and the platform-wide document count
+
+       def rel(L, R):                                   # what Acme may know
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A, count(L.exists_B) == count(R.exists_B))   # DCL-7.2: the platform-wide count
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q3 proof] unsat
+      [q3 premises] sat
+    restatement:
+      run: RUN-z3-declassify-pairs
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "Birch creates a private document, and the count on Acme's usage panel goes up by one.", answer: true, key_line: "[q3 s1] allows", why: "The platform-wide count is released (DCL-7.2), so worlds with different counts are not related." }
+        - { id: s2, text: "Birch edits a private document's body, and Acme's usage panel changes.", answer: false, key_line: "[q3 s2] forbids", why: "The body is not released and the count is unchanged: related worlds, so the panel must stay the same." }
+        - { id: s3, text: "Acme edits its own document, and Acme's usage panel changes.", answer: true, key_line: "[q3 s3] allows", why: "Acme's own document differs." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-declassify-pairs
+    key_lines: ["[q3 proof] unsat", "[q3 premises] sat", "[q3 s1] allows"]
+    explain: "The count is declassified on purpose, with its record (DCL-7.2), and the relation includes it. Worlds that agree on Acme's document and on the count give equal panels (unsat); they can still differ in Birch's bodies (premises sat)."
+
+  - id: v1-flawed
+    pair: v1
+    operator: drop-declassification
+    artifact: usage-panel-count
+    key: { class: G12, also: [G1] }
+    description: "Restates tenant isolation for the usage panel, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # Acme's usage panel
+          return [W.own_A, 1]                          # its document, and its own document count
+
+      def rel(L, R):                                   # what Acme may know
+          return And(L.own_A == R.own_A)               # every tenant: nothing of Birch's reaches Acme
+
+      L, R = Usage('L'), Usage('R')                    # Acme's document; two of Birch's private ones
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/usage_isolation.py
+      +++ b/checks/usage_isolation.py
+      @@ -1,5 +1,5 @@
+       def view_A(W):                                   # Acme's usage panel
+      -    return [W.own_A]
+      +    return [W.own_A, 1]                          # its document, and its own document count
+
+       def rel(L, R):                                   # what Acme may know
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A)               # every tenant: nothing of Birch's reaches Acme
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q4 proof] unsat
+      [q4 premises] sat
+    restatement:
+      run: RUN-z3-declassify-pairs
+      scenarios:
+        - { id: s1, text: "Birch creates a private document, and the count on Acme's usage panel goes up by one.", answer: false, key_line: "[q4 s1] forbids", why: "Without the declassification the worlds are related, so the panel must not change. The requirement wants the platform-wide count shown." }
+        - { id: s2, text: "Birch edits a private document's body, and Acme's usage panel changes.", answer: false, key_line: "[q4 s2] forbids", why: "Related worlds: forbidden, as the requirement says." }
+        - { id: s3, text: "Acme edits its own document, and Acme's usage panel changes.", answer: true, key_line: "[q4 s3] allows", why: "Acme's own document differs." }
+    evidence:
+      type: scenario
+      load_bearing: ["statement:2", "statement:5"]
+      reference: "RUN-z3-declassify-pairs [q4 s1] forbids: Birch creates a document, and the statement forbids the platform-wide count from changing"
+    key_run: RUN-z3-declassify-pairs
+    key_lines: ["[q4 proof] unsat", "[q4 s1] forbids"]
+    explain: "The declassification of the platform-wide count is gone, so the statement forbids the panel the requirement asks for; the check passes because the panel no longer shows the count. A true statement about the wrong system."

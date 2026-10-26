@@ -1,7 +1,8 @@
 // SCR-today, the happy path's version: continue where you left off. The lesson of the most recent answer in the practice
 // record is where the learner was; if every question there is answered, the next lesson in course order that is not
 // finished is next. With nothing in the record, the course starts with Start here (S1.L0). Derived at read time (I2).
-// The plan of due items, re-finds and audit cases (DESIGN.md SCR-today) arrives with the scheduler.
+// Below it, a short set of generated questions on the KCs the learner has met (DueSet.tsx); the scheduled plan of due
+// items, re-finds and audit cases (DESIGN.md SCR-today) arrives with the scheduler.
 //
 // In the Little Library world the place you stopped is the page's hero: the volume it belongs to as a small cover in
 // that volume's ink, the lesson's title, its colophon and one primary action. The week is told in ranges, never as a
@@ -18,6 +19,7 @@ import { answers, lastLesson, progressOf } from '../../app/progress.ts'
 import { useTitle } from '../../app/title.ts'
 import { Loading } from '../../components/page/states.tsx'
 import { CoverArt } from '../../components/volume/CoverArt.tsx'
+import { DueSet } from './DueSet.tsx'
 import { splitTitle, volumeOf } from '../../components/volume/volumes.ts'
 import '../../components/volume/volume.css'
 import './today.css'
@@ -122,6 +124,7 @@ export function TodayScreen() {
           {next.status === 'error' ? <p className="status">Where you left off could not be worked out ({next.message}).</p> : null}
           {next.status === 'loading' || (next.status === 'ready' && next.value === null) ? <Loading what="where you left off" /> : null}
           {ready !== null ? <NextCard next={ready} unavailable={events.status === 'unavailable'} /> : null}
+          {record !== null ? <DueSet events={record} store={store} /> : null}
         </div>
 
         <div className="td-side">

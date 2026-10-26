@@ -1,0 +1,11 @@
+; Capture(n)'s obligation, as miniplinth check emits it. Inv: 0 <= held, held <= bal, 0 <= bal
+(declare-fun bal () Int)
+(declare-fun held () Int)
+(declare-fun n () Int)
+(declare-fun bal_p () Int)
+(declare-fun held_p () Int)
+(assert (and (<= 0 held) (<= held bal) (<= 0 bal)))
+(assert (and (> n 0) (<= n held)))
+(assert (and (= bal_p (- bal n)) (= held_p (- held n))))
+(assert (not (and (<= 0 held_p) (<= 0 bal_p))))
+(check-sat)

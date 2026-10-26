@@ -21,6 +21,8 @@ export { lineOf } from './lines.ts'
 export { LABS_FORMAT, MANIFEST_FORMAT, MARKDOWN_INDEX_FORMAT, SEARCH_FORMAT, STAGES_FORMAT } from './output.ts'
 export type { LabPage, Manifest, ManifestPage, MarkdownIndex, SearchEntry, SearchIndex, SearchKind, StagePage } from './output.ts'
 export { expectedPath, markdownProblems } from './check.ts'
+export { AUDIT_FORMAT } from './audit-types.ts'
+export type { AuditAnchor, AuditCase, AuditKey, AuditPool, AuditScenario, GapClass, LineRef, TextPart } from './audit-types.ts'
 export type {
   Lesson,
   LessonBlock,

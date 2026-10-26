@@ -1,0 +1,312 @@
+# AUD-5.3 · S5 · G5 Bounded or inconclusive presented as proof (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. The pair's receipts and scenarios are keyed by RUN-tlc-deadlock-stop (TLC 1.8.0 in the
+# Bench image): q1 sound member (Amount 40), q2 flawed member (Amount 80), q3 the flawed member's model re-run with
+# -deadlock. The flawed member is keyed by the spine's run, RUN-tlc-doublespend: the same read-then-write withdrawal,
+# whose default run stops at "Deadlock reached" before the state that breaks NoOverspend. The two G5 variants W3-T13
+# adds: v1, TLC's inductive check at fixed constants (RUN-tlc-inductive), and v2, a liveness check under SYMMETRY
+# (RUN-tlc-deadlock-stop q4 and q5; RUN-tlc-sym-liveness).
+id: AUD-5.3
+stage: S5
+class: G5
+medium: tla
+artifact: withdraw-model
+subject: "a withdrawal model checked with TLC (TLA+)"
+claim: "TLC found no invariant violation."
+requirement: >-
+  No interleaving of the two withdrawal workers spends more than the account holds: NoOverspend holds in every
+  reachable state.
+scenario_question: "Does the run's output, as printed, establish this?"
+scheduled_after: [LAB-5.1]
+kcs: [KC-5.tlc-flags-matter, KC-5.bounded-scope, KC-5.inductive-invariant-tla]
+based_on:
+  incident: "This course's own v1 mock-ups printed TLC numbers that no run had produced; the executed run that replaced them stopped at a deadlock under TLC's default flags and found the violation only with -deadlock."
+  date: "2026-10-20"
+  date_marks: "the mock-ups' numbers were checked against an executed run; the run itself is dated 2026-10-21"
+  source: [docs/history/v1/, research/evidence/A5r3/tla/run.log]
+
+cases:
+  - id: sound
+    key: none
+    description: "Sets Amount in the model to the withdrawal size in config.toml. TLC found no invariant violation."
+    statement: |
+      ---- MODULE Withdraw ----
+      EXTENDS Naturals
+      CONSTANTS Init, Amount, Workers
+      VARIABLES bal, pc, seen, spent
+      vars == <<bal, pc, seen, spent>>
+      Init_ == /\ bal = Init /\ spent = 0
+               /\ pc = [w \in Workers |-> "read"] /\ seen = [w \in Workers |-> 0]
+      Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+                  /\ pc' = [pc EXCEPT ![w] = IF bal >= Amount THEN "write" ELSE "wait"]
+                  /\ UNCHANGED <<bal, spent>>
+      Write(w) == /\ pc[w] = "write" /\ bal' = seen[w] - Amount /\ spent' = spent + Amount
+                  /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Read(w) \/ Write(w)) \/ Idle
+      Spec == Init_ /\ [][Next]_vars
+      NoOverspend == spent <= Init
+      ====
+      \* Withdraw.cfg, checked with TLC's default flags
+      CONSTANTS
+        Init = 100
+        Amount = 40
+        Workers = {w1, w2}
+      INIT Init_
+      NEXT Next
+      INVARIANT NoOverspend
+    diff: |
+      --- a/specs/Withdraw.cfg
+      +++ b/specs/Withdraw.cfg
+      @@ -1,4 +1,4 @@
+       CONSTANTS
+         Init = 100
+      -  Amount = 10
+      +  Amount = 40
+         Workers = {w1, w2}
+    receipt: |
+      [q1] Model checking completed. No error has been found.
+      [q1] 18 states generated, 13 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-deadlock-stop
+      scenarios: &sound-scenarios
+        - { id: s1, text: "No reachable state violates NoOverspend", answer: true, key_line: "[q1] Model checking completed. No error has been found.", why: "TLC finished and found no error: every reachable state at these constants meets the invariant." }
+        - { id: s2, text: "TLC explored every reachable state", answer: true, key_line: "[q1] 18 states generated, 13 distinct states found, 0 states left on queue.", why: "0 states left on queue: the search ran to the end, 13 distinct states." }
+        - { id: s3, text: "Some reachable state has no next step", answer: false, key_line: "[q1] Model checking completed. No error has been found.", why: "TLC checks for deadlock by default and reported none: when both workers are done, Idle lets the model stutter." }
+        - { id: s4, text: "TLC printed an invariant violation", answer: false, key_line: "[q1] Model checking completed. No error has been found.", why: "No error of any kind." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-tlc-deadlock-stop
+    key_lines: ["[q1] Model checking completed. No error has been found.", "[q1] 18 states generated, 13 distinct states found, 0 states left on queue."]
+    explain: "The run completed with 0 states left on queue, so \"no invariant violation\" is TLC's verdict over every reachable state at these constants: [M] · constants · complete. Two withdrawals of 40 from 100 cannot overspend, however they interleave."
+
+  - id: flawed
+    key: G5
+    description: "Sets Amount in the model to the withdrawal size in config.toml. TLC found no invariant violation."
+    statement: |
+      ---- MODULE Withdraw ----
+      EXTENDS Naturals
+      CONSTANTS Init, Amount, Workers
+      VARIABLES bal, pc, seen, spent
+      vars == <<bal, pc, seen, spent>>
+      Init_ == /\ bal = Init /\ spent = 0
+               /\ pc = [w \in Workers |-> "read"] /\ seen = [w \in Workers |-> 0]
+      Read(w)  == /\ pc[w] = "read" /\ seen' = [seen EXCEPT ![w] = bal]
+                  /\ pc' = [pc EXCEPT ![w] = IF bal >= Amount THEN "write" ELSE "wait"]
+                  /\ UNCHANGED <<bal, spent>>
+      Write(w) == /\ pc[w] = "write" /\ bal' = seen[w] - Amount /\ spent' = spent + Amount
+                  /\ pc' = [pc EXCEPT ![w] = "done"] /\ UNCHANGED seen
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Read(w) \/ Write(w)) \/ Idle
+      Spec == Init_ /\ [][Next]_vars
+      NoOverspend == spent <= Init
+      ====
+      \* Withdraw.cfg, checked with TLC's default flags
+      CONSTANTS
+        Init = 100
+        Amount = 80
+        Workers = {w1, w2}
+      INIT Init_
+      NEXT Next
+      INVARIANT NoOverspend
+    diff: |
+      --- a/specs/Withdraw.cfg
+      +++ b/specs/Withdraw.cfg
+      @@ -1,4 +1,4 @@
+       CONSTANTS
+         Init = 100
+      -  Amount = 10
+      +  Amount = 80
+         Workers = {w1, w2}
+    receipt: |
+      [q2] Error: Deadlock reached.
+      [q2] 11 states generated, 10 distinct states found, 3 states left on queue.
+    restatement:
+      run: RUN-tlc-deadlock-stop
+      scenarios:
+        - { id: s1, text: "No reachable state violates NoOverspend", answer: false, key_line: "[q2] Error: Deadlock reached.", why: "TLC stopped at the first deadlock, so the states it never reached were never checked. Re-run with -deadlock, it finds NoOverspend violated (q3)." }
+        - { id: s2, text: "TLC explored every reachable state", answer: false, key_line: "[q2] 11 states generated, 10 distinct states found, 3 states left on queue.", why: "3 states left on queue: the search stopped part way." }
+        - { id: s3, text: "Some reachable state has no next step", answer: true, key_line: "[q2] Error: Deadlock reached.", why: "Worker w2 read a balance of 20, below 80, and waits; w1 is done; nothing can move." }
+        - { id: s4, text: "TLC printed an invariant violation", answer: false, key_line: "[q2] Error: Deadlock reached.", why: "It printed a deadlock, which is not a verdict about NoOverspend at all." }
+    evidence: { type: verdict-line, load_bearing: ["receipt:1", "receipt:2"] }
+    key_run: RUN-tlc-doublespend
+    key_lines:
+      - { config: 1.8.0-default, line: "Error: Deadlock reached." }
+      - { config: 1.8.0-default, line: "11 states generated, 10 distinct states found, 3 states left on queue." }
+      - { config: 1.8.0-deadlock, line: "Error: Invariant NoOverspend is violated." }
+    explain: "TLC stopped at \"Deadlock reached\" with 3 states left on queue, so the invariant was checked only on the states it had reached. \"No invariant violation\" reads a stopped run as a verdict; the honest stamp is [?] · stopped at deadlock. With -deadlock the same model violates NoOverspend in a 5-state trace: both workers read 100, then both write."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: stamp-bounded-inductive-as-proof
+    artifact: inductive-check
+    key: none
+    claim: "Inv is inductive: TLC's inductive check reports no error."
+    description: "Adds TLC's inductive check for Inv and records its stamp in the receipt table."
+    statement: |
+      ---- MODULE DoubleSpendInd ----
+      EXTENDS DoubleSpendAtomic
+      TypeOK == /\ bal \in 0..Init
+                /\ spent \in 0..Init
+                /\ pc \in [Workers -> {"go", "done"}]
+      Inv == TypeOK /\ bal + spent = Init /\ bal >= 0 /\ spent >= 0
+      ISpec == Inv /\ [][Next]_vars
+      ====
+      \* Ind_w3.cfg: every state that meets Inv, then one step of Next
+      CONSTANTS Init = 100  Amount = 80  Workers = {w1, w2, w3}
+      INIT Inv
+      NEXT Next
+      INVARIANT Inv
+      \* stamp: [M] · constants · inductive at Workers = {w1, w2, w3}, Init = 100, Amount = 80
+    diff: |
+      --- a/proofs/RECEIPTS.md
+      +++ b/proofs/RECEIPTS.md
+      @@ -3,1 +3,2 @@
+       | NoOverspend | DoubleSpendAtomic.cfg | [M] · constants · complete |
+      +| Inv inductive | Ind_w3.cfg | [M] · constants · inductive at Workers = {w1, w2, w3} |
+    receipt: |
+      Model checking completed. No error has been found.
+      2020 states generated, 808 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-inductive
+      scenarios: &v1-scenarios
+        - { id: u1, text: "With three workers, Init = 100 and Amount = 80, every state that meets Inv steps only to states that meet Inv", answer: true, key_line: "2020 states generated, 808 distinct states found, 0 states left on queue.", why: "TLC started from all 808 states that meet Inv and checked every step from them: that is the inductive check, at these constants." }
+        - { id: u2, text: "Inv is inductive with four workers", answer: false, key_line: "2020 states generated, 808 distinct states found, 0 states left on queue.", why: "Workers was fixed at three. TLC checks one model at a time; four workers is another model, never run." }
+        - { id: u3, text: "NoOverspend alone is inductive at Init = 10", answer: false, key_line: "Error: Invariant WeakInv is violated.", why: "The run's weak-init10 configuration finds a counterexample to induction for the weaker invariant." }
+    evidence: { type: restatement, scenarios: *v1-scenarios }
+    key_run: RUN-tlc-inductive
+    key_lines: [{ config: inv-w3, line: "Model checking completed. No error has been found." }]
+    explain: "The stamp names its scope: inductive at three workers and these constants, which is what TLC checked. A claim for every number of workers needs a parametric proof of the step, in Z3 or Lean."
+
+  - id: v1-flawed
+    pair: v1
+    operator: stamp-bounded-inductive-as-proof
+    artifact: inductive-check
+    key: G5
+    claim: "Inv is inductive: TLC's inductive check reports no error."
+    description: "Adds TLC's inductive check for Inv and records its stamp in the receipt table."
+    statement: |
+      ---- MODULE DoubleSpendInd ----
+      EXTENDS DoubleSpendAtomic
+      TypeOK == /\ bal \in 0..Init
+                /\ spent \in 0..Init
+                /\ pc \in [Workers -> {"go", "done"}]
+      Inv == TypeOK /\ bal + spent = Init /\ bal >= 0 /\ spent >= 0
+      ISpec == Inv /\ [][Next]_vars
+      ====
+      \* Ind_w3.cfg: every state that meets Inv, then one step of Next
+      CONSTANTS Init = 100  Amount = 80  Workers = {w1, w2, w3}
+      INIT Inv
+      NEXT Next
+      INVARIANT Inv
+      \* stamp: [P] · Inv is inductive for every number of workers
+    diff: |
+      --- a/proofs/RECEIPTS.md
+      +++ b/proofs/RECEIPTS.md
+      @@ -3,1 +3,2 @@
+       | NoOverspend | DoubleSpendAtomic.cfg | [M] · constants · complete |
+      +| Inv inductive | Ind_w3.cfg | [P] · for every number of workers |
+    receipt: |
+      Model checking completed. No error has been found.
+      2020 states generated, 808 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-inductive
+      scenarios: *v1-scenarios
+    evidence: { type: verdict-line, load_bearing: ["statement:14", "diff:5"] }
+    key_run: RUN-tlc-inductive
+    key_lines: [{ config: inv-w3, line: "Model checking completed. No error has been found." }, { config: inv-w3, line: "2020 states generated, 808 distinct states found, 0 states left on queue." }]
+    explain: "TLC checked one model: three workers, Init = 100, Amount = 80, 808 starting states. [P] for every number of workers is a claim no run of TLC makes; the output earns [M] · constants · inductive at N = 3, and [P] needs the parametric proof."
+
+  - id: v2-sound
+    pair: v2
+    operator: report-inconclusive-as-verdict
+    artifact: worker-pool-liveness
+    key: none
+    claim: "TLC found no liveness violation."
+    description: "Adds the TLC configuration for the worker pool's liveness check. TLC found no liveness violation."
+    statement: |
+      ---- MODULE Sym ----
+      EXTENDS Naturals, TLC
+      CONSTANTS Workers
+      VARIABLES pc
+      Init == pc = [w \in Workers |-> "idle"]
+      Go(w) == pc[w] = "idle" /\ pc' = [pc EXCEPT ![w] = "done"]
+      Next == \E w \in Workers : Go(w)
+      Spec == Init /\ [][Next]_pc /\ \A w \in Workers : WF_pc(Go(w))
+      AllDone == <>(\A w \in Workers : pc[w] = "done")
+      Perms == Permutations(Workers)
+      ====
+      \* Sym.cfg, checked with TLC's default flags
+      CONSTANTS Workers = {w1, w2}
+      SPECIFICATION Spec
+      PROPERTY AllDone
+      CHECK_DEADLOCK FALSE
+    diff: |
+      --- /dev/null
+      +++ b/specs/Sym.cfg
+      @@ -0,0 +1,4 @@
+      +CONSTANTS Workers = {w1, w2}
+      +SPECIFICATION Spec
+      +PROPERTY AllDone
+      +CHECK_DEADLOCK FALSE
+    receipt: |
+      [q5] Model checking completed. No error has been found.
+      [q5] 5 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-deadlock-stop
+      scenarios: &v2-sound-scenarios
+        - { id: w1, text: "No behavior of Spec violates AllDone", answer: true, key_line: "[q5] Model checking completed. No error has been found.", why: "Checked without symmetry over the whole state graph: TLC's verdict on the liveness property." }
+        - { id: w2, text: "TLC explored every reachable state of the model it checked", answer: true, key_line: "[q5] 5 states generated, 4 distinct states found, 0 states left on queue.", why: "0 states left on queue." }
+        - { id: w3, text: "TLC printed a warning about its own result", answer: false, key_line: "[q5] Model checking completed. No error has been found.", why: "No warning in the log." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-tlc-deadlock-stop
+    key_lines: ["[q5] Model checking completed. No error has been found."]
+    explain: "The liveness property is checked with symmetry off, so \"no violation\" is TLC's verdict on the 4 distinct states: [M] · constants."
+
+  - id: v2-flawed
+    pair: v2
+    operator: report-inconclusive-as-verdict
+    artifact: worker-pool-liveness
+    key: G5
+    claim: "TLC found no liveness violation."
+    description: "Adds the TLC configuration for the worker pool's liveness check. TLC found no liveness violation."
+    statement: |
+      ---- MODULE Sym ----
+      EXTENDS Naturals, TLC
+      CONSTANTS Workers
+      VARIABLES pc
+      Init == pc = [w \in Workers |-> "idle"]
+      Go(w) == pc[w] = "idle" /\ pc' = [pc EXCEPT ![w] = "done"]
+      Next == \E w \in Workers : Go(w)
+      Spec == Init /\ [][Next]_pc /\ \A w \in Workers : WF_pc(Go(w))
+      AllDone == <>(\A w \in Workers : pc[w] = "done")
+      Perms == Permutations(Workers)
+      ====
+      \* Sym.cfg, checked with TLC's default flags
+      CONSTANTS Workers = {w1, w2}
+      SPECIFICATION Spec
+      PROPERTY AllDone
+      SYMMETRY Perms
+      CHECK_DEADLOCK FALSE
+    diff: |
+      --- /dev/null
+      +++ b/specs/Sym.cfg
+      @@ -0,0 +1,5 @@
+      +CONSTANTS Workers = {w1, w2}
+      +SPECIFICATION Spec
+      +PROPERTY AllDone
+      +SYMMETRY Perms
+      +CHECK_DEADLOCK FALSE
+    receipt: |
+      [q4] Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined.
+      [q4] Model checking completed. No error has been found.
+      [q4] 4 states generated, 3 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-deadlock-stop
+      scenarios:
+        - { id: w1, text: "No behavior of Spec violates AllDone", answer: false, key_line: "[q4] Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined.", why: "TLC itself says it might have missed a liveness violation, so its \"no error\" does not establish the property." }
+        - { id: w2, text: "TLC explored every reachable state of the model it checked", answer: true, key_line: "[q4] 4 states generated, 3 distinct states found, 0 states left on queue.", why: "0 states left on queue, but of the symmetry-reduced graph: 3 distinct states, not 4." }
+        - { id: w3, text: "TLC printed a warning about its own result", answer: true, key_line: "[q4] Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined.", why: "The first line of the receipt." }
+    evidence: { type: verdict-line, load_bearing: ["statement:16", "receipt:1"] }
+    key_run: RUN-tlc-sym-liveness
+    key_lines: ["Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined."]
+    explain: "With SYMMETRY declared, TLC warns that it \"might cause TLC to miss violations of the stated liveness properties\", so its \"no error\" is inconclusive: [?] with that reason. Checked with symmetry off, the same property is TLC's verdict."

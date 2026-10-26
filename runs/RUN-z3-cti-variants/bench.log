@@ -1,0 +1,31 @@
+z3 5.3.1 bound N = 6
+[q1 s1 bal=1 held=2] reachable within 6: no
+[q1 s2 bal=5 held=2] reachable within 6: yes, in 1 steps
+[q1 s3 bal=-1 held=0] reachable within 6: no
+[q1 s4 bal=3 held=3] reachable within 6: yes, in 1 steps
+[q2 s1 bal=1 held=2] reachable within 6: yes, in 2 steps
+[q2 s2 bal=5 held=2] reachable within 6: yes, in 1 steps
+[q2 s3 bal=-1 held=0] reachable within 6: yes, in 3 steps
+[q2 s4 bal=3 held=3] reachable within 6: yes, in 1 steps
+[q3 step of merch >= 0] sat
+[q3 pre-state] paid above merch: True
+[q3 search] violation reachable within 6 steps: yes, at step 3
+[q3 step of 0 <= paid <= merch] sat
+[q3 edited, step of merch >= 0] unsat
+[q3 edited, search] violation reachable within 6 steps: no
+[q4 step of merch >= 0] sat
+[q4 pre-state] paid above merch: True
+[q4 search] violation reachable within 6 steps: no
+[q4 step of 0 <= paid <= merch] unsat
+[q4 edited, step of merch >= 0] sat
+[q4 edited, search] violation reachable within 6 steps: no
+[q3 s1 cust=0 merch=0 paid=1] reachable within 6: yes, in 2 steps
+[q3 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps
+[q3 s3 cust=1 merch=-1 paid=0] reachable within 6: yes, in 3 steps
+[q3 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps
+[q4 s1 cust=0 merch=0 paid=1] reachable within 6: no
+[q4 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps
+[q4 s3 cust=1 merch=-1 paid=0] reachable within 6: no
+[q4 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps
+[q1 edited, step of bal >= 0] unsat
+[q2 edited, step of bal >= 0] unsat

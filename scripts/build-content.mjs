@@ -139,7 +139,7 @@ export async function main(argv, io = {}) {
     }
   }
   const files = [];
-  for (const path of [...walk(root, 'content/stages'), ...walk(root, 'content/drawers')]) {
+  for (const path of [...walk(root, 'content/stages'), ...walk(root, 'content/drawers'), ...walk(root, 'content/audit')]) {
     const r = readText(root, path);
     if (r.error !== undefined) readProblems.push({ severity: 'error', code: 'encoding', message: r.error, file: path, line: null });
     else files.push({ path, text: r.text });

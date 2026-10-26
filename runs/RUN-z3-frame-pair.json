@@ -1,0 +1,243 @@
+{
+  "id": "RUN-z3-frame-pair",
+  "title": "AUD-4.1's cases: four generated obligations are sat with an account below zero; replayed in the interpreter, the models of the two queries generated from commands that write that account are runs that break Inv, and the other two are no runs of their commands",
+  "task": "W3-T13",
+  "origin": "recorded",
+  "records": "AUD-4.1 (content/audit/AUD-4.1.yaml): each query file, its model, the model replayed in the interpreter of the command it was generated from, and the step-3 scenarios",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:38.781Z",
+  "started_at": "2026-10-26T18:04:38.603Z",
+  "duration_s": 0.176,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-frame-pair-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "check.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-frame-pair/inputs/check.py",
+      "sha256": "89bd7f4c25fc26b95ed5542c7da3758219278a8f47398cce3c19428219d08206",
+      "bytes": 4912,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-frame-pair/inputs/q1.smt2",
+      "sha256": "cc6cc21937b3cfdcb9372db865841fca8afbdd30fe0713fe34df1e2211426f4b",
+      "bytes": 389,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-frame-pair/inputs/q2.smt2",
+      "sha256": "2783d090f2c158bd8da046b6d36b4ca1abd9eeb1c5912fb231a310d12fc05989",
+      "bytes": 414,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1",
+    "[q1 check] sat",
+    "[q1 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+    "[q1 replay] ok, ends a=0 b=1 c=0: no run of the command breaks Inv here",
+    "[q2 check] sat",
+    "[q2 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+    "[q2 replay] ok, ends a=0 b=1 c=-1: a run of the command that breaks Inv",
+    "[q1 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=0: below zero no",
+    "[q1 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=3: below zero no",
+    "[q1 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=0: below zero no",
+    "[q1 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no",
+    "[q2 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=-1: below zero yes",
+    "[q2 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=2: below zero no",
+    "[q2 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=-1: below zero yes",
+    "[q2 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no",
+    "[q3 check] sat",
+    "[q3 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+    "[q3 replay] ok, ends cust=1 merch=0 fees=-1: a run of the command that breaks Inv",
+    "[q4 check] sat",
+    "[q4 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+    "[q4 replay] ok, ends cust=1 merch=0 fees=0: no run of the command breaks Inv here",
+    "[q3 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=-1: below zero yes",
+    "[q3 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=1: below zero no",
+    "[q3 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no",
+    "[q3 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=-1: below zero yes",
+    "[q4 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=0: below zero no",
+    "[q4 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=2: below zero no",
+    "[q4 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no",
+    "[q4 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=0: below zero no"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-frame-pair/bench.log",
+      "sha256": "01b88c21c7c1e94fbec1c585dbb19ad8eb723c91fe816a78ba0ed01d0ed90c46",
+      "bytes": 1787,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "check": "sat",
+      "model": "a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+      "replay": "ok, ends a=0 b=1 c=0: no run of the command breaks Inv here",
+      "s1": "ok, ends a=0 b=1 c=0: below zero no",
+      "s2": "ok, ends a=3 b=2 c=3: below zero no",
+      "s3": "ok, ends a=0 b=5 c=0: below zero no",
+      "s4": "Err, ends a=0 b=0 c=0: below zero no"
+    },
+    "q2": {
+      "check": "sat",
+      "model": "a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+      "replay": "ok, ends a=0 b=1 c=-1: a run of the command that breaks Inv",
+      "s1": "ok, ends a=0 b=1 c=-1: below zero yes",
+      "s2": "ok, ends a=3 b=2 c=2: below zero no",
+      "s3": "ok, ends a=0 b=5 c=-1: below zero yes",
+      "s4": "Err, ends a=0 b=0 c=0: below zero no"
+    },
+    "q3": {
+      "check": "sat",
+      "model": "cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+      "replay": "ok, ends cust=1 merch=0 fees=-1: a run of the command that breaks Inv",
+      "s1": "ok, ends cust=2 merch=2 fees=-1: below zero yes",
+      "s2": "ok, ends cust=6 merch=0 fees=1: below zero no",
+      "s3": "Err, ends cust=0 merch=1 fees=0: below zero no",
+      "s4": "ok, ends cust=5 merch=0 fees=-1: below zero yes"
+    },
+    "q4": {
+      "check": "sat",
+      "model": "cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+      "replay": "ok, ends cust=1 merch=0 fees=0: no run of the command breaks Inv here",
+      "s1": "ok, ends cust=2 merch=2 fees=0: below zero no",
+      "s2": "ok, ends cust=6 merch=0 fees=2: below zero no",
+      "s3": "Err, ends cust=0 merch=1 fees=0: below zero no",
+      "s4": "ok, ends cust=5 merch=0 fees=0: below zero no"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "check.py: q1.smt2 and q2.smt2, then the Z3Py queries q3 and q4, each model replayed, then the scenarios",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:38.603Z",
+      "duration_s": 0.176,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-frame-pair-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "check.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-frame-pair/inputs/check.py",
+          "sha256": "89bd7f4c25fc26b95ed5542c7da3758219278a8f47398cce3c19428219d08206",
+          "bytes": 4912,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-frame-pair/inputs/q1.smt2",
+          "sha256": "cc6cc21937b3cfdcb9372db865841fca8afbdd30fe0713fe34df1e2211426f4b",
+          "bytes": 389,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-frame-pair/inputs/q2.smt2",
+          "sha256": "2783d090f2c158bd8da046b6d36b4ca1abd9eeb1c5912fb231a310d12fc05989",
+          "bytes": 414,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "[q1 check] sat",
+        "[q1 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+        "[q1 replay] ok, ends a=0 b=1 c=0: no run of the command breaks Inv here",
+        "[q2 check] sat",
+        "[q2 model] a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1",
+        "[q2 replay] ok, ends a=0 b=1 c=-1: a run of the command that breaks Inv",
+        "[q1 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=0: below zero no",
+        "[q1 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=3: below zero no",
+        "[q1 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=0: below zero no",
+        "[q1 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no",
+        "[q2 s1 a=1 b=0 c=0 amount=1] ok, ends a=0 b=1 c=-1: below zero yes",
+        "[q2 s2 a=5 b=0 c=3 amount=2] ok, ends a=3 b=2 c=2: below zero no",
+        "[q2 s3 a=3 b=2 c=0 amount=3] ok, ends a=0 b=5 c=-1: below zero yes",
+        "[q2 s4 a=0 b=0 c=0 amount=1] Err, ends a=0 b=0 c=0: below zero no",
+        "[q3 check] sat",
+        "[q3 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+        "[q3 replay] ok, ends cust=1 merch=0 fees=-1: a run of the command that breaks Inv",
+        "[q4 check] sat",
+        "[q4 model] cust=0 merch=1 fees=0 n=1 cust_p=1 merch_p=0 fees_p=-1",
+        "[q4 replay] ok, ends cust=1 merch=0 fees=0: no run of the command breaks Inv here",
+        "[q3 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=-1: below zero yes",
+        "[q3 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=1: below zero no",
+        "[q3 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no",
+        "[q3 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=-1: below zero yes",
+        "[q4 s1 cust=0 merch=4 fees=0 n=2] ok, ends cust=2 merch=2 fees=0: below zero no",
+        "[q4 s2 cust=1 merch=5 fees=2 n=5] ok, ends cust=6 merch=0 fees=2: below zero no",
+        "[q4 s3 cust=0 merch=1 fees=0 n=3] Err, ends cust=0 merch=1 fees=0: below zero no",
+        "[q4 s4 cust=2 merch=3 fees=0 n=3] ok, ends cust=5 merch=0 fees=0: below zero no"
+      ],
+      "outputs": [
+        "runs/RUN-z3-frame-pair/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-only at /w; the inputs are kept there as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the log's non-blank lines, copied in log order (content/audit/tools/record-keys-s3s4.mjs); a run with several configurations keeps them on each configuration, and the top level repeats the primary one's.",
+    "q1.smt2 is the query RUN-z3-missing-frame prints for S4.L5 cell 1, copied from its log. The interpreter functions in check.py are the commands each query was generated from, in miniature, as in S10.L3 cell 1."
+  ]
+}

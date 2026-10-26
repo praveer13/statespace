@@ -1,0 +1,172 @@
+# AUD-2.1 · S2 · G1 Statement too weak (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Both members are keyed by RUN-lean-refund-both, the both-parties run spine section 6.2's Key run cell names,
+# recorded in the Bench image (content/audit/tools/record-keys-s1s2.mjs): one guarded refund and two theorems under
+# the name refund_nonneg, each built, read with #print axioms, replayed by leanchecker and evaluated on the step-3
+# scenarios. Recording the both-parties member now lets the pair carry one claim; the AUDIT-DESK card's W1 fallback
+# (the customer-only claim as the sound member) is not needed. Spine section 6 ships this anchor keyed by executed
+# runs, without variants; they land with W2-T13.
+id: AUD-2.1
+stage: S2
+class: G1
+medium: lean
+artifact: refund-both-parties
+subject: "a refund theorem (Lean)"
+claim: "Refunds never overdraw anyone; proved."
+requirement: >-
+  If every balance is at zero or above before a refund of a non-negative amount, every balance is at zero or above
+  after it: the customer's, the merchant's and every other account's.
+scenario_question: "Does the theorem, as written, rule out this outcome?"
+scheduled_after: [LAB-2]
+kcs: [KC-2.theorem-statement-reading, KC-2.kernel-not-requirement]
+based_on:
+  incident: "Spec-Harness: on SpecGenBench, 22.7% of the specifications a verifier accepted had no postcondition, so the verifier's acceptance said nothing about what the code must do."
+  date: "2026-03-31"
+  date_marks: "the paper's first arXiv version was posted"
+  source: https://arxiv.org/abs/2604.00280
+
+cases:
+  - id: sound
+    key: none
+    description: "Replaces the sorry in refund_nonneg with a proof. The build is green."
+    statement: |
+      def NonNeg (s : State) : Prop := ∀ j, 0 ≤ s.balance j
+
+      def refund (s : State) (p : PaymentId) (amt : Int) : State :=
+        if amt ≤ s.balance (s.payments p).merchant then
+          { s with balance := fun j =>
+              if j = (s.payments p).merchant then s.balance j - amt
+              else if j = (s.payments p).customer then s.balance j + amt
+              else s.balance j }
+        else s
+
+      theorem refund_nonneg (s : State) (p : PaymentId) (amt : Int)
+          (hInv : NonNeg s) (hPos : 0 ≤ amt) :
+          NonNeg (refund s p amt)
+    diff: |
+      --- a/Refunds/Theorem.lean
+      +++ b/Refunds/Theorem.lean
+      @@ -3,4 +3,12 @@
+       theorem refund_nonneg (s : State) (p : PaymentId) (amt : Int)
+           (hInv : NonNeg s) (hPos : 0 ≤ amt) :
+           NonNeg (refund s p amt) := by
+      -  sorry
+      +  intro j
+      +  have := hInv j
+      +  unfold refund
+      +  split
+      +  · simp only
+      +    split
+      +    · next hj => subst hj; omega
+      +    · split <;> omega
+      +  · exact this
+    receipt: |
+      ✔ [3/5] Built Refunds.Theorem (150ms)
+      Build completed successfully (5 jobs).
+      lake exit=0
+      'refund_nonneg' depends on axioms: [propext, Quot.sound]
+      leanchecker exit=0
+    restatement:
+      run: RUN-lean-refund-both
+      scenarios: &sound-scenarios
+        - id: s1
+          text: "Customer 0, merchant 30. A refund of 50 leaves the customer at 50 and the merchant at -20."
+          answer: true
+          key_line: '("s1", true, 0, 30)'
+          why: "Every balance was at zero or above and 50 is non-negative, so NonNeg must hold afterwards; a merchant at -20 breaks it. (The refund itself refuses this one: the run shows the balances unchanged at 0 and 30.)"
+        - id: s2
+          text: "Customer 10, merchant 100. A refund of 50 leaves the customer at -40 and the merchant at 150."
+          answer: true
+          key_line: '("s2", true, 60, 50)'
+          why: "A customer at -40 breaks NonNeg after the refund, so the theorem rules it out."
+        - id: s3
+          text: "Customer 0, merchant 100. A refund of 50 leaves the customer at 50 and the merchant at 50."
+          answer: false
+          key_line: '("s3", false, 50, 50)'
+          why: "Every balance stays at zero or above: the theorem allows it, and it is what refund returns."
+        - id: s4
+          text: "Customer 0, merchant 100. A refund of -10 leaves the customer at -10 and the merchant at 110."
+          answer: false
+          key_line: '("s4", false, -10, 110)'
+          why: "hPos needs 0 ≤ amt, so the theorem says nothing about a negative refund."
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-lean-refund-both
+    key_lines:
+      - { config: sound, line: "lake exit=0" }
+      - { config: sound, line: "'refund_nonneg' depends on axioms: [propext, Quot.sound]" }
+      - { config: sound, line: "leanchecker exit=0" }
+    explain: "Built with standard axioms only and replayed by the kernel, and the conclusion is NonNeg of the whole state after the refund: every account, the merchant's included. The statement matches the claim."
+
+  - id: flawed
+    key: { class: G1, also: [G12] }
+    description: "Replaces the sorry in refund_nonneg with a proof. The build is green."
+    statement: |
+      def NonNeg (s : State) : Prop := ∀ j, 0 ≤ s.balance j
+
+      def refund (s : State) (p : PaymentId) (amt : Int) : State :=
+        if amt ≤ s.balance (s.payments p).merchant then
+          { s with balance := fun j =>
+              if j = (s.payments p).merchant then s.balance j - amt
+              else if j = (s.payments p).customer then s.balance j + amt
+              else s.balance j }
+        else s
+
+      theorem refund_nonneg (s : State) (p : PaymentId) (amt : Int)
+          (hInv : NonNeg s) (hPos : 0 ≤ amt) :
+          0 ≤ (refund s p amt).balance (s.payments p).customer
+    diff: |
+      --- a/Refunds/Theorem.lean
+      +++ b/Refunds/Theorem.lean
+      @@ -3,4 +3,11 @@
+       theorem refund_nonneg (s : State) (p : PaymentId) (amt : Int)
+           (hInv : NonNeg s) (hPos : 0 ≤ amt) :
+           0 ≤ (refund s p amt).balance (s.payments p).customer := by
+      -  sorry
+      +  have := hInv (s.payments p).customer
+      +  unfold refund
+      +  split
+      +  · simp only
+      +    split
+      +    · next h => rw [h]; omega
+      +    · simp; omega
+      +  · exact this
+    receipt: |
+      ✔ [3/5] Built Refunds.Theorem (162ms)
+      Build completed successfully (5 jobs).
+      lake exit=0
+      'refund_nonneg' depends on axioms: [propext, Quot.sound]
+      leanchecker exit=0
+    restatement:
+      run: RUN-lean-refund-both
+      scenarios:
+        - id: s1
+          text: "Customer 0, merchant 30. A refund of 50 leaves the customer at 50 and the merchant at -20."
+          answer: false
+          key_line: '("s1", false, 0, 30)'
+          why: "The conclusion speaks only of the customer, who ends at 50. A merchant at -20 meets every premise and the conclusion: the theorem allows it."
+        - id: s2
+          text: "Customer 10, merchant 100. A refund of 50 leaves the customer at -40 and the merchant at 150."
+          answer: true
+          key_line: '("s2", true, 60, 50)'
+          why: "The customer below zero breaks the conclusion, so this one is ruled out."
+        - id: s3
+          text: "Customer 0, merchant 100. A refund of 50 leaves the customer at 50 and the merchant at 50."
+          answer: false
+          key_line: '("s3", false, 50, 50)'
+          why: "The customer stays at zero or above: allowed, and it is what refund returns."
+        - id: s4
+          text: "Customer 0, merchant 100. A refund of -10 leaves the customer at -10 and the merchant at 110."
+          answer: false
+          key_line: '("s4", false, -10, 110)'
+          why: "hPos needs 0 ≤ amt: a negative refund is outside the theorem."
+    evidence:
+      type: scenario
+      load_bearing: ["statement:13"]
+      reference: { run: RUN-lean-refund-both, config: flawed, line: '("s1", false, 0, 30)', scenario: "Customer 0, merchant 30; a refund of 50 leaves the merchant at -20" }
+    key_run: RUN-lean-refund-both
+    key_lines:
+      - { config: flawed, line: "lake exit=0" }
+      - { config: flawed, line: "'refund_nonneg' depends on axioms: [propext, Quot.sound]" }
+      - { config: flawed, line: '("s1", false, 0, 30)' }
+    explain: "The build, the axioms and the kernel replay are all clean, and the theorem is true. But its conclusion names only the payment's customer: an outcome that leaves the merchant at -20 meets the theorem, so it proves less than 'never overdraw anyone'. This refund does refuse that outcome; the proof does not show it, and an unguarded refund satisfies the same statement while the merchant goes negative (RUN-lean-refund-a21: refund_nonneg and refund_breaks_inv both check)."
+
+variants: { pending: { lands: W2-T13 } }

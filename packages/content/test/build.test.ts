@@ -37,6 +37,7 @@ test('the fixture content builds with no error', () => {
     drawers: 2,
     stages: 1,
     labs: 1,
+    auditAnchors: 0,
     blocks: { prose: 2, instrument: 2, item: 3, claim: 1, specimen: 1, card: 1 },
     itemRevs: 5,
     runsCited: 1,

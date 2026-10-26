@@ -10,6 +10,7 @@ import type { LessonCardBlock, LessonChoice, LessonInstrumentBlock, LessonItemBl
 import type { Lesson } from '@statespace/content'
 import type { LedgerEvent } from '@statespace/ledger'
 import { CallItCell, itemFromCell } from '../call-it/index.ts'
+import { GeneratedItem } from '../generated/index.ts'
 import type { LedgerStore } from '../../storage/index.ts'
 import { InlineMd, Markdown, RUN_PENDING } from '../markdown/Markdown.tsx'
 import { claimName, specimenName } from '../../app/content.ts'
@@ -290,11 +291,20 @@ function ChoiceItem({ block, choice, n, ctx, exercise }: { readonly block: Lesso
 
 export function ItemBlock({ block, n, ctx, exercise }: { readonly block: LessonItemBlock; readonly n: number; readonly ctx: BlockContext; readonly exercise?: string }) {
   if (block.choice !== undefined) return <ChoiceItem block={block} choice={block.choice} n={n} ctx={ctx} exercise={exercise} />
+  // A generated item: a fresh instance of the block's family and template, keyed and graded by the family's checker in the page.
   return (
-    <div className="question question-generated no-margin" data-role={block.role}>
-      <ExerciseHead exercise={exercise} role={block.role} />
-      <p className="question-later">A fresh question is generated here for each learner. The generator arrives in a later build.</p>
-    </div>
+    <GeneratedItem
+      family={block.family}
+      template={block.template}
+      band={block.band}
+      mode={block.mode}
+      role={block.role}
+      head={<ExerciseHead exercise={exercise} role={block.role} />}
+      store={ctx.store}
+      events={ctx.events}
+      place={{ page: ctx.page.id, n }}
+      itemRev={block.itemRev}
+    />
   )
 }
 

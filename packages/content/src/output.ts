@@ -34,6 +34,8 @@ export interface Manifest {
   stages: string
   labs: string
   search: string
+  /** The audit pool (content/audit.<hash>.json; audit-types.ts). Absent from manifests written before the Desk. */
+  audit?: string
   md: string
   schemas: string
 }

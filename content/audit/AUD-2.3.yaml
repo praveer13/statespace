@@ -1,0 +1,113 @@
+# AUD-2.3 · S2 · G6c Hidden trust: kernel bypass (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Both members are keyed by RUN-lean-skipkernel-pair, recorded in the Bench image: the same
+# statement built twice, once with a proof and once from a declaration added while debug.skipKernelTC was set. The
+# flawed member shows the option line and the run's verdict lines, never the construction (AUDIT-DESK 1.3). Spine
+# section 6 ships this anchor keyed by executed runs, without variants; they land with W2-T13.
+id: AUD-2.3
+stage: S2
+class: G6c
+medium: lean
+artifact: conservation-theorem
+subject: "a conservation proof (Lean)"
+claim: "Proved; the build is green and uses only standard axioms."
+requirement: >-
+  Every call of transfer keeps the total of the two balances, for all integers: the conservation theorem holds, and
+  Lean's kernel has checked its proof.
+scenario_question: "Does the theorem, as written, rule out this result?"
+scheduled_after: [LAB-2, S2.L9]
+kcs: [KC-2.axioms-and-trust]
+based_on:
+  incident: "An older Lean REPL did not use the Lean verification kernel, so 12 incorrect miniF2F proofs passed (Appendix B)."
+  date: "2025-07"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2507.14722
+
+cases:
+  - id: sound
+    key: none
+    description: "Replaces the sorry in conserves with a proof. The build is green."
+    statement: |
+      def transfer (a b amt : Int) : Int × Int :=
+        if 0 < amt ∧ amt ≤ a then (a - amt, b + amt) else (a, b)
+
+      theorem conserves (a b amt : Int) :
+          (transfer a b amt).1 + (transfer a b amt).2 = a + b
+    diff: |
+      --- a/Ledger/Conserve.lean
+      +++ b/Ledger/Conserve.lean
+      @@ -1,5 +1,6 @@
+       import Ledger.Transfer
+
+       theorem conserves (a b amt : Int) :
+           (transfer a b amt).1 + (transfer a b amt).2 = a + b := by
+      -  sorry
+      +  unfold transfer
+      +  split <;> simp <;> omega
+    receipt: |
+      ✔ [3/5] Built Ledger.Conserve (137ms)
+      Build completed successfully (5 jobs).
+      lake exit=0
+      'conserves' depends on axioms: [propext, Quot.sound]
+      leanchecker exit=0
+    restatement:
+      run: RUN-lean-skipkernel-pair
+      scenarios: &scenarios
+        - { id: s1, text: "transfer 5 3 2 returns (3, 5)", answer: false, key_line: '("s1", false, 3, 5)', why: "3 + 5 = 5 + 3: the total is kept, so the theorem allows it. It is also what transfer returns." }
+        - { id: s2, text: "transfer 5 3 2 returns (3, 6)", answer: true, key_line: '("s2", true, 3, 5)', why: "3 + 6 is 9, not 8: the theorem rules this out." }
+        - { id: s3, text: "transfer 5 3 9 returns (-4, 12)", answer: false, key_line: '("s3", false, 5, 3)', why: "An overdraft that keeps the total: conservation alone does not rule it out. The guard does, and the theorem says nothing about the guard." }
+        - { id: s4, text: "transfer 5 3 9 returns (5, 3)", answer: false, key_line: '("s4", false, 5, 3)', why: "A refused transfer keeps the total." }
+        - { id: s5, text: "transfer 5 3 2 returns (5, 3)", answer: false, key_line: '("s5", false, 3, 5)', why: "Nothing moved, and the total is kept: the theorem allows a transfer that never happens." }
+    evidence: { type: restatement, scenarios: *scenarios }
+    key_run: RUN-lean-skipkernel-pair
+    key_lines:
+      - { config: sound, line: "lake exit=0" }
+      - { config: sound, line: "'conserves' depends on axioms: [propext, Quot.sound]" }
+      - { config: sound, line: "leanchecker exit=0" }
+    explain: "Built, with standard axioms only, and the kernel replay finds no problem: conserves is checked by Lean's kernel. It still says only that the total is kept, nothing about overdrafts."
+
+  - id: flawed
+    key: { class: G6c, also: [G6d] }
+    description: "Replaces the sorry in conserves with a lemma from a new fast-path module. The build is green."
+    statement: |
+      def transfer (a b amt : Int) : Int × Int :=
+        if 0 < amt ∧ amt ≤ a then (a - amt, b + amt) else (a, b)
+
+      theorem conserves (a b amt : Int) :
+          (transfer a b amt).1 + (transfer a b amt).2 = a + b
+    diff: |
+      --- a/Ledger/Conserve.lean
+      +++ b/Ledger/Conserve.lean
+      @@ -1,5 +1,6 @@
+       import Ledger.Transfer
+      +import Ledger.Fast
+
+       theorem conserves (a b amt : Int) :
+           (transfer a b amt).1 + (transfer a b amt).2 = a + b :=
+      -  sorry
+      +  conserves_fast a b amt
+      --- /dev/null
+      +++ b/Ledger/Fast.lean
+      +set_option debug.skipKernelTC true in
+      +⋯ (the lines that add conserves_fast; the course does not reproduce them)
+    receipt: |
+      ✔ [4/6] Built Ledger.Conserve (448ms)
+      Build completed successfully (6 jobs).
+      lake exit=0
+      'conserves' does not depend on any axioms
+      leanchecker found a problem in Ledger.Fast
+      uncaught exception: while replaying declaration 'conserves_fast':
+      (kernel) declaration type mismatch, 'conserves_fast' has type
+      leanchecker exit=1
+    restatement:
+      run: RUN-lean-skipkernel-pair
+      scenarios: *scenarios
+    evidence: { type: declaration, load_bearing: ["diff:13", "receipt:5", "receipt:7"] }
+    key_run: RUN-lean-skipkernel-pair
+    key_lines:
+      - { config: flawed, line: "lake exit=0" }
+      - { config: flawed, line: "'conserves' does not depend on any axioms" }
+      - { config: flawed, line: "leanchecker found a problem in Ledger.Fast" }
+      - { config: flawed, line: "leanchecker exit=1" }
+    explain: "The build is green and no axiom is listed, because conserves_fast was added while the kernel's check was switched off. The kernel replay rejects it: its value is not a proof of its type. Nothing here was checked by the kernel, whatever the theorem's truth."
+
+variants: { pending: { lands: W2-T13 } }

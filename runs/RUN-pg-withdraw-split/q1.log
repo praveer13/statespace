@@ -1,0 +1,14 @@
+[q1] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed
+[q1 p1] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1
+[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <waiting ...>
+[q1 p1] a: COMMIT -> COMMIT
+[q1 p1] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s <... completed> -> UPDATE 0
+[q1 p1] b: COMMIT -> COMMIT
+[q1 p1] a returned True, b returned False
+[q1 p1] final bal=20; spent=80 of 100
+[q1 p2] a: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 1
+[q1 p2] a: COMMIT -> COMMIT
+[q1 p2] b: UPDATE acct SET bal = bal - %s WHERE id = %s AND bal >= %s -> UPDATE 0
+[q1 p2] b: COMMIT -> COMMIT
+[q1 p2] a returned True, b returned False
+[q1 p2] final bal=20; spent=80 of 100

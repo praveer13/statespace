@@ -1,0 +1,170 @@
+{
+  "id": "RUN-tlc-deadlock-stop",
+  "title": "AUD-5.3's cases: the Withdraw model at Amount 40 (q1) and 80 (q2) under TLC's default flags, q2 with -deadlock (q3), and Sym's liveness check with SYMMETRY (q4) and without (q5)",
+  "task": "W3-T13",
+  "task_label": "W3-T13 (AUD-5.x anchors)",
+  "origin": "recorded",
+  "records": "AUD-5.3 (content/audit/AUD-5.3.yaml): the pair, variant pair v2, and the -deadlock re-run",
+  "engine": "tlc",
+  "version": "1.8.0",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools-1.8.0.jar in the statespace-bench image (/opt/tla2tools/tla2tools-1.8.0.jar)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T17:57:16.193Z",
+  "started_at": "2026-10-26T17:57:14.467Z",
+  "duration_s": 1.577,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-s5s6-tlc-deadlock-stop",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/Sym.tla",
+      "sha256": "7ccb4c64404049dc545c79a6dd969938b55bd13f7213afa51e995797b576b8b6",
+      "bytes": 354,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/Withdraw.tla",
+      "sha256": "facfc30510efef2b130ec55c95f986ba4100053708075da2549871dd227ed9ba",
+      "bytes": 773,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/jobs.txt",
+      "sha256": "d5ddd5125813d02d0aaa86a9cfae26a4b90154364e6b6b9aacaf97d751c36d6d",
+      "bytes": 109,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/q1.cfg",
+      "sha256": "1dbd088c1c1988a1f3c5eddc511351d3c52691c5941ff5db804feffd0c8f1d4c",
+      "bytes": 101,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/q2.cfg",
+      "sha256": "77df4fdf7e533997ea3bb38de2cceed0a178cb26c7ee0ded14e5243166694805",
+      "bytes": 101,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/q4.cfg",
+      "sha256": "9f326ec4186a646a1d733214d9c2ed9ef3f206f5d1d4e2175401842cc8d0daea",
+      "bytes": 101,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/q5.cfg",
+      "sha256": "c0be1ddd431d2f67405945351fcaec299491882749d50d1817acc6c17339c916",
+      "bytes": 86,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/inputs/run.sh",
+      "sha256": "2013180d6caab960ad81b74599ca8472cbf7df3fbe7929f652304746e1c38960",
+      "bytes": 547,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "workers": 1
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q1] Model checking completed. No error has been found.",
+    "[q1] 18 states generated, 13 distinct states found, 0 states left on queue.",
+    "[q1] exit=0",
+    "[q2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q2] Error: Deadlock reached.",
+    "[q2] Error: The behavior up to this point is:",
+    "[q2] State 1: <Initial predicate>",
+    "[q2] State 2: <Read(w1) line 8, col 13 to line 10, col 39 of module Withdraw>",
+    "[q2] State 3: <Write(w1) line 11, col 13 to line 12, col 64 of module Withdraw>",
+    "[q2] State 4: <Read(w2) line 8, col 13 to line 10, col 39 of module Withdraw>",
+    "[q2] 11 states generated, 10 distinct states found, 3 states left on queue.",
+    "[q2] exit=11",
+    "[q3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q3] Error: Invariant NoOverspend is violated.",
+    "[q3] Error: The behavior up to this point is:",
+    "[q3] State 1: <Initial predicate>",
+    "[q3] State 2: <Read(w1) line 8, col 13 to line 10, col 39 of module Withdraw>",
+    "[q3] State 3: <Read(w2) line 8, col 13 to line 10, col 39 of module Withdraw>",
+    "[q3] State 4: <Write(w1) line 11, col 13 to line 12, col 64 of module Withdraw>",
+    "[q3] State 5: <Write(w2) line 11, col 13 to line 12, col 64 of module Withdraw>",
+    "[q3] 12 states generated, 11 distinct states found, 2 states left on queue.",
+    "[q3] exit=12",
+    "[q4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q4] Warning: Declaring symmetry during liveness checking is dangerous. It might cause TLC to miss violations of the stated liveness properties. Please check liveness without symmetry defined.",
+    "[q4] Model checking completed. No error has been found.",
+    "[q4] 4 states generated, 3 distinct states found, 0 states left on queue.",
+    "[q4] exit=0",
+    "[q5] TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+    "[q5] Model checking completed. No error has been found.",
+    "[q5] 5 states generated, 4 distinct states found, 0 states left on queue.",
+    "[q5] exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-deadlock-stop/tlc.log",
+      "sha256": "05f74094ccbe4a19fbb9099a62c8ce844f8cfe1b41f4cee05561a158a99bfc7e",
+      "bytes": 14840,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "result": "no error",
+      "distinct": 13
+    },
+    "q2": {
+      "result": "deadlock",
+      "distinct": 10
+    },
+    "q3": {
+      "result": "violated: NoOverspend",
+      "distinct": 11
+    },
+    "q4": {
+      "result": "no error",
+      "distinct": 3
+    },
+    "q5": {
+      "result": "no error",
+      "distinct": 4
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-write at /w (TLC writes trace files beside the specs).",
+    "run.sh runs TLC once per line of jobs.txt (tag|dir|module|cfg|flags) and prefixes every line TLC prints with \"[tag] \", then the exit status as \"[tag] exit=N\". verdict_lines are the log lines content/audit/tools/record-s5s6.mjs keeps, in log order.",
+    "Tags are neutral: q1, q2, ... name a case's check; a second word (s1, t1, c1, x1) names a scenario's edit of that case's module, which content/audit/tools/s5s6-inputs.mjs applies and the inputs folder holds as it ran."
+  ]
+}

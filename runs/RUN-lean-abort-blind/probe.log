@@ -1,0 +1,59 @@
+[p1 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.abort (Err.insufficient)
+[p1 store (0, 0) amt 1] the statement's obs equal: true
+[p1 store (0, 0) amt 1] outcomes equal: true
+[p2 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.commit (0, 0)
+[p2 store (0, 0) amt 1] the statement's obs equal: true
+[p2 store (0, 0) amt 1] outcomes equal: false
+[p3 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.insufficient)
+[p3 store (10, 0) amt 0] the statement's obs equal: true
+[p3 store (10, 0) amt 0] outcomes equal: false
+[p4 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.nonPositive)
+[p4 store (10, 0) amt 0] the statement's obs equal: true
+[p4 store (10, 0) amt 0] outcomes equal: true
+[p5 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)
+[p5 store (10, 0) amt 5] the statement's obs equal: true
+[p5 store (10, 0) amt 5] outcomes equal: true
+[p6 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 0)
+[p6 store (10, 0) amt 5] the statement's obs equal: true
+[p6 store (10, 0) amt 5] outcomes equal: false
+[q1 s1] ruled out
+[q1 s2] not ruled out
+[q1 s3] ruled out
+[q1 s4] not ruled out
+[q1 s5] ruled out
+[q2 s1] not ruled out
+[q2 s2] not ruled out
+[q2 s3] ruled out
+[q2 s4] not ruled out
+[q2 s5] not ruled out
+[q3 s1] not ruled out
+[q3 s2] not ruled out
+[q3 s3] ruled out
+[q3 s4] not ruled out
+[q4 s1] ruled out
+[q4 s2] not ruled out
+[q4 s3] ruled out
+[q4 s4] not ruled out
+[q5 s1] ruled out
+[q5 s2] not ruled out
+[q5 s3] ruled out
+[q5 s4] ruled out
+[q6 s1] not ruled out
+[q6 s2] not ruled out
+[q6 s3] ruled out
+[q6 s4] ruled out
+[p7 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (15, -5)
+[p7 store (10, 0) amt 5] the statement's obs equal: true
+[p7 store (10, 0) amt 5] outcomes equal: false
+[p8 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)
+[p8 store (10, 0) amt 5] the statement's obs equal: true
+[p8 store (10, 0) amt 5] outcomes equal: true
+[q7 s1] not ruled out
+[q7 s2] not ruled out
+[q7 s3] ruled out
+[q7 s4] ruled out
+[q8 s1] ruled out
+[q8 s2] not ruled out
+[q8 s3] ruled out
+[q8 s4] ruled out
+lean exit=0

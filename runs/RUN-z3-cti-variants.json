@@ -1,0 +1,225 @@
+{
+  "id": "RUN-z3-cti-variants",
+  "title": "AUD-4.3's scenarios and variant pair: bounded searches from Init (N = 6) on the holds model and its twin, and the merchant model of S4.L6 with its twin, before and after the agent's edit",
+  "task": "W3-T13",
+  "origin": "recorded",
+  "records": "AUD-4.3 (content/audit/AUD-4.3.yaml): the pair's step-3 scenarios, and the variant pair's inductive step, pre-state, bounded search, strengthened invariant and edited command",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:02:48.092Z",
+  "started_at": "2026-10-26T18:02:47.729Z",
+  "duration_s": 0.363,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-cti-variants-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "cti.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-cti-variants/inputs/cti.py",
+      "sha256": "48ffa25e2f6fc9327df1033431fc48a41b1493300fe9209813ccd40465ac8836",
+      "bytes": 5461,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 bound N = 6",
+    "[q1 s1 bal=1 held=2] reachable within 6: no",
+    "[q1 s2 bal=5 held=2] reachable within 6: yes, in 1 steps",
+    "[q1 s3 bal=-1 held=0] reachable within 6: no",
+    "[q1 s4 bal=3 held=3] reachable within 6: yes, in 1 steps",
+    "[q2 s1 bal=1 held=2] reachable within 6: yes, in 2 steps",
+    "[q2 s2 bal=5 held=2] reachable within 6: yes, in 1 steps",
+    "[q2 s3 bal=-1 held=0] reachable within 6: yes, in 3 steps",
+    "[q2 s4 bal=3 held=3] reachable within 6: yes, in 1 steps",
+    "[q3 step of merch >= 0] sat",
+    "[q3 pre-state] paid above merch: True",
+    "[q3 search] violation reachable within 6 steps: yes, at step 3",
+    "[q3 step of 0 <= paid <= merch] sat",
+    "[q3 edited, step of merch >= 0] unsat",
+    "[q3 edited, search] violation reachable within 6 steps: no",
+    "[q4 step of merch >= 0] sat",
+    "[q4 pre-state] paid above merch: True",
+    "[q4 search] violation reachable within 6 steps: no",
+    "[q4 step of 0 <= paid <= merch] unsat",
+    "[q4 edited, step of merch >= 0] sat",
+    "[q4 edited, search] violation reachable within 6 steps: no",
+    "[q3 s1 cust=0 merch=0 paid=1] reachable within 6: yes, in 2 steps",
+    "[q3 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps",
+    "[q3 s3 cust=1 merch=-1 paid=0] reachable within 6: yes, in 3 steps",
+    "[q3 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps",
+    "[q4 s1 cust=0 merch=0 paid=1] reachable within 6: no",
+    "[q4 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps",
+    "[q4 s3 cust=1 merch=-1 paid=0] reachable within 6: no",
+    "[q4 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps",
+    "[q1 edited, step of bal >= 0] unsat",
+    "[q2 edited, step of bal >= 0] unsat"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-cti-variants/bench.log",
+      "sha256": "5d8869804ca790337004bbae40721d4a73958c80641f0f0265c29639680ef1f1",
+      "bytes": 1541,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "s1": "reachable within 6: no",
+      "s2": "reachable within 6: yes, in 1 steps",
+      "s3": "reachable within 6: no",
+      "s4": "reachable within 6: yes, in 1 steps",
+      "edited, step of bal >= 0": "unsat"
+    },
+    "q2": {
+      "s1": "reachable within 6: yes, in 2 steps",
+      "s2": "reachable within 6: yes, in 1 steps",
+      "s3": "reachable within 6: yes, in 3 steps",
+      "s4": "reachable within 6: yes, in 1 steps",
+      "edited, step of bal >= 0": "unsat"
+    },
+    "q3": {
+      "step of merch >= 0": "sat",
+      "pre-state": "paid above merch: True",
+      "search": "violation reachable within 6 steps: yes, at step 3",
+      "step of 0 <= paid <= merch": "sat",
+      "edited, step of merch >= 0": "unsat",
+      "edited, search": "violation reachable within 6 steps: no",
+      "s1": "reachable within 6: yes, in 2 steps",
+      "s2": "reachable within 6: yes, in 1 steps",
+      "s3": "reachable within 6: yes, in 3 steps",
+      "s4": "reachable within 6: yes, in 1 steps"
+    },
+    "q4": {
+      "step of merch >= 0": "sat",
+      "pre-state": "paid above merch: True",
+      "search": "violation reachable within 6 steps: no",
+      "step of 0 <= paid <= merch": "unsat",
+      "edited, step of merch >= 0": "sat",
+      "edited, search": "violation reachable within 6 steps: no",
+      "s1": "reachable within 6: no",
+      "s2": "reachable within 6: yes, in 1 steps",
+      "s3": "reachable within 6: no",
+      "s4": "reachable within 6: yes, in 1 steps"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "cti.py: reachability of each scenario state, the merchant model and its twin, and both models after the edit",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:47.729Z",
+      "duration_s": 0.363,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-cti-variants-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "cti.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-cti-variants/inputs/cti.py",
+          "sha256": "48ffa25e2f6fc9327df1033431fc48a41b1493300fe9209813ccd40465ac8836",
+          "bytes": 5461,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 bound N = 6",
+        "[q1 s1 bal=1 held=2] reachable within 6: no",
+        "[q1 s2 bal=5 held=2] reachable within 6: yes, in 1 steps",
+        "[q1 s3 bal=-1 held=0] reachable within 6: no",
+        "[q1 s4 bal=3 held=3] reachable within 6: yes, in 1 steps",
+        "[q2 s1 bal=1 held=2] reachable within 6: yes, in 2 steps",
+        "[q2 s2 bal=5 held=2] reachable within 6: yes, in 1 steps",
+        "[q2 s3 bal=-1 held=0] reachable within 6: yes, in 3 steps",
+        "[q2 s4 bal=3 held=3] reachable within 6: yes, in 1 steps",
+        "[q3 step of merch >= 0] sat",
+        "[q3 pre-state] paid above merch: True",
+        "[q3 search] violation reachable within 6 steps: yes, at step 3",
+        "[q3 step of 0 <= paid <= merch] sat",
+        "[q3 edited, step of merch >= 0] unsat",
+        "[q3 edited, search] violation reachable within 6 steps: no",
+        "[q4 step of merch >= 0] sat",
+        "[q4 pre-state] paid above merch: True",
+        "[q4 search] violation reachable within 6 steps: no",
+        "[q4 step of 0 <= paid <= merch] unsat",
+        "[q4 edited, step of merch >= 0] sat",
+        "[q4 edited, search] violation reachable within 6 steps: no",
+        "[q3 s1 cust=0 merch=0 paid=1] reachable within 6: yes, in 2 steps",
+        "[q3 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps",
+        "[q3 s3 cust=1 merch=-1 paid=0] reachable within 6: yes, in 3 steps",
+        "[q3 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps",
+        "[q4 s1 cust=0 merch=0 paid=1] reachable within 6: no",
+        "[q4 s2 cust=2 merch=1 paid=1] reachable within 6: yes, in 1 steps",
+        "[q4 s3 cust=1 merch=-1 paid=0] reachable within 6: no",
+        "[q4 s4 cust=0 merch=2 paid=2] reachable within 6: yes, in 1 steps",
+        "[q1 edited, step of bal >= 0] unsat",
+        "[q2 edited, step of bal >= 0] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-cti-variants/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-only at /w; the inputs are kept there as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the log's non-blank lines, copied in log order (content/audit/tools/record-keys-s3s4.mjs); a run with several configurations keeps them on each configuration, and the top level repeats the primary one's.",
+    "The holds model and its twin are RUN-z3-cti-pair's S10.L6 cell 2 models, copied into cti.py; that run keys the pair itself."
+  ]
+}

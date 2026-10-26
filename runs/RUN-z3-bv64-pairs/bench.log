@@ -1,0 +1,55 @@
+z3 5.3.1 rlimit=5000000
+[q1 violation] unsat
+[q1 violation i64] unsat
+[q1 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3
+[q1 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806
+[q1 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5
+[q1 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807
+[q2 violation] unsat
+[q2 violation i64] sat
+[q2 witness i64] a=9223372036586340139 b=9223372036854775795 amount=9223372036586340133: a-amount=6 b+amount=-268435688
+[q2 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3
+[q2 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806
+[q2 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5
+[q2 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807
+[q3 violation] unsat
+[q3 violation i64] sat
+[q3 witness i64] a=9079256848778919935 b=0 amount=-9223372036854775807: a-amount=-144115188075855874
+[q3 s1 a=10 amount=3] sat (covered); int64: a-amount = 7
+[q3 s2 a=10 amount=-5] sat (covered); int64: a-amount = 15
+[q3 s3 a=10 amount=-9223372036854775808] sat (covered); int64: a-amount = -9223372036854775798
+[q3 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3
+[q4 violation] unsat
+[q4 violation i64] unsat
+[q4 s1 a=10 amount=3] sat (covered); int64: a-amount = 7
+[q4 s2 a=10 amount=-5] unsat (not covered); int64: a-amount = 15
+[q4 s3 a=10 amount=-9223372036854775808] unsat (not covered); int64: a-amount = -9223372036854775798
+[q4 s4 a=2 amount=5] unsat (not covered); int64: a-amount = -3
+[q5 violation] unsat
+[q5 violation i64] unsat
+[q5 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3
+[q5 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered); int64: a-amount = 0, b+amount = -9223372036854775806
+[q5 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5
+[q5 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807
+[q6 violation] unsat
+[q6 violation i64] sat
+[q6 witness i64] a=9223372036854775800 b=9223372036854775590 amount=9223372036586340265: a-amount=268435535 b+amount=-268435761
+[q6 s1 a=10 b=0 amount=3] sat (covered); int64: a-amount = 7, b+amount = 3
+[q6 s2 a=10 b=9223372036854775800 amount=10] sat (covered); int64: a-amount = 0, b+amount = -9223372036854775806
+[q6 s3 a=2 b=0 amount=5] unsat (not covered); int64: a-amount = -3, b+amount = 5
+[q6 s4 a=5 b=9223372036854775802 amount=5] sat (covered); int64: a-amount = 0, b+amount = 9223372036854775807
+[q7 violation] unsat
+[q7 violation i64] sat
+[q7 witness i64] amount=7753720574186094592 rate=8191: amount*rate=-1414622623685410816 fee=-141462262368541
+[q7 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50
+[q7 s2 amount=1000000000000000 rate=10000] sat (covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955
+[q7 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000
+[q7 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10
+[q8 violation] unsat
+[q8 violation i64] unsat
+[q8 s1 amount=10000 rate=50] sat (covered); int64: amount*rate = 500000, fee = 50
+[q8 s2 amount=1000000000000000 rate=10000] unsat (not covered); int64: amount*rate = -8446744073709551616, fee = -844674407370955
+[q8 s3 amount=1000000000000 rate=10000] sat (covered); int64: amount*rate = 10000000000000000, fee = 1000000000000
+[q8 s4 amount=5 rate=20000] unsat (not covered); int64: amount*rate = 100000, fee = 10
+[q5 cli] unsat
+[q6 cli] unsat

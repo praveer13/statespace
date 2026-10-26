@@ -1,0 +1,467 @@
+# AUD-1.2 · S1 · G4 Encoding and type-semantics slip (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. The flawed member is keyed by RUN-z3-bv64 (spine section 6.2's key run), whose guarded
+# DESTINATION wrap is this member's recipient wrap; every receipt, scenario, variant and the sound member are keyed by
+# RUN-z3-bv64-pairs, recorded in the Bench image (content/audit/tools/record-keys-s1s2.mjs). That run states each
+# case's Int query as the case shows it, then the same premises and violation over signed 64-bit bit-vectors, the
+# arithmetic of the int64 code each query stands for. Its tags are neutral: q1 sound member, q2 flawed member,
+# q3/q4 variant pair v1 (flawed/sound), q5/q6 variant pair v2 (sound/flawed), q7/q8 variant pair v3 (flawed/sound).
+id: AUD-1.2
+stage: S1
+class: G4
+medium: z3py
+artifact: recipient-wrap
+subject: "a two-party transfer query (Z3Py)"
+claim: "No balance can go negative; the transfer is safe."
+requirement: >-
+  ledger.go keeps every balance as a Go int64, whose arithmetic wraps on overflow. Every transfer it accepts,
+  computed as ledger.go computes it, leaves the sender and the recipient at zero or above.
+scenario_question: "Does the statement speak about this transfer: do these values meet every premise it checks?"
+scheduled_after: [LAB-1, S1.L5]
+kcs: [KC-1.encoding-is-the-claim]
+based_on:
+  incident: "Bitcoin CVE-2010-5139: a transaction's outputs overflowed when summed, so the client's check that outputs do not exceed inputs passed, and the block created about 184 billion bitcoins."
+  date: "2010-08-15"
+  date_marks: "the block with the overflowing transaction was mined"
+  source: https://en.bitcoin.it/wiki/CVE-2010-5139
+
+cases:
+  - id: sound
+    key: none
+    description: "Extends the overdraft check to the recipient. Z3 answers unsat: no balance can go negative."
+    statement: |
+      # ledger.go keeps balances as int64
+      a, b, amount = Ints('a b amount')
+      s = Solver()
+      s.add(a >= 0, b >= 0)
+      s.add(amount > 0, amount <= a)              # ledger.go: the transfer guard
+      s.add(amount <= 2**63 - 1 - b)              # ledger.go: the recipient's overflow check
+      s.add(Or(a - amount < 0, b + amount < 0))   # the violation: a balance ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/transfer_query.py
+      +++ b/checks/transfer_query.py
+      @@ -6,3 +6,3 @@
+       s.add(amount <= 2**63 - 1 - b)              # ledger.go: the recipient's overflow check
+      -s.add(a - amount < 0)                       # the violation: the sender ends below zero
+      +s.add(Or(a - amount < 0, b + amount < 0))   # the violation: a balance ends below zero
+       print(s.check())
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q1 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios: &sound-scenarios
+        - id: s1
+          text: "a = 10, b = 0, amount = 3"
+          answer: true
+          key_line: "[q1 s1 a=10 b=0 amount=3] sat (covered)"
+          why: "Every premise holds, so the unsat speaks about this transfer. In int64 the run gives the sender 7 and the recipient 3, the same as over Int."
+        - id: s2
+          text: "a = 10, b = 9223372036854775800, amount = 10"
+          answer: false
+          key_line: "[q1 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered)"
+          why: "The overflow check refuses it: b + amount would pass the largest int64. ledger.go refuses it too, so the statement leaves it out for the right reason."
+        - id: s3
+          text: "a = 2, b = 0, amount = 5"
+          answer: false
+          key_line: "[q1 s3 a=2 b=0 amount=5] unsat (not covered)"
+          why: "The guard amount <= a refuses an overdraft, so the query never considers it."
+        - id: s4
+          text: "a = 5, b = 9223372036854775802, amount = 5"
+          answer: true
+          key_line: "[q1 s4 a=5 b=9223372036854775802 amount=5] sat (covered)"
+          why: "The recipient lands exactly on the largest int64, 9223372036854775807 in the run's int64 line: in range, and covered."
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q1 violation] unsat", "[q1 violation i64] unsat"]
+    explain: "The overflow check keeps b + amount inside int64, and the guard keeps a - amount at zero or above, so every operation the query models stays in range and Int arithmetic agrees with ledger.go's. The same premises over 64-bit bit-vectors are unsat too: the claim holds for both parties as ledger.go computes them."
+
+  - id: flawed
+    key: { class: G4, also: [G8] }
+    description: "Extends the overdraft check to the recipient. Z3 answers unsat: no balance can go negative."
+    statement: |
+      # ledger.go keeps balances as int64
+      a, b, amount = Ints('a b amount')
+      s = Solver()
+      s.add(a >= 0, b >= 0)
+      s.add(amount > 0, amount <= a)              # ledger.go: the transfer guard
+      s.add(Or(a - amount < 0, b + amount < 0))   # the violation: a balance ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/transfer_query.py
+      +++ b/checks/transfer_query.py
+      @@ -5,3 +5,3 @@
+       s.add(amount > 0, amount <= a)              # ledger.go: the transfer guard
+      -s.add(a - amount < 0)                       # the violation: the sender ends below zero
+      +s.add(Or(a - amount < 0, b + amount < 0))   # the violation: a balance ends below zero
+       print(s.check())
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q2 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios:
+        - id: s1
+          text: "a = 10, b = 0, amount = 3"
+          answer: true
+          key_line: "[q2 s1 a=10 b=0 amount=3] sat (covered)"
+          why: "Every premise holds, and here int64 and Int agree: the sender ends at 7, the recipient at 3."
+        - id: s2
+          text: "a = 10, b = 9223372036854775800, amount = 10"
+          answer: true
+          key_line: "[q2 s2 a=10 b=9223372036854775800 amount=10] sat (covered)"
+          why: "Every premise holds, so the unsat speaks about it, over Int, where b + amount is a large positive number. ledger.go computes it in int64, where the run gives b + amount = -9223372036854775806: the recipient wraps negative."
+        - id: s3
+          text: "a = 2, b = 0, amount = 5"
+          answer: false
+          key_line: "[q2 s3 a=2 b=0 amount=5] unsat (not covered)"
+          why: "The guard amount <= a refuses it."
+        - id: s4
+          text: "a = 5, b = 9223372036854775802, amount = 5"
+          answer: true
+          key_line: "[q2 s4 a=5 b=9223372036854775802 amount=5] sat (covered)"
+          why: "Covered, and still in range: the run's int64 line gives the recipient 9223372036854775807, the largest int64. One more would wrap."
+    evidence:
+      type: witness
+      load_bearing: ["statement:1", "statement:2", "statement:6"]
+      reference: { run: RUN-z3-bv64-pairs, line: "[q2 witness i64] a=9223372036586340139 b=9223372036854775795 amount=9223372036586340133: a-amount=6 b+amount=-268435688" }
+    key_run: RUN-z3-bv64
+    key_lines: ["[1.5 BitVec64 signed: guarded DESTINATION wrap] sat"]
+    explain: "The query is over unbounded Int, and the code is int64. Nothing in the premises keeps b + amount below 2^63, so the unsat says nothing about what ledger.go computes: over 64-bit bit-vectors the same premises admit a recipient that wraps negative. The guard protects the sender, not the recipient."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: change-arithmetic
+    artifact: negative-amount
+    key: { class: G4, also: [G8] }
+    claim: "unsat: no transfer can overdraw the sender."
+    description: "Drops amount > 0 from the query: the guard already bounds the amount. Z3 still answers unsat."
+    statement: |
+      # ledger.go: func transfer(a, b, amount int64) (int64, int64)
+      a, amount = Ints('a amount')
+      s = Solver()
+      s.add(a >= 0)
+      s.add(amount <= a)                  # ledger.go: the transfer guard
+      s.add(a - amount < 0)               # the violation: the sender ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/sender_query.py
+      +++ b/checks/sender_query.py
+      @@ -4,3 +4,2 @@
+       s.add(a >= 0)
+      -s.add(amount > 0)
+       s.add(amount <= a)                  # ledger.go: the transfer guard
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q3 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios:
+        - id: s1
+          text: "a = 10, amount = 3"
+          answer: true
+          key_line: "[q3 s1 a=10 amount=3] sat (covered)"
+          why: "Every premise holds; the sender ends at 7."
+        - id: s2
+          text: "a = 10, amount = -5"
+          answer: true
+          key_line: "[q3 s2 a=10 amount=-5] sat (covered)"
+          why: "Without amount > 0 a negative amount meets every premise. Over Int it raises the sender to 15, and so does int64."
+        - id: s3
+          text: "a = 10, amount = -9223372036854775808"
+          answer: true
+          key_line: "[q3 s3 a=10 amount=-9223372036854775808] sat (covered)"
+          why: "Covered: over Int, subtracting it makes the sender huge. In int64 the run gives a - amount = -9223372036854775798: the subtraction wraps and the sender goes negative."
+        - id: s4
+          text: "a = 2, amount = 5"
+          answer: false
+          key_line: "[q3 s4 a=2 amount=5] unsat (not covered)"
+          why: "The guard refuses it."
+    evidence:
+      type: witness
+      load_bearing: ["statement:1", "statement:2", "diff:5"]
+      reference: { run: RUN-z3-bv64-pairs, line: "[q3 witness i64] a=9079256848778919935 b=0 amount=-9223372036854775807: a-amount=-144115188075855874" }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q3 violation] unsat", "[q3 violation i64] sat"]
+    explain: "Over Int a negative amount only raises the sender, so the unsat looks harmless. ledger.go's amount is an int64: near its minimum, a - amount wraps, and over 64-bit bit-vectors the same premises admit a sender that ends negative (RUN-z3-bv64-negamt records the same wrap)."
+
+  - id: v1-sound
+    pair: v1
+    operator: change-arithmetic
+    artifact: negative-amount
+    key: none
+    claim: "unsat: no transfer can overdraw the sender."
+    description: "Drops amount > 0 from the query: the guard already bounds the amount. Z3 still answers unsat."
+    statement: |
+      # ledger.go: func transfer(a, b int64, amount uint32) (int64, int64)
+      a, amount = Ints('a amount')
+      s = Solver()
+      s.add(a >= 0)
+      s.add(amount >= 0)                  # ledger.go: amount is a uint32
+      s.add(amount <= a)                  # ledger.go: the transfer guard
+      s.add(a - amount < 0)               # the violation: the sender ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/sender_query.py
+      +++ b/checks/sender_query.py
+      @@ -5,3 +5,2 @@
+       s.add(amount >= 0)                  # ledger.go: amount is a uint32
+      -s.add(amount > 0)
+       s.add(amount <= a)                  # ledger.go: the transfer guard
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q4 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios: &v1-sound-scenarios
+        - id: s1
+          text: "a = 10, amount = 3"
+          answer: true
+          key_line: "[q4 s1 a=10 amount=3] sat (covered)"
+          why: "Every premise holds; the sender ends at 7."
+        - id: s2
+          text: "a = 10, amount = -5"
+          answer: false
+          key_line: "[q4 s2 a=10 amount=-5] unsat (not covered)"
+          why: "amount >= 0 leaves it out, and a uint32 cannot hold -5, so ledger.go never receives it."
+        - id: s3
+          text: "a = 10, amount = -9223372036854775808"
+          answer: false
+          key_line: "[q4 s3 a=10 amount=-9223372036854775808] unsat (not covered)"
+          why: "Not a uint32, and outside amount >= 0."
+        - id: s4
+          text: "a = 2, amount = 5"
+          answer: false
+          key_line: "[q4 s4 a=2 amount=5] unsat (not covered)"
+          why: "The guard refuses it."
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q4 violation] unsat", "[q4 violation i64] unsat"]
+    explain: "amount is a uint32 widened to int64, so it is never negative and a - amount stays between 0 and a: every operation is in range, and the query keeps amount >= 0 from the type. Dropping amount > 0 only admits a zero transfer. Over 64-bit bit-vectors, with amount widened from 32 bits, the violation is unsat too."
+
+  - id: v2-sound
+    pair: v2
+    operator: change-arithmetic
+    artifact: recipient-wrap-smt
+    medium: smt-lib
+    key: none
+    description: "Extends the overdraft check to the recipient. Z3 answers unsat: no balance can go negative."
+    statement: |
+      ; ledger.go keeps balances as int64
+      (declare-const a Int)
+      (declare-const b Int)
+      (declare-const amount Int)
+      (assert (and (>= a 0) (>= b 0)))
+      (assert (and (> amount 0) (<= amount a)))          ; ledger.go: the transfer guard
+      (assert (<= amount (- 9223372036854775807 b)))     ; ledger.go: the recipient's overflow check
+      (assert (or (< (- a amount) 0) (< (+ b amount) 0)))  ; the violation: a balance ends below zero
+      (check-sat)
+    diff: |
+      --- a/checks/transfer.smt2
+      +++ b/checks/transfer.smt2
+      @@ -7,3 +7,3 @@
+       (assert (<= amount (- 9223372036854775807 b)))     ; ledger.go: the recipient's overflow check
+      -(assert (< (- a amount) 0))                        ; the violation: the sender ends below zero
+      +(assert (or (< (- a amount) 0) (< (+ b amount) 0)))  ; the violation: a balance ends below zero
+       (check-sat)
+    receipt: |
+      [q5 cli] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios: &v2-sound-scenarios
+        - id: s1
+          text: "a = 10, b = 0, amount = 3"
+          answer: true
+          key_line: "[q5 s1 a=10 b=0 amount=3] sat (covered)"
+          why: "Every premise holds; in int64 the sender ends at 7 and the recipient at 3."
+        - id: s2
+          text: "a = 10, b = 9223372036854775800, amount = 10"
+          answer: false
+          key_line: "[q5 s2 a=10 b=9223372036854775800 amount=10] unsat (not covered)"
+          why: "The overflow check refuses it, as ledger.go does."
+        - id: s3
+          text: "a = 2, b = 0, amount = 5"
+          answer: false
+          key_line: "[q5 s3 a=2 b=0 amount=5] unsat (not covered)"
+          why: "The guard refuses an overdraft."
+        - id: s4
+          text: "a = 5, b = 9223372036854775802, amount = 5"
+          answer: true
+          key_line: "[q5 s4 a=5 b=9223372036854775802 amount=5] sat (covered)"
+          why: "Exactly the largest int64 for the recipient: in range, and covered."
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q5 violation] unsat", "[q5 violation i64] unsat", "[q5 cli] unsat"]
+    explain: "The overflow assertion keeps b + amount inside int64 and the guard keeps a - amount at zero or above, so Int and ledger.go's int64 agree on every transfer the file admits. Over 64-bit bit-vectors the same assertions are unsat as well."
+
+  - id: v2-flawed
+    pair: v2
+    operator: change-arithmetic
+    artifact: recipient-wrap-smt
+    medium: smt-lib
+    key: { class: G4, also: [G8] }
+    description: "Extends the overdraft check to the recipient. Z3 answers unsat: no balance can go negative."
+    statement: |
+      ; ledger.go keeps balances as int64
+      (declare-const a Int)
+      (declare-const b Int)
+      (declare-const amount Int)
+      (assert (and (>= a 0) (>= b 0)))
+      (assert (and (> amount 0) (<= amount a)))          ; ledger.go: the transfer guard
+      (assert (or (< (- a amount) 0) (< (+ b amount) 0)))  ; the violation: a balance ends below zero
+      (check-sat)
+    diff: |
+      --- a/checks/transfer.smt2
+      +++ b/checks/transfer.smt2
+      @@ -6,3 +6,3 @@
+       (assert (and (> amount 0) (<= amount a)))          ; ledger.go: the transfer guard
+      -(assert (< (- a amount) 0))                        ; the violation: the sender ends below zero
+      +(assert (or (< (- a amount) 0) (< (+ b amount) 0)))  ; the violation: a balance ends below zero
+       (check-sat)
+    receipt: |
+      [q6 cli] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios:
+        - id: s1
+          text: "a = 10, b = 0, amount = 3"
+          answer: true
+          key_line: "[q6 s1 a=10 b=0 amount=3] sat (covered)"
+          why: "Every premise holds; int64 and Int agree here."
+        - id: s2
+          text: "a = 10, b = 9223372036854775800, amount = 10"
+          answer: true
+          key_line: "[q6 s2 a=10 b=9223372036854775800 amount=10] sat (covered)"
+          why: "Covered over Int. In int64 the run gives b + amount = -9223372036854775806: ledger.go's recipient wraps negative."
+        - id: s3
+          text: "a = 2, b = 0, amount = 5"
+          answer: false
+          key_line: "[q6 s3 a=2 b=0 amount=5] unsat (not covered)"
+          why: "The guard refuses it."
+        - id: s4
+          text: "a = 5, b = 9223372036854775802, amount = 5"
+          answer: true
+          key_line: "[q6 s4 a=5 b=9223372036854775802 amount=5] sat (covered)"
+          why: "Covered, and exactly at the largest int64: still in range."
+    evidence:
+      type: witness
+      load_bearing: ["statement:1", "statement:2", "statement:7"]
+      reference: { run: RUN-z3-bv64-pairs, line: "[q6 witness i64] a=9223372036854775800 b=9223372036854775590 amount=9223372036586340265: a-amount=268435535 b+amount=-268435761" }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q6 cli] unsat", "[q6 violation i64] sat"]
+    explain: "Declared Int, the constants are unbounded and b + amount never wraps. ledger.go's int64 does: with nothing keeping b + amount below 2^63, the same assertions over 64-bit bit-vectors are sat, with a recipient that ends negative."
+
+  - id: v3-flawed
+    pair: v3
+    operator: change-arithmetic
+    artifact: fee-multiplication
+    key: { class: G4, also: [G8] }
+    claim: "unsat: the fee is never negative."
+    description: "Adds the fee to the transfer checks. Z3 answers unsat: the fee is never negative."
+    statement: |
+      # ledger.go: fee := amount * rateBps / 10000, all int64
+      amount, rate, fee = Ints('amount rate fee')
+      s = Solver()
+      s.add(amount > 0)
+      s.add(rate >= 0, rate <= 10000)          # ledger.go: the rate in basis points
+      s.add(fee == amount * rate / 10000)
+      s.add(fee < 0)                           # the violation: a negative fee pays the sender
+      print(s.check())
+    diff: |
+      --- a/checks/fee_query.py
+      +++ b/checks/fee_query.py
+      @@ -5,2 +5,4 @@
+       s.add(rate >= 0, rate <= 10000)          # ledger.go: the rate in basis points
+      +s.add(fee == amount * rate / 10000)
+      +s.add(fee < 0)                           # the violation: a negative fee pays the sender
+       print(s.check())
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q7 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios:
+        - id: s1
+          text: "amount = 10000, rate = 50"
+          answer: true
+          key_line: "[q7 s1 amount=10000 rate=50] sat (covered)"
+          why: "Every premise holds; the run's int64 line gives a fee of 50, as Int does."
+        - id: s2
+          text: "amount = 1000000000000000, rate = 10000"
+          answer: true
+          key_line: "[q7 s2 amount=1000000000000000 rate=10000] sat (covered)"
+          why: "Covered: nothing bounds the amount. Over Int the fee is positive; in int64 amount * rate overflows, and the run gives fee = -844674407370955."
+        - id: s3
+          text: "amount = 1000000000000, rate = 10000"
+          answer: true
+          key_line: "[q7 s3 amount=1000000000000 rate=10000] sat (covered)"
+          why: "Covered, and the product still fits in int64: the run gives a fee of 1000000000000."
+        - id: s4
+          text: "amount = 5, rate = 20000"
+          answer: false
+          key_line: "[q7 s4 amount=5 rate=20000] unsat (not covered)"
+          why: "rate <= 10000 refuses it."
+    evidence:
+      type: witness
+      load_bearing: ["statement:1", "statement:2", "statement:6"]
+      reference: { run: RUN-z3-bv64-pairs, line: "[q7 witness i64] amount=7753720574186094592 rate=8191: amount*rate=-1414622623685410816 fee=-141462262368541" }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q7 violation] unsat", "[q7 violation i64] sat"]
+    explain: "Over Int a product of two non-negative numbers is non-negative, so the unsat is easy. ledger.go multiplies in int64 before it divides: with no bound on the amount the product wraps, and over 64-bit bit-vectors the same premises admit a negative fee."
+
+  - id: v3-sound
+    pair: v3
+    operator: change-arithmetic
+    artifact: fee-multiplication
+    key: none
+    claim: "unsat: the fee is never negative."
+    description: "Adds the fee to the transfer checks. Z3 answers unsat: the fee is never negative."
+    statement: |
+      # ledger.go: fee := amount * rateBps / 10000, all int64
+      amount, rate, fee = Ints('amount rate fee')
+      s = Solver()
+      s.add(amount > 0)
+      s.add(amount <= 10**12)                  # ledger.go: the per-transfer cap
+      s.add(rate >= 0, rate <= 10000)          # ledger.go: the rate in basis points
+      s.add(fee == amount * rate / 10000)
+      s.add(fee < 0)                           # the violation: a negative fee pays the sender
+      print(s.check())
+    diff: |
+      --- a/checks/fee_query.py
+      +++ b/checks/fee_query.py
+      @@ -6,2 +6,4 @@
+       s.add(rate >= 0, rate <= 10000)          # ledger.go: the rate in basis points
+      +s.add(fee == amount * rate / 10000)
+      +s.add(fee < 0)                           # the violation: a negative fee pays the sender
+       print(s.check())
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q8 violation] unsat
+    restatement:
+      run: RUN-z3-bv64-pairs
+      scenarios: &v3-sound-scenarios
+        - id: s1
+          text: "amount = 10000, rate = 50"
+          answer: true
+          key_line: "[q8 s1 amount=10000 rate=50] sat (covered)"
+          why: "Every premise holds; the fee is 50 in int64 and over Int."
+        - id: s2
+          text: "amount = 1000000000000000, rate = 10000"
+          answer: false
+          key_line: "[q8 s2 amount=1000000000000000 rate=10000] unsat (not covered)"
+          why: "Over the per-transfer cap, which ledger.go enforces, so it never reaches the multiplication."
+        - id: s3
+          text: "amount = 1000000000000, rate = 10000"
+          answer: true
+          key_line: "[q8 s3 amount=1000000000000 rate=10000] sat (covered)"
+          why: "Exactly at the cap: the product fits in int64, and the run gives a fee of 1000000000000."
+        - id: s4
+          text: "amount = 5, rate = 20000"
+          answer: false
+          key_line: "[q8 s4 amount=5 rate=20000] unsat (not covered)"
+          why: "rate <= 10000 refuses it."
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-bv64-pairs
+    key_lines: ["[q8 violation] unsat", "[q8 violation i64] unsat"]
+    explain: "The cap keeps amount * rate far below the largest int64, so the multiplication never wraps and Int agrees with ledger.go. Over 64-bit bit-vectors, cap included, a negative fee is unsat too."

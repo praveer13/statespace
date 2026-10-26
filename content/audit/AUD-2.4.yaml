@@ -1,0 +1,133 @@
+# AUD-2.4 · S2 · G8a Statement substitution (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# The sound member's solution is byte for byte the one the imported RUN-lean-comparator judged (spine section 6.2's key
+# run; research/evidence/lean-measure/proj/judge/Solution.lean), so its key line is that run's verdict. Every receipt,
+# every scenario and the flawed member are keyed by RUN-lean-comparator-pair, recorded in the Bench image
+# (content/audit/tools/record-keys-s1s2.mjs): the same challenge, built, read with #print axioms and judged by
+# lake comparator for both solutions. Spine section 6 ships this anchor keyed by executed runs, without variants;
+# they land with W2-T13.
+id: AUD-2.4
+stage: S2
+class: G8a
+medium: lean
+artifact: pinned-conservation
+subject: "a solution to a pinned challenge (Lean)"
+claim: "Comparator-ready; proved."
+requirement: >-
+  The challenge pins conserves (a b amt : Int) : (transfer a b amt).1 + (transfer a b amt).2 = a + b, with transfer
+  exactly as Challenge.lean defines it. A solution counts only if it proves that statement, under that name, for
+  every a, b and amt, using only the permitted axioms.
+scenario_question: "Does the theorem, as written, rule out this result?"
+scheduled_after: [LAB-2, S2.L10]
+kcs: [KC-2.statement-pinning, KC-2.kernel-not-requirement]
+based_on:
+  incident: "FormalQualBench: agents attempted workarounds at the elaborator level, and the out-of-band check against the pinned statement caught what the build accepted: 'Comparator catches the illegal axiom'."
+  date: "2026-03-18"
+  date_marks: "the first of the two dates on which the benchmark's runs were evaluated"
+  source: https://math.inc/formalqualbench
+
+cases:
+  - id: sound
+    key: none
+    description: "Fills in the proof of conserves in Solution.lean. The build is green, with standard axioms."
+    statement: |
+      def transfer (a b amt : Int) : Int × Int :=
+        if 0 < amt ∧ amt ≤ a then (a - amt, b + amt) else (a, b)
+
+      theorem conserves (a b amt : Int) :
+          (transfer a b amt).1 + (transfer a b amt).2 = a + b
+    diff: |
+      --- a/Solution.lean
+      +++ b/Solution.lean
+      @@ -4,3 +4,3 @@
+       theorem conserves (a b amt : Int) :
+           (transfer a b amt).1 + (transfer a b amt).2 = a + b := by
+      -  sorry
+      +  unfold transfer; split <;> simp <;> omega
+    receipt: |
+      ✔ [4/5] Built Solution (159ms)
+      Build completed successfully (5 jobs).
+      lake exit=0
+      'conserves' depends on axioms: [propext, Quot.sound]
+    restatement:
+      run: RUN-lean-comparator-pair
+      scenarios: &sound-scenarios
+        - id: s1
+          text: "transfer 5 3 2 returns (3, 6)"
+          answer: true
+          key_line: '("s1", true, 3, 5)'
+          why: "3 + 6 is 9, not 8: ruled out. transfer actually returns (3, 5)."
+        - id: s2
+          text: "transfer 5 3 9 returns (-4, 13)"
+          answer: true
+          key_line: '("s2", true, 5, 3)'
+          why: "The theorem covers every amount, and -4 + 13 is 9, not 8: ruled out."
+        - id: s3
+          text: "transfer 5 3 2 returns (3, 5)"
+          answer: false
+          key_line: '("s3", false, 3, 5)'
+          why: "The total is kept: allowed, and it is what transfer returns."
+        - id: s4
+          text: "transfer 5 3 0 returns (5, 4)"
+          answer: true
+          key_line: '("s4", true, 5, 3)'
+          why: "A zero amount is covered too, and 5 + 4 is not 8: ruled out."
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-lean-comparator
+    key_lines: [{ config: judge, line: "Your solution is okay!" }]
+    explain: "lake comparator accepts it: the solution's conserves is the challenge's statement, with the challenge's transfer and only permitted axioms (RUN-lean-comparator; again in the Bench, without the sandbox, in RUN-lean-comparator-pair). The theorem covers every amount."
+
+  - id: flawed
+    key: { class: G8a, also: [G1] }
+    description: "Fills in the proof of conserves in Solution.lean. The build is green, with standard axioms."
+    statement: |
+      def transfer (a b amt : Int) : Int × Int :=
+        if 0 < amt ∧ amt ≤ a then (a - amt, b + amt) else (a, b)
+
+      theorem conserves (a b amt : Int) (h : 0 < amt ∧ amt ≤ a) :
+          (transfer a b amt).1 + (transfer a b amt).2 = a + b
+    diff: |
+      --- a/Solution.lean
+      +++ b/Solution.lean
+      @@ -4,3 +4,3 @@
+      -theorem conserves (a b amt : Int) :
+      +theorem conserves (a b amt : Int) (h : 0 < amt ∧ amt ≤ a) :
+           (transfer a b amt).1 + (transfer a b amt).2 = a + b := by
+      -  sorry
+      +  unfold transfer; split <;> simp <;> omega
+    receipt: |
+      ✔ [4/5] Built Solution (149ms)
+      Build completed successfully (5 jobs).
+      lake exit=0
+      'conserves' depends on axioms: [propext, Quot.sound]
+    restatement:
+      run: RUN-lean-comparator-pair
+      scenarios:
+        - id: s1
+          text: "transfer 5 3 2 returns (3, 6)"
+          answer: true
+          key_line: '("s1", true, 3, 5)'
+          why: "2 meets h (0 < 2 and 2 ≤ 5), and 3 + 6 is not 8: ruled out."
+        - id: s2
+          text: "transfer 5 3 9 returns (-4, 13)"
+          answer: false
+          key_line: '("s2", false, 5, 3)'
+          why: "9 fails h (9 > 5), so this theorem says nothing about it."
+        - id: s3
+          text: "transfer 5 3 2 returns (3, 5)"
+          answer: false
+          key_line: '("s3", false, 3, 5)'
+          why: "The total is kept: allowed."
+        - id: s4
+          text: "transfer 5 3 0 returns (5, 4)"
+          answer: false
+          key_line: '("s4", false, 5, 3)'
+          why: "0 fails h, so the theorem is silent about a zero amount."
+    evidence: { type: identifiers, load_bearing: ["statement:4", "diff:5"] }
+    key_run: RUN-lean-comparator-pair
+    key_lines:
+      - { config: flawed, line: "lake exit=0" }
+      - { config: flawed, line: "error: Challenge and solution theorem statement do not match: 'conserves'" }
+      - { config: flawed, line: "comparator exit=1" }
+    explain: "The name is the challenge's, but the statement is not: the added hypothesis h limits conserves to accepted transfers, a weaker theorem under the pinned name. The build and the axioms are clean; lake comparator rejects it, because the solution's statement does not match the challenge's."
+
+variants: { pending: { lands: W2-T13 } }

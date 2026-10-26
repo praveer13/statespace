@@ -1,0 +1,246 @@
+# AUD-8.2 · S8 · G8 Model–implementation drift (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Every case is keyed by RUN-tlc-trace-drift, recorded in the Bench image by
+# content/audit/tools/record-keys-s7-s8.mjs: a minimal Rust outbox simulator built once per case with that case's
+# worker.rs (the statement, verbatim), its end-state suite, its seed-1 NDJSON trace, and TLC trace validation of the
+# trace against S8.L2's Outbox spec with S8.L6's trace module. Tags are neutral: q1 sound member, q2 flawed member,
+# q3/q4 variant pair v1 (flawed/sound). The receipts show what the agent showed, the suite and the trace; the trace
+# validation verdict is the key. Spine section 6.2's key run cell names RUN-tlc-trace-validation, which LAB-8 records
+# on the reference simulator; until it exists, content/audit/README.md lists the cell as an open item.
+id: AUD-8.2
+stage: S8
+class: G8
+medium: rust
+artifact: outbox-reply-path
+subject: "an outbox simulator's worker (Rust)"
+claim: "The simulator implements the outbox spec; all tests pass."
+requirement: >-
+  Every run of the simulator is a behavior of the Outbox spec (S8.L2): in particular the worker commits an intent
+  before it sends it, and stores the provider's result before it acknowledges, so that no crash can lose a result the
+  outbox already reports as done.
+scenario_question: "Does the case's run establish this?"
+scheduled_after: [LAB-8.6]
+kcs: [KC-8.trace-validation]
+based_on:
+  incident: "CCF (NSDI 2025): checking Microsoft's Confidential Consortium Framework against its TLA+ specifications, trace validation included, found six consensus bugs (section 7)."
+  date: "2024-10-16"
+  date_marks: "the paper's arXiv v2, the version the course cites"
+  source: https://arxiv.org/abs/2406.17455
+
+cases:
+  - id: sound
+    key: none
+    description: "Moves one worker step earlier so the writes batch. All tests pass."
+    statement: |
+      // sim/src/worker.rs: the worker's path for one command
+      pub fn submit(w: &mut Worker, c: &str) {
+          w.begin();
+          w.insert_command(c);
+          w.insert_intent(c);
+          w.commit(c);              // the command and its intent, one transaction
+          w.arm_timer(c);
+          w.dispatch(c);            // send the intent with its key
+      }
+
+      pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+          w.receive(c, reply);
+          w.persist(c);             // store the provider's result
+          w.ack(c);                 // mark the intent done
+      }
+    diff: |
+      --- a/sim/src/worker.rs
+      +++ b/sim/src/worker.rs
+      @@ -5,4 +5,4 @@ pub fn submit(w: &mut Worker, c: &str) {
+           w.insert_intent(c);
+           w.commit(c);              // the command and its intent, one transaction
+      +    w.arm_timer(c);
+           w.dispatch(c);            // send the intent with its key
+      -    w.arm_timer(c);
+    receipt: |
+      [q1] test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+      [q1] seed 1: 7 trace lines written to q1-seed-1.ndjson
+      [q1]      1	{"event":"Commit","cmd":"c1"}
+      [q1]      2	{"event":"TimerArmed","cmd":"c1"}
+      [q1]      3	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q1]      4	{"event":"Receive","cmd":"c1"}
+      [q1]      5	{"event":"Persist","cmd":"c1"}
+      [q1]      6	{"event":"Ack","cmd":"c1"}
+      [q1]      7	{"event":"End"}
+    restatement:
+      run: RUN-tlc-trace-drift
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: true, key_line: '[q1] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted"', why: "TLC's trace validation matched all seven lines: the trace is accepted." }
+        - { id: s2, text: "On seed 1, the worker stores the provider's result before it acknowledges.", answer: true, key_line: '[q1] 5 {"event":"Persist","cmd":"c1"}', why: "Line 5 is Persist and line 6 is Ack." }
+        - { id: s3, text: "The suite would fail if the worker acknowledged before it stored the result.", answer: false, key_line: "[q2] test result: ok. 2 passed; 0 failed", why: "The suite reads the final state only. The ack-before-persist worker (q2 in the same run) passes it." }
+        - { id: s4, text: "On seed 1, the provider charges c1 once.", answer: true, key_line: "[q1] test tests::provider_is_charged_once ... ok", why: "The suite's second test checks exactly that." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-tlc-trace-drift
+    key_lines:
+      - { config: q1, line: '[q1] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted", lines |-> 7, matched |-> 7, first_unmatched |-> 0' }
+      - { config: q1, line: "[q1] test result: ok. 2 passed; 0 failed" }
+    explain: "The timer is implementation-only: the trace module reads TimerArmed as a stuttering step, so it may sit before or after Dispatch, and TLC accepts the trace. That is TESTED [T] over one seed, composed with the spec's MODEL-CHECKED [M] result; more seeds, and seeds with crashes, would make the [T] stronger."
+
+  - id: flawed
+    key: { class: G8, also: [G11] }
+    description: "Moves one worker step earlier so the writes batch. All tests pass."
+    statement: |
+      // sim/src/worker.rs: the worker's path for one command
+      pub fn submit(w: &mut Worker, c: &str) {
+          w.begin();
+          w.insert_command(c);
+          w.insert_intent(c);
+          w.commit(c);              // the command and its intent, one transaction
+          w.dispatch(c);            // send the intent with its key
+          w.arm_timer(c);
+      }
+
+      pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+          w.receive(c, reply);
+          w.ack(c);                 // mark the intent done
+          w.persist(c);             // store the provider's result
+      }
+    diff: |
+      --- a/sim/src/worker.rs
+      +++ b/sim/src/worker.rs
+      @@ -11,4 +11,4 @@ pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+       pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+           w.receive(c, reply);
+      +    w.ack(c);                 // mark the intent done
+           w.persist(c);             // store the provider's result
+      -    w.ack(c);                 // mark the intent done
+    receipt: |
+      [q2] test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+      [q2] seed 1: 7 trace lines written to q2-seed-1.ndjson
+      [q2]      1	{"event":"Commit","cmd":"c1"}
+      [q2]      2	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q2]      3	{"event":"TimerArmed","cmd":"c1"}
+      [q2]      4	{"event":"Receive","cmd":"c1"}
+      [q2]      5	{"event":"Ack","cmd":"c1"}
+      [q2]      6	{"event":"Persist","cmd":"c1"}
+      [q2]      7	{"event":"End"}
+    restatement:
+      run: RUN-tlc-trace-drift
+      scenarios:
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: false, key_line: '[q2] <<"trace-validation", [diameter |-> 6, verdict |-> "rejected"', why: "TLC's trace validation matched four lines and no behavior matches line 5: rejected." }
+        - { id: s2, text: "On seed 1, the worker stores the provider's result before it acknowledges.", answer: false, key_line: '[q2] 5 {"event":"Ack","cmd":"c1"}', why: "Line 5 is Ack and line 6 is Persist." }
+        - { id: s3, text: "The suite would fail if the worker acknowledged before it stored the result.", answer: false, key_line: "[q2] test result: ok. 2 passed; 0 failed", why: "This worker does exactly that, and the suite passes." }
+        - { id: s4, text: "On seed 1, the provider charges c1 once.", answer: true, key_line: "[q2] test tests::provider_is_charged_once ... ok", why: "True, and beside the point: the drift costs nothing until a crash lands between Ack and Persist." }
+    evidence:
+      type: witness
+      load_bearing: ["statement:13", "receipt:7"]
+      reference: "RUN-tlc-trace-drift (q2): trace q2-seed-1.ndjson, rejected with first_unmatched 5, the Ack line"
+    key_run: RUN-tlc-trace-drift
+    key_lines:
+      - { config: q2, line: '[q2] <<"trace-validation", [diameter |-> 6, verdict |-> "rejected", lines |-> 7, matched |-> 4, first_unmatched |-> 5' }
+      - { config: q2, line: "[q2] test result: ok. 2 passed; 0 failed" }
+    explain: "The worker now acknowledges before it stores the provider's result, while the spec's Ack needs a stored result. The suite checks end states, and on a fault-free seed the end state is the same, so it passes. Trace validation checks the order of steps: no behavior of the spec matches line 5, the Ack. The code is not the system the spec describes. A crash between Ack and Persist would lose a result the outbox reports as done. The claim also leans on a suite that cannot see order, so G11 is accepted too."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: reorder-effects
+    artifact: outbox-submit-path
+    key: G8
+    description: "Moves one step of submit so the transaction closes later. All tests pass."
+    statement: |
+      // sim/src/worker.rs: the worker's path for one command
+      pub fn submit(w: &mut Worker, c: &str) {
+          w.begin();
+          w.insert_command(c);
+          w.insert_intent(c);
+          w.dispatch(c);            // send the intent with its key
+          w.commit(c);              // the command and its intent, one transaction
+          w.arm_timer(c);
+      }
+
+      pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+          w.receive(c, reply);
+          w.persist(c);             // store the provider's result
+          w.ack(c);                 // mark the intent done
+      }
+    diff: |
+      --- a/sim/src/worker.rs
+      +++ b/sim/src/worker.rs
+      @@ -5,4 +5,4 @@ pub fn submit(w: &mut Worker, c: &str) {
+           w.insert_intent(c);
+      +    w.dispatch(c);            // send the intent with its key
+           w.commit(c);              // the command and its intent, one transaction
+      -    w.dispatch(c);            // send the intent with its key
+           w.arm_timer(c);
+    receipt: |
+      [q3] test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+      [q3] seed 1: 7 trace lines written to q3-seed-1.ndjson
+      [q3]      1	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q3]      2	{"event":"Commit","cmd":"c1"}
+      [q3]      3	{"event":"TimerArmed","cmd":"c1"}
+      [q3]      4	{"event":"Receive","cmd":"c1"}
+      [q3]      5	{"event":"Persist","cmd":"c1"}
+      [q3]      6	{"event":"Ack","cmd":"c1"}
+      [q3]      7	{"event":"End"}
+    restatement:
+      run: RUN-tlc-trace-drift
+      scenarios:
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: false, key_line: '[q3] <<"trace-validation", [diameter |-> 1, verdict |-> "rejected"', why: "No behavior matches line 1: the spec cannot dispatch an intent that was never committed." }
+        - { id: s2, text: "On seed 1, the worker commits the intent before it sends it.", answer: false, key_line: '[q3] 1 {"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}', why: "Line 1 is Dispatch; Commit is line 2." }
+        - { id: s3, text: "On seed 1, the provider charges c1 once.", answer: true, key_line: "[q3] test tests::provider_is_charged_once ... ok", why: "True on this fault-free seed." }
+    evidence:
+      type: witness
+      load_bearing: ["statement:6", "receipt:3"]
+      reference: "RUN-tlc-trace-drift (q3): trace q3-seed-1.ndjson, rejected with first_unmatched 1, the Dispatch line"
+    key_run: RUN-tlc-trace-drift
+    key_lines:
+      - { config: q3, line: '[q3] <<"trace-validation", [diameter |-> 1, verdict |-> "rejected", lines |-> 7, matched |-> 0, first_unmatched |-> 1' }
+      - { config: q3, line: "[q3] test result: ok. 2 passed; 0 failed" }
+    explain: "The worker sends the intent before its transaction commits. If the transaction then fails, the provider has charged a command the database never recorded. The suite sees only the end state and passes; trace validation rejects line 1, because the spec's Dispatch needs a committed intent."
+
+  - id: v1-sound
+    pair: v1
+    operator: reorder-effects
+    artifact: outbox-submit-path
+    key: none
+    description: "Moves one step of submit so the transaction closes later. All tests pass."
+    statement: |
+      // sim/src/worker.rs: the worker's path for one command
+      pub fn submit(w: &mut Worker, c: &str) {
+          w.begin();
+          w.insert_intent(c);
+          w.insert_command(c);
+          w.commit(c);              // the command and its intent, one transaction
+          w.dispatch(c);            // send the intent with its key
+          w.arm_timer(c);
+      }
+
+      pub fn on_reply(w: &mut Worker, c: &str, reply: Reply) {
+          w.receive(c, reply);
+          w.persist(c);             // store the provider's result
+          w.ack(c);                 // mark the intent done
+      }
+    diff: |
+      --- a/sim/src/worker.rs
+      +++ b/sim/src/worker.rs
+      @@ -3,4 +3,4 @@ pub fn submit(w: &mut Worker, c: &str) {
+           w.begin();
+      +    w.insert_intent(c);
+           w.insert_command(c);
+      -    w.insert_intent(c);
+           w.commit(c);              // the command and its intent, one transaction
+    receipt: |
+      [q4] test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+      [q4] seed 1: 7 trace lines written to q4-seed-1.ndjson
+      [q4]      1	{"event":"Commit","cmd":"c1"}
+      [q4]      2	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q4]      3	{"event":"TimerArmed","cmd":"c1"}
+      [q4]      4	{"event":"Receive","cmd":"c1"}
+      [q4]      5	{"event":"Persist","cmd":"c1"}
+      [q4]      6	{"event":"Ack","cmd":"c1"}
+      [q4]      7	{"event":"End"}
+    restatement:
+      run: RUN-tlc-trace-drift
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: true, key_line: '[q4] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted"', why: "All seven lines matched." }
+        - { id: s2, text: "On seed 1, the worker commits the intent before it sends it.", answer: true, key_line: '[q4] 1 {"event":"Commit","cmd":"c1"}', why: "Line 1 is Commit, line 2 is Dispatch." }
+        - { id: s3, text: "On seed 1, the provider charges c1 once.", answer: true, key_line: "[q4] test tests::provider_is_charged_once ... ok", why: "The suite's second test." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-tlc-trace-drift
+    key_lines:
+      - { config: q4, line: '[q4] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted", lines |-> 7, matched |-> 7, first_unmatched |-> 0' }
+    explain: "The two inserts sit inside one transaction, and the log records only its Commit, so their order is invisible to the spec: TLC accepts the trace. The swap changes nothing the spec can see."

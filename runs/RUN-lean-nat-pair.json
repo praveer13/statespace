@@ -1,0 +1,464 @@
+{
+  "id": "RUN-lean-nat-pair",
+  "title": "AUD-3.2's cases: four non-negativity theorems build with the same axioms; on the Nat models without a guard an overdraft truncates to 0 and the total changes",
+  "task": "W2-T13",
+  "origin": "recorded",
+  "records": "AUD-3.2 (content/audit/AUD-3.2.yaml): lean on each project and the step-3 scenarios evaluated on the same model",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:02:46.273Z",
+  "started_at": "2026-10-26T18:02:45.016Z",
+  "duration_s": 0.409,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-lean-nat-pair-flawed",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh",
+    "flawed"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/sound/Pay.lean",
+      "sha256": "3cd6b93f6879443cb1afd45aedf23c3f95eff71dac3b88b3aa9b04e9021e6eb1",
+      "bytes": 361,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/sound/Scen.lean",
+      "sha256": "f9d3e9d7a4e6ff1904c12c36c8dfd0ab1716bae9c08d61232b4b2dd948166b54",
+      "bytes": 528,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/run.sh",
+      "sha256": "669780554b779c0c7919a7c60e40400a2c8d85605f6248b17e6f9721044b7283",
+      "bytes": 257,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/flawed/Pay.lean",
+      "sha256": "94c8a73225acb4964e161beb9b961881cf1b2372df6a76748269ebf71b621577",
+      "bytes": 292,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/flawed/Scen.lean",
+      "sha256": "6ae5a043d21feb8153a87a1a22ed2718b8c632640dea87f8efd2045e17e695a3",
+      "bytes": 528,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/v1-sound/Pay.lean",
+      "sha256": "a103e8ac45cdfd27846c2f5e16d1b6af48e7e7498362980e433d557b09138cd9",
+      "bytes": 276,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/v1-sound/Scen.lean",
+      "sha256": "28d012af404c2d9f6b2b9b305dde9cb501a27d00e66191e4b9cd59ef7eda291c",
+      "bytes": 586,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/v1-flawed/Pay.lean",
+      "sha256": "50523590d2a97df10013269733d34757f825381b11ed4f1ef1d85592cb94d920",
+      "bytes": 243,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/inputs/v1-flawed/Scen.lean",
+      "sha256": "4bcafdba679d9dc19a96b477dcecfa9599031ab541233b59e80696ab41dd3221",
+      "bytes": 586,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "'pay_nonneg' depends on axioms: [propext]",
+    "lean exit=0",
+    "'pay_nonneg' depends on axioms: [propext]",
+    "[q1 s1 pay 30 0 50] returns (0, 50) kept=false",
+    "[q1 s2 pay 30 0 20] returns (10, 20) kept=true",
+    "[q1 s3 pay 30 0 30] returns (0, 30) kept=true",
+    "[q1 s4 pay 0 5 1] returns (0, 6) kept=false",
+    "scenarios exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-nat-pair/sound.log",
+      "sha256": "a68c87d194be14282f61e3046401d3b1a0c5c93d85bd61c83f085ef151a0bb24",
+      "bytes": 295,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/flawed.log",
+      "sha256": "9d48880c4c8d58f348f98febd955aa6953c058ea488897186d7478963e566dd5",
+      "bytes": 297,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/v1-sound.log",
+      "sha256": "410f0c07e75ffbc1d62fa10ecf17bfb918c4105b9cef948c88fcab0afc1c3b69",
+      "bytes": 325,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-nat-pair/v1-flawed.log",
+      "sha256": "1fd0753a9f4287b873f7ff926fded803f5695ee54e7b6fd51bff0ba51ced24e8",
+      "bytes": 335,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "sound": {
+      "build_exit": 0,
+      "scenarios": {
+        "q2": {
+          "s1": "returns (30, 0) kept=true",
+          "s2": "returns (10, 20) kept=true",
+          "s3": "returns (0, 30) kept=true",
+          "s4": "returns (0, 5) kept=true"
+        }
+      }
+    },
+    "flawed": {
+      "build_exit": 0,
+      "scenarios": {
+        "q1": {
+          "s1": "returns (0, 50) kept=false",
+          "s2": "returns (10, 20) kept=true",
+          "s3": "returns (0, 30) kept=true",
+          "s4": "returns (0, 6) kept=false"
+        }
+      }
+    },
+    "v1-sound": {
+      "build_exit": 0,
+      "scenarios": {
+        "q3": {
+          "s1": "returns none kept=true",
+          "s2": "returns (some 25) kept=true",
+          "s3": "returns (some 0) kept=true",
+          "s4": "returns none kept=true"
+        }
+      }
+    },
+    "v1-flawed": {
+      "build_exit": 0,
+      "scenarios": {
+        "q4": {
+          "s1": "returns (some 0) kept=false",
+          "s2": "returns (some 25) kept=true",
+          "s3": "returns (some 0) kept=true",
+          "s4": "returns (some 0) kept=false"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "flawed",
+  "configs": [
+    {
+      "id": "sound",
+      "origin": "recorded",
+      "purpose": "run.sh sound: lean sound/Pay.lean, then the same file with sound/Scen.lean appended",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:44.605Z",
+      "duration_s": 0.408,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-nat-pair-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/sound/Pay.lean",
+          "sha256": "3cd6b93f6879443cb1afd45aedf23c3f95eff71dac3b88b3aa9b04e9021e6eb1",
+          "bytes": 361,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/sound/Scen.lean",
+          "sha256": "f9d3e9d7a4e6ff1904c12c36c8dfd0ab1716bae9c08d61232b4b2dd948166b54",
+          "bytes": 528,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/run.sh",
+          "sha256": "669780554b779c0c7919a7c60e40400a2c8d85605f6248b17e6f9721044b7283",
+          "bytes": 257,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'pay_nonneg' depends on axioms: [propext]",
+        "lean exit=0",
+        "'pay_nonneg' depends on axioms: [propext]",
+        "[q2 s1 pay 30 0 50] returns (30, 0) kept=true",
+        "[q2 s2 pay 30 0 20] returns (10, 20) kept=true",
+        "[q2 s3 pay 30 0 30] returns (0, 30) kept=true",
+        "[q2 s4 pay 0 5 1] returns (0, 5) kept=true",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-nat-pair/sound.log"
+      ]
+    },
+    {
+      "id": "flawed",
+      "origin": "recorded",
+      "purpose": "run.sh flawed: lean flawed/Pay.lean, then the same file with flawed/Scen.lean appended",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:45.016Z",
+      "duration_s": 0.409,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-nat-pair-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/flawed/Pay.lean",
+          "sha256": "94c8a73225acb4964e161beb9b961881cf1b2372df6a76748269ebf71b621577",
+          "bytes": 292,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/flawed/Scen.lean",
+          "sha256": "6ae5a043d21feb8153a87a1a22ed2718b8c632640dea87f8efd2045e17e695a3",
+          "bytes": 528,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/run.sh",
+          "sha256": "669780554b779c0c7919a7c60e40400a2c8d85605f6248b17e6f9721044b7283",
+          "bytes": 257,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'pay_nonneg' depends on axioms: [propext]",
+        "lean exit=0",
+        "'pay_nonneg' depends on axioms: [propext]",
+        "[q1 s1 pay 30 0 50] returns (0, 50) kept=false",
+        "[q1 s2 pay 30 0 20] returns (10, 20) kept=true",
+        "[q1 s3 pay 30 0 30] returns (0, 30) kept=true",
+        "[q1 s4 pay 0 5 1] returns (0, 6) kept=false",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-nat-pair/flawed.log"
+      ]
+    },
+    {
+      "id": "v1-sound",
+      "origin": "recorded",
+      "purpose": "run.sh v1-sound: lean v1-sound/Pay.lean, then the same file with v1-sound/Scen.lean appended",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:45.428Z",
+      "duration_s": 0.412,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-nat-pair-v1-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "v1-sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/v1-sound/Pay.lean",
+          "sha256": "a103e8ac45cdfd27846c2f5e16d1b6af48e7e7498362980e433d557b09138cd9",
+          "bytes": 276,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/v1-sound/Scen.lean",
+          "sha256": "28d012af404c2d9f6b2b9b305dde9cb501a27d00e66191e4b9cd59ef7eda291c",
+          "bytes": 586,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/run.sh",
+          "sha256": "669780554b779c0c7919a7c60e40400a2c8d85605f6248b17e6f9721044b7283",
+          "bytes": 257,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'payout_nonneg' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0",
+        "'payout_nonneg' depends on axioms: [propext, Quot.sound]",
+        "[q3 s1 payout 30 50] returns none kept=true",
+        "[q3 s2 payout 30 5] returns (some 25) kept=true",
+        "[q3 s3 payout 30 30] returns (some 0) kept=true",
+        "[q3 s4 payout 0 1] returns none kept=true",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-nat-pair/v1-sound.log"
+      ]
+    },
+    {
+      "id": "v1-flawed",
+      "origin": "recorded",
+      "purpose": "run.sh v1-flawed: lean v1-flawed/Pay.lean, then the same file with v1-flawed/Scen.lean appended",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:45.843Z",
+      "duration_s": 0.429,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-nat-pair-v1-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "v1-flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/v1-flawed/Pay.lean",
+          "sha256": "50523590d2a97df10013269733d34757f825381b11ed4f1ef1d85592cb94d920",
+          "bytes": 243,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/v1-flawed/Scen.lean",
+          "sha256": "4bcafdba679d9dc19a96b477dcecfa9599031ab541233b59e80696ab41dd3221",
+          "bytes": 586,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-nat-pair/inputs/run.sh",
+          "sha256": "669780554b779c0c7919a7c60e40400a2c8d85605f6248b17e6f9721044b7283",
+          "bytes": 257,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'payout_nonneg' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0",
+        "'payout_nonneg' depends on axioms: [propext, Quot.sound]",
+        "[q4 s1 payout 30 50] returns (some 0) kept=false",
+        "[q4 s2 payout 30 5] returns (some 25) kept=true",
+        "[q4 s3 payout 30 30] returns (some 0) kept=true",
+        "[q4 s4 payout 0 1] returns (some 0) kept=false",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-nat-pair/v1-flawed.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-only at /w; the inputs are kept there as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the log's non-blank lines, copied in log order (content/audit/tools/record-keys-s3s4.mjs); a run with several configurations keeps them on each configuration, and the top level repeats the primary one's.",
+    "A scenario line prints what the model returns and whether every unit of money is kept (kept). RUN-lean-nat-trunc records the same truncation on draft 0 (30 - 50 is 0, and the total goes from 30 to 50)."
+  ]
+}

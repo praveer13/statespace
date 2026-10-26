@@ -11,6 +11,7 @@
 //   content/stages.<hash>.json  every stage: the spine's tables joined to the stage's own data
 //   content/labs.<hash>.json    every lab, the same way
 //   content/search.<hash>.json  the search index
+//   content/audit.<hash>.json   the audit pool: every anchor under content/audit/, with its cases and keys
 //   schemas/<name>.schema.json  the published JSON Schemas, with schemas/index.json
 //   content/manifest.json       the entry point: which file is which, by ID
 
@@ -26,12 +27,14 @@ import type { OutputFile, PageProblem, Problem, SourceFile } from '../types.ts'
 import { LABS_FORMAT, MANIFEST_FORMAT, MARKDOWN_INDEX_FORMAT, STAGES_FORMAT } from '../output.ts'
 import type { LabPage, Manifest, ManifestPage, MarkdownIndex, StagePage } from '../output.ts'
 import { buildSearchIndex } from './search.ts'
+import { auditPool, compileAudit } from '../audit.ts'
+import type { AuditAnchor } from '../audit-types.ts'
 
 export { buildSearchIndex } from './search.ts'
 
 export interface ContentInput {
   registry: Registry
-  /** The text files under content/stages/ and content/drawers/, by repository-relative path. */
+  /** The text files under content/stages/, content/drawers/ and content/audit/, by repository-relative path. */
   files: readonly SourceFile[]
   /** The run records by ID: the parsed contents of runs/RUN-*.json. */
   runs: ReadonlyMap<string, unknown>
@@ -50,6 +53,8 @@ export interface BuildReport {
   drawers: number
   stages: number
   labs: number
+  /** Audit anchors built from content/audit/. */
+  auditAnchors: number
   /** Blocks by type, over every built page. */
   blocks: Record<string, number>
   itemRevs: number
@@ -87,11 +92,14 @@ const LESSON_FILE = /^content\/stages\/(S[1-9][0-9]*)\/(S[1-9][0-9]*\.L[0-9]+)\.
 const DRAWER_FILE = /^content\/drawers\/(D-[0-9]{2})\.md$/
 const STAGE_FILE = /^content\/stages\/(S[1-9][0-9]*)\/stage\.yaml$/
 const LAB_FILE = /^content\/stages\/(S[1-9][0-9]*)\/lab\.yaml$/
+const AUDIT_FILE = /^content\/audit\/(AUD-[0-9]+\.[0-9]+)\.ya?ml$/
 /** Files of the same folders that this build leaves alone, with the reason. */
 const LEFT_ALONE: ReadonlyArray<readonly [RegExp, string]> = [
   [/^content\/stages\/budget\.yaml$/, "another task's data"],
   [/^content\/stages\/S[1-9][0-9]*\/placement\.yaml$/, "another task's data"],
   [/^content\/(?:stages|drawers)\/(?:S[1-9][0-9]*\/)?README\.md$/, 'documentation'],
+  [/^content\/audit\/README\.md$/, 'documentation'],
+  [/^content\/audit\/(?:_|tools\/)/, 'an audit author\'s working file'],
 ]
 
 const json = (value: unknown): string => `${JSON.stringify(value)}\n`
@@ -129,6 +137,7 @@ export function buildContent(input: ContentInput): ContentOutput {
   const markdown = new Map<string, string>()
   const stages = new Map<string, { record: LessonStage; runs: Record<string, unknown>; facts: Record<string, unknown>; unresolved: string[] }>()
   const labs = new Map<string, { record: LessonLab; runs: Record<string, unknown>; facts: Record<string, unknown>; unresolved: string[] }>()
+  const auditAnchors = new Map<string, AuditAnchor>()
   let itemRevs = 0
 
   for (const file of [...input.files].sort((a, b) => naturalCompare(a.path, b.path))) {
@@ -151,6 +160,10 @@ export function buildContent(input: ContentInput): ContentOutput {
         const { compiled, problems: found } = compileRecord<LessonLab>('lab', file.text, ctx)
         add(file.path, found)
         if (compiled !== null) labs.set(compiled.record.id, compiled)
+      } else if (AUDIT_FILE.test(file.path)) {
+        const { anchor, problems: found } = compileAudit(file.text, file.path, { index, runs: input.runs })
+        add(file.path, found)
+        if (anchor !== null) auditAnchors.set(anchor.id, anchor)
       } else if (LEFT_ALONE.some(([re]) => re.test(file.path))) {
         skipped.push(`${file.path}: ${LEFT_ALONE.find(([re]) => re.test(file.path))?.[1] ?? 'left alone'}`)
       } else if (/\.md$/.test(file.path)) {
@@ -177,6 +190,7 @@ export function buildContent(input: ContentInput): ContentOutput {
     stages: '',
     labs: '',
     search: '',
+    audit: '',
     md: 'md/index.json',
     schemas: 'schemas/index.json',
   }
@@ -275,6 +289,11 @@ export function buildContent(input: ContentInput): ContentOutput {
   manifest.search = `content/search.${sha256Hex(searchText).slice(0, 12)}.json`
   outputs.push({ path: manifest.search, text: searchText })
 
+  // the audit pool
+  const auditText = json(auditPool(index, [...auditAnchors.values()].sort((a, b) => naturalCompare(a.id, b.id)), input.runs))
+  manifest.audit = `content/audit.${sha256Hex(auditText).slice(0, 12)}.json`
+  outputs.push({ path: manifest.audit, text: auditText })
+
   // the published schemas
   const published: Array<{ name: string; id: string; schema: string | null; file: string; sha256: string }> = []
   for (const s of [...input.schemas].sort((a, b) => a.path.localeCompare(b.path))) {
@@ -311,6 +330,7 @@ export function buildContent(input: ContentInput): ContentOutput {
       drawers: Object.keys(manifest.drawers).length,
       stages: stages.size,
       labs: labs.size,
+      auditAnchors: auditAnchors.size,
       blocks,
       itemRevs,
       runsCited: runsCited.size,

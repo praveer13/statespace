@@ -1,0 +1,12 @@
+; Transfer's obligation, as miniplinth check emits it; Inv is ledger.mp's
+(define-fun Inv ((x Int) (y Int)) Bool (= (+ x y) 100))
+(declare-fun a () Int)
+(declare-fun b () Int)
+(declare-fun amount () Int)
+(declare-fun a_p () Int)
+(declare-fun b_p () Int)
+(assert (Inv a b))
+(assert (> amount 0))
+(assert (and (= a_p (- a amount)) (= b_p (+ b amount))))
+(assert (not (= (+ a_p b_p) 100)))
+(check-sat)

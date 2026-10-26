@@ -1,0 +1,34 @@
+server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+generator n=200 seed=7: ok 22, insufficient 46, no-such-account 74, self-transfer 27, bad-amount 31
+generator outcome classes: ok 22, zero-rows 178
+[shipped] compiler: the shipped compiler
+[q1 shipped] agree 200 of 200
+[q2 shipped] agree 200 of 200
+[q3 shipped] agree 200 of 200
+[q4 shipped] agree 200 of 200
+[m1] compiler: reports success whatever the rowcount
+[q1 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}
+[q2 m1] agree 200 of 200
+[q3 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}
+[q4 m1] agree 22 of 200; first disagreement, command 1: transfer(9 -> 1, 39): reference zero-rows {1: 100, 2: 50, 3: 0}, database ok {1: 100, 2: 50, 3: 0}
+[m2] compiler: credits the receiver twice
+[q1 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}
+[q2 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}
+[q3 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}
+[q4 m2] agree 5 of 200; first disagreement, command 6: transfer(2 -> 1, 32): reference ok {1: 132, 2: 18, 3: 0}, database ok {1: 164, 2: 18, 3: 0}
+[m3] compiler: writes the balance guard as > instead of >=
+[q1 m3] agree 200 of 200
+[q2 m3] agree 200 of 200
+[q3 m3] agree 200 of 200
+[q4 m3] agree 200 of 200
+[m4] compiler: lists the WHERE conditions in another order
+[q1 m4] agree 200 of 200
+[q2 m4] agree 200 of 200
+[q3 m4] agree 200 of 200
+[q4 m4] agree 200 of 200
+[m5] compiler: refuses by raising an error instead of updating no rows
+[q1 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}
+[q2 m5] agree 200 of 200
+[q3 m5] agree 194 of 200; first disagreement, command 8: transfer(2 -> 3, None): reference zero-rows {1: 30, 2: 120, 3: 0}, database sqlstate:22012 {1: 30, 2: 120, 3: 0}
+[q4 m5] agree 200 of 200
+[fixture] transfer(1 -> 2, 30) on {1: 100, 2: 50}: reference ok {1: 70, 2: 80}, database ok {1: 70, 2: 80}; agree 1 of 1

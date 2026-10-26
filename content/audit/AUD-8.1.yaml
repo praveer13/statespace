@@ -1,0 +1,209 @@
+# AUD-8.1 · S8 · G7 Unstated environment assumption (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Each statement is a TLC configuration of S8.L2's Outbox spec, run as it stands by
+# RUN-tlc-env-assumption (content/audit/tools/record-keys-s7-s8.mjs); its leading comment lines are the claim. That
+# run's tags are neutral: q1 sound member, q2 flawed member, q3/q4 variant pair v1 (sound/flawed); e1 to e4 and f1 to
+# f4 are the step-3 scenarios, the same model under one environment each. The flawed member is keyed by
+# RUN-tlc-double-charge (spine section 6.2's key run): with the provider's idempotency off, a crash after the send
+# leads to a second dispatch and a second charge (SP-8.1).
+id: AUD-8.1
+stage: S8
+class: G7
+medium: tla
+artifact: outbox-provider-assumptions
+subject: "an outbox model's TLC configuration (TLA+)"
+claim: "Exactly once, via the outbox."
+requirement: >-
+  Each command a client commits is charged at most once by the payment provider, through worker crashes, timer
+  re-sends and retries, against the provider the service uses: Stripe's API v1, which dedups a repeated idempotency
+  key only while it keeps that key, and may prune keys after a retention period.
+scenario_question: "In this environment, does NoDoubleCharge hold for the case's model, by TLC?"
+scheduled_after: [LAB-8.8]
+kcs: [KC-8.at-least-once, KC-8.provider-horizon]
+based_on:
+  incident: "Stripe's API v1 documentation on idempotent requests: keys may be removed from the system automatically after they are at least 24 hours old, and a request with a pruned key is treated as new."
+  date: "2026-10-21"
+  date_marks: "the page was read"
+  source: https://docs.stripe.com/api/idempotent_requests
+
+cases:
+  - id: sound
+    key: none
+    description: "Widens the claim's TLC configuration to every crash window and writes down its assumptions. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: every crash window, up to two crashes, three attempts.
+      \* [A] the provider performs a repeated key's effect once (Dedup = TRUE).
+      \* [A] the provider keeps a key until the outbox has acked and drained it.
+      CONSTANTS Cmds = {c1}  MaxCrashes = 2  MaxAttempts = 3
+                CrashWindows = {"CW1", "CW2", "CW3", "CW4"}
+                Dedup = TRUE  FreshKey = FALSE  Forgets = "afterDrain"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,5 +1,7 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+      -\* [M] TLC over Spec: crash window CW2, one crash, two attempts.
+      +\* [M] TLC over Spec: every crash window, up to two crashes, three attempts.
+      +\* [A] the provider performs a repeated key's effect once (Dedup = TRUE).
+      +\* [A] the provider keeps a key until the outbox has acked and drained it.
+      -CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2
+      -          CrashWindows = {"CW2"}
+      +CONSTANTS Cmds = {c1}  MaxCrashes = 2  MaxAttempts = 3
+      +          CrashWindows = {"CW1", "CW2", "CW3", "CW4"}
+                 Dedup = TRUE  FreshKey = FALSE  Forgets = "afterDrain"  Timeouts = FALSE
+    receipt: |
+      [q1] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q1] Model checking completed. No error has been found.
+      [q1] 194 states generated, 105 distinct states found, 0 states left on queue.
+      [q1] The depth of the complete state graph search is 16.
+    restatement:
+      run: RUN-tlc-env-assumption
+      scenarios: &scenarios
+        - { id: s1, text: "The provider dedups repeated keys and never prunes one.", answer: true, key_line: "[e1] Model checking completed. No error has been found.", why: "Every repeat of a key finds it in the provider's table." }
+        - { id: s2, text: "The provider dedups repeated keys, and prunes a key as soon as its command is acked.", answer: false, key_line: "[e2] Error: Invariant NoDoubleCharge is violated.", why: "A copy of an earlier attempt is still on the wire after the ack; once the key is pruned, the provider charges it again." }
+        - { id: s3, text: "The provider performs every request it receives; it keeps no idempotency table.", answer: false, key_line: "[e3] Error: Invariant NoDoubleCharge is violated.", why: "A crash after the send makes the worker dispatch again, and the provider charges twice." }
+        - { id: s4, text: "The provider dedups repeated keys, and prunes a key only after the outbox has acked it and no copy is in flight.", answer: true, key_line: "[e4] Model checking completed. No error has been found.", why: "This is the horizon the statement assumes: no copy can arrive after its key is gone." }
+    evidence: { type: restatement, scenarios: *scenarios }
+    key_run: RUN-tlc-env-assumption
+    key_lines:
+      - { config: q1, line: "[q1] Model checking completed. No error has been found." }
+      - { config: e2, line: "[e2] Error: Invariant NoDoubleCharge is violated." }
+      - { config: e3, line: "[e3] Error: Invariant NoDoubleCharge is violated." }
+    explain: "At-least-once delivery with no double charge, given two things about the provider that the claim states as [A]: it dedups a repeated key, and it keeps the key until every copy has drained. Drop either and TLC finds a double charge (s2, s3). Against Stripe the second [A] is the provider-horizon clause you write in LAB-8.8, with the retention and the date you read it."
+
+  - id: flawed
+    key: G7
+    description: "Widens the claim's TLC configuration to every crash window and writes down its assumptions. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: every crash window, up to two crashes, three attempts.
+      \* [A] the database keeps every committed row across a worker crash.
+      \* [A] the network delivers each request at most once per attempt.
+      CONSTANTS Cmds = {c1}  MaxCrashes = 2  MaxAttempts = 3
+                CrashWindows = {"CW1", "CW2", "CW3", "CW4"}
+                Dedup = TRUE  FreshKey = FALSE  Forgets = "afterDrain"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,5 +1,7 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+      -\* [M] TLC over Spec: crash window CW2, one crash, two attempts.
+      +\* [M] TLC over Spec: every crash window, up to two crashes, three attempts.
+      +\* [A] the database keeps every committed row across a worker crash.
+      +\* [A] the network delivers each request at most once per attempt.
+      -CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2
+      -          CrashWindows = {"CW2"}
+      +CONSTANTS Cmds = {c1}  MaxCrashes = 2  MaxAttempts = 3
+      +          CrashWindows = {"CW1", "CW2", "CW3", "CW4"}
+                 Dedup = TRUE  FreshKey = FALSE  Forgets = "afterDrain"  Timeouts = FALSE
+    receipt: |
+      [q2] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q2] Model checking completed. No error has been found.
+      [q2] 194 states generated, 105 distinct states found, 0 states left on queue.
+      [q2] The depth of the complete state graph search is 16.
+    restatement:
+      run: RUN-tlc-env-assumption
+      scenarios: *scenarios
+    evidence:
+      type: witness
+      load_bearing: ["statement:7", "statement:3", "statement:4"]
+      reference: "RUN-tlc-double-charge (cw2-nodedup): Commit, Dispatch, Crash, Recover, Dispatch; Invariant NoDoubleCharge is violated"
+    key_run: RUN-tlc-double-charge
+    key_lines:
+      - { config: cw2-nodedup, line: "Error: Invariant NoDoubleCharge is violated." }
+      - { config: cw2-dedup, line: "Model checking completed. No error has been found." }
+    explain: "The model passes only because Dedup = TRUE and Forgets = \"afterDrain\" set the provider up to cooperate, and the claim's assumptions never mention the provider. Switch its idempotency off and TLC finds the double charge: a crash after the send, a recovery, a second dispatch. \"Exactly once\" is at-least-once delivery plus an assumption about someone else's system, and that assumption belongs in the claim as [A], with its horizon."
+
+variants:
+  - id: v1-sound
+    pair: v1
+    operator: drop-environment-assumption
+    artifact: outbox-crash-budget
+    key: none
+    description: "Narrows the claim's TLC configuration so the check runs in seconds, and writes down its assumption. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: one command, two attempts, no timer re-sends.
+      \* [A] the worker runs without crashing (MaxCrashes = 0).
+      CONSTANTS Cmds = {c1}  MaxCrashes = 0  MaxAttempts = 2  CrashWindows = {}
+                Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,4 +1,5 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+       \* [M] TLC over Spec: one command, two attempts, no timer re-sends.
+      -CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW2"}
+      +\* [A] the worker runs without crashing (MaxCrashes = 0).
+      +CONSTANTS Cmds = {c1}  MaxCrashes = 0  MaxAttempts = 2  CrashWindows = {}
+                 Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+    receipt: |
+      [q3] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q3] Model checking completed. No error has been found.
+      [q3] 7 states generated, 7 distinct states found, 0 states left on queue.
+      [q3] The depth of the complete state graph search is 7.
+    restatement:
+      run: RUN-tlc-env-assumption
+      scenarios: &v1-scenarios
+        - { id: s1, text: "The worker never crashes, and no timer re-sends a request.", answer: true, key_line: "[f1] Model checking completed. No error has been found.", why: "One dispatch, one charge." }
+        - { id: s2, text: "The worker may crash once, after it sends a request and before the reply arrives.", answer: false, key_line: "[f2] Error: Invariant NoDoubleCharge is violated.", why: "Recovery returns the intent to pending, the worker sends it again, and a provider without idempotency charges twice." }
+        - { id: s3, text: "The worker may crash once, before it sends anything.", answer: true, key_line: "[f3] Model checking completed. No error has been found.", why: "Nothing was sent before the crash, so the retry is the first send." }
+        - { id: s4, text: "The worker never crashes, but a timer re-sends an unanswered request.", answer: false, key_line: "[f4] Error: Invariant NoDoubleCharge is violated.", why: "The re-send is a second request with no table to catch it." }
+    evidence: { type: restatement, scenarios: *v1-scenarios }
+    key_run: RUN-tlc-env-assumption
+    key_lines:
+      - { config: q3, line: "[q3] Model checking completed. No error has been found." }
+      - { config: f2, line: "[f2] Error: Invariant NoDoubleCharge is violated." }
+    explain: "A small claim, honestly scoped: with crash actions switched off, the outbox charges once, and the claim says so as [A]. It is no evidence about crashes (s2), and a reader can see that from the claim alone."
+
+  - id: v1-flawed
+    pair: v1
+    operator: drop-environment-assumption
+    artifact: outbox-crash-budget
+    key: G7
+    description: "Narrows the claim's TLC configuration so the check runs in seconds, and writes down its assumption. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: one command, two attempts, no timer re-sends.
+      \* [A] the provider answers each request it receives.
+      CONSTANTS Cmds = {c1}  MaxCrashes = 0  MaxAttempts = 2  CrashWindows = {}
+                Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,4 +1,5 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+       \* [M] TLC over Spec: one command, two attempts, no timer re-sends.
+      -CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW2"}
+      +\* [A] the provider answers each request it receives.
+      +CONSTANTS Cmds = {c1}  MaxCrashes = 0  MaxAttempts = 2  CrashWindows = {}
+                 Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+    receipt: |
+      [q4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q4] Model checking completed. No error has been found.
+      [q4] 7 states generated, 7 distinct states found, 0 states left on queue.
+      [q4] The depth of the complete state graph search is 7.
+    restatement:
+      run: RUN-tlc-env-assumption
+      scenarios: *v1-scenarios
+    evidence:
+      type: witness
+      load_bearing: ["statement:4", "statement:3"]
+      reference: "RUN-tlc-env-assumption (f2): Commit, Dispatch, Crash, Recover, Dispatch; Invariant NoDoubleCharge is violated"
+    key_run: RUN-tlc-env-assumption
+    key_lines:
+      - { config: q4, line: "[q4] Model checking completed. No error has been found." }
+      - { config: f2, line: "[f2] Error: Invariant NoDoubleCharge is violated." }
+    explain: "MaxCrashes = 0 switches the crash actions off, and the claim's assumptions never say so. The no-error result is about a worker that cannot crash; allow one crash after the send and TLC finds a double charge. An outbox exists for crashes, so this is the assumption a reader most needs to see."

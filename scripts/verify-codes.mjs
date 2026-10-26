@@ -165,6 +165,8 @@ export function maskCopy(text, definedRefs = new Set()) {
  */
 export const EVALUATED_KEYS = new Set(['options', 'distractors', 'distractor', 'choices', 'claim', 'quote', 'quotes', 'agent', 'agent_text', 'agentText', 'says', 'assertion', 'unreviewed'])
 const OPTION_KEYS = new Set(['options', 'distractors', 'distractor', 'choices'])
+/** Keys of an audit case (content/audit/README.md) whose values are code, a diff or lines copied from a run. */
+export const AUDIT_VERBATIM_KEYS = new Set(['statement', 'diff', 'receipt', 'key_line', 'key_lines', 'reference'])
 export function isEvaluatedPath(keys) {
   const own = keys[keys.length - 1]
   if (own === undefined) return false
@@ -383,7 +385,13 @@ function walk(root, rel, keep) {
 export function documentUnits(rules, text, file) {
   const units = []
   if (/\.ya?ml$/.test(file)) {
-    for (const b of yamlBlocks(text)) {
+    const audit = /(^|\/)content\/audit\/AUD-[^/]*\.ya?ml$/.test(file)
+    for (let b of yamlBlocks(text)) {
+      // An audit case's artifact and run lines are verbatim: code, a diff, and lines copied from a recorded run
+      // (content/audit/README.md), which the Desk shows as figures, never as copy.
+      if (audit && b.keys.some((k) => AUDIT_VERBATIM_KEYS.has(k))) continue
+      // ... and the same keys inside a flow mapping (a scenario's key_line), blanked in place so offsets hold.
+      if (audit) b = { ...b, text: b.text.replace(/\b(?:key_line|reference)\s*:\s*"(?:[^"\\\n]|\\.)*"/g, (m) => ' '.repeat(m.length)) }
       const evaluated = isEvaluatedPath(b.keys)
       for (const s of rules.sentencesOf(unquoteYaml(b.text))) units.push({ text: s.text, offset: s.offset, lineOf: b.lineOf, evaluated })
       for (const e of embeddedCopy(unquoteYaml(b.text))) units.push({ text: e.text, offset: e.offset, lineOf: b.lineOf, evaluated })

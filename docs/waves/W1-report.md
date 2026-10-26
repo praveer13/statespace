@@ -55,7 +55,7 @@ On 2026-10-26 the owner changed the order of work. The course's happy path is bu
   - 52 `item-kc`.
   - 2 `title-differs`.
 - **Site build.** `npm run build -w apps/site` passes. It runs the content build, the names step, the typecheck, `vite build`, then writes `404.html`.
-- **Smoke test.** `scripts/site/smoke.sh` runs Chromium in the Playwright image v1.63.0-noble at 360 px, and all 17 tests pass. The new `apps/site/e2e/pages.spec.ts` opens every page. Each must show one visible h1, which is not the could-not-load or not-found heading, and no console error. Results:
+- **Smoke test.** `scripts/site/smoke.sh` runs Chromium in the pinned Playwright image (`mcr.microsoft.com/playwright:v1.63.0-noble`) at 360 px, and all 17 tests pass. The new `apps/site/e2e/pages.spec.ts` opens every page. Each must show one visible h1, which is not the could-not-load or not-found heading, and no console error. Results:
 
   | Pages | Render |
   |---|---|
@@ -277,3 +277,74 @@ Each toy computes a real thing about a small model the lesson discusses, says wh
 - The lesson-page loading, failed and missing states (`components/page/states.tsx`) were not restyled in this phase.
 - GATE-codes still reports five bracketed IDs in S5.L6–S5.L9 content front matter and prose, and the LAB-2 title "The verified ledger" uses a bare "verified" on the Bench; both are content, not the site.
 - The e2e suite (`npm run e2e -w apps/site`, with its axe checks) was not run in this phase.
+
+## Phase 3 — Audit Desk and generators (2026-10-26)
+
+The Audit Desk now holds real cases, and fourteen generator families draw fresh questions in the tab. Every Desk key, scenario answer and receipt line is copied from a run recorded in the Bench image; every generated item is keyed when it is graded, by a checker that runs in the page and prints its bound.
+
+### What a learner can now do
+
+- **Audit an agent's claim, end to end.** `/audit` starts a session of mixed sound and flawed cases (4 while the pool has fewer pairs than a 5-case session needs), or opens any case from the catalogue at `/audit/case/AUD-n.k/m`. A case runs the five steps of AUDIT-DESK section 5: call the statement alone, with how sure you are (the call is final); read the agent's diff and the receipt from a recorded run; write "This proves: ___" and answer the scenarios; name the kind of gap (G1 to G13 in three groups, or none: sound); point at one to three lines. Filing shows the answer key, the scenario answers with the run line behind each, the other case of the pair side by side, and the dated incident the anchor is based on.
+- **See audit accuracy.** `/audit` shows flawed cases found, sound cases accepted and balanced accuracy, from the learner's own findings on unseen cases, with each rate held back until ten cases count. Nothing is stored but the events.
+- **Practise on fresh questions.** Drawers place generated items; S1.L1 now has one beside its fixed question; Today shows "Practice, drawn fresh", up to three items from families whose first lesson the learner has met. Each item draws a new seed, grades in the page, shows the state where the pick and the answer differ, the box it checked, the checker, and every option's why, and offers "Draw another". Nothing locks.
+
+### Anchors shipped
+
+25 anchors, 120 cases (60 sound, 60 flawed), every one with a matched pair and all but the five pending ones with variant pairs:
+
+| Stage | Anchors | Kinds of gap |
+|---|---|---|
+| S1 | AUD-1.1, AUD-1.2, AUD-1.3 | G2, G4, G5 |
+| S2 | AUD-2.1 to AUD-2.4 (variants pending, W2-T13) | G1, G6a, G6c, G8a |
+| S3 | AUD-3.1, AUD-3.2 | G8, G4 |
+| S4 | AUD-4.1, AUD-4.2, AUD-4.3 | G8, G1, G13 |
+| S5 | AUD-5.1 to AUD-5.4 | G3, G7, G5, G9 |
+| S6 | AUD-6.1, AUD-6.2, AUD-6.3 | G11, G10, G6e |
+| S7 | AUD-7.1, AUD-7.2 | G10, G12 |
+| S8 | AUD-8.1, AUD-8.2 | G7, G8 |
+| S9 | AUD-9.1, AUD-9.2 | G10, G11 |
+
+AUDIT-DESK and the spine define no S10 anchors; S10's Defence Part C harvests a case with `statespace audit` (not built). The key runs recorded for the Desk, all in the Bench image with `--network none`: RUN-z3-vacuous-variants, RUN-z3-bv64-pairs, RUN-z3-inconclusive-pairs, RUN-lean-refund-both, RUN-lean-axioms-pair, RUN-lean-skipkernel-pair, RUN-lean-comparator-pair, RUN-lean-checker-drift, RUN-lean-nat-pair, RUN-z3-frame-pair, RUN-z3-noguard-pair, RUN-z3-cti-variants, RUN-tlc-hold-kind, RUN-tlc-hold-env, RUN-tlc-deadlock-stop, RUN-tlc-split-guard, RUN-pg-withdraw-split, RUN-drt-transfers, RUN-pg-pool-levels, RUN-history-g2item, RUN-z3-observer-pairs, RUN-pg-observer-pairs, RUN-z3-declassify-pairs, RUN-tlc-env-assumption, RUN-tlc-trace-drift, RUN-lean-abort-blind and RUN-pg-validator-pairs. The three Lean records of Phase 2 that hashed edited lesson files (RUN-lean-s2-cells, RUN-lean-noguard, RUN-lean-preservation-frag) were re-run: every log came back byte-identical, and only their input hashes and times changed. The 22 run IDs the spine does not register are listed in `packages/ids/proposals.json` for the next spine revision.
+
+### Families shipped
+
+| Family | Templates | Engine in the page |
+|---|---|---|
+| GEN-negate-it | t1–t4 | negate box |
+| GEN-find-the-witness | t1–t4 | witness pocket |
+| GEN-call-it | t1, t2, t4 (t3 pending, W4-T20) | call pocket |
+| GEN-which-stamp | t1–t3 | the stamp deriver |
+| GEN-spot-the-gap | t1–t4 | gap check |
+| GEN-spec-it | t1–t3 | spec scope |
+| GEN-proof-structure | t1–t3 | tactic model |
+| GEN-defend | t1–t4 | defend box |
+| GEN-wp-it | t1–t3 | wp box |
+| GEN-cti-or-bug | t1–t3 | CTI box |
+| GEN-trace-allowed | t1–t3 | trace graph |
+| GEN-lasso-or-not | t1, t2 | lasso check |
+| GEN-anomaly-id | t1–t4 | history check over recorded PostgreSQL histories |
+| GEN-leaks-to-observer | t1–t3 | pair check |
+
+All serve pick mode. GATE-generators is green on the fourteen and the fixture family, with determinism digests recorded in Chromium, Firefox and WebKit. Every stem and basis says the check ran in this page over a printed box, and names the engine it stands in for.
+
+### Integration in this pass
+
+- **GATE-links** was red: the 22 new Desk run IDs were unregistered. They are now proposals, pending the next spine revision.
+- **GATE-codes** was red on Desk files: run lines and code (a receipt's `[E1 …]`, a Python `[HIDDEN for …]`) read as bracket codes. The gate now skips an audit case's verbatim keys (`statement`, `diff`, `receipt`, `key_line`, `key_lines`, `reference`), and three `explain` texts lost a bare "correct". The S5.L6 to S5.L9 front matter now writes its KC and drawer lists as block lists, so their IDs are no longer bracketed. GATE-codes is green and its self-check catches all 18 planted faults.
+- **GATE-stamps:** AUD-9.2's requirement no longer puts [P] in requirement fit; only the old S8.L7 finding remains.
+- **GATE-numbers:** the Playwright image tag in this report's first section is now quoted as an image name.
+- **Site:** a single case opened from the catalogue reads "The case" instead of a misleading "Case 1"; on phones the answer key's scenario table puts each why on its own line; generated options written as words (verdicts, predictions) are set in the reading face with `code` spans, not in monospace with literal backticks.
+- **Tracker:** tasks.yaml and docs/TRACKER.md moved 15 tasks to `review` and 119 to `in-progress`, each with a note naming what is missing.
+
+### Checked
+
+`npx tsc -p apps/site` clean; `npm run build -w apps/site` succeeds; 126 site unit tests, 167 generator tests and 170 content tests pass. Green: GATE-generators, GATE-audit-blind (advisory longest-diff note only), GATE-runs, GATE-links, GATE-codes, GATE-numbers, GATE-schema, GATE-coverage, GATE-privacy (local identity only). Screenshots at 1440 and 390 of /audit, a full case (call, reveal, this proves, kind of gap, evidence, answer key), audit accuracy, drawer D-03 graded, S1.L1's generated item and Today's practice set: no horizontal scroll, no console errors, no request off localhost.
+
+### Follow-ups
+
+- **GATE-audit** (15 findings): key-run on AUD-2.2, 2.3, 7.2, 8.2 and 9.2, where the spine's Key run cell names a run that is imported without argv or not yet recorded; no GEN-spot-the-gap `auditBattery`; exemplars short of six for G1, G2, G3, G6, G7, G9, G12 and G13.
+- **GATE-items** (735 findings): option-balance, cue and blind-strategy findings on every generated family, and the authored stage items found before this phase.
+- **Desk:** no stamp after filing; evidence for witness, paired-states and scenario types is graded by the stand-in rule (lines that include a load-bearing one), not replayed; sessions ignore `scheduled_after`; the call rides on the audit event until event@1 admits AUD refs; judgment code should move to `packages/learner` with its property tests; the case header names the anchor's medium even for a variant in another; the differing line in the pair figures is not marked.
+- **Generators:** pick mode only; GeneratedItem shows one choice part (GEN-call-it t4 shows a placeholder), never `grade.why` on a miss; keys rest on in-page checkers, not Z3, TLC, Lean or the history checker; most lesson items keep their fixed choice, so families reach learners through drawers and Today.
+- **Pre-existing, not from this phase:** GATE-kc (7 dose failures), GATE-calls (S1.L0 and S10 cells), GATE-lessons (S7.L7, S7.L8 anatomy), GATE-specimens (SP-4.2, SP-7.1, SP-7.2), GATE-conformance (Pyodide against native Z3), GATE-bundle (Today and lesson route budgets, fonts, routes, search at 360 px, the fragment canary), and GATE-runs' 36 changed inputs that the release lane fails on.
+- **Review queue** is 12.4 hours, over the 10-hour gate.

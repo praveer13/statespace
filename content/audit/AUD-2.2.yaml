@@ -1,0 +1,146 @@
+# AUD-2.2 · S2 · G6a Hidden trust: escape hatches (docs/AUDIT-DESK.md section 3.2). The format is
+# content/audit/README.md's. Both members are keyed by RUN-lean-axioms-pair, recorded in the Bench image
+# (content/audit/tools/record-keys-s1s2.mjs): one conservation theorem built twice, its helper declared once as a
+# theorem and once as an axiom. The spine's Key run cell names the imported RUN-lean-axioms, which records sorryAx,
+# a custom axiom and a native axiom on separate specimen declarations and has no argv; GATE-audit reports a key-run
+# finding until the cell names RUN-lean-axioms-pair (as for AUD-2.3). Spine section 6 ships this anchor keyed by
+# executed runs, without variants; they land with W2-T13.
+id: AUD-2.2
+stage: S2
+class: G6a
+medium: lean
+artifact: conservation-helper
+subject: "a ledger conservation proof (Lean)"
+claim: "Proved; the build is green."
+requirement: >-
+  Every call of transfer keeps the total of the two balances, and Lean's kernel has checked a proof of it that rests
+  only on the standard axioms (propext, Quot.sound, Classical.choice).
+scenario_question: "Does the theorem, as written, rule out this result?"
+scheduled_after: [LAB-2, S2.L9]
+kcs: [KC-2.axioms-and-trust, KC-2.automation-scope]
+based_on:
+  incident: "AlphaVerus: without its critique models, the self-improving agent increasingly closed Verus verification obligations with assume(false), then moved to trivial specifications."
+  date: "2024-12"
+  date_marks: "the paper's first arXiv version"
+  source: https://arxiv.org/abs/2412.06176
+
+cases:
+  - id: sound
+    key: none
+    description: "Closes the sorry in transfer_conserves with a small arithmetic lemma in a new module. The build is green."
+    statement: |
+      structure Ledger where
+        a : Int
+        b : Int
+
+      def transfer (l : Ledger) (amt : Int) : Ledger :=
+        if 0 < amt ∧ amt ≤ l.a then { a := l.a - amt, b := l.b + amt } else l
+
+      theorem transfer_conserves (l : Ledger) (amt : Int) :
+          (transfer l amt).a + (transfer l amt).b = l.a + l.b
+    diff: |
+      --- /dev/null
+      +++ b/Ledger/Arith.lean
+      @@ -0,0 +1 @@
+      +theorem rebalance (x y amt : Int) : (x - amt) + (y + amt) = x + y := by omega
+      --- a/Ledger/Conserve.lean
+      +++ b/Ledger/Conserve.lean
+      @@ -1,6 +1,10 @@
+       import Ledger.Transfer
+      +import Ledger.Arith
+
+       theorem transfer_conserves (l : Ledger) (amt : Int) :
+           (transfer l amt).a + (transfer l amt).b = l.a + l.b := by
+      -  sorry
+      +  unfold transfer
+      +  split
+      +  · exact rebalance l.a l.b amt
+      +  · rfl
+    receipt: |
+      ✔ [3/6] Built Ledger.Arith (180ms)
+      ✔ [4/6] Built Ledger.Conserve (140ms)
+      Build completed successfully (6 jobs).
+      lake exit=0
+      'transfer_conserves' depends on axioms: [propext, Quot.sound]
+      leanchecker exit=0
+    restatement:
+      run: RUN-lean-axioms-pair
+      scenarios: &scenarios
+        - id: s1
+          text: "transfer {a := 5, b := 3} 2 returns {a := 3, b := 5}"
+          answer: false
+          key_line: '("s1", false, { a := 3, b := 5 })'
+          why: "3 + 5 = 5 + 3: the total is kept, so the theorem allows it. It is also what transfer returns."
+        - id: s2
+          text: "transfer {a := 5, b := 3} 2 returns {a := 3, b := 6}"
+          answer: true
+          key_line: '("s2", true, { a := 3, b := 5 })'
+          why: "3 + 6 is 9, not 8: the theorem rules it out."
+        - id: s3
+          text: "transfer {a := 5, b := 3} 9 returns {a := -4, b := 12}"
+          answer: false
+          key_line: '("s3", false, { a := 5, b := 3 })'
+          why: "An overdraft that keeps the total: conservation alone does not rule it out."
+        - id: s4
+          text: "transfer {a := 5, b := 3} 0 returns {a := 5, b := 3}"
+          answer: false
+          key_line: '("s4", false, { a := 5, b := 3 })'
+          why: "Nothing moved and the total is kept: allowed."
+    evidence: { type: restatement, scenarios: *scenarios }
+    key_run: RUN-lean-axioms-pair
+    key_lines:
+      - { config: sound, line: "lake exit=0" }
+      - { config: sound, line: "'transfer_conserves' depends on axioms: [propext, Quot.sound]" }
+      - { config: sound, line: "leanchecker exit=0" }
+    explain: "rebalance is a theorem closed by omega, and #print axioms lists only propext and Quot.sound, both standard: the kernel checked the whole chain. The theorem says the total is kept, and nothing more."
+
+  - id: flawed
+    key: G6a
+    description: "Closes the sorry in transfer_conserves with a small arithmetic lemma in a new module. The build is green."
+    statement: |
+      structure Ledger where
+        a : Int
+        b : Int
+
+      def transfer (l : Ledger) (amt : Int) : Ledger :=
+        if 0 < amt ∧ amt ≤ l.a then { a := l.a - amt, b := l.b + amt } else l
+
+      theorem transfer_conserves (l : Ledger) (amt : Int) :
+          (transfer l amt).a + (transfer l amt).b = l.a + l.b
+    diff: |
+      --- /dev/null
+      +++ b/Ledger/Arith.lean
+      @@ -0,0 +1 @@
+      +axiom rebalance (x y amt : Int) : (x - amt) + (y + amt) = x + y
+      --- a/Ledger/Conserve.lean
+      +++ b/Ledger/Conserve.lean
+      @@ -1,6 +1,10 @@
+       import Ledger.Transfer
+      +import Ledger.Arith
+
+       theorem transfer_conserves (l : Ledger) (amt : Int) :
+           (transfer l amt).a + (transfer l amt).b = l.a + l.b := by
+      -  sorry
+      +  unfold transfer
+      +  split
+      +  · exact rebalance l.a l.b amt
+      +  · rfl
+    receipt: |
+      ✔ [3/6] Built Ledger.Arith (177ms)
+      ✔ [4/6] Built Ledger.Conserve (131ms)
+      Build completed successfully (6 jobs).
+      lake exit=0
+      'transfer_conserves' depends on axioms: [rebalance]
+      leanchecker exit=0
+    restatement:
+      run: RUN-lean-axioms-pair
+      scenarios: *scenarios
+    evidence: { type: declaration, load_bearing: ["diff:4", "receipt:5"] }
+    key_run: RUN-lean-axioms-pair
+    key_lines:
+      - { config: flawed, line: "lake exit=0" }
+      - { config: flawed, line: "'transfer_conserves' depends on axioms: [rebalance]" }
+      - { config: flawed, line: "leanchecker exit=0" }
+    explain: "rebalance is declared with axiom: assumed, never proved. The build is green and the kernel replay accepts it, because the kernel checks the proof against whatever axioms are declared. #print axioms names rebalance where a clean proof names only standard axioms. The arithmetic happens to be true; this build does not establish it."
+
+variants: { pending: { lands: W2-T13 } }

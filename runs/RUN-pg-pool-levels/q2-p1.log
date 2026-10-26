@@ -1,0 +1,12 @@
+[q2 p1] permutation a_pool b_pool a_begin a_level b_begin b_level a_debit b_debit a_commit b_commit 
+[q2 p1]   step a_pool: SET
+[q2 p1]   step b_pool: SET
+[q2 p1]   step a_begin: BEGIN
+[q2 p1]   step a_level: SHOW [["serializable"]]
+[q2 p1]   step b_begin: BEGIN
+[q2 p1]   step b_level: SHOW [["read committed"]]
+[q2 p1]   step a_debit: UPDATE 1
+[q2 p1]   step b_debit: UPDATE 1
+[q2 p1]   step a_commit: COMMIT
+[q2 p1]   step b_commit: COMMIT
+[q2 p1]   check: [[1, -50], [2, -50]]; [["-100"]]

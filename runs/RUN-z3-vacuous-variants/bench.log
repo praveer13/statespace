@@ -1,0 +1,38 @@
+z3 5.3.1 rlimit=5000000
+[q1 violation] unsat
+[q1 premises] sat [a = 1, amount = 1, b = 0]
+[q1 s1 a=10 b=0 amount=3] sat (covered)
+[q1 s2 a=10 b=0 amount=150] unsat (not covered)
+[q1 s3 a=2 b=0 amount=5] unsat (not covered)
+[q1 s4 a=500 b=7 amount=100] sat (covered)
+[q2 violation] unsat
+[q2 premises] unsat
+[q2 core] unsat_core=['amount <= MAX_TRANSFER (0)', 'amount > 0']
+[q2 s1 a=10 b=0 amount=3] unsat (not covered)
+[q2 s2 a=10 b=0 amount=150] unsat (not covered)
+[q2 s3 a=2 b=0 amount=5] unsat (not covered)
+[q2 s4 a=500 b=7 amount=100] unsat (not covered)
+[q4 violation] unsat
+[q4 premises] sat [a = 1, amount = 1, b = 0]
+[q4 s1 a=10 b=0 amount=3] sat (covered)
+[q4 s2 a=2 b=0 amount=5] unsat (not covered)
+[q4 s3 a=4 b=4 amount=4] sat (covered)
+[q3 violation] unsat
+[q3 premises] unsat
+[q3 core] unsat_core=['a < amount', 'amount <= a']
+[q3 s1 a=10 b=0 amount=3] unsat (not covered)
+[q3 s2 a=2 b=0 amount=5] unsat (not covered)
+[q3 s3 a=4 b=4 amount=4] unsat (not covered)
+[q5 violation] unsat
+[q5 premises] sat [amount = 1, bal = 1, w = 0]
+[q5 s1 bal=100 w=0 amount=50] sat (covered)
+[q5 s2 bal=100 w=480 amount=50] unsat (not covered)
+[q5 s3 bal=20 w=0 amount=50] unsat (not covered)
+[q5 s4 bal=1000 w=499 amount=1] sat (covered)
+[q6 violation] unsat
+[q6 premises] unsat
+[q6 core] unsat_core=['amount > 0', 'w + amount <= 500', 'w >= 500']
+[q6 s1 bal=100 w=0 amount=50] unsat (not covered)
+[q6 s2 bal=100 w=480 amount=50] unsat (not covered)
+[q6 s3 bal=20 w=0 amount=50] unsat (not covered)
+[q6 s4 bal=1000 w=499 amount=1] unsat (not covered)

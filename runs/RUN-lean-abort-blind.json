@@ -1,0 +1,970 @@
+{
+  "id": "RUN-lean-abort-blind",
+  "title": "Preservation with an observer blind to aborts: the conditional-write compiler satisfies it, and the run pair from (0, 0) with amount 1 (source aborts, compiled code commits) has equal balances and different outcomes",
+  "task": "W5-T33",
+  "origin": "recorded",
+  "records": "S9.L4 cell 1 (SP-9.3) and AUD-9.1 (content/audit/AUD-9.1.yaml): the eight cases' preservation theorems, each elaborated with #print axioms, and the probe that evaluates each case's run pair and step-3 scenarios",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:03:04.293Z",
+  "started_at": "2026-10-26T18:03:03.681Z",
+  "duration_s": 0.611,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-aud9-lean-abort-blind-probe",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh",
+    "probe"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+      "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+      "bytes": 2548,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q1.lean",
+      "sha256": "3a9bfe70111560f00d11713c84af8527260e1bd195d5a60855c886ed884520de",
+      "bytes": 980,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+      "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+      "bytes": 198,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q2.lean",
+      "sha256": "ee7503872251b7b4735ff8910cd15f5e89b64ae733bc1927a4aadf97200eb0fd",
+      "bytes": 936,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q3.lean",
+      "sha256": "7f72ccb1cd37558b9d5b4b7c5f5ea0687852db206743e5e9a8493547336d0265",
+      "bytes": 978,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q4.lean",
+      "sha256": "a312a99227456e77580d5bfd46fc8cb4ed21d4bc834d725bfa295793538616c8",
+      "bytes": 980,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q5.lean",
+      "sha256": "066e55045f9a0140454f21f4a2b01da40dbf1dd9e17439e04af4ff23c8578f06",
+      "bytes": 980,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q6.lean",
+      "sha256": "ee5125c47c5c82edebed1c39158b60657c2297ca8c42d3630fd74187b0853134",
+      "bytes": 983,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q7.lean",
+      "sha256": "c1b4c56f4104ce9119fa1bd6a0861d0b6fa2b44585a734b368c96da3c926647a",
+      "bytes": 1019,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/q8.lean",
+      "sha256": "574359261ec035a5106c0f15cbdfd0e1d35ae28f884508d05f6ba6afb1f272bc",
+      "bytes": 1002,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/inputs/probe.lean",
+      "sha256": "b85d70919455a74ff766799156cedb4e01706a2d846e4a2592d055c988f5de92",
+      "bytes": 11263,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[p1 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.abort (Err.insufficient)",
+    "[p1 store (0, 0) amt 1] the statement's obs equal: true",
+    "[p1 store (0, 0) amt 1] outcomes equal: true",
+    "[p2 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.commit (0, 0)",
+    "[p2 store (0, 0) amt 1] the statement's obs equal: true",
+    "[p2 store (0, 0) amt 1] outcomes equal: false",
+    "[p3 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.insufficient)",
+    "[p3 store (10, 0) amt 0] the statement's obs equal: true",
+    "[p3 store (10, 0) amt 0] outcomes equal: false",
+    "[p4 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.nonPositive)",
+    "[p4 store (10, 0) amt 0] the statement's obs equal: true",
+    "[p4 store (10, 0) amt 0] outcomes equal: true",
+    "[p5 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)",
+    "[p5 store (10, 0) amt 5] the statement's obs equal: true",
+    "[p5 store (10, 0) amt 5] outcomes equal: true",
+    "[p6 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 0)",
+    "[p6 store (10, 0) amt 5] the statement's obs equal: true",
+    "[p6 store (10, 0) amt 5] outcomes equal: false",
+    "[q1 s1] ruled out",
+    "[q1 s2] not ruled out",
+    "[q1 s3] ruled out",
+    "[q1 s4] not ruled out",
+    "[q1 s5] ruled out",
+    "[q2 s1] not ruled out",
+    "[q2 s2] not ruled out",
+    "[q2 s3] ruled out",
+    "[q2 s4] not ruled out",
+    "[q2 s5] not ruled out",
+    "[q3 s1] not ruled out",
+    "[q3 s2] not ruled out",
+    "[q3 s3] ruled out",
+    "[q3 s4] not ruled out",
+    "[q4 s1] ruled out",
+    "[q4 s2] not ruled out",
+    "[q4 s3] ruled out",
+    "[q4 s4] not ruled out",
+    "[q5 s1] ruled out",
+    "[q5 s2] not ruled out",
+    "[q5 s3] ruled out",
+    "[q5 s4] ruled out",
+    "[q6 s1] not ruled out",
+    "[q6 s2] not ruled out",
+    "[q6 s3] ruled out",
+    "[q6 s4] ruled out",
+    "[p7 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (15, -5)",
+    "[p7 store (10, 0) amt 5] the statement's obs equal: true",
+    "[p7 store (10, 0) amt 5] outcomes equal: false",
+    "[p8 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)",
+    "[p8 store (10, 0) amt 5] the statement's obs equal: true",
+    "[p8 store (10, 0) amt 5] outcomes equal: true",
+    "[q7 s1] not ruled out",
+    "[q7 s2] not ruled out",
+    "[q7 s3] ruled out",
+    "[q7 s4] ruled out",
+    "[q8 s1] ruled out",
+    "[q8 s2] not ruled out",
+    "[q8 s3] ruled out",
+    "[q8 s4] ruled out",
+    "lean exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-abort-blind/q1.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q2.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q3.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q4.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q5.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q6.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q7.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/q8.log",
+      "sha256": "afc016fc9af6e752fe04e9b6a07f685f7ea49379d4a6571728d37197023a20bc",
+      "bytes": 68,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-abort-blind/probe.log",
+      "sha256": "60f17f1a4aa4364acc9a4f4950e80c391dc42ebc41b08c70af3059c3373a3010",
+      "bytes": 2286,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "builds": {
+      "q1": 0,
+      "q2": 0,
+      "q3": 0,
+      "q4": 0,
+      "q5": 0,
+      "q6": 0,
+      "q7": 0,
+      "q8": 0
+    },
+    "axioms": {
+      "q1": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q2": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q3": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q4": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q5": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q6": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q7": "'preservation' depends on axioms: [propext, Quot.sound]",
+      "q8": "'preservation' depends on axioms: [propext, Quot.sound]"
+    },
+    "pairs": {
+      "p1": {
+        "obs_equal": true,
+        "outcomes_equal": true
+      },
+      "p2": {
+        "obs_equal": true,
+        "outcomes_equal": false
+      },
+      "p3": {
+        "obs_equal": true,
+        "outcomes_equal": false
+      },
+      "p4": {
+        "obs_equal": true,
+        "outcomes_equal": true
+      },
+      "p5": {
+        "obs_equal": true,
+        "outcomes_equal": true
+      },
+      "p6": {
+        "obs_equal": true,
+        "outcomes_equal": false
+      },
+      "p7": {
+        "obs_equal": true,
+        "outcomes_equal": false
+      },
+      "p8": {
+        "obs_equal": true,
+        "outcomes_equal": true
+      }
+    },
+    "scenarios": {
+      "q1": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": false,
+        "s5": true
+      },
+      "q2": {
+        "s1": false,
+        "s2": false,
+        "s3": true,
+        "s4": false,
+        "s5": false
+      },
+      "q3": {
+        "s1": false,
+        "s2": false,
+        "s3": true,
+        "s4": false
+      },
+      "q4": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": false
+      },
+      "q5": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      },
+      "q6": {
+        "s1": false,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      },
+      "q7": {
+        "s1": false,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      },
+      "q8": {
+        "s1": true,
+        "s2": false,
+        "s3": true,
+        "s4": true
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "none"
+    }
+  },
+  "primary_config": "probe",
+  "configs": [
+    {
+      "id": "q1",
+      "origin": "recorded",
+      "purpose": "run.sh q1: Defs.lean then q1.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:00.416Z",
+      "duration_s": 0.41,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q1"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q1.lean",
+          "sha256": "3a9bfe70111560f00d11713c84af8527260e1bd195d5a60855c886ed884520de",
+          "bytes": 980,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q1.log"
+      ]
+    },
+    {
+      "id": "q2",
+      "origin": "recorded",
+      "purpose": "run.sh q2: Defs.lean then q2.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:00.830Z",
+      "duration_s": 0.396,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q2.lean",
+          "sha256": "ee7503872251b7b4735ff8910cd15f5e89b64ae733bc1927a4aadf97200eb0fd",
+          "bytes": 936,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q2.log"
+      ]
+    },
+    {
+      "id": "q3",
+      "origin": "recorded",
+      "purpose": "run.sh q3: Defs.lean then q3.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:01.228Z",
+      "duration_s": 0.402,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q3"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q3.lean",
+          "sha256": "7f72ccb1cd37558b9d5b4b7c5f5ea0687852db206743e5e9a8493547336d0265",
+          "bytes": 978,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q3.log"
+      ]
+    },
+    {
+      "id": "q4",
+      "origin": "recorded",
+      "purpose": "run.sh q4: Defs.lean then q4.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:01.633Z",
+      "duration_s": 0.404,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q4",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q4"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q4.lean",
+          "sha256": "a312a99227456e77580d5bfd46fc8cb4ed21d4bc834d725bfa295793538616c8",
+          "bytes": 980,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q4.log"
+      ]
+    },
+    {
+      "id": "q5",
+      "origin": "recorded",
+      "purpose": "run.sh q5: Defs.lean then q5.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:02.041Z",
+      "duration_s": 0.401,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q5",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q5"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q5.lean",
+          "sha256": "066e55045f9a0140454f21f4a2b01da40dbf1dd9e17439e04af4ff23c8578f06",
+          "bytes": 980,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q5.log"
+      ]
+    },
+    {
+      "id": "q6",
+      "origin": "recorded",
+      "purpose": "run.sh q6: Defs.lean then q6.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:02.445Z",
+      "duration_s": 0.413,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q6",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q6"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q6.lean",
+          "sha256": "ee5125c47c5c82edebed1c39158b60657c2297ca8c42d3630fd74187b0853134",
+          "bytes": 983,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q6.log"
+      ]
+    },
+    {
+      "id": "q7",
+      "origin": "recorded",
+      "purpose": "run.sh q7: Defs.lean then q7.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:02.860Z",
+      "duration_s": 0.409,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q7",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q7"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q7.lean",
+          "sha256": "c1b4c56f4104ce9119fa1bd6a0861d0b6fa2b44585a734b368c96da3c926647a",
+          "bytes": 1019,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q7.log"
+      ]
+    },
+    {
+      "id": "q8",
+      "origin": "recorded",
+      "purpose": "run.sh q8: Defs.lean then q8.lean, the case's compile, obs and preservation, with #print axioms preservation",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:03.273Z",
+      "duration_s": 0.405,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-q8",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "q8"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/q8.lean",
+          "sha256": "574359261ec035a5106c0f15cbdfd0e1d35ae28f884508d05f6ba6afb1f272bc",
+          "bytes": 1002,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "'preservation' depends on axioms: [propext, Quot.sound]",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/q8.log"
+      ]
+    },
+    {
+      "id": "probe",
+      "origin": "recorded",
+      "purpose": "run.sh probe: each case's compiled code and observer; the run pair of each case under its own observer and under the outcome itself; the step-3 scenarios",
+      "engine": "lean",
+      "version": "4.35.0",
+      "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:03:03.681Z",
+      "duration_s": 0.611,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-aud9-lean-abort-blind-probe",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "probe"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/Defs.lean",
+          "sha256": "1bcc2985ad1b281c190ff97d5cf31b9d61d825b4c0b52d412fb27fc0d9a0b8a2",
+          "bytes": 2548,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/probe.lean",
+          "sha256": "b85d70919455a74ff766799156cedb4e01706a2d846e4a2592d055c988f5de92",
+          "bytes": 11263,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-abort-blind/inputs/run.sh",
+          "sha256": "7cd9d1717338738a3b33c79f3d3b2d41e85de1d1d98579056ad823e1d9e23c76",
+          "bytes": 198,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[p1 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.abort (Err.insufficient)",
+        "[p1 store (0, 0) amt 1] the statement's obs equal: true",
+        "[p1 store (0, 0) amt 1] outcomes equal: true",
+        "[p2 store (0, 0) amt 1] source Outcome.abort (Err.insufficient) | compiled Outcome.commit (0, 0)",
+        "[p2 store (0, 0) amt 1] the statement's obs equal: true",
+        "[p2 store (0, 0) amt 1] outcomes equal: false",
+        "[p3 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.insufficient)",
+        "[p3 store (10, 0) amt 0] the statement's obs equal: true",
+        "[p3 store (10, 0) amt 0] outcomes equal: false",
+        "[p4 store (10, 0) amt 0] source Outcome.abort (Err.nonPositive) | compiled Outcome.abort (Err.nonPositive)",
+        "[p4 store (10, 0) amt 0] the statement's obs equal: true",
+        "[p4 store (10, 0) amt 0] outcomes equal: true",
+        "[p5 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)",
+        "[p5 store (10, 0) amt 5] the statement's obs equal: true",
+        "[p5 store (10, 0) amt 5] outcomes equal: true",
+        "[p6 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 0)",
+        "[p6 store (10, 0) amt 5] the statement's obs equal: true",
+        "[p6 store (10, 0) amt 5] outcomes equal: false",
+        "[q1 s1] ruled out",
+        "[q1 s2] not ruled out",
+        "[q1 s3] ruled out",
+        "[q1 s4] not ruled out",
+        "[q1 s5] ruled out",
+        "[q2 s1] not ruled out",
+        "[q2 s2] not ruled out",
+        "[q2 s3] ruled out",
+        "[q2 s4] not ruled out",
+        "[q2 s5] not ruled out",
+        "[q3 s1] not ruled out",
+        "[q3 s2] not ruled out",
+        "[q3 s3] ruled out",
+        "[q3 s4] not ruled out",
+        "[q4 s1] ruled out",
+        "[q4 s2] not ruled out",
+        "[q4 s3] ruled out",
+        "[q4 s4] not ruled out",
+        "[q5 s1] ruled out",
+        "[q5 s2] not ruled out",
+        "[q5 s3] ruled out",
+        "[q5 s4] ruled out",
+        "[q6 s1] not ruled out",
+        "[q6 s2] not ruled out",
+        "[q6 s3] ruled out",
+        "[q6 s4] ruled out",
+        "[p7 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (15, -5)",
+        "[p7 store (10, 0) amt 5] the statement's obs equal: true",
+        "[p7 store (10, 0) amt 5] outcomes equal: false",
+        "[p8 store (10, 0) amt 5] source Outcome.commit (5, 5) | compiled Outcome.commit (5, 5)",
+        "[p8 store (10, 0) amt 5] the statement's obs equal: true",
+        "[p8 store (10, 0) amt 5] outcomes equal: true",
+        "[q7 s1] not ruled out",
+        "[q7 s2] not ruled out",
+        "[q7 s3] ruled out",
+        "[q7 s4] ruled out",
+        "[q8 s1] ruled out",
+        "[q8 s2] not ruled out",
+        "[q8 s3] ruled out",
+        "[q8 s4] ruled out",
+        "lean exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-abort-blind/probe.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the run's inputs/ folder, which holds the files as they ran.",
+    "Each log is the container's output. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-aud9.mjs), copied in log order.",
+    "Every case file is appended to Defs.lean (run.sh), so the eight theorems share one source semantics, one IR and one view of the store. q1, q4, q5 and q8 observe the outcome (the error code, if any, and the balances); q2 observes the balances only, q3 whether the command aborted but not its code, q6 the sender's balance only, and q7 the total of the two balances.",
+    "The probe evaluates, for each case, a run pair from one store: the source and the case's compiled code, under the case's own observer and under the outcome itself. p2 is S9.L4 cell 1: from (0, 0) with amount 1 the source aborts and the conditional-write code commits, with equal balances.",
+    "A scenario line says whether the case's theorem, as written, rules out a given pair (the source run on a store, and a stated outcome for the compiled run): it does when the two observations differ.",
+    "The S9.L4 listing leaves the positivity check out; the cases keep it (assertPos), unchanged in every case but q3 and q4."
+  ]
+}

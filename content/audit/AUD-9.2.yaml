@@ -1,0 +1,521 @@
+# AUD-9.2 · S9 · G11 Test presented as proof (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# The pair and variant v2 are keyed by RUN-pg-validator-pairs, recorded on PostgreSQL 18.6 (the postgres:18 image
+# RUN-pg-one-db pins) by content/audit/tools/record-aud9.mjs; variant v1 is SP-9.4 and is keyed by RUN-pg-one-db.
+# The run tags its cases q1 to q12 so a receipt line never names a key: q1 sound member, q2 flawed member, q3/q4 variant
+# pair v1 (flawed/sound), q5/q6 v2 (sound/flawed), q7/q8 v3, q9/q10 v4 and q11/q12 v5 (each flawed/sound). Spine 6.2's Key run cell names RUN-sql-shape-validator,
+# which waits for the reference validator (LAB-9.11); until it is recorded, GATE-audit reports a key-run finding here.
+id: AUD-9.2
+stage: S9
+class: G11
+medium: sql
+artifact: credit-rewrite
+subject: "a validated SQL rewrite (PostgreSQL)"
+claim: "Generated SQL validated; equivalent to the source."
+requirement: >-
+  On every database the schema allows, the generated SQL gives the outcome of what it replaces: it commits or
+  aborts alike, and leaves the same table. A validation report says how far its method reaches: every database,
+  a stated bound, or a number of instances tried.
+scenario_question: "On this database, do the generated SQL and what it is checked against give the same outcome: the same commit or abort and the same table after, or for a query the same result?"
+scheduled_after: [S9.L8, LAB-9.11]
+kcs: [KC-9.sql-equivalence, KC-9.translation-validation]
+based_on:
+  incident: "Singh and Bedathur report that LLM judges of SQL query equivalence lean towards answering 'equivalent'; a CIDR 2026 study of LLM SQL rewrites found that about 32% of them changed query results."
+  date: "2024-12"
+  date_marks: "the first arXiv version of the judges paper"
+  source:
+    - https://arxiv.org/abs/2412.05561
+    - https://www.cidrdb.org/cidr2026/papers/p33-narasayya.pdf
+
+cases:
+  - id: sound
+    key: none
+    description: "Rewrites the compiled credit as an upsert, which the new storage layer prefers. The validator accepts it."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled credit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite
+      INSERT INTO acct (id, bal) SELECT id, bal + 30 FROM acct WHERE id = 2
+        ON CONFLICT (id) DO UPDATE SET bal = EXCLUDED.bal;
+      -- validation report
+      method  replay both on every database with ids in {1, 2}, each absent, at 0 or at 50: 9 databases
+      stamp   MODEL-CHECKED [M] · ids {1, 2}, bal {0, 50}
+    diff: |
+      --- a/plan/credit.sql
+      +++ b/plan/credit.sql
+      @@ -1,2 +1,3 @@
+       -- the credit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal + $amt WHERE id = $to;
+      +INSERT INTO acct (id, bal) SELECT id, bal + $amt FROM acct WHERE id = $to
+      +  ON CONFLICT (id) DO UPDATE SET bal = EXCLUDED.bal;
+    receipt: |
+      [q1 replay] 9 databases, 0 differ
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q1 s1] same", why: "Both statements commit and leave account 2 at 80." }
+        - { id: s2, text: "Account 1 at 100, and no account 2", answer: true, key_line: "[q1 s2] same", why: "The SELECT finds no row to insert, so the rewrite touches 0 rows, as the UPDATE does: both abort." }
+        - { id: s3, text: "An empty table", answer: true, key_line: "[q1 s3] same", why: "No row for account 2: both touch 0 rows and abort." }
+        - { id: s4, text: "Account 2 alone, at 0", answer: true, key_line: "[q1 s4] same", why: "Both commit and leave account 2 at 30." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-pg-validator-pairs
+    key_lines: ["[q1 replay] 9 databases, 0 differ"]
+    explain: "The rewrite takes its row from the table, so it inserts nothing when account 2 is missing and touches 0 rows, as the UPDATE does. The replay finds no difference on the 9 databases of its family, and the report stamps exactly that: [M] with the bound. It is evidence about those databases and says so."
+
+  - id: flawed
+    key: { class: G11, also: [G10] }
+    description: "Rewrites the compiled credit as an upsert, which the new storage layer prefers. The validator accepts it."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled credit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite
+      INSERT INTO acct (id, bal) VALUES (2, 30)
+        ON CONFLICT (id) DO UPDATE SET bal = acct.bal + 30;
+      -- validation report
+      method  shape: the same table, the same key and the same increment as the compiled credit
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/credit.sql
+      +++ b/plan/credit.sql
+      @@ -1,2 +1,3 @@
+       -- the credit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal + $amt WHERE id = $to;
+      +INSERT INTO acct (id, bal) VALUES ($to, $amt)
+      +  ON CONFLICT (id) DO UPDATE SET bal = acct.bal + $amt;
+    receipt: |
+      [q2 shape] credit: table acct, key 2, bal + 30 | rewrite: table acct, key 2, bal + 30 | accepted
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q2 s1] same", why: "Account 2 exists, so the upsert takes its conflict branch and adds 30, as the UPDATE does." }
+        - { id: s2, text: "Account 1 at 100, and no account 2", answer: false, key_line: "[q2 s2] differ", why: "The UPDATE touches 0 rows and the plan aborts. The upsert inserts account 2 at 30 and commits." }
+        - { id: s3, text: "An empty table", answer: false, key_line: "[q2 s3] differ", why: "The same: an abort against a commit that creates account 2." }
+        - { id: s4, text: "Account 2 alone, at 0", answer: true, key_line: "[q2 s4] same", why: "Account 2 exists: both leave it at 30." }
+    evidence: { type: verdict-line, load_bearing: ["statement:8", "statement:9", "receipt:1"] }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q2 shape] credit: table acct, key 2, bal + 30 | rewrite: table acct, key 2, bal + 30 | accepted"
+      - "[q2 replay] 9 databases, 3 differ"
+      - "[q2 first difference] database empty: credit abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 2:30"
+    explain: "The validator read each statement's table, key and increment from its text and never ran either one, yet the report stamps [P]. A replay over the same 9 databases finds 3 that differ: wherever account 2 is missing, the credit aborts and the upsert creates the account and commits. A shape check is weaker than one test, and here it accepted a rewrite that changes results."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: replace-proof-by-single-db-test
+    artifact: upsert-fixture
+    claim: "Validated on the fixture database: the rewrite matches the compiled credit."
+    key: { class: G11, also: [G10] }
+    description: "Rewrites the compiled credit as an upsert. The fixture database and the S6 suite agree with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled credit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite
+      INSERT INTO acct (id, bal) VALUES (2, 30)
+        ON CONFLICT (id) DO UPDATE SET bal = acct.bal + 30;
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 50
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/credit.sql
+      +++ b/plan/credit.sql
+      @@ -1,2 +1,3 @@
+       -- the credit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal + $amt WHERE id = $to;
+      +INSERT INTO acct (id, bal) VALUES ($to, $amt)
+      +  ON CONFLICT (id) DO UPDATE SET bal = acct.bal + $amt;
+    receipt: |
+      UPDATE 1
+      2 |  80
+      INSERT 0 1
+      2 |  80
+    receipt_run: RUN-pg-one-db
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q3 s1] same", why: "The one database the report tried: both leave account 2 at 80." }
+        - { id: s2, text: "Account 1 at 100, and no account 2", answer: false, key_line: "[q3 s2] differ", why: "The credit touches 0 rows and aborts; the upsert inserts account 2 and commits." }
+        - { id: s3, text: "An empty table", answer: false, key_line: "[q3 s3] differ", why: "An abort against a commit that creates account 2." }
+        - { id: s4, text: "Account 2 alone, at 0", answer: true, key_line: "[q3 s4] same", why: "Account 2 exists: both leave it at 30." }
+    evidence: { type: verdict-line, load_bearing: ["statement:8", "statement:9"] }
+    key_run: RUN-pg-one-db
+    key_lines:
+      - { config: fixture, line: "UPDATE 1" }
+      - { config: fixture, line: "INSERT 0 1" }
+      - { config: cell1, line: "UPDATE 0" }
+      - { config: cell1, line: "INSERT 0 1" }
+    explain: "One database is one instance: the report's method earns [T] · 1 instance, and it stamps [P]. On a database without account 2, the credit reports UPDATE 0, which the plan turns into an abort, and the upsert reports INSERT 0 1 and leaves account 2 at 30. This is SP-9.4."
+
+  - id: v1-sound
+    pair: v1
+    operator: replace-proof-by-single-db-test
+    artifact: upsert-fixture
+    claim: "Validated on the fixture database: the rewrite matches the compiled credit."
+    key: none
+    description: "Rewrites the compiled credit as an upsert. The fixture database and the S6 suite agree with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled credit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite
+      INSERT INTO acct (id, bal) VALUES (2, 30)
+        ON CONFLICT (id) DO UPDATE SET bal = acct.bal + 30;
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 50
+      stamp   TESTED [T] · 1 instance
+    diff: |
+      --- a/plan/credit.sql
+      +++ b/plan/credit.sql
+      @@ -1,2 +1,3 @@
+       -- the credit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal + $amt WHERE id = $to;
+      +INSERT INTO acct (id, bal) VALUES ($to, $amt)
+      +  ON CONFLICT (id) DO UPDATE SET bal = acct.bal + $amt;
+    receipt: |
+      UPDATE 1
+      2 |  80
+      INSERT 0 1
+      2 |  80
+    receipt_run: RUN-pg-one-db
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q4 s1] same", why: "The one database the report tried: both leave account 2 at 80." }
+        - { id: s2, text: "Account 1 at 100, and no account 2", answer: false, key_line: "[q4 s2] differ", why: "The credit touches 0 rows and aborts; the upsert inserts account 2 and commits. The report never claimed this database." }
+        - { id: s3, text: "An empty table", answer: false, key_line: "[q4 s3] differ", why: "An abort against a commit; outside the one instance the report tried." }
+        - { id: s4, text: "Account 2 alone, at 0", answer: true, key_line: "[q4 s4] same", why: "Account 2 exists: both leave it at 30." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-pg-one-db
+    key_lines:
+      - { config: fixture, line: "UPDATE 1" }
+      - { config: fixture, line: "INSERT 0 1" }
+    explain: "The claim and the stamp say what the run shows and no more: the two statements agree on the fixture database, one instance. The rewrite does differ elsewhere (step 3), and the report does not pretend otherwise. Whether to ship it is a separate question, and this stamp is what that question has to work with."
+
+  - id: v2-sound
+    pair: v2
+    operator: replace-proof-by-single-db-test
+    artifact: transfer-plan-emitter
+    medium: rust
+    key: none
+    description: "Reuses the account binding in the SQL emitter: one lookup fewer per command. The validator accepts the generated plan."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the plan generated for transfer 30 1 2; it aborts unless each statement touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30;
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- validation report
+      method  replay the plan and the source command on every database with accounts 1 and 2 at 0, 30 or 50: 9 databases
+      stamp   MODEL-CHECKED [M] · accounts 1 and 2, bal {0, 30, 50}
+    diff: |
+      --- a/compiler/src/sql.rs
+      +++ b/compiler/src/sql.rs
+      @@ -10,4 +10,5 @@
+           let acct = cmd.from;
+      +    let to = cmd.to;
+           out.push(debit(acct, cmd.amt));
+      -    out.push(credit(cmd.to, cmd.amt));
+      +    out.push(credit(to, cmd.amt));
+    receipt: |
+      [q5 replay] 9 databases, 0 differ
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0", answer: true, key_line: "[q5 s1] same", why: "Both commit with account 1 at 70 and account 2 at 30." }
+        - { id: s2, text: "Accounts 1 and 2 at 0 and 0", answer: true, key_line: "[q5 s2] same", why: "Not enough funds: the source aborts, and the plan's debit touches 0 rows and aborts." }
+        - { id: s3, text: "Accounts 1 and 2 at 30 and 50", answer: true, key_line: "[q5 s3] same", why: "Both commit with account 1 at 0 and account 2 at 80." }
+        - { id: s4, text: "Accounts 1 and 2 at 10 and 5", answer: true, key_line: "[q5 s4] same", why: "Both abort." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-pg-validator-pairs
+    key_lines: ["[q5 replay] 9 databases, 0 differ"]
+    explain: "The emitter still credits cmd.to, through a new binding. The replay runs the plan and the source command on the 9 databases of its family and finds no difference, and the stamp names that bound. The source side here is a hand transcription of S9's source semantics into PL/pgSQL, recorded with the run, until the reference interpreter lands."
+
+  - id: v2-flawed
+    pair: v2
+    operator: replace-proof-by-single-db-test
+    artifact: transfer-plan-emitter
+    medium: rust
+    key: { class: G11, also: [G10] }
+    description: "Reuses the account binding in the SQL emitter: one lookup fewer per command. The validator accepts the generated plan."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the plan generated for transfer 30 1 2; it aborts unless each statement touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30;
+      UPDATE acct SET bal = bal + 30 WHERE id = 1;
+      -- validation report
+      method  shape: a debit, then a credit, each an UPDATE of acct keyed by id, bal - <n> then bal + <n>
+      stamp   PROVED [P] · equivalent to transfer 30 1 2
+    diff: |
+      --- a/compiler/src/sql.rs
+      +++ b/compiler/src/sql.rs
+      @@ -10,4 +10,4 @@
+           let acct = cmd.from;
+           out.push(debit(acct, cmd.amt));
+      -    out.push(credit(cmd.to, cmd.amt));
+      +    out.push(credit(acct, cmd.amt));
+    receipt: |
+      [q6 shape] debit: table acct, key 1, bal - 30 | credit: table acct, key 1, bal + 30 | accepted
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0", answer: false, key_line: "[q6 s1] differ", why: "The source leaves 70 and 30. The plan debits account 1 and credits it back: 100 and 0." }
+        - { id: s2, text: "Accounts 1 and 2 at 0 and 0", answer: true, key_line: "[q6 s2] same", why: "Not enough funds: both abort before the credit matters." }
+        - { id: s3, text: "Accounts 1 and 2 at 30 and 50", answer: false, key_line: "[q6 s3] differ", why: "The source leaves 0 and 80; the plan leaves 30 and 50." }
+        - { id: s4, text: "Accounts 1 and 2 at 10 and 5", answer: true, key_line: "[q6 s4] same", why: "Both abort." }
+    evidence: { type: verdict-line, load_bearing: ["statement:6", "statement:7", "receipt:1"] }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q6 shape] debit: table acct, key 1, bal - 30 | credit: table acct, key 1, bal + 30 | accepted"
+      - "[q6 replay] 9 databases, 6 differ"
+      - "[q6 first difference] database (1,30),(2,0): source commit | 1:0 2:30; plan commit | 1:30 2:0"
+    explain: "The shape check sees two UPDATEs keyed by id, a debit and a credit, and cannot see which account a key names: the credit goes back to account 1. It never runs the plan, and the report stamps [P]. A replay against the source command on 9 databases finds 6 that differ; on every one where the transfer goes through, account 2 never receives the 30."
+
+  - id: v3-flawed
+    pair: v3
+    operator: replace-proof-by-single-db-test
+    artifact: hold-guard-rewrite
+    claim: "Validated on the fixture database: the rewrite matches the compiled debit."
+    key: { class: G11, also: [G10] }
+    description: "Rewrites the hold guard with NOT EXISTS, which the planner handles better. The fixture database agrees with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0)); holds (acct_id int), NULL allowed
+      -- the compiled debit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30
+        AND id NOT IN (SELECT acct_id FROM holds);
+      -- the agent's rewrite
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30
+        AND NOT EXISTS (SELECT 1 FROM holds h WHERE h.acct_id = acct.id);
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 0, one hold, on account 3
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/debit.sql
+      +++ b/plan/debit.sql
+      @@ -1,3 +1,3 @@
+       -- the debit of transfer $amt $from $to
+       UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal >= $amt
+      -  AND id NOT IN (SELECT acct_id FROM holds);
+      +  AND NOT EXISTS (SELECT 1 FROM holds h WHERE h.acct_id = acct.id);
+    receipt: |
+      [q7 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0, one hold on account 3 (the fixture database)", answer: true, key_line: "[q7 s1] same", why: "Neither guard stops account 1: both debit it." }
+        - { id: s2, text: "Accounts 1 and 2 at 100 and 0, no holds", answer: true, key_line: "[q7 s2] same", why: "No holds: both debit account 1." }
+        - { id: s3, text: "Accounts 1 and 2 at 100 and 0, one hold whose acct_id is NULL", answer: false, key_line: "[q7 s3] differ", why: "id NOT IN (NULL) is never true, so the compiled debit touches 0 rows and aborts; NOT EXISTS finds no match and debits." }
+        - { id: s4, text: "Accounts 1 and 2 at 100 and 0, one hold on account 1", answer: true, key_line: "[q7 s4] same", why: "Both guards stop account 1: both abort." }
+    evidence: { type: verdict-line, load_bearing: ["statement:9", "statement:10"] }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q7 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0"
+      - "[q7 s3] differ: compiled abort (statement 1 touched 0 rows) | unchanged; rewrite commit | 1:70 2:0"
+    explain: "One database is one instance, and the report stamps [P]. holds.acct_id allows NULL, and the fixture has none: on a database with a NULL hold, NOT IN is never true and the compiled debit aborts, while NOT EXISTS debits and commits."
+
+  - id: v3-sound
+    pair: v3
+    operator: replace-proof-by-single-db-test
+    artifact: hold-guard-rewrite
+    claim: "Validated on the fixture database: the rewrite matches the compiled debit."
+    key: none
+    description: "Rewrites the hold guard with NOT EXISTS, which the planner handles better. The fixture database agrees with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0)); holds (acct_id int), NULL allowed
+      -- the compiled debit of transfer 30 1 2; the plan aborts unless it touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30
+        AND id NOT IN (SELECT acct_id FROM holds);
+      -- the agent's rewrite
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30
+        AND NOT EXISTS (SELECT 1 FROM holds h WHERE h.acct_id = acct.id);
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 0, one hold, on account 3
+      stamp   TESTED [T] · 1 instance
+    diff: |
+      --- a/plan/debit.sql
+      +++ b/plan/debit.sql
+      @@ -1,3 +1,3 @@
+       -- the debit of transfer $amt $from $to
+       UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal >= $amt
+      -  AND id NOT IN (SELECT acct_id FROM holds);
+      +  AND NOT EXISTS (SELECT 1 FROM holds h WHERE h.acct_id = acct.id);
+    receipt: |
+      [q8 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0, one hold on account 3 (the fixture database)", answer: true, key_line: "[q8 s1] same", why: "Neither guard stops account 1: both debit it." }
+        - { id: s2, text: "Accounts 1 and 2 at 100 and 0, no holds", answer: true, key_line: "[q8 s2] same", why: "No holds: both debit account 1." }
+        - { id: s3, text: "Accounts 1 and 2 at 100 and 0, one hold whose acct_id is NULL", answer: false, key_line: "[q8 s3] differ", why: "id NOT IN (NULL) is never true, so the compiled debit touches 0 rows and aborts; NOT EXISTS finds no match and debits." }
+        - { id: s4, text: "Accounts 1 and 2 at 100 and 0, one hold on account 1", answer: true, key_line: "[q8 s4] same", why: "Both guards stop account 1: both abort." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q8 fixture] same: compiled commit | 1:70 2:0; rewrite commit | 1:70 2:0"
+    explain: "The report claims one instance and stamps one instance. The rewrite does differ on a NULL hold (step 3); the stamp leaves that question open instead of closing it."
+
+  - id: v4-flawed
+    pair: v4
+    operator: replace-proof-by-single-db-test
+    artifact: funds-guard-rewrite
+    claim: "Validated on three databases: the rewrite matches the compiled debit."
+    key: { class: G11, also: [G10] }
+    description: "Rewrites the debit guard as a subtraction, to match the ledger service. Three test databases agree with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled plan of transfer 30 1 2; it aborts unless each statement touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30;
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite of the debit
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal - 30 > 0;
+      -- validation report
+      method  run both plans on three databases: account 1 at 100, 50 or 0, account 2 at 0
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/debit.sql
+      +++ b/plan/debit.sql
+      @@ -1,2 +1,2 @@
+       -- the debit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal >= $amt;
+      +UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal - $amt > 0;
+    receipt: |
+      [q9 tried] 3 databases, 0 differ
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0", answer: true, key_line: "[q9 s1] same", why: "Both plans commit with 70 and 30." }
+        - { id: s2, text: "Accounts 1 and 2 at 30 and 0", answer: false, key_line: "[q9 s2] differ", why: "The whole balance: bal >= 30 holds and the compiled plan commits; bal - 30 > 0 fails and the rewrite aborts." }
+        - { id: s3, text: "Accounts 1 and 2 at 10 and 0", answer: true, key_line: "[q9 s3] same", why: "Not enough funds: both abort." }
+        - { id: s4, text: "Accounts 1 and 2 at 31 and 0", answer: true, key_line: "[q9 s4] same", why: "Both commit with 1 and 30." }
+    evidence: { type: verdict-line, load_bearing: ["statement:8", "statement:9", "receipt:1"] }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q9 tried] 3 databases, 0 differ"
+      - "[q9 s2] differ: compiled commit | 1:0 2:30; rewrite abort (statement 1 touched 0 rows) | unchanged"
+    explain: "Three databases are three instances: [T] · 3 instances, and the report stamps [P]. None of them puts account 1 at exactly 30, where the two guards part: the compiled plan moves the whole balance and the rewrite refuses it."
+
+  - id: v4-sound
+    pair: v4
+    operator: replace-proof-by-single-db-test
+    artifact: funds-guard-rewrite
+    claim: "Validated on three databases: the rewrite matches the compiled debit."
+    key: none
+    description: "Rewrites the debit guard as a subtraction, to match the ledger service. Three test databases agree with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled plan of transfer 30 1 2; it aborts unless each statement touches one row
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal >= 30;
+      UPDATE acct SET bal = bal + 30 WHERE id = 2;
+      -- the agent's rewrite of the debit
+      UPDATE acct SET bal = bal - 30 WHERE id = 1 AND bal - 30 > 0;
+      -- validation report
+      method  run both plans on three databases: account 1 at 100, 50 or 0, account 2 at 0
+      stamp   TESTED [T] · 3 instances
+    diff: |
+      --- a/plan/debit.sql
+      +++ b/plan/debit.sql
+      @@ -1,2 +1,2 @@
+       -- the debit of transfer $amt $from $to
+      -UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal >= $amt;
+      +UPDATE acct SET bal = bal - $amt WHERE id = $from AND bal - $amt > 0;
+    receipt: |
+      [q10 tried] 3 databases, 0 differ
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 0", answer: true, key_line: "[q10 s1] same", why: "Both plans commit with 70 and 30." }
+        - { id: s2, text: "Accounts 1 and 2 at 30 and 0", answer: false, key_line: "[q10 s2] differ", why: "The whole balance: bal >= 30 holds and the compiled plan commits; bal - 30 > 0 fails and the rewrite aborts." }
+        - { id: s3, text: "Accounts 1 and 2 at 10 and 0", answer: true, key_line: "[q10 s3] same", why: "Not enough funds: both abort." }
+        - { id: s4, text: "Accounts 1 and 2 at 31 and 0", answer: true, key_line: "[q10 s4] same", why: "Both commit with 1 and 30." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q10 tried] 3 databases, 0 differ"
+    explain: "The claim names its three databases and the stamp counts them. The guards do part at a balance of exactly 30 (step 3), which none of the three tried; the stamp says how little that rules out."
+
+  - id: v5-flawed
+    pair: v5
+    operator: replace-proof-by-single-db-test
+    artifact: report-rewrite
+    claim: "Validated on the fixture database: the rewrite matches the compiled report."
+    key: { class: G11, also: [G10] }
+    description: "Simplifies the balance report: the coalesce is redundant. The fixture database agrees with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled balance report for accounts 1 and 2
+      SELECT coalesce(sum(bal), 0) FROM acct WHERE id IN (1, 2);
+      -- the agent's rewrite
+      SELECT sum(bal) FROM acct WHERE id IN (1, 2);
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 50
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/report.sql
+      +++ b/plan/report.sql
+      @@ -1,2 +1,2 @@
+       -- the balance report for $ids
+      -SELECT coalesce(sum(bal), 0) FROM acct WHERE id IN ($ids);
+      +SELECT sum(bal) FROM acct WHERE id IN ($ids);
+    receipt: |
+      [q11 fixture] same: compiled result 150; rewrite result 150
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q11 s1] same", why: "Both report 150." }
+        - { id: s2, text: "An empty table", answer: false, key_line: "[q11 s2] differ", why: "sum over no rows is NULL; the compiled report turns it into 0." }
+        - { id: s3, text: "Account 1 at 100, and no account 2", answer: true, key_line: "[q11 s3] same", why: "One row: both report 100." }
+        - { id: s4, text: "Account 3 alone, at 7", answer: false, key_line: "[q11 s4] differ", why: "No row matches: 0 against NULL." }
+    evidence: { type: verdict-line, load_bearing: ["statement:7", "statement:8"] }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q11 fixture] same: compiled result 150; rewrite result 150"
+      - "[q11 s2] differ: compiled result 0; rewrite result NULL"
+    explain: "One database is one instance, and the report stamps [P]. The coalesce is not redundant: when no row matches, sum returns NULL, and the compiled report returns 0. The fixture always has rows, so it cannot show the difference."
+
+  - id: v5-sound
+    pair: v5
+    operator: replace-proof-by-single-db-test
+    artifact: report-rewrite
+    claim: "Validated on the fixture database: the rewrite matches the compiled report."
+    key: none
+    description: "Simplifies the balance report: the coalesce is redundant. The fixture database agrees with the original."
+    statement: |
+      -- schema: acct (id int PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled balance report for accounts 1 and 2
+      SELECT coalesce(sum(bal), 0) FROM acct WHERE id IN (1, 2);
+      -- the agent's rewrite
+      SELECT sum(bal) FROM acct WHERE id IN (1, 2);
+      -- validation report
+      method  run both on the fixture database: accounts 1 and 2 at 100 and 50
+      stamp   TESTED [T] · 1 instance
+    diff: |
+      --- a/plan/report.sql
+      +++ b/plan/report.sql
+      @@ -1,2 +1,2 @@
+       -- the balance report for $ids
+      -SELECT coalesce(sum(bal), 0) FROM acct WHERE id IN ($ids);
+      +SELECT sum(bal) FROM acct WHERE id IN ($ids);
+    receipt: |
+      [q12 fixture] same: compiled result 150; rewrite result 150
+    receipt_run: RUN-pg-validator-pairs
+    restatement:
+      run: RUN-pg-validator-pairs
+      scenarios: &v5-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 100 and 50 (the fixture database)", answer: true, key_line: "[q12 s1] same", why: "Both report 150." }
+        - { id: s2, text: "An empty table", answer: false, key_line: "[q12 s2] differ", why: "sum over no rows is NULL; the compiled report turns it into 0." }
+        - { id: s3, text: "Account 1 at 100, and no account 2", answer: true, key_line: "[q12 s3] same", why: "One row: both report 100." }
+        - { id: s4, text: "Account 3 alone, at 7", answer: false, key_line: "[q12 s4] differ", why: "No row matches: 0 against NULL." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-pg-validator-pairs
+    key_lines:
+      - "[q12 fixture] same: compiled result 150; rewrite result 150"
+    explain: "One instance, stamped as one instance. The description calls the coalesce redundant, and step 3 shows that it is not when no row matches; the report itself claims only the fixture."

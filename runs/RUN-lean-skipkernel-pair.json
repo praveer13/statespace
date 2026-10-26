@@ -1,0 +1,381 @@
+{
+  "id": "RUN-lean-skipkernel-pair",
+  "title": "AUD-2.3's pair: one conservation theorem built twice; both builds exit 0 with no non-standard axiom, and only the kernel replay rejects the member built under debug.skipKernelTC",
+  "task": "W1-T32",
+  "origin": "recorded",
+  "records": "AUD-2.3 (content/audit/AUD-2.3.yaml): lake build, #print axioms and leanchecker on the sound and the flawed project, and the step-3 scenarios evaluated in Lean",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T17:27:57.879Z",
+  "started_at": "2026-10-26T17:27:54.450Z",
+  "duration_s": 3.427,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-lean-skipkernel-pair-flawed",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh",
+    "flawed"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger/Conserve.lean",
+      "sha256": "a644391a68891bbbe516b29cf8afc53e84a38563baa77b91b7eea4abd804802d",
+      "bytes": 167,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger/Transfer.lean",
+      "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+      "bytes": 108,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger.lean",
+      "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+      "bytes": 46,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Report.lean",
+      "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+      "bytes": 38,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Scenarios.lean",
+      "sha256": "a57e7836f7b79c8d69e35912019770718131877ca2d0f1346458775151810c5b",
+      "bytes": 610,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/lakefile.toml",
+      "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+      "bytes": 73,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/run.sh",
+      "sha256": "fe7678955ad27312f3738b29721c4bb021927fc33b9e1c83279cebca00a147dd",
+      "bytes": 418,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Conserve.lean",
+      "sha256": "1002b959b10c29693afb3245f4479efe450607b8810d8dd0faf02479ece93818",
+      "bytes": 163,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Fast.lean",
+      "sha256": "c4719575f2c6839f907939c612f773d54b2e5ea619c879418e1588c32c512b45",
+      "bytes": 697,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Transfer.lean",
+      "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+      "bytes": 108,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger.lean",
+      "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+      "bytes": 46,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Report.lean",
+      "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+      "bytes": 38,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/lakefile.toml",
+      "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+      "bytes": 73,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "✔ [2/6] Built Ledger.Transfer (132ms)",
+    "✔ [3/6] Built Ledger.Fast (536ms)",
+    "✔ [4/6] Built Ledger.Conserve (448ms)",
+    "✔ [5/6] Built Ledger (502ms)",
+    "Build completed successfully (6 jobs).",
+    "lake exit=0",
+    "'conserves' does not depend on any axioms",
+    "report exit=0",
+    "leanchecker found a problem in Ledger.Fast",
+    "uncaught exception: while replaying declaration 'conserves_fast':",
+    "(kernel) declaration type mismatch, 'conserves_fast' has type",
+    "leanchecker exit=1"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/sound.log",
+      "sha256": "28312796399f17f10a3ac5f88181573c73705f6bfcf9cf458140de2caa53f339",
+      "bytes": 523,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel-pair/flawed.log",
+      "sha256": "c9505ab359db061392b01771a4e2be033ff1d48bbc46f83025ab4f501ef2f59f",
+      "bytes": 736,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "sound": {
+      "build_exit": 0,
+      "axioms": "'conserves' depends on axioms: [propext, Quot.sound]",
+      "leanchecker_exit": 0,
+      "leanchecker": "accepts"
+    },
+    "scenarios": {
+      "s1": false,
+      "s2": true,
+      "s3": false,
+      "s4": false,
+      "s5": false
+    },
+    "flawed": {
+      "build_exit": 0,
+      "axioms": "'conserves' does not depend on any axioms",
+      "leanchecker_exit": 1,
+      "leanchecker": "rejects"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "flawed",
+  "configs": [
+    {
+      "id": "sound",
+      "origin": "recorded",
+      "purpose": "run.sh sound: lake build, #print axioms conserves, leanchecker Ledger, then the step-3 scenarios",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T17:27:53.156Z",
+      "duration_s": 1.289,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-skipkernel-pair-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger/Conserve.lean",
+          "sha256": "a644391a68891bbbe516b29cf8afc53e84a38563baa77b91b7eea4abd804802d",
+          "bytes": 167,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger/Transfer.lean",
+          "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+          "bytes": 108,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Ledger.lean",
+          "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+          "bytes": 46,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Report.lean",
+          "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+          "bytes": 38,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/Scenarios.lean",
+          "sha256": "a57e7836f7b79c8d69e35912019770718131877ca2d0f1346458775151810c5b",
+          "bytes": 610,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/sound/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/run.sh",
+          "sha256": "fe7678955ad27312f3738b29721c4bb021927fc33b9e1c83279cebca00a147dd",
+          "bytes": 418,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/5] Built Ledger.Transfer (139ms)",
+        "✔ [3/5] Built Ledger.Conserve (137ms)",
+        "✔ [4/5] Built Ledger (120ms)",
+        "Build completed successfully (5 jobs).",
+        "lake exit=0",
+        "'conserves' depends on axioms: [propext, Quot.sound]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", false, 3, 5)",
+        "(\"s2\", true, 3, 5)",
+        "(\"s3\", false, 5, 3)",
+        "(\"s4\", false, 5, 3)",
+        "(\"s5\", false, 3, 5)",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-skipkernel-pair/sound.log"
+      ]
+    },
+    {
+      "id": "flawed",
+      "origin": "recorded",
+      "purpose": "run.sh flawed: lake build, #print axioms conserves, leanchecker Ledger",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T17:27:54.450Z",
+      "duration_s": 3.427,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-skipkernel-pair-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Conserve.lean",
+          "sha256": "1002b959b10c29693afb3245f4479efe450607b8810d8dd0faf02479ece93818",
+          "bytes": 163,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Fast.lean",
+          "sha256": "c4719575f2c6839f907939c612f773d54b2e5ea619c879418e1588c32c512b45",
+          "bytes": 697,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger/Transfer.lean",
+          "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+          "bytes": 108,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Ledger.lean",
+          "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+          "bytes": 46,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/Report.lean",
+          "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+          "bytes": 38,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/flawed/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel-pair/inputs/run.sh",
+          "sha256": "fe7678955ad27312f3738b29721c4bb021927fc33b9e1c83279cebca00a147dd",
+          "bytes": 418,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Ledger.Transfer (132ms)",
+        "✔ [3/6] Built Ledger.Fast (536ms)",
+        "✔ [4/6] Built Ledger.Conserve (448ms)",
+        "✔ [5/6] Built Ledger (502ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'conserves' does not depend on any axioms",
+        "report exit=0",
+        "leanchecker found a problem in Ledger.Fast",
+        "uncaught exception: while replaying declaration 'conserves_fast':",
+        "(kernel) declaration type mismatch, 'conserves_fast' has type",
+        "leanchecker exit=1"
+      ],
+      "outputs": [
+        "runs/RUN-lean-skipkernel-pair/flawed.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys.mjs), copied in log order.",
+    "Each project is the same transfer and the same theorem statement, conserves. The sound project proves it with unfold, split, simp and omega; the flawed one closes it with a declaration added while debug.skipKernelTC was set (inputs/flawed/Ledger/Fast.lean). The Audit Desk shows the option line and these verdict lines, never that construction (docs/AUDIT-DESK.md section 3.2).",
+    "A scenario line prints the scenario, whether the theorem as written rules out that result (its balances do not sum to a + b), and what transfer actually returns.",
+    "The imported RUN-lean-skipkernel records the same behaviour on a proof of False, without argv; this run is recorded with argv and keys AUD-2.3 on its own statement."
+  ]
+}

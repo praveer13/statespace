@@ -1,0 +1,202 @@
+{
+  "id": "RUN-z3-declassify-pairs",
+  "title": "AUD-7.2's cases: every isolation query is unsat with its premises sat; on concrete changes Acme's view shows, the relations with a declassification allow the share and the count, and the blanket relations forbid them",
+  "task": "W4-T13",
+  "origin": "recorded",
+  "records": "AUD-7.2 (content/audit/AUD-7.2.yaml): the proof and premise queries of the pair and variant pair v1, and each step-3 change judged by the case's relation",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:03.346Z",
+  "started_at": "2026-10-26T18:04:03.133Z",
+  "duration_s": 0.212,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-declassify-pairs-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "declassify.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-declassify-pairs/inputs/declassify.py",
+      "sha256": "7ff3a086a02ff8ddb2e81fda0d75679361d5a0f28ce0cacafcbb12c2e2233280",
+      "bytes": 5786,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[q1 proof] unsat",
+    "[q1 premises] sat",
+    "[q2 proof] unsat",
+    "[q2 premises] sat",
+    "[q1 s1] allows",
+    "[q1 s2] forbids",
+    "[q1 s3] allows",
+    "[q1 s4] allows",
+    "[q2 s1] forbids",
+    "[q2 s2] forbids",
+    "[q2 s3] forbids",
+    "[q2 s4] allows",
+    "[q3 proof] unsat",
+    "[q3 premises] sat",
+    "[q4 proof] unsat",
+    "[q4 premises] sat",
+    "[q3 s1] allows",
+    "[q3 s2] forbids",
+    "[q3 s3] allows",
+    "[q4 s1] forbids",
+    "[q4 s2] forbids",
+    "[q4 s3] allows"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-declassify-pairs/bench.log",
+      "sha256": "510fa1b55caa680f3566c149ee4add78ba422ce98c9047ca14e72489598d993c",
+      "bytes": 381,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "proof": "unsat",
+      "premises": "sat",
+      "s1": "allows",
+      "s2": "forbids",
+      "s3": "allows",
+      "s4": "allows"
+    },
+    "q2": {
+      "proof": "unsat",
+      "premises": "sat",
+      "s1": "forbids",
+      "s2": "forbids",
+      "s3": "forbids",
+      "s4": "allows"
+    },
+    "q3": {
+      "proof": "unsat",
+      "premises": "sat",
+      "s1": "allows",
+      "s2": "forbids",
+      "s3": "allows"
+    },
+    "q4": {
+      "proof": "unsat",
+      "premises": "sat",
+      "s1": "forbids",
+      "s2": "forbids",
+      "s3": "allows"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "declassify.py: the queries of AUD-7.2's cases",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:03.133Z",
+      "duration_s": 0.212,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-declassify-pairs-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "declassify.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-declassify-pairs/inputs/declassify.py",
+          "sha256": "7ff3a086a02ff8ddb2e81fda0d75679361d5a0f28ce0cacafcbb12c2e2233280",
+          "bytes": 5786,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[q1 proof] unsat",
+        "[q1 premises] sat",
+        "[q2 proof] unsat",
+        "[q2 premises] sat",
+        "[q1 s1] allows",
+        "[q1 s2] forbids",
+        "[q1 s3] allows",
+        "[q1 s4] allows",
+        "[q2 s1] forbids",
+        "[q2 s2] forbids",
+        "[q2 s3] forbids",
+        "[q2 s4] allows",
+        "[q3 proof] unsat",
+        "[q3 premises] sat",
+        "[q4 proof] unsat",
+        "[q4 premises] sat",
+        "[q3 s1] allows",
+        "[q3 s2] forbids",
+        "[q3 s3] allows",
+        "[q4 s1] forbids",
+        "[q4 s2] forbids",
+        "[q4 s3] allows"
+      ],
+      "outputs": [
+        "runs/RUN-z3-declassify-pairs/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s7-s8.mjs), copied in log order.",
+    "Every query runs under rlimit 5000000. Tags q1 to q4 are neutral: the anchor file says which case each tag is (AUD-7.2).",
+    "A change is \"allows\" when the two worlds are not related, so the statement lets Acme see the difference, and \"forbids\" when they are related, so the statement requires Acme's view to stay the same."
+  ]
+}

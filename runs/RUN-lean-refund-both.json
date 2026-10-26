@@ -1,0 +1,385 @@
+{
+  "id": "RUN-lean-refund-both",
+  "title": "AUD-2.1's pair: one guarded refund, two theorems named refund_nonneg; both build with [propext, Quot.sound] and replay in the kernel, but only the sound one's statement covers every account, so only it rules out a refund that leaves the merchant negative",
+  "task": "W1-T34",
+  "origin": "recorded",
+  "records": "AUD-2.1 (content/audit/AUD-2.1.yaml): lake build, #print axioms refund_nonneg and leanchecker on the both-parties project (sound) and the customer-only project (flawed), and the step-3 scenarios against each statement",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:14.073Z",
+  "started_at": "2026-10-26T18:04:12.601Z",
+  "duration_s": 1.458,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-lean-refund-both-flawed",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh",
+    "flawed"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds/Refund.lean",
+      "sha256": "38c9e805b8624c7b2e626636e2c900719ddf4ffac156cd2c3331ef713c3ec546",
+      "bytes": 682,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds/Theorem.lean",
+      "sha256": "a1c76043005fee43f60fb6278d90c2045ab4e962d73b5180561d890256321929",
+      "bytes": 311,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds.lean",
+      "sha256": "de96c33d5a344745e078d1aaded99efd1a2b90812a17464d20f7fef8c1fbbf07",
+      "bytes": 45,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/Report.lean",
+      "sha256": "9de5977c81feb3c89e8e55f587fe4f43bc2feaf8435a511446441d7b4a080581",
+      "bytes": 43,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/Scenarios.lean",
+      "sha256": "0c7f771d4d06b0bf92237da8cb0b7b1128c1296eae301bf06c1cace644439f41",
+      "bytes": 1185,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/sound/lakefile.toml",
+      "sha256": "50ef8dbf757b5c3da77251e02506b021463d772aa7e14a3d1f2523f639872be1",
+      "bytes": 76,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/run.sh",
+      "sha256": "d71ca61c7459abcf7161b95395408ed036a62f22e3afd3ce9fab2f6bd1ed9488",
+      "bytes": 457,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds/Refund.lean",
+      "sha256": "38c9e805b8624c7b2e626636e2c900719ddf4ffac156cd2c3331ef713c3ec546",
+      "bytes": 682,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds/Theorem.lean",
+      "sha256": "eab2efc89295ac2a85ade117c00186ddef6d24e5392b0272d74f244b66a4bde4",
+      "bytes": 347,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds.lean",
+      "sha256": "de96c33d5a344745e078d1aaded99efd1a2b90812a17464d20f7fef8c1fbbf07",
+      "bytes": 45,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/Report.lean",
+      "sha256": "9de5977c81feb3c89e8e55f587fe4f43bc2feaf8435a511446441d7b4a080581",
+      "bytes": 43,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/Scenarios.lean",
+      "sha256": "067d113e6bcebc015ef78299ae1309f6a73bfd960a5ebab6223dfd49a84045a7",
+      "bytes": 1095,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/inputs/flawed/lakefile.toml",
+      "sha256": "50ef8dbf757b5c3da77251e02506b021463d772aa7e14a3d1f2523f639872be1",
+      "bytes": 76,
+      "role": "config"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "✔ [2/5] Built Refunds.Refund (174ms)",
+    "✔ [3/5] Built Refunds.Theorem (162ms)",
+    "✔ [4/5] Built Refunds (138ms)",
+    "Build completed successfully (5 jobs).",
+    "lake exit=0",
+    "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+    "report exit=0",
+    "leanchecker exit=0",
+    "(\"s1\", false, 0, 30)",
+    "(\"s2\", true, 60, 50)",
+    "(\"s3\", false, 50, 50)",
+    "(\"s4\", false, -10, 110)",
+    "scenarios exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-refund-both/sound.log",
+      "sha256": "5d5985ef57564fbbb24a6a66e11c31b52fc0a4b12f499b484a9c3770c3e948aa",
+      "bytes": 517,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-refund-both/flawed.log",
+      "sha256": "55c7f686b73ea6d2167b17cd7ba81606a9f66000692bfb2dda0e47bbd569fee9",
+      "bytes": 518,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "sound": {
+      "build_exit": 0,
+      "axioms": "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+      "leanchecker_exit": 0,
+      "scenarios": {
+        "s1": true,
+        "s2": true,
+        "s3": false,
+        "s4": false
+      }
+    },
+    "flawed": {
+      "build_exit": 0,
+      "axioms": "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+      "leanchecker_exit": 0,
+      "scenarios": {
+        "s1": false,
+        "s2": true,
+        "s3": false,
+        "s4": false
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "flawed",
+  "configs": [
+    {
+      "id": "sound",
+      "origin": "recorded",
+      "purpose": "run.sh sound: the sound project, built and read as the Bench reads it",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:11.170Z",
+      "duration_s": 1.419,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-refund-both-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds/Refund.lean",
+          "sha256": "38c9e805b8624c7b2e626636e2c900719ddf4ffac156cd2c3331ef713c3ec546",
+          "bytes": 682,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds/Theorem.lean",
+          "sha256": "a1c76043005fee43f60fb6278d90c2045ab4e962d73b5180561d890256321929",
+          "bytes": 311,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/Refunds.lean",
+          "sha256": "de96c33d5a344745e078d1aaded99efd1a2b90812a17464d20f7fef8c1fbbf07",
+          "bytes": 45,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/Report.lean",
+          "sha256": "9de5977c81feb3c89e8e55f587fe4f43bc2feaf8435a511446441d7b4a080581",
+          "bytes": 43,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/Scenarios.lean",
+          "sha256": "0c7f771d4d06b0bf92237da8cb0b7b1128c1296eae301bf06c1cace644439f41",
+          "bytes": 1185,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/sound/lakefile.toml",
+          "sha256": "50ef8dbf757b5c3da77251e02506b021463d772aa7e14a3d1f2523f639872be1",
+          "bytes": 76,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/run.sh",
+          "sha256": "d71ca61c7459abcf7161b95395408ed036a62f22e3afd3ce9fab2f6bd1ed9488",
+          "bytes": 457,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/5] Built Refunds.Refund (150ms)",
+        "✔ [3/5] Built Refunds.Theorem (150ms)",
+        "✔ [4/5] Built Refunds (125ms)",
+        "Build completed successfully (5 jobs).",
+        "lake exit=0",
+        "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", true, 0, 30)",
+        "(\"s2\", true, 60, 50)",
+        "(\"s3\", false, 50, 50)",
+        "(\"s4\", false, -10, 110)",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-refund-both/sound.log"
+      ]
+    },
+    {
+      "id": "flawed",
+      "origin": "recorded",
+      "purpose": "run.sh flawed: the flawed project, built and read as the Bench reads it",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:12.601Z",
+      "duration_s": 1.458,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-lean-refund-both-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds/Refund.lean",
+          "sha256": "38c9e805b8624c7b2e626636e2c900719ddf4ffac156cd2c3331ef713c3ec546",
+          "bytes": 682,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds/Theorem.lean",
+          "sha256": "eab2efc89295ac2a85ade117c00186ddef6d24e5392b0272d74f244b66a4bde4",
+          "bytes": 347,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/Refunds.lean",
+          "sha256": "de96c33d5a344745e078d1aaded99efd1a2b90812a17464d20f7fef8c1fbbf07",
+          "bytes": 45,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/Report.lean",
+          "sha256": "9de5977c81feb3c89e8e55f587fe4f43bc2feaf8435a511446441d7b4a080581",
+          "bytes": 43,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/Scenarios.lean",
+          "sha256": "067d113e6bcebc015ef78299ae1309f6a73bfd960a5ebab6223dfd49a84045a7",
+          "bytes": 1095,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/flawed/lakefile.toml",
+          "sha256": "50ef8dbf757b5c3da77251e02506b021463d772aa7e14a3d1f2523f639872be1",
+          "bytes": 76,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-refund-both/inputs/run.sh",
+          "sha256": "d71ca61c7459abcf7161b95395408ed036a62f22e3afd3ce9fab2f6bd1ed9488",
+          "bytes": 457,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/5] Built Refunds.Refund (174ms)",
+        "✔ [3/5] Built Refunds.Theorem (162ms)",
+        "✔ [4/5] Built Refunds (138ms)",
+        "Build completed successfully (5 jobs).",
+        "lake exit=0",
+        "'refund_nonneg' depends on axioms: [propext, Quot.sound]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", false, 0, 30)",
+        "(\"s2\", true, 60, 50)",
+        "(\"s3\", false, 50, 50)",
+        "(\"s4\", false, -10, 110)",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-refund-both/flawed.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s1s2.mjs), copied in log order.",
+    "Both projects share Refunds/Refund.lean, a refund that does nothing unless the merchant holds amt. The sound theorem concludes NonNeg (refund s p amt); the flawed one concludes only 0 ≤ (refund s p amt).balance (s.payments p).customer.",
+    "A scenario line prints the scenario, whether the project's theorem as written rules out that outcome (its premises hold and its conclusion fails on the outcome, over the customer, account 1, and the merchant, account 2; every other balance is 0 and unchanged), and what refund returns for the two accounts.",
+    "This is the both-parties member spine section 6.2 names for W2-T13; it is recorded here with the W1 anchor so that the pair carries one claim."
+  ]
+}

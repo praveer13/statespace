@@ -1,0 +1,126 @@
+[f4] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+[f4] Running breadth-first search Model-Checking with fp 103 and seed 28475716671902734 with 1 worker on 20 cores with 1365MB heap and 64MB offheap memory [pid: 8] (Linux 6.12.63 amd64, Eclipse Adoptium 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+[f4] Parsing file /w/Outbox.tla
+[f4] Parsing file /w/OutboxIface.tla
+[f4] Parsing file /tmp/tlc-12289241821320667385/_TLCTrace.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/Naturals.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Naturals.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/FiniteSets.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/FiniteSets.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/Sequences.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Sequences.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/TLC.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLC.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/TLCExt.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/TLCExt.tla)
+[f4] Parsing file /tmp/tlc-12289241821320667385/Integers.tla (jar:file:/opt/tla2tools/tla2tools-1.8.0.jar!/tla2sany/StandardModules/Integers.tla)
+[f4] Semantic processing of module Naturals
+[f4] Semantic processing of module Sequences
+[f4] Semantic processing of module FiniteSets
+[f4] Semantic processing of module OutboxIface
+[f4] Semantic processing of module TLC
+[f4] Semantic processing of module Integers
+[f4] Semantic processing of module TLCExt
+[f4] Semantic processing of module _TLCTrace
+[f4] Semantic processing of module Outbox
+[f4] Linting of module OutboxIface
+[f4] Linting of module TLCExt
+[f4] Linting of module _TLCTrace
+[f4] Linting of module Outbox
+[f4] Starting... (2026-10-26 18:04:08)
+[f4] Computing initial states...
+[f4] Finished computing initial states: 1 distinct state generated at 2026-10-26 18:04:08.
+[f4] Error: Invariant NoDoubleCharge is violated.
+[f4] Error: The behavior up to this point is:
+[f4] State 1: <Initial predicate>
+[f4] /\ reqs = {}
+[f4] /\ seen = {}
+[f4] /\ replies = {}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 0)
+[f4] /\ up = TRUE
+[f4] /\ committed = {}
+[f4] /\ status = (c1 :> "none")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 0)
+[f4] 
+[f4] State 2: <Commit(c1) line 23, col 14 to line 26, col 95 of module Outbox>
+[f4] /\ reqs = {}
+[f4] /\ seen = {}
+[f4] /\ replies = {}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 0)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "pending")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 0)
+[f4] 
+[f4] State 3: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>
+[f4] /\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+[f4] /\ seen = {}
+[f4] /\ replies = {}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 1)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "inflight")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 0)
+[f4] 
+[f4] State 4: <Timeout(c1) line 39, col 15 to line 45, col 107 of module Outbox>
+[f4] /\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+[f4] /\ seen = {}
+[f4] /\ replies = {}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 1)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "pending")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 0)
+[f4] 
+[f4] State 5: <Dispatch(c1) line 29, col 16 to line 36, col 92 of module Outbox>
+[f4] /\ reqs = { [cmd |-> c1, key |-> <<c1, 0>>, att |-> 1],
+[f4]   [cmd |-> c1, key |-> <<c1, 0>>, att |-> 2] }
+[f4] /\ seen = {}
+[f4] /\ replies = {}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 2)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "inflight")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 0)
+[f4] 
+[f4] State 6: <Next line 104, col 12 to line 104, col 36 of module Outbox>
+[f4] /\ reqs = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 2]}
+[f4] /\ seen = {<<c1, 0>>}
+[f4] /\ replies = {[cmd |-> c1, key |-> <<c1, 0>>, att |-> 1]}
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 2)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "inflight")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 1)
+[f4] 
+[f4] State 7: <Next line 104, col 12 to line 104, col 36 of module Outbox>
+[f4] /\ reqs = {}
+[f4] /\ seen = {<<c1, 0>>}
+[f4] /\ replies = { [cmd |-> c1, key |-> <<c1, 0>>, att |-> 1],
+[f4]   [cmd |-> c1, key |-> <<c1, 0>>, att |-> 2] }
+[f4] /\ crashes = 0
+[f4] /\ attempts = (c1 :> 2)
+[f4] /\ up = TRUE
+[f4] /\ committed = {c1}
+[f4] /\ status = (c1 :> "inflight")
+[f4] /\ durable = {}
+[f4] /\ got = {}
+[f4] /\ charges = (c1 :> 2)
+[f4] 
+[f4] 19 states generated, 16 distinct states found, 5 states left on queue.
+[f4] The depth of the complete state graph search is 7.
+[f4] Finished in 00s at (2026-10-26 18:04:08)
+[f4] Trace exploration spec path: ./Outbox_TTrace_1793037848.tla

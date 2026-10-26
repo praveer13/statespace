@@ -1,0 +1,214 @@
+{
+  "id": "RUN-z3-observer-pairs",
+  "title": "AUD-7.1's cases: each self-composition query is unsat under the case's own observer; under the whole response a client reads, q2 and q3 are sat with a distinguishing pair and q1 and q4 stay unsat",
+  "task": "W4-T13",
+  "origin": "recorded",
+  "records": "AUD-7.1 (content/audit/AUD-7.1.yaml): the self-composition, premise and client-observer queries of the pair and variant pair v1, and each step-3 scenario evaluated under the case's observer",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:04:02.792Z",
+  "started_at": "2026-10-26T18:04:02.578Z",
+  "duration_s": 0.213,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-observer-pairs-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "observer.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-observer-pairs/inputs/observer.py",
+      "sha256": "77ebae43b2f407d32e629f290d7e829f9974ddd332b65597da22c6d5b2a14a8f",
+      "bytes": 5698,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[q1 proof] unsat",
+    "[q1 premises] sat",
+    "[q1 client] unsat",
+    "[q1 s1 L hits=0 total=1 R hits=0 total=0] apart",
+    "[q1 s2 L hits=1 total=1 R hits=0 total=0] apart",
+    "[q1 s3 L hits=1 total=2 R hits=1 total=2] equal",
+    "[q1 s4 L hits=2 total=3 R hits=2 total=2] apart",
+    "[q2 proof] unsat",
+    "[q2 premises] sat",
+    "[q2 client] sat | hits L=1 R=1 | total L=1 R=2",
+    "[q2 s1 L hits=0 total=1 R hits=0 total=0] equal",
+    "[q2 s2 L hits=1 total=1 R hits=0 total=0] apart",
+    "[q2 s3 L hits=1 total=2 R hits=1 total=2] equal",
+    "[q2 s4 L hits=2 total=3 R hits=2 total=2] equal",
+    "[q3 proof] unsat",
+    "[q3 premises] sat",
+    "[q3 client] sat | code L=0 R=1 | body L=0 R=0",
+    "[q3 s1 L code=1 body=0 R code=0 body=0] equal",
+    "[q3 s2 L code=2 body=7 R code=2 body=7] equal",
+    "[q3 s3 L code=2 body=7 R code=0 body=0] apart",
+    "[q4 proof] unsat",
+    "[q4 premises] sat",
+    "[q4 client] unsat",
+    "[q4 s1 L code=1 body=0 R code=0 body=0] apart",
+    "[q4 s2 L code=2 body=7 R code=2 body=7] equal",
+    "[q4 s3 L code=2 body=7 R code=0 body=0] apart"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-observer-pairs/bench.log",
+      "sha256": "e968642116dce23f6e2567923e4c077b30aa1014a6b21eed4818f2c741af33c3",
+      "bytes": 953,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "proof": "unsat",
+      "premises": "sat",
+      "client": "unsat",
+      "s1": "apart",
+      "s2": "apart",
+      "s3": "equal",
+      "s4": "apart"
+    },
+    "q2": {
+      "proof": "unsat",
+      "premises": "sat",
+      "client": "sat",
+      "s1": "equal",
+      "s2": "apart",
+      "s3": "equal",
+      "s4": "equal"
+    },
+    "q3": {
+      "proof": "unsat",
+      "premises": "sat",
+      "client": "sat",
+      "s1": "equal",
+      "s2": "equal",
+      "s3": "apart"
+    },
+    "q4": {
+      "proof": "unsat",
+      "premises": "sat",
+      "client": "unsat",
+      "s1": "apart",
+      "s2": "equal",
+      "s3": "apart"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "observer.py: the queries of AUD-7.1's cases",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:04:02.578Z",
+      "duration_s": 0.213,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-observer-pairs-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "observer.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-observer-pairs/inputs/observer.py",
+          "sha256": "77ebae43b2f407d32e629f290d7e829f9974ddd332b65597da22c6d5b2a14a8f",
+          "bytes": 5698,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[q1 proof] unsat",
+        "[q1 premises] sat",
+        "[q1 client] unsat",
+        "[q1 s1 L hits=0 total=1 R hits=0 total=0] apart",
+        "[q1 s2 L hits=1 total=1 R hits=0 total=0] apart",
+        "[q1 s3 L hits=1 total=2 R hits=1 total=2] equal",
+        "[q1 s4 L hits=2 total=3 R hits=2 total=2] apart",
+        "[q2 proof] unsat",
+        "[q2 premises] sat",
+        "[q2 client] sat | hits L=1 R=1 | total L=1 R=2",
+        "[q2 s1 L hits=0 total=1 R hits=0 total=0] equal",
+        "[q2 s2 L hits=1 total=1 R hits=0 total=0] apart",
+        "[q2 s3 L hits=1 total=2 R hits=1 total=2] equal",
+        "[q2 s4 L hits=2 total=3 R hits=2 total=2] equal",
+        "[q3 proof] unsat",
+        "[q3 premises] sat",
+        "[q3 client] sat | code L=0 R=1 | body L=0 R=0",
+        "[q3 s1 L code=1 body=0 R code=0 body=0] equal",
+        "[q3 s2 L code=2 body=7 R code=2 body=7] equal",
+        "[q3 s3 L code=2 body=7 R code=0 body=0] apart",
+        "[q4 proof] unsat",
+        "[q4 premises] sat",
+        "[q4 client] unsat",
+        "[q4 s1 L code=1 body=0 R code=0 body=0] apart",
+        "[q4 s2 L code=2 body=7 R code=2 body=7] equal",
+        "[q4 s3 L code=2 body=7 R code=0 body=0] apart"
+      ],
+      "outputs": [
+        "runs/RUN-z3-observer-pairs/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the files listed in the configuration's inputs, mounted at /w; the inputs are kept under this run's inputs/ folder as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-keys-s7-s8.mjs), copied in log order.",
+    "Every query runs under rlimit 5000000. Tags q1 to q4 are neutral: the anchor file says which case each tag is (AUD-7.1).",
+    "The Search model is RUN-z3-count-channel's (three document slots, the same Rel); the Open model is S7.L6 cell 2's (RUN-z3-selfcomp). A scenario line evaluates the case's observer on two concrete responses."
+  ]
+}

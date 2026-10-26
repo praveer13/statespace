@@ -1,0 +1,264 @@
+{
+  "id": "RUN-z3-noguard-pair",
+  "title": "AUD-4.2's cases: four obligations are unsat as checked; with every conjunct of the declared Inv, the unguarded transfer over the two-conjunct Inv is sat at amount 1, and of the two conjuncts dropped from Capture's obligation only one follows from the others",
+  "task": "W3-T13",
+  "origin": "recorded",
+  "records": "AUD-4.2 (content/audit/AUD-4.2.yaml): each obligation as checked, the same obligation with the full Inv after the step, the implication check for a dropped conjunct, and the step-3 scenarios",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T18:02:47.391Z",
+  "started_at": "2026-10-26T18:02:47.177Z",
+  "duration_s": 0.214,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-audit-z3-noguard-pair-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "check.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-noguard-pair/inputs/check.py",
+      "sha256": "41fde976c50792bf987c36f540bccd22a9cc23ec97cfd92a28ae06ebcda831e4",
+      "bytes": 2653,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-noguard-pair/inputs/q1.smt2",
+      "sha256": "068cdb8aeae85025369b431e598b0936e91275985585cfb74b723f7d442f2a1d",
+      "bytes": 423,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-noguard-pair/inputs/q2.smt2",
+      "sha256": "f1694b3423b7d35c76a6c76969af661702d5083e38827f6b4a7f6c7d15fb16f9",
+      "bytes": 399,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-noguard-pair/inputs/q3.smt2",
+      "sha256": "bd96d042828d2c27aadbd9840e3ee2f6d6076abecaab152a5ff74a17402d7e41",
+      "bytes": 433,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-noguard-pair/inputs/q4.smt2",
+      "sha256": "8ac708ee318227494cbaa6c5a52fc569ca8a16ee602684b2d71a0a9b267ab60c",
+      "bytes": 428,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1",
+    "[q1 check] unsat",
+    "[q2 check] unsat",
+    "[q3 check] unsat",
+    "[q4 check] unsat",
+    "[q1 full] sat",
+    "[q1 full min amount] 1 (a=0 b=100 a_p=-1 b_p=101)",
+    "[q2 full] unsat",
+    "[q3 full] unsat",
+    "[q3 implied] unsat",
+    "[q4 full] unsat",
+    "[q4 implied] sat held_p=1 bal_p=0",
+    "[q1 s1 a_p=50 b_p=50] ruled out: no",
+    "[q1 s2 a_p=-20 b_p=120] ruled out: no",
+    "[q1 s3 a_p=50 b_p=60] ruled out: yes",
+    "[q1 s4 a_p=-20 b_p=130] ruled out: yes",
+    "[q2 s1 a_p=50 b_p=50] ruled out: no",
+    "[q2 s2 a_p=-20 b_p=120] ruled out: no",
+    "[q2 s3 a_p=50 b_p=60] ruled out: yes",
+    "[q2 s4 a_p=-20 b_p=130] ruled out: yes",
+    "[q3 s1 bal_p=5 held_p=2] ruled out: no",
+    "[q3 s2 bal_p=3 held_p=5] ruled out: yes",
+    "[q3 s3 bal_p=-1 held_p=0] ruled out: yes",
+    "[q3 s4 bal_p=2 held_p=-1] ruled out: yes",
+    "[q4 s1 bal_p=5 held_p=2] ruled out: no",
+    "[q4 s2 bal_p=3 held_p=5] ruled out: no",
+    "[q4 s3 bal_p=-1 held_p=0] ruled out: yes",
+    "[q4 s4 bal_p=2 held_p=-1] ruled out: yes"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-noguard-pair/bench.log",
+      "sha256": "43021b07dbfe58a0415321604fda950b3041ac1c0a4e807165730eac67fed43e",
+      "bytes": 863,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "q1": {
+      "check": "unsat",
+      "full": "sat",
+      "full min amount": "1 (a=0 b=100 a_p=-1 b_p=101)",
+      "s1": "ruled out: no",
+      "s2": "ruled out: no",
+      "s3": "ruled out: yes",
+      "s4": "ruled out: yes"
+    },
+    "q2": {
+      "check": "unsat",
+      "full": "unsat",
+      "s1": "ruled out: no",
+      "s2": "ruled out: no",
+      "s3": "ruled out: yes",
+      "s4": "ruled out: yes"
+    },
+    "q3": {
+      "check": "unsat",
+      "full": "unsat",
+      "implied": "unsat",
+      "s1": "ruled out: no",
+      "s2": "ruled out: yes",
+      "s3": "ruled out: yes",
+      "s4": "ruled out: yes"
+    },
+    "q4": {
+      "check": "unsat",
+      "full": "unsat",
+      "implied": "sat held_p=1 bal_p=0",
+      "s1": "ruled out: no",
+      "s2": "ruled out: no",
+      "s3": "ruled out: yes",
+      "s4": "ruled out: yes"
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "origin": "recorded",
+      "purpose": "check.py: q1.smt2 to q4.smt2 as checked and with the full Inv, then the scenarios",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T18:02:47.177Z",
+      "duration_s": 0.214,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-audit-z3-noguard-pair-bench",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "check.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-noguard-pair/inputs/check.py",
+          "sha256": "41fde976c50792bf987c36f540bccd22a9cc23ec97cfd92a28ae06ebcda831e4",
+          "bytes": 2653,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-z3-noguard-pair/inputs/q1.smt2",
+          "sha256": "068cdb8aeae85025369b431e598b0936e91275985585cfb74b723f7d442f2a1d",
+          "bytes": 423,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-noguard-pair/inputs/q2.smt2",
+          "sha256": "f1694b3423b7d35c76a6c76969af661702d5083e38827f6b4a7f6c7d15fb16f9",
+          "bytes": 399,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-noguard-pair/inputs/q3.smt2",
+          "sha256": "bd96d042828d2c27aadbd9840e3ee2f6d6076abecaab152a5ff74a17402d7e41",
+          "bytes": 433,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-z3-noguard-pair/inputs/q4.smt2",
+          "sha256": "8ac708ee318227494cbaa6c5a52fc569ca8a16ee602684b2d71a0a9b267ab60c",
+          "bytes": 428,
+          "role": "source"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "[q1 check] unsat",
+        "[q2 check] unsat",
+        "[q3 check] unsat",
+        "[q4 check] unsat",
+        "[q1 full] sat",
+        "[q1 full min amount] 1 (a=0 b=100 a_p=-1 b_p=101)",
+        "[q2 full] unsat",
+        "[q3 full] unsat",
+        "[q3 implied] unsat",
+        "[q4 full] unsat",
+        "[q4 implied] sat held_p=1 bal_p=0",
+        "[q1 s1 a_p=50 b_p=50] ruled out: no",
+        "[q1 s2 a_p=-20 b_p=120] ruled out: no",
+        "[q1 s3 a_p=50 b_p=60] ruled out: yes",
+        "[q1 s4 a_p=-20 b_p=130] ruled out: yes",
+        "[q2 s1 a_p=50 b_p=50] ruled out: no",
+        "[q2 s2 a_p=-20 b_p=120] ruled out: no",
+        "[q2 s3 a_p=50 b_p=60] ruled out: yes",
+        "[q2 s4 a_p=-20 b_p=130] ruled out: yes",
+        "[q3 s1 bal_p=5 held_p=2] ruled out: no",
+        "[q3 s2 bal_p=3 held_p=5] ruled out: yes",
+        "[q3 s3 bal_p=-1 held_p=0] ruled out: yes",
+        "[q3 s4 bal_p=2 held_p=-1] ruled out: yes",
+        "[q4 s1 bal_p=5 held_p=2] ruled out: no",
+        "[q4 s2 bal_p=3 held_p=5] ruled out: no",
+        "[q4 s3 bal_p=-1 held_p=0] ruled out: yes",
+        "[q4 s4 bal_p=2 held_p=-1] ruled out: yes"
+      ],
+      "outputs": [
+        "runs/RUN-z3-noguard-pair/bench.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of this run's inputs/ folder, mounted read-only at /w; the inputs are kept there as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the log's non-blank lines, copied in log order (content/audit/tools/record-keys-s3s4.mjs); a run with several configurations keeps them on each configuration, and the top level repeats the primary one's.",
+    "The full check replaces the last assertion of each file by the negation of every conjunct of Inv after the step; the replacement is done in check.py, on the file as it ran. RUN-z3-conservation-noguard and RUN-z3-optimize-min record the same two facts on the W0 query."
+  ]
+}

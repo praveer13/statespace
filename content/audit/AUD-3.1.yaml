@@ -1,0 +1,250 @@
+# AUD-3.1 · S3 · G8 Model–implementation drift (docs/AUDIT-DESK.md section 3.2). The format is content/audit/README.md's.
+# Every case is keyed by RUN-lean-checker-drift (spine section 6.2's Key run), recorded in the Bench image: four
+# projects that share the shipped checker (typecheck, HasType) and evaluator (exec). Each builds with standard axioms;
+# each is then checked against the challenge's pinned statement (Pin.lean, the comparison comparator makes, done by
+# Lean's elaborator), and the step-3 scenarios are evaluated on the same file. Project tags in scenario lines are
+# neutral: q1 sound, q2 flawed, q3 v1-flawed, q4 v1-sound.
+id: AUD-3.1
+stage: S3
+class: G8
+medium: lean
+artifact: step-invariant-checker
+subject: "a step-invariant proof for a checker (Lean)"
+claim: "Preservation proved for the typechecker."
+requirement: >-
+  Every step the shipped code takes keeps the invariant: for every command the shipped checker accepts (HasType, that
+  is typecheck c = none) and every successful step of the shipped evaluator exec from a state with no negative
+  balance, the new state has no negative balance either. The theorem must speak of those commands and those steps.
+scenario_question: "Does the theorem, as written, speak about this step: do the command and its result meet every hypothesis it states?"
+scheduled_after: [LAB-3]
+kcs: [KC-3.goldens-as-theorems, KC-2.statement-pinning]
+based_on:
+  incident: "VERINA pull request #17: a published verification benchmark fixed its specifications in 18 tasks and its code in 9."
+  date: "2026-04-17"
+  date_marks: "the pull request was merged"
+  source: https://github.com/sunblaze-ucb/verina/pull/17
+
+cases:
+  - id: sound
+    key: none
+    description: "Replaces the sorry in step_preserves_inv with a proof by cases on the command. The build is green."
+    statement: |
+      -- Ledger.lean: the shipped checker
+      def typecheck : Cmd → Option String
+        | .transfer _ _ amt => if 0 < amt then none else some "amount-positive"
+
+      def HasType (c : Cmd) : Prop := typecheck c = none
+
+      -- Ledger.lean: the step invariant
+      theorem step_preserves_inv (c : Cmd) (s s' : State) :
+          HasType c → NonNeg s → exec c s = .ok s' → NonNeg s'
+    diff: |
+      --- a/Ledger.lean
+      +++ b/Ledger.lean
+      @@ -32,6 +32,18 @@
+         split at h <;> simp_all
+
+      +theorem setBal_apply (s : State) (x y : Acct) (v : Int) :
+      +    setBal s x v y = if y = x then v else s y := rfl
+      +
+       theorem step_preserves_inv (c : Cmd) (s s' : State) :
+           HasType c → NonNeg s → exec c s = .ok s' → NonNeg s' := by
+      -  sorry
+      +  intro ht hs he
+      +  cases c with
+      +  | transfer x y n =>
+      +    have hn : 0 < n := amt_pos ht
+      +    simp only [exec] at he
+      +    split at he
+      +    · cases he
+      +      obtain ⟨ha, hb, hc⟩ := hs
+      +      refine ⟨?_, ?_, ?_⟩ <;> cases x <;> cases y <;> simp_all [post, setBal_apply] <;> omega
+      +    · cases he
+    receipt: |
+      'step_preserves_inv' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-checker-drift
+      scenarios: &sound-scenarios
+        - { id: s1, text: "transfer .a .b 5, from a = 10, b = 0, c = 0", answer: true, key_line: "[q1 s1] accepted=true ok=true covered=true", why: "The checker accepts it and exec succeeds: the theorem covers this step." }
+        - { id: s2, text: "transfer .a .a 5, from a = 10, b = 0, c = 0", answer: true, key_line: "[q1 s2] accepted=true ok=true covered=true", why: "A self-transfer. The shipped checker accepts it, and the theorem's hypothesis is HasType, so it is covered." }
+        - { id: s3, text: "transfer .a .b 0, from a = 10, b = 0, c = 0", answer: false, key_line: "[q1 s3] accepted=false ok=true covered=false", why: "The checker rejects an amount of 0 (amount-positive), so HasType fails and the theorem says nothing about it." }
+        - { id: s4, text: "transfer .b .c 3, from a = 10, b = 3, c = 0", answer: true, key_line: "[q1 s4] accepted=true ok=true covered=true", why: "Accepted, and the guard holds at b = 3: covered." }
+        - { id: s5, text: "transfer .a .b 20, from a = 10, b = 0, c = 0", answer: false, key_line: "[q1 s5] accepted=true ok=false covered=false", why: "Accepted by the checker, but exec returns guard-failed. The theorem speaks only of successful steps." }
+    evidence: { type: restatement, scenarios: *sound-scenarios }
+    key_run: RUN-lean-checker-drift
+    key_lines:
+      - { config: sound, line: "lean exit=0" }
+      - { config: sound, line: "'step_preserves_inv' depends on axioms: [propext, Quot.sound]" }
+      - { config: sound, line: "pin exit=0" }
+    explain: "The theorem is stated over HasType, the relation the shipped checker implements, and over the shipped exec, and it closes the pinned statement as written. Built with standard axioms only, it covers every command the checker accepts, self-transfers included. The helper lemma is only a rewriting step."
+
+  - id: flawed
+    key: { class: G8, also: [G8a] }
+    description: "Replaces the sorry in step_preserves_inv with a proof by cases on the command. The build is green."
+    statement: |
+      -- Ledger.lean: the shipped checker
+      def typecheck : Cmd → Option String
+        | .transfer _ _ amt => if 0 < amt then none else some "amount-positive"
+
+      def HasType (c : Cmd) : Prop := typecheck c = none
+
+      -- Ledger.lean: the step invariant
+      def HasType' (c : Cmd) : Prop := HasType c ∧ c.src ≠ c.dst
+
+      theorem step_preserves_inv (c : Cmd) (s s' : State) :
+          HasType' c → NonNeg s → exec c s = .ok s' → NonNeg s'
+    diff: |
+      --- a/Ledger.lean
+      +++ b/Ledger.lean
+      @@ -32,6 +32,17 @@
+         split at h <;> simp_all
+
+      +def HasType' (c : Cmd) : Prop := HasType c ∧ c.src ≠ c.dst
+      +
+       theorem step_preserves_inv (c : Cmd) (s s' : State) :
+      -    HasType c → NonNeg s → exec c s = .ok s' → NonNeg s' := by
+      -  sorry
+      +    HasType' c → NonNeg s → exec c s = .ok s' → NonNeg s' := by
+      +  intro ht hs he
+      +  cases c with
+      +  | transfer x y n =>
+      +    have hn : 0 < n := amt_pos ht.1
+      +    simp only [exec] at he
+      +    split at he
+      +    · cases he
+      +      obtain ⟨ha, hb, hc⟩ := hs
+      +      refine ⟨?_, ?_, ?_⟩ <;> cases x <;> cases y <;> simp_all [post, setBal] <;> omega
+      +    · cases he
+    receipt: |
+      'step_preserves_inv' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-checker-drift
+      scenarios:
+        - { id: s1, text: "transfer .a .b 5, from a = 10, b = 0, c = 0", answer: true, key_line: "[q2 s1] accepted=true ok=true covered=true", why: "Two different accounts, accepted, and exec succeeds: covered." }
+        - { id: s2, text: "transfer .a .a 5, from a = 10, b = 0, c = 0", answer: false, key_line: "[q2 s2] accepted=true ok=true covered=false", why: "The shipped checker accepts this self-transfer and exec runs it, but HasType' also asks src ≠ dst. The theorem says nothing about it." }
+        - { id: s3, text: "transfer .a .b 0, from a = 10, b = 0, c = 0", answer: false, key_line: "[q2 s3] accepted=false ok=true covered=false", why: "The checker rejects an amount of 0, so neither HasType nor HasType' holds." }
+        - { id: s4, text: "transfer .b .c 3, from a = 10, b = 3, c = 0", answer: true, key_line: "[q2 s4] accepted=true ok=true covered=true", why: "Two different accounts, accepted, and the guard holds: covered." }
+        - { id: s5, text: "transfer .a .b 20, from a = 10, b = 0, c = 0", answer: false, key_line: "[q2 s5] accepted=true ok=false covered=false", why: "exec returns guard-failed. The theorem speaks only of successful steps." }
+    evidence: { type: identifiers, load_bearing: ["statement:8", "statement:11"] }
+    key_run: RUN-lean-checker-drift
+    key_lines:
+      - { config: flawed, line: "lean exit=0" }
+      - { config: flawed, line: "pin exit=1" }
+      - { config: flawed, line: "HasType' c → NonNeg s → exec c s = Except.ok s' → NonNeg s'" }
+      - { config: flawed, line: "HasType c → NonNeg s → exec c s = Except.ok s' → NonNeg s'" }
+    explain: "The build is green, but the theorem is about HasType', a stricter copy that also excludes self-transfers. The shipped checker implements HasType and accepts transfer .a .a 5, which the theorem never mentions. Checked against the pinned statement, Lean reports a type mismatch between HasType' and HasType: preservation is proved for a checker that does not ship."
+
+variants:
+  - id: v1-flawed
+    pair: v1
+    operator: redefine-or-stricter-copy
+    artifact: step-invariant-evaluator
+    claim: "Preservation proved for the evaluator."
+    key: { class: G8, also: [G8a] }
+    description: "Replaces the sorry in step_preserves_inv with a proof. The build is green."
+    statement: |
+      -- Ledger.lean: the shipped evaluator
+      def exec : Cmd → State → Except String State
+        | .transfer x y n, s => if n ≤ s x then .ok (post s x y n) else .error "guard-failed"
+
+      -- Ledger.lean: the step invariant
+      def execStrict : Cmd → State → Except String State
+        | .transfer x y n, s => if n < s x then .ok (post s x y n) else .error "guard-failed"
+
+      theorem step_preserves_inv (c : Cmd) (s s' : State) :
+          HasType c → NonNeg s → execStrict c s = .ok s' → NonNeg s'
+    diff: |
+      --- a/Ledger.lean
+      +++ b/Ledger.lean
+      @@ -32,6 +32,18 @@
+         split at h <;> simp_all
+
+      +def execStrict : Cmd → State → Except String State
+      +  | .transfer x y n, s => if n < s x then .ok (post s x y n) else .error "guard-failed"
+      +
+       theorem step_preserves_inv (c : Cmd) (s s' : State) :
+      -    HasType c → NonNeg s → exec c s = .ok s' → NonNeg s' := by
+      -  sorry
+      +    HasType c → NonNeg s → execStrict c s = .ok s' → NonNeg s' := by
+      +  intro ht hs he
+      +  cases c with
+      +  | transfer x y n =>
+      +    have hn : 0 < n := amt_pos ht
+      +    simp only [execStrict] at he
+      +    split at he
+      +    · cases he
+      +      obtain ⟨ha, hb, hc⟩ := hs
+      +      refine ⟨?_, ?_, ?_⟩ <;> cases x <;> cases y <;> simp_all [post, setBal] <;> omega
+      +    · cases he
+    receipt: |
+      'step_preserves_inv' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-checker-drift
+      scenarios:
+        - { id: s1, text: "transfer .a .b 5, from a = 10, b = 0, c = 0", answer: true, key_line: "[q3 s1] accepted=true ok=true covered=true", why: "Less than the balance: execStrict succeeds too, so the theorem covers it." }
+        - { id: s2, text: "transfer .a .b 10, from a = 10, b = 0, c = 0", answer: false, key_line: "[q3 s2] accepted=true ok=true covered=false", why: "The shipped exec pays out the whole balance; execStrict refuses it (10 < 10 fails), so the theorem says nothing about this step." }
+        - { id: s3, text: "transfer .a .b 20, from a = 10, b = 0, c = 0", answer: false, key_line: "[q3 s3] accepted=true ok=false covered=false", why: "Both evaluators refuse it: no successful step." }
+        - { id: s4, text: "transfer .c .a 0, from a = 10, b = 0, c = 4", answer: false, key_line: "[q3 s4] accepted=false ok=true covered=false", why: "The checker rejects an amount of 0." }
+    evidence: { type: identifiers, load_bearing: ["statement:6", "statement:10"] }
+    key_run: RUN-lean-checker-drift
+    key_lines:
+      - { config: v1-flawed, line: "lean exit=0" }
+      - { config: v1-flawed, line: "pin exit=1" }
+      - { config: v1-flawed, line: "HasType c → NonNeg s → execStrict c s = Except.ok s' → NonNeg s'" }
+    explain: "The theorem is about execStrict, a copy of the evaluator that refuses a transfer of the whole balance. The shipped exec runs that step, and the theorem never mentions it. Against the pinned statement Lean reports a type mismatch between execStrict and exec."
+
+  - id: v1-sound
+    pair: v1
+    operator: redefine-or-stricter-copy
+    artifact: step-invariant-evaluator
+    claim: "Preservation proved for the evaluator."
+    key: none
+    description: "Replaces the sorry in step_preserves_inv with a proof. The build is green."
+    statement: |
+      -- Ledger.lean: the shipped evaluator
+      def exec : Cmd → State → Except String State
+        | .transfer x y n, s => if n ≤ s x then .ok (post s x y n) else .error "guard-failed"
+
+      -- Ledger.lean: the step invariant
+      theorem step_preserves_inv (c : Cmd) (s s' : State) :
+          HasType c → NonNeg s → exec c s = .ok s' → NonNeg s'
+    diff: |
+      --- a/Ledger.lean
+      +++ b/Ledger.lean
+      @@ -32,6 +32,17 @@
+         split at h <;> simp_all
+
+      +theorem post_nonneg (s : State) (x y : Acct) (n : Int) (hn : 0 < n) (hcov : n ≤ s x)
+      +    (hs : NonNeg s) : NonNeg (post s x y n) := by
+      +  obtain ⟨ha, hb, hc⟩ := hs
+      +  refine ⟨?_, ?_, ?_⟩ <;> cases x <;> cases y <;> simp_all [post, setBal] <;> omega
+      +
+       theorem step_preserves_inv (c : Cmd) (s s' : State) :
+           HasType c → NonNeg s → exec c s = .ok s' → NonNeg s' := by
+      -  sorry
+      +  intro ht hs he
+      +  cases c with
+      +  | transfer x y n =>
+      +    simp only [exec] at he
+      +    split at he
+      +    · cases he; exact post_nonneg s x y n (amt_pos ht) (by assumption) hs
+      +    · cases he
+    receipt: |
+      'step_preserves_inv' depends on axioms: [propext, Quot.sound]
+      lean exit=0
+    restatement:
+      run: RUN-lean-checker-drift
+      scenarios: &v1-sound-scenarios
+        - { id: s1, text: "transfer .a .b 5, from a = 10, b = 0, c = 0", answer: true, key_line: "[q4 s1] accepted=true ok=true covered=true", why: "Accepted, and exec succeeds: covered." }
+        - { id: s2, text: "transfer .a .b 10, from a = 10, b = 0, c = 0", answer: true, key_line: "[q4 s2] accepted=true ok=true covered=true", why: "The whole balance: exec's guard is n ≤ s x, so the step succeeds and the theorem covers it." }
+        - { id: s3, text: "transfer .a .b 20, from a = 10, b = 0, c = 0", answer: false, key_line: "[q4 s3] accepted=true ok=false covered=false", why: "exec refuses it: no successful step to speak of." }
+        - { id: s4, text: "transfer .c .a 0, from a = 10, b = 0, c = 4", answer: false, key_line: "[q4 s4] accepted=false ok=true covered=false", why: "The checker rejects an amount of 0." }
+    evidence: { type: restatement, scenarios: *v1-sound-scenarios }
+    key_run: RUN-lean-checker-drift
+    key_lines:
+      - { config: v1-sound, line: "lean exit=0" }
+      - { config: v1-sound, line: "pin exit=0" }
+    explain: "A different proof of the pinned statement: the per-step lemma post_nonneg does the arithmetic, and the theorem is still about HasType and the shipped exec. It closes the pinned statement as written."
