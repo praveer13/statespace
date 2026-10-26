@@ -1,0 +1,169 @@
+/* INS-pglite's live result: the cell's statements as a ruled log, rows as ruled tables (DESIGN.md: tables stay ink
+   on newsprint, 1-px rules under a heavier head rule). An error is words on a 3-px ink left rule, never a colour. */
+
+.pg-out {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.pg-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.pg-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  min-width: 0;
+  padding-block: var(--space-2);
+  border-bottom: var(--border-component) solid var(--rule-soft);
+}
+
+.pg-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-3);
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  min-width: 0;
+}
+
+.pg-line {
+  flex: none;
+  min-width: 4.5em;
+  color: var(--pencil);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.pg-sql {
+  flex: 1 1 16rem;
+  min-width: 0;
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.pg-tag {
+  flex: none;
+  margin-left: auto;
+  font-family: var(--font-code);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pg-table {
+  max-width: 100%;
+  overflow-x: auto;
+  border-top: var(--border-structure) solid var(--ink);
+}
+
+.pg-table:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.pg-table table {
+  border-collapse: collapse;
+  min-width: 12rem;
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: var(--lh-table);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.pg-table th,
+.pg-table td {
+  padding: 4px var(--space-3) 4px 0;
+  border-bottom: var(--border-component) solid var(--rule-soft);
+  text-align: left;
+  vertical-align: top;
+  white-space: pre;
+}
+
+.pg-table th {
+  font-family: var(--font-structure);
+  font-weight: 600;
+  border-bottom-color: var(--rule);
+}
+
+.pg-table [data-numeric='true'] {
+  text-align: right;
+}
+
+.pg-null {
+  font-family: var(--font-structure);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--pencil);
+}
+
+.pg-count,
+.pg-note,
+.pg-version,
+.pg-msg,
+.pg-msg-extra {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.pg-count,
+.pg-note,
+.pg-version {
+  color: var(--pencil);
+}
+
+.pg-version code {
+  font-family: var(--font-code);
+  font-size: 13px;
+}
+
+.pg-error,
+.pg-notice {
+  display: grid;
+  gap: 2px;
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--ink);
+}
+
+.pg-notice {
+  border-left-width: var(--border-component);
+}
+
+.pg-msg-extra {
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--pencil);
+}
+
+.pg-one {
+  padding-top: var(--space-2);
+  border-top: var(--border-component) solid var(--rule-soft);
+}
+
+.pg-text summary {
+  cursor: pointer;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.pg-text summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}

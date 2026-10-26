@@ -348,3 +348,145 @@ All serve pick mode. GATE-generators is green on the fourteen and the fixture fa
 - **Generators:** pick mode only; GeneratedItem shows one choice part (GEN-call-it t4 shows a placeholder), never `grade.why` on a miss; keys rest on in-page checkers, not Z3, TLC, Lean or the history checker; most lesson items keep their fixed choice, so families reach learners through drawers and Today.
 - **Pre-existing, not from this phase:** GATE-kc (7 dose failures), GATE-calls (S1.L0 and S10 cells), GATE-lessons (S7.L7, S7.L8 anatomy), GATE-specimens (SP-4.2, SP-7.1, SP-7.2), GATE-conformance (Pyodide against native Z3), GATE-bundle (Today and lesson route budgets, fonts, routes, search at 360 px, the fragment canary), and GATE-runs' 36 changed inputs that the release lane fails on.
 - **Review queue** is 12.4 hours, over the 10-hour gate.
+
+## Phase 4 — live engines (2026-10-26)
+
+Lesson cells now run on real engines. After the learner makes the call, the cell's code becomes editable and runs on
+the instrument origin (`apps/instruments`, a separate Pages site) over the message-only bus. The call still gates the
+first run, which is the one recorded; re-runs are free. Every live result is labelled "Run in this tab", with the
+engine version the engine printed and the budget it ran under. It sits below the recorded run, which stays the
+course's evidence. Stamps and line classes are unchanged.
+
+### What a learner can now do
+
+- **Run a cell live.** Making the call starts the first run. The figure strip shows each state in words: `live ·
+  downloading n%`, `starting`, `running`, `ran in this tab`, `stopped`, `error`, `unavailable`. While an engine
+  downloads, the loader shows the size from the build manifest ("0.0 MB of 12.9 MB (12,893,420 bytes, the engine's
+  first load)") and asks nothing first (OD-6) [X RUN-phone-pyodide]. If the handshake fails, the cell shows its recorded run with the word
+  "unavailable".
+- **Edit, re-run, stop, reset.** "Run again in this tab" runs the edited text. Stop terminates the worker, and the next
+  run starts a fresh one from the engine cache. "Reset the code" restores the course's text.
+- **See the engine's own output.** Each engine has its own text-only renderer: Z3's printed lines and traceback;
+  Datalog relations with "derived by" heights, compared as sets with the recorded Soufflé run; a Derivation Board with
+  Z3's raw answer per step and the state Z3 found; a Goal Replay stepper over the goals Lean printed at build time;
+  PGlite's statement log with rows, SQLSTATEs and the world it loaded; and Spectacle's TLC-order counts, the trace
+  table and the step graph, compared with the recorded TLC run.
+
+### Engines
+
+| Bus engine | Version printed | First load | Instrument ids |
+|---|---|---|---|
+| `z3` | Z3 5.3.1 on Pyodide 314.0.7 | 12,893,420 B | INS-z3 |
+| `datalog` | Z3 Fixedpoint 5.3.1 (W0-S03 adapter) | 12,893,420 B (same files) | INS-datalog |
+| `derivation` | Z3 5.3.1, derivation board 1 | 12,893,420 B (same files) | INS-derivation |
+| `pglite` | PGlite 0.5.11 (PostgreSQL 18.6) | 5,580,851 B | INS-pglite |
+| `spectacle` | Spectacle 5827c22 (identified by eval.js's SHA-256) | 428,159 B | INS-spectacle, INS-theater |
+| `goal-replay` | Lean 4.35.0 goals from RUN-goal-replay (no Lean in the tab) | 7,474 B | INS-goal-replay |
+
+The fetch script `scripts/instruments/fetch-engines.mjs` pins every payload by SHA-256. Payloads are gitignored and
+ship only in the instrument origin's published tree. The versions and first loads in the table are the pinned
+payloads' own [X RUN-z3-starter-pyodide, RUN-phone-pyodide, RUN-pglite-0511, RUN-spectacle-s5s8, RUN-goal-replay, RUN-datalog-matrix].
+
+### Cells, live and recorded only
+
+All 174 `:::instrument` cells in content/stages were classified, and 86 run live. A cell of a live instrument that the
+engine cannot run as written does not get a Run that could only fail. Its strip reads "no live run", and a sentence
+under the code gives the reason (`liveCell` and `recordedOnly` in `apps/site/src/instruments/registry.ts`).
+
+| Instrument | Cells | Live | Recorded only, and why |
+|---|---|---|---|
+| INS-z3 | 38 | 37 | 1: S7.L6 cell 3 is SMT-LIB (`smt2`), and the tab's Z3 runs Python cells |
+| INS-goal-replay | 26 | 21 | 5: the S9 cells; RUN-goal-replay holds S2 and S3 only |
+| INS-pglite | 14 | 14 | — |
+| INS-datalog | 5 | 5 | — |
+| INS-derivation | 4 | 4 | — |
+| INS-spectacle | 8 | 2 | 4 module fragments (S8.L4 cells 2–3, S8.L7 cells 1–2); S8.L2 EXTENDS OutboxIface; S5.L8 gives no values for its constants |
+| INS-theater | 7 | 3 | 2 module fragments (S8.L3 cells 1, 3); S5.L5 EXTENDS HoldsEnv; S8.L1 is prose (`text`) |
+| INS-interp | 18 | 0 | no tab engine yet (W2-T08) |
+| INS-pairs | 10 | 0 | no tab engine yet (W4-T08, W4-T27) |
+| INS-history | 9 | 0 | no tab engine yet (W4-T03, W4-T19); concurrent histories stay Bench runs |
+| INS-bench-lean | 8 | 0 | Bench instrument: runs on the learner's machine, not in the tab |
+| INS-bench-tlc | 8 | 0 | Bench instrument |
+| INS-lasso | 7 | 0 | no tab engine yet (W3-T09) |
+| INS-lane-a | 5 | 0 | no tab engine yet (W2-T08) |
+| INS-receipt | 4 | 0 | receipt import is W1-T14 |
+| INS-bench-pg | 2 | 0 | Bench instrument |
+| INS-sim | 1 | 0 | no tab engine yet (W5-T15) |
+| **Total** | **174** | **86** | **88** |
+
+### Integration in this pass
+
+- **Per-cell gating.** `LiveInstrument.recordedOnly(code, {lesson, cell})` and `liveCell()` were added, with a TLA+
+  rule (a whole module, standard EXTENDS only, a value for every constant) and a Goal Replay rule (S2 and S3). The
+  TLA+ rule agrees with the adapter on all 15 TLA+ cells run through it in Node.
+- **Strict parents by default.** A production `vite build` of the instruments now accepts
+  `https://statespace.play.naigap.com` alone, unless `MAIN_ORIGIN` names another origin. Localhost parents come only
+  from the dev server or an explicit `DEV_PARENTS`. Before this change, a plain build named three localhost parents,
+  and GATE-bundle's lint.parents failed on it. It now passes.
+- **GATE-stamps.** Two Phase 4 findings were fixed: the live output's span rule now uses its own class
+  (`.cell-live-line`), so it no longer reaches stamp spans, and Goal Replay's dashed box is solid, because dashed and
+  dotted belong to the line classes alone.
+- **GATE-privacy.** The Datalog worker's in-Pyodide path no longer looks like a home directory (`/ss-datalog`).
+- **Deploy steps.** `scripts/instruments/deploy.md` was written from a fresh clone of `praveer13/statespace-instruments`.
+  It covers what to keep (CNAME, .nojekyll, licences, the W0-S02 build under `b/`), the spike `sw.js` to retire (it
+  would answer 504 for every new `/engines/` path), the notices to add, and how the site build names the instrument
+  origin.
+
+### Checked
+
+- `tsc` is clean for apps/site and apps/instruments (both the src and node configs). `npm run build -w apps/site`
+  and `npm run build -w apps/instruments` pass.
+- `npm test`: 788 pass and 3 fail. All 3 failures existed before this phase and come from content: GATE-kc (7 doses),
+  GATE-facts (copy in S2.L6 and S2.L10), and GATE-stamps (S8.L7's requirement line).
+- `verify-stamps`: 1 finding, the same S8.L7 line. `verify-privacy`: ok.
+- `verify-bundle`: 8 passed, 6 failed, 18 pending, the same failing set as before this phase. The lesson route budget
+  was already over before this phase, and the renderers added to it. The Today route is unchanged. The engine
+  manifest lives at `engines/manifest.json`, and the gate looks at the build root and `b/<id>/`, so `manifest.engines`
+  is still pending. The gate's lines, before and after this phase:
+
+  ```text
+  before  FAIL  budget.route.lesson  a lesson route, excluding instrument engines: 349.6 KB against 250 KB
+  after   FAIL  budget.route.lesson  a lesson route, excluding instrument engines: 364.3 KB against 250 KB
+  before  FAIL  budget.route.today   Today route: 249.5 KB against 200 KB
+  after   FAIL  budget.route.today   Today route: 249.6 KB against 200 KB
+  after   pass  budget.host          instrument host page without engines: 5.1 KB against 50 KB
+  after   pass  lint.parents         the production instrument build names no localhost
+  ```
+- **Cross-origin sweep in Chromium 149.** The site ran on :5181 (the dev server) and the instruments ran on :5182 (a
+  `DEV_PARENTS=http://localhost:5181` build under `vite preview`, with its CSP). Each of the 86 live cells was called
+  (or Run, for `call=false` cells), and all 86 reached a result. Requests went only to those two origins. There were no
+  console errors and no horizontal overflow at 1280 px.
+- **States on S1.L0 Figure 1.1.** The download (wasm held back 5 s) showed 12,893,420 bytes. An edit to
+  `amount <= a` printed `unsat` and Z3's own "model is not available". An endless loop showed running, then Stop gave
+  "Stopped". Reset and re-run gave `sat` again. Both verdicts are the recorded run's [X RUN-z3-boot-variant].
+- **Screenshots.** One cell per engine at 1280 and 360 px, the recorded-only S8.L3 figure, and the four states are in
+  the session scratchpad's `phase4-shots/final/`. They are not committed.
+
+### Follow-ups
+
+- **Service worker** on the instrument origin (W1-T35, W1-T06). Today, `pyodide.mjs`, `pyodide.asm.mjs`, PGlite's
+  `index.js` and its chunks load through the browser's module loader, not from the hash-checked copies. Still to do:
+  warm's heartbeat, and the kill switch.
+- **Versioned hosting.** Serve each build at `b/<buildId>/host.html`, with `INSTRUMENTS_BUILD` and
+  `VITE_INSTRUMENTS_BUILD` set to the same id. Point GATE-bundle's `manifest.engines` at `engines/manifest.json`, or
+  move the manifest.
+- **packages/bus.** Merge the two `protocol.ts` copies and generate the reply validators from `schemas/` (GATE-schema).
+  Add GATE-bundle's `handshake.*` and `loader.*` checks.
+- **One Pyodide heap.** INS-z3, INS-datalog and INS-derivation each start a Pyodide worker. The bytes are cached once,
+  but the heaps are not shared. One Pyodide-Z3 worker that hosts all three adapters would fix that. The z3 rlimit
+  patch covers `Solver` only; Optimize, Fixedpoint and SolverFor still need it.
+- **TLA+ cells.** Serve the course modules (HoldsEnv, OutboxIface) on the instrument origin (ARCHITECTURE.md section
+  6.3) so S5.L5 and S8.L2 can go live. Give S5.L8 a `\* Init = …` line. Spectacle runs from the classic worker build
+  only (not `vite dev`). Its scripts run through `importScripts(blob:)`.
+- **Placement (owner decision).** Section 6.9 puts INS-theater and INS-goal-replay on the main origin, from build-time
+  data. Phase 4 runs a Spectacle search under Theater figures, and serves Goal Replay strips through the bus. Either
+  amend section 6.9, or bundle the strips into the content build and keep Theater recorded-only.
+- **Goal Replay.** Record the S9 cells. Give the shared live-cell copy a replay wording ("Run again in this tab" reads
+  oddly for a lookup). Spectacle prints no version, so "printed its version as 5827c22" needs per-engine wording too.
+- **Comparisons.** Pass the recorded run's snapshot to `Output`, so that Datalog stops reading the DOM and PGlite can
+  compare its rows.
+- **Phones and idle.** Make the board read-only on phones (DESIGN section 7.4). End idle PGlite workers (565 to
+  1,125 MiB resident [X RUN-pglite-0511]).
+- **Conformance gates.** None is built yet: Spectacle = TLC (W3-T08), PGlite = PostgreSQL (W4-T04), Datalog = Soufflé
+  with heights (W4-T07), GATE-replay (W2-T03).
+- **Not run in this phase:** the instruments Playwright suite in Firefox and WebKit, axe on the new panels, and a deploy.

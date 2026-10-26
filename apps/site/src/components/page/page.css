@@ -638,6 +638,110 @@ a.running-vol:hover .running-word {
   font-weight: 400;
 }
 
+/* Live mode: the code figure becomes an editable plate of the same frame, and the run in this tab gets its own
+   panel under the recorded run, opened by a 1.5-px ink rule. Every state is a word; nothing rests on colour. */
+.cell-live-state {
+  font-weight: 400;
+}
+
+.cell-live-code {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.cell-editor {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3);
+  resize: vertical;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-structure) solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  white-space: pre;
+  overflow: auto;
+  tab-size: 4;
+}
+
+.cell-editor:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.cell-live-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.cell-live-note {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+.cell-live {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  min-width: 0;
+  padding-top: var(--space-3);
+  border-top: var(--border-structure) solid var(--ink);
+}
+
+.cell-live-out .cell-live-line {
+  white-space: pre-wrap;
+}
+
+.cell-live-stderr,
+.cell-live-cut {
+  color: var(--pencil);
+}
+
+.cell-live-err pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cell-live-load {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.cell-live-load progress {
+  width: 100%;
+  height: 10px;
+  accent-color: var(--vol);
+}
+
+.cell-live-bytes,
+.cell-live-why,
+.cell-live-prov {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.cell-live-bytes {
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-live-exact,
+.cell-live-prov {
+  color: var(--pencil);
+}
+
 .cell-after {
   padding-top: var(--space-3);
   border-top: var(--border-component) solid var(--rule-soft);
@@ -1195,4 +1299,9 @@ a.running-vol:hover .running-word {
   .question-option[data-picked='true'] {
     outline: 2px solid CanvasText;
   }
+}
+
+/* A cell of a live instrument that keeps its recorded run alone: one plain sentence under the code. */
+.cell-recorded-only {
+  margin: 0;
 }

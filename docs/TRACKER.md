@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** as of 2026-10-26, 23 of the 263 tasks are `done` (every W0 task except the exit review, W0-T11), 15 are in `review` and 119 are `in-progress`; the other 106 are `todo`. The happy-path build (Phases 0 to 3: the site and its screens, all 84 lessons and 34 drawers, the specimen cabinet, Claims, Today, the Mirror, the Audit Desk with 25 anchors, 14 generator families and the recorded runs) moved a task to `review` only where its acceptance passed on 2026-10-26, and to `in-progress` with a note in tasks.yaml naming what is missing; see [the W1 report](waves/W1-report.md). No task the owner reviews is `done` yet. The owner's review queue is 12.4 hours, over the 10-hour gate (OD-7), so no new task with owner review starts until the queue drops. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-26, 23 of the 263 tasks are `done` (every W0 task except the exit review, W0-T11), 15 are in `review` and 125 are `in-progress`; the other 100 are `todo`. The happy-path build (Phases 0 to 4: the site and its screens, all 84 lessons and 34 drawers, the specimen cabinet, Claims, Today, the Mirror, the Audit Desk with 25 anchors, 14 generator families, the recorded runs and live engines on the instrument origin) moved a task to `review` only where its acceptance passed on 2026-10-26, and to `in-progress` with a note in tasks.yaml naming what is missing; see [the W1 report](waves/W1-report.md). No task the owner reviews is `done` yet. The owner's review queue is 12.4 hours, over the 10-hour gate (OD-7), so no new task with owner review starts until the queue drops. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -188,7 +188,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [ ] W1-T18 · Agent kit, `llms.txt`, phone layouts · M · sonnet · W1-T13, W1-T36, W1-T41
 - [ ] W1-T20 · Settings: export, merge-import with undo, 7-day backup nudge · M · sonnet · W1-T03, W1-T35
 - [~] W1-T31 · SCR-lab and SCR-bench (part of W1-T13) · M · sonnet · W1-T02, W1-T14, W1-T41
-- [ ] W1-T35 · Instrument bus and host (added) · M · opus · W0-S01, W0-T02, W1-T41
+- [~] W1-T35 · Instrument bus and host (added) · M · opus · W0-S01, W0-T02, W1-T41
 - [=] W1-T36 · Content pipeline (added) · M · sonnet · W0-S12, W0-T03, W0-S11
 
 ### Gates
@@ -299,7 +299,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Instruments
 
-- [ ] W2-T03 · Goal Replay generator and UI · M · sonnet · W0-S10
+- [~] W2-T03 · Goal Replay generator and UI · M · sonnet · W0-S10
 - [ ] W2-T08 · IR schema, TypeScript interpreter, Lane A host · M · opus · W2-T07
 
 ### Generators
@@ -388,9 +388,9 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Instruments
 
-- [ ] W3-T01 · Derivation Board · M · sonnet · W1-T06
+- [~] W3-T01 · Derivation Board · M · sonnet · W1-T06
 - [ ] W3-T06 · Theater on TLC state graphs (milestone) · S · sonnet · W3-T05, W3-T23, W3-T24
-- [ ] W3-T08 · Spectacle instrument and its minimap · M · sonnet · W0-S04
+- [~] W3-T08 · Spectacle instrument and its minimap · M · sonnet · W0-S04
 - [ ] W3-T09 · Lasso validator · M · opus · W0-S05
 - [ ] W3-T23 · Theater engine (part of W3-T06) · M · sonnet · W3-T05
 - [ ] W3-T24 · SCR-theater (part of W3-T06) · M · sonnet · W3-T23, W3-T09
@@ -498,8 +498,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 ### Instruments
 
 - [ ] W4-T03 · History viewer and serializability checker (milestone) · S · opus · W4-T01, W4-T18, W4-T19
-- [ ] W4-T04 · PGlite instrument · M · sonnet · W0-S08
-- [ ] W4-T07 · Datalog pair · M · sonnet · W0-S03
+- [~] W4-T04 · PGlite instrument · M · sonnet · W0-S08
+- [~] W4-T07 · Datalog pair · M · sonnet · W0-S03
 - [~] W4-T08 · Paired-state evaluator and GEN-leaks-to-observer (milestone) · S · opus · W2-T08, W4-T27, W4-T28
 - [ ] W4-T15 · Spec duels by URL · M · opus · W0-S01
 - [ ] W4-T18 · Abstract-serializability checker (part of W4-T03) · M · opus · W4-T16, W2-T08

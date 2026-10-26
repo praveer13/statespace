@@ -1,0 +1,94 @@
+/* INS-datalog's live result: relations as ruled tables, ink on paper (DESIGN.md: tables stay ink on newsprint).
+   A 3-px ink rule under the header, hairline rules between tuples; the comparison is a sentence, never a colour. */
+
+.dl-out {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.dl-rel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.dl-table-wrap {
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.dl-table-wrap:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.dl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.dl-table caption {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-weight: 600;
+}
+
+.dl-table th,
+.dl-table td {
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  border-bottom: var(--border-component) solid var(--rule-hair);
+  text-align: left;
+  vertical-align: top;
+}
+
+.dl-table thead th {
+  border-top: var(--border-component) solid var(--rule);
+  border-bottom: 3px solid var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dl-table tbody tr:last-child td {
+  border-bottom: var(--border-component) solid var(--rule);
+}
+
+.dl-table td code {
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  white-space: nowrap;
+}
+
+.dl-type,
+.dl-why,
+.dl-empty {
+  font-weight: 400;
+  color: var(--pencil);
+}
+
+.dl-why {
+  white-space: nowrap;
+}
+
+.dl-digest,
+.dl-compare {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.dl-digest {
+  color: var(--pencil);
+}
+
+.dl-compare {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--ink);
+}

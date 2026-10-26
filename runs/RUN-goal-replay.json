@@ -1,0 +1,259 @@
+{
+  "id": "RUN-goal-replay",
+  "title": "Goal Replay strips for the S2 and S3 Lean cells, read through $/lean/plainGoal from Lean 4.35.0 in the bench image: 21 cells, 24 strips, 75 states; 13 cells elaborate cleanly",
+  "task": "W2-T03",
+  "origin": "recorded",
+  "records": "the goal before each tactic and at the end of each tactic proof, for every INS-goal-replay cell of S2 and S3, as the instrument origin serves them to the cell stepper",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image, run as lean --server",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T19:24:21.945Z",
+  "started_at": "2026-10-26T19:24:08.105Z",
+  "duration_s": 6.91,
+  "argv": [
+    [
+      "node",
+      "scripts/build-goal-replay.mjs",
+      "--twice",
+      "--record"
+    ],
+    [
+      "docker",
+      "run",
+      "-i",
+      "--name",
+      "<container>",
+      "--rm",
+      "--network",
+      "none",
+      "--memory=6g",
+      "-v",
+      "<corpus>:/w:ro",
+      "-v",
+      "<utc-localtime>:/etc/localtime:ro",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "lean",
+      "--server"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "scripts/build-goal-replay.mjs",
+      "sha256": "baeecb2d844da329a76b72dec6de8101678104fec92f3c31ac29ad1f8988e0b3",
+      "bytes": 21069,
+      "role": "generator"
+    },
+    {
+      "path": "scripts/spikes/W0-S10/lib/lean-server.mjs",
+      "sha256": "63bfaa68c1ff6a4078b95f769a9dd68d0d0fbccc0b4862e847eeba998367e158",
+      "bytes": 9893,
+      "role": "language-server client"
+    },
+    {
+      "path": "content/stages/S2/S2.L0.md",
+      "sha256": "c043a235fd042a231cf24080108072f1a00d084e8d20ccd74e6e692f9d1f4e6d",
+      "bytes": 7299,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L1.md",
+      "sha256": "7c632f94f1d28c24fa8de9e91e10f24bc569fbd78dcaeb3cea163dafc019d56e",
+      "bytes": 6112,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L2.md",
+      "sha256": "8ad96d11c6608def3206006ec4769419caa6bafd2259eae6d0cf59a9abb26c22",
+      "bytes": 5646,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L3.md",
+      "sha256": "c86bf98c7788d724fff85f43051269c613766761a46afe0ad51a23b05818cad7",
+      "bytes": 6189,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L4.md",
+      "sha256": "6f9b2104deef6c2e263b55580864be7147d12f8af200e981973f78a6deb70890",
+      "bytes": 6660,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L5.md",
+      "sha256": "04c28ed64faf5518d7fbf13c03d72c6c4580c7e01c9730915d2410a4225a581b",
+      "bytes": 13827,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L6.md",
+      "sha256": "fabf6104a29225ee14905407db43f5572ace64d9e566f9afcb6436d539da73e0",
+      "bytes": 7815,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L7.md",
+      "sha256": "a7dbdac9bb5a04198384c5d561557f461daeb4666ad37faa6d391593926abe51",
+      "bytes": 14264,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S2/S2.L9.md",
+      "sha256": "5bab448e0c808ffd8e2a59c02d765b24e49394665e7417444c3ecc45bcee4f3b",
+      "bytes": 16951,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S3/S3.L1.md",
+      "sha256": "2d52409f913d97dd11205acf926d95337b9f63b7d8c3bc8ff93028b253f3b321",
+      "bytes": 8143,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S3/S3.L2.md",
+      "sha256": "3e775240997e1c2094d04db5c0598fc7ca8ca6a8f7b5427f933228812954c276",
+      "bytes": 15538,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S3/S3.L5.md",
+      "sha256": "96faa37eb3bef02c007cb565f72512f2e6a117cb70c100b110d4ebcb014e3506",
+      "bytes": 6958,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S3/S3.L6.md",
+      "sha256": "762e68cfac9d1fd7bf10513ded07bf098bf076b9ba1ac77fcead3be8db48a6b5",
+      "bytes": 17055,
+      "role": "lesson"
+    },
+    {
+      "path": "content/stages/S3/S3.L8.md",
+      "sha256": "c213b4fd0ff65c7e3641f1a8875dd2073997f50d04906443e1c4784f3cd44f6f",
+      "bytes": 6629,
+      "role": "lesson"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L0_cell1.lean",
+      "sha256": "32244cc8e6f32183b6e5a0c0decc5a768520ade673c7b4f01302bc56d080294c",
+      "bytes": 489,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L1_cell1.lean",
+      "sha256": "723a91de495980727e9f9a9a5f24fbca6eafb6db3926b9e8efa1441dfdb3650e",
+      "bytes": 213,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_cell1.lean",
+      "sha256": "61e64fbb0b5ecd2e2e3e19a316277e544ff08baebc4b14f0c54f11715f74e3d9",
+      "bytes": 227,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L2_cell2.lean",
+      "sha256": "af5b522547c00ec96ae28de388cf5dd3f106b8f80d41b424319162c2662e0351",
+      "bytes": 286,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L3_cell1.lean",
+      "sha256": "a1394d0e777caf38e122d78cf0be5716500d0f653b1f83b01ba5c73a433914a5",
+      "bytes": 387,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L4_cell1.lean",
+      "sha256": "97896e1629fad43574ecc5968f25ef85cdb1e2f3bf8fbf838c5f9c807acd34a3",
+      "bytes": 237,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L4_cell2.lean",
+      "sha256": "a726f2948444eb99e9ec919125bbd7db2c2a897d9678c09512a25d0df680b055",
+      "bytes": 412,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-noguard/inputs/NoGuardCell.lean",
+      "sha256": "398deee3469a9a07daa448255903acba7449783f32d3315c2b6897f8f88d73de",
+      "bytes": 501,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L6_cell1.lean",
+      "sha256": "77f1a7a2fd9c231071a4e9367ea17d5fc195e4b7bc4eb627b76726708237221b",
+      "bytes": 523,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_alt.lean",
+      "sha256": "d05b7b6de4e285099f0ce5b97b569ea9bcebc93549ee068838b52bd285216e1a",
+      "bytes": 908,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-s2-cells/inputs/L7_cell3.lean",
+      "sha256": "cbc6c7c4414ebd0cc7d4eeccfc26c0168408c7247b6a3d0157f4ba235f5086df",
+      "bytes": 695,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-lean-stuck/inputs/OddCheck.lean",
+      "sha256": "17dd7b120d935bb8b0d0c8c171582a957993b6a42ce331afc89197c6ef420fce",
+      "bytes": 1267,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "memory": "6g",
+    "network": "none",
+    "timeout_s": 600,
+    "workers": 1
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "goal-replay: 21 cells, 24 strips, 75 states; 13 cells elaborate cleanly",
+    "goal-replay: second cold generation byte-identical"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-goal-replay/goal-strips.json",
+      "sha256": "93c6d479602b3562d739b15ebd55e53b6a5ec98bc90bccf92a3c6d518bf2dca5",
+      "bytes": 56643,
+      "role": "bundle served on the instrument origin"
+    },
+    {
+      "path": "runs/RUN-goal-replay/goal-strips.txt",
+      "sha256": "56b39712ab30999bd49c751eca3ddd21772a352230bc79de737ec7667eb0beec",
+      "bytes": 15170,
+      "role": "text view"
+    }
+  ],
+  "values": {
+    "cells": 21,
+    "strips": 24,
+    "states": 75,
+    "clean_cells": 13,
+    "identical_twice": true
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2"
+  },
+  "notes": [
+    "Each goal is Lean output; the generator chooses only where to ask (the start of each tactic and the end of each tactic proof).",
+    "A cell is elaborated in the first source that elaborates without errors: a committed run input containing the cell text, the cell alone, or the cell after its lesson's earlier cells. A cell that elaborates only with errors keeps its strips and Lean's messages (elaborated: with-errors: the failure is the lesson's point); a cell whose errors say its context is missing (the S3 stage template) keeps Lean's messages and no strip (elaborated: needs-context).",
+    "The bundle is what scripts/instruments/fetch-engines.mjs pins for the goal-replay engine; no Lean runs in the browser."
+  ]
+}

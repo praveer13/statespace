@@ -1,0 +1,179 @@
+/* The Derivation Board's live result (docs/DESIGN.md section 6.8). Newsprint and ink; the only colour is the line
+   language's: the heavy violation rule on a step Z3 refuted with a state, the dotted bounded rule on a step stopped
+   by the rlimit, and the dashed assumed rule on the board's givens (section 4.1). Every state is also a word. */
+
+.dv {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.dv-head,
+.dv-tally {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.dv-head {
+  font-weight: 600;
+}
+
+.dv-header {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-component) solid var(--rule);
+}
+
+.dv-hrow {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1fr);
+  gap: var(--space-2);
+  padding-left: var(--space-2);
+  border-left: 2px solid transparent;
+}
+
+.dv-hrow dt {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  font-weight: 600;
+}
+
+.dv-hrow dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dv-hrow code,
+.dv-text code,
+.dv-state code {
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+}
+
+/* An assumption that has not failed: dashed, never vermilion. */
+.dv-given.line-assumed {
+  border-left: 2px dashed var(--line-assumed);
+}
+
+.dv-assumed {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+.dv-steps {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dv-step {
+  display: grid;
+  grid-template-columns: 2.25em minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
+  border-left: var(--border-structure) solid var(--ink);
+  min-width: 0;
+}
+
+.dv-step[data-result='stated'] {
+  border-left-color: var(--rule);
+}
+
+.dv-step:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* A witnessed violation: Z3 found a state where the step fails. */
+.dv-step.line-violation {
+  border-left: 3px solid var(--line-violation);
+}
+
+.dv-step.line-violation .dv-state {
+  border-left: 3px solid var(--line-violation);
+}
+
+/* Stopped at the stated bound (the rlimit). */
+.dv-step.line-bounded {
+  border-left: 2px dotted var(--line-bounded);
+}
+
+.dv-n {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.dv-main {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.dv-text {
+  overflow-x: auto;
+}
+
+.dv-text code {
+  white-space: pre;
+}
+
+.dv-rule,
+.dv-result,
+.dv-why,
+.dv-state-head,
+.dv-state-body,
+.dv-queries {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.dv-rule,
+.dv-label,
+.dv-bound,
+.dv-follow,
+.dv-queries,
+.dv-notes {
+  color: var(--pencil);
+}
+
+.dv-word {
+  font-weight: 700;
+}
+
+.dv-state {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-1) var(--space-2);
+  border-left: var(--border-structure) solid var(--ink);
+}
+
+.dv-state-head {
+  font-weight: 600;
+}
+
+.dv-queries {
+  padding-left: var(--space-4);
+}
+
+.dv-notes {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+}

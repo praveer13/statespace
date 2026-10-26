@@ -1182,8 +1182,14 @@ tasks:
     status: in-progress
     started: 2026-10-26
     notes: >-
-      Happy path, 2026-10-26: Recorded runs render as numbered figures in lessons. Missing: the live
-      INS-z3 cell with the download loader and its GATE-bundle checks.
+      Phase 4, 2026-10-26: live INS-z3 cells. 37 of 38 INS-z3 cells (every python cell) run Pyodide
+      314.0.7 + z3_solver 5.3.1.0 [X RUN-z3-starter-pyodide] on the instrument origin after the call; the loader shows the
+      manifest's 12,893,420 B with no prompt; output is labelled run in this tab with the printed
+      version; Stop terminates the worker; the recorded run stays above as the evidence. Missing:
+      the instrument service worker (pyodide.mjs and pyodide.asm.mjs load through the module loader,
+      not the hash-checked copies), warm's 15 s heartbeat, the kill switch, the interpretation-tap
+      slot's live wiring, GATE-bundle's loader.* checks, and a Playwright test of the cold recorded
+      fallback. The S7.L6 smt2 cell keeps its recorded run.
     owner_review: true
     review_h: 0.5
   - id: W1-T07
@@ -2165,7 +2171,17 @@ tasks:
     model: opus
     model_reason: "Parses untrusted input or enforces origin isolation (I6): security-critical."
     depends_on: [W0-S01, W0-T02, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: bus v1 built (apps/instruments/src/bus, host, supervisor;
+      apps/site/src/instruments client): origin, source, build and one-port checks, ancestorOrigins
+      refusal, size and structure caps, per-request watchdogs, run/cancel/warm/caps/evict, a
+      generated engine manifest at engines/manifest.json. Production builds accept
+      https://statespace.play.naigap.com alone (lint.parents passes). Missing: packages/bus
+      (protocol.ts is two copies), GATE-schema on bus messages, GATE-bundle's handshake.* checks,
+      the manifest where GATE-bundle looks for it, versioned b/<buildId>/ hosting, and the service
+      worker.
     owner_review: true
     review_h: 0.5
   - id: W1-T36
@@ -2615,7 +2631,14 @@ tasks:
     model: sonnet
     model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
     depends_on: [W0-S10]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: scripts/build-goal-replay.mjs records RUN-goal-replay (21 S2/S3 cells, 75
+      goal states, two cold runs byte-identical); the goal-replay engine serves them over the bus
+      and GoalStepper renders them; 21 cells live. Missing: the S9 cells (5, recorded only), fading
+      and predict-the-next-goal prompts, GATE-replay and its simulated bump, and the section 6.9
+      placement decision (strips on the main origin).
     owner_review: true
     review_h: 0.5
   - id: W2-T04
@@ -4015,7 +4038,13 @@ tasks:
     model: sonnet
     model_reason: "Well-specified UI against DESIGN.md's screen spec."
     depends_on: [W1-T06]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: Derivation Board v0 on Z3 5.3.1 [X RUN-z3-starter-pyodide] in the tab (engine derivation); all 4 S4
+      INS-derivation cells run live and reproduce their recorded findings. Missing: subterm keyboard
+      navigation, rule list and undo, capture warnings, fading, read-only phones, SCR-derivation,
+      and the GATE-a11y keyboard path.
     owner_review: true
     review_h: 0.5
   - id: W3-T02
@@ -4246,7 +4275,14 @@ tasks:
     model: sonnet
     model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
     depends_on: [W0-S04]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: Spectacle 5827c22 runs on the instrument origin behind a TLC-order search
+      (engine spectacle); 2 of 8 INS-spectacle cells and 3 of 7 INS-theater cells run live with
+      TLC's counts. The other cells keep their recorded runs and say why (module fragments, EXTENDS
+      of course modules, no constant values). Missing: the minimap, course modules on the instrument
+      origin, and GATE-conformance Spectacle = TLC.
     owner_review: true
     review_h: 0.5
   - id: W3-T09
@@ -5520,7 +5556,12 @@ tasks:
     model: sonnet
     model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
     depends_on: [W0-S08]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: PGlite 0.5.11 (PostgreSQL 18.6) [X RUN-pglite-0511] worker with a reset between runs and the
+      S7.L4 world preludes; all 14 INS-pglite cells run live. Missing: idle termination, the phone
+      gate, comparison with the recorded run, and both GATE-conformance pairs.
     owner_review: true
     review_h: 0.5
   - id: W4-T05
@@ -5622,7 +5663,13 @@ tasks:
     model: sonnet
     model_reason: "Instrument integration from a clear engine spec, held by a conformance gate."
     depends_on: [W0-S03]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 4, 2026-10-26: Datalog in the tab on Z3 Fixedpoint 5.3.1 [X RUN-z3-fixedpoint] with the W0-S03 adapter (engine
+      datalog); all 5 INS-datalog cells run live and compare tuples as sets with the recorded
+      Souffle run. Missing: the printed budget cap, GATE-conformance with heights, and a
+      byte-identity check on the adapter copy.
     owner_review: true
     review_h: 0.5
   - id: W4-T08

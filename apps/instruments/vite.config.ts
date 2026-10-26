@@ -32,10 +32,42 @@ function metaCsp(): Plugin {
   }
 }
 
-export default defineConfig({
+/** The main origin a production build accepts when MAIN_ORIGIN is not given: the course's own site. */
+export const PRODUCTION_MAIN_ORIGIN = 'https://statespace.play.naigap.com'
+
+/**
+ * The parents this build accepts (ARCHITECTURE.md section 5.5): an exact scheme, host and port, no wildcard and no
+ * path. MAIN_ORIGIN, when set, is the whole list. Otherwise DEV_PARENTS, when set, is the list (a local
+ * cross-origin test build; GATE-bundle's lint.parents fails such a build, so it never ships). Otherwise a
+ * production build (`vite build`) holds the course's main origin alone, and the dev server accepts the local site
+ * ports.
+ */
+export function allowedParents(mode: string, env: NodeJS.ProcessEnv = process.env): string[] {
+  const list = env.MAIN_ORIGIN
+    ? [env.MAIN_ORIGIN]
+    : env.DEV_PARENTS
+      ? env.DEV_PARENTS.split(',')
+      : mode === 'production'
+        ? [PRODUCTION_MAIN_ORIGIN]
+        : ['http://localhost:5181', 'http://localhost:3000', 'http://localhost:4173']
+  for (const o of list) {
+    if (new URL(o).origin !== o) throw new Error(`allowed parent ${o} is not an exact origin`)
+  }
+  return list
+}
+
+/** The build id the main origin names in its handshake; the deploy workflow sets INSTRUMENTS_BUILD to a content hash. */
+const BUILD = process.env.INSTRUMENTS_BUILD ?? 'dev'
+
+export default defineConfig(({ mode }) => ({
   // The instrument origin is its own static site; the deploy workflow sets VITE_BASE when it is not at the root.
   base: process.env.VITE_BASE ?? '/',
   plugins: [react(), metaCsp()],
+  define: {
+    __INSTRUMENTS_BUILD__: JSON.stringify(BUILD),
+    __ALLOWED_PARENTS__: JSON.stringify(allowedParents(mode)),
+  },
+  worker: { format: 'es' },
   build: {
     manifest: true,
     target: 'es2022',
@@ -46,6 +78,6 @@ export default defineConfig({
       },
     },
   },
-  server: { port: 3001 },
+  server: { port: 5182 },
   preview: { port: 4174 },
-})
+}))

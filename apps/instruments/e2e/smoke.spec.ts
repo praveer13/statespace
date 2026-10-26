@@ -48,9 +48,9 @@ for (const route of PAGES) {
   })
 }
 
-test('the host page says what it is: a scaffold with no bus and no engines', async ({ page }) => {
+test('the host page opened on its own says what it is and does nothing', async ({ page }) => {
   await page.goto('/host.html')
-  await expect(page.locator('#status')).toHaveText('Scaffold build: no bus and no engines yet.')
+  await expect(page.locator('#status')).toHaveText('This page belongs to the statespace course and does nothing on its own.')
 })
 
 for (const width of WIDTHS) {

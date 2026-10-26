@@ -1,0 +1,217 @@
+/* The Goal Replay stepper: a numbered list of the proof's tactics (the current one carries a 3-px ink rule and the
+   word "Step n of m"), the goal before it in a paper code plate, and Previous/Next. Every state is a word or a rule;
+   nothing rests on colour. Long goal lines scroll inside their plate, never the page (360 and 320 px). */
+
+.goal-replay {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.goal-source,
+.goal-errors {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.goal-errors {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.goal-decls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.goal-decl {
+  min-height: 44px;
+  padding: var(--space-1) var(--space-3);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-structure) solid var(--rule);
+  border-radius: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.goal-decl[aria-pressed='true'] {
+  border-color: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--ink);
+  font-weight: 600;
+}
+
+.goal-stepper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.goal-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.goal-step {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 36px;
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.goal-step code {
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.goal-step:hover {
+  background: var(--band);
+}
+
+.goal-step[aria-current='step'] {
+  border-left-color: var(--ink);
+  background: var(--sheet);
+  font-weight: 600;
+}
+
+.goal-step:focus-visible,
+.goal-decl:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.goal-step-n {
+  flex: none;
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+  color: var(--pencil);
+}
+
+.goal-step-end {
+  font-style: italic;
+}
+
+.goal-now {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  min-width: 0;
+  padding-top: var(--space-2);
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.goal-now-head {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  overflow-wrap: anywhere;
+}
+
+.goal-now-n {
+  font-weight: 700;
+}
+
+.goal-line {
+  color: var(--pencil);
+}
+
+.goal-list {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.goal-count,
+.goal-messages-head {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  font-weight: 600;
+}
+
+.goal-text pre,
+.goal-msg pre {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.goal-msg pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.goal-closed,
+.goal-none {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-structure) solid var(--rule);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+}
+
+.goal-closed {
+  border-style: solid;
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.goal-messages ul {
+  list-style: none;
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.goal-sev {
+  display: block;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+.goal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.goal-nav-note {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}

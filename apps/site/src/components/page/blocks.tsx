@@ -15,6 +15,7 @@ import type { LedgerStore } from '../../storage/index.ts'
 import { InlineMd, Markdown, RUN_PENDING } from '../markdown/Markdown.tsx'
 import { claimName, specimenName } from '../../app/content.ts'
 import { callRef, itemRef } from '../../app/progress.ts'
+import { LiveCode, LiveResult, liveCell, liveStatus, useLiveRun } from '../../instruments/index.ts'
 
 /** What a block needs from its page and the practice record. */
 export interface BlockContext {
@@ -127,6 +128,16 @@ export function InstrumentBlock({ block, ctx, kc, figure }: { readonly block: Le
   const [committed, setCommitted] = useState(false)
   const revealed = !asks || committed || ctx.answered.has(callRef(page.id, block.cell))
   const word = runWord(page)
+  // Live mode (apps/site/src/instruments): after the reveal, the code becomes editable and runs on the instrument
+  // origin. The call still comes first; the run its commit starts is the first live run, and re-runs are free.
+  // A cell of a live instrument that the engine cannot run as written keeps its recorded run alone and says why.
+  const { live, reason: recordedOnly } = liveCell(block.ins, block.code?.lang, block.code?.text ?? '', { lesson: page.id, cell: block.cell })
+  const liveRun = useLiveRun(live, block.code?.text ?? '', revealed)
+  const showLive = live !== undefined && revealed && block.code !== undefined
+  const reveal = (): void => {
+    setCommitted(true)
+    if (live !== undefined) liveRun.run()
+  }
   return (
     <figure className="cell no-margin" aria-label={`${figure !== undefined ? `Figure ${figure}, ` : ''}${instrumentName(block.ins)}, cell ${block.cell}`}>
       <div className="cell-head">
@@ -135,18 +146,22 @@ export function InstrumentBlock({ block, ctx, kc, figure }: { readonly block: Le
           {figure !== undefined ? ' · ' : ''}
           {instrumentName(block.ins)}
           <span className="cell-lane"> · recorded {word}</span>
+          {showLive ? <span className="cell-live-state"> · {liveStatus(liveRun.state, live.name)}</span> : null}
+          {recordedOnly !== undefined ? <span className="cell-live-state"> · no live run</span> : null}
         </span>
         <code className="cell-run">{block.recorded}</code>
       </div>
       <div className="cell-body">
         {block.md !== undefined ? <Markdown md={block.md} /> : null}
-        {block.code !== undefined ? (
+        {showLive && block.code !== undefined ? <LiveCode run={liveRun} lang={block.code.lang} live={live} revealed={revealed} /> : null}
+        {!showLive && block.code !== undefined ? (
           <div className="code-block cell-code" role="region" aria-label={`${block.code.lang} code`} tabIndex={0}>
             <pre>
               <code>{block.code.text}</code>
             </pre>
           </div>
         ) : null}
+        {recordedOnly !== undefined ? <p className="cell-live-note cell-recorded-only">Not run in this tab: {recordedOnly}. The recorded {word} is what this figure shows.</p> : null}
         {block.direction !== undefined ? <Markdown md={block.direction} className="cell-direction" /> : null}
         {block.tap !== undefined && revealed ? (
           <p className="cell-tap">
@@ -160,18 +175,19 @@ export function InstrumentBlock({ block, ctx, kc, figure }: { readonly block: Le
             layout="inline"
             actionLabel={`Show the recorded ${word}`}
             revealed={revealed}
-            onCommitted={() => setCommitted(true)}
+            onCommitted={reveal}
           />
         ) : null}
         {item !== undefined && ctx.store === null && !revealed ? (
           // No record can be kept in this browser, so no call is asked; the run can still be read.
           <p className="actions">
-            <button type="button" className="button button-secondary" onClick={() => setCommitted(true)}>
+            <button type="button" className="button button-secondary" onClick={reveal}>
               Show the recorded {word}
             </button>
           </p>
         ) : null}
         {revealed ? <RecordedRun page={page} id={block.recorded} /> : null}
+        {showLive ? <LiveResult run={liveRun} live={live} recorded={block.recorded} word={word} /> : null}
         {revealed && asks && block.call !== undefined ? <EveryWhy choice={block.call} /> : null}
         {revealed && block.after !== undefined ? <Markdown md={block.after} className="cell-after" /> : null}
       </div>

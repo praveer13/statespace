@@ -5,8 +5,9 @@
   "type": "module",
   "description": "The instrument origin: the message-only bus host and the engine workers, on their own static site (React 19, Vite 7).",
   "scripts": {
-    "dev": "vite",
-    "build": "npm run typecheck && vite build",
+    "engines": "node ../../scripts/instruments/fetch-engines.mjs",
+    "dev": "npm run engines && vite",
+    "build": "npm run engines && npm run typecheck && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p . && tsc -p tsconfig.node.json",
     "e2e": "playwright test -c e2e/playwright.config.ts"

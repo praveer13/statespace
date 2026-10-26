@@ -7,7 +7,9 @@ import { defineConfig, type Plugin } from 'vite'
  * committed files write <course-domain> (OD-5), and the build reads COURSE_DOMAIN. With none set the frame
  * source is 'none', so a build made without it embeds nothing.
  */
-export function contentSecurityPolicy(courseDomain: string | undefined): string {
+export function contentSecurityPolicy(courseDomain: string | undefined, instrumentsOrigin: string | undefined = process.env.VITE_INSTRUMENTS_ORIGIN): string {
+  // VITE_INSTRUMENTS_ORIGIN (apps/site/src/instruments/config.ts) names the instrument origin exactly and wins.
+  const frame = instrumentsOrigin ? instrumentsOrigin : courseDomain ? `https://instruments.${courseDomain}` : "'none'"
   return [
     "default-src 'self'",
     "script-src 'self'",
@@ -15,7 +17,7 @@ export function contentSecurityPolicy(courseDomain: string | undefined): string 
     "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self'",
-    `frame-src ${courseDomain ? `https://instruments.${courseDomain}` : "'none'"}`,
+    `frame-src ${frame}`,
     "worker-src 'self'",
     "object-src 'none'",
     "base-uri 'none'",
