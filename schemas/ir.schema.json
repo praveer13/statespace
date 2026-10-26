@@ -3,102 +3,928 @@
   "$id": "urn:statespace:ir@1",
   "x-typeName": "IR",
   "title": "statespace IR, version 1",
-  "description": "The one JSON IR that links S3, S6 and S9 (spine section 9.3), written by `lake exe export-ir` and read by the TypeScript interpreter, the Lane A host and the Rust crates. TODO(W2-T08): this is the skeleton W0-T02 reserves. It fixes the envelope and the parts that curriculum/S03-semantics.md names (the policy fields of decision 6, and a golden's fields in section 2.7); the encodings of programs, calls, states and outcomes are open objects until W2-T08 publishes IR@1 from the Lean reference semantics. Narrowing an open object to a closed one is a compatible change for a writer that already emits only the narrowed form.",
+  "description": "The one JSON IR that links S3, S6 and S9 (spine section 9.3): `lake exe export-ir` writes it, the goldens pool (labs/LAB-3/challenge/goldens.json) is one, and the TypeScript interpreter (packages/interp), the Lane A host and the Rust crates read it. Every sum type is an object with a tag, and every integer that can be a balance or an amount is a decimal string. Published by W2-T08 from the Lean reference semantics (labs/LAB-3/reference/MiniPlinthRef).",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema"],
+  "required": [
+    "schema"
+  ],
   "properties": {
-    "schema": { "const": "statespace/ir@1" },
+    "schema": {
+      "const": "statespace/ir@1"
+    },
     "programs": {
-      "description": "Mini-Plinth programs: commands with distinct names.",
+      "description": "Mini-Plinth programs.",
       "type": "array",
-      "items": { "$ref": "#/$defs/program" }
+      "items": {
+        "$ref": "#/$defs/program"
+      }
     },
     "calls": {
       "description": "Calls of a command with raw argument values.",
       "type": "array",
-      "items": { "$ref": "#/$defs/call" }
+      "items": {
+        "$ref": "#/$defs/call"
+      }
     },
     "states": {
-      "description": "States: balances, holds, nextHold and flags.",
+      "description": "States.",
       "type": "array",
-      "items": { "$ref": "#/$defs/state" }
+      "items": {
+        "$ref": "#/$defs/state"
+      }
     },
     "policy": {
       "description": "The edge-case decisions the semantics takes, which the learner's evaluator declares as Lab3.policy.",
       "$ref": "#/$defs/policy"
     },
     "outcomes": {
-      "description": "Outcomes: ok with state, output and effects, or an Err with payload.",
+      "description": "Outcomes.",
       "type": "array",
-      "items": { "$ref": "#/$defs/outcome" }
+      "items": {
+        "$ref": "#/$defs/outcome"
+      }
     },
     "goldens": {
-      "description": "Kernel-checked goldens. Each right-hand side comes from the golden module's literals, never from a fresh #eval.",
+      "description": "Kernel-checked goldens.",
       "type": "array",
-      "items": { "$ref": "#/$defs/golden" }
+      "items": {
+        "$ref": "#/$defs/golden"
+      }
     }
   },
   "$defs": {
+    "int": {
+      "description": "An integer as a decimal string: a JSON number loses precision above 2^53, and balances reach ±(2^63 - 1) and beyond.",
+      "type": "string",
+      "pattern": "^-?[0-9]+(?![\\s\\S])"
+    },
+    "acct": {
+      "description": "An account: the mint, the sink, a user account by name, or the escrow account of a hold.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag"
+          ],
+          "properties": {
+            "tag": {
+              "const": "mint"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag"
+          ],
+          "properties": {
+            "tag": {
+              "const": "sink"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "name"
+          ],
+          "properties": {
+            "tag": {
+              "const": "user"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "hold"
+          ],
+          "properties": {
+            "tag": {
+              "const": "escrow"
+            },
+            "hold": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "ty": {
+      "description": "Mini-Plinth's types.",
+      "enum": [
+        "account",
+        "amount",
+        "hold",
+        "int",
+        "bool"
+      ]
+    },
+    "val": {
+      "description": "A run-time value: an argument of a call.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "acct"
+          ],
+          "properties": {
+            "tag": {
+              "const": "acct"
+            },
+            "acct": {
+              "$ref": "#/$defs/acct"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "value"
+          ],
+          "properties": {
+            "tag": {
+              "const": "int"
+            },
+            "value": {
+              "$ref": "#/$defs/int"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "value"
+          ],
+          "properties": {
+            "tag": {
+              "const": "bool"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "hold"
+          ],
+          "properties": {
+            "tag": {
+              "const": "hold"
+            },
+            "hold": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "expr": {
+      "description": "An expression. Literals are integers; accounts, holds and booleans come from parameters.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "value"
+          ],
+          "properties": {
+            "tag": {
+              "const": "lit"
+            },
+            "value": {
+              "$ref": "#/$defs/int"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "name"
+          ],
+          "properties": {
+            "tag": {
+              "const": "var"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "e"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "balance",
+                "frozen"
+              ]
+            },
+            "e": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "a",
+            "b"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "add",
+                "sub",
+                "ge",
+                "eq",
+                "and"
+              ]
+            },
+            "a": {
+              "$ref": "#/$defs/expr"
+            },
+            "b": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "a"
+          ],
+          "properties": {
+            "tag": {
+              "const": "not"
+            },
+            "a": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        }
+      ]
+    },
+    "resourceOp": {
+      "description": "An operation as syntax: deposit n to a, move n from x to y, hold n on x, capture h to y, release h.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "amount",
+            "to"
+          ],
+          "properties": {
+            "tag": {
+              "const": "deposit"
+            },
+            "amount": {
+              "$ref": "#/$defs/expr"
+            },
+            "to": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "amount",
+            "from",
+            "to"
+          ],
+          "properties": {
+            "tag": {
+              "const": "move"
+            },
+            "amount": {
+              "$ref": "#/$defs/expr"
+            },
+            "from": {
+              "$ref": "#/$defs/expr"
+            },
+            "to": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "amount",
+            "on"
+          ],
+          "properties": {
+            "tag": {
+              "const": "hold"
+            },
+            "amount": {
+              "$ref": "#/$defs/expr"
+            },
+            "on": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "hold",
+            "to"
+          ],
+          "properties": {
+            "tag": {
+              "const": "capture"
+            },
+            "hold": {
+              "$ref": "#/$defs/expr"
+            },
+            "to": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "hold"
+          ],
+          "properties": {
+            "tag": {
+              "const": "release"
+            },
+            "hold": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        }
+      ]
+    },
+    "stmt": {
+      "description": "A command body: one operation, or set f(x) := e. forceMove is LAB-3.6's unsafe extension, outside the v0 language.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "op"
+          ],
+          "properties": {
+            "tag": {
+              "const": "op"
+            },
+            "op": {
+              "$ref": "#/$defs/resourceOp"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "field",
+            "target",
+            "value"
+          ],
+          "properties": {
+            "tag": {
+              "const": "set"
+            },
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target": {
+              "$ref": "#/$defs/expr"
+            },
+            "value": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "amount",
+            "from",
+            "to"
+          ],
+          "properties": {
+            "tag": {
+              "const": "forceMove"
+            },
+            "amount": {
+              "$ref": "#/$defs/expr"
+            },
+            "from": {
+              "$ref": "#/$defs/expr"
+            },
+            "to": {
+              "$ref": "#/$defs/expr"
+            }
+          }
+        }
+      ]
+    },
+    "cmd": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "params",
+        "guard",
+        "body"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ty"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ty": {
+                "$ref": "#/$defs/ty"
+              }
+            }
+          }
+        },
+        "guard": {
+          "$ref": "#/$defs/expr"
+        },
+        "body": {
+          "$ref": "#/$defs/stmt"
+        }
+      },
+      "description": "command name(params) requires guard do body, with each parameter's type."
+    },
     "program": {
-      "description": "TODO(W2-T08): the encoding of a program.",
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commands"
+      ],
+      "properties": {
+        "id": {
+          "description": "The program's name in this document, which goldens refer to.",
+          "type": "string",
+          "minLength": 1
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cmd"
+          }
+        }
+      },
+      "description": "Mini-Plinth programs: commands with distinct names."
     },
     "call": {
-      "description": "TODO(W2-T08): the encoding of a call.",
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "args"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/val"
+          }
+        }
+      },
+      "description": "A call of a command with raw argument values; amounts are decoded at the boundary."
+    },
+    "hold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "owner",
+        "amount",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "owner": {
+          "$ref": "#/$defs/acct"
+        },
+        "amount": {
+          "$ref": "#/$defs/int"
+        },
+        "status": {
+          "enum": [
+            "held",
+            "captured",
+            "released"
+          ]
+        }
+      }
     },
     "state": {
-      "description": "TODO(W2-T08): the encoding of a state.",
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bals",
+        "holds",
+        "nextHold",
+        "frozen"
+      ],
+      "properties": {
+        "bals": {
+          "description": "Balances in the state's own order: the order matters, because a lookup reads the first entry and a new account is added at the end.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "acct",
+              "bal"
+            ],
+            "properties": {
+              "acct": {
+                "$ref": "#/$defs/acct"
+              },
+              "bal": {
+                "$ref": "#/$defs/int"
+              }
+            }
+          }
+        },
+        "holds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hold"
+          }
+        },
+        "nextHold": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frozen": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/acct"
+          }
+        }
+      },
+      "description": "A state: balances, holds, nextHold and the accounts whose frozen flag is set."
+    },
+    "err": {
+      "description": "Every way a call can fail, as a value.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "name"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "unknownCommand",
+                "guardFailed"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "param"
+          ],
+          "properties": {
+            "tag": {
+              "const": "badArgument"
+            },
+            "param": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "acct"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "unknownAccount",
+                "overflow"
+              ]
+            },
+            "acct": {
+              "$ref": "#/$defs/acct"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag",
+            "hold"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "unknownHold",
+                "holdNotOpen"
+              ]
+            },
+            "hold": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tag"
+          ],
+          "properties": {
+            "tag": {
+              "enum": [
+                "selfTransfer",
+                "typeError",
+                "outOfFuel"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "acct"
+      ],
+      "properties": {
+        "tag": {
+          "const": "notify"
+        },
+        "acct": {
+          "$ref": "#/$defs/acct"
+        }
+      }
     },
     "outcome": {
-      "description": "TODO(W2-T08): the encoding of an outcome.",
-      "type": "object"
+      "description": "An outcome: ok with the state, the output (the ids of the holds opened) and the effects, or an error.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ok"
+          ],
+          "properties": {
+            "ok": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "state",
+                "output",
+                "effects"
+              ],
+              "properties": {
+                "state": {
+                  "$ref": "#/$defs/state"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "effects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/effect"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "error"
+          ],
+          "properties": {
+            "error": {
+              "$ref": "#/$defs/err"
+            }
+          }
+        }
+      ]
+    },
+    "typeOutcome": {
+      "description": "A type checker's verdict: accepted, or the rule a rejected command breaks.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ok"
+          ],
+          "properties": {
+            "ok": {
+              "const": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "error"
+          ],
+          "properties": {
+            "error": {
+              "enum": [
+                "dupParam",
+                "unknownParam",
+                "wrongType",
+                "nonPositive",
+                "unguardedDebit",
+                "assignsResource"
+              ]
+            }
+          }
+        }
+      ]
     },
     "policy": {
       "description": "The four policy fields of curriculum/S03-semantics.md section 1.1, decision 6. The reference defaults are zero reject, self allow, guard error and overflow unbounded.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["zero", "self", "guard", "overflow"],
+      "required": [
+        "zero",
+        "self",
+        "guard",
+        "overflow"
+      ],
       "properties": {
         "zero": {
           "description": "What an amount of 0 does: reject it, or return the state unchanged.",
-          "enum": ["reject", "noop"]
+          "enum": [
+            "reject",
+            "noop"
+          ]
         },
         "self": {
           "description": "Whether a move from an account to itself is allowed or rejected.",
-          "enum": ["allow", "reject"]
+          "enum": [
+            "allow",
+            "reject"
+          ]
         },
         "guard": {
           "description": "What a false guard gives: an error, or the state unchanged with no output.",
-          "enum": ["error", "silent"]
+          "enum": [
+            "error",
+            "silent"
+          ]
         },
         "overflow": {
-          "description": "Unbounded balances, or balances bounded to [-maxBal, maxBal]. TODO(W2-T08): confirm the encoding against the export.",
+          "description": "Unbounded balances, or balances bounded to [-maxBal, maxBal], with maxBal as a decimal string.",
           "type": "object",
           "additionalProperties": false,
-          "required": ["mode"],
+          "required": [
+            "mode"
+          ],
           "properties": {
-            "mode": { "enum": ["unbounded", "bounded"] },
-            "maxBal": { "type": "integer", "minimum": 0 }
+            "mode": {
+              "enum": [
+                "unbounded",
+                "bounded"
+              ]
+            },
+            "maxBal": {
+              "$ref": "#/$defs/nat"
+            }
           },
           "if": {
-            "required": ["mode"],
-            "properties": { "mode": { "const": "bounded" } }
+            "required": [
+              "mode"
+            ],
+            "properties": {
+              "mode": {
+                "const": "bounded"
+              }
+            }
           },
-          "then": { "required": ["maxBal"] }
+          "then": {
+            "required": [
+              "maxBal"
+            ]
+          }
         }
       }
     },
     "golden": {
-      "description": "One golden: a theorem about a call on a pre-state, with its outcome.",
+      "description": "One golden: a theorem closed by decide. An evaluator golden (pool eval) states exec p c s = r for a program, call, pre-state and policy; a typing golden (pool typing) states typecheck c = r. Its right-hand side is the golden module's kernel-checked literal, never a fresh #eval.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["pool", "theorem", "statementSha256", "pre", "call", "outcome"],
+      "required": [
+        "pool",
+        "theorem"
+      ],
       "properties": {
         "pool": {
-          "description": "The golden pool the golden belongs to.",
+          "description": "eval or typing.",
+          "enum": [
+            "eval",
+            "typing"
+          ]
+        },
+        "id": {
+          "description": "The golden's input, shared by its evaluator goldens under each policy.",
           "type": "string",
           "minLength": 1
         },
@@ -111,10 +937,59 @@
           "description": "The statement hash of the theorem's text, by the rule of statement-hash@1.",
           "$ref": "urn:statespace:defs@1#/$defs/statementSha256"
         },
-        "pre": { "$ref": "#/$defs/state" },
-        "call": { "$ref": "#/$defs/call" },
-        "outcome": { "$ref": "#/$defs/outcome" }
+        "program": {
+          "description": "The id of the program in programs[].",
+          "type": "string",
+          "minLength": 1
+        },
+        "policy": {
+          "$ref": "#/$defs/policy"
+        },
+        "pre": {
+          "$ref": "#/$defs/state"
+        },
+        "call": {
+          "$ref": "#/$defs/call"
+        },
+        "outcome": {
+          "$ref": "#/$defs/outcome"
+        },
+        "command": {
+          "$ref": "#/$defs/cmd"
+        },
+        "verdict": {
+          "$ref": "#/$defs/typeOutcome"
+        },
+        "strata": {
+          "description": "What the golden samples: the command, the outcome class and whether it holds a boundary value.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "op": {
+              "type": "string"
+            },
+            "class": {
+              "type": "string"
+            },
+            "boundary": {
+              "type": "boolean"
+            }
+          }
+        },
+        "source": {
+          "description": "Where the input comes from: generated, or the lesson cell it reproduces.",
+          "type": "string"
+        },
+        "note": {
+          "description": "What a typing golden tests.",
+          "type": "string"
+        }
       }
+    },
+    "nat": {
+      "description": "A non-negative integer as a decimal string.",
+      "type": "string",
+      "pattern": "^[0-9]+(?![\\s\\S])"
     }
   }
 }
