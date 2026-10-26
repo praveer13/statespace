@@ -13,6 +13,7 @@
     { "id": "typecheck", "kind": "check", "argv": ["npm", "run", "typecheck"], "needs": "package.json", "built_by": "W0-S12", "lanes": { "fast": {}, "nightly": {}, "release": {} } },
     { "id": "unit-tests", "kind": "check", "argv": ["npm", "test"], "needs": "package.json", "built_by": "W0-S12", "lanes": { "fast": {}, "nightly": {}, "release": {} } },
     { "id": "build", "kind": "check", "argv": ["npm", "run", "build"], "needs": "package.json", "built_by": "W0-S12", "lanes": { "fast": {}, "nightly": {}, "release": {} } },
+    { "id": "content-build", "kind": "check", "argv": ["node", "scripts/build-content.mjs", "--check"], "needs": "scripts/build-content.mjs", "built_by": "W1-T36", "lanes": { "fast": {}, "nightly": {}, "release": { "args": ["--strict"] } } },
     { "id": "lane-tests", "kind": "check", "argv": ["node", "--test", "scripts/spikes/W0-T04/lane.test.mjs", "scripts/spikes/W0-T04/lane-manifest.test.mjs", "scripts/spikes/W0-T04/status-branch.test.mjs", "scripts/spikes/W0-T04/file-issue.test.mjs", "scripts/spikes/W0-T04/emulate-runner.test.mjs", "scripts/spikes/W0-T04/workflows.test.mjs"], "needs": "scripts/spikes/W0-T04/lane.mjs", "built_by": "W0-T04", "lanes": { "fast": {}, "nightly": {} } },
 
     { "id": "GATE-numbers", "kind": "gate", "script": "scripts/verify-numbers.mjs", "built_by": "W0-S11", "lanes": { "fast": {}, "nightly": {}, "release": { "args": ["--strict"] } } },
@@ -58,6 +59,9 @@
     { "id": "schema-self-check", "kind": "check", "argv": ["node", "scripts/verify-schema.mjs", "--self-check"], "needs": "scripts/verify-schema.mjs", "built_by": "W0-T02", "lanes": { "nightly": {}, "release": {} } },
     { "id": "privacy-self-test", "kind": "check", "argv": ["node", "scripts/verify-privacy.mjs", "--self-test"], "needs": "scripts/verify-privacy.mjs", "built_by": "W0-T01", "lanes": { "nightly": {}, "release": {} } },
     { "id": "facts-self-check", "kind": "check", "argv": ["node", "scripts/verify-facts.mjs", "--self-check"], "needs": "scripts/verify-facts.mjs", "built_by": "W0-T08", "lanes": { "nightly": {}, "release": {} } },
+    { "id": "specimens-self-check", "kind": "check", "argv": ["node", "scripts/verify-specimens.mjs", "--self-check"], "needs": "scripts/verify-specimens.mjs", "built_by": "W1-T42", "lanes": { "nightly": {} } },
+    { "id": "conformance-self-check", "kind": "check", "argv": ["node", "scripts/verify-conformance.mjs", "--self-check"], "needs": "scripts/verify-conformance.mjs", "built_by": "W1-T42", "lanes": { "nightly": {} } },
+    { "id": "specimens-conformance-tests", "kind": "check", "argv": ["node", "--test", "scripts/spikes/W1-T42/claims.test.mjs", "scripts/spikes/W1-T42/conformance.test.mjs", "scripts/spikes/W1-T42/engines.test.mjs", "scripts/spikes/W1-T42/pair.test.mjs", "scripts/spikes/W1-T42/reproduce.test.mjs", "scripts/spikes/W1-T42/specimens.test.mjs"], "needs": "scripts/spikes/W1-T42/claims.test.mjs", "built_by": "W1-T42", "lanes": { "nightly": {} } },
 
     { "id": "GATE-release", "kind": "gate", "script": "scripts/verify-release.mjs", "built_by": "W5-T09", "lanes": { "release": { "required": true } }, "note": "the stub: until W5-T09 builds the script, the release lane fails closed" }
   ]

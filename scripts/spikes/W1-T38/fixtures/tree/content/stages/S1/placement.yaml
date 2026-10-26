@@ -1,0 +1,26 @@
+# A fixture for the lessons gate: a stand-in for the placement walk that closes Boot (W1-T45 owns the real file and its
+# fields; curriculum/D-drawers.md section 5 is its spec). The gate reads it at Boot's place, so its copy uses terms 1 to 5
+# only, and a field that holds IDs alone is data, not copy.
+id: S1
+draft: true
+offer: Know some logic already? An optional 15-minute check lets the course skip what you show. You can take it later from Stages.
+steps:
+  - kc: KC-1.quantifier-negation
+    items:
+      - family: GEN-negate-it
+        template: t1
+        band: 2
+      - family: GEN-negate-it
+        template: t3
+        band: 3
+  - kc: KC-1.violation-as-sat
+    requires: [KC-1.quantifier-negation]
+    items:
+      - family: GEN-call-it
+        template: t1
+        band: 2
+      - ref: placement:step-4/GEN-find-the-witness/t1
+result:
+  shown: Shown. One more item in about a week confirms it.
+  notShown: Not shown yet. The lesson is ready when you are.
+  notProbed: Not probed yet. This one needs the solver; you can finish it on your laptop.

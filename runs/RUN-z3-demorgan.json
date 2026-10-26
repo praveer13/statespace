@@ -1,0 +1,908 @@
+{
+  "id": "RUN-z3-demorgan",
+  "title": "The mis-negation a' < 0 and b' < 0 is unsat on the unguarded transfer; the correct negation a' < 0 or b' < 0 is sat with a witness",
+  "task": "W1-T12",
+  "origin": "recorded",
+  "records": "S1.L1 segment 1 and D-03: on the unguarded transfer the mis-negation is unsat, the correct negation is sat with a witness, and De Morgan's identity holds: not (a' >= 0 and b' >= 0) is the same formula as a' < 0 or b' < 0",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel (z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl) installed by uv; the Pyodide configurations use the pyemscripten wheel (sha256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": null,
+  "recorded_at": "2026-10-26T02:12:31.500Z",
+  "started_at": "2026-10-26T02:12:29.522Z",
+  "duration_s": 0.11,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "--with",
+    "z3-solver==5.3.1",
+    "python",
+    "-I",
+    "demorgan.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+      "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+      "bytes": 6227,
+      "role": "script"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "bytes": 36561071,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+      "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+      "bytes": 2736,
+      "role": "harness"
+    },
+    {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "file": "pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "bytes": 6488647,
+      "role": "engine"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "bytes": 6525334,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+      "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+      "bytes": 5270,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/index.html",
+      "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+      "bytes": 944,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+      "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+      "bytes": 2256,
+      "role": "harness"
+    },
+    {
+      "name": "node_modules/playwright-core/package.json",
+      "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+      "role": "harness dependency, playwright-core 1.63.0"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+      "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+      "bytes": 643,
+      "role": "harness"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/correct_negation.smt2",
+      "sha256": "b63aa3c62e5f5973617aea98ea7b0f00b7c0bf5accad6b6248b0862e795a9482",
+      "bytes": 337,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/mis_negation.smt2",
+      "sha256": "6b5cabef874fe21825065ece6fbfbf3ca81acf234239734c12dc0dbd950daa54",
+      "bytes": 338,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/negation_equivalence.smt2",
+      "sha256": "29d522f4796cc2c4dbd13c076de88f2b076035f8add20e9966dc5722935377de",
+      "bytes": 338,
+      "role": "query"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "harness_timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[mis_negation] unsat",
+    "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+    "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+    "[negation_equivalence] unsat"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-demorgan/native.log",
+      "sha256": "cbf9408311599b167345ce060e2ce57d206f4b35c6bd8db0f4c44209ca116bcc",
+      "bytes": 1144,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/correct_negation.smt2",
+      "sha256": "b63aa3c62e5f5973617aea98ea7b0f00b7c0bf5accad6b6248b0862e795a9482",
+      "bytes": 337,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/mis_negation.smt2",
+      "sha256": "6b5cabef874fe21825065ece6fbfbf3ca81acf234239734c12dc0dbd950daa54",
+      "bytes": 338,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/smt2/negation_equivalence.smt2",
+      "sha256": "29d522f4796cc2c4dbd13c076de88f2b076035f8add20e9966dc5722935377de",
+      "bytes": 338,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/pyodide-node.log",
+      "sha256": "36b64533c40bdd8d37e2bb139a01913d81266b47fe27e55203040c1e3957bdf6",
+      "bytes": 1145,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/pyodide-chromium.log",
+      "sha256": "6fd6950a5cb45495ca61b2e2767c6a946f32f4b27f60176c77b8a48ee2fe1e26",
+      "bytes": 1142,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/pyodide-firefox.log",
+      "sha256": "22b501f27027ee43de55edabd657a464d5ba2409dd606630deedd462a7fbebf7",
+      "bytes": 1142,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/pyodide-webkit.log",
+      "sha256": "22b501f27027ee43de55edabd657a464d5ba2409dd606630deedd462a7fbebf7",
+      "bytes": 1142,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-demorgan/cvc5-bench.log",
+      "sha256": "8de9d8e89b587654b7b2f6f1336aed763dba553b1561a8f3ab232af97bc6ba1c",
+      "bytes": 110,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "queries": {
+      "mis_negation": {
+        "verdict": "unsat",
+        "smt2_sha256": "6b5cabef874fe21825065ece6fbfbf3ca81acf234239734c12dc0dbd950daa54",
+        "smt2_raw_sha256_by_engine": {
+          "native": "36951ddfe8595e8e5363ee443ad322ae809cbb85d9e1d3d62a6bfacba9eb3dbd",
+          "pyodide-node": "36951ddfe8595e8e5363ee443ad322ae809cbb85d9e1d3d62a6bfacba9eb3dbd",
+          "pyodide-chromium": "9085ef17bfc0c05f7c87ddb952d822f2f1a8ecb2a2f801494d881621e3dc23fb",
+          "pyodide-firefox": "9085ef17bfc0c05f7c87ddb952d822f2f1a8ecb2a2f801494d881621e3dc23fb",
+          "pyodide-webkit": "9085ef17bfc0c05f7c87ddb952d822f2f1a8ecb2a2f801494d881621e3dc23fb"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "correct_negation": {
+        "verdict": "sat",
+        "witness": {
+          "a": "0",
+          "amount": "1",
+          "b": "0"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "smt2_sha256": "b63aa3c62e5f5973617aea98ea7b0f00b7c0bf5accad6b6248b0862e795a9482",
+        "smt2_raw_sha256_by_engine": {
+          "native": "2b5a25193d9ded7aefe7b8c0962ef5d85cb24519179cbe791824bfa4dd26e7f0",
+          "pyodide-node": "2b5a25193d9ded7aefe7b8c0962ef5d85cb24519179cbe791824bfa4dd26e7f0",
+          "pyodide-chromium": "4ae534f4c8e7450832968afd0e6863959de8e8b744dd6d4255b5a1897cf95984",
+          "pyodide-firefox": "4ae534f4c8e7450832968afd0e6863959de8e8b744dd6d4255b5a1897cf95984",
+          "pyodide-webkit": "4ae534f4c8e7450832968afd0e6863959de8e8b744dd6d4255b5a1897cf95984"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "negation_equivalence": {
+        "verdict": "unsat",
+        "smt2_sha256": "29d522f4796cc2c4dbd13c076de88f2b076035f8add20e9966dc5722935377de",
+        "smt2_raw_sha256_by_engine": {
+          "native": "4166a6e54cedea0a8376a3c14a688cc4f6783da16831b982f7982fedf48162c8",
+          "pyodide-node": "4166a6e54cedea0a8376a3c14a688cc4f6783da16831b982f7982fedf48162c8",
+          "pyodide-chromium": "443051587f46e7518b8cd72c38ae7273f4b2c956950a3111c02565bb45a591c2",
+          "pyodide-firefox": "443051587f46e7518b8cd72c38ae7273f4b2c956950a3111c02565bb45a591c2",
+          "pyodide-webkit": "443051587f46e7518b8cd72c38ae7273f4b2c956950a3111c02565bb45a591c2"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      }
+    },
+    "engines": [
+      "native",
+      "pyodide-node",
+      "pyodide-chromium",
+      "pyodide-firefox",
+      "pyodide-webkit"
+    ],
+    "verdicts_agree": true,
+    "witnesses_replay": true,
+    "exports_identical": true,
+    "raw_exports_identical": false,
+    "cvc5": {
+      "configuration": "cvc5-bench",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "queries_checked": 3,
+      "agree": 3
+    }
+  },
+  "checks": [
+    {
+      "id": "mis_negation",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "correct_negation",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "negation_equivalence",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "no-unexpected-queries",
+      "pass": true
+    },
+    {
+      "id": "exports-identical",
+      "pass": true,
+      "detail": "the 5 Z3 configurations (native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit) exported the same SMT-LIB text for every query, all 3 of them"
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2",
+    "containers": {
+      "playwright": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "bench": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+    }
+  },
+  "primary_config": "native",
+  "configs": [
+    {
+      "id": "native",
+      "purpose": "the script under uv with the z3-solver 5.3.1.0 wheel on CPython, the LAB-1 way (labs/TOOLS.md section 2.1); the primary configuration",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "started_at": "2026-10-26T02:12:29.522Z",
+      "duration_s": 0.11,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "python",
+        "-I",
+        "demorgan.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+          "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+          "bytes": 6227,
+          "role": "script"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[mis_negation] unsat",
+        "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "[negation_equivalence] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/native.log",
+        "runs/RUN-z3-demorgan/smt2/correct_negation.smt2",
+        "runs/RUN-z3-demorgan/smt2/mis_negation.smt2",
+        "runs/RUN-z3-demorgan/smt2/negation_equivalence.smt2"
+      ],
+      "environment": {
+        "python": "CPython 3.13.12",
+        "uv": "uv 0.10.2",
+        "library": "libz3.so 27688808 bytes"
+      }
+    },
+    {
+      "id": "pyodide-node",
+      "purpose": "the script in Pyodide under Node with this task's harness, pyodide-node.mjs: the setting in which RUN-z3-bv64-pyodide ran (with a harness of its own) and in which the spine's GATE-calls reproduces a Call It answer; Pyodide 314.0.7 and the Z3 5.3.1.0 wheel, a fresh engine and a fresh Python namespace for the script",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": null,
+      "started_at": "2026-10-26T02:12:29.633Z",
+      "duration_s": 1.599,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T12/pyodide-node.mjs",
+        "--pyodide",
+        "<sandbox>/engines/pyodide",
+        "--wheel",
+        "<sandbox>/engines/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+        "--script",
+        "demorgan.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+          "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+          "bytes": 6227,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+          "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+          "bytes": 2736,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[mis_negation] unsat",
+        "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "[negation_equivalence] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/pyodide-node.log"
+      ],
+      "environment": {
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "node": "v22.22.2 x64",
+        "load_pyodide_ms": 1050,
+        "load_wheel_ms": 242,
+        "script_ms": 265
+      }
+    },
+    {
+      "id": "pyodide-chromium",
+      "purpose": "the script in Pyodide in a module worker in chromium 153.0.8010.12 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:15.582Z",
+      "duration_s": 0.016,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-chromium",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers chromium; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+          "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+          "bytes": 6227,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[mis_negation] unsat",
+        "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "[negation_equivalence] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/pyodide-chromium.log"
+      ],
+      "environment": {
+        "browser": "chromium 153.0.8010.12",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1016,
+        "load_wheel_ms": 243,
+        "script_ms": 16,
+        "session_wall_ms": 3092,
+        "docker_run_started_at": "2026-10-26T02:12:15.227Z",
+        "docker_run_wall_ms": 3512
+      }
+    },
+    {
+      "id": "pyodide-firefox",
+      "purpose": "the script in Pyodide in a module worker in firefox 155.0 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:19.281Z",
+      "duration_s": 0.019,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-firefox",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers firefox; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+          "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+          "bytes": 6227,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[mis_negation] unsat",
+        "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "[negation_equivalence] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/pyodide-firefox.log"
+      ],
+      "environment": {
+        "browser": "firefox 155.0",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1083,
+        "load_wheel_ms": 338,
+        "script_ms": 19,
+        "session_wall_ms": 3724,
+        "docker_run_started_at": "2026-10-26T02:12:18.749Z",
+        "docker_run_wall_ms": 4518
+      }
+    },
+    {
+      "id": "pyodide-webkit",
+      "purpose": "the script in Pyodide in a module worker in webkit 26.6 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:23.814Z",
+      "duration_s": 0.016,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-webkit",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers webkit; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-demorgan/demorgan.py",
+          "sha256": "cbe6680d2d5b2824fd922cbf24b46f56029591a7f8e1e756dc47a7238298b3e9",
+          "bytes": 6227,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[mis_negation] unsat",
+        "[correct_negation] sat [amount = 1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok",
+        "[negation_equivalence] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/pyodide-webkit.log"
+      ],
+      "environment": {
+        "browser": "webkit 26.6",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1014,
+        "load_wheel_ms": 270,
+        "script_ms": 16,
+        "session_wall_ms": 3135,
+        "docker_run_started_at": "2026-10-26T02:12:23.278Z",
+        "docker_run_wall_ms": 3757
+      }
+    },
+    {
+      "id": "cvc5-bench",
+      "purpose": "a second solver on the queries: every sat or unsat query of the run that has an SMT-LIB export, as that text, on cvc5 1.4.2 [git 282d5e0 on branch HEAD], the Bench binary (the spine's \"authored unsat cross-checked on cvc5\")",
+      "origin": "recorded",
+      "engine": "cvc5",
+      "version": "1.4.2",
+      "version_string": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "started_at": "2026-10-26T02:12:31.272Z",
+      "duration_s": 0.159,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w1t12-cvc5-z3-demorgan",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/smt2:/q:ro",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "sh",
+        "/s/cvc5-check.sh",
+        "/q"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+          "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+          "bytes": 643,
+          "role": "harness"
+        },
+        {
+          "path": "runs/RUN-z3-demorgan/smt2/correct_negation.smt2",
+          "sha256": "b63aa3c62e5f5973617aea98ea7b0f00b7c0bf5accad6b6248b0862e795a9482",
+          "bytes": 337,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-demorgan/smt2/mis_negation.smt2",
+          "sha256": "6b5cabef874fe21825065ece6fbfbf3ca81acf234239734c12dc0dbd950daa54",
+          "bytes": 338,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-demorgan/smt2/negation_equivalence.smt2",
+          "sha256": "29d522f4796cc2c4dbd13c076de88f2b076035f8add20e9966dc5722935377de",
+          "bytes": 338,
+          "role": "query"
+        }
+      ],
+      "budget": {
+        "per_file_timeout_s": 60,
+        "harness_timeout_s": 600,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+        "correct_negation: sat",
+        "mis_negation: unsat",
+        "negation_equivalence: unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-demorgan/cvc5-bench.log"
+      ],
+      "environment": {
+        "container_image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+      }
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the primary configuration ran on the host under uv, in no container; the container configurations name their images"
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T12. values.queries.<query> holds each query's verdict and rlimit; for a sat query, its witness (the primary configuration's model, as strings), the text of the primary configuration's replay (replay) and whether every configuration's model for it replayed (witness_replays); its unsat_core or minimum where it has one; the SHA-256 of its SMT-LIB export; and the verdict of each configuration that ran it (engines, cvc5's on the 3 queries it ran). Cite one as {{run:RUN-z3-demorgan#values.queries.<name>.verdict}}. 3 queries in all.",
+    "Where each configuration ran: native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit, cvc5-bench. native is the host under uv (CPython 3.13, the wheel z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl from PyPI, no container); pyodide-node is Pyodide 314.0.7 with the z3_solver 5.3.1.0 pyemscripten wheel under Node 22 on the host (CPython 3.14 inside Pyodide); the pyodide-chromium, pyodide-firefox and pyodide-webkit configurations are the same engine in a module worker of each browser inside the pinned Playwright container (desktop builds, headless, not phones); cvc5-bench is cvc5 1.4.2, the Bench binary, in the Bench image with the network off.",
+    "Witnesses are recorded by property and never compared by value across engines [X RUN-z3-bv64-pyodide]: every sat query's model is replayed in plain Python integers by the script itself, in each configuration that gave one (native, pyodide-node, pyodide-chromium, pyodide-firefox and pyodide-webkit; cvc5-bench gives verdicts only), and the check is that every one of them replays. In this run the configurations in values.engines returned the same model for every sat query, which is a fact about this run and no promise.",
+    "Every query ran with rlimit 5000000 (spine section 9.1; values.queries.<query>.rlimit). The SMT-LIB exports are Z3's to_smt2() text with its let names (?x60, $x34) renamed in order of appearance, because Z3 names them after AST ids and the ids are not the same in every process: the raw text differed between Z3 configurations on 3 of the 3 queries that have an export (smt2_raw_sha256_by_engine). The renamed text is the same in every Z3 configuration, and its SHA-256 is values.queries.<query>.smt2_sha256.",
+    "started_at and duration_s of a configuration that ran its own command (native, pyodide-node and cvc5-bench) are when that command started and how long it took, start-up included. Each browser configuration (pyodide-chromium, pyodide-firefox and pyodide-webkit) comes from one docker run, in which one browser session ran every Z3 script of runs/inputs/S1 in turn; that session is shared by the 9 Z3 records of runs/inputs/S1, and the configuration's argv and exit_code are its docker run's. A browser configuration's started_at is when its session began, after the browser had launched and before its page opened, and its duration_s is this script's own time in the worker, measured around the call without the engine's start-up and rounded to whole milliseconds by the harness. Its environment holds two spans that cover every script: session_wall_ms, from started_at to when the last script had finished (the page's and the engine's load and every script, not the browser's close), and docker_run_wall_ms, the docker run from docker_run_started_at, when the recording script started it, to its exit (adding the container's start and the launch of Node and the browser before started_at, and the browser's close and the output's chown after the last script). budget.harness_timeout_s is the wall time after which the recording script would have stopped a configuration's command (for a browser configuration, the docker run). The ms figure on an @@ line is the script's own measurement of that query's solver call, rounded to hundredths of a millisecond; in this record's browser logs pyodide-firefox and pyodide-webkit gave whole milliseconds, and pyodide-chromium gave multiples of 0.1 ms, on all 3 queries, so a browser figure of a few milliseconds is a rough one.",
+    "cvc5 1.4.2 [git 282d5e0 on branch HEAD] ran 3 of the 3 queries, each file under a 60 s limit (budget.per_file_timeout_s): every sat or unsat query that has an SMT-LIB export, as that text, which here is every query. The checks require its verdict to equal Z3's on each one it ran (values.cvc5, and engines in each entry).",
+    "In native and pyodide-node, which ran on the host, argv's paths to the script are relative to a scratch folder that held copies of the configuration's inputs from runs/inputs/S1/RUN-z3-demorgan/ at the same relative paths, and the command ran in that folder; pyodide-node.mjs is named by its path from the repository root, and the <sandbox> paths are placeholders (next note).",
+    "Placeholders in argv: <sandbox>/engines is a scratch directory with Pyodide's npm package unpacked in pyodide/ and the Z3 wheel, both fetched and checked against their published digests (the inputs list them); <sandbox>/out is the browser container's output directory; <sandbox>/smt2 is a scratch copy of the SMT-LIB files the cvc5 configuration reads (the inputs list them). Repository paths are relative to the repository root."
+  ]
+}

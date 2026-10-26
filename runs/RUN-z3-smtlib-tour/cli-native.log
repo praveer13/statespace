@@ -1,0 +1,27 @@
+Z3 version 5.3.1 - 64 bit
+== starter.smt2
+sat
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0 in 9 ms
+== starter_guarded.smt2
+unsat
+-- exit 0 in 11 ms
+== starter_guarded_get_model.smt2
+unsat
+(error "line 8 column 10: model is not available")
+-- exit 1 in 10 ms
+== unknown_theory.smt2
+unknown
+(:reason-unknown "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))")
+-- exit 0 in 8 ms
+== unknown_canceled.smt2
+unknown
+(:reason-unknown "canceled")
+-- exit 0 in 419 ms

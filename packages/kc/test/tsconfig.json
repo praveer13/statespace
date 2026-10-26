@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    // The tests call the gates' own functions (scripts/verify-kc.mjs, scripts/verify-coverage.mjs), whose JSDoc
+    // supplies their types.
+    "allowJs": true,
+    "checkJs": false,
+    "tsBuildInfoFile": "../../../node_modules/.tmp/tsconfig.kc-test.tsbuildinfo"
+  },
+  "include": [".", "../src"]
+}

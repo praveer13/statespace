@@ -1,0 +1,19 @@
+server
+PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+case bigint_at_max: credit 1 to a bigint balance of 9223372036854775807
+psql:/q/numeric_bound.sql:17: ERROR:  bigint out of range
+sqlstate 22003
+balance
+9223372036854775807
+case numeric19_below_bound: credit 1 to a numeric(19,0) balance of 9223372036854775807
+balance
+9223372036854775808
+case numeric19_at_bound: credit 1 to a numeric(19,0) balance of 9999999999999999999
+psql:/q/numeric_bound.sql:31: ERROR:  numeric field overflow
+DETAIL:  A field with precision 19, scale 0 must round to an absolute value less than 10^19.
+sqlstate 22003
+balance
+9999999999999999999
+case numeric_unbounded: credit 1 to a numeric balance of 9999999999999999999
+balance
+10000000000000000000

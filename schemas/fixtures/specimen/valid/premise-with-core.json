@@ -1,0 +1,43 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.6",
+  "title": "An unsat over contradictory premises",
+  "kcs": [
+    "KC-1.implication-vacuity",
+    "KC-1.non-vacuity-check"
+  ],
+  "found_in": {
+    "lesson": "S1.L3"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L3"
+    ]
+  },
+  "violates": "Non-vacuity: the premises can hold together.",
+  "because": "Contradictory premises make every violation query unsat, whatever the property says.",
+  "class": "a proof over premises that cannot hold",
+  "cured_by": {
+    "text": "Ask the premise query beside every unsat, and fix the configuration that makes it unsat.",
+    "claim": "CL-1.1"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-vacuous-unsat",
+      "query": "max0_range_premises",
+      "direction": "premise"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-vacuous-unsat",
+        "query": "max0_range_violation",
+        "caption": "The violation query, on the same premises"
+      }
+    ],
+    "minimal": {
+      "kind": "core",
+      "run": "RUN-z3-vacuous-unsat",
+      "query": "max0_range_core"
+    }
+  }
+}

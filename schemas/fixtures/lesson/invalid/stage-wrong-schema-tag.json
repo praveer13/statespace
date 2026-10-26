@@ -1,0 +1,45 @@
+{
+  "schema": "statespace/stage@1",
+  "id": "S2",
+  "draft": false,
+  "summary": "Say what a program must never do, and have Z3 hunt for a violation.",
+  "newTool": "Z3Py, met first in this tab",
+  "roadmapTime": "2–4 focused sessions",
+  "seams": [
+    "SEAM-1",
+    "SEAM-7"
+  ],
+  "anchors": [
+    "AUD-2.1",
+    "AUD-2.2"
+  ],
+  "drawers": [
+    "D-01",
+    "D-13"
+  ],
+  "cards": [
+    {
+      "type": "card",
+      "variant": "twin",
+      "title": "Two-phase transfers",
+      "md": "A pending transfer is posted or voided once {{run:RUN-z3-starter}}.",
+      "runs": [
+        "RUN-z3-starter"
+      ]
+    },
+    {
+      "type": "card",
+      "variant": "reading",
+      "md": "A dated reading pointer, section level."
+    }
+  ],
+  "defence": "Two parts: probe a lock against its claims, then prove the mutants die.",
+  "extra": {
+    "hints": [
+      {
+        "rung": "R0",
+        "note": "A teach-back."
+      }
+    ]
+  }
+}

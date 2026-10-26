@@ -1,0 +1,881 @@
+{
+  "id": "RUN-w0-exit",
+  "task": "W0-T11",
+  "engine": "node",
+  "version": "22.22.2",
+  "version_string": "Node.js v22.22.2, running the gate scripts of this repository",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "budget": {
+    "fast_lane_budget_s": 300,
+    "queue_gate_h": 10,
+    "timeout_s": 900,
+    "network": "gh reads GitHub's Actions pages for the two github-nightly configurations; nothing else uses the network"
+  },
+  "environment": {
+    "os": "Linux 6.12.63 x86_64",
+    "cpu_count": 20,
+    "ram_gib": 31,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "git": "git version 2.51.2",
+    "container": null,
+    "host": "a developer machine shared with other agents while this ran; its load was not measured"
+  },
+  "title": "The W0 exit checks at the commit W1 starts from: the review queue, the spikes' decision records and runs, the keep/kill rules, the two planted-fault self-checks, GATE-privacy in three modes, GATE-runs and the fast lane here",
+  "recorded_at": "2026-10-25T18:00:08.432Z",
+  "started_at": "2026-10-25T17:59:12.993Z",
+  "duration_s": 55.439,
+  "argv": [
+    [
+      "node",
+      "scripts/spikes/W0-T11/exit-check.mjs",
+      "queue",
+      "--with",
+      "W0-T11",
+      "--json"
+    ],
+    [
+      "node",
+      "scripts/spikes/W0-T11/exit-check.mjs",
+      "spikes",
+      "--json"
+    ],
+    [
+      "node",
+      "scripts/spikes/W0-T11/exit-check.mjs",
+      "keepkill",
+      "--json"
+    ],
+    [
+      "node",
+      "scripts/verify-numbers.mjs",
+      "--self-check"
+    ],
+    [
+      "node",
+      "scripts/verify-runs.mjs",
+      "--self-check"
+    ],
+    [
+      "node",
+      "scripts/verify-privacy.mjs"
+    ],
+    [
+      "node",
+      "scripts/verify-privacy.mjs"
+    ],
+    [
+      "node",
+      "scripts/verify-privacy.mjs",
+      "--strict"
+    ],
+    [
+      "node",
+      "scripts/verify-runs.mjs"
+    ],
+    [
+      "node",
+      "scripts/verify-runs.mjs",
+      "--json"
+    ],
+    [
+      "gh",
+      "run",
+      "list",
+      "--workflow",
+      "nightly",
+      "--limit",
+      "10",
+      "--json",
+      "databaseId,conclusion,createdAt,event,headSha,status,displayTitle,url"
+    ],
+    [
+      "gh",
+      "run",
+      "view",
+      "40173643334",
+      "--json",
+      "databaseId,conclusion,createdAt,event,headSha,url,jobs"
+    ],
+    [
+      "gh",
+      "run",
+      "view",
+      "40173643334",
+      "--log-failed"
+    ],
+    [
+      "node",
+      "scripts/spikes/W0-T04/lane.mjs",
+      "fast",
+      "--summary",
+      "<scratch>/lane-summary.json"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "content/governance/keepkill-rules.yaml",
+      "sha256": "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+      "bytes": 30227,
+      "role": "the keep/kill rules, whose hash the keepkill configuration compares"
+    },
+    {
+      "path": "runs/RUN-keepkill-rules.json",
+      "sha256": "7101a46940d5cb3ae4a84cd4fc49cf0332d3da3192a640687309707788d55869",
+      "bytes": 30177,
+      "role": "the record that holds their SHA-256"
+    },
+    {
+      "path": "scripts/spikes/W0-T11/exit-check.mjs",
+      "sha256": "a946bf5651ed4f4a6b6bcf4ffe68052ff5aff439e6d5a1403726621ca144d027",
+      "bytes": 20847,
+      "role": "the queue, spikes and keepkill checks"
+    },
+    {
+      "path": "scripts/spikes/W0-T11/record.mjs",
+      "sha256": "9cba16e5ef25210b13564601a58b1989885e845f2047d8a10218816d57657b63",
+      "bytes": 26418,
+      "role": "this recorder"
+    },
+    {
+      "path": "scripts/verify-numbers.mjs",
+      "sha256": "a5da928383a65f765510a73aad4d039a41ab870c3c66eb09fbd10a932eaa6add",
+      "bytes": 6509,
+      "role": "GATE-numbers"
+    },
+    {
+      "path": "scripts/runs/numbers-rules.mjs",
+      "sha256": "36d42f6dab902124215df162ff7992d0f3c873ffa53dbea3e09d8aff3dfa1595",
+      "bytes": 29796,
+      "role": "GATE-numbers' rules"
+    },
+    {
+      "path": "scripts/verify-runs.mjs",
+      "sha256": "5890b4c637025ae8fcbfc7b4c80b4370acc67febf1aee0a45d528c4dc757f0b6",
+      "bytes": 14795,
+      "role": "GATE-runs"
+    },
+    {
+      "path": "scripts/runs/registry.mjs",
+      "sha256": "eb1000a8622c2cfe5ad2c82b66ae3510b18ca1f34037b5a7442be2ff36b8cda3",
+      "bytes": 7238,
+      "role": "GATE-runs' registry code"
+    },
+    {
+      "path": "scripts/runs/gate-self-check.mjs",
+      "sha256": "59c11c55a3d32b0e3f31c224456b07ce3c21a671e7ec6141f5e03e471a98df42",
+      "bytes": 17210,
+      "role": "the planted faults of GATE-numbers and GATE-runs"
+    },
+    {
+      "path": "scripts/verify-privacy.mjs",
+      "sha256": "ea5ced769a728ae9d3e7069f3a0f7cbc932a208b0b2da29c5b794dc18fb1de05",
+      "bytes": 53770,
+      "role": "GATE-privacy"
+    },
+    {
+      "path": "scripts/spikes/W0-T04/lane.mjs",
+      "sha256": "73e0a8324c855c788145d5b774cf28ec0078467df88da73483a2e8d2216ab43b",
+      "bytes": 31458,
+      "role": "the lane runner"
+    }
+  ],
+  "sources_at_recording": [
+    {
+      "path": "tracker/tasks.yaml",
+      "sha256": "1abb42088ed9d98471c6d9f90a6112b1d5df8ee3748c342c102a5a5aae5f76a9",
+      "bytes": 351876,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "docs/TRACKER.md",
+      "sha256": "3b2465a445569812c34589bc3d9dd6d19f1a9a6de2755c599bcad1e251e62a4b",
+      "bytes": 45849,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "runs/index.json",
+      "sha256": "d0cc0bc01e264dcba75788e821fe063a198e907389d3d0f2610cadd613eae414",
+      "bytes": 35465,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "runs/RUN-ci-fastlane.json",
+      "sha256": "f502f1bacb5c1ba33f1d3b7b047502f4818973e10973a849546385fed5719f75",
+      "bytes": 60121,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "packages/ids/src/registry.json",
+      "sha256": "f5ebbaa50f23938f796902f66b654454d6e6ad33d46dd1a34ffbd818dbcd8c1f",
+      "bytes": 163471,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "packages/ids/proposals.json",
+      "sha256": "89aaec40e4df8b1d35d24a512546533b100cfe0be23d04a6d245a27739eae343",
+      "bytes": 977,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "scripts/spikes/W0-T04/gates.json",
+      "sha256": "022109c8fa17b63121f05f345948ae03cf1d253beb7c1b3595af9f92ffc6bc2d",
+      "bytes": 9083,
+      "role": "read by a check; a living file"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "9f01a5036a191cc79546d4a6d69f4d30c5023a2b7902875ffb4779cda0a7e729",
+      "bytes": 67533,
+      "role": "read by a check; a living file"
+    }
+  ],
+  "exit_code": 0,
+  "verdict_lines": [
+    "queue: 0 h now, 0.25 h with W0-T11 in review; the gate is 10 h; W1 plans 33.25 h",
+    "spikes: PASS (11 spikes with a decision record and a fallback, 30 named runs resolved, 74 of 74 executed runs on disk)",
+    "keepkill: PASS (rules 67d1cba9cdab; 1 commit; no learner-zero record)",
+    "GATE-numbers self-check: PASS (14 of 14 held)",
+    "GATE-runs self-check: PASS (15 of 15 held)",
+    "verify-privacy: ok, 2862 published files (36396630 bytes, digest 485dcb75cb48); no term list checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches",
+    "verify-privacy: ok, 2862 published files (36396630 bytes, digest 485dcb75cb48); no term list checked; 3 local identity terms checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches",
+    "private-term   (strict)  not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)",
+    "GATE-runs: PASS (75 records, 2140 resolved references; 0.1 s)",
+    "26 warnings, 8 records with inputs that changed since their run; 0 findings (this record's own warning is left out)",
+    "1 run of the nightly workflow, 1 of them scheduled",
+    "nightly run 40173643334 (schedule, 2026-10-25T07:40:13Z): failure; failed step \"Check that the image is pinned by digest and has git\"",
+    "error: BENCH_IMAGE must name the image by digest (name@sha256:...), not by tag; it is 'unset'",
+    "fast lane: PASS in 35.2 s (13 passed, 0 failed, 0 skipped, 15 absent)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-w0-exit/queue.json",
+      "sha256": "8db42a20a452b8941c0b832607c209c1fbb7edb413c4b59b5a98d682e8ba035c",
+      "bytes": 1244,
+      "kind": "the check as JSON"
+    },
+    {
+      "path": "runs/RUN-w0-exit/spikes.json",
+      "sha256": "8367fcc6563c9fe05b3d25b3f8984707ed1b1a9b7853ca3c3636c76481a65788",
+      "bytes": 14568,
+      "kind": "the check as JSON"
+    },
+    {
+      "path": "runs/RUN-w0-exit/keepkill.json",
+      "sha256": "3b7504c2bce67c02d888db6254892729c785b1232ebc953b15aeaed47d0cdb5d",
+      "bytes": 2040,
+      "kind": "the check as JSON"
+    },
+    {
+      "path": "runs/RUN-w0-exit/numbers-self-check.txt",
+      "sha256": "6c7065e448c19ce1bc9844c77ad7eca2a51857affce7b3cc9522414870c50745",
+      "bytes": 1981,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/runs-self-check.txt",
+      "sha256": "49e5561fe4d0fa2704a5f08bd8709d9dee61f0460d130a368c996413a7a4f288",
+      "bytes": 2948,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/privacy.txt",
+      "sha256": "2bc5cc1ee2507dbff0a839b2c872ef5d80901692d18febcfb70eff69af96f1e9",
+      "bytes": 368,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/privacy-local.txt",
+      "sha256": "a38d7b1c09d5df8b1ce3d69b424a17dceca1bc9cfaceb0acb69dc5a47a7e9987",
+      "bytes": 448,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/privacy-strict.txt",
+      "sha256": "d702744173f99592f87946740e5db243a918482d238bc5e31537799be8c0b72a",
+      "bytes": 182,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/runs-gate.txt",
+      "sha256": "1ed92e0f859a56469cdfcece45dbe67f29036de4033f2dc1f96df08e153884ae",
+      "bytes": 1383,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/runs-gate.json",
+      "sha256": "bb9f336213cfed280a5abcc6e6da4ea0d56ce40aaf29ee20e68cf20b18680534",
+      "bytes": 5341,
+      "kind": "the report as JSON"
+    },
+    {
+      "path": "runs/RUN-w0-exit/github-nightly-list.json",
+      "sha256": "60112900421a67af5c4d451d69416c8a51dfe1a29b8b5f4e3dc7e6bc1e39ae38",
+      "bytes": 333,
+      "kind": "what gh run list returned"
+    },
+    {
+      "path": "runs/RUN-w0-exit/github-nightly.json",
+      "sha256": "2e2a0b38eadf95e9d744180b9cc568c89026eb98d1e811b95c5ecf790a77b1ef",
+      "bytes": 6031,
+      "kind": "what gh run view --json returned: the run, its jobs and every step"
+    },
+    {
+      "path": "runs/RUN-w0-exit/github-nightly-errors.txt",
+      "sha256": "b9fb379b41212a66556f3aa041577592bc94fafa11f6e60619d60c373bc60460",
+      "bytes": 137,
+      "kind": "the error lines of the failed step"
+    },
+    {
+      "path": "runs/RUN-w0-exit/fast-lane.txt",
+      "sha256": "9a3f0b3b2206528bdc907486c07baf52c70f2d6d7e5742e979ecaf1697fa3c1b",
+      "bytes": 67704,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-w0-exit/fast-lane-summary.json",
+      "sha256": "a662c1835beca0589b2be03d6e80255be265a7da79e05ad53eb09ea538ef6c3f",
+      "bytes": 10288,
+      "kind": "the lane summary: each gate, its result, duration and verdict"
+    }
+  ],
+  "values": {
+    "queue_tasks_in_review": 0,
+    "queue_h_now": 0,
+    "queue_h_with_w0_t11": 0.25,
+    "queue_gate_h": 10,
+    "w1_planned_review_h": 33.25,
+    "w1_owner_review_tasks": 44,
+    "tasks_done": 23,
+    "tasks_todo": 240,
+    "spikes_with_decision_record": 11,
+    "named_runs_resolved": 30,
+    "executed_runs_registered": 74,
+    "executed_runs_missing": 0,
+    "numbers_self_check_held": "14 of 14",
+    "runs_self_check_held": "15 of 15",
+    "privacy_ok": true,
+    "privacy_local_ok": true,
+    "privacy_term_list_checked": false,
+    "privacy_strict_exit": 1,
+    "rules_sha256": "67d1cba9cdab3247ca8425f7bfa5e1821c6823ac8ea613648cde73211f94e589",
+    "rules_commits": 1,
+    "rules_first_commit": "5f7192c",
+    "rules_first_committed_at": "2026-10-24T11:22:49-07:00",
+    "rules_hashed_at": "2026-10-24T14:02:01.391Z",
+    "learner_zero_records": 0,
+    "runs_gate_warnings": 26,
+    "runs_with_changed_inputs": {
+      "RUN-budget-gate": [
+        "content/stages/budget.yaml",
+        "docs/spine/SPINE.md",
+        "curriculum/S02-proof.md",
+        "curriculum/S10-assembly.md"
+      ],
+      "RUN-ci-fastlane": [
+        "scripts/spikes/W0-T04/gates.json",
+        "package-lock.json"
+      ],
+      "RUN-facts-gate": [
+        "package-lock.json",
+        "packages/runs/test/check.test.ts"
+      ],
+      "RUN-links-gate": [
+        "packages/ids/src/index.ts",
+        "packages/ids/src/registry.json",
+        "packages/ids/proposals.json",
+        "docs/spine/SPINE.md",
+        "docs/EVIDENCE.md",
+        "tracker/tasks.yaml",
+        "docs/TRACKER.md"
+      ],
+      "RUN-privacy-gate": [
+        "scripts/verify-privacy.mjs",
+        ".gitignore"
+      ],
+      "RUN-scaffold": [
+        "package-lock.json",
+        "package-lock.json",
+        "vendor/kernelspace/VENDOR.md"
+      ],
+      "RUN-schema-self-check": [
+        "schemas/codegen/self-check.mjs"
+      ],
+      "RUN-w0-integration": [
+        "scripts/spikes/W0-T04/gates.json",
+        "packages/ids/proposals.json",
+        "scripts/verify-privacy.mjs",
+        "tracker/tasks.yaml",
+        "docs/TRACKER.md"
+      ]
+    },
+    "github_hosted_lane_clock_s": [
+      {
+        "id": "github-hosted",
+        "commit": "5f7192c",
+        "conclusion": "failure",
+        "lane_clock_s": 79.6,
+        "run_id": 40120435413
+      },
+      {
+        "id": "github-hosted-e309b50",
+        "commit": "e309b50",
+        "conclusion": "success",
+        "lane_clock_s": 79.3,
+        "run_id": 40181640744
+      },
+      {
+        "id": "github-hosted-c5f14c5",
+        "commit": "c5f14c5",
+        "conclusion": "success",
+        "lane_clock_s": 78.7,
+        "run_id": 40215386056
+      }
+    ],
+    "local_fast_lane_s": 35.236,
+    "local_fast_lane_result": "pass",
+    "local_fast_lane_counts": {
+      "pass": 13,
+      "fail": 0,
+      "error": 0,
+      "timeout": 0,
+      "absent": 15,
+      "skipped": 0
+    },
+    "local_fast_lane_commit": "c5f14c55d1166fd72fd7560d8156b9dd274ad817",
+    "local_fast_lane_tree_dirty": true,
+    "nightly_run_id": 40173643334,
+    "nightly_created_at": "2026-10-25T07:40:13Z",
+    "nightly_conclusion": "failure",
+    "nightly_failed_step": "Check that the image is pinned by digest and has git",
+    "nightly_bench_image_unset": true,
+    "tasks_yaml_sha256": "1abb42088ed9d98471c6d9f90a6112b1d5df8ee3748c342c102a5a5aae5f76a9"
+  },
+  "configs": [
+    {
+      "id": "queue",
+      "purpose": "the owner review queue from tracker/tasks.yaml: tasks in review with owner review, and with this task counted as in review (OD-7: under 10 h)",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T11/exit-check.mjs",
+        "queue",
+        "--with",
+        "W0-T11",
+        "--json"
+      ],
+      "env": {},
+      "started_at": "2026-10-25T17:59:13.064Z",
+      "duration_s": 0.074,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "queue: 0 h now, 0.25 h with W0-T11 in review; the gate is 10 h; W1 plans 33.25 h"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/queue.json"
+      ]
+    },
+    {
+      "id": "spikes",
+      "purpose": "every spike has a decision record with a Decision and a Fallback section; every run a W0 task names, and every run spine section 9.5 lists as executed, has a record that matches runs/index.json",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T11/exit-check.mjs",
+        "spikes",
+        "--json"
+      ],
+      "env": {},
+      "started_at": "2026-10-25T17:59:13.139Z",
+      "duration_s": 0.075,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "spikes: PASS (11 spikes with a decision record and a fallback, 30 named runs resolved, 74 of 74 executed runs on disk)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/spikes.json"
+      ]
+    },
+    {
+      "id": "keepkill",
+      "purpose": "the keep/kill rules hash to the SHA-256 recorded for them, in the working tree and in the last commit; their history; no learner-zero record exists",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T11/exit-check.mjs",
+        "keepkill",
+        "--json"
+      ],
+      "env": {},
+      "started_at": "2026-10-25T17:59:13.214Z",
+      "duration_s": 0.067,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "keepkill: PASS (rules 67d1cba9cdab; 1 commit; no learner-zero record)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/keepkill.json"
+      ]
+    },
+    {
+      "id": "numbers-self-check",
+      "purpose": "GATE-numbers must fail on each planted fault, among them an untagged number (spine section 13, W0 exit)",
+      "argv": [
+        "node",
+        "scripts/verify-numbers.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true",
+        "W0S11_SCRATCH": "<scratch>"
+      },
+      "started_at": "2026-10-25T17:59:13.281Z",
+      "duration_s": 7.784,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "GATE-numbers self-check: PASS (14 of 14 held)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/numbers-self-check.txt"
+      ]
+    },
+    {
+      "id": "runs-self-check",
+      "purpose": "GATE-runs must fail on each planted fault, among them an unresolved run reference (spine section 13, W0 exit)",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--self-check"
+      ],
+      "env": {
+        "CI": "true",
+        "W0S11_SCRATCH": "<scratch>"
+      },
+      "started_at": "2026-10-25T17:59:21.065Z",
+      "duration_s": 2.823,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "GATE-runs self-check: PASS (15 of 15 held)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/runs-self-check.txt"
+      ]
+    },
+    {
+      "id": "privacy",
+      "purpose": "GATE-privacy as the fast lane runs it: CI set, no hashed term list",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-25T17:59:23.888Z",
+      "duration_s": 0.88,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "warning: private-term: not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)",
+        "verify-privacy: ok, 2862 published files (36396630 bytes, digest 485dcb75cb48); no term list checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/privacy.txt"
+      ]
+    },
+    {
+      "id": "privacy-local",
+      "purpose": "GATE-privacy as a developer runs it: CI unset, so the local identity is checked as well; no identity text reaches the output",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs"
+      ],
+      "env": {},
+      "env_unset": [
+        "CI"
+      ],
+      "started_at": "2026-10-25T17:59:24.768Z",
+      "duration_s": 4.707,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "warning: private-term: not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE); only your local identity was checked (3 terms)",
+        "verify-privacy: ok, 2862 published files (36396630 bytes, digest 485dcb75cb48); no term list checked; 3 local identity terms checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/privacy-local.txt"
+      ]
+    },
+    {
+      "id": "privacy-strict",
+      "purpose": "GATE-privacy as the release lane runs it (--strict): a missing hashed term list is a failure, so a failure here is expected until the owner sets the term list",
+      "argv": [
+        "node",
+        "scripts/verify-privacy.mjs",
+        "--strict"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-25T17:59:29.475Z",
+      "duration_s": 0.89,
+      "exit_code": 1,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "verify-privacy: 1 problem(s)",
+        "private-term   (strict)  not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/privacy-strict.txt"
+      ]
+    },
+    {
+      "id": "runs-gate",
+      "purpose": "GATE-runs on the tree: every reference resolves, the registry is intact; the warnings list the inputs that changed since their runs",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-25T17:59:30.365Z",
+      "duration_s": 0.174,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "read  75 run records (866 output files and 1201 input files hashed); 2906 run references in 62 files: 2066 [X] tags, 730 {{run:}} templates, 110 format placeholders",
+        "pass  2140 references resolve; 656 {{run:}} references wait for their runs (documents and drafts; the release lane fails on them)",
+        "warn  inputs: 28 (the release lane fails on them)",
+        "GATE-runs: PASS (75 records, 2140 resolved references; 0.1 s)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/runs-gate.txt"
+      ]
+    },
+    {
+      "id": "runs-gate-json",
+      "purpose": "the same run as data: each warning, and so each record whose inputs changed since it was recorded (re-recording them is a release task, not an exit criterion)",
+      "argv": [
+        "node",
+        "scripts/verify-runs.mjs",
+        "--json"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-25T17:59:30.540Z",
+      "duration_s": 0.173,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "26 warnings, 8 records with inputs that changed since their run; 0 findings (this record's own warning is left out)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/runs-gate.json"
+      ]
+    },
+    {
+      "id": "github-nightly-list",
+      "purpose": "the nightly workflow's recent runs on GitHub",
+      "argv": [
+        "gh",
+        "run",
+        "list",
+        "--workflow",
+        "nightly",
+        "--limit",
+        "10",
+        "--json",
+        "databaseId,conclusion,createdAt,event,headSha,status,displayTitle,url"
+      ],
+      "env": {
+        "GH_PROMPT_DISABLED": "1",
+        "NO_COLOR": "1"
+      },
+      "started_at": "2026-10-25T17:59:30.713Z",
+      "duration_s": 0.628,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "1 run of the nightly workflow, 1 of them scheduled"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/github-nightly-list.json"
+      ]
+    },
+    {
+      "id": "github-nightly",
+      "purpose": "the latest scheduled nightly: its conclusion, the step that failed and the error it printed",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "40173643334",
+        "--json",
+        "databaseId,conclusion,createdAt,event,headSha,url,jobs"
+      ],
+      "env": {
+        "GH_PROMPT_DISABLED": "1",
+        "NO_COLOR": "1"
+      },
+      "started_at": "2026-10-25T17:59:31.341Z",
+      "duration_s": 0.927,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "nightly run 40173643334 (schedule, 2026-10-25T07:40:13Z): failure; failed step \"Check that the image is pinned by digest and has git\""
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/github-nightly.json"
+      ]
+    },
+    {
+      "id": "github-nightly-failed-log",
+      "purpose": "the error lines of the failed step",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "40173643334",
+        "--log-failed"
+      ],
+      "env": {
+        "GH_PROMPT_DISABLED": "1",
+        "NO_COLOR": "1"
+      },
+      "started_at": "2026-10-25T17:59:32.268Z",
+      "duration_s": 0.898,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "error: BENCH_IMAGE must name the image by digest (name@sha256:...), not by tag; it is 'unset'",
+        "error: Process completed with exit code 1."
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/github-nightly-errors.txt"
+      ]
+    },
+    {
+      "id": "fast-lane",
+      "purpose": "the fast lane on this working tree, as .github/workflows/fast.yml runs it (CI set, no secrets); the committed one ran on GitHub-hosted runners (RUN-ci-fastlane)",
+      "argv": [
+        "node",
+        "scripts/spikes/W0-T04/lane.mjs",
+        "fast",
+        "--summary",
+        "<scratch>/lane-summary.json"
+      ],
+      "env": {
+        "CI": "true"
+      },
+      "started_at": "2026-10-25T17:59:33.169Z",
+      "duration_s": 35.262,
+      "exit_code": 0,
+      "engine": "node",
+      "version": "22.22.2",
+      "verdict_lines": [
+        "fast lane: 28 step(s), root <repo>, budget 300 s",
+        "[ 1/28] vendor-verify          PASS       0.4 s  vendor-drift: ok (34 files match VENDOR.md at 80c8537e4048)",
+        "[ 2/28] lint-purity            PASS       0.4 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)",
+        "[ 3/28] typecheck              PASS       5.2 s  no output",
+        "[ 4/28] unit-tests             PASS      12.5 s  153 tests, 152 passed, 0 failed, 1 skipped",
+        "[ 5/28] build                  PASS       3.6 s  ✓ built in 652ms",
+        "[ 6/28] lane-tests             PASS       4.7 s  68 tests, 67 passed, 0 failed, 1 skipped",
+        "[ 7/28] GATE-numbers           PASS       0.6 s  GATE-numbers: PASS (3291 tokens in 44 files, 63 known; 0.5 s)",
+        "[ 8/28] GATE-facts             PASS       0.4 s  GATE-facts: PASS (17 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.3 s)",
+        "[18/28] GATE-links             PASS       0.2 s  GATE-links: green (1 pending proposal(s))",
+        "[20/28] GATE-budget            PASS       0.1 s  GATE-budget: green (2 warnings), 3 notes",
+        "[24/28] GATE-privacy           PASS       0.9 s  verify-privacy: ok, 2860 published files (36315102 bytes, digest 2b19dcb9037c); no term list checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches",
+        "[25/28] GATE-schema            PASS       6.1 s  GATE-schema: PASS (22 checks; 6.1 s)",
+        "[28/28] GATE-runs              PASS       0.2 s  GATE-runs: PASS (75 records, 2140 resolved references; 0.1 s)",
+        "absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage (W1-T04), GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)",
+        "fast lane: PASS in 35.2 s (13 passed, 0 failed, 0 skipped, 15 absent)"
+      ],
+      "outputs": [
+        "runs/RUN-w0-exit/fast-lane.txt",
+        "runs/RUN-w0-exit/fast-lane-summary.json"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "ci-fastlane-under-300-s",
+      "pass": true,
+      "detail": "RUN-ci-fastlane holds 3 GitHub-hosted configurations; the slowest lane clock is 79.6 s against 300 s: 5f7192c failure 79.6 s; e309b50 success 79.3 s; c5f14c5 success 78.7 s"
+    },
+    {
+      "id": "ci-fastlane-green-on-the-commit-w1-starts-from",
+      "pass": true,
+      "detail": "2 of 3 GitHub-hosted configurations are green"
+    },
+    {
+      "id": "numbers-gate-trips-on-planted-faults",
+      "pass": true,
+      "detail": "GATE-numbers self-check: PASS (14 of 14 held)"
+    },
+    {
+      "id": "runs-gate-trips-on-planted-faults",
+      "pass": true,
+      "detail": "GATE-runs self-check: PASS (15 of 15 held)"
+    },
+    {
+      "id": "privacy-green",
+      "pass": true,
+      "detail": "verify-privacy: ok, 2862 published files (36396630 bytes, digest 485dcb75cb48); no term list checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches; developer mode: exit 0"
+    },
+    {
+      "id": "privacy-strict-fails-only-on-the-missing-term-list",
+      "pass": true,
+      "detail": "private-term   (strict)  not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE)"
+    },
+    {
+      "id": "keepkill-rules-recorded-and-unchanged",
+      "pass": true,
+      "detail": "keepkill: PASS (rules 67d1cba9cdab; 1 commit; no learner-zero record)"
+    },
+    {
+      "id": "spikes-have-a-run-and-a-decision-record",
+      "pass": true,
+      "detail": "spikes: PASS (11 spikes with a decision record and a fallback, 30 named runs resolved, 74 of 74 executed runs on disk)"
+    },
+    {
+      "id": "review-queue-under-10-h",
+      "pass": true,
+      "detail": "queue: 0 h now, 0.25 h with W0-T11 in review; the gate is 10 h; W1 plans 33.25 h"
+    },
+    {
+      "id": "fast-lane-green-on-this-working-tree",
+      "pass": true,
+      "detail": "pass in 35.236 s on commit c5f14c5 with uncommitted changes; counts {\"pass\":13,\"fail\":0,\"error\":0,\"timeout\":0,\"absent\":15,\"skipped\":0}"
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "Local, on the host: not a GitHub-hosted runner. The GitHub-hosted fast-lane runs are configurations of RUN-ci-fastlane, which the check ci-fastlane-under-300-s reads; this record cites their lane clocks and does not repeat them.",
+    "Recorded at the commit W1 starts from (c5f14c5), in a working tree that holds uncommitted files: this task's own and any that other tasks of W1's first batch had written by then. The fast-lane configuration says in its summary whether the tree was dirty, and a red lane would be named with the task whose work in progress caused it.",
+    "inputs holds the gate scripts, the rules and this task's scripts. sources_at_recording holds the hashes of the living files the checks read (the tracker, the run index, the ID registry, RUN-ci-fastlane, the lane manifest and the lockfile); they change with every task that lands, so they are not inputs, and a later edit to them does not make this record stale.",
+    "The privacy and privacy-local configurations are green with no hashed term list: GATE-privacy then does not check the private-design terms (and in CI not the local identity). privacy-strict is the release lane's mode and fails on exactly that until the owner sets the term list (owner action 15 of docs/waves/W0-report.md).",
+    "The github-nightly configurations are read with gh from GitHub's Actions pages, so they need network access and a logged-in gh; a recorder run without them leaves them out. The nightly lane runs in the digest-pinned Bench image, which is not published, so every night stops at its first check until the repository variable BENCH_IMAGE is set (owner action 11 of docs/waves/W0-report.md).",
+    "runs-gate-json lists, per record, the inputs that changed since it was recorded; re-recording them is a release task (the release lane fails on each), not an exit criterion.",
+    "Outputs are normalised: the repository is <repo>, the scratch directory <scratch>, the temporary directory <tmp>, the home directory <home>, store paths <nix-store>, and the local account and git identity <user>.",
+    "The ID RUN-w0-exit is proposed in packages/ids/proposals.json: spine section 9.5 does not register it, and a revision of the spine registers or declines it."
+  ]
+}

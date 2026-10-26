@@ -1,0 +1,149 @@
+{
+  "id": "RUN-specimens-replay",
+  "title": "The witnesses of SP-1.1, SP-1.4 and SP-1.5 replay in plain integers: each satisfies the premises of its query and violates the property",
+  "task": "W1-T16",
+  "origin": "recorded",
+  "records": "SP-1.1, SP-1.4 and SP-1.5: the model each W0 Z3 run printed (RUN-z3-starter, RUN-z3-bv64, RUN-z3-bv64-pyodide), read from that run record's verdict lines, checked against the premises and the violated property of the query that produced it, in Python integers with two's complement for 64 bits; no solver",
+  "engine": "python",
+  "version": "3.13.12",
+  "version_string": "CPython 3.13.12",
+  "binary": "CPython 3.13.12, the interpreter uv ran (the file is hashed)",
+  "binary_sha256": "70c02343578edf8522b2b0018f723d9d3068f4c6386b8036a3eeee3fd1ddb2b5",
+  "image": null,
+  "recorded_at": "2026-10-26T03:31:55.772Z",
+  "started_at": "2026-10-26T03:31:55.689Z",
+  "duration_s": 0.041,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "python",
+    "-I",
+    "scripts/spikes/W1-T16/replay_witnesses.py"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/spikes/W1-T16/replay_witnesses.py",
+      "sha256": "2b04ad69f6596772f8d13fc391bd7c283b27163ab8adc9046d84300397bf0d58",
+      "bytes": 5295,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-starter.json",
+      "sha256": "eed409642c8aa8d7e929112372237eff07a054ba3b089ef8eec3da11a97e42a0",
+      "bytes": 3541,
+      "role": "witness source: the model of SP-1.1, from its verdict line"
+    },
+    {
+      "path": "runs/RUN-z3-bv64.json",
+      "sha256": "67f48b6642cdae7443c2504a55ccfe765ac0772372488312874c06258300c936",
+      "bytes": 4165,
+      "role": "witness source: the models of SP-1.4 and SP-1.5, from their verdict lines"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-pyodide.json",
+      "sha256": "875c440fbc2ffc3bd2a63e0281ecbbf6d4913218765e65070416ff2257523bf6",
+      "bytes": 2827,
+      "role": "witness source: the model Pyodide found for SP-1.4's related query, from its verdict line"
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "[sp_1_1_starter] replay ok: a=0 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a - amount = -1 < 0 ok",
+    "[sp_1_4_recipient_wrap] replay ok: A=9223372036854775806 B=9223372036850581504 X=4194304 (signed 64-bit): A >= 0 ok, B >= 0 ok, X > 0 ok, X <= A ok, B + X wraps to -9223372036854775808 < 0 (the integers give 9223372036854775808) ok",
+    "[sp_1_4_pyodide_related_query] replay ok: M=9223372036854775803 B=9223336852482686975 (signed 64-bit): B >= 0 ok, M > 0 ok, B + M wraps to -35184372088838 < 0 (the integers give 18446708889337462778) ok",
+    "[sp_1_5_mixed_signedness] replay ok: A=13835060254305419776 X=4611686018427387904 (guard unsigned, check signed): X > 0 (unsigned) ok, X <= A (unsigned) ok, A reads as -4611683819404131840 signed ok, A - X reads as -9223369837831519744 < 0 signed ok"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-specimens-replay/replay.log",
+      "sha256": "f60b1bc4371bf7445aef6cb95ca0c4c93926440922dd45c662dbb78e5a635756",
+      "bytes": 791,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "replays": {
+      "sp_1_1_starter": {
+        "specimen": "SP-1.1",
+        "witness_from": "RUN-z3-starter",
+        "replays": true,
+        "witness": {
+          "a": "0",
+          "b": "0",
+          "amount": "1"
+        }
+      },
+      "sp_1_4_recipient_wrap": {
+        "specimen": "SP-1.4",
+        "witness_from": "RUN-z3-bv64",
+        "replays": true,
+        "witness": {
+          "A": "9223372036854775806",
+          "B": "9223372036850581504",
+          "X": "4194304"
+        }
+      },
+      "sp_1_4_pyodide_related_query": {
+        "specimen": "SP-1.4",
+        "witness_from": "RUN-z3-bv64-pyodide",
+        "replays": true,
+        "witness": {
+          "M": "9223372036854775803",
+          "B": "9223336852482686975"
+        }
+      },
+      "sp_1_5_mixed_signedness": {
+        "specimen": "SP-1.5",
+        "witness_from": "RUN-z3-bv64",
+        "replays": true,
+        "witness": {
+          "A": "13835060254305419776",
+          "X": "4611686018427387904"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2"
+  },
+  "checks": [
+    {
+      "id": "sp_1_1_starter",
+      "pass": true,
+      "specimen": "SP-1.1",
+      "witness_from": "RUN-z3-starter"
+    },
+    {
+      "id": "sp_1_4_recipient_wrap",
+      "pass": true,
+      "specimen": "SP-1.4",
+      "witness_from": "RUN-z3-bv64"
+    },
+    {
+      "id": "sp_1_4_pyodide_related_query",
+      "pass": true,
+      "specimen": "SP-1.4",
+      "witness_from": "RUN-z3-bv64-pyodide"
+    },
+    {
+      "id": "sp_1_5_mixed_signedness",
+      "pass": true,
+      "specimen": "SP-1.5",
+      "witness_from": "RUN-z3-bv64"
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "A replay is not a re-execution of Z3. GATE-specimens re-executes the Z3 queries behind SP-1.1, SP-1.4 and SP-1.5 from their own records (RUN-z3-starter, RUN-z3-bv64); this record adds the check those two runs never printed: that each model, as the run printed it, satisfies the premises and violates the property.",
+    "The premises and the property are those of the Z3 query that printed the model (research/evidence/a2r3/scripts/z3_claims.py, sections 1 and 4, and research/evidence/A5r3/scripts/z3unk.mjs for the Pyodide query), written again in plain integers in scripts/spikes/W1-T16/replay_witnesses.py; a 64-bit value is read as the signed or the unsigned integer the query compares it as.",
+    "Each witness is read from the verdict lines of the run record that holds it (the three inputs of role witness source), so the model replayed is the model the specimen label prints; the label builder compares the values on each replay line with the label's witness."
+  ]
+}

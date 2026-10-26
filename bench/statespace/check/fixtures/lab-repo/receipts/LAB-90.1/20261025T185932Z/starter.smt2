@@ -1,0 +1,10 @@
+; the roadmap's starter: can a transfer leave the sender below zero?
+(declare-const a Int)
+(declare-const b Int)
+(declare-const amount Int)
+(assert (>= a 0))
+(assert (>= b 0))
+(assert (> amount 0))
+(assert (< (- a amount) 0))
+(check-sat)
+(get-info :reason-unknown)

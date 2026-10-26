@@ -1,0 +1,115 @@
+W1-T39's change to W1-T21's fixture family, applied on 2026-10-25, when this round of W1 permitted W1-T39 to make it.
+GEN-fixture's t3 dp:Z5 mutant "drop a conjunct" was always the shortest option, a length cue GATE-items found (the
+shipped-cue step of RUN-items-gate puts it back and the gate fails it), so "flip the connective only" (dp:G5) replaces
+it and the framework README stops listing dp:Z5 among the fixture's tags. scripts/spikes/W1-T21/record.mjs then
+re-recorded determinism.json in Node, Chromium, Firefox and WebKit (RUN-generators-gate): t3's digests and the family
+digest changed, t1's and t2's did not. Kept as the record of the change for the owner's review of W1-T21; it is applied.
+
+--- a/packages/generators/src/core/fixture/index.ts
++++ b/packages/generators/src/core/fixture/index.ts
+@@ -7,8 +7,14 @@
+ // The item: a requirement over a few integer variables; pick the query that, if sat, shows a state violating it.
+ // Three templates negate three shapes (a bound, an implication, a conjunction); the distractors are misconception
+ // mutants (assert the requirement, shift the boundary, negate the consequent only, the converse, keep the "and",
+-// drop a conjunct). The box engine confirms the reference, finds a violating state (non-vacuity) and tells every
+-// pair of options apart on a state; a box past its state budget is `unknown`, so band 3 discards some seeds.
++// flip the connective only). The box engine confirms the reference, finds a violating state (non-vacuity) and tells
++// every pair of options apart on a state; a box past its state budget is `unknown`, so band 3 discards some seeds.
++//
++// Changed by W1-T39 on 2026-10-25, for GATE-items: t3's dp:Z5 mutant "drop a conjunct" was always the shortest
++// option, a length cue (always picking the longest option scored 500.0 of 1800 against a bar of 486.7 on both
++// samples, and t3/b3 had 130 of 400 keys over 1.3 times their distractors' mean length; RUN-items-gate records both),
++// so "flip the connective only" (dp:G5) replaced it. t3's instances changed with it, which is why determinism.json's
++// t3 digests (and the family digest) were re-recorded in Node, Chromium, Firefox and WebKit (RUN-generators-gate).
+ //
+ // Pure: no DOM, storage or network.
+ 
+@@ -23,7 +29,7 @@
+ import type { Band, ChoicePart, Generator, InstanceBase, Json, KeyBase, Measure, TemplateId, TemplateSpec, WitnessClass } from '../types.ts'
+ import { BOX_ENGINE, BOX_MAX_STATES, BOX_VERSION, boxBound, boxPort } from './engine.ts'
+ import type { BoxQuery } from './engine.ts'
+-import { and, atomsOf, evaluate, flipDirection, implies, maxCoefOf, negate, not, rel, render, shapeOf, shiftBoundary, varsOf, xor } from './formula.ts'
++import { and, atomsOf, evaluate, flipDirection, implies, maxCoefOf, negate, not, or, rel, render, shapeOf, shiftBoundary, varsOf, xor } from './formula.ts'
+ import type { Formula, Lin, Rel, State } from './formula.ts'
+ 
+ export { BOX_ENGINE, BOX_MAX_STATES, BOX_VERSION, boxPort } from './engine.ts'
+@@ -148,11 +154,13 @@
+       why: () => 'Negating a conjunction gives a disjunction: this query asks every part to fail at once, so it misses states that break only one.',
+       apply: (ref) => (ref.f === 'or' ? and(...ref.args) : null),
+     },
++    // In place of dp:Z5 "drop a conjunct", which was always the shortest option (W1-T39; see the header). With it, t3
++    // is a 2x2 of connective and negation, so neither length nor shared tokens single out the key.
+     {
+-      tag: 'dp:Z5',
+-      operator: 'drop a conjunct',
+-      why: () => 'This checks one part of the requirement and drops the rest, a slip carried into the encoding.',
+-      apply: (ref) => (ref.f === 'or' ? (ref.args[0] as Formula) : null),
++      tag: 'dp:G5',
++      operator: 'flip the connective only',
++      why: () => 'This turns the "and" into an "or" but leaves each part as it was, half of the negation: it accepts states that keep the requirement.',
++      apply: (ref) => (ref.f === 'or' ? or(...ref.args.map((a) => negate(a as Formula))) : null),
+     },
+     {
+       tag: 'dp:Z1',
+@@ -273,7 +281,7 @@
+   title: 'Framework fixture: negate a requirement over a bounded box',
+   templates: TEMPLATES,
+   engines: [BOX_ENGINE],
+-  misconceptions: ['dp:Z1', 'dp:O1', 'dp:G5', 'dp:G4', 'dp:G1', 'dp:Z5'],
++  misconceptions: ['dp:Z1', 'dp:O1', 'dp:G5', 'dp:G4', 'dp:G1'],
+   make,
+   key,
+   grade: (inst, answer, k) => gradeItem(inst, answer, k, { basis: 'the fixture box engine, every state of the box enumerated', engine: k.engine, ...(k.bound === undefined ? {} : { bound: k.bound }) }),
+--- a/packages/generators/src/core/README.md
++++ b/packages/generators/src/core/README.md
+@@ -143,7 +143,7 @@
+ 
+ ## 9. The fixture family
+ 
+-`fixture/` is a small complete family that runs anywhere, so the gate can hold the framework itself to every check before any course family exists: `GEN-fixture`, `fixture: true`, no content, no lesson. A requirement over two to four integer variables in a box `[-span, span]`; the learner picks the query whose `sat` answers are violations. Three templates negate three shapes (a bound, an implication, a conjunction); the distractors are mutants tagged dp:Z1, dp:O1, dp:G5, dp:G4, dp:G1 and dp:Z5. Its checker, the box engine, enumerates the box; past its state budget a query is `unknown`, so band 3 discards some seeds by design, and its verdicts carry the box as their bound. `fixtureClassOf()` and `fixtureSecondWitness()` show what M-class-hint needs from a family.
++`fixture/` is a small complete family that runs anywhere, so the gate can hold the framework itself to every check before any course family exists: `GEN-fixture`, `fixture: true`, no content, no lesson. A requirement over two to four integer variables in a box `[-span, span]`; the learner picks the query whose `sat` answers are violations. Three templates negate three shapes (a bound, an implication, a conjunction); the distractors are mutants tagged dp:Z1, dp:O1, dp:G5, dp:G4 and dp:G1. Its checker, the box engine, enumerates the box; past its state budget a query is `unknown`, so band 3 discards some seeds by design, and its verdicts carry the box as their bound. `fixtureClassOf()` and `fixtureSecondWitness()` show what M-class-hint needs from a family.
+ 
+ ## 10. Decisions [D]
+ 
+--- a/packages/generators/src/core/fixture/determinism.json
++++ b/packages/generators/src/core/fixture/determinism.json
+@@ -14,31 +14,31 @@
+     "t2/b1": "sha256:b64a72554fe8fb5eadfaef4baad79d8a74ceb1cd208a91bf3e3cb842e4b169fb",
+     "t2/b2": "sha256:54fc07f10d9d297bca967b38928992bff19775f6d85344f8b8d7fcc4b5477489",
+     "t2/b3": "sha256:87394d6905a92e6d59cd2cf0e2d7e0f69a9ec27975220621824703f213c0adaf",
+-    "t3/b1": "sha256:ba94c18b49221d1ba6b6f16bb856c55673967e6a30a4777754cae47971ccfb05",
+-    "t3/b2": "sha256:8f9b1caf51cd74e1243045a824197efedcab771df9851df7a931d5fbb6208f3e",
+-    "t3/b3": "sha256:4c91e0200535bea7f306a4a5624f3b4f2b9d18e99d3e90c2ac98e729cf13d921"
++    "t3/b1": "sha256:653201232edc921fb84cc6f01ec9a6024007f1bb9a7db8a8b5e477cf829f01c1",
++    "t3/b2": "sha256:68701c3ac3424f27507e02abf660256dbee9d815cadfd717752f993990b93c9f",
++    "t3/b3": "sha256:bc209f309ea0d3cebda768d070b0b148d11e6894dd289730f9844c71cfbd9f62"
+   },
+-  "digest": "sha256:9c9f5d93b0218f7836d9445afc794bb98b1da8332d452339957fdcbc0011cf21",
++  "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b",
+   "engines": [
+     {
+       "engine": "node",
+       "version": "22.22.2",
+-      "digest": "sha256:9c9f5d93b0218f7836d9445afc794bb98b1da8332d452339957fdcbc0011cf21"
++      "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b"
+     },
+     {
+       "engine": "chromium",
+       "version": "153.0.8010.12",
+-      "digest": "sha256:9c9f5d93b0218f7836d9445afc794bb98b1da8332d452339957fdcbc0011cf21"
++      "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b"
+     },
+     {
+       "engine": "firefox",
+       "version": "155.0",
+-      "digest": "sha256:9c9f5d93b0218f7836d9445afc794bb98b1da8332d452339957fdcbc0011cf21"
++      "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b"
+     },
+     {
+       "engine": "webkit",
+       "version": "26.6",
+-      "digest": "sha256:9c9f5d93b0218f7836d9445afc794bb98b1da8332d452339957fdcbc0011cf21"
++      "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b"
+     }
+   ],
+   "run": "RUN-generators-gate"

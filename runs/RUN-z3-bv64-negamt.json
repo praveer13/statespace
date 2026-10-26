@@ -1,0 +1,1115 @@
+{
+  "id": "RUN-z3-bv64-negamt",
+  "title": "Over signed BitVec 64 the guard without amount > 0 lets the sender wrap negative; over Int a negative amount drains the recipient and never the sender",
+  "task": "W1-T12",
+  "origin": "recorded",
+  "records": "S1.L5 segment 1 and the Defence's zero-or-negative item: signed BitVec 64 without amount > 0 lets A - X wrap below zero, and with it the same violation is unsat; the Int twin of z3_negamt.py gives sat for the recipient's drain, unsat for the sender, unsat for a change under a zero amount",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel (z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl) installed by uv; the Pyodide configurations use the pyemscripten wheel (sha256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": null,
+  "recorded_at": "2026-10-26T02:12:39.580Z",
+  "started_at": "2026-10-26T02:12:37.547Z",
+  "duration_s": 0.099,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "--with",
+    "z3-solver==5.3.1",
+    "python",
+    "-I",
+    "bv64_negamt.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+      "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+      "bytes": 7097,
+      "role": "script"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "bytes": 36561071,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+      "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+      "bytes": 2736,
+      "role": "harness"
+    },
+    {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "file": "pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "bytes": 6488647,
+      "role": "engine"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "bytes": 6525334,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+      "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+      "bytes": 5270,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/index.html",
+      "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+      "bytes": 944,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+      "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+      "bytes": 2256,
+      "role": "harness"
+    },
+    {
+      "name": "node_modules/playwright-core/package.json",
+      "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+      "role": "harness dependency, playwright-core 1.63.0"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-bv64-negamt/original/z3_negamt.py",
+      "sha256": "67ea9d9a9ea6649bdb366279535f32238167c4633d255a4e069f17f8a47c0776",
+      "bytes": 233,
+      "role": "script"
+    },
+    {
+      "path": "research/evidence/a2r3/scripts/z3_negamt.py",
+      "sha256": "67ea9d9a9ea6649bdb366279535f32238167c4633d255a4e069f17f8a47c0776",
+      "bytes": 233,
+      "role": "script (the original, same bytes)"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+      "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+      "bytes": 643,
+      "role": "harness"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_noguard.smt2",
+      "sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906",
+      "bytes": 301,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_positive.smt2",
+      "sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3",
+      "bytes": 332,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_recipient_drain.smt2",
+      "sha256": "f6d48e4290917d64068a5e9b8cb617e0404a17e0cd1f621bbfeca47d520b7abc",
+      "bytes": 260,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_sender_noguard.smt2",
+      "sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a",
+      "bytes": 242,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_zero_noop.smt2",
+      "sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2",
+      "bytes": 325,
+      "role": "query"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "harness_timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+    "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+    "[bv64_sender_positive] unsat",
+    "[int_sender_noguard] unsat",
+    "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+    "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+    "[int_zero_noop] unsat"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-bv64-negamt/native.log",
+      "sha256": "ae9cff58ff494ffd4cbd6d80f6e28e6430167d8479c9f709770c3967cf9b9c00",
+      "bytes": 2314,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_noguard.smt2",
+      "sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906",
+      "bytes": 301,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_positive.smt2",
+      "sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3",
+      "bytes": 332,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_recipient_drain.smt2",
+      "sha256": "f6d48e4290917d64068a5e9b8cb617e0404a17e0cd1f621bbfeca47d520b7abc",
+      "bytes": 260,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_sender_noguard.smt2",
+      "sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a",
+      "bytes": 242,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/smt2/int_zero_noop.smt2",
+      "sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2",
+      "bytes": 325,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/pyodide-node.log",
+      "sha256": "a0b8e81fa9d269b01921cadf6637d85f40037b01676a4311f49d452cb99b5c50",
+      "bytes": 2315,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/pyodide-chromium.log",
+      "sha256": "4ad6a4bef828c8571c6fac18f66f8aae975f2bccaad14006f3b706541bac0ea0",
+      "bytes": 2310,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/pyodide-firefox.log",
+      "sha256": "7738a4f6e7b84b3b1c9e09d01c7033181f056c484aa7f5b2208bf7bd2cf1d543",
+      "bytes": 2310,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/pyodide-webkit.log",
+      "sha256": "d84f570a8419d641978095c30ce3257a1c9bebcc9efb66c17860910ffd6095dd",
+      "bytes": 2310,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/int-twin-original.log",
+      "sha256": "8d6023e07e4edbe046336ae4e16b09f27c7c3f4803fd1b78144177b8a9c12f8f",
+      "bytes": 85,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-bv64-negamt/cvc5-bench.log",
+      "sha256": "d1e822dcecf1788d83a65e8701794821722b1da413566aa9d019309524c1dd1c",
+      "bytes": 165,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "queries": {
+      "bv64_sender_noguard": {
+        "verdict": "sat",
+        "witness": {
+          "A": "9079256848778919935",
+          "B": "0",
+          "X": "9223372036854775809"
+        },
+        "witness_signed": {
+          "A": "9079256848778919935",
+          "B": "0",
+          "X": "-9223372036854775807"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "smt2_sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906",
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "bv64_sender_positive": {
+        "verdict": "unsat",
+        "smt2_sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3",
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "int_sender_noguard": {
+        "verdict": "unsat",
+        "smt2_sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a",
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "int_recipient_drain": {
+        "verdict": "sat",
+        "witness": {
+          "a": "0",
+          "amount": "-1",
+          "b": "0"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "smt2_sha256": "f6d48e4290917d64068a5e9b8cb617e0404a17e0cd1f621bbfeca47d520b7abc",
+        "smt2_raw_sha256_by_engine": {
+          "native": "af024c74db0cc0508d794590b5ddcf4769834b17dd2b2fce8117626506ce55ca",
+          "pyodide-node": "af024c74db0cc0508d794590b5ddcf4769834b17dd2b2fce8117626506ce55ca",
+          "pyodide-chromium": "76e73be59f0071c786a552d895b9af9d659ec0010d534efa32f35ff9cc675d72",
+          "pyodide-firefox": "76e73be59f0071c786a552d895b9af9d659ec0010d534efa32f35ff9cc675d72",
+          "pyodide-webkit": "76e73be59f0071c786a552d895b9af9d659ec0010d534efa32f35ff9cc675d72"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "int_zero_noop": {
+        "verdict": "unsat",
+        "smt2_sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2",
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      }
+    },
+    "engines": [
+      "native",
+      "pyodide-node",
+      "pyodide-chromium",
+      "pyodide-firefox",
+      "pyodide-webkit"
+    ],
+    "verdicts_agree": true,
+    "witnesses_replay": true,
+    "exports_identical": true,
+    "raw_exports_identical": false,
+    "cvc5": {
+      "configuration": "cvc5-bench",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "queries_checked": 5,
+      "agree": 5
+    },
+    "int_twin_original": {
+      "query": "negative amount passes the guard, drains recipient",
+      "verdict": "sat",
+      "witness": {
+        "amount": "-1",
+        "b": "0",
+        "a": "0"
+      },
+      "witness_replays": true
+    }
+  },
+  "checks": [
+    {
+      "id": "bv64_sender_noguard",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "bv64_sender_positive",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "int_sender_noguard",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "int_recipient_drain",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "int_zero_noop",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "no-unexpected-queries",
+      "pass": true
+    },
+    {
+      "id": "exports-identical",
+      "pass": true,
+      "detail": "the 5 Z3 configurations (native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit) exported the same SMT-LIB text for every query, all 5 of them"
+    },
+    {
+      "id": "int-twin-original",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "detail": "z3_negamt.py as it is on disk: a negative amount passes the guard and drains the recipient"
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2",
+    "containers": {
+      "playwright": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "bench": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+    }
+  },
+  "primary_config": "native",
+  "configs": [
+    {
+      "id": "native",
+      "purpose": "the script under uv with the z3-solver 5.3.1.0 wheel on CPython, the LAB-1 way (labs/TOOLS.md section 2.1); the primary configuration",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "started_at": "2026-10-26T02:12:37.547Z",
+      "duration_s": 0.099,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "python",
+        "-I",
+        "bv64_negamt.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+          "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+          "bytes": 7097,
+          "role": "script"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+        "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "[bv64_sender_positive] unsat",
+        "[int_sender_noguard] unsat",
+        "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "[int_zero_noop] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/native.log",
+        "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_noguard.smt2",
+        "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_positive.smt2",
+        "runs/RUN-z3-bv64-negamt/smt2/int_recipient_drain.smt2",
+        "runs/RUN-z3-bv64-negamt/smt2/int_sender_noguard.smt2",
+        "runs/RUN-z3-bv64-negamt/smt2/int_zero_noop.smt2"
+      ],
+      "environment": {
+        "python": "CPython 3.13.12",
+        "uv": "uv 0.10.2",
+        "library": "libz3.so 27688808 bytes"
+      }
+    },
+    {
+      "id": "pyodide-node",
+      "purpose": "the script in Pyodide under Node with this task's harness, pyodide-node.mjs: the setting in which RUN-z3-bv64-pyodide ran (with a harness of its own) and in which the spine's GATE-calls reproduces a Call It answer; Pyodide 314.0.7 and the Z3 5.3.1.0 wheel, a fresh engine and a fresh Python namespace for the script",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": null,
+      "started_at": "2026-10-26T02:12:37.647Z",
+      "duration_s": 1.58,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T12/pyodide-node.mjs",
+        "--pyodide",
+        "<sandbox>/engines/pyodide",
+        "--wheel",
+        "<sandbox>/engines/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+        "--script",
+        "bv64_negamt.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+          "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+          "bytes": 7097,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+          "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+          "bytes": 2736,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+        "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "[bv64_sender_positive] unsat",
+        "[int_sender_noguard] unsat",
+        "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "[int_zero_noop] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/pyodide-node.log"
+      ],
+      "environment": {
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "node": "v22.22.2 x64",
+        "load_pyodide_ms": 1023,
+        "load_wheel_ms": 236,
+        "script_ms": 292
+      }
+    },
+    {
+      "id": "pyodide-chromium",
+      "purpose": "the script in Pyodide in a module worker in chromium 153.0.8010.12 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:15.582Z",
+      "duration_s": 0.052,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-chromium",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers chromium; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+          "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+          "bytes": 7097,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+        "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "[bv64_sender_positive] unsat",
+        "[int_sender_noguard] unsat",
+        "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "[int_zero_noop] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/pyodide-chromium.log"
+      ],
+      "environment": {
+        "browser": "chromium 153.0.8010.12",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1016,
+        "load_wheel_ms": 243,
+        "script_ms": 52,
+        "session_wall_ms": 3092,
+        "docker_run_started_at": "2026-10-26T02:12:15.227Z",
+        "docker_run_wall_ms": 3512
+      }
+    },
+    {
+      "id": "pyodide-firefox",
+      "purpose": "the script in Pyodide in a module worker in firefox 155.0 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:19.281Z",
+      "duration_s": 0.057,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-firefox",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers firefox; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+          "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+          "bytes": 7097,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+        "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "[bv64_sender_positive] unsat",
+        "[int_sender_noguard] unsat",
+        "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "[int_zero_noop] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/pyodide-firefox.log"
+      ],
+      "environment": {
+        "browser": "firefox 155.0",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1083,
+        "load_wheel_ms": 338,
+        "script_ms": 57,
+        "session_wall_ms": 3724,
+        "docker_run_started_at": "2026-10-26T02:12:18.749Z",
+        "docker_run_wall_ms": 4518
+      }
+    },
+    {
+      "id": "pyodide-webkit",
+      "purpose": "the script in Pyodide in a module worker in webkit 26.6 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:23.814Z",
+      "duration_s": 0.041,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-webkit",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers webkit; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py",
+          "sha256": "818f4a04b257a9d5f53837d76845f246c4d73af9a27634efbb33d3a0d9c68786",
+          "bytes": 7097,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]",
+        "  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok",
+        "[bv64_sender_positive] unsat",
+        "[int_sender_noguard] unsat",
+        "[int_recipient_drain] sat [amount = -1, b = 0, a = 0]",
+        "  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok",
+        "[int_zero_noop] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/pyodide-webkit.log"
+      ],
+      "environment": {
+        "browser": "webkit 26.6",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1014,
+        "load_wheel_ms": 270,
+        "script_ms": 41,
+        "session_wall_ms": 3135,
+        "docker_run_started_at": "2026-10-26T02:12:23.278Z",
+        "docker_run_wall_ms": 3757
+      }
+    },
+    {
+      "id": "int-twin-original",
+      "purpose": "z3_negamt.py as it is on disk in research/, the Int twin whose output was never committed, run as it is under uv (it sets no rlimit)",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "started_at": "2026-10-26T02:12:39.228Z",
+      "duration_s": 0.084,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "python",
+        "-I",
+        "original/z3_negamt.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-bv64-negamt/original/z3_negamt.py",
+          "sha256": "67ea9d9a9ea6649bdb366279535f32238167c4633d255a4e069f17f8a47c0776",
+          "bytes": 233,
+          "role": "script"
+        },
+        {
+          "path": "research/evidence/a2r3/scripts/z3_negamt.py",
+          "sha256": "67ea9d9a9ea6649bdb366279535f32238167c4633d255a4e069f17f8a47c0776",
+          "bytes": 233,
+          "role": "script (the original, same bytes)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[negative amount passes the guard, drains recipient] sat [amount = -1, b = 0, a = 0]"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/int-twin-original.log"
+      ],
+      "environment": {
+        "python": "CPython 3.13.12",
+        "uv": "uv 0.10.2"
+      }
+    },
+    {
+      "id": "cvc5-bench",
+      "purpose": "a second solver on the queries: every sat or unsat query of the run that has an SMT-LIB export, as that text, on cvc5 1.4.2 [git 282d5e0 on branch HEAD], the Bench binary (the spine's \"authored unsat cross-checked on cvc5\")",
+      "origin": "recorded",
+      "engine": "cvc5",
+      "version": "1.4.2",
+      "version_string": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "started_at": "2026-10-26T02:12:39.355Z",
+      "duration_s": 0.165,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w1t12-cvc5-z3-bv64-negamt",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/smt2:/q:ro",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "sh",
+        "/s/cvc5-check.sh",
+        "/q"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+          "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+          "bytes": 643,
+          "role": "harness"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_noguard.smt2",
+          "sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906",
+          "bytes": 301,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-negamt/smt2/bv64_sender_positive.smt2",
+          "sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3",
+          "bytes": 332,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-negamt/smt2/int_recipient_drain.smt2",
+          "sha256": "f6d48e4290917d64068a5e9b8cb617e0404a17e0cd1f621bbfeca47d520b7abc",
+          "bytes": 260,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-negamt/smt2/int_sender_noguard.smt2",
+          "sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a",
+          "bytes": 242,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-bv64-negamt/smt2/int_zero_noop.smt2",
+          "sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2",
+          "bytes": 325,
+          "role": "query"
+        }
+      ],
+      "budget": {
+        "per_file_timeout_s": 60,
+        "harness_timeout_s": 600,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+        "bv64_sender_noguard: sat",
+        "bv64_sender_positive: unsat",
+        "int_recipient_drain: sat",
+        "int_sender_noguard: unsat",
+        "int_zero_noop: unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-bv64-negamt/cvc5-bench.log"
+      ],
+      "environment": {
+        "container_image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+      }
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the primary configuration ran on the host under uv, in no container; the container configurations name their images"
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T12. values.queries.<query> holds each query's verdict and rlimit; for a sat query, its witness (the primary configuration's model, as strings; witness_signed reads its bit-vector values as signed integers), the text of the primary configuration's replay (replay) and whether every configuration's model for it replayed (witness_replays); its unsat_core or minimum where it has one; the SHA-256 of its SMT-LIB export; and the verdict of each configuration that ran it (engines, cvc5's on the 5 queries it ran). Cite one as {{run:RUN-z3-bv64-negamt#values.queries.<name>.verdict}}. 5 queries in all.",
+    "Where each configuration ran: native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit, int-twin-original, cvc5-bench. native is the host under uv (CPython 3.13, the wheel z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl from PyPI, no container); pyodide-node is Pyodide 314.0.7 with the z3_solver 5.3.1.0 pyemscripten wheel under Node 22 on the host (CPython 3.14 inside Pyodide); the pyodide-chromium, pyodide-firefox and pyodide-webkit configurations are the same engine in a module worker of each browser inside the pinned Playwright container (desktop builds, headless, not phones); int-twin-original is research/evidence/a2r3/scripts/z3_negamt.py run as it is (its byte-identical copy original/z3_negamt.py), on the host under uv as native is; cvc5-bench is cvc5 1.4.2, the Bench binary, in the Bench image with the network off.",
+    "Witnesses are recorded by property and never compared by value across engines [X RUN-z3-bv64-pyodide]: every sat query's model is replayed in plain Python integers by the script itself, in each configuration that gave one (native, pyodide-node, pyodide-chromium, pyodide-firefox and pyodide-webkit; cvc5-bench gives verdicts only), and the check is that every one of them replays. int-twin-original's witness is replayed in BigInt by the recording script (values.int_twin_original.witness_replays). In this run the configurations in values.engines returned the same model for every sat query, which is a fact about this run and no promise.",
+    "Every query ran with rlimit 5000000 (spine section 9.1; values.queries.<query>.rlimit); z3_negamt.py, which int-twin-original runs as it is, sets none. The SMT-LIB exports are Z3's to_smt2() text with its let names (?x60, $x34) renamed in order of appearance, because Z3 names them after AST ids and the ids are not the same in every process: the raw text differed between Z3 configurations on 1 of the 5 queries that have an export (smt2_raw_sha256_by_engine). The renamed text is the same in every Z3 configuration, and its SHA-256 is values.queries.<query>.smt2_sha256.",
+    "started_at and duration_s of a configuration that ran its own command (native, pyodide-node, int-twin-original and cvc5-bench) are when that command started and how long it took, start-up included. Each browser configuration (pyodide-chromium, pyodide-firefox and pyodide-webkit) comes from one docker run, in which one browser session ran every Z3 script of runs/inputs/S1 in turn; that session is shared by the 9 Z3 records of runs/inputs/S1, and the configuration's argv and exit_code are its docker run's. A browser configuration's started_at is when its session began, after the browser had launched and before its page opened, and its duration_s is this script's own time in the worker, measured around the call without the engine's start-up and rounded to whole milliseconds by the harness. Its environment holds two spans that cover every script: session_wall_ms, from started_at to when the last script had finished (the page's and the engine's load and every script, not the browser's close), and docker_run_wall_ms, the docker run from docker_run_started_at, when the recording script started it, to its exit (adding the container's start and the launch of Node and the browser before started_at, and the browser's close and the output's chown after the last script). budget.harness_timeout_s is the wall time after which the recording script would have stopped a configuration's command (for a browser configuration, the docker run). The ms figure on an @@ line is the script's own measurement of that query's solver call, rounded to hundredths of a millisecond; in this record's browser logs pyodide-firefox and pyodide-webkit gave whole milliseconds, and pyodide-chromium gave multiples of 0.1 ms, on all 5 queries, so a browser figure of a few milliseconds is a rough one.",
+    "cvc5 1.4.2 [git 282d5e0 on branch HEAD] ran 5 of the 5 queries, each file under a 60 s limit (budget.per_file_timeout_s): every sat or unsat query that has an SMT-LIB export, as that text, which here is every query. The checks require its verdict to equal Z3's on each one it ran (values.cvc5, and engines in each entry).",
+    "In native, pyodide-node and int-twin-original, which ran on the host, argv's paths to the script are relative to a scratch folder that held copies of the configuration's inputs from runs/inputs/S1/RUN-z3-bv64-negamt/ at the same relative paths, and the command ran in that folder; pyodide-node.mjs is named by its path from the repository root, and the <sandbox> paths are placeholders (next note).",
+    "Placeholders in argv: <sandbox>/engines is a scratch directory with Pyodide's npm package unpacked in pyodide/ and the Z3 wheel, both fetched and checked against their published digests (the inputs list them); <sandbox>/out is the browser container's output directory; <sandbox>/smt2 is a scratch copy of the SMT-LIB files the cvc5 configuration reads (the inputs list them). Repository paths are relative to the repository root.",
+    "The configuration int-twin-original runs research/evidence/a2r3/scripts/z3_negamt.py, whose output was never committed (spine section 9.5), byte-identical to runs/inputs/S1/RUN-z3-bv64-negamt/original/z3_negamt.py; it printed one line."
+  ]
+}

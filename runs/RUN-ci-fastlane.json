@@ -287,6 +287,30 @@
       "sha256": "09645a3e7cb597e79de7b99eb427e2da675be83538f81a3cc69ce5369ce7e59f",
       "bytes": 2362,
       "kind": "the lane output without the step output groups"
+    },
+    {
+      "path": "runs/RUN-ci-fastlane/github-hosted-e309b50/run.json",
+      "sha256": "f32ae1b5dc1cd74cdda79fdae4a7a341a7a5479c30751858edd0ab3a616f9bdc",
+      "bytes": 3588,
+      "kind": "what gh run view --json returned: the run, its job and every step with its times"
+    },
+    {
+      "path": "runs/RUN-ci-fastlane/github-hosted-e309b50/job.log",
+      "sha256": "3e9b9cb897c31b41a1dbb447366eaa35082a109b80ef11a1c7303840edd5d54e",
+      "bytes": 192970,
+      "kind": "the whole job log, paths normalised"
+    },
+    {
+      "path": "runs/RUN-ci-fastlane/github-hosted-c5f14c5/run.json",
+      "sha256": "00fd8c3049264fe7b02c207918e9c63df39dd15d84cdd7b12d0558959c3d5346",
+      "bytes": 3585,
+      "kind": "what gh run view --json returned: the run, its job and every step with its times"
+    },
+    {
+      "path": "runs/RUN-ci-fastlane/github-hosted-c5f14c5/job.log",
+      "sha256": "3c8df7a6b47a6318af66c99a372455c87b4e13da2aac68cd0b2068531cd94f66",
+      "bytes": 192980,
+      "kind": "the whole job log, paths normalised"
     }
   ],
   "values": {
@@ -326,7 +350,12 @@
       "gates_absent": 21,
       "duration_s": 159.746
     },
-    "github_hosted_lane_clock_s": 79.6
+    "github_hosted_lane_clock_s": 79.6,
+    "github_hosted_green_runs": 2,
+    "github_hosted_e309b50_lane_clock_s": 79.3,
+    "github_hosted_e309b50_job_s": 83,
+    "github_hosted_c5f14c5_lane_clock_s": 78.7,
+    "github_hosted_c5f14c5_job_s": 83
   },
   "environment": {
     "os": "Ubuntu 24.04.5 LTS in a Docker container on Linux 6.12.63 x86_64",
@@ -979,6 +1008,300 @@
         "[24/28] GATE-privacy           FAIL       1.6 s  vendor-license vendor/kernelspace/  a vendored directory (inside vendor/) without its own license file"
       ],
       "note": "Duration per scripts/spikes/W0-T04/README.md section 5: first lane step start to last lane step end, without Set up job, Post and Complete job. The lane failed on one gate, GATE-privacy, whose only finding waits for the owner (OD-16); every other built gate passed."
+    },
+    {
+      "id": "github-hosted-e309b50",
+      "label": "the committed fast.yml on a GitHub-hosted runner, triggered by the push of \"W0 finish: owner decisions (W0-T09), trace validation (W0-S13), spine revision 3 (W0-T10)\": green",
+      "run_id": 40181640744,
+      "url": "https://github.com/praveer13/statespace/actions/runs/40181640744",
+      "event": "push",
+      "workflow": "fast",
+      "branch": "master",
+      "commit": "e309b50e3667dc622a4d31a02a312db4c6a78d5d",
+      "attempt": 1,
+      "runner_image": "ubuntu-24.04, image version 20261012.334.1",
+      "tools": {
+        "node": "22.22.2",
+        "npm": "10.9.7",
+        "uv": "0.10.2",
+        "git": "2.55.0"
+      },
+      "run_created_at": "2026-10-25T09:40:49Z",
+      "started_at": "2026-10-25T09:40:52Z",
+      "ended_at": "2026-10-25T09:42:12Z",
+      "duration_s": 80,
+      "lane_clock_s": 79.3,
+      "job_started_at": "2026-10-25T09:40:51Z",
+      "job_completed_at": "2026-10-25T09:42:14Z",
+      "job_duration_s": 83,
+      "conclusion": "success",
+      "exit_code": 0,
+      "lane": {
+        "result": "PASS",
+        "clock_s": 79.3,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "absent": 15,
+        "steps": 28,
+        "budget_s": 300
+      },
+      "verdict_lines": [
+        "fast lane: 28 step(s), root <repo>, budget 300 s",
+        "[ 1/28] vendor-verify          PASS       0.8 s  vendor-drift: ok (34 files match VENDOR.md at 80c8537e4048)",
+        "[ 2/28] lint-purity            PASS       0.7 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)",
+        "[ 3/28] typecheck              PASS      12.4 s  no output",
+        "[ 4/28] unit-tests             PASS      25.2 s  153 tests, 152 passed, 0 failed, 1 skipped",
+        "[ 5/28] build                  PASS       7.7 s  ✓ built in 1.45s",
+        "[ 6/28] lane-tests             PASS       5.7 s  68 tests, 67 passed, 0 failed, 1 skipped",
+        "[ 7/28] GATE-numbers           PASS       1.2 s  GATE-numbers: PASS (3283 tokens in 43 files, 63 known; 1.1 s)",
+        "[ 8/28] GATE-facts             PASS       0.8 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.7 s)",
+        "[18/28] GATE-links             PASS       0.4 s  GATE-links: green",
+        "[20/28] GATE-budget            PASS       0.2 s  GATE-budget: green (2 warnings), 3 notes",
+        "[24/28] GATE-privacy           PASS       1.6 s  verify-privacy: ok, 2835 published files (35725823 bytes, digest ba59d622e93b); no term list checked; review JSONs absent from the tree and from 11 commits of history; 2 vendored directories licensed; 41 allowed matches",
+        "[25/28] GATE-schema            PASS      11.6 s  GATE-schema: PASS (22 checks; 11.5 s)",
+        "[28/28] GATE-runs              PASS       0.4 s  GATE-runs: PASS (74 records, 2109 resolved references; 0.3 s)",
+        "absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage (W1-T04), GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)",
+        "fast lane: PASS in 79.3 s (13 passed, 0 failed, 0 skipped, 15 absent)"
+      ],
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:40:51Z",
+          "completed_at": "2026-10-25T09:40:52Z"
+        },
+        {
+          "number": 2,
+          "name": "Start the lane clock",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:40:52Z",
+          "completed_at": "2026-10-25T09:40:53Z"
+        },
+        {
+          "number": 3,
+          "name": "Check out the repository",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:40:53Z",
+          "completed_at": "2026-10-25T09:40:54Z"
+        },
+        {
+          "number": 4,
+          "name": "Set up Node",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:40:54Z",
+          "completed_at": "2026-10-25T09:41:00Z"
+        },
+        {
+          "number": 5,
+          "name": "Set up uv",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:41:00Z",
+          "completed_at": "2026-10-25T09:41:01Z"
+        },
+        {
+          "number": 6,
+          "name": "Install the pinned packages",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:41:01Z",
+          "completed_at": "2026-10-25T09:41:03Z"
+        },
+        {
+          "number": 7,
+          "name": "Run the fast lane",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:41:03Z",
+          "completed_at": "2026-10-25T09:42:12Z"
+        },
+        {
+          "number": 12,
+          "name": "Post Set up uv",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:42:12Z",
+          "completed_at": "2026-10-25T09:42:12Z"
+        },
+        {
+          "number": 13,
+          "name": "Post Set up Node",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:42:12Z",
+          "completed_at": "2026-10-25T09:42:12Z"
+        },
+        {
+          "number": 14,
+          "name": "Post Check out the repository",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:42:12Z",
+          "completed_at": "2026-10-25T09:42:12Z"
+        },
+        {
+          "number": 15,
+          "name": "Complete job",
+          "conclusion": "success",
+          "started_at": "2026-10-25T09:42:12Z",
+          "completed_at": "2026-10-25T09:42:12Z"
+        }
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-T11/github-run.mjs",
+          "sha256": "e4757ac4f8ccfe0184636002c2fdbb1d98240298f2d65ba7e6d78d69371ccfd8",
+          "role": "reads the run with gh and writes this configuration"
+        }
+      ],
+      "outputs": [
+        "runs/RUN-ci-fastlane/github-hosted-e309b50/run.json",
+        "runs/RUN-ci-fastlane/github-hosted-e309b50/job.log"
+      ],
+      "note": "Read by scripts/spikes/W0-T11/github-run.mjs from gh run view 40181640744. duration_s is GitHub's whole-second step times, the first lane step's start to the last lane step's end (scripts/spikes/W0-T04/README.md section 5); lane_clock_s is the lane runner's own clock from the same step, and job_duration_s the whole job with its set-up and clean-up. 15 gates are absent, not built yet, so the figure covers 13 of 28 steps and grows as W1 builds them."
+    },
+    {
+      "id": "github-hosted-c5f14c5",
+      "label": "the committed fast.yml on a GitHub-hosted runner, triggered by the push of \"W0 round 2 accepted: W0-T09, W0-T10, W0-S13 and the OD-6 addenda done\": green",
+      "run_id": 40215386056,
+      "url": "https://github.com/praveer13/statespace/actions/runs/40215386056",
+      "event": "push",
+      "workflow": "fast",
+      "branch": "master",
+      "commit": "c5f14c55d1166fd72fd7560d8156b9dd274ad817",
+      "attempt": 1,
+      "runner_image": "ubuntu-24.04, image version 20261012.334.1",
+      "tools": {
+        "node": "22.22.2",
+        "npm": "10.9.7",
+        "uv": "0.10.2",
+        "git": "2.55.0"
+      },
+      "run_created_at": "2026-10-25T17:13:04Z",
+      "started_at": "2026-10-25T17:13:07Z",
+      "ended_at": "2026-10-25T17:14:26Z",
+      "duration_s": 79,
+      "lane_clock_s": 78.7,
+      "job_started_at": "2026-10-25T17:13:06Z",
+      "job_completed_at": "2026-10-25T17:14:29Z",
+      "job_duration_s": 83,
+      "conclusion": "success",
+      "exit_code": 0,
+      "lane": {
+        "result": "PASS",
+        "clock_s": 78.7,
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0,
+        "absent": 15,
+        "steps": 28,
+        "budget_s": 300
+      },
+      "verdict_lines": [
+        "fast lane: 28 step(s), root <repo>, budget 300 s",
+        "[ 1/28] vendor-verify          PASS       0.8 s  vendor-drift: ok (34 files match VENDOR.md at 80c8537e4048)",
+        "[ 2/28] lint-purity            PASS       0.7 s  purity-lint: ok (25 package files pure; 7 app files import vendor/ only through a wrapper home)",
+        "[ 3/28] typecheck              PASS      12.6 s  no output",
+        "[ 4/28] unit-tests             PASS      25.1 s  153 tests, 152 passed, 0 failed, 1 skipped",
+        "[ 5/28] build                  PASS       7.7 s  ✓ built in 1.48s",
+        "[ 6/28] lane-tests             PASS       5.8 s  68 tests, 67 passed, 0 failed, 1 skipped",
+        "[ 7/28] GATE-numbers           PASS       1.1 s  GATE-numbers: PASS (3283 tokens in 43 files, 63 known; 1.1 s)",
+        "[ 8/28] GATE-facts             PASS       0.8 s  GATE-facts: PASS (3 value tags stated, 1 value reference, 13 facts, 0 TTL warnings; 0.7 s)",
+        "[18/28] GATE-links             PASS       0.4 s  GATE-links: green",
+        "[20/28] GATE-budget            PASS       0.2 s  GATE-budget: green (2 warnings), 3 notes",
+        "[24/28] GATE-privacy           PASS       1.6 s  verify-privacy: ok, 2835 published files (35726183 bytes, digest 84e59d2f6078); no term list checked; review JSONs absent from the tree and from 12 commits of history; 2 vendored directories licensed; 41 allowed matches",
+        "[25/28] GATE-schema            PASS      11.7 s  GATE-schema: PASS (22 checks; 11.6 s)",
+        "[28/28] GATE-runs              PASS       0.4 s  GATE-runs: PASS (74 records, 2109 resolved references; 0.3 s)",
+        "absent, not built yet (15): GATE-calls (W1-T05), GATE-interp (W2-T08), GATE-items (W1-T39), GATE-audit-blind (W1-T40), GATE-generators (W1-T05), GATE-kc (W1-T04), GATE-stamps (W1-T01), GATE-codes (W1-T01), GATE-claims (W1-T15), GATE-coverage (W1-T04), GATE-glyphs (W6-T03), GATE-bundle (W1-T41), GATE-guardrails (W1-T18), GATE-lessons (W1-T38), GATE-erosions (W2-T42)",
+        "fast lane: PASS in 78.7 s (13 passed, 0 failed, 0 skipped, 15 absent)"
+      ],
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:07Z",
+          "completed_at": "2026-10-25T17:13:07Z"
+        },
+        {
+          "number": 2,
+          "name": "Start the lane clock",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:07Z",
+          "completed_at": "2026-10-25T17:13:08Z"
+        },
+        {
+          "number": 3,
+          "name": "Check out the repository",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:08Z",
+          "completed_at": "2026-10-25T17:13:09Z"
+        },
+        {
+          "number": 4,
+          "name": "Set up Node",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:09Z",
+          "completed_at": "2026-10-25T17:13:14Z"
+        },
+        {
+          "number": 5,
+          "name": "Set up uv",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:14Z",
+          "completed_at": "2026-10-25T17:13:15Z"
+        },
+        {
+          "number": 6,
+          "name": "Install the pinned packages",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:15Z",
+          "completed_at": "2026-10-25T17:13:17Z"
+        },
+        {
+          "number": 7,
+          "name": "Run the fast lane",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:13:17Z",
+          "completed_at": "2026-10-25T17:14:26Z"
+        },
+        {
+          "number": 12,
+          "name": "Post Set up uv",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:14:26Z",
+          "completed_at": "2026-10-25T17:14:26Z"
+        },
+        {
+          "number": 13,
+          "name": "Post Set up Node",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:14:26Z",
+          "completed_at": "2026-10-25T17:14:26Z"
+        },
+        {
+          "number": 14,
+          "name": "Post Check out the repository",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:14:26Z",
+          "completed_at": "2026-10-25T17:14:27Z"
+        },
+        {
+          "number": 15,
+          "name": "Complete job",
+          "conclusion": "success",
+          "started_at": "2026-10-25T17:14:27Z",
+          "completed_at": "2026-10-25T17:14:27Z"
+        }
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W0-T11/github-run.mjs",
+          "sha256": "e4757ac4f8ccfe0184636002c2fdbb1d98240298f2d65ba7e6d78d69371ccfd8",
+          "role": "reads the run with gh and writes this configuration"
+        }
+      ],
+      "outputs": [
+        "runs/RUN-ci-fastlane/github-hosted-c5f14c5/run.json",
+        "runs/RUN-ci-fastlane/github-hosted-c5f14c5/job.log"
+      ],
+      "note": "Read by scripts/spikes/W0-T11/github-run.mjs from gh run view 40215386056. duration_s is GitHub's whole-second step times, the first lane step's start to the last lane step's end (scripts/spikes/W0-T04/README.md section 5); lane_clock_s is the lane runner's own clock from the same step, and job_duration_s the whole job with its set-up and clean-up. 15 gates are absent, not built yet, so the figure covers 13 of 28 steps and grows as W1 builds them."
     }
   ],
   "primary_config": "github-hosted",
@@ -1012,6 +1335,11 @@
       "id": "nightly-writes-status-json",
       "pass": true,
       "detail": "red; 7 gates and 10 checks run"
+    },
+    {
+      "id": "fast-lane-green-on-github-hosted-runners",
+      "pass": true,
+      "detail": "2 further GitHub-hosted runs of the committed fast.yml (e309b50: PASS in 79.3 s with 13 passed, 0 failed, 15 absent; c5f14c5: PASS in 78.7 s with 13 passed, 0 failed, 15 absent); the slowest took 79.3 s against the 300 s budget"
     }
   ],
   "pass": true,
@@ -1025,6 +1353,7 @@
     "The fast lane ran 13 steps and listed 15 gates as absent, because their scripts do not exist yet (each names the task that builds it); an absent gate is neither a pass nor a failure, and the lane gets slower as they arrive, which is what the budget watches.",
     "The nightly configuration is the nightly lane run on this host with the host's Node and no container: it is not the digest-pinned Bench image (W0-T05's image is not published, so the BENCH_IMAGE variable cannot be set) and not GitHub. It shows that the lane writes status/nightly.json in the documented format; the generated file was moved under runs/ because status/nightly.json is a generated file that is never committed on the default branch (status/README.md).",
     "actionlint 1.7.12 (archive checked against its published SHA-256) ran with shellcheck 0.11.0 from the shellcheck-py wheel; both exited without a finding on the four workflows. The same command on a scratch workflow with a planted shell fault and a planted misspelled expression found both (actionlint/planted.txt), so a clean exit means something. shellcheck came from a PyPI wheel run with `uv run --with`, which is not how a hosted runner would get it; it checks the scripts, not the runner.",
-    "Owner action that completes this record: push, require the check \"fast lane\" in the branch rules, dispatch fast.yml once (Actions > fast > Run workflow), read the run's duration from its page (first step start to last step end, as above) and add it as a configuration named github-hosted, then make it the primary configuration and set environment.emulated to false. The same run shows what the emulation missed."
+    "Owner action that completes this record: push, require the check \"fast lane\" in the branch rules, dispatch fast.yml once (Actions > fast > Run workflow), read the run's duration from its page (first step start to last step end, as above) and add it as a configuration named github-hosted, then make it the primary configuration and set environment.emulated to false. The same run shows what the emulation missed.",
+    "Added by W0-T11 on 2026-10-25: configurations github-hosted-e309b50 and github-hosted-c5f14c5 are further GitHub-hosted runs of the committed fast.yml, read from the Actions pages with scripts/spikes/W0-T11/github-run.mjs, each with its job log and run metadata as outputs. They are green where the primary configuration (the first GitHub run, before OD-16) was red on GATE-privacy only. The primary configuration, the title and recorded_at still describe that first run."
   ]
 }

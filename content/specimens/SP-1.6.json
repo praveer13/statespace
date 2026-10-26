@@ -1,0 +1,49 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.6",
+  "title": "\"unsat, therefore safe\" over contradictory premises",
+  "draft": true,
+  "kcs": [
+    "KC-1.implication-vacuity",
+    "KC-1.non-vacuity-check"
+  ],
+  "found_in": {
+    "lesson": "S1.L3"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L3"
+    ]
+  },
+  "violates": "Non-vacuity: the premises can hold together, so that an unsat says something about the property.",
+  "because": "Contradictory premises make every violation query unsat, whatever the property says. Here a transfer must be positive and at most a limit that the configuration sets to zero.",
+  "class": "a proof over premises that cannot hold together",
+  "cured_by": {
+    "text": "Ask the premise query beside every unsat, and fix the configuration that empties the premises.",
+    "claim": "CL-1.1"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-vacuous-unsat",
+      "query": "max0_range_premises",
+      "direction": "premise"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-vacuous-unsat",
+        "query": "max0_range_violation",
+        "caption": "The violation query on the same premises is unsat, which on its own reads as a pass."
+      },
+      {
+        "run": "RUN-z3-vacuous-unsat",
+        "query": "max0_range_absurd",
+        "caption": "So is the violation query of an absurd property, which no pass should ever cover."
+      }
+    ],
+    "minimal": {
+      "kind": "core",
+      "run": "RUN-z3-vacuous-unsat",
+      "query": "max0_range_core"
+    }
+  }
+}

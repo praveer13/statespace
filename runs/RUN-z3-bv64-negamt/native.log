@@ -1,0 +1,13 @@
+z3 5.3.1 rlimit=5000000
+[bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]
+  replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok
+@@ {"model": {"A": "9079256848778919935", "B": "0", "X": "9223372036854775809"}, "model_signed": {"A": "9079256848778919935", "B": "0", "X": "-9223372036854775807"}, "ms": 4.75, "q": "bv64_sender_noguard", "replay": "A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906", "smt2_sha256": "bcb4d3f779a89a6b33de66601e8590f0e421e7b0e91d6d8c2e8150c3174fd906", "verdict": "sat"}
+[bv64_sender_positive] unsat
+@@ {"ms": 6.58, "q": "bv64_sender_positive", "rlimit": 5000000, "smt2_raw_sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3", "smt2_sha256": "fcf517d25e017253b4cbcc7a02544f9494b5dc5e867c2ddc0cdaff1fd75c5dc3", "verdict": "unsat"}
+[int_sender_noguard] unsat
+@@ {"ms": 0.69, "q": "int_sender_noguard", "rlimit": 5000000, "smt2_raw_sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a", "smt2_sha256": "a2fe1a792a76f7397489633549c19ee81829d0bce0613e2d5341e5d5ece2c14a", "verdict": "unsat"}
+[int_recipient_drain] sat [amount = -1, b = 0, a = 0]
+  replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok
+@@ {"model": {"a": "0", "amount": "-1", "b": "0"}, "ms": 1.02, "q": "int_recipient_drain", "replay": "a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "af024c74db0cc0508d794590b5ddcf4769834b17dd2b2fce8117626506ce55ca", "smt2_sha256": "f6d48e4290917d64068a5e9b8cb617e0404a17e0cd1f621bbfeca47d520b7abc", "verdict": "sat"}
+[int_zero_noop] unsat
+@@ {"ms": 0.04, "q": "int_zero_noop", "rlimit": 5000000, "smt2_raw_sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2", "smt2_sha256": "853c28b7c7ad8ad8a8e49f5db9342f740fb78ed2c27fc89657c17c67decd36e2", "verdict": "unsat"}

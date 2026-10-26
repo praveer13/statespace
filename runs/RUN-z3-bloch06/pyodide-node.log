@@ -1,0 +1,14 @@
+z3 5.3.1 rlimit=5000000
+[buggy_mid_outside] sat [high = 1879048192, low = 268435456]
+  replay ok: low=268435456 high=1879048192 (signed 32-bit; low + high wraps to -2147483648, the integers give 2147483648): 0 <= low <= high ok, low + high overflows ok, mid = -1073741824 is outside low..high ok
+@@ {"model": {"high": "1879048192", "low": "268435456"}, "model_signed": {"high": "1879048192", "low": "268435456"}, "ms": 25.51, "q": "buggy_mid_outside", "replay": "low=268435456 high=1879048192 (signed 32-bit; low + high wraps to -2147483648, the integers give 2147483648): 0 <= low <= high ok, low + high overflows ok, mid = -1073741824 is outside low..high ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "0a4f051b334d8a886570c804e09769a61f249d922eab756db8b963edffebb8cc", "smt2_sha256": "eac4a528ee8cdca0305ab83a2bb29453e4a012a05ec13c24bec40c31d7995698", "verdict": "sat"}
+[buggy_mid_below_zero] sat [high = 2147483647, low = 65]
+  replay ok: low=65 high=2147483647 (signed 32-bit; low + high wraps to -2147483584, the integers give 2147483712): 0 <= low <= high ok, low + high overflows ok, mid = -1073741792 is outside low..high ok, mid < 0 ok
+@@ {"model": {"high": "2147483647", "low": "65"}, "model_signed": {"high": "2147483647", "low": "65"}, "ms": 5.08, "q": "buggy_mid_below_zero", "replay": "low=65 high=2147483647 (signed 32-bit; low + high wraps to -2147483584, the integers give 2147483712): 0 <= low <= high ok, low + high overflows ok, mid = -1073741792 is outside low..high ok, mid < 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "cf775d8fc592356f4fe2e10b3fa14525114dbc41c79b38eb00416b5452e6dfbd", "smt2_sha256": "9b9b7dc71488586caaee31ca8e7d83203cc9835fb7e9f7518eacfa1fa76ef5fd", "verdict": "sat"}
+[fix_low_plus_half] unsat
+@@ {"ms": 42.97, "q": "fix_low_plus_half", "rlimit": 5000000, "smt2_raw_sha256": "9b803ac87278e0ca35d6074b301d471415d71f07e2d5adbfb9f712d0dc2cbb69", "smt2_sha256": "a5e80148d26ae321a8e63567b89b4c1e43a7816f9a0340a9597871ffa44caa88", "verdict": "unsat"}
+[fix_logical_shift] unsat
+@@ {"ms": 21.01, "q": "fix_logical_shift", "rlimit": 5000000, "smt2_raw_sha256": "adb116fdac1aaa253d5c990380544bbe3c718fc0f904debdad5269253e5e6448", "smt2_sha256": "d82b3e84b47d6a917f6398134f56eb15c117ed3b891885f10fe460162915af34", "verdict": "unsat"}
+[premises_satisfiable] sat [high = 0, low = 0]
+  replay ok: low=0 high=0: 0 <= low <= high ok
+@@ {"model": {"high": "0", "low": "0"}, "model_signed": {"high": "0", "low": "0"}, "ms": 1.23, "q": "premises_satisfiable", "replay": "low=0 high=0: 0 <= low <= high ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "1cb15264dfdaecef001552bff1d89172e035d715f9a5a8243a38e3a0d0a604f0", "smt2_sha256": "1cb15264dfdaecef001552bff1d89172e035d715f9a5a8243a38e3a0d0a604f0", "verdict": "sat"}

@@ -1,0 +1,543 @@
+TAP version 13
+# Subtest: the three taps (spine section 8.5; ASSESSMENT.md section 5.2)
+    # Subtest: guess is below 67%, think so 67 to 80%, sure above 80%
+    ok 1 - guess is below 67%, think so 67 to 80%, sure above 80%
+      ---
+      duration_ms: 1.34819
+      type: 'test'
+      ...
+    # Subtest: the payoffs are +1/0, +2/-2 and +3/-6, and an honest report maximizes the expected payoff
+    ok 2 - the payoffs are +1/0, +2/-2 and +3/-6, and an honest report maximizes the expected payoff
+      ---
+      duration_ms: 0.536873
+      type: 'test'
+      ...
+    # Subtest: payoffOf and signed write the earned payoff with its sign
+    ok 3 - payoffOf and signed write the earned payoff with its sign
+      ---
+      duration_ms: 0.184505
+      type: 'test'
+      ...
+    # Subtest: isConfidence accepts the three categories and nothing else
+    ok 4 - isConfidence accepts the three categories and nothing else
+      ---
+      duration_ms: 0.233105
+      type: 'test'
+      ...
+    1..4
+ok 1 - the three taps (spine section 8.5; ASSESSMENT.md section 5.2)
+  ---
+  duration_ms: 3.287165
+  type: 'suite'
+  ...
+# Subtest: the constants of the Mirror, each in one place
+    # Subtest: the minimum calls per band is 20 (spine section 8.5), z is 1.96 (ASSESSMENT.md section 6.4)
+    ok 1 - the minimum calls per band is 20 (spine section 8.5), z is 1.96 (ASSESSMENT.md section 6.4)
+      ---
+      duration_ms: 0.235634
+      type: 'test'
+      ...
+    # Subtest: an active study-month needs 4 distinct local days, and VRK30 counts from 30 days (spine section 2.3)
+    ok 2 - an active study-month needs 4 distinct local days, and VRK30 counts from 30 days (spine section 2.3)
+      ---
+      duration_ms: 0.113315
+      type: 'test'
+      ...
+    # Subtest: stated confidence is imputed from the band: midway between chance and 2/3, 0.73, 0.90 (ASSESSMENT.md section 5.6)
+    ok 3 - stated confidence is imputed from the band: midway between chance and 2/3, 0.73, 0.90 (ASSESSMENT.md section 5.6)
+      ---
+      duration_ms: 0.363434
+      type: 'test'
+      ...
+    1..3
+ok 2 - the constants of the Mirror, each in one place
+  ---
+  duration_ms: 1.060156
+  type: 'suite'
+  ...
+# Subtest: the shape of a called item: its chance and its bin (spine section 8.5)
+    # Subtest: k options print "1 in k"; a set of m statements prints 1 in 2^m; a constructed answer has no guessing floor
+    ok 1 - k options print "1 in k"; a set of m statements prints 1 in 2^m; a constructed answer has no guessing floor
+      ---
+      duration_ms: 0.33054
+      type: 'test'
+      ...
+    # Subtest: only a set sits in its own bin
+    ok 2 - only a set sits in its own bin
+      ---
+      duration_ms: 0.214023
+      type: 'test'
+      ...
+    # Subtest: isCallShape holds the counts to what a cell or a set can carry
+    ok 3 - isCallShape holds the counts to what a cell or a set can carry
+      ---
+      duration_ms: 0.359939
+      type: 'test'
+      ...
+    # Subtest: the shape and KC a call carries in data.call read back, and a malformed record reads as nothing
+    ok 4 - the shape and KC a call carries in data.call read back, and a malformed record reads as nothing
+      ---
+      duration_ms: 0.519824
+      type: 'test'
+      ...
+    1..4
+ok 3 - the shape of a called item: its chance and its bin (spine section 8.5)
+  ---
+  duration_ms: 1.681959
+  type: 'suite'
+  ...
+# Subtest: the diagnosis rule: at least 20 calls and an interval wholly outside the printed band (ASSESSMENT.md section 5.6)
+    # Subtest: sure, 18 of 30 right: 0.42-0.75, below the band, so a sentence
+    ok 1 - sure, 18 of 30 right: 0.42-0.75, below the band, so a sentence
+      ---
+      duration_ms: 8.418542
+      type: 'test'
+      ...
+    # Subtest: sure, 21 of 30 right: 0.52-0.83, the interval reaches the band, so nothing
+    ok 2 - sure, 21 of 30 right: 0.52-0.83, the interval reaches the band, so nothing
+      ---
+      duration_ms: 2.959313
+      type: 'test'
+      ...
+    # Subtest: sure, 18 of 20 right: 0.70-0.97, the interval overlaps the band, so nothing
+    ok 3 - sure, 18 of 20 right: 0.70-0.97, the interval overlaps the band, so nothing
+      ---
+      duration_ms: 1.393282
+      type: 'test'
+      ...
+    # Subtest: think so, 7 of 12 right: 0.32-0.81, fewer than 20 calls, so nothing (v1 said "at 80% right only 58%" from about this many)
+    ok 4 - think so, 7 of 12 right: 0.32-0.81, fewer than 20 calls, so nothing (v1 said "at 80% right only 58%" from about this many)
+      ---
+      duration_ms: 0.859944
+      type: 'test'
+      ...
+    # Subtest: 19 calls are too few however far outside the band they fall; 20 are enough
+    ok 5 - 19 calls are too few however far outside the band they fall; 20 are enough
+      ---
+      duration_ms: 2.555688
+      type: 'test'
+      ...
+    # Subtest: a band whose interval lies wholly above its printed band is also diagnosed (guess hits more often than 67%)
+    ok 6 - a band whose interval lies wholly above its printed band is also diagnosed (guess hits more often than 67%)
+      ---
+      duration_ms: 4.991152
+      type: 'test'
+      ...
+    # Subtest: think so can be diagnosed below its band too, and an interval inside the band says nothing
+    ok 7 - think so can be diagnosed below its band too, and an interval inside the band says nothing
+      ---
+      duration_ms: 8.974809
+      type: 'test'
+      ...
+    # Subtest: guess cannot be below its band, and sure cannot be above it
+    ok 8 - guess cannot be below its band, and sure cannot be above it
+      ---
+      duration_ms: 2.569423
+      type: 'test'
+      ...
+    # Subtest: a band carries the mean chance of its calls: where a blind guess would sit, which the screen draws the guess band from
+    ok 9 - a band carries the mean chance of its calls: where a blind guess would sit, which the screen draws the guess band from
+      ---
+      duration_ms: 1.144734
+      type: 'test'
+      ...
+    # Subtest: every band has a row, empty or not, with no rate when it holds no call
+    ok 10 - every band has a row, empty or not, with no rate when it holds no call
+      ---
+      duration_ms: 0.522729
+      type: 'test'
+      ...
+    1..10
+ok 4 - the diagnosis rule: at least 20 calls and an interval wholly outside the printed band (ASSESSMENT.md section 5.6)
+  ---
+  duration_ms: 35.775372
+  type: 'suite'
+  ...
+# Subtest: an interval against its band: touching the edge is reaching the band (a decision [D]: nothing is said)
+    # Subtest: wholly below, wholly above, and reaching, at the three printed bands
+    ok 1 - wholly below, wholly above, and reaching, at the three printed bands
+      ---
+      duration_ms: 0.189052
+      type: 'test'
+      ...
+    1..1
+ok 5 - an interval against its band: touching the edge is reaching the band (a decision [D]: nothing is said)
+  ---
+  duration_ms: 0.298038
+  type: 'suite'
+  ...
+# Subtest: resolution: the hit rate at sure minus the hit rate at guess, shown apart and only when both bands hold enough calls
+    # Subtest: both bands at the minimum: 0.80 at sure minus 0.40 at guess
+    ok 1 - both bands at the minimum: 0.80 at sure minus 0.40 at guess
+      ---
+      duration_ms: 2.901022
+      type: 'test'
+      ...
+    # Subtest: a band under the minimum on either side shows none, and the band between takes no part
+    ok 2 - a band under the minimum on either side shows none, and the band between takes no part
+      ---
+      duration_ms: 7.297522
+      type: 'test'
+      ...
+    1..2
+ok 6 - resolution: the hit rate at sure minus the hit rate at guess, shown apart and only when both bands hold enough calls
+  ---
+  duration_ms: 10.32425
+  type: 'suite'
+  ...
+# Subtest: bias: the imputed mean stated probability minus accuracy, with accuracy's Wilson interval
+    # Subtest: 20 sure calls with 15 right: bias 0.90 - 0.75, its interval 0.90 minus accuracy's interval
+    ok 1 - 20 sure calls with 15 right: bias 0.90 - 0.75, its interval 0.90 minus accuracy's interval
+      ---
+      duration_ms: 0.814016
+      type: 'test'
+      ...
+    # Subtest: the mean is imputed per tap and per item: guess is midway between the item's chance and 2/3
+    ok 2 - the mean is imputed per tap and per item: guess is midway between the item's chance and 2/3
+      ---
+      duration_ms: 0.720032
+      type: 'test'
+      ...
+    # Subtest: guess on a two-way item and on a constructed answer use that item's own chance
+    ok 3 - guess on a two-way item and on a constructed answer use that item's own chance
+      ---
+      duration_ms: 0.725985
+      type: 'test'
+      ...
+    # Subtest: bias is shown from 20 calls and not before
+    ok 4 - bias is shown from 20 calls and not before
+      ---
+      duration_ms: 1.392213
+      type: 'test'
+      ...
+    # Subtest: twenty calls spread over the bands show the bias although no band holds twenty (the two thresholds are separate)
+    ok 5 - twenty calls spread over the bands show the bias although no band holds twenty (the two thresholds are separate)
+      ---
+      duration_ms: 0.880644
+      type: 'test'
+      ...
+    1..5
+ok 7 - bias: the imputed mean stated probability minus accuracy, with accuracy's Wilson interval
+  ---
+  duration_ms: 4.725822
+  type: 'suite'
+  ...
+# Subtest: a multiple true/false set sits in its own bin, with its own chance (spine section 8.5)
+    # Subtest: sets and single answers are never pooled
+    ok 1 - sets and single answers are never pooled
+      ---
+      duration_ms: 1.934929
+      type: 'test'
+      ...
+    # Subtest: a set's guess is imputed from 1 in 32: midway between 1/32 and 2/3
+    ok 2 - a set's guess is imputed from 1 in 32: midway between 1/32 and 2/3
+      ---
+      duration_ms: 0.986464
+      type: 'test'
+      ...
+    1..2
+ok 8 - a multiple true/false set sits in its own bin, with its own chance (spine section 8.5)
+  ---
+  duration_ms: 3.060553
+  type: 'suite'
+  ...
+# Subtest: only post-instruction, unassisted calls count (ASSESSMENT.md sections 2.5, 3.2 and 5.6)
+    # Subtest: a call before first learning is left out, and one at or after it counts
+    ok 1 - a call before first learning is left out, and one at or after it counts
+      ---
+      duration_ms: 0.485526
+      type: 'test'
+      ...
+    # Subtest: a call is before instruction while its KC has no first learning at all
+    ok 2 - a call is before instruction while its KC has no first learning at all
+      ---
+      duration_ms: 0.177548
+      type: 'test'
+      ...
+    # Subtest: first learning is the first attempt at the exit item; a later attempt does not move it
+    ok 3 - first learning is the first attempt at the exit item; a later attempt does not move it
+      ---
+      duration_ms: 0.226547
+      type: 'test'
+      ...
+    # Subtest: a KC credited by a test-out is learned at its confirmation (ASSESSMENT.md section 3.2)
+    ok 4 - a KC credited by a test-out is learned at its confirmation (ASSESSMENT.md section 3.2)
+      ---
+      duration_ms: 0.323771
+      type: 'test'
+      ...
+    # Subtest: a first-contact call (Boot's) never counts, even after the KC is learned (spine section 12 item 33)
+    ok 5 - a first-contact call (Boot's) never counts, even after the KC is learned (spine section 12 item 33)
+      ---
+      duration_ms: 0.258471
+      type: 'test'
+      ...
+    # Subtest: assisted calls are tallied apart and never pooled with the learner's own
+    ok 6 - assisted calls are tallied apart and never pooled with the learner's own
+      ---
+      duration_ms: 1.349574
+      type: 'test'
+      ...
+    # Subtest: an agent's call, a seen one and a call without a KC, a shape or first learning are left out, each by its own reason
+    ok 7 - an agent's call, a seen one and a call without a KC, a shape or first learning are left out, each by its own reason
+      ---
+      duration_ms: 0.606109
+      type: 'test'
+      ...
+    # Subtest: an ungraded call (no ok) is no miss and no hit: it is left out
+    ok 8 - an ungraded call (no ok) is no miss and no hit: it is left out
+      ---
+      duration_ms: 0.234859
+      type: 'test'
+      ...
+    # Subtest: a graded item the learner called counts like a call, when it says its shape and KC (a "called item")
+    ok 9 - a graded item the learner called counts like a call, when it says its shape and KC (a "called item")
+      ---
+      duration_ms: 0.246016
+      type: 'test'
+      ...
+    # Subtest: events at or after `now` are not read
+    ok 10 - events at or after `now` are not read
+      ---
+      duration_ms: 0.246667
+      type: 'test'
+      ...
+    # Subtest: a call is read by its own instant, whatever offset it carries
+    ok 11 - a call is read by its own instant, whatever offset it carries
+      ---
+      duration_ms: 0.319348
+      type: 'test'
+      ...
+    1..11
+ok 9 - only post-instruction, unassisted calls count (ASSESSMENT.md sections 2.5, 3.2 and 5.6)
+  ---
+  duration_ms: 4.810161
+  type: 'suite'
+  ...
+# Subtest: the Mirror is a function of the set of events
+    # Subtest: order, duplicates and merges give the same Mirror (a double import, a merge and a stale tab)
+    ok 1 - order, duplicates and merges give the same Mirror (a double import, a merge and a stale tab)
+      ---
+      duration_ms: 169.473592
+      type: 'test'
+      ...
+    1..1
+ok 10 - the Mirror is a function of the set of events
+  ---
+  duration_ms: 169.550699
+  type: 'suite'
+  ...
+# Subtest: the first call on a question is the one every reader finds
+    # Subtest: firstCallOf and firstCalls give the earliest call in fold order, whatever order the events arrive in and however often
+    ok 1 - firstCallOf and firstCalls give the earliest call in fold order, whatever order the events arrive in and however often
+      ---
+      duration_ms: 70.650286
+      type: 'test'
+      ...
+    # Subtest: a question called from two devices has one call in either merge order
+    ok 2 - a question called from two devices has one call in either merge order
+      ---
+      duration_ms: 33.470242
+      type: 'test'
+      ...
+    # Subtest: the generated instance is its ref and its seed: another seed is another question, the same seed is the same one
+    ok 3 - the generated instance is its ref and its seed: another seed is another question, the same seed is the same one
+      ---
+      duration_ms: 0.287468
+      type: 'test'
+      ...
+    1..3
+ok 11 - the first call on a question is the one every reader finds
+  ---
+  duration_ms: 105.002437
+  type: 'suite'
+  ...
+# Subtest: the log is a set by id: an event twice is one, and two records of one id are decided by the canonical rule
+    # Subtest: a double import counts once, in any order
+    ok 1 - a double import counts once, in any order
+      ---
+      duration_ms: 1.295861
+      type: 'test'
+      ...
+    # Subtest: two records that share an id and differ: the one whose canonical JSON is smaller, whichever arrives first
+    ok 2 - two records that share an id and differ: the one whose canonical JSON is smaller, whichever arrives first
+      ---
+      duration_ms: 0.627276
+      type: 'test'
+      ...
+    1..2
+ok 12 - the log is a set by id: an event twice is one, and two records of one id are decided by the canonical rule
+  ---
+  duration_ms: 2.020806
+  type: 'suite'
+  ...
+# Subtest: a later call changes nothing the Mirror shows
+    # Subtest: whatever it says and whoever writes it, a second call on a called question is left out
+    ok 1 - whatever it says and whoever writes it, a second call on a called question is left out
+      ---
+      duration_ms: 62.301327
+      type: 'test'
+      ...
+    # Subtest: a first call that was left out uses the question up: a later call never counts in its place
+    ok 2 - a first call that was left out uses the question up: a later call never counts in its place
+      ---
+      duration_ms: 0.390635
+      type: 'test'
+      ...
+    # Subtest: the call that counts is the earliest in fold order even when a later-written one carries an earlier instant
+    ok 3 - the call that counts is the earliest in fold order even when a later-written one carries an earlier instant
+      ---
+      duration_ms: 0.262124
+      type: 'test'
+      ...
+    1..3
+ok 13 - a later call changes nothing the Mirror shows
+  ---
+  duration_ms: 63.084516
+  type: 'suite'
+  ...
+# Subtest: planCall: the sheet never plans a second call
+    # Subtest: it plans a write exactly when the log holds no call on the question, and says which call is there otherwise
+    ok 1 - it plans a write exactly when the log holds no call on the question, and says which call is there otherwise
+      ---
+      duration_ms: 21.744553
+      type: 'test'
+      ...
+    # Subtest: what it plans is a valid call event, and planning again after it is written finds that event
+    ok 2 - what it plans is a valid call event, and planning again after it is written finds that event
+      ---
+      duration_ms: 17.878568
+      type: 'test'
+      ...
+    # Subtest: stale tabs: however many plan a write from an old view, one call counts, the same one in every tab
+    ok 3 - stale tabs: however many plan a write from an old view, one call counts, the same one in every tab
+      ---
+      duration_ms: 3.360592
+      type: 'test'
+      ...
+    # Subtest: a call is written with everything the Mirror reads: its shape and KC travel in data.call, and extra data is kept beside them
+    ok 4 - a call is written with everything the Mirror reads: its shape and KC travel in data.call, and extra data is kept beside them
+      ---
+      duration_ms: 0.190477
+      type: 'test'
+      ...
+    1..4
+ok 14 - planCall: the sheet never plans a second call
+  ---
+  duration_ms: 43.302904
+  type: 'suite'
+  ...
+# Subtest: VRK30: KCs whose latest qualifying event, 30 days or more after first learning, is correct (ASSESSMENT.md section 3.6)
+    # Subtest: a fresh correct answer 30 days after first learning counts; one 29 days after does not
+    ok 1 - a fresh correct answer 30 days after first learning counts; one 29 days after does not
+      ---
+      duration_ms: 5.213629
+      type: 'test'
+      ...
+    # Subtest: the 30 days are exact elapsed time from the first-learning instant, whatever offset either carries
+    ok 2 - the 30 days are exact elapsed time from the first-learning instant, whatever offset either carries
+      ---
+      duration_ms: 0.938533
+      type: 'test'
+      ...
+    # Subtest: a KC counts while its latest qualifying event is correct: a later miss removes it, a later match restores it
+    ok 3 - a KC counts while its latest qualifying event is correct: a later miss removes it, a later match restores it
+      ---
+      duration_ms: 1.867924
+      type: 'test'
+      ...
+    # Subtest: only fresh events qualify: not an assisted, agent or seen one, an ungraded one, a call, an authored cell, or a KC never learned
+    ok 4 - only fresh events qualify: not an assisted, agent or seen one, an ungraded one, a call, an authored cell, or a KC never learned
+      ---
+      duration_ms: 0.862664
+      type: 'test'
+      ...
+    # Subtest: a probe, a Prove-it prediction and a generated audit variant are fresh too
+    ok 5 - a probe, a Prove-it prediction and a generated audit variant are fresh too
+      ---
+      duration_ms: 0.912091
+      type: 'test'
+      ...
+    # Subtest: the accuracy over all qualifying events: 41 of 52 shows as 0.79 with Wilson 0.66-0.88 (ASSESSMENT.md section 3.6)
+    ok 6 - the accuracy over all qualifying events: 41 of 52 shows as 0.79 with Wilson 0.66-0.88 (ASSESSMENT.md section 3.6)
+      ---
+      duration_ms: 5.973484
+      type: 'test'
+      ...
+    # Subtest: events at or after `now` are not read, and a KC learned after the event it would qualify is not learned yet
+    ok 7 - events at or after `now` are not read, and a KC learned after the event it would qualify is not learned yet
+      ---
+      duration_ms: 0.45863
+      type: 'test'
+      ...
+    # Subtest: settled KCs are marked from the caller's set and never decided here
+    ok 8 - settled KCs are marked from the caller's set and never decided here
+      ---
+      duration_ms: 0.611877
+      type: 'test'
+      ...
+    # Subtest: a test-out confirmation is first learning, so 30 days run from it
+    ok 9 - a test-out confirmation is first learning, so 30 days run from it
+      ---
+      duration_ms: 0.497109
+      type: 'test'
+      ...
+    1..9
+ok 15 - VRK30: KCs whose latest qualifying event, 30 days or more after first learning, is correct (ASSESSMENT.md section 3.6)
+  ---
+  duration_ms: 18.757897
+  type: 'suite'
+  ...
+# Subtest: the rate per active study-month (spine section 2.3; ASSESSMENT.md section 3.6)
+    # Subtest: a month is active with graded own work on at least 4 distinct local days, and three days are not enough
+    ok 1 - a month is active with graded own work on at least 4 distinct local days, and three days are not enough
+      ---
+      duration_ms: 1.561114
+      type: 'test'
+      ...
+    # Subtest: only graded own work counts: not help, an agent, an ungraded event or an uncredited one
+    ok 2 - only graded own work counts: not help, an agent, an ungraded event or an uncredited one
+      ---
+      duration_ms: 1.180485
+      type: 'test'
+      ...
+    # Subtest: a month is the local date the event froze, so travel never moves it
+    ok 3 - a month is the local date the event froze, so travel never moves it
+      ---
+      duration_ms: 0.22909
+      type: 'test'
+      ...
+    # Subtest: the rate is the count over the active months, null while none is active (a declared break dilutes nothing)
+    ok 4 - the rate is the count over the active months, null while none is active (a declared break dilutes nothing)
+      ---
+      duration_ms: 0.826551
+      type: 'test'
+      ...
+    1..4
+ok 16 - the rate per active study-month (spine section 2.3; ASSESSMENT.md section 3.6)
+  ---
+  duration_ms: 4.037531
+  type: 'suite'
+  ...
+# Subtest: VRK30 is a function of the set of events
+    # Subtest: order and duplicates change nothing
+    ok 1 - order and duplicates change nothing
+      ---
+      duration_ms: 43.985996
+      type: 'test'
+      ...
+    1..1
+ok 17 - VRK30 is a function of the set of events
+  ---
+  duration_ms: 44.046143
+  type: 'suite'
+  ...
+1..17
+# tests 69
+# suites 17
+# pass 69
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 377.34838

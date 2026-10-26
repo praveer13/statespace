@@ -1,14 +1,18 @@
 {
   // See packages/rng/tsconfig.json: sources compile without DOM or Node types; tests compile separately.
   // `paths` maps the one specifier the vendored fsrs.ts imports from kernelspace's learner types.
+  // The event types come from @statespace/ledger, which brings the vendored rng.ts into the program: as in packages/ledger,
+  // rng's one ambient declaration is included, and exactOptionalPropertyTypes matches packages/schema, whose generated
+  // types the event records are built from.
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2022"],
     "types": [],
+    "exactOptionalPropertyTypes": true,
     "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.learner.tsbuildinfo",
     "paths": {
       "@/lib/learner/types": ["./src/schedule/kernelspace-types.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../rng/src/ambient.d.ts"]
 }

@@ -1,0 +1,17 @@
+GATE-runs self-check: copy the registry and the scanned tree to a scratch directory, plant one fault at a time, require the gate to fail on it
+  ok    the untouched copy: passes the fast lane
+  ok    planted: an unresolved {{run:}} in learner copy not labeled draft: fails as it should: references content/stages/S1/L1.md:1:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist, in learner copy not labeled draft
+  ok    planted: an unresolved [X RUN-id] tag in a document: fails as it should: references docs/PLAN.md:1191:39: [X RUN-does-not-exist] claims an executed run, but runs/RUN-does-not-exist.json does not exist (record the run, or write {{run:RUN-does-not-
+  ok    planted: a malformed {{run:}} ID: fails as it should: references docs/PLAN.md:1191:5: {{run:run_bad_id}} is not a run ID (RUN-{kebab})
+  ok    planted: a value reference to a path the record does not have: fails as it should: references docs/PLAN.md:1191:14: {{run:RUN-z3-starter#values.no_such_value}}: the record has nothing at values.no_such_value
+  ok    planted: an output file under runs/ tampered with: fails as it should: registry runs/RUN-tlc-atomic.json: outputs/0: output runs/RUN-tlc-atomic/w2-default.log has SHA-256 0e2efc055864..., the record says bacb66324cd5...
+  ok    planted: a record whose id is not its file name: fails as it should: registry runs/RUN-z3-starter-copy.json: id "RUN-z3-starter" is not the file name RUN-z3-starter-copy
+  ok    planted: an imported record with a null field it does not explain: fails as it should: registry runs/RUN-z3-starter.json: an imported record leaves argv null without an unrecorded entry
+  ok    planted: a record that breaks run@1 (exit_code as a string): fails as it should: registry runs/RUN-tlc-full.json: does not validate against run@1: /exit_code type (must be integer or null)
+  ok    planted: a primary_config that names no configuration: fails as it should: registry runs/RUN-tlc-full.json: primary_config "nope" names no configuration
+  ok    control: format placeholders in code spans pass: adds no finding, as it should: placeholders are exempt
+  ok    control: a value reference that resolves passes: adds no finding, as it should: the value exists
+  ok    control: an unresolved {{run:}} in copy labeled draft passes the fast lane: adds no finding, as it should: a draft may wait for its run
+  ok    release lane: the same draft fails --release: fails as it should: references content/stages/S1/L1.md:3:38: {{run:RUN-does-not-exist}} does not resolve: runs/RUN-does-not-exist.json does not exist (the release lane resolves every reference)
+  ok    release lane: an input changed since its run passes the fast lane and fails --release: the fast lane adds 0 findings (a warning only); the release lane adds runs/RUN-tlc-atomic.json: input research/spikes/tla/A3.cfg changed since the run (re-record before release
+GATE-runs self-check: PASS (15 of 15 held)

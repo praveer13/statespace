@@ -1,0 +1,8 @@
+(set-option :produce-unsat-cores true)
+(declare-const amount Int)
+(define-fun MAX_TRANSFER () Int 0)
+(assert (> amount 0))
+(declare-const under-max Bool)
+(assert (=> under-max (<= amount MAX_TRANSFER)))
+(check-sat-assuming (under-max))
+(get-unsat-core)

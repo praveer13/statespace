@@ -1,0 +1,51 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.3",
+  "title": "A refund rule that mints money",
+  "draft": true,
+  "kcs": [
+    "KC-1.two-state-property",
+    "KC-1.witness-class"
+  ],
+  "found_in": {
+    "lesson": "S1.L4"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L4"
+    ]
+  },
+  "violates": "A refund never creates money: the total after the refund is at most the total before, `total′ ≤ total`.",
+  "because": "The clamp keeps the merchant's balance at zero instead of rejecting a refund above it, so the customer is credited in full while the merchant gives less.",
+  "class": "a clamp where a rejection belongs",
+  "cured_by": {
+    "text": "Reject a refund above the merchant's balance, so that the debit equals the credit.",
+    "claim": "CL-1.4"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-refund-mint",
+      "query": "clamp_mint",
+      "direction": "violation"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-refund-mint",
+        "query": "patch_exact_witness_mint",
+        "caption": "A patch that rejects only the smallest overdrawing refund leaves another witness: it fixes the instance and not the class."
+      },
+      {
+        "run": "RUN-z3-refund-mint",
+        "query": "fixed_mint",
+        "caption": "The rule that rejects a refund above the merchant's balance has no witness."
+      }
+    ],
+    "minimal": {
+      "kind": "optimize",
+      "run": "RUN-z3-refund-mint",
+      "query": "minimize_minted",
+      "objective": "minted",
+      "confirm": "no_smaller_mint"
+    }
+  }
+}

@@ -1,0 +1,262 @@
+Z3 version 5.3.1 - 64 bit
+== cli-unsat: z3 -smt2 -model rlimit=5000000 cli-unsat.smt2
+unsat
+(:reason-unknown "")
+-- exit 0
+== cli-sat-model: z3 -smt2 -model rlimit=5000000 cli-sat-model.smt2
+sat
+(:reason-unknown "")
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== cli-unknown-rlimit: z3 -smt2 -model rlimit=5000000 cli-unknown-rlimit.smt2
+unknown
+(:reason-unknown "canceled")
+-- exit 0
+== cli-bitvector-model: z3 -smt2 -model rlimit=5000000 cli-bitvector-model.smt2
+sat
+(
+  (define-fun b () (_ BitVec 64)
+    #x7fffdfffffffffff)
+  (define-fun m () (_ BitVec 64)
+    #x7ffffffffffffffb)
+)
+-- exit 0
+== cli-error-then-sat: z3 -smt2 -model rlimit=5000000 cli-error-then-sat.smt2
+(error "line 2 column 11: unknown constant q")
+sat
+(
+  (define-fun a () Int
+    0)
+)
+-- exit 1
+== cli-not-boolean-then-sat: z3 -smt2 -model rlimit=5000000 cli-not-boolean-then-sat.smt2
+(error "line 2 column 15: invalid assert command, term is not Boolean")
+sat
+(
+  (define-fun a () Int
+    0)
+)
+-- exit 1
+== cli-syntax-error-no-answer: z3 -smt2 -model rlimit=5000000 cli-syntax-error-no-answer.smt2
+(error "line 3 column 0: invalid assert command, ')' expected")
+-- exit 1
+== cli-model-asked-after-unsat: z3 -smt2 -model rlimit=5000000 cli-model-asked-after-unsat.smt2
+unsat
+(error "line 5 column 10: model is not available")
+-- exit 1
+== cli-rlimit-too-large: z3 -smt2 -model rlimit=4294967296 cli-rlimit-too-large.smt2
+ERROR: invalid value '4294967296' for unsigned int parameter 'rlimit'
+-- exit 110
+== cli-check-sat-assuming: z3 -smt2 -model rlimit=5000000 cli-check-sat-assuming.smt2
+unsat
+-- exit 0
+== cli-assert-after-question: z3 -smt2 -model rlimit=5000000 cli-assert-after-question.smt2
+sat
+-- exit 0
+== cli-script-rlimit-overrides: z3 -smt2 -model rlimit=5000000 cli-script-rlimit-overrides.smt2
+-- stopped after 3 s by the capture's wall-clock limit
+== cli-printed-word-before-question: z3 -smt2 -model rlimit=5000000 cli-printed-word-before-question.smt2
+sat
+(error "line 3 column 21: unknown constant nonexistent")
+-- exit 1
+== cli-stray-paren-after-echo: z3 -smt2 -model rlimit=5000000 cli-stray-paren-after-echo.smt2
+unsat
+-- exit 0
+== cli-block-comment-hides-echo: z3 -smt2 -model rlimit=5000000 cli-block-comment-hides-echo.smt2
+unsat
+(error "line 4 column 1: unexpected end of quoted symbol")
+-- exit 1
+== cli-backslash-in-quoted-symbol: z3 -smt2 -model rlimit=5000000 cli-backslash-in-quoted-symbol.smt2
+(error "line 1 column 18: invalid character '\' in quoted symbol")
+(error "line 1 column 18: unexpected character")
+sat
+(
+)
+-- exit 1
+== cli-named-premises: z3 -smt2 -model rlimit=5000000 cli-named-premises.smt2
+unsat
+(amount-pos under-max)
+-- exit 0
+== cli-nonlinear-in-qf-lia-then-sat: z3 -smt2 -model rlimit=5000000 cli-nonlinear-in-qf-lia-then-sat.smt2
+(error "line 3 column 21: logic does not support nonlinear arithmetic")
+sat
+(
+  (define-fun x () Int
+    0)
+)
+-- exit 1
+== cli-nul-in-comment: z3 -smt2 -model rlimit=5000000 cli-nul-in-comment.smt2
+unsat
+-- exit 0
+== cli-cr-in-comment: z3 -smt2 -model rlimit=5000000 cli-cr-in-comment.smt2
+sat
+(:reason-unknown "")
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== cli-crlf-string: z3 -smt2 -model rlimit=5000000 cli-crlf-string.smt2
+sat
+(
+  (define-fun s () String
+    "a\u{d}\u{a}b")
+)
+-- exit 0
+== cli-dimacs-prefix: z3 -smt2 -model rlimit=5000000 cli-dimacs-prefix.smt2
+(error "line 1 column 1: invalid command, '(' expected")
+sat
+(
+)
+-- exit 1
+== cli-named-assumption: z3 -smt2 -model rlimit=5000000 cli-named-assumption.smt2
+unsat
+((<= amount 0))
+-- exit 0
+== cli-quoted-annotation-assumption: z3 -smt2 -model rlimit=5000000 cli-quoted-annotation-assumption.smt2
+unsat
+-- exit 0
+== cli-assumed-constant: z3 -smt2 -model rlimit=5000000 cli-assumed-constant.smt2
+unsat
+(under-max)
+-- exit 0
+== cli-get-value-after-sat: z3 -smt2 -model rlimit=5000000 cli-get-value-after-sat.smt2
+sat
+(:reason-unknown "")
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+((a 0)
+ (b 0)
+ (amount 1))
+(- 1)
+()
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== cli-produce-models-off: z3 -smt2 -model rlimit=5000000 cli-produce-models-off.smt2
+sat
+(:reason-unknown "")
+-- exit 0
+== cli-model-off: z3 -smt2 -model rlimit=5000000 cli-model-off.smt2
+sat
+(:reason-unknown "")
+-- exit 0
+== cli-model-v1-text: z3 -smt2 -model rlimit=5000000 cli-model-v1-text.smt2
+sat
+(:reason-unknown "")
+"b -> 0
+amount -> 1
+a -> 0"
+-- exit 0
+== api-unsat: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-unsat.smt2
+unsat
+-- exit 0
+== api-sat-model: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-sat-model.smt2
+sat
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== api-unknown-rlimit: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-unknown-rlimit.smt2
+unknown
+(:reason-unknown "canceled")
+-- exit 0
+== api-error: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-error.smt2
+(error "line 2 column 11: unknown constant q")
+-- exit 1
+== api-check-sat-assuming: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-check-sat-assuming.smt2
+unsat
+-- exit 0
+== api-named-premises: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-named-premises.smt2
+unsat
+-- exit 0
+== api-nonlinear-in-qf-lia: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-nonlinear-in-qf-lia.smt2
+(error "line 3 column 21: logic does not support nonlinear arithmetic")
+-- exit 1
+== api-cr-in-comment: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-cr-in-comment.smt2
+sat
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== api-crlf-string: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-crlf-string.smt2
+sat
+(
+  (define-fun s () String
+    "a\u{d}\u{a}b")
+)
+-- exit 0
+== api-assumed-constant: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-assumed-constant.smt2
+unsat
+-- exit 0
+== api-get-value-after-sat: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-get-value-after-sat.smt2
+sat
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+-- exit 0
+== parse_smt2_string reading of api-named-premises (the api entry's reading before Solver.from_string)
+sat
+== Solver.from_string reading of cli-nul-in-comment (why check_script refuses a NUL)
+sat
+== Solver.from_string reading of cli-dimacs-prefix (why check_script refuses a form outside any command)
+unsat
+== Path.read_text reading of cli-cr-in-comment (the api runner's reading before it read bytes)
+unsat
+== parse_smt2_string reading of cli-named-assumption's assumption (why check_script refuses an annotation in the question)
+assumption (! (<= amount MAX_TRANSFER) :named under-max) read as (=> under-max (<= amount 0))
+sat
+== Solver.from_string reading of cli-produce-models-off, with its model (why check_script refuses models turned off)
+sat
+(define-fun b () Int
+  0)
+(define-fun amount () Int
+  1)
+(define-fun a () Int
+  0)
+== Solver.from_string reading of cli-model-v1-text, with its model (why check_script refuses models printed as text)
+sat
+(define-fun b () Int
+  0)
+(define-fun amount () Int
+  1)
+(define-fun a () Int
+  0)

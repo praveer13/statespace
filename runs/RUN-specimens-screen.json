@@ -1,0 +1,470 @@
+{
+  "id": "RUN-specimens-screen",
+  "title": "The specimen screen as it stands: its tests and the cabinet's freshness on the host, and the screen in Chromium, Firefox and WebKit at 320, 360 and 1280 px in both themes with axe, target sizes, the keyboard and the route over a real IndexedDB",
+  "task": "W1-T16",
+  "origin": "recorded",
+  "engine": "playwright",
+  "version": "1.63.0",
+  "version_string": "Playwright 1.63.0 in mcr.microsoft.com/playwright:v1.63.0-noble; chromium 153.0.8010.12, firefox 155.0, webkit 26.6; axe-core 4.14.0",
+  "binary": null,
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-26T06:22:15.380Z",
+  "started_at": "2026-10-26T06:21:13.737Z",
+  "duration_s": 61.625,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=4g",
+    "--network",
+    "none",
+    "--name",
+    "w1t16-screen-browsers",
+    "-v",
+    "<repo>:/repo:ro",
+    "-v",
+    "<sandbox>/dist:/dist:ro",
+    "-v",
+    "<sandbox>/out:/out",
+    "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "node",
+    "/repo/scripts/spikes/W1-T16/harness/check.mjs",
+    "/dist",
+    "/out",
+    "/statespace/"
+  ],
+  "inputs": [
+    {
+      "sha256": "ace7773e315f755f42e5e273974e83db10160cfb5913e0406d87bf5bb3e3e96e",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 27,
+      "path": "apps/site/src/screens/specimens",
+      "role": "the screen: its model, components, styles, tests and the cabinet it loads"
+    },
+    {
+      "sha256": "316786ad103508d86440626e8a28a1bc19b83bf2bc9d2e4748860632e6f6ddb4",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 18,
+      "path": "scripts/spikes/W1-T16",
+      "role": "the builder, the internal-name guard, the fixtures generator, the replay script, their tests and the browser harness"
+    },
+    {
+      "sha256": "40f5426e1c4ed614a87a2deef2272f75e6e4dc87ddab23db48614ea0e05e98c0",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 11,
+      "path": "content/specimens",
+      "role": "the specimen records the cabinet is built from"
+    },
+    {
+      "path": "schemas/specimen.schema.json",
+      "sha256": "d168da8fbd820067cd622484e0e1903d506f469b9b768e315ccaee5ab01202c1",
+      "bytes": 14390,
+      "role": "the schema of the records"
+    },
+    {
+      "path": "content/glossary.yaml",
+      "sha256": "dcbbc6277cc413b08398c569659b49c725dbc9114d536cf1519949a665d2e655",
+      "bytes": 9658,
+      "role": "the glossary whose internal names the builder and the render tests hold every word to (W1-T38's file)"
+    },
+    {
+      "path": "scripts/spikes/W1-T16/record-screen.mjs",
+      "sha256": "6fa88a514cc16648bc23776de08ba84c1a521e67313133f4c50033e6576a08df",
+      "bytes": 16091,
+      "role": "recording script"
+    },
+    {
+      "path": "<sandbox>/dist",
+      "sha256": "2c54f284802320a0c2678b75e11de05f792257f40055dffcf0085e69c2028f73",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 21,
+      "role": "the built harness the browsers loaded"
+    }
+  ],
+  "budget": {
+    "container_memory": "4g",
+    "network": "none: the image, node_modules and the built harness are local",
+    "widths_px": [
+      320,
+      360,
+      1280
+    ],
+    "themes": [
+      "light",
+      "night"
+    ],
+    "viewport_height_px": 900,
+    "minimum_target_px": 44
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "54 axe and layout runs, 6 keyboard walks, 6 route checks; 0 failures"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-specimens-screen/screen-tests.log",
+      "sha256": "009b5076d626b3ff5e4ba757029d36ccfcc03a6e41800c1f7836d460b67da734",
+      "bytes": 17804,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/script-tests.log",
+      "sha256": "d589bbbd94041baa9cf4e84d3ef750e3953cc17ef585e2e80e6743aca04723f0",
+      "bytes": 12001,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/cabinet-fresh.log",
+      "sha256": "daaf60c52524a61bd62e711fdfde95d1e06b6ecababb1d4045b0297bc912bdeb",
+      "bytes": 115,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/fixtures-fresh.log",
+      "sha256": "8f83ec5cc23b3603c4b9d5b72e58712ccbeed3982e3f3bcf130e77f6dcedc120",
+      "bytes": 87,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/harness-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/browsers.log",
+      "sha256": "05eec2ef2f0bfc22a4aefb4e0e55779cc118c5c909efc57337c41be5cf9dec02",
+      "bytes": 69,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-specimens-screen/browsers-report.json",
+      "sha256": "2a20b4025082c231a06d67fe4609cf02df8822d7759cde4d4352ef265ef7deed",
+      "bytes": 19315,
+      "kind": "report"
+    }
+  ],
+  "values": {
+    "browsers": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    },
+    "widths_px": [
+      320,
+      360,
+      1280
+    ],
+    "themes": [
+      "light",
+      "night"
+    ],
+    "layout_and_axe_runs": 54,
+    "axe_serious_or_critical": 0,
+    "sideways_scroll_px_max": 0,
+    "controls_under_44_px": 0,
+    "faces_checked": [
+      "Archivo",
+      "Source Serif 4",
+      "JuliaMono"
+    ],
+    "faces_loaded_in_every_run_that_checks_them": [
+      "Archivo",
+      "JuliaMono",
+      "Source Serif 4"
+    ],
+    "runs_that_check_faces": 18,
+    "labels_listed_when_every_specimen_is_held": [
+      10
+    ],
+    "keyboard_walks": 6,
+    "route_checks": 6,
+    "failures": 0,
+    "screen_tests": {
+      "tests": 67,
+      "pass": 67,
+      "fail": 0
+    },
+    "script_tests": {
+      "tests": 43,
+      "pass": 43,
+      "fail": 0
+    },
+    "tools": {
+      "playwright": "1.63.0",
+      "axe-core": "4.14.0",
+      "vite": "7.3.7"
+    }
+  },
+  "checks": [
+    {
+      "id": "screen-tests-pass",
+      "pass": true
+    },
+    {
+      "id": "script-tests-pass",
+      "pass": true
+    },
+    {
+      "id": "cabinet-is-fresh",
+      "pass": true
+    },
+    {
+      "id": "fixtures-are-fresh",
+      "pass": true
+    },
+    {
+      "id": "harness-builds",
+      "pass": true
+    },
+    {
+      "id": "browsers-report-no-failure",
+      "pass": true
+    },
+    {
+      "id": "three-engines",
+      "pass": true
+    },
+    {
+      "id": "three-widths-two-themes",
+      "pass": true
+    },
+    {
+      "id": "axe-no-serious-or-critical",
+      "pass": true
+    },
+    {
+      "id": "no-sideways-scroll-and-no-small-control",
+      "pass": true
+    },
+    {
+      "id": "three-faces-loaded",
+      "pass": true
+    },
+    {
+      "id": "keyboard-walks-and-route-checks-ran",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "docker": "Docker version 29.1.3, build v29.1.3"
+  },
+  "primary_config": "browsers",
+  "configs": [
+    {
+      "id": "screen-tests",
+      "origin": "recorded",
+      "purpose": "the screen's unit and render tests: the model, the evidence resolver with planted faults, the status rules and the markup",
+      "started_at": "2026-10-26T06:21:13.737Z",
+      "duration_s": 0.658,
+      "argv": [
+        "node",
+        "--test",
+        "apps/site/src/screens/specimens/test/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "# tests 67",
+        "# pass 67",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/screen-tests.log",
+          "sha256": "009b5076d626b3ff5e4ba757029d36ccfcc03a6e41800c1f7836d460b67da734",
+          "bytes": 17804,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "script-tests",
+      "origin": "recorded",
+      "purpose": "the tests of the cabinet's builder, the internal-name guard, the schema fixtures and the replay run",
+      "started_at": "2026-10-26T06:21:14.397Z",
+      "duration_s": 3.334,
+      "argv": [
+        "node",
+        "--test",
+        "scripts/spikes/W1-T16/cabinet.test.mjs",
+        "scripts/spikes/W1-T16/words.test.mjs",
+        "scripts/spikes/W1-T16/fixtures.test.mjs",
+        "scripts/spikes/W1-T16/replay.test.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "# tests 43",
+        "# pass 43",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/script-tests.log",
+          "sha256": "d589bbbd94041baa9cf4e84d3ef750e3953cc17ef585e2e80e6743aca04723f0",
+          "bytes": 12001,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "cabinet-fresh",
+      "origin": "recorded",
+      "purpose": "the committed cabinet is what content/specimens/ and runs/ build",
+      "started_at": "2026-10-26T06:21:17.732Z",
+      "duration_s": 0.189,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T16/build-cabinet.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "build-cabinet: apps/site/src/screens/specimens/data/cabinet.generated.json is what 10 records and their runs build"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/cabinet-fresh.log",
+          "sha256": "daaf60c52524a61bd62e711fdfde95d1e06b6ecababb1d4045b0297bc912bdeb",
+          "bytes": 115,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fixtures-fresh",
+      "origin": "recorded",
+      "purpose": "the committed specimen@1 fixtures are what the generator writes",
+      "started_at": "2026-10-26T06:21:17.921Z",
+      "duration_s": 0.039,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T16/make-schema-fixtures.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "make-schema-fixtures: schemas/fixtures/specimen/ is what this script writes (66 files)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/fixtures-fresh.log",
+          "sha256": "8f83ec5cc23b3603c4b9d5b72e58712ccbeed3982e3f3bcf130e77f6dcedc120",
+          "bytes": 87,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "harness-build",
+      "origin": "recorded",
+      "purpose": "the harness built with Vite: the real screen, and the real route over the real IndexedDB adapter, with the site's fonts and a project base path",
+      "started_at": "2026-10-26T06:21:17.960Z",
+      "duration_s": 1.516,
+      "argv": [
+        "npx",
+        "vite",
+        "build",
+        "-c",
+        "scripts/spikes/W1-T16/harness/vite.config.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/harness-build.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "browsers",
+      "origin": "recorded",
+      "purpose": "the harness in Chromium, Firefox and WebKit, inside the pinned image with no network: layout, axe, target sizes, the keyboard, a fragment link and the route over a real IndexedDB",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T06:21:19.477Z",
+      "duration_s": 55.889,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=4g",
+        "--network",
+        "none",
+        "--name",
+        "w1t16-screen-browsers",
+        "-v",
+        "<repo>:/repo:ro",
+        "-v",
+        "<sandbox>/dist:/dist:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "/repo/scripts/spikes/W1-T16/harness/check.mjs",
+        "/dist",
+        "/out",
+        "/statespace/"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "54 axe and layout runs, 6 keyboard walks, 6 route checks; 0 failures"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-specimens-screen/browsers.log",
+          "sha256": "05eec2ef2f0bfc22a4aefb4e0e55779cc118c5c909efc57337c41be5cf9dec02",
+          "bytes": 69,
+          "kind": "log"
+        },
+        {
+          "path": "runs/RUN-specimens-screen/browsers-report.json",
+          "sha256": "2a20b4025082c231a06d67fe4609cf02df8822d7759cde4d4352ef265ef7deed",
+          "bytes": 19315,
+          "kind": "report"
+        }
+      ],
+      "inputs": [
+        {
+          "path": "<sandbox>/dist",
+          "sha256": "2c54f284802320a0c2678b75e11de05f792257f40055dffcf0085e69c2028f73",
+          "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+          "files": 21,
+          "role": "the built harness the browsers loaded"
+        }
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary",
+      "reason": "no single file ran: the browsers ran inside the pinned image, which is named by digest under image"
+    },
+    {
+      "field": "binary_sha256",
+      "reason": "as binary: the image is named by digest, and the browsers it holds are not hashed one by one"
+    }
+  ],
+  "notes": [
+    "The screen ran in a harness of its own (scripts/spikes/W1-T16/harness), not in the site's shell: it is the real screen and the real route over the real IndexedDB adapter, with the clock fixed and a second tab writing a call, inside a minimal router with the site's fonts. W1-T02's shell and the lesson pages that link to the specimens were not part of it.",
+    "axe finds a share of the accessibility problems a page can have; the checks here (target sizes, the keyboard, no sideways scroll at 320 and 360 px) are the ones a script can make. A screen-reader pass is W1-T46.",
+    "The browsers ran with no network in the pinned Playwright image; Node ran the harness server and the checks. The unit tests and the freshness checks ran on the host.",
+    "A control of 43.5 px or more in both directions counts as 44 px, for subpixel layout; the check reports every control below that.",
+    "The tests of the screen and of the scripts are listed by file in their configurations; a machine without python3 skips the two replay tests that run it, and the log says so.",
+    "This ran on the development host, not on a CI runner, and no lane runs it: the integrator decides where the browser step belongs.",
+    "Spine section 9.5 registers no run for this task; the ID is proposed once a scanned document cites it."
+  ]
+}

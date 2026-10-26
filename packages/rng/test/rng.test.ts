@@ -66,5 +66,19 @@ test('hash32 is FNV-1a over 32 bits: the published test vectors', () => {
 })
 
 test('the package does not re-export the entropy source or the quiz-export order', () => {
-  assert.deepEqual(Object.keys(rng).sort(), ['hash32', 'shuffledOrder', 'splitmix32', 'splitmix32u'])
+  assert.deepEqual(Object.keys(rng).sort(), [
+    'SeededDraw',
+    'UINT32_RANGE',
+    'createDraw',
+    'deriveSeed',
+    'fmix32',
+    'hash32',
+    'isUint32',
+    'shuffledOrder',
+    'splitmix32',
+    'splitmix32u',
+    'toUint32',
+  ])
+  assert.equal('freshSeed' in rng, false)
+  assert.equal('exportOrder' in rng, false)
 })

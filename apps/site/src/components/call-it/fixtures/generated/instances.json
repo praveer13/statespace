@@ -1,0 +1,577 @@
+{
+  "about": "Call It fixtures: generated instances in the shape packages/generators produces (InstanceBase and KeyBase), for GEN-call-it's four templates. Each fact is a verdict line of the run its stem cites. The component's tests render them, and GATE-items reads them through its own instance reader (scripts/spikes/W1-T07/lib/items-gate.mjs).",
+  "entries": [
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t1",
+        "band": 1,
+        "seed": 40961,
+        "kcs": {
+          "primary": "KC-1.violation-as-sat",
+          "secondary": []
+        },
+        "item": {
+          "stem": "An agent's guarded transfer checks `amount <= b`, the recipient's balance, where it should check the sender's. Over `Int`, Z3 is asked for a transfer that passes the guard and leaves the sender below zero {{run:RUN-z3-boot-variant}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "What will Z3 return?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "`unknown`",
+                  "why": "A small linear integer query is decided outright.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z6",
+                    "operator": "read a decided query as undecided"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "`sat`",
+                  "why": "The guard bounds the amount by the recipient's balance, so a transfer of 1 from an account holding 0 passes it and overdraws the sender.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "`unsat`",
+                  "why": "This reads the guard as protecting the sender; it protects nothing about the sender's balance.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z1",
+                    "operator": "unsat read as safe"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "z3@5.3.1",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "B"
+          }
+        ],
+        "statements": []
+      },
+      "instanceRef": "gen:GEN-call-it:t1:b1:0x0000a001"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t1",
+        "band": 1,
+        "seed": 40962,
+        "kcs": {
+          "primary": "KC-1.quantifier-negation",
+          "secondary": []
+        },
+        "item": {
+          "stem": "The transfer has no guard. Z3 is asked whether both balances can end below zero at once: `a2 < 0 and b2 < 0` {{run:RUN-z3-demorgan}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "What will Z3 return?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "`sat`",
+                  "why": "The transfer is unguarded, but the recipient only gains, so both balances cannot fall.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z5",
+                    "operator": "a wrong negation carried into the encoding"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "`unknown`",
+                  "why": "Three linear integer constraints are decided outright.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z6",
+                    "operator": "read a decided query as undecided"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "`unsat`",
+                  "why": "No input gives the recipient a negative balance, so Z3 answers `unsat`; the property is still violated, and the right negation uses `or`.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "z3@5.3.1",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "C"
+          }
+        ],
+        "statements": []
+      },
+      "instanceRef": "gen:GEN-call-it:t1:b1:0x0000a002"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t1",
+        "band": 2,
+        "seed": 40963,
+        "kcs": {
+          "primary": "KC-1.unknown-fails-closed",
+          "secondary": []
+        },
+        "item": {
+          "stem": "Z3 is asked whether two whole numbers `x` and `y` exist with `x**y == 8` and `y > 1` {{run:RUN-z3-unknown-pow}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "What will Z3 return?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "`unknown`",
+                  "why": "Z3 gives up on a nonlinear exponent, and the reason line says why.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "`sat`",
+                  "why": "A solution exists, but a verdict reports this run, not the truth.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z6",
+                    "operator": "a verdict read as the truth"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "`unsat`",
+                  "why": "A solution exists, so a guess of `unsat` misread the constraint.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z5",
+                    "operator": "a wrong operator carried into the encoding"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "z3@5.3.1",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "A"
+          }
+        ],
+        "statements": []
+      },
+      "instanceRef": "gen:GEN-call-it:t1:b2:0x0000a003"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t2",
+        "band": 1,
+        "seed": 45057,
+        "kcs": {
+          "primary": "KC-5.tlc-flags-matter",
+          "secondary": []
+        },
+        "item": {
+          "stem": "TLC will check the DoubleSpend model (Init = 100, Amount = 80, two workers) with `-deadlock`, for the invariant `NoOverspend` {{run:RUN-tlc-doublespend}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "If TLC finds a violation, how many actions long is the counterexample it prints?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "1–3 actions",
+                  "why": "Each worker reads the balance and then writes it, and the second write is the one that overspends, so fewer than four actions cannot reach the violation.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:T6",
+                    "operator": "the unit of trace length"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "4–6 actions",
+                  "why": "The counterexample has 5 states, which is 4 actions: the first worker reads, the second reads, the first writes, the second writes {{run:RUN-tlc-doublespend}}.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "7 or more actions",
+                  "why": "A shortest counterexample cannot be longer than the search is deep, and TLC reports a depth of 5 {{run:RUN-tlc-doublespend}}.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:T6",
+                    "operator": "the unit of trace length"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "bound": "TLC 1.8.0 at Init = 100, Amount = 80 and two workers"
+      },
+      "key": {
+        "engine": "tlc@1.8.0",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "B"
+          }
+        ],
+        "statements": [],
+        "bound": "TLC 1.8.0 at Init = 100, Amount = 80 and two workers"
+      },
+      "instanceRef": "gen:GEN-call-it:t2:b1:0x0000b001"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t3",
+        "band": 1,
+        "seed": 49153,
+        "kcs": {
+          "primary": "KC-6.anomaly-isolation",
+          "secondary": []
+        },
+        "item": {
+          "stem": "On PostgreSQL 18.6 at REPEATABLE READ, an invariant says the team total never goes below zero. Two transactions each read the total (200), each withdraws 150 from a different account, and both commit {{run:RUN-pg-anomalies}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "The team total ends at -100. Which anomaly is this?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "lost update",
+                  "why": "A lost update overwrites a value another transaction wrote; here each transaction withdraws from a different account, so no write is overwritten.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "dirty read",
+                  "why": "A dirty read sees data that was never committed; both transactions read the committed total.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "write skew",
+                  "why": "Each check held on its own snapshot, and together the two withdrawals broke the invariant: the team total reaches -100 {{run:RUN-pg-anomalies}}.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "D",
+                  "text": "non-repeatable read",
+                  "why": "A non-repeatable read means one transaction reads the same row twice and sees different values; neither transaction reads twice.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "postgres@18.6",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "C"
+          }
+        ],
+        "statements": []
+      },
+      "instanceRef": "gen:GEN-call-it:t3:b1:0x0000c001"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t3",
+        "band": 1,
+        "seed": 49154,
+        "kcs": {
+          "primary": "KC-6.compilation-pattern",
+          "secondary": []
+        },
+        "item": {
+          "stem": "On PostgreSQL 18.6 at READ COMMITTED, two transactions each read the balance (100), then each runs an update that writes the balance it read minus 80 {{run:RUN-pg-anomalies}}.",
+          "parts": [
+            {
+              "kind": "choice",
+              "id": "main",
+              "prompt": "The final balance is 20, although 160 was spent from 100. Which anomaly is this?",
+              "options": [
+                {
+                  "id": "A",
+                  "text": "write skew",
+                  "why": "Write skew needs two transactions that write different rows after reading the same data; here both write the same row.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                },
+                {
+                  "id": "B",
+                  "text": "lost update",
+                  "why": "Both writes used the value each had read, so the second overwrote the first: final balance 20, 160 spent from 100 {{run:RUN-pg-anomalies}}.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "C",
+                  "text": "dirty read",
+                  "why": "A dirty read sees data that was never committed; both transactions read the committed balance.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                },
+                {
+                  "id": "D",
+                  "text": "phantom read",
+                  "why": "A phantom read is a set of rows changing between two reads of the same predicate; no predicate is re-read here.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Q4",
+                    "operator": "which anomaly the isolation level allows"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "postgres@18.6",
+        "choices": [
+          {
+            "part": "main",
+            "answer": "B"
+          }
+        ],
+        "statements": []
+      },
+      "instanceRef": "gen:GEN-call-it:t3:b1:0x0000c002"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t4",
+        "band": 2,
+        "seed": 53249,
+        "kcs": {
+          "primary": "KC-1.three-answers",
+          "secondary": []
+        },
+        "item": {
+          "stem": "Z3 returned `unknown (canceled)` on a query with no solution, at `rlimit` 5000000 {{run:RUN-z3-budget-pyodide}}.",
+          "parts": [
+            {
+              "kind": "multi-tf",
+              "id": "main",
+              "prompt": "Which statements are true of Z3's answers?",
+              "statements": [
+                {
+                  "id": "s1",
+                  "text": "A `unsat` covers every input of its encoding, if the solver is sound.",
+                  "why": "`unsat` says no model of this query exists, which is a statement about the encoding.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "s2",
+                  "text": "A `sat` means the property holds.",
+                  "why": "`sat` gives a model of the query, which for a violation query is a witness that the property fails.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z1",
+                    "operator": "sat read as the property holds"
+                  }
+                },
+                {
+                  "id": "s3",
+                  "text": "This `unknown (canceled)` means no counterexample exists.",
+                  "why": "A stop on the budget is no verdict: the search was cut off before it showed anything either way.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z2",
+                    "operator": "unknown read as no bug"
+                  }
+                },
+                {
+                  "id": "s4",
+                  "text": "A larger `rlimit` could turn this `unknown` into a verdict.",
+                  "why": "The run stopped on its budget, so more budget is the one change that can finish it.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "s5",
+                  "text": "A `unsat` over `Int` also covers 64-bit integer code.",
+                  "why": "Over `Int` a negative amount makes the sender richer, while 64-bit arithmetic wraps; the encoding is the claim.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z4",
+                    "operator": "Int assumed to cover i64"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "z3@5.3.1",
+        "choices": [],
+        "statements": [
+          {
+            "part": "main",
+            "truth": {
+              "s1": true,
+              "s2": false,
+              "s3": false,
+              "s4": true,
+              "s5": false
+            }
+          }
+        ]
+      },
+      "instanceRef": "gen:GEN-call-it:t4:b2:0x0000d001"
+    },
+    {
+      "instance": {
+        "family": "GEN-call-it",
+        "template": "t4",
+        "band": 2,
+        "seed": 53250,
+        "kcs": {
+          "primary": "KC-1.claim-anatomy",
+          "secondary": []
+        },
+        "item": {
+          "stem": "Z3 returned `unsat` on the violation query behind a claim whose premises are `a >= 0`, `b >= 0` and `amount > 0`, with the guard `amount <= a` {{run:RUN-z3-vacuous-unsat}}.",
+          "parts": [
+            {
+              "kind": "multi-tf",
+              "id": "main",
+              "prompt": "Which statements are true of that result?",
+              "statements": [
+                {
+                  "id": "s1",
+                  "text": "The result is about this encoding and these premises.",
+                  "why": "A solver answers one query over one encoding; the claim's other parts are separate.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "s2",
+                  "text": "The result shows that the premises can all hold at once.",
+                  "why": "`unsat` of the violation query says nothing about the premises being satisfiable; the premise query does.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:Z1",
+                    "operator": "unsat read as safe"
+                  }
+                },
+                {
+                  "id": "s3",
+                  "text": "A premise query that returns `sat` shows the claim is about something.",
+                  "why": "A transfer that meets every premise exists, so the claim is not vacuous {{run:RUN-z3-vacuous-unsat}}.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                },
+                {
+                  "id": "s4",
+                  "text": "With contradictory premises, the violation query would return `sat`.",
+                  "why": "Contradictory premises leave no model, so every violation query is `unsat` and every property is proved vacuously {{run:RUN-z3-vacuous-unsat}}.",
+                  "origin": {
+                    "kind": "mutant",
+                    "tag": "dp:G4",
+                    "operator": "a false antecedent read as irrelevant"
+                  }
+                },
+                {
+                  "id": "s5",
+                  "text": "If the solver is sound, no transfer that meets these premises leaves the sender below zero.",
+                  "why": "`unsat` for exactly this encoding means no model of the violation exists, if the solver is sound.",
+                  "origin": {
+                    "kind": "reference"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "key": {
+        "engine": "z3@5.3.1",
+        "choices": [],
+        "statements": [
+          {
+            "part": "main",
+            "truth": {
+              "s1": true,
+              "s2": false,
+              "s3": true,
+              "s4": false,
+              "s5": true
+            }
+          }
+        ]
+      },
+      "instanceRef": "gen:GEN-call-it:t4:b2:0x0000d002"
+    }
+  ]
+}

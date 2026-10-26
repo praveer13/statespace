@@ -1,0 +1,34 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.7",
+  "title": "A reason-stable unknown",
+  "kcs": [
+    "KC-1.three-answers",
+    "KC-1.unknown-fails-closed"
+  ],
+  "found_in": {
+    "lesson": "S1.L2"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L2"
+    ]
+  },
+  "violates": "Nothing is violated: this specimen is about reading a verdict.",
+  "because": "A power with an unknown exponent lies outside what the solver decides, though one solution exists.",
+  "class": "an unknown that says why",
+  "cured_by": {
+    "text": "Read the reason, never treat unknown as a pass, and fail closed where the answer enforces something."
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-unknown-pow",
+      "query": "Int x**y == 8, y>1",
+      "direction": "violation"
+    },
+    "minimal": {
+      "kind": "not-applicable",
+      "why": "a verdict, not a witness"
+    }
+  }
+}

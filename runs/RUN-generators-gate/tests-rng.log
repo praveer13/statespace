@@ -1,0 +1,158 @@
+
+> @statespace/rng@0.0.0 test
+> node --test "test/*.test.ts"
+
+TAP version 13
+# Subtest: fmix32 is MurmurHash3's 32-bit finalizer
+ok 1 - fmix32 is MurmurHash3's 32-bit finalizer
+  ---
+  duration_ms: 0.96665
+  type: 'test'
+  ...
+# Subtest: deriveSeed matches the independent implementation, labels with non-ASCII code units included
+ok 2 - deriveSeed matches the independent implementation, labels with non-ASCII code units included
+  ---
+  duration_ms: 0.185111
+  type: 'test'
+  ...
+# Subtest: below(n) is rejection sampling over splitmix32u: the independent implementation's sequences
+ok 3 - below(n) is rejection sampling over splitmix32u: the independent implementation's sequences
+  ---
+  duration_ms: 0.19983
+  type: 'test'
+  ...
+# Subtest: below(2^32) is the raw stream, and below(1) is always 0 while still consuming a draw
+ok 4 - below(2^32) is the raw stream, and below(1) is always 0 while still consuming a draw
+  ---
+  duration_ms: 0.098117
+  type: 'test'
+  ...
+# Subtest: below(n) stays in range and is close to uniform (chi-square, 6 cells, 60,000 draws)
+ok 5 - below(n) stays in range and is close to uniform (chi-square, 6 cells, 60,000 draws)
+  ---
+  duration_ms: 4.351458
+  type: 'test'
+  ...
+# Subtest: int, bool and chance stay in their ranges and refuse bad arguments
+ok 6 - int, bool and chance stay in their ranges and refuse bad arguments
+  ---
+  duration_ms: 1.161589
+  type: 'test'
+  ...
+# Subtest: shuffle returns a permutation, leaves its input alone, and reaches every order of three about equally
+ok 7 - shuffle returns a permutation, leaves its input alone, and reaches every order of three about equally
+  ---
+  duration_ms: 13.692367
+  type: 'test'
+  ...
+# Subtest: sample draws k distinct elements; weighted never picks a zero weight
+ok 8 - sample draws k distinct elements; weighted never picks a zero weight
+  ---
+  duration_ms: 0.628671
+  type: 'test'
+  ...
+# Subtest: the same seed gives the same sequence of mixed calls; fork ignores what was drawn before it
+ok 9 - the same seed gives the same sequence of mixed calls; fork ignores what was drawn before it
+  ---
+  duration_ms: 0.314301
+  type: 'test'
+  ...
+# Subtest: seeds are uint32: negative integers wrap, fractions and NaN are refused
+ok 10 - seeds are uint32: negative integers wrap, fractions and NaN are refused
+  ---
+  duration_ms: 0.316576
+  type: 'test'
+  ...
+# Subtest: parity: every self-test case of the vendored kernelspace lint gives the same number of findings here
+ok 11 - parity: every self-test case of the vendored kernelspace lint gives the same number of findings here
+  ---
+  duration_ms: 18.867618
+  type: 'test'
+  ...
+# Subtest: statespace additions: randomUUID, the other transcendental functions and **
+ok 12 - statespace additions: randomUUID, the other transcendental functions and **
+  ---
+  duration_ms: 0.891991
+  type: 'test'
+  ...
+# Subtest: statespace additions: locale-dependent methods and Intl, through any receiver or the global object
+ok 13 - statespace additions: locale-dependent methods and Intl, through any receiver or the global object
+  ---
+  duration_ms: 0.479321
+  type: 'test'
+  ...
+# Subtest: statespace additions: timers and garbage-collection observers, bare or through the global object
+ok 14 - statespace additions: timers and garbage-collection observers, bare or through the global object
+  ---
+  duration_ms: 0.42268
+  type: 'test'
+  ...
+# Subtest: statespace additions: crypto and performance cannot hide behind an alias, and globalThis[...] is a global
+ok 15 - statespace additions: crypto and performance cannot hide behind an alias, and globalThis[...] is a global
+  ---
+  duration_ms: 0.348066
+  type: 'test'
+  ...
+# Subtest: exact arithmetic, comments and strings never trip it
+ok 16 - exact arithmetic, comments and strings never trip it
+  ---
+  duration_ms: 0.383789
+  type: 'test'
+  ...
+# Subtest: a finding names its line and column
+ok 17 - a finding names its line and column
+  ---
+  duration_ms: 0.232518
+  type: 'test'
+  ...
+# Subtest: the scope: statespace's seeded paths, numeric, without tests, declarations or vendored code
+ok 18 - the scope: statespace's seeded paths, numeric, without tests, declarations or vendored code
+  ---
+  duration_ms: 0.309489
+  type: 'test'
+  ...
+# Subtest: splitmix32u equals an independent BigInt implementation over 11 seeds x 200 draws
+ok 19 - splitmix32u equals an independent BigInt implementation over 11 seeds x 200 draws
+  ---
+  duration_ms: 1.736854
+  type: 'test'
+  ...
+# Subtest: splitmix32 is splitmix32u over 2^32, in [0, 1)
+ok 20 - splitmix32 is splitmix32u over 2^32, in [0, 1)
+  ---
+  duration_ms: 0.858458
+  type: 'test'
+  ...
+# Subtest: the same seed gives the same sequence twice, and different seeds differ
+ok 21 - the same seed gives the same sequence twice, and different seeds differ
+  ---
+  duration_ms: 0.74961
+  type: 'test'
+  ...
+# Subtest: shuffledOrder is a deterministic permutation of [0, n)
+ok 22 - shuffledOrder is a deterministic permutation of [0, n)
+  ---
+  duration_ms: 0.626659
+  type: 'test'
+  ...
+# Subtest: hash32 is FNV-1a over 32 bits: the published test vectors
+ok 23 - hash32 is FNV-1a over 32 bits: the published test vectors
+  ---
+  duration_ms: 0.138729
+  type: 'test'
+  ...
+# Subtest: the package does not re-export the entropy source or the quiz-export order
+ok 24 - the package does not re-export the entropy source or the quiz-export order
+  ---
+  duration_ms: 0.126806
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 359.827323

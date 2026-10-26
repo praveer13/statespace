@@ -1,0 +1,25 @@
+{
+  "name": "@statespace/generators",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The GEN-* generator families: pure makers, keys from checkers at grade time, graders (ARCHITECTURE.md section 17.3). src/core/ is the framework (W1-T21; see src/core/README.md): the contract, seeds and redraws, distractors as misconception mutants, grading, M-layered-feedback, M-class-hint, M-which-is-it, the keep/kill arm readings and GATE-generators' checks. Each family lives in src/<slug>/ and exports `generator` from src/<slug>/index.ts.",
+  "sideEffects": false,
+  "exports": {
+    "./core": "./src/core/index.ts",
+    "./core/fixture": "./src/core/fixture/index.ts",
+    "./*": "./src/*/index.ts"
+  },
+  "dependencies": {
+    "@statespace/kc": "0.0.0",
+    "@statespace/ledger": "0.0.0",
+    "@statespace/rng": "0.0.0"
+  },
+  "scripts": {
+    "typecheck": "tsc -p . && tsc -p test",
+    "test": "node --test \"test/**/*.test.ts\""
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

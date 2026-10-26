@@ -1,0 +1,268 @@
+TAP version 13
+# Subtest: a call is written once: the first commit records it, a second commit on the question writes nothing and shows the first
+ok 1 - a call is written once: the first commit records it, a second commit on the question writes nothing and shows the first
+  ---
+  duration_ms: 111.423428
+  type: 'test'
+  ...
+# Subtest: the call is in the log before the promise settles, and still there when the page is opened again
+ok 2 - the call is in the log before the promise settles, and still there when the page is opened again
+  ---
+  duration_ms: 7.151776
+  type: 'test'
+  ...
+# Subtest: a stale tab: a tab that read the log before another tab called the question cannot call it again
+ok 3 - a stale tab: a tab that read the log before another tab called the question cannot call it again
+  ---
+  duration_ms: 7.031368
+  type: 'test'
+  ...
+# Subtest: PROPERTY: tabs that commit at the same moment may each write, and still one call counts, the same one everywhere
+ok 4 - PROPERTY: tabs that commit at the same moment may each write, and still one call counts, the same one everywhere
+  ---
+  duration_ms: 89.707192
+  type: 'test'
+  ...
+# Subtest: a read-only store refuses and writes nothing; a store that fails reports why and writes nothing
+ok 5 - a read-only store refuses and writes nothing; a store that fails reports why and writes nothing
+  ---
+  duration_ms: 2.382391
+  type: 'test'
+  ...
+# Subtest: a generated item is the same question for the same seed and another question for another: its call is final per seed
+ok 6 - a generated item is the same question for the same seed and another question for another: its call is final per seed
+  ---
+  duration_ms: 2.833067
+  type: 'test'
+  ...
+# Subtest: the Mirror reads what the sheet wrote: calls after first learning are counted, with their shape, KC and help
+ok 7 - the Mirror reads what the sheet wrote: calls after first learning are counted, with their shape, KC and help
+  ---
+  duration_ms: 81.99383
+  type: 'test'
+  ...
+# Subtest: GATE-items is green on the authored Call It fixtures: three pages, seven calls, 5 of 7 genuine surprises, no verdict over 60%
+ok 8 - GATE-items is green on the authored Call It fixtures: three pages, seven calls, 5 of 7 genuine surprises, no verdict over 60%
+  ---
+  duration_ms: 294.061062
+  type: 'test'
+  ...
+# Subtest: GATE-items is green on the generated Call It fixtures: the four templates, three verdicts, sets of 2 and 3 true in 5
+ok 9 - GATE-items is green on the generated Call It fixtures: the four templates, three verdicts, sets of 2 and 3 true in 5
+  ---
+  duration_ms: 22.527172
+  type: 'test'
+  ...
+# Subtest: planted in the pages: an option with no why is why-tag/why on cell:S1.L1\#1
+ok 10 - planted in the pages: an option with no why is why-tag/why on cell:S1.L1\#1
+  ---
+  duration_ms: 11.121773
+  type: 'test'
+  ...
+# Subtest: planted in the pages: a distractor with no misconception key is why-tag/tag on cell:S1.L1\#1
+ok 11 - planted in the pages: a distractor with no misconception key is why-tag/tag on cell:S1.L1\#1
+  ---
+  duration_ms: 11.752432
+  type: 'test'
+  ...
+# Subtest: planted in the pages: a misconception key the registry does not hold is why-tag/registered on cell:S1.L1\#1
+ok 12 - planted in the pages: a misconception key the registry does not hold is why-tag/registered on cell:S1.L1\#1
+  ---
+  duration_ms: 9.433927
+  type: 'test'
+  ...
+# Subtest: planted in the pages: a key far longer than its distractors is length/ratio on cell:S1.L1\#2
+ok 13 - planted in the pages: a key far longer than its distractors is length/ratio on cell:S1.L1\#2
+  ---
+  duration_ms: 11.988265
+  type: 'test'
+  ...
+# Subtest: planted in the pages: two options that read the same is distinct/text on cell:S1.L2\#2
+ok 14 - planted in the pages: two options that read the same is distinct/text on cell:S1.L2\#2
+  ---
+  duration_ms: 11.3703
+  type: 'test'
+  ...
+# Subtest: planted in the pages: keys moved so that unsat answers 5 of 7 calls is calls/balance on the stage
+ok 15 - planted in the pages: keys moved so that unsat answers 5 of 7 calls is calls/balance on the stage
+  ---
+  duration_ms: 9.464452
+  type: 'test'
+  ...
+# Subtest: planted in the pages: a call that every segment reads as a first run, all keyed `sat`, is calls/surprises on the stage
+ok 16 - planted in the pages: a call that every segment reads as a first run, all keyed `sat`, is calls/surprises on the stage
+  ---
+  duration_ms: 9.029729
+  type: 'test'
+  ...
+# Subtest: planted in the instances: a statement with no why is why-tag/why, a false statement with no key is why-tag/tag, an unregistered key is why-tag/registered
+ok 17 - planted in the instances: a statement with no why is why-tag/why, a false statement with no key is why-tag/tag, an unregistered key is why-tag/registered
+  ---
+  duration_ms: 43.356382
+  type: 'test'
+  ...
+# Subtest: planted in the instances: a set whose statements are all true scores nothing for guessing and is multi-tf/count; a pool that is mostly true breaks the share
+ok 18 - planted in the instances: a set whose statements are all true scores nothing for guessing and is multi-tf/count; a pool that is mostly true breaks the share
+  ---
+  duration_ms: 20.651096
+  type: 'test'
+  ...
+# Subtest: planted in the instances: three-way verdicts that all key `sat` are calls/generated-balance, and always-last is not tripped by a key that moves
+ok 19 - planted in the instances: three-way verdicts that all key `sat` are calls/generated-balance, and always-last is not tripped by a key that moves
+  ---
+  duration_ms: 31.489158
+  type: 'test'
+  ...
+# Subtest: planted in the instances: a key longer than its distractors in an interval or an anomaly question is length/ratio
+ok 20 - planted in the instances: a key longer than its distractors in an interval or an anomaly question is length/ratio
+  ---
+  duration_ms: 22.96532
+  type: 'test'
+  ...
+# Subtest: the fixtures reduce to the sheet's items: seven authored choices and eight generated ones, none lost
+ok 21 - the fixtures reduce to the sheet's items: seven authored choices and eight generated ones, none lost
+  ---
+  duration_ms: 116.01586
+  type: 'test'
+  ...
+# Subtest: the refs are the ones event@1 allows: call:S1.L1/c1 for a cell, call:GEN-call-it/t1 for a generated item
+ok 22 - the refs are the ones event@1 allows: call:S1.L1/c1 for a cell, call:GEN-call-it/t1 for a generated item
+  ---
+  duration_ms: 0.217875
+  type: 'test'
+  ...
+# Subtest: the shape of an item sets its chance line and its bin: three options, four options, a set of five
+ok 23 - the shape of an item sets its chance line and its bin: three options, four options, a set of five
+  ---
+  duration_ms: 9.497132
+  type: 'test'
+  ...
+# Subtest: itemFromCell gives nothing for a cell with no call, and itemFromInstance nothing for an item the sheet cannot ask
+ok 24 - itemFromCell gives nothing for a cell with no call, and itemFromInstance nothing for an item the sheet cannot ask
+  ---
+  duration_ms: 0.538258
+  type: 'test'
+  ...
+# Subtest: a bound the key rests on travels with the item, and the item keeps the engine that keyed it
+ok 25 - a bound the key rests on travels with the item, and the item keeps the engine that keyed it
+  ---
+  duration_ms: 0.328443
+  type: 'test'
+  ...
+# Subtest: a verdict, then a confidence: the action is ready only when both are chosen, and a set needs every statement marked
+ok 26 - a verdict, then a confidence: the action is ready only when both are chosen, and a set needs every statement marked
+  ---
+  duration_ms: 3.399526
+  type: 'test'
+  ...
+# Subtest: a tap the item does not offer, or a confidence that is not one, changes nothing
+ok 27 - a tap the item does not offer, or a confidence that is not one, changes nothing
+  ---
+  duration_ms: 3.222895
+  type: 'test'
+  ...
+# Subtest: grading: a choice is right only on the key, a set only when every statement is, and a miss carries the first wrong tag
+ok 28 - grading: a choice is right only on the key, a set only when every statement is, and a miss carries the first wrong tag
+  ---
+  duration_ms: 3.360312
+  type: 'test'
+  ...
+# Subtest: a committed draft becomes a call event the Mirror reads: shape, KC, provenance and time on task, and it validates as event@1
+ok 29 - a committed draft becomes a call event the Mirror reads: shape, KC, provenance and time on task, and it validates as event@1
+  ---
+  duration_ms: 8.792299
+  type: 'test'
+  ...
+# Subtest: recordedFrom reads a call back, and nothing from an event that is no call
+ok 30 - recordedFrom reads a call back, and nothing from an event that is no call
+  ---
+  duration_ms: 0.840491
+  type: 'test'
+  ...
+# Subtest: a session moves choosing, committing, recorded; the action needs a ready draft; a refusal reopens it with the reason
+ok 31 - a session moves choosing, committing, recorded; the action needs a ready draft; a refusal reopens it with the reason
+  ---
+  duration_ms: 2.624575
+  type: 'test'
+  ...
+# Subtest: PROPERTY: once the call is recorded, no tap, help box, commit, failure or empty read changes it, whatever the sequence
+ok 32 - PROPERTY: once the call is recorded, no tap, help box, commit, failure or empty read changes it, whatever the sequence
+  ---
+  duration_ms: 16.958603
+  type: 'test'
+  ...
+# Subtest: PROPERTY: from any point, the draft is what the taps made it until the call is recorded, and the record is whatever the log says
+ok 33 - PROPERTY: from any point, the draft is what the taps made it until the call is recorded, and the record is whatever the log says
+  ---
+  duration_ms: 12.818149
+  type: 'test'
+  ...
+# Subtest: an open sheet: a fieldset with its legend, the question, one native radio per option, the chance printed, and the action off
+ok 34 - an open sheet: a fieldset with its legend, the question, one native radio per option, the chance printed, and the action off
+  ---
+  duration_ms: 221.641602
+  type: 'test'
+  ...
+# Subtest: the sheet bound to the store: no store says the record is not kept and offers no call, and a store not yet read says it is looking
+ok 35 - the sheet bound to the store: no store says the record is not kept and offers no call, and a store not yet read says it is looking
+  ---
+  duration_ms: 4.128395
+  type: 'test'
+  ...
+# Subtest: the action is named by the host, the help box is a native checkbox with its honesty note, and the expert skip is offered only when asked for
+ok 36 - the action is named by the host, the help box is a native checkbox with its honesty note, and the expert skip is offered only when asked for
+  ---
+  duration_ms: 12.684411
+  type: 'test'
+  ...
+# Subtest: a recorded call: the whole fieldset is disabled, the taps and the payoffs stay in view, and there is no action and no skip
+ok 37 - a recorded call: the whole fieldset is disabled, the taps and the payoffs stay in view, and there is no action and no skip
+  ---
+  duration_ms: 5.1868
+  type: 'test'
+  ...
+# Subtest: once the host reveals the result: matched or missed, the payoff as feedback only, and the whys
+ok 38 - once the host reveals the result: matched or missed, the payoff as feedback only, and the whys
+  ---
+  duration_ms: 10.666572
+  type: 'test'
+  ...
+# Subtest: a multiple true/false set: a true/false pair per statement, one confidence for the set, its chance as 1 in 2^m
+ok 39 - a multiple true/false set: a true/false pair per statement, one confidence for the set, its chance as 1 in 2^m
+  ---
+  duration_ms: 8.928475
+  type: 'test'
+  ...
+# Subtest: a generated instance prints its stem and the bound its key rests on (I10)
+ok 40 - a generated instance prints its stem and the bound its key rests on (I10)
+  ---
+  duration_ms: 3.404383
+  type: 'test'
+  ...
+# Subtest: everything an item says is a text node: markup in a prompt, an option or a why is escaped, never drawn
+ok 41 - everything an item says is a text node: markup in a prompt, an option or a why is escaped, never drawn
+  ---
+  duration_ms: 6.907257
+  type: 'test'
+  ...
+# Subtest: every id is unique within a sheet and across sheets, and each radio sits in a label
+ok 42 - every id is unique within a sheet and across sheets, and each radio sits in a label
+  ---
+  duration_ms: 4.955003
+  type: 'test'
+  ...
+# Subtest: every word the sheet gives a reader keeps the vocabulary rules, and uses no glossary term beyond the five Boot introduces
+ok 43 - every word the sheet gives a reader keeps the vocabulary rules, and uses no glossary term beyond the five Boot introduces
+  ---
+  duration_ms: 209.603511
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 827.858048

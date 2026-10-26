@@ -1,0 +1,776 @@
+{
+  "id": "RUN-bench-cli-acceptance",
+  "title": "W1-T29's acceptance: statespace receipt verify accepts the fixture receipts and rejects tampered ones, statespace run RUN-z3-starter reproduces its verdict, and the bench tests pass",
+  "task": "W1-T29",
+  "origin": "recorded",
+  "records": "the statespace CLI's acceptance commands as a learner or the nightly lane runs them: receipt verify on 9 fixture receipts and 2 tampered ones, run RUN-z3-starter, run RUN-z3-smtlib-tour, run --all --engine z3, and the bench test suite",
+  "engine": "statespace",
+  "version": "0.1.0",
+  "binary": "the statespace Bench CLI, bench/statespace/ (a directory: binary_sha256 is its manifest hash, the sha256_method of its entry in inputs), run with uv from bench/uv.lock; the Z3 that run re-executes is the z3-solver 5.3.1.0 wheel each record pins",
+  "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+  "image": null,
+  "recorded_at": "2026-10-26T05:08:43.718Z",
+  "started_at": "2026-10-26T05:06:31.748Z",
+  "duration_s": 131.965,
+  "argv": [
+    "uv",
+    "run",
+    "--project",
+    "bench",
+    "--locked",
+    "statespace",
+    "receipt",
+    "verify",
+    "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+    "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+    "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+    "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+    "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+    "schemas/fixtures/receipt/valid/trace-validation.json",
+    "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+    "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+    "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json"
+  ],
+  "inputs": [
+    {
+      "path": "bench/statespace/",
+      "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+      "files": 44
+    },
+    {
+      "path": "bench/statespace/check/fixtures/lab-repo/",
+      "sha256": "a83bbdcbc9265980563987dbe6a1093d5b39e68d87620c0642c99ca05592918d",
+      "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+      "files": 11
+    },
+    {
+      "path": "runs/",
+      "sha256": "debc17b482bee2ea5a96b413a21e148a5a761340c636777432dd8a572a2f8ea9",
+      "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+      "files": 1839
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+      "sha256": "67ff2543b44b8fec8aaa1909a0f42bf2f554a0c5afc9d7ada1df8f3e99528343",
+      "bytes": 2017,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+      "sha256": "7470a9edef2e2000b80a116c956a2003dc0eed87f93947c6f54cb88b9ddf145c",
+      "bytes": 3200,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+      "sha256": "b12c608f2b622b5a1dcc872d92cdfd804922cdb4070429299195f4530dbe1b5f",
+      "bytes": 1841,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+      "sha256": "9c80e9cb630c218943feff51546fbd1153d7998767e7a941b98f8d19bf203969",
+      "bytes": 583,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+      "sha256": "f2d5a84a74a22efc09a5821d95e541809d23cfaa68b4b8c93b095fe9545b5979",
+      "bytes": 2094,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/trace-validation.json",
+      "sha256": "2fc794335e09c4e8c3e32a8a62dd66bb0d793c0d20e22ba97d1a181e8a2c9d37",
+      "bytes": 2029,
+      "role": "receipt"
+    },
+    {
+      "path": "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+      "sha256": "fc064739aa235dfd5578f925ee548a92388fea7bd31e42386745ca34f6e3f0f2",
+      "bytes": 2304,
+      "role": "receipt"
+    },
+    {
+      "path": "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+      "sha256": "fb88a2d01d2da8024fa9d0ca936a44f391b3053ceb7bd852956df4fd9591545d",
+      "bytes": 1762,
+      "role": "receipt"
+    },
+    {
+      "path": "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json",
+      "sha256": "b25ecd5e4a3e5a23627e7fce8b088b83c5db51a4e97e3f3cd3506ee373e8aadb",
+      "bytes": 2809,
+      "role": "receipt"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/tampered/flipped-check.json",
+      "sha256": "df7952a099be61310cb21ae3401f08937fb212dc00b939b28a42f13520216946",
+      "bytes": 2808,
+      "role": "receipt"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/tampered/flipped-verdict-resealed.json",
+      "sha256": "4e8c5893666da468a3cb0ff7da59cd7c8e18c0ec01f65ce8f8e84c15ea8778ab",
+      "bytes": 2805,
+      "role": "receipt"
+    },
+    {
+      "path": "runs/RUN-z3-starter.json",
+      "sha256": "eed409642c8aa8d7e929112372237eff07a054ba3b089ef8eec3da11a97e42a0",
+      "bytes": 3541,
+      "role": "record"
+    },
+    {
+      "path": "research/evidence/a2r3/scripts/z3_claims.py",
+      "sha256": "a558596e31782a8d3f0dc3a2062cb7cb713d71a93417d453b0818b6434cc592d",
+      "bytes": 3651,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour.json",
+      "sha256": "c001a84eec4d7a0bc3d18ba2c2c6b77e4e8e156484be5f4d8e6db4d736348a3f",
+      "bytes": 52373,
+      "role": "record"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh",
+      "sha256": "67b905add72bc09a6f758288275cc83b48072458f08bdd25c2284cf5bc43bc22",
+      "bytes": 745,
+      "role": "script"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+      "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+      "bytes": 194,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+      "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+      "bytes": 224,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+      "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+      "bytes": 236,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+      "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+      "bytes": 232,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+      "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+      "bytes": 123,
+      "role": "fixture"
+    }
+  ],
+  "budget": {},
+  "exit_code": 0,
+  "verdict_lines": [
+    "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/trace-validation.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-bench-cli-acceptance/receipt-verify.log",
+      "sha256": "59ed100f90dd2b8d8ded467c3309400ec8be0066f547978e221146815285184a",
+      "bytes": 6669,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/receipt-verify-tampered.log",
+      "sha256": "9fdd6c1533f8e65fb8acc32a2fcad63e6a8124b92a932efbda7f2d207958e158",
+      "bytes": 1092,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/run-starter.log",
+      "sha256": "630f7251bf88b299b1383d04562e5b5d56c6cfe2f8bdaf1909c0c0b3e133beff",
+      "bytes": 864,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/run-tour.log",
+      "sha256": "554139f9d7660b551898dda1a9d78c33b4b31f828f49edcfcd85e84bf240d199",
+      "bytes": 2116,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/run-all-z3.log",
+      "sha256": "e7ed2c3e59fb2b9c0d9719361deb3162023b74e29580f8206a27b52df10ade41",
+      "bytes": 26048,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-bench-cli-acceptance/tests.log",
+      "sha256": "7cd3299e72bf4407d6f7bd03ae2d361af00a8e414bc72521b17a15d9467b44e7",
+      "bytes": 224,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "receipt-verify": {
+      "exit_code": 0,
+      "duration_s": 0.21
+    },
+    "receipt-verify-tampered": {
+      "exit_code": 1,
+      "duration_s": 0.163
+    },
+    "run-starter": {
+      "exit_code": 0,
+      "duration_s": 10.328
+    },
+    "run-tour": {
+      "exit_code": 0,
+      "duration_s": 0.706
+    },
+    "run-all-z3": {
+      "exit_code": 0,
+      "duration_s": 90.045
+    },
+    "tests": {
+      "exit_code": 0,
+      "duration_s": 30.51
+    }
+  },
+  "checks": [
+    {
+      "id": "receipt-verify",
+      "pass": true
+    },
+    {
+      "id": "receipt-verify-tampered",
+      "pass": true
+    },
+    {
+      "id": "run-starter",
+      "pass": true
+    },
+    {
+      "id": "run-tour",
+      "pass": true
+    },
+    {
+      "id": "run-all-z3",
+      "pass": true
+    },
+    {
+      "id": "tests",
+      "pass": true
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2"
+  },
+  "primary_config": "receipt-verify",
+  "configs": [
+    {
+      "id": "receipt-verify",
+      "purpose": "acceptance criterion 1: statespace receipt verify accepts the fixture receipts",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "statespace",
+        "receipt",
+        "verify",
+        "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+        "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+        "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+        "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+        "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+        "schemas/fixtures/receipt/valid/trace-validation.json",
+        "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+        "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+        "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+          "sha256": "67ff2543b44b8fec8aaa1909a0f42bf2f554a0c5afc9d7ada1df8f3e99528343",
+          "bytes": 2017,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+          "sha256": "7470a9edef2e2000b80a116c956a2003dc0eed87f93947c6f54cb88b9ddf145c",
+          "bytes": 3200,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+          "sha256": "b12c608f2b622b5a1dcc872d92cdfd804922cdb4070429299195f4530dbe1b5f",
+          "bytes": 1841,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+          "sha256": "9c80e9cb630c218943feff51546fbd1153d7998767e7a941b98f8d19bf203969",
+          "bytes": 583,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+          "sha256": "f2d5a84a74a22efc09a5821d95e541809d23cfaa68b4b8c93b095fe9545b5979",
+          "bytes": 2094,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/trace-validation.json",
+          "sha256": "2fc794335e09c4e8c3e32a8a62dd66bb0d793c0d20e22ba97d1a181e8a2c9d37",
+          "bytes": 2029,
+          "role": "receipt"
+        },
+        {
+          "path": "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+          "sha256": "fc064739aa235dfd5578f925ee548a92388fea7bd31e42386745ca34f6e3f0f2",
+          "bytes": 2304,
+          "role": "receipt"
+        },
+        {
+          "path": "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+          "sha256": "fb88a2d01d2da8024fa9d0ca936a44f391b3053ceb7bd852956df4fd9591545d",
+          "bytes": 1762,
+          "role": "receipt"
+        },
+        {
+          "path": "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json",
+          "sha256": "b25ecd5e4a3e5a23627e7fce8b088b83c5db51a4e97e3f3cd3506ee373e8aadb",
+          "bytes": 2809,
+          "role": "receipt"
+        },
+        {
+          "path": "bench/statespace/check/fixtures/lab-repo/",
+          "sha256": "a83bbdcbc9265980563987dbe6a1093d5b39e68d87620c0642c99ca05592918d",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 11
+        }
+      ],
+      "started_at": "2026-10-26T05:06:31.748Z",
+      "duration_s": 0.21,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "schemas/fixtures/receipt/valid/datalog-pairs-goldens.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/lean-comparator-sandbox-failed.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/pg-isorun-rls.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/self-assessed-minimal.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/tlc-deadlock-stop.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/trace-validation.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "schemas/fixtures/receipt/valid/z3-unsat-cross-checked.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.1/20261025T185932Z.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+        "bench/statespace/check/fixtures/lab-repo/receipts/LAB-90.2/20261025T185932Z.json",
+        "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/receipt-verify.log"
+      ]
+    },
+    {
+      "id": "receipt-verify-tampered",
+      "purpose": "acceptance criterion 1: statespace receipt verify rejects tampered receipts (a failing check flipped to pass; a flipped verdict with its digest recomputed)",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "statespace",
+        "receipt",
+        "verify",
+        "--root",
+        "bench/statespace/check/fixtures/lab-repo",
+        "runs/RUN-bench-cli-acceptance/tampered/flipped-check.json",
+        "runs/RUN-bench-cli-acceptance/tampered/flipped-verdict-resealed.json"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        },
+        {
+          "path": "runs/RUN-bench-cli-acceptance/tampered/flipped-check.json",
+          "sha256": "df7952a099be61310cb21ae3401f08937fb212dc00b939b28a42f13520216946",
+          "bytes": 2808,
+          "role": "receipt"
+        },
+        {
+          "path": "runs/RUN-bench-cli-acceptance/tampered/flipped-verdict-resealed.json",
+          "sha256": "4e8c5893666da468a3cb0ff7da59cd7c8e18c0ec01f65ce8f8e84c15ea8778ab",
+          "bytes": 2805,
+          "role": "receipt"
+        },
+        {
+          "path": "bench/statespace/check/fixtures/lab-repo/",
+          "sha256": "a83bbdcbc9265980563987dbe6a1093d5b39e68d87620c0642c99ca05592918d",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 11
+        }
+      ],
+      "started_at": "2026-10-26T05:06:31.959Z",
+      "duration_s": 0.163,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 1,
+      "verdict_lines": [
+        "runs/RUN-bench-cli-acceptance/tampered/flipped-check.json",
+        "  FAIL  /ext/integrity: the integrity digest does not match: the receipt was edited after statespace check wrote it",
+        "REJECTED: 1 problem",
+        "runs/RUN-bench-cli-acceptance/tampered/flipped-verdict-resealed.json",
+        "  FAIL  /runs/0/verdict: the stored verdict is sat, but its verdict lines say unsat",
+        "REJECTED: 1 problem"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/receipt-verify-tampered.log"
+      ]
+    },
+    {
+      "id": "run-starter",
+      "purpose": "acceptance criterion 3: statespace run RUN-z3-starter reproduces its recorded verdict",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "statespace",
+        "run",
+        "RUN-z3-starter"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        },
+        {
+          "path": "runs/RUN-z3-starter.json",
+          "sha256": "eed409642c8aa8d7e929112372237eff07a054ba3b089ef8eec3da11a97e42a0",
+          "bytes": 3541,
+          "role": "record"
+        },
+        {
+          "path": "research/evidence/a2r3/scripts/z3_claims.py",
+          "sha256": "a558596e31782a8d3f0dc3a2062cb7cb713d71a93417d453b0818b6434cc592d",
+          "bytes": 3651,
+          "role": "script"
+        }
+      ],
+      "started_at": "2026-10-26T05:06:32.122Z",
+      "duration_s": 10.328,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "  same      z3 version: 5.3.1",
+        "  same      [1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]",
+        "  same      [1.3 guard added] unsat (0.00s) ",
+        "reproduced: 3 of 3 verdict lines"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/run-starter.log"
+      ]
+    },
+    {
+      "id": "run-tour",
+      "purpose": "statespace run re-executes a command whose inputs keep their layout (tour_cli.sh reads smtlib/<name>.smt2)",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "statespace",
+        "run",
+        "RUN-z3-smtlib-tour"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        },
+        {
+          "path": "runs/RUN-z3-smtlib-tour.json",
+          "sha256": "c001a84eec4d7a0bc3d18ba2c2c6b77e4e8e156484be5f4d8e6db4d736348a3f",
+          "bytes": 52373,
+          "role": "record"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh",
+          "sha256": "67b905add72bc09a6f758288275cc83b48072458f08bdd25c2284cf5bc43bc22",
+          "bytes": 745,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        }
+      ],
+      "started_at": "2026-10-26T05:06:42.450Z",
+      "duration_s": 0.706,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "  same      Z3 version 5.3.1 - 64 bit",
+        "  same      == starter.smt2",
+        "  same      sat",
+        "  same      (",
+        "  same      )",
+        "  same      == starter_guarded.smt2",
+        "  same      unsat",
+        "  same      == starter_guarded_get_model.smt2",
+        "  same      unsat",
+        "  same      (error \"line 8 column 10: model is not available\")",
+        "  same      == unknown_theory.smt2",
+        "  same      unknown",
+        "  same      (:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "  same      == unknown_canceled.smt2",
+        "  same      unknown",
+        "  same      (:reason-unknown \"canceled\")",
+        "reproduced: 16 of 16 verdict lines"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/run-tour.log"
+      ]
+    },
+    {
+      "id": "run-all-z3",
+      "purpose": "statespace run --all --engine z3, the step proposed for the nightly lane",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "statespace",
+        "run",
+        "--all",
+        "--engine",
+        "z3"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        },
+        {
+          "path": "runs/",
+          "sha256": "debc17b482bee2ea5a96b413a21e148a5a761340c636777432dd8a572a2f8ea9",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 1839
+        }
+      ],
+      "started_at": "2026-10-26T05:06:43.156Z",
+      "duration_s": 90.045,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "RUN-origin-subdomain-live · The instrument origin on the real custom subdomains (GitHub Pages, real DNS and certificates): Z3 cross-origin in three engines, parent storage, handshake, and the framed cache across browser restarts (W0-S01, live run)",
+        "  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only",
+        "RUN-origin-subdomain · The instrument origin on a stand-in custom subdomain: Z3 cross-origin in three engines, parent storage, handshake, and the framed cache across browser restarts (W0-S01)",
+        "  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only",
+        "RUN-phone-pyodide · Pyodide 314.0.7 with the Z3 5.3.1 wheel on phones: first-load size, load time, memory, rlimit timing and cache persistence; an emulation on three desktop engines, and real-device sessions when they are on file (W0-S02)",
+        "  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only",
+        "RUN-z3-11179 · Z3 issue #11179: 5.3.0 answers unsat on two satisfiable inputs where 5.3.1 answers unknown",
+        "  not re-executed: no argv is recorded and the record names 2 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv",
+        "RUN-z3-bloch06 · A toy model of Bloch's 2006 binary-search midpoint: (low + high) / 2 leaves low..high in signed 32-bit arithmetic, and the two cures do not",
+        "reproduced: 9 of 9 verdict lines",
+        "RUN-z3-boot-variant · Boot's variant, a guard that reads the recipient's balance, lets a transfer overdraw the sender; the corrected guard gives unsat",
+        "reproduced: 7 of 7 verdict lines",
+        "RUN-z3-btc2010 · A toy model of CVE-2010-5139: outputs summed in 64-bit arithmetic pass the check while creating value, and range checks make it unsat",
+        "reproduced: 9 of 9 verdict lines",
+        "RUN-z3-budget-pyodide · Under Pyodide in a Node harness, Z3's timeout never returned, while an rlimit of 5e6 gave unknown (canceled)",
+        "  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv",
+        "RUN-z3-bv64-negamt · Over signed BitVec 64 the guard without amount > 0 lets the sender wrap negative; over Int a negative amount drains the recipient and never the sender",
+        "reproduced: 8 of 8 verdict lines",
+        "RUN-z3-bv64-pyodide · Under Pyodide in a Node harness, a recipient-wrap witness for B >= 0, M > 0, B + M < 0",
+        "  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv",
+        "RUN-z3-bv64 · Under signed 64-bit bit-vectors the guard protects the sender and the recipient wraps",
+        "reproduced: 5 of 5 verdict lines",
+        "RUN-z3-conservation-noguard · Conservation over Int is proved with no guard at all",
+        "reproduced: 2 of 2 verdict lines",
+        "RUN-z3-demorgan · The mis-negation a' < 0 and b' < 0 is unsat on the unguarded transfer; the correct negation a' < 0 or b' < 0 is sat with a witness",
+        "reproduced: 5 of 5 verdict lines",
+        "RUN-z3-double-capture · A capture applied twice to one hold conserves money and breaks at-most-once; the held >= h patch fixes the instance and not the class; the status guard is unsat",
+        "reproduced: 19 of 19 verdict lines",
+        "RUN-z3-fixedpoint · Under Pyodide in a Node harness, Z3 Fixedpoint with stratified negation: canread(1,3) sat, revoked canread(1,4) unsat",
+        "  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv",
+        "RUN-z3-optimize-min · Under an Optimize objective the minimal overdraft amount is 1",
+        "reproduced: 2 of 2 verdict lines",
+        "RUN-z3-refund-a21 · The refund theorem (customer >= 0) is unsat with a modify-style update and sat with a value update; the merchant can go negative",
+        "reproduced: 4 of 4 verdict lines",
+        "RUN-z3-refund-mint · The clamp refund rule mints money, and a witness-sized patch leaves a larger witness; rejecting a refund above the merchant's balance is unsat and not vacuous",
+        "reproduced: 18 of 18 verdict lines",
+        "RUN-z3-selftransfer · The buggy-update self-transfer changes the balance: sat [n = 1, t = 0, f = 0]",
+        "reproduced: 2 of 2 verdict lines",
+        "RUN-z3-smtlib-tour · D-13's SMT-LIB examples through the Z3 command line, its API interpreter and Pyodide: sat with a model, unsat, unknown with its reason, and a budget set with (set-option :rlimit)",
+        "reproduced: 16 of 16 verdict lines",
+        "RUN-z3-starter-pyodide · The starter on Z3 5.3.1 in Pyodide 314.0.7 in three browser engines, without cross-origin isolation",
+        "  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble; the Z3 lane re-executes on this machine only",
+        "RUN-z3-starter · The roadmap's starter on Z3 5.3.1: an overdraft witness, then unsat once the guard is added",
+        "reproduced: 3 of 3 verdict lines",
+        "RUN-z3-unknown-pow · x**y == 8, y > 1 gives unknown, incomplete (theory arithmetic), natively on 5.3.1 and 4.15.4 and under Pyodide",
+        "reproduced: 3 of 3 verdict lines",
+        "RUN-z3-vacuous-unsat · Contradictory premises make every violation query unsat, and the premise query is the tell: CL-1.1's premise witness and the MAX_TRANSFER = 0 config with its unsat core",
+        "reproduced: 25 of 25 verdict lines",
+        "RUN-z3-verdict-lines · Z3 5.3.1's whole output for 40 SMT-LIB queries through the command line and the Python API under an rlimit: the verdict-line fixtures of the Z3 lane",
+        "  not re-executed: argv holds several commands; the Z3 lane re-executes one",
+        "16 reproduced, 0 differ, 9 not re-executed by this CLI"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/run-all-z3.log"
+      ]
+    },
+    {
+      "id": "tests",
+      "purpose": "the bench test suite (bench/statespace/check/tests), which no CI lane runs yet",
+      "argv": [
+        "uv",
+        "run",
+        "--project",
+        "bench",
+        "--locked",
+        "--group",
+        "image",
+        "python",
+        "-I",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "bench/statespace/check/tests",
+        "-t",
+        "bench"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/",
+          "sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+          "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+          "files": 44
+        }
+      ],
+      "started_at": "2026-10-26T05:08:13.202Z",
+      "duration_s": 30.51,
+      "origin": "recorded",
+      "engine": "statespace",
+      "version": "0.1.0",
+      "binary_sha256": "bc139f6611525250ed83a8027c88ebcd23595a6084060e9ea3d1f7ca5add2dea",
+      "image": null,
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "Ran 123 tests in 30.363s",
+        "OK"
+      ],
+      "outputs": [
+        "runs/RUN-bench-cli-acceptance/tests.log"
+      ]
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T29 with scripts/spikes/W1-T29/record-acceptance.py, from the repository root, until a CI lane runs the bench tests and statespace run (the lane steps W1-T29 asked the integrator for). Each configuration is one command; its whole output, with paths of this machine written as repository paths or <sandbox>, is runs/RUN-bench-cli-acceptance/<configuration>.log.",
+    "bench/statespace/, bench/statespace/check/fixtures/lab-repo/ and runs/ are directory inputs, hashed as manifests (sha256_method gives the shell command that recomputes one) once, after the tampered receipts were written and before any command ran, so runs/ includes the previous recording of this run; a later change to the CLI does not show as a changed input file, so re-record after a change that the acceptance depends on.",
+    "The tampered receipts under runs/RUN-bench-cli-acceptance/tampered/ are copies of the LAB-90.2 receipt in the lab-repo fixture: flipped-check.json flips a failing check to pass and keeps the old digest; flipped-verdict-resealed.json flips the run's verdict and the z3 section to sat and recomputes the digest, which anyone can. --root names the fixture lab repository, whose statements and run inputs they share."
+  ]
+}

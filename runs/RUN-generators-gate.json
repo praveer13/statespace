@@ -1,0 +1,523 @@
+{
+  "id": "RUN-generators-gate",
+  "title": "GATE-generators on this repository: the fixture family green in Chromium, Firefox and WebKit and on the host, with the determinism lint, the planted-fault self-check and the tests",
+  "task": "W1-T21",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-26T02:43:19.839Z",
+  "started_at": "2026-10-26T02:43:02.695Z",
+  "duration_s": 16.863,
+  "argv": [
+    "node",
+    "scripts/verify-generators.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-generators.mjs",
+      "sha256": "7814543f1e20b2aa69139069d38bfbdfb3d429ef3cbd66182aac495711e39bd7",
+      "bytes": 33149,
+      "role": "gate"
+    },
+    {
+      "path": "packages/generators/src/core",
+      "sha256": "3d43e8e80032710ac79acd09e1509fdaf3e339421f62f9180d63b0c33e464269",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 20,
+      "role": "framework, fixture family and its checks"
+    },
+    {
+      "path": "packages/rng/src",
+      "sha256": "28b2b1d7d33e337d90063af29631f292b96298c12ee11d3eeb631c52471bc448",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 4,
+      "role": "seeded draws and the determinism lint"
+    },
+    {
+      "path": "packages/generators/test",
+      "sha256": "65cb316d49873b2e7eddace3c43eb1f992130636f78055aacf30218c7a7cf212",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 16,
+      "role": "tests"
+    },
+    {
+      "path": "packages/rng/test",
+      "sha256": "1e93621676df74debcdd7520e81d5a795020e9990113196a3373d61b0998cf25",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 4,
+      "role": "tests"
+    },
+    {
+      "path": "vendor/kernelspace/src/lib/rng.ts",
+      "sha256": "078ef989d77ca4c88f8b2fe55cc130bd7561770780b397ae2511ef1404da6817",
+      "bytes": 2261,
+      "role": "vendored seeded RNG"
+    },
+    {
+      "path": "vendor/kernelspace/scripts/verify-determinism.ts",
+      "sha256": "cbf69560eb825c733081d76a89192b81f07ef0c8f522d472ccf173b96c8b61ee",
+      "bytes": 13739,
+      "role": "vendored lint, whose self-test cases the port must reproduce"
+    },
+    {
+      "path": "packages/ids/src/registry.json",
+      "sha256": "f5ebbaa50f23938f796902f66b654454d6e6ad33d46dd1a34ffbd818dbcd8c1f",
+      "bytes": 163471,
+      "role": "the spine registry (families, misconception keys, KCs)"
+    },
+    {
+      "path": "scripts/spikes/W1-T21/record.mjs",
+      "sha256": "5477a89c80ece17045fab9a2973682ebf5ddc8098f3a605f47926089903a87d6",
+      "bytes": 14466,
+      "role": "recording script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "key_seeds_per_cell": 8,
+    "digest_sample": {
+      "graded": 48,
+      "display": 16
+    },
+    "browser_wait_s": 180,
+    "network": "none: the image and node_modules are local"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-generators: 1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; determinism read from each family's determinism.json",
+    "  ok    GEN-fixture (fixture)  630 instances, 61 keyed, discarded: vacuous 5, equivalent 1, unknown 5, 305 answers graded, digest sha256:a8b0deb679e5",
+    "GATE-generators: green (1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; determinism read from each family's determinism.json)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-generators-gate/engines.log",
+      "sha256": "9286f62bb106c16c1dd60da354c2f072a2b96fc055fb643350a382de4d7dc906",
+      "bytes": 524,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/write.log",
+      "sha256": "8902dcd97a5b2e667929907b99400012735712d53e793f018acb0f5c489cab85",
+      "bytes": 558,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/engines-check.log",
+      "sha256": "485c6b06098452425f44f73f3cc2ea1eac7bdc315c6c914e69f2c10dc49ff388",
+      "bytes": 496,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/fast.log",
+      "sha256": "a10a658d529b2f648a3f63efbc389729b85b3c39b0d0e8da02f879f24c2d6a6a",
+      "bytes": 460,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/fast-json.log",
+      "sha256": "1d2152d95c518a755473f55db4bfecf625aeed872dee55cc55c2a5a77f8ad72c",
+      "bytes": 1617,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/self-check.log",
+      "sha256": "c1cde08b37ccff41101d8f4cb3ec851a80e6178e115439b97976e58efc3af219",
+      "bytes": 2820,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/tests-generators.log",
+      "sha256": "ef580c1aea529e2702d48180b9cc37725b4373996b91941c8faccc6a15d19b92",
+      "bytes": 25077,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/tests-rng.log",
+      "sha256": "67da2694f1e2782d7f9e5e2eb5ac6f010c2f2777abb070896068e0a514c0dce9",
+      "bytes": 5545,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-generators-gate/engines.json",
+      "sha256": "ef3fd6846ccddfd21ca0b913ce8cd8746e6b4103d33fc636f400f8ce3e50ed62",
+      "bytes": 4106,
+      "kind": "report"
+    },
+    {
+      "path": "runs/RUN-generators-gate/determinism.GEN-fixture.json",
+      "sha256": "f451870ec31699d3652abc3df1673558774d535612e4ff7a8ce6b2ae0613b924",
+      "bytes": 1758,
+      "kind": "report"
+    }
+  ],
+  "values": {
+    "family": "GEN-fixture",
+    "digest": "sha256:a8b0deb679e51c36bc7aa8d37c334aa6313ba597f0b52e499328832247e35e1b",
+    "determinism_file": {
+      "path": "packages/generators/src/core/fixture/determinism.json",
+      "sha256": "f451870ec31699d3652abc3df1673558774d535612e4ff7a8ce6b2ae0613b924"
+    },
+    "browsers": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    },
+    "node_host": "22.22.2",
+    "node_container": "v24.20.0",
+    "instances": 630,
+    "keyed": 61,
+    "discarded": {
+      "vacuous": 5,
+      "equivalent": 1,
+      "unknown": 5
+    },
+    "answers_graded": 305,
+    "lint_files": 21,
+    "lint_findings": 0,
+    "self_check_cases": 21,
+    "bundle_bytes": 46147,
+    "tools": {
+      "esbuild": "0.28.2",
+      "playwright-core": "1.63.0",
+      "typescript": "5.9.3"
+    },
+    "engines_summary": "digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6"
+  },
+  "checks": [
+    {
+      "id": "three-browsers-agree-with-node",
+      "pass": true
+    },
+    {
+      "id": "determinism-recorded",
+      "pass": true
+    },
+    {
+      "id": "green-in-three-engines",
+      "pass": true
+    },
+    {
+      "id": "fast-lane-green",
+      "pass": true
+    },
+    {
+      "id": "self-check-holds",
+      "pass": true
+    },
+    {
+      "id": "tests-pass",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "fast",
+  "configs": [
+    {
+      "id": "engines",
+      "origin": "recorded",
+      "purpose": "every family's digest computed by one bundle in Chromium, Firefox and WebKit inside the pinned Playwright image, written for the host to compare; the run fails only on a missing or stale determinism.json before the write",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:43:02.695Z",
+      "duration_s": 3.319,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--name",
+        "w1t21-engines",
+        "-v",
+        "<repo>:/repo:ro",
+        "-v",
+        "<sandbox>:/out",
+        "-w",
+        "/repo",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "scripts/verify-generators.mjs",
+        "--engines",
+        "--engines-out",
+        "/out/engines.json"
+      ],
+      "exit_code": 1,
+      "expected_exit_codes": [
+        0,
+        1
+      ],
+      "verdict_lines": [
+        "GATE-generators: 1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6",
+        "  FAIL  GEN-fixture (fixture)  630 instances, 61 keyed, discarded: vacuous 5, equivalent 1, unknown 5, 305 answers graded, digest sha256:a8b0deb679e5",
+        "FAIL  determinism  GEN-fixture  the instances changed since they were recorded (t3/b1, t3/b2, t3/b3): if the change is intended, re-record in three engines",
+        "GATE-generators: FAIL (1 finding: determinism 1)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/engines.log",
+          "sha256": "9286f62bb106c16c1dd60da354c2f072a2b96fc055fb643350a382de4d7dc906",
+          "bytes": 524,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "write",
+      "origin": "recorded",
+      "purpose": "the host compares its own digests with the three browsers' and writes each family's determinism.json where all four agree",
+      "started_at": "2026-10-26T02:43:06.017Z",
+      "duration_s": 0.96,
+      "argv": [
+        "node",
+        "scripts/verify-generators.mjs",
+        "--engines-in",
+        "runs/RUN-generators-gate/engines.json",
+        "--write"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "GATE-generators: 1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6",
+        "  ok    GEN-fixture (fixture)  630 instances, 61 keyed, discarded: vacuous 5, equivalent 1, unknown 5, 305 answers graded, digest sha256:a8b0deb679e5",
+        "  wrote packages/generators/src/core/fixture/determinism.json",
+        "GATE-generators: green (1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/write.log",
+          "sha256": "8902dcd97a5b2e667929907b99400012735712d53e793f018acb0f5c489cab85",
+          "bytes": 558,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "engines-check",
+      "origin": "recorded",
+      "purpose": "GATE-generators with the browsers, against the committed determinism.json: green in Chromium, Firefox and WebKit",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:43:06.977Z",
+      "duration_s": 3.44,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--name",
+        "w1t21-engines-check",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/repo",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "scripts/verify-generators.mjs",
+        "--engines"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "GATE-generators: 1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6",
+        "  ok    GEN-fixture (fixture)  630 instances, 61 keyed, discarded: vacuous 5, equivalent 1, unknown 5, 305 answers graded, digest sha256:a8b0deb679e5",
+        "GATE-generators: green (1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; digests compared in chromium 153.0.8010.12, firefox 155.0, webkit 26.6)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/engines-check.log",
+          "sha256": "485c6b06098452425f44f73f3cc2ea1eac7bdc315c6c914e69f2c10dc49ff388",
+          "bytes": 496,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fast",
+      "origin": "recorded",
+      "purpose": "GATE-generators as the fast lane runs it, on the host",
+      "started_at": "2026-10-26T02:43:10.418Z",
+      "duration_s": 0.759,
+      "argv": [
+        "node",
+        "scripts/verify-generators.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "GATE-generators: 1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; determinism read from each family's determinism.json",
+        "  ok    GEN-fixture (fixture)  630 instances, 61 keyed, discarded: vacuous 5, equivalent 1, unknown 5, 305 answers graded, digest sha256:a8b0deb679e5",
+        "GATE-generators: green (1 family (1 fixture), 630 instances, 61 keyed, 11 discarded; lint over 21 files; determinism read from each family's determinism.json)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/fast.log",
+          "sha256": "a10a658d529b2f648a3f63efbc389729b85b3c39b0d0e8da02f879f24c2d6a6a",
+          "bytes": 460,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fast-json",
+      "origin": "recorded",
+      "purpose": "the same run, as JSON, for the values below",
+      "started_at": "2026-10-26T02:43:11.177Z",
+      "duration_s": 0.89,
+      "argv": [
+        "node",
+        "scripts/verify-generators.mjs",
+        "--json"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/fast-json.log",
+          "sha256": "1d2152d95c518a755473f55db4bfecf625aeed872dee55cc55c2a5a77f8ad72c",
+          "bytes": 1617,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "one planted fault per check; the gate must fail on each, and the clean fixture must pass",
+      "started_at": "2026-10-26T02:43:12.068Z",
+      "duration_s": 2.082,
+      "argv": [
+        "node",
+        "scripts/verify-generators.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "held  -            the clean fixture passes: no findings",
+        "held  lint         the lint flags Math.random: 1 finding(s)",
+        "held  purity       make that counts its calls is impure: make gave a different instance for the same seed, band and template",
+        "held  purity       make that reads the clock trips the guard: make threw: Date.now was read inside make(): a generator takes time and randomness only from its seed (I3)",
+        "held  contract     one template breaks the contract: a family has 2 to 4 templates, pending ones included, this one 1",
+        "held  templates    templates that share a shape are parameter variety: t2 and t1 produce the same shape the same shape: templates must differ in structure, not only in parameters",
+        "held  banding      a measure outside its band: span 99 is outside band 1's [3, 4]",
+        "held  determinism  a digest that differs from the recorded one: the instances changed since they were recorded (t1/b1): if the change is intended, re-record in three engines",
+        "held  determinism  a digest no WebKit run confirmed: no webkit digest: determinism must be confirmed in Chromium, Firefox and WebKit",
+        "held  unknown      a key kept although its checker said unknown: the checker answered unknown to all 1 queries, and the key was kept",
+        "held  distractors  a key that leaves a pair of options untold: part main: no witness tells apart A and B",
+        "held  distractors  a witness that does not replay: part main: the witness for A and B does not replay: they agree on {\"b\":-4,\"x\":-4}",
+        "held  distractors  a key that is not the reference: part main: the checker keyed A, but the reference is B",
+        "held  distractors  a key that discards every seed: no seed of t1 band 1 could be keyed (4 sampled, 8 drawn from 0x00000000): the cell cannot serve an item",
+        "held  grading      a grader that matches everything: the key: the key is bounded but the grade prints no bound (I10)",
+        "held  -            a family with one live template and two pending passes: no findings; pending t2 until W3-T27, t3 until W4-T20",
+        "held  pending      a pending template that gets drawn: GEN-fixture t2 (negate an implication) is pending until W3-T27 brings trace: it is never drawn",
+        "held  unknown      a template that is not pending whose engine has no port: no port over fixture-box, trace: the unknown, distractor and grading checks could not run",
+        "held  pending      a template still pending once its engine has a port: t2 is pending on trace, but a port for trace is here: make the template live (remove pending and list trace in engines) so the gate checks it",
+        "held  registry     a pending template that lands with no tracker task: t2: pending until W9-T99, which is not a task of the tracker",
+        "held  contract     every template pending breaks the contract: every template is pending: a family serves at least one template now",
+        "GATE-generators self-check: green (21 cases held)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/self-check.log",
+          "sha256": "c1cde08b37ccff41101d8f4cb3ec851a80e6178e115439b97976e58efc3af219",
+          "bytes": 2820,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "tests-generators",
+      "origin": "recorded",
+      "purpose": "the tests of packages/generators: the core, the fixture family, the mechanics and the gate script",
+      "started_at": "2026-10-26T02:43:14.151Z",
+      "duration_s": 4.936,
+      "argv": [
+        "npm",
+        "test",
+        "-w",
+        "@statespace/generators"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "# tests 100",
+        "# pass 100",
+        "# fail 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/tests-generators.log",
+          "sha256": "ef580c1aea529e2702d48180b9cc37725b4373996b91941c8faccc6a15d19b92",
+          "bytes": 25077,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "tests-rng",
+      "origin": "recorded",
+      "purpose": "the tests of packages/rng: the draws against an independent implementation, and the lint against the vendored lint's own cases",
+      "started_at": "2026-10-26T02:43:19.088Z",
+      "duration_s": 0.477,
+      "argv": [
+        "npm",
+        "test",
+        "-w",
+        "@statespace/rng"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "# tests 24",
+        "# pass 24",
+        "# fail 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-generators-gate/tests-rng.log",
+          "sha256": "67da2694f1e2782d7f9e5e2eb5ac6f010c2f2777abb070896068e0a514c0dce9",
+          "bytes": 5545,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the primary configuration ran on the host with no container; the engines and engines-check configurations name the Playwright image by digest"
+    }
+  ],
+  "notes": [
+    "The fast lane cannot start browsers (no lane installs them yet), so it compares the digest Node computes with the one Chromium, Firefox and WebKit computed and determinism.json records; the browsers ran here, in the pinned Playwright image, from one esbuild bundle of the families and the core.",
+    "Five JavaScript engines computed the same digest: the host's Node 22.22.2, the image's Node v24.20.0, and the three browsers.",
+    "Only the framework's fixture family existed when this was recorded; the course families (W1-T22 to W1-T26) are checked by the same gate as they land, each with its own determinism.json.",
+    "The fixture discards some band-3 seeds by design: its box engine answers unknown past its state budget, which is how the gate shows that unknown instances are discarded and redrawn.",
+    "Pending templates (TemplateSpec.pending, for families whose later templates wait for engines of later waves, as W1-T23 and W1-T24 do): the self-check runs the fixture as GEN-find-the-witness's W1 slice, one template live and two pending until W3-T27 and W4-T20, and it passes. Five faults around it each fail: drawing a pending template, a live template whose engine has no port, a template still pending once its engine has a port, a landing task the tracker lacks, and a family with every template pending. The gate tests run the same slice end to end through the script.",
+    "This ran on the development host, not on a CI runner.",
+    "Spine section 9.5 registers no run for this task; the ID is proposed with scripts/spikes/W1-T21/propose-ids.mjs once a scanned document cites it."
+  ]
+}

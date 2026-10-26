@@ -1,0 +1,22 @@
+held  -            the clean fixture passes: no findings
+held  lint         the lint flags Math.random: 1 finding(s)
+held  purity       make that counts its calls is impure: make gave a different instance for the same seed, band and template
+held  purity       make that reads the clock trips the guard: make threw: Date.now was read inside make(): a generator takes time and randomness only from its seed (I3)
+held  contract     one template breaks the contract: a family has 2 to 4 templates, pending ones included, this one 1
+held  templates    templates that share a shape are parameter variety: t2 and t1 produce the same shape the same shape: templates must differ in structure, not only in parameters
+held  banding      a measure outside its band: span 99 is outside band 1's [3, 4]
+held  determinism  a digest that differs from the recorded one: the instances changed since they were recorded (t1/b1): if the change is intended, re-record in three engines
+held  determinism  a digest no WebKit run confirmed: no webkit digest: determinism must be confirmed in Chromium, Firefox and WebKit
+held  unknown      a key kept although its checker said unknown: the checker answered unknown to all 1 queries, and the key was kept
+held  distractors  a key that leaves a pair of options untold: part main: no witness tells apart A and B
+held  distractors  a witness that does not replay: part main: the witness for A and B does not replay: they agree on {"b":-4,"x":-4}
+held  distractors  a key that is not the reference: part main: the checker keyed A, but the reference is B
+held  distractors  a key that discards every seed: no seed of t1 band 1 could be keyed (4 sampled, 8 drawn from 0x00000000): the cell cannot serve an item
+held  grading      a grader that matches everything: the key: the key is bounded but the grade prints no bound (I10)
+held  -            a family with one live template and two pending passes: no findings; pending t2 until W3-T27, t3 until W4-T20
+held  pending      a pending template that gets drawn: GEN-fixture t2 (negate an implication) is pending until W3-T27 brings trace: it is never drawn
+held  unknown      a template that is not pending whose engine has no port: no port over fixture-box, trace: the unknown, distractor and grading checks could not run
+held  pending      a template still pending once its engine has a port: t2 is pending on trace, but a port for trace is here: make the template live (remove pending and list trace in engines) so the gate checks it
+held  registry     a pending template that lands with no tracker task: t2: pending until W9-T99, which is not a task of the tracker
+held  contract     every template pending breaks the contract: every template is pending: a family serves at least one template now
+GATE-generators self-check: green (21 cases held)

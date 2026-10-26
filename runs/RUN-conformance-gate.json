@@ -1,0 +1,492 @@
+{
+  "id": "RUN-conformance-gate",
+  "title": "GATE-conformance on this repository: Pyodide Z3 = native Z3 on the same queries, its require-all mode and its planted-fault self-check",
+  "task": "W1-T42",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-25T20:15:27.372Z",
+  "started_at": "2026-10-25T20:15:06.752Z",
+  "duration_s": 20.587,
+  "argv": [
+    "node",
+    "scripts/verify-conformance.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-conformance.mjs",
+      "sha256": "e38ab09fc1ab1fe0df34c3c284605880f26856ad54686ec36b8715f75bb8fc8c",
+      "bytes": 18395,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/engines.mjs",
+      "sha256": "35817358220c1ac273b9e0d9bb01c5aafb3373ec13ea429cf9a3cf1669d7e11e",
+      "bytes": 20667,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/fixtures.mjs",
+      "sha256": "c9bdbcd5e64675ec7cc1dada9071b221be68374bb907e434840f7289077fb968",
+      "bytes": 9272,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/gate-claims.mjs",
+      "sha256": "d5023d329a252b54c41b8ab46255d2786ba943aad69328b001f99333b708679f",
+      "bytes": 4721,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/pair.mjs",
+      "sha256": "9c13dd27ce5fd17804214efdef488d39a3d133f33d874fa72fa3eb79a96bf7df",
+      "bytes": 4363,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/pyodide-host.mjs",
+      "sha256": "0476051c9878c3622fb544bc3a9512f0304f409d9065a2fe11f8f43f880e3a51",
+      "bytes": 2068,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/reproduce.mjs",
+      "sha256": "78df4404df2281c7ebb0f9b635b60e5fd3ca86e57c3b0babb7fd981d3f8e83ac",
+      "bytes": 15988,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/self-check.mjs",
+      "sha256": "46e747747d33de8a0c8e242362ebf314612f05e432d6c788ac1675a4a5cc0080",
+      "bytes": 13990,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/specimens.mjs",
+      "sha256": "db813d92e7431f2b35cd9464908a3da78834ae014fc5f90534184db520ad2a13",
+      "bytes": 5297,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T42/lib/z3-corpus.mjs",
+      "sha256": "93028fcef28470f79ff57201bca0d1df687d584cd13f890cab5320488976398a",
+      "bytes": 8754,
+      "role": "gate"
+    },
+    {
+      "path": "content/assurance/gate-claims.json",
+      "sha256": "28b96d92d69ec33118540b5e72311fc791d21490b1eb4dcd817483088f8056bd",
+      "bytes": 101,
+      "role": "gate"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "role": "wheel (native z3)"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "role": "wheel (z3 under Pyodide)"
+    },
+    {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "file": "pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "role": "engine (Pyodide)"
+    }
+  ],
+  "budget": {
+    "network": "the pinned engine files are downloaded into the engine cache on the first run, each checked against its SHA-256",
+    "step_timeout_s": 1800
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-conformance",
+    "  held     z3-same-query      Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)",
+    "           11 of 11 queries equal (3.3 s)",
+    "           native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment)",
+    "           pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)",
+    "           query                             specimen native   pyodide  witness",
+    "           starter-overdraft                 SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+    "           starter-guarded                   SP-1.1   unsat    unsat    -",
+    "           optimize-min                      SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+    "           int-conservation-noguard          SP-2.2   unsat    unsat    -",
+    "           bv64-sender-guarded               SP-1.4   unsat    unsat    -",
+    "           bv64-recipient-wrap               SP-1.4   sat      sat      valid on both; the values are equal here (never required)",
+    "           bv64-conservation                 SP-1.4   unsat    unsat    -",
+    "           bv64-unsigned-guard-signed-check  SP-1.5   sat      sat      valid on both; the values are equal here (never required)",
+    "           vacuous-premises                  SP-1.6   unsat    unsat    -",
+    "           unknown-pow                       SP-1.7   unknown  unknown  reason: smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+    "           rlimit-cubes                      SP-1.8   unknown  unknown  reason: canceled",
+    "  absent   z3-pyodide-native  Pyodide Z3 = native Z3, on every authored cell and generator template",
+    "  absent   pocket-z3          Pocket checkers = Z3",
+    "  absent   spectacle-tlc      Spectacle = TLC",
+    "  absent   lasso-tlc          Lasso validator = TLC",
+    "  absent   pglite-pg          PGlite = PostgreSQL 18.6",
+    "  absent   datalog-souffle    Tab Datalog = Soufflé",
+    "  absent   provider-tlc       The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC",
+    "  claims   GATE-conformance backs SEAM-13 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red",
+    "  absent   not built yet (7): z3-pyodide-native (W1-T37), pocket-z3 (W1-T19), spectacle-tlc (W3-T08), lasso-tlc (W3-T09), pglite-pg (W4-T04), datalog-souffle (W4-T07), provider-tlc (W5-T35)",
+    "GATE-conformance: PASS (1 pair held, 11 comparisons, 0 differ; 7 not built yet; 5.3 s)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-conformance-gate/nightly.log",
+      "sha256": "9f856bf334ff6b6b4ec14c8fc32e34e2ae299c4d5c37794e54a66ffe877e2dd0",
+      "bytes": 2491,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-conformance-gate/nightly-json.log",
+      "sha256": "64260a4d855ba99cb69f54dc1d18d0567d83aed7b637008d53fbad0e58e4328b",
+      "bytes": 5135,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-conformance-gate/require-all.log",
+      "sha256": "8d61f6dd268be96aa39e178d1c49ef76cdd2adb82e42f2a0471bcf45d05a7850",
+      "bytes": 3462,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-conformance-gate/self-check.log",
+      "sha256": "f1f9ee6bfea4bfece969502ac7683c8c4ea04cc582c78273e466603f3f216877",
+      "bytes": 1648,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-conformance-gate/bench-nightly.log",
+      "sha256": "ae18f494410b01f2bacc4d305eaeb9bee0a8fa0bc54b8b3f3f838254efa77b01",
+      "bytes": 2464,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "pairs_held": 1,
+    "pairs_absent": 7,
+    "queries_compared": 11,
+    "queries_equal": 11,
+    "witnesses_equal": 4,
+    "native": "native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment)",
+    "pyodide": "pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)",
+    "verdicts": {
+      "starter-overdraft": {
+        "native": "sat",
+        "pyodide": "sat"
+      },
+      "starter-guarded": {
+        "native": "unsat",
+        "pyodide": "unsat"
+      },
+      "optimize-min": {
+        "native": "sat",
+        "pyodide": "sat"
+      },
+      "int-conservation-noguard": {
+        "native": "unsat",
+        "pyodide": "unsat"
+      },
+      "bv64-sender-guarded": {
+        "native": "unsat",
+        "pyodide": "unsat"
+      },
+      "bv64-recipient-wrap": {
+        "native": "sat",
+        "pyodide": "sat"
+      },
+      "bv64-conservation": {
+        "native": "unsat",
+        "pyodide": "unsat"
+      },
+      "bv64-unsigned-guard-signed-check": {
+        "native": "sat",
+        "pyodide": "sat"
+      },
+      "vacuous-premises": {
+        "native": "unsat",
+        "pyodide": "unsat"
+      },
+      "unknown-pow": {
+        "native": "unknown",
+        "pyodide": "unknown"
+      },
+      "rlimit-cubes": {
+        "native": "unknown",
+        "pyodide": "unknown"
+      }
+    },
+    "claims_backed": [
+      "SEAM-13"
+    ]
+  },
+  "checks": [
+    {
+      "id": "nightly-passes",
+      "pass": true
+    },
+    {
+      "id": "require-all-fails-while-a-pair-is-absent",
+      "pass": true
+    },
+    {
+      "id": "self-check-holds",
+      "pass": true
+    },
+    {
+      "id": "every-query-agrees",
+      "pass": true
+    },
+    {
+      "id": "bench-nightly-passes",
+      "pass": true
+    }
+  ],
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "nightly",
+  "configs": [
+    {
+      "id": "nightly",
+      "origin": "recorded",
+      "purpose": "the nightly lane on this repository: Pyodide Z3 = native Z3 on the same queries, the recipient wrap included; the other pairs reported absent with their builders",
+      "started_at": "2026-10-25T20:15:06.752Z",
+      "duration_s": 5.321,
+      "argv": [
+        "node",
+        "scripts/verify-conformance.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "verdict_lines": [
+        "GATE-conformance",
+        "  held     z3-same-query      Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)",
+        "           11 of 11 queries equal (3.3 s)",
+        "           native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment)",
+        "           pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)",
+        "           query                             specimen native   pyodide  witness",
+        "           starter-overdraft                 SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           starter-guarded                   SP-1.1   unsat    unsat    -",
+        "           optimize-min                      SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           int-conservation-noguard          SP-2.2   unsat    unsat    -",
+        "           bv64-sender-guarded               SP-1.4   unsat    unsat    -",
+        "           bv64-recipient-wrap               SP-1.4   sat      sat      valid on both; the values are equal here (never required)",
+        "           bv64-conservation                 SP-1.4   unsat    unsat    -",
+        "           bv64-unsigned-guard-signed-check  SP-1.5   sat      sat      valid on both; the values are equal here (never required)",
+        "           vacuous-premises                  SP-1.6   unsat    unsat    -",
+        "           unknown-pow                       SP-1.7   unknown  unknown  reason: smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+        "           rlimit-cubes                      SP-1.8   unknown  unknown  reason: canceled",
+        "  absent   z3-pyodide-native  Pyodide Z3 = native Z3, on every authored cell and generator template",
+        "  absent   pocket-z3          Pocket checkers = Z3",
+        "  absent   spectacle-tlc      Spectacle = TLC",
+        "  absent   lasso-tlc          Lasso validator = TLC",
+        "  absent   pglite-pg          PGlite = PostgreSQL 18.6",
+        "  absent   datalog-souffle    Tab Datalog = Soufflé",
+        "  absent   provider-tlc       The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC",
+        "  claims   GATE-conformance backs SEAM-13 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red",
+        "  absent   not built yet (7): z3-pyodide-native (W1-T37), pocket-z3 (W1-T19), spectacle-tlc (W3-T08), lasso-tlc (W3-T09), pglite-pg (W4-T04), datalog-souffle (W4-T07), provider-tlc (W5-T35)",
+        "GATE-conformance: PASS (1 pair held, 11 comparisons, 0 differ; 7 not built yet; 5.3 s)"
+      ],
+      "outputs": [
+        "runs/RUN-conformance-gate/nightly.log"
+      ]
+    },
+    {
+      "id": "nightly-json",
+      "origin": "recorded",
+      "purpose": "the same, as JSON, for the counts",
+      "started_at": "2026-10-25T20:15:12.073Z",
+      "duration_s": 5.065,
+      "argv": [
+        "node",
+        "scripts/verify-conformance.mjs",
+        "--json"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-conformance-gate/nightly-json.log"
+      ]
+    },
+    {
+      "id": "require-all",
+      "origin": "recorded",
+      "purpose": "every pair required, as a release asks: it must fail while a pair script is absent",
+      "started_at": "2026-10-25T20:15:17.138Z",
+      "duration_s": 5.083,
+      "argv": [
+        "node",
+        "scripts/verify-conformance.mjs",
+        "--require-all"
+      ],
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "verdict_lines": [
+        "GATE-conformance",
+        "  held     z3-same-query      Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)",
+        "           11 of 11 queries equal (3.2 s)",
+        "           native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment)",
+        "           pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)",
+        "           query                             specimen native   pyodide  witness",
+        "           starter-overdraft                 SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           starter-guarded                   SP-1.1   unsat    unsat    -",
+        "           optimize-min                      SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           int-conservation-noguard          SP-2.2   unsat    unsat    -",
+        "           bv64-sender-guarded               SP-1.4   unsat    unsat    -",
+        "           bv64-recipient-wrap               SP-1.4   sat      sat      valid on both; the values are equal here (never required)",
+        "           bv64-conservation                 SP-1.4   unsat    unsat    -",
+        "           bv64-unsigned-guard-signed-check  SP-1.5   sat      sat      valid on both; the values are equal here (never required)",
+        "           vacuous-premises                  SP-1.6   unsat    unsat    -",
+        "           unknown-pow                       SP-1.7   unknown  unknown  reason: smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+        "           rlimit-cubes                      SP-1.8   unknown  unknown  reason: canceled",
+        "  absent   z3-pyodide-native  Pyodide Z3 = native Z3, on every authored cell and generator template",
+        "  absent   pocket-z3          Pocket checkers = Z3",
+        "  absent   spectacle-tlc      Spectacle = TLC",
+        "  absent   lasso-tlc          Lasso validator = TLC",
+        "  absent   pglite-pg          PGlite = PostgreSQL 18.6",
+        "  absent   datalog-souffle    Tab Datalog = Soufflé",
+        "  absent   provider-tlc       The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC",
+        "  claims   GATE-conformance backs SEAM-13 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red",
+        "  FAIL     required  z3-pyodide-native: scripts/conformance/z3-pyodide-native.mjs does not exist, and this run requires the pair (built by W1-T37)",
+        "  FAIL     required  pocket-z3: scripts/conformance/pocket-z3.mjs does not exist, and this run requires the pair (built by W1-T19)",
+        "  FAIL     required  spectacle-tlc: scripts/conformance/spectacle-tlc.mjs does not exist, and this run requires the pair (built by W3-T08)",
+        "  FAIL     required  lasso-tlc: scripts/conformance/lasso-tlc.mjs does not exist, and this run requires the pair (built by W3-T09)",
+        "  FAIL     required  pglite-pg: scripts/conformance/pglite-pg.mjs does not exist, and this run requires the pair (built by W4-T04)",
+        "  FAIL     required  datalog-souffle: scripts/conformance/datalog-souffle.mjs does not exist, and this run requires the pair (built by W4-T07)",
+        "  FAIL     required  provider-tlc: scripts/conformance/provider-tlc.mjs does not exist, and this run requires the pair (built by W5-T35)",
+        "  absent   not built yet (7): z3-pyodide-native (W1-T37), pocket-z3 (W1-T19), spectacle-tlc (W3-T08), lasso-tlc (W3-T09), pglite-pg (W4-T04), datalog-souffle (W4-T07), provider-tlc (W5-T35)",
+        "GATE-conformance: FAIL (7 findings; 1 pair held, 11 comparisons, 0 differ; 7 not built yet; 5.1 s)"
+      ],
+      "outputs": [
+        "runs/RUN-conformance-gate/require-all.log"
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "plant one fault at a time, with stand-in engines and stub pair scripts: the gate must fail on each and pass the controls",
+      "started_at": "2026-10-25T20:15:22.222Z",
+      "duration_s": 0.136,
+      "argv": [
+        "node",
+        "scripts/verify-conformance.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "verdict_lines": [
+        "GATE-conformance self-check: plant one fault at a time; the gate must fail on each and pass the controls",
+        "  ok    control: two engines that agree on every query",
+        "  ok    planted: Pyodide answers unsat where native says sat (the recipient wrap)",
+        "  ok    planted: both engines return a witness that breaks the wrap property",
+        "  ok    control: two different valid witnesses are not a difference (witnesses are never compared by value)",
+        "  ok    planted: the reasons for an unknown differ",
+        "  ok    planted: an engine does not answer a query",
+        "  ok    planted: a query raises inside an engine",
+        "  ok    planted: the program exits non-zero on one engine",
+        "  ok    planted: the program does not finish on one engine",
+        "  ok    planted: an engine at another version than its pin",
+        "  ok    planted: both engines agree on an answer that is not the authored one",
+        "  ok    planted: an unreadable RESULT line",
+        "  ok    control: a pair script that reports and exits as the protocol says",
+        "  ok    planted: a pair script that reports a difference and exits 1",
+        "  ok    planted: a pair script whose report says ok but whose exit status says 1",
+        "  ok    planted: a pair script that exits 1 and prints text only",
+        "  ok    planted: a pair script that could not run (exit 2): the gate does not pass",
+        "  ok    control: an absent pair is reported with its builder and is not a pass or a failure",
+        "  ok    planted: the same absent pair, required",
+        "  ok    planted: the claims file does not back GATE-conformance",
+        "  ok    planted: the claims file names a gate the spine does not register",
+        "  ok    planted: an engine cannot be set up (the gate exits 2, never 0)",
+        "GATE-conformance self-check: PASS (22 of 22 held)"
+      ],
+      "outputs": [
+        "runs/RUN-conformance-gate/self-check.log"
+      ]
+    },
+    {
+      "id": "bench-nightly",
+      "origin": "recorded",
+      "purpose": "the nightly lane's environment: the gate inside the Bench image, whose own Python and Z3 are the native engine",
+      "started_at": "2026-10-25T20:15:22.390Z",
+      "duration_s": 4.982,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--name",
+        "w1t42-conformance-gate-bench-nightly",
+        "-v",
+        "<repo>:/repo:ro",
+        "-v",
+        "/nix:/nix:ro",
+        "-v",
+        "<sandbox>/engine-cache:/cache",
+        "-e",
+        "STATESPACE_ENGINE_CACHE=/cache",
+        "-e",
+        "HOME=/tmp",
+        "-w",
+        "/repo",
+        "--entrypoint",
+        "<host-node>",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "/repo/scripts/verify-conformance.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "verdict_lines": [
+        "GATE-conformance",
+        "  held     z3-same-query      Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)",
+        "           11 of 11 queries equal (3.2 s)",
+        "           native z3 5.3.1 (CPython 3.13.12, linux; python3 on PATH)",
+        "           pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)",
+        "           query                             specimen native   pyodide  witness",
+        "           starter-overdraft                 SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           starter-guarded                   SP-1.1   unsat    unsat    -",
+        "           optimize-min                      SP-1.1   sat      sat      valid on both; the values are equal here (never required)",
+        "           int-conservation-noguard          SP-2.2   unsat    unsat    -",
+        "           bv64-sender-guarded               SP-1.4   unsat    unsat    -",
+        "           bv64-recipient-wrap               SP-1.4   sat      sat      valid on both; the values are equal here (never required)",
+        "           bv64-conservation                 SP-1.4   unsat    unsat    -",
+        "           bv64-unsigned-guard-signed-check  SP-1.5   sat      sat      valid on both; the values are equal here (never required)",
+        "           vacuous-premises                  SP-1.6   unsat    unsat    -",
+        "           unknown-pow                       SP-1.7   unknown  unknown  reason: smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+        "           rlimit-cubes                      SP-1.8   unknown  unknown  reason: canceled",
+        "  absent   z3-pyodide-native  Pyodide Z3 = native Z3, on every authored cell and generator template",
+        "  absent   pocket-z3          Pocket checkers = Z3",
+        "  absent   spectacle-tlc      Spectacle = TLC",
+        "  absent   lasso-tlc          Lasso validator = TLC",
+        "  absent   pglite-pg          PGlite = PostgreSQL 18.6",
+        "  absent   datalog-souffle    Tab Datalog = Soufflé",
+        "  absent   provider-tlc       The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC",
+        "  claims   GATE-conformance backs SEAM-13 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red",
+        "  absent   not built yet (7): z3-pyodide-native (W1-T37), pocket-z3 (W1-T19), spectacle-tlc (W3-T08), lasso-tlc (W3-T09), pglite-pg (W4-T04), datalog-souffle (W4-T07), provider-tlc (W5-T35)",
+        "GATE-conformance: PASS (1 pair held, 11 comparisons, 0 differ; 7 not built yet; 4.7 s)"
+      ],
+      "outputs": [
+        "runs/RUN-conformance-gate/bench-nightly.log"
+      ],
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+    }
+  ],
+  "notes": [
+    "This is the same-query pair that spine 9.5 and 11.2 say GATE-conformance records: each query is one z3py program run on native Z3 and on Pyodide, so no two engines were asked different questions as RUN-z3-bv64 and RUN-z3-bv64-pyodide were.",
+    "Verdicts and the reasons for unknown are compared exactly; a witness is checked against the query's property on each engine and never compared by value. The witnesses_equal value counts the sat queries whose two witnesses happened to be equal here; the gate never requires it.",
+    "The pair scripts of the other rows (scripts/conformance/<pair>.mjs) did not exist when this was recorded; the log lists each with the task that builds it.",
+    "The bench-nightly configuration is a local substitute for the nightly lane on GitHub, which has not run: the Bench image runs the gate with the image's own python3 and Z3 as the native engine, and Node comes from the host's /nix store, mounted read-only, because the image has none (the workflow installs it with actions/setup-node). The repository is mounted read-only and is the working directory."
+  ]
+}

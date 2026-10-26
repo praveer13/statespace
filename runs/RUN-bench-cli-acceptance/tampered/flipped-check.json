@@ -1,0 +1,133 @@
+{
+  "schema": "statespace/receipt@1",
+  "lab": "LAB-90",
+  "stage": "LAB-90.2",
+  "lane": "reported",
+  "createdAt": "2026-10-25T18:59:32Z",
+  "cli": {
+    "name": "statespace",
+    "version": "0.1.0"
+  },
+  "environment": {
+    "devcontainer": null,
+    "os": {
+      "name": "Linux",
+      "version": "6.12.63",
+      "arch": "x86_64"
+    },
+    "sandbox": "off"
+  },
+  "tools": [
+    {
+      "name": "z3",
+      "version": "5.3.1",
+      "sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "pinned": true
+    },
+    {
+      "name": "z3-cli",
+      "version": "Z3 version 5.3.1 - 64 bit",
+      "sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "pinned": true
+    }
+  ],
+  "statements": [
+    {
+      "path": "claims/guard.smt2",
+      "kind": "smt2",
+      "sha256": "445e643d0f7ad595d79a06da5fd32300819e58028f5d61a14e66219779464a66"
+    }
+  ],
+  "runs": [
+    {
+      "step": "violation",
+      "engine": "z3",
+      "version": "5.3.1",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "receipts/LAB-90.2/20261025T185932Z/violation.smt2"
+      ],
+      "inputSha256": "445e643d0f7ad595d79a06da5fd32300819e58028f5d61a14e66219779464a66",
+      "budget": {
+        "rlimit": 5000000
+      },
+      "exitCode": 0,
+      "verdictLines": [
+        "unsat"
+      ],
+      "verdict": "unsat",
+      "ms": 10
+    },
+    {
+      "step": "premises",
+      "engine": "z3",
+      "version": "5.3.1",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "receipts/LAB-90.2/20261025T185932Z/premises.smt2"
+      ],
+      "inputSha256": "219bff9b4093e1ea30ba1b2cd0db860a118ed9dd3593a3515e3db80f83344177",
+      "budget": {
+        "rlimit": 5000000,
+        "seed": 2026
+      },
+      "exitCode": 0,
+      "verdictLines": [
+        "sat"
+      ],
+      "verdict": "sat",
+      "ms": 80
+    }
+  ],
+  "z3": {
+    "smtlibSha256": "445e643d0f7ad595d79a06da5fd32300819e58028f5d61a14e66219779464a66",
+    "entry": "cli",
+    "rlimit": 5000000,
+    "verdict": "unsat"
+  },
+  "checks": [
+    {
+      "id": "LAB-90.c2",
+      "pass": true
+    },
+    {
+      "id": "LAB-90.c3",
+      "pass": true
+    }
+  ],
+  "provenance": {
+    "assisted": "none",
+    "agent": false,
+    "guard": "on"
+  },
+  "claims": [
+    {
+      "template": "CL-90.1"
+    }
+  ],
+  "tcb": [
+    {
+      "component": "Z3 5.3.1",
+      "status": "trusted"
+    },
+    {
+      "component": "the SMT-LIB encoding of the guard",
+      "status": "trusted"
+    }
+  ],
+  "ext": {
+    "integrity": {
+      "scheme": "statespace-receipt-integrity@1",
+      "sha256": "fe6d56aa312dedd739a297d7779fb7204a90b7e375783c7989ec4d2426019b85"
+    }
+  }
+}

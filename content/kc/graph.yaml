@@ -1,0 +1,1404 @@
+# The KC graph v0: the 105 knowledge components of spine section 4 (revision 3), with their requires, confusable
+# and threshold edges, the confusable sets, the six fading families, each KC's item sources, and the lab-artifact
+# dependencies that the published paths must respect. W1-T04 wrote it; packages/kc loads it, and
+# `node scripts/verify-kc.mjs --write` regenerates packages/kc/src/graph.generated.ts from it.
+#
+# GATE-kc (node scripts/verify-kc.mjs) holds this file to the spine: the KC rows, names, stages, threshold flags,
+# requires (hard and soft) and confusable edges, the sets and the families must equal section 4 exactly, and
+# first_taught must be the first lesson or step briefing whose spine row lists the KC (first contact exempt).
+# Change the spine first, then this file. A registered KC ID is never renamed or deleted (spine, ID conventions).
+#
+# What the spine does not tabulate, and where it comes from:
+#   families     the generator families whose items carry the KC: the stage specs' exit items and Today cards
+#                (curriculum/S01-S10), ASSESSMENT.md section 4's per-family KC lines, curriculum/D-drawers.md
+#                section 6.6. A threshold KC needs a family, or a bank of at least four authored isomorphs.
+#   lab_stages   per lab stage: kcs, the KCs its checks exercise (the checks' KC tags), taught before the stage on
+#                every path unless first_contact marks a two-minute win that runs the course's reference ahead of
+#                its lesson; uses, the earlier stages whose artifacts it consumes (the stage specs' lab sections
+#                and claim mints, spine section 5.2); tools, the set-up whose first use needs its drawer.
+#   lesson_uses  per lesson: the lab stages whose artifacts its objective, worked example or copy applies (the
+#                stage specs). They are lab-artifact dependencies too, so the paths must respect them.
+#   substitutes  what stands in when a published path crosses a soft edge or an artifact dependency: spine
+#                section 3.0's table of jumps. GATE-kc fails a crossing without one, and a substitute no path uses.
+#   pending_crossings  a crossing that section 3.0's table does not substitute yet, with the owner decision it
+#                waits on. GATE-kc warns on each, so the gap is labeled in every run, and fails an entry no path
+#                needs; a crossing with neither a substitute nor an entry here fails.
+# The paths themselves are content/stages/budget.yaml's, which GATE-budget holds equal to spine section 3.0.
+
+schema: statespace/kc-graph@1
+
+# Tags that are first contact: recorded and scheduled, counted toward no KC state (spine section 12 item 33).
+first_contact:
+  S1.L0: [KC-1.violation-as-sat]
+
+kcs:
+  # ---- S1 Counterexample (Z3Py)
+  - id: KC-1.only-if-direction
+    name: "Read \"P only if Q\" as P → Q"
+    stage: S1
+    requires: []
+    confusable: [KC-1.implication-vacuity]
+    first_taught: S1.L1
+    families: [GEN-negate-it]
+  - id: KC-1.quantifier-negation
+    name: "Negate ∀ and ∃ claims correctly"
+    stage: S1
+    requires: []
+    confusable: [KC-1.only-if-direction]
+    first_taught: S1.L1
+    families: [GEN-negate-it]
+  - id: KC-1.implication-vacuity
+    name: "A false premise makes an implication true; vacuous premises"
+    stage: S1
+    threshold: true
+    requires: [KC-1.only-if-direction]
+    confusable: [KC-1.non-vacuity-check]
+    first_taught: S1.L3
+    families: [GEN-negate-it, GEN-call-it]
+  - id: KC-1.two-state-property
+    name: "A step as a relation between S and S′; primed variables"
+    stage: S1
+    requires: []
+    confusable: [KC-5.behaviors-stuttering]
+    first_taught: S1.L4
+    families: [GEN-negate-it]
+  - id: KC-1.violation-as-sat
+    name: "Search for a violation by asserting the negation and asking for `sat`"
+    stage: S1
+    threshold: true
+    requires: [KC-1.quantifier-negation]
+    confusable: [KC-1.three-answers]
+    first_taught: S1.L1
+    families: [GEN-negate-it, GEN-call-it, GEN-find-the-witness]
+  - id: KC-1.three-answers
+    name: "`sat`, `unsat`, `unknown` as statements about one query, encoding and solver run"
+    stage: S1
+    threshold: true
+    requires: [KC-1.violation-as-sat]
+    confusable: [KC-1.unknown-fails-closed]
+    first_taught: S1.L2
+    families: [GEN-call-it, GEN-which-stamp]
+  - id: KC-1.unknown-fails-closed
+    name: "`unknown` is no verdict; it fails closed where it guards enforcement"
+    stage: S1
+    requires: [KC-1.three-answers]
+    confusable: [KC-5.bounded-scope]
+    first_taught: S1.L2
+    families: [GEN-which-stamp, GEN-call-it]
+  - id: KC-1.witness-class
+    name: "A witness is one member of a class: minimize, then generalize"
+    stage: S1
+    requires: [KC-1.violation-as-sat]
+    confusable: [KC-4.cti-or-bug]
+    first_taught: S1.L1
+    families: [GEN-find-the-witness]
+  - id: KC-1.non-vacuity-check
+    name: "Every `unsat` needs a satisfiable premise witness"
+    stage: S1
+    requires: [KC-1.implication-vacuity, KC-1.three-answers]
+    confusable: [KC-1.implication-vacuity]
+    first_taught: S1.L3
+    families: [GEN-call-it, GEN-negate-it]
+  - id: KC-1.encoding-is-the-claim
+    name: "The result is about the encoding: Int, BitVec 64, signedness"
+    stage: S1
+    threshold: true
+    requires: [KC-1.three-answers]
+    confusable: [KC-3.nat-truncation]
+    first_taught: S1.L5
+    families: [GEN-call-it, GEN-find-the-witness]
+  - id: KC-1.claim-anatomy
+    name: "State a guarantee in six fields, with an \"if weakened\" witness that refutes the claim's own proposition"
+    stage: S1
+    requires: [KC-1.three-answers, KC-1.violation-as-sat]
+    confusable: []
+    first_taught: S1.L3
+    families: [GEN-find-the-witness, GEN-which-stamp]
+  # ---- S2 Proof (Lean 4)
+  - id: KC-2.proof-reading
+    name: "Self-explain a proof line by line"
+    stage: S2
+    requires: []
+    confusable: []
+    first_taught: S2.L0
+    families: [GEN-proof-structure]
+  - id: KC-2.props-as-types
+    name: "A proof is a term; `theorem` versus `def`"
+    stage: S2
+    threshold: true
+    requires: [KC-2.proof-reading]
+    confusable: [KC-2.goal-state-reading]
+    first_taught: S2.L2
+    families: [GEN-proof-structure]
+  - id: KC-2.goal-state-reading
+    name: "Predict the goal a tactic produces"
+    stage: S2
+    requires: [KC-2.props-as-types]
+    confusable: []
+    first_taught: S2.L3
+    families: [GEN-proof-structure]
+  - id: KC-2.induction-principle
+    name: "Base case and step; the hypothesis is not circular"
+    stage: S2
+    requires: [KC-2.proof-reading]
+    confusable: [KC-2.generalized-ih]
+    first_taught: S2.L1
+    families: [GEN-proof-structure]
+  - id: KC-2.generalized-ih
+    name: "Generalize the hypothesis over the state before induction"
+    stage: S2
+    threshold: true
+    requires: [KC-2.induction-principle]
+    confusable: [KC-2.induction-principle]
+    first_taught: S2.L7
+    families: [GEN-proof-structure]
+  - id: KC-2.theorem-statement-reading
+    name: "Say what a theorem proves, naming every hypothesis"
+    stage: S2
+    requires: [KC-2.props-as-types, KC-1.quantifier-negation]
+    confusable: [KC-2.kernel-not-requirement]
+    first_taught: S2.L5
+    families: [GEN-call-it]
+  - id: KC-2.rejection-unchanged
+    name: "Unchanged state on rejection as a theorem shape"
+    stage: S2
+    requires: [KC-2.goal-state-reading]
+    confusable: []
+    first_taught: S2.L6
+    families: [GEN-proof-structure]
+  - id: KC-2.finite-map-update
+    name: "Pointwise update over `Acct → Int`; aliasing on self-transfer"
+    stage: S2
+    requires: [KC-2.theorem-statement-reading]
+    confusable: [KC-3.edge-cases-as-decisions]
+    first_taught: S2.L8
+    families: [GEN-find-the-witness]
+  - id: KC-2.axioms-and-trust
+    name: "Read `#print axioms`; standard, `sorryAx`, `_native`, custom; build versus replay"
+    stage: S2
+    threshold: true
+    requires: [KC-2.props-as-types]
+    confusable: [KC-2.automation-scope]
+    first_taught: S2.L9
+    families: [GEN-which-stamp]
+  - id: KC-2.automation-scope
+    name: "What `omega`, `decide` and `grind` close, and which axioms they add"
+    stage: S2
+    requires: [KC-2.goal-state-reading]
+    confusable: [KC-2.axioms-and-trust]
+    first_taught: S2.L6
+    families: [GEN-which-stamp, GEN-call-it]
+  - id: KC-2.kernel-not-requirement
+    name: "Kernel acceptance establishes the formal proposition, not business intent"
+    stage: S2
+    threshold: true
+    requires: [KC-2.theorem-statement-reading]
+    confusable: [KC-2.statement-pinning]
+    first_taught: S2.L10
+    families: [GEN-call-it, GEN-spot-the-gap]
+  - id: KC-2.statement-pinning
+    name: "Agents prove, you state: challenge packs and comparator verdicts"
+    stage: S2
+    requires: [KC-2.axioms-and-trust]
+    confusable: [KC-2.kernel-not-requirement]
+    first_taught: S2.L10
+    families: [GEN-call-it]
+  # ---- S3 Semantics (Lean 4)
+  - id: KC-3.abstract-syntax
+    name: "An inductive AST for entities, expressions, guards and commands"
+    stage: S3
+    requires: [KC-2.props-as-types]
+    confusable: []
+    first_taught: S3.L1
+    families: [GEN-call-it]
+  - id: KC-3.typing-judgment
+    name: "`HasType`; well-formed commands"
+    stage: S3
+    requires: [KC-3.abstract-syntax]
+    confusable: [KC-3.progress-preservation-scope]
+    first_taught: S3.L2
+    families: [GEN-find-the-witness, GEN-proof-structure]
+  - id: KC-3.resource-postings
+    name: "`ResourceOp ∈ {deposit, move, hold, capture, release}`, each a pair of postings against mint and sink accounts; resources cannot be assigned"
+    stage: S3
+    requires: [KC-3.typing-judgment, KC-1.two-state-property]
+    confusable: []
+    first_taught: S3.L2
+    families: [GEN-find-the-witness]
+  - id: KC-3.refined-types
+    name: "`Amount := {n : Int // 0 < n}` as a dependent-type example"
+    stage: S3
+    requires: [KC-3.typing-judgment]
+    confusable: [KC-1.encoding-is-the-claim]
+    first_taught: S3.L2
+    families: [GEN-proof-structure]
+  - id: KC-3.big-step-errors
+    name: "An evaluator into `Except Err (State × Output × List Effect)`"
+    stage: S3
+    requires: [KC-3.abstract-syntax]
+    confusable: [KC-3.small-step-stuck]
+    first_taught: S3.L3
+    families: [GEN-find-the-witness]
+  - id: KC-3.small-step-stuck
+    name: "Stuck states versus error outcomes"
+    stage: S3
+    threshold: true
+    requires: [KC-3.big-step-errors]
+    confusable: [KC-3.big-step-errors]
+    first_taught: S3.L4
+    families: [GEN-find-the-witness, GEN-call-it]
+  - id: KC-3.progress-preservation-scope
+    name: "What progress and preservation buy, and what they do not"
+    stage: S3
+    threshold: true
+    requires: [KC-3.small-step-stuck, KC-3.typing-judgment]
+    confusable: [KC-3.step-invariant]
+    first_taught: S3.L5
+    families: [GEN-call-it, GEN-proof-structure]
+  - id: KC-3.step-invariant
+    name: "An invariant preserved by every successful transition"
+    stage: S3
+    requires: [KC-2.generalized-ih, KC-3.big-step-errors]
+    confusable: [KC-3.progress-preservation-scope]
+    first_taught: S3.L6
+    families: [GEN-proof-structure, GEN-find-the-witness]
+  - id: KC-3.edge-cases-as-decisions
+    name: "Zero, self-transfer, failed guard and overflow as recorded decisions"
+    stage: S3
+    requires: [KC-3.big-step-errors]
+    confusable: [KC-2.finite-map-update]
+    first_taught: S3.L7
+    families: [GEN-call-it]
+  - id: KC-3.nat-truncation
+    name: "`Nat` subtraction truncates and hides overdrafts"
+    stage: S3
+    requires: [KC-1.encoding-is-the-claim]
+    confusable: [KC-1.encoding-is-the-claim]
+    first_taught: S3.L7
+    families: [GEN-find-the-witness]
+  - id: KC-3.termination-fuel
+    name: "Structural recursion and fuel"
+    stage: S3
+    requires: [KC-3.big-step-errors]
+    confusable: []
+    first_taught: S3.L8
+    families: [GEN-call-it]
+  - id: KC-3.goldens-as-theorems
+    name: "Kernel-checked goldens as the correspondence check for learner-owned semantics"
+    stage: S3
+    requires: [KC-2.axioms-and-trust, KC-3.big-step-errors]
+    confusable: [KC-6.differential-testing]
+    first_taught: S3.L9
+    families: [GEN-find-the-witness]
+  # ---- S4 Obligations (Lean, Z3)
+  - id: KC-4.hoare-triple
+    name: "Triples; partial versus total correctness"
+    stage: S4
+    requires: [KC-1.two-state-property]
+    confusable: []
+    first_taught: S4.L1
+    families: [GEN-call-it]
+  - id: KC-4.wp-assignment
+    name: "Weakest precondition of assignment by substitution"
+    stage: S4
+    threshold: true
+    requires: [KC-4.hoare-triple]
+    confusable: [KC-4.symbolic-execution]
+    first_taught: S4.L2
+    families: [GEN-wp-it, GEN-call-it]
+  - id: KC-4.wp-sequence-conditional
+    name: "Weakest preconditions of sequences and guarded commands; four guard readings"
+    stage: S4
+    requires: [KC-4.wp-assignment]
+    confusable: []
+    first_taught: S4.L3
+    families: [GEN-wp-it]
+  - id: KC-4.vc-shape
+    name: "`Inv ∧ Guard ∧ Step ∧ ¬Inv′`, and what `sat` or `unsat` of it means"
+    stage: S4
+    requires: [KC-4.wp-sequence-conditional, KC-1.violation-as-sat]
+    confusable: [KC-4.invariant-vs-inductive]
+    first_taught: S4.L4
+    families: [GEN-negate-it, GEN-spec-it]
+  - id: KC-4.symbolic-execution
+    name: "Forward symbolic execution as a second derivation"
+    stage: S4
+    requires: [KC-4.wp-assignment]
+    confusable: [KC-4.wp-assignment]
+    first_taught: S4.L4
+    families: [GEN-negate-it]
+  - id: KC-4.frame-condition
+    name: "Frame conditions: unchanged state must be said"
+    stage: S4
+    requires: [KC-4.vc-shape]
+    confusable: []
+    first_taught: S4.L5
+    families: [GEN-negate-it, GEN-spec-it, GEN-spot-the-gap]
+  - id: KC-4.capture-avoiding-substitution
+    name: "Substitution without variable capture"
+    stage: S4
+    requires: [KC-4.wp-assignment]
+    confusable: []
+    first_taught: S4.L2
+    families: [GEN-wp-it]
+  - id: KC-4.invariant-vs-inductive
+    name: "Invariant (true in reachable states) versus inductive (preserved by every step)"
+    stage: S4
+    threshold: true
+    requires: [KC-4.vc-shape, KC-3.step-invariant]
+    confusable: [KC-4.cti-or-bug]
+    first_taught: S4.L4
+    families: [GEN-cti-or-bug, GEN-call-it]
+  - id: KC-4.cti-or-bug
+    name: "Inductive, CTI (strengthen) or reachable (fix)"
+    stage: S4
+    threshold: true
+    requires: [KC-4.invariant-vs-inductive]
+    confusable: [KC-1.witness-class]
+    first_taught: S4.L6
+    families: [GEN-cti-or-bug]
+  - id: KC-4.trust-stack
+    name: "Solver versus VC generator versus semantics: which correctness a result rests on"
+    stage: S4
+    threshold: true
+    requires: [KC-4.vc-shape, KC-2.axioms-and-trust]
+    confusable: [KC-9.tcb]
+    first_taught: S4.L8
+    families: [GEN-find-the-witness, GEN-which-stamp, GEN-spot-the-gap, GEN-call-it]
+  - id: KC-4.prove-or-enforce
+    name: "Prove per command, otherwise enforce at commit"
+    stage: S4
+    requires: [KC-4.vc-shape]
+    confusable: [KC-6.enforce-at-commit]
+    first_taught: S4.L7
+    families: [GEN-which-stamp]
+  # ---- S5 Time (TLA+)
+  - id: KC-5.behaviors-stuttering
+    name: "Behaviors, actions and stuttering"
+    stage: S5
+    requires: [KC-1.two-state-property]
+    confusable: []
+    first_taught: S5.L1
+    families: [GEN-trace-allowed]
+  - id: KC-5.tlc-flags-matter
+    name: "Flags change verdicts; trace length counts actions, not states"
+    stage: S5
+    requires: [KC-5.behaviors-stuttering]
+    confusable: [KC-5.bounded-scope]
+    first_taught: S5.L2
+    families: [GEN-call-it]
+  - id: KC-5.interleaving-granularity
+    name: "Atomicity and granularity decide the reachable interleavings"
+    stage: S5
+    requires: [KC-5.behaviors-stuttering]
+    confusable: [KC-6.compilation-pattern]
+    first_taught: S5.L3
+    families: [GEN-find-the-witness, GEN-trace-allowed, GEN-call-it]
+  - id: KC-5.holds-lifecycle
+    name: "Available → Held → Captured or Released"
+    stage: S5
+    requires: [KC-5.behaviors-stuttering]
+    confusable: []
+    first_taught: S5.L4
+    families: [GEN-trace-allowed]
+  - id: KC-5.hostile-environment
+    name: "Timeouts, duplicates, crashes and restarts as actions"
+    stage: S5
+    requires: [KC-5.holds-lifecycle]
+    confusable: [KC-8.crash-windows]
+    first_taught: S5.L5
+    families: [GEN-call-it, GEN-find-the-witness]
+  - id: KC-5.safety-vs-liveness
+    name: "\"Never twice\" versus \"eventually\""
+    stage: S5
+    threshold: true
+    requires: [KC-5.behaviors-stuttering]
+    confusable: [KC-7.hyperproperty]
+    first_taught: S5.L6
+    families: [GEN-call-it, GEN-lasso-or-not, GEN-trace-allowed]
+  - id: KC-5.temporal-operators
+    name: "□, ◇ and ~>, read and written; implicit always and eventually"
+    stage: S5
+    requires: [KC-5.safety-vs-liveness]
+    confusable: []
+    first_taught: S5.L6
+    families: [GEN-call-it]
+  - id: KC-5.fairness
+    name: "Weak and strong fairness: what the scheduler and the environment promise"
+    stage: S5
+    threshold: true
+    requires: [KC-5.safety-vs-liveness]
+    confusable: [KC-8.progress-needs-recovery]
+    first_taught: S5.L7
+    families: [GEN-lasso-or-not, GEN-call-it]
+  - id: KC-5.lasso-reading
+    name: "A liveness counterexample is a lasso"
+    stage: S5
+    requires: [KC-5.safety-vs-liveness]
+    confusable: []
+    first_taught: S5.L6
+    families: [GEN-lasso-or-not]
+  - id: KC-5.bounded-scope
+    name: "\"No error\" holds for stated constants and bounds, not every size"
+    stage: S5
+    threshold: true
+    requires: [KC-5.tlc-flags-matter]
+    confusable: [KC-1.unknown-fails-closed]
+    first_taught: S5.L8
+    families: [GEN-call-it, GEN-which-stamp]
+  - id: KC-5.inductive-invariant-tla
+    name: "An inductive invariant checked at fixed N is [M]; a parametric proof of the inductive step is [P]"
+    stage: S5
+    requires: [KC-4.invariant-vs-inductive, KC-5.bounded-scope]
+    confusable: []
+    first_taught: S5.L9
+    families: [GEN-which-stamp, GEN-cti-or-bug]
+  # ---- S6 Correspondence (PostgreSQL, Rust)
+  - id: KC-6.sql-not-algebra
+    name: "Bags, NULL and three-valued logic"
+    stage: S6
+    requires: [KC-1.encoding-is-the-claim]
+    confusable: []
+    first_taught: S6.L1
+    families: [GEN-call-it]
+  - id: KC-6.null-guards
+    name: "CHECK accepts NULL; WHERE skips it"
+    stage: S6
+    requires: [KC-6.sql-not-algebra]
+    confusable: []
+    first_taught: S6.L1
+    families: [GEN-find-the-witness, GEN-call-it]
+  - id: KC-6.rowcount-as-guard
+    name: "Rowcount equals 1, or a typed error"
+    stage: S6
+    requires: [KC-6.null-guards]
+    requires_soft: [KC-3.big-step-errors]
+    confusable: []
+    first_taught: S6.L2
+    families: [GEN-call-it, GEN-find-the-witness]
+  - id: KC-6.differential-testing
+    name: "What differential tests establish: outcome classes, n, generator statistics"
+    stage: S6
+    threshold: true
+    requires: [KC-6.rowcount-as-guard]
+    confusable: [KC-3.goldens-as-theorems]
+    first_taught: S6.L3
+    families: [GEN-call-it, GEN-which-stamp]
+  - id: KC-6.overflow-refusal
+    name: "The model takes a step the database refuses (22003)"
+    stage: S6
+    requires: [KC-1.encoding-is-the-claim, KC-6.rowcount-as-guard]
+    confusable: []
+    first_taught: S6.L4
+    families: [GEN-call-it]
+  - id: KC-6.enforce-at-commit
+    name: "A deferred check over postings; SUM over no rows is NULL"
+    stage: S6
+    requires: [KC-4.prove-or-enforce, KC-6.null-guards]
+    confusable: [KC-4.prove-or-enforce]
+    first_taught: S6.L5
+    families: [GEN-find-the-witness]
+  - id: KC-6.compilation-pattern
+    name: "The compilation pattern, not only the isolation level, decides the anomaly"
+    stage: S6
+    requires: [KC-6.rowcount-as-guard, KC-5.interleaving-granularity]
+    confusable: [KC-6.anomaly-isolation]
+    first_taught: S6.L6
+    families: [GEN-anomaly-id]
+  - id: KC-6.anomaly-isolation
+    name: "Lost update, write skew and read skew against isolation levels"
+    stage: S6
+    threshold: true
+    requires: [KC-6.compilation-pattern]
+    confusable: [KC-6.compilation-pattern]
+    first_taught: S6.L6
+    families: [GEN-call-it, GEN-anomaly-id]
+  - id: KC-6.serializable-retries
+    name: "Whole-command retries on 40001 and 40P01; termination is assumed"
+    stage: S6
+    requires: [KC-6.anomaly-isolation]
+    confusable: []
+    first_taught: S6.L7
+    families: [GEN-which-stamp, GEN-anomaly-id]
+  - id: KC-6.refinement-relation
+    name: "R(S, D) and the simulation square"
+    stage: S6
+    threshold: true
+    requires: [KC-6.differential-testing, KC-3.step-invariant]
+    confusable: [KC-9.forward-simulation]
+    first_taught: S6.L8
+    families: [GEN-call-it, GEN-find-the-witness]
+  - id: KC-6.abstract-serializability
+    name: "Accept a history if some serial order reproduces every committed output"
+    stage: S6
+    requires: [KC-6.refinement-relation, KC-6.anomaly-isolation]
+    confusable: []
+    first_taught: S6.L8
+    families: [GEN-find-the-witness]
+  - id: KC-6.db-as-assumption
+    name: "PostgreSQL's semantics enter a claim as assumptions"
+    stage: S6
+    requires: [KC-6.serializable-retries, KC-6.abstract-serializability]
+    confusable: [KC-4.trust-stack]
+    first_taught: S6.L9
+    families: [GEN-call-it, GEN-which-stamp]
+  # ---- S7 Secrecy (Datalog, Z3, PostgreSQL RLS)
+  - id: KC-7.access-models
+    name: "Users, teams, roles, documents and sharing"
+    stage: S7
+    requires: []
+    confusable: []
+    first_taught: S7.L1
+    families: [GEN-call-it]
+  - id: KC-7.policy-as-datalog
+    name: "Policy as Datalog: access matrix and derivations"
+    stage: S7
+    requires: [KC-7.access-models]
+    confusable: []
+    first_taught: S7.L2
+    families: [GEN-find-the-witness, GEN-spec-it]
+  - id: KC-7.policy-checking
+    name: "Policy queries with distinguishing requests; operator choice"
+    stage: S7
+    requires: [KC-7.policy-as-datalog, KC-1.violation-as-sat]
+    confusable: []
+    first_taught: S7.L3
+    families: [GEN-spec-it, GEN-call-it]
+  - id: KC-7.small-scope
+    name: "A small scope is a hypothesis, not a proof for all sizes"
+    stage: S7
+    requires: [KC-7.policy-checking, KC-5.bounded-scope]
+    confusable: [KC-5.bounded-scope]
+    first_taught: S7.L3
+    families: [GEN-call-it]
+  - id: KC-7.rls-semantics
+    name: "`USING` filters silently, `WITH CHECK` errors, owners bypass unless `FORCE`"
+    stage: S7
+    requires: [KC-7.policy-as-datalog, KC-6.sql-not-algebra]
+    confusable: []
+    first_taught: S7.L4
+    families: [GEN-find-the-witness]
+  - id: KC-7.side-channels
+    name: "Counts, sizes and integrity checks as channels"
+    stage: S7
+    requires: [KC-7.rls-semantics]
+    confusable: []
+    first_taught: S7.L4
+    families: [GEN-find-the-witness, GEN-leaks-to-observer]
+  - id: KC-7.enforcement-vs-ni
+    name: "A check on every read is not noninterference"
+    stage: S7
+    threshold: true
+    requires: [KC-7.policy-checking]
+    confusable: [KC-7.observer-equivalence]
+    first_taught: S7.L5
+    families: [GEN-leaks-to-observer]
+  - id: KC-7.hyperproperty
+    name: "Noninterference is a property of pairs of executions"
+    stage: S7
+    requires: [KC-5.safety-vs-liveness]
+    confusable: [KC-5.safety-vs-liveness]
+    first_taught: S7.L5
+    families: [GEN-call-it, GEN-leaks-to-observer]
+  - id: KC-7.observer-equivalence
+    name: "The observer, its equivalence relation and paired states"
+    stage: S7
+    threshold: true
+    requires: [KC-7.hyperproperty, KC-4.vc-shape]
+    confusable: [KC-7.enforcement-vs-ni]
+    first_taught: S7.L6
+    families: [GEN-leaks-to-observer, GEN-spec-it]
+  - id: KC-7.declassification
+    name: "What, who, where and when; why the blanket claim is false"
+    stage: S7
+    requires: [KC-7.observer-equivalence]
+    confusable: [KC-7.side-channels]
+    first_taught: S7.L7
+    families: [GEN-leaks-to-observer]
+  - id: KC-7.revocation-past
+    name: "Revocation cannot unsee; the new enemy"
+    stage: S7
+    requires: [KC-7.declassification, KC-5.temporal-operators]
+    confusable: []
+    first_taught: S7.L8
+    families: [GEN-call-it, GEN-trace-allowed]
+  # ---- S8 Effects (TLA+, Rust)
+  - id: KC-8.commit-not-send
+    name: "Recording intent is not performing an effect"
+    stage: S8
+    threshold: true
+    requires: [KC-5.hostile-environment]
+    confusable: [KC-8.at-least-once]
+    first_taught: S8.L1
+    families: [GEN-call-it]
+  - id: KC-8.outbox-chain
+    name: "Command → Outbox → Worker → External → Ack"
+    stage: S8
+    requires: [KC-8.commit-not-send]
+    confusable: []
+    first_taught: S8.L2
+    families: [GEN-trace-allowed]
+  - id: KC-8.crash-windows
+    name: "What a crash between each pair of steps permits"
+    stage: S8
+    requires: [KC-8.outbox-chain]
+    confusable: [KC-5.hostile-environment]
+    first_taught: S8.L3
+    families: [GEN-trace-allowed, GEN-find-the-witness]
+  - id: KC-8.at-least-once
+    name: "At-least-once delivery duplicates; exactly-once is a pair"
+    stage: S8
+    threshold: true
+    requires: [KC-8.crash-windows]
+    confusable: [KC-8.commit-not-send]
+    first_taught: S8.L3
+    families: [GEN-find-the-witness, GEN-call-it]
+  - id: KC-8.untrusted-replies
+    name: "Replies as untrusted input"
+    stage: S8
+    requires: [KC-8.outbox-chain]
+    confusable: []
+    first_taught: S8.L4
+    families: [GEN-find-the-witness]
+  - id: KC-8.idempotency-keys
+    name: "One key per command, written in the same SERIALIZABLE transaction"
+    stage: S8
+    requires: [KC-8.at-least-once, KC-6.serializable-retries]
+    confusable: []
+    first_taught: S8.L4
+    families: [GEN-find-the-witness]
+  - id: KC-8.progress-needs-recovery
+    name: "Liveness that needs eventual recovery"
+    stage: S8
+    requires: [KC-5.fairness, KC-8.crash-windows]
+    confusable: [KC-5.fairness]
+    first_taught: S8.L5
+    families: [GEN-lasso-or-not]
+  - id: KC-8.deterministic-simulation
+    name: "Seeded fault schedules replay the same transitions"
+    stage: S8
+    requires: [KC-8.outbox-chain]
+    confusable: []
+    first_taught: S8.L6
+    families: [GEN-find-the-witness]
+  - id: KC-8.trace-validation
+    name: "Implementation traces checked as behaviors of the spec"
+    stage: S8
+    requires: [KC-8.deterministic-simulation, KC-5.behaviors-stuttering]
+    confusable: [KC-6.differential-testing]
+    first_taught: S8.L6
+    families: [GEN-trace-allowed]
+  - id: KC-8.provider-horizon
+    name: "The provider's key retention as an assumed seam"
+    stage: S8
+    requires: [KC-8.idempotency-keys]
+    confusable: []
+    first_taught: S8.L7
+    families: [GEN-which-stamp, GEN-call-it]
+  # ---- S9 Preservation (Lean, Rust)
+  - id: KC-9.stack-machine-correctness
+    name: "A compiler-correctness proof by structural induction"
+    stage: S9
+    requires: [KC-2.generalized-ih]
+    confusable: []
+    first_taught: S9.L1
+    families: [GEN-proof-structure]
+  - id: KC-9.translation-validation
+    name: "Check each output instead of the compiler"
+    stage: S9
+    requires: [KC-6.differential-testing]
+    confusable: [KC-9.forward-simulation]
+    first_taught: S9.L2
+    families: [GEN-which-stamp, GEN-find-the-witness]
+  - id: KC-9.target-ir
+    name: "IR semantics with aborts; determinism"
+    stage: S9
+    requires: [KC-3.big-step-errors]
+    confusable: []
+    first_taught: S9.L3
+    families: [GEN-call-it, GEN-find-the-witness]
+  - id: KC-9.observations
+    name: "What is observable; observational equivalence"
+    stage: S9
+    requires: [KC-9.target-ir, KC-7.observer-equivalence]
+    confusable: [KC-7.observer-equivalence]
+    first_taught: S9.L4
+    families: [GEN-leaks-to-observer, GEN-call-it]
+  - id: KC-9.forward-simulation
+    name: "Matching relation and simulation diagram"
+    stage: S9
+    threshold: true
+    requires: [KC-9.observations, KC-6.refinement-relation]
+    confusable: [KC-9.simulation-kinds]
+    first_taught: S9.L5
+    families: [GEN-proof-structure]
+  - id: KC-9.simulation-kinds
+    name: "Forward, backward and bisimulation; when forward suffices"
+    stage: S9
+    requires: [KC-9.forward-simulation]
+    confusable: [KC-9.forward-simulation]
+    first_taught: S9.L5
+    families: [GEN-call-it]
+  - id: KC-9.preservation-proof
+    name: "Semantic preservation for the fragment"
+    stage: S9
+    requires: [KC-9.forward-simulation]
+    confusable: []
+    first_taught: S9.L6
+    families: [GEN-proof-structure]
+  - id: KC-9.bad-optimization
+    name: "A wrong transformation breaks the proof; extract its counterexample"
+    stage: S9
+    requires: [KC-9.preservation-proof]
+    confusable: [KC-4.cti-or-bug]
+    first_taught: S9.L7
+    families: [GEN-find-the-witness]
+  - id: KC-9.sql-equivalence
+    name: "Containment, provers and refutation; one-database agreement is [T] (1 instance)"
+    stage: S9
+    requires: [KC-9.translation-validation, KC-6.sql-not-algebra]
+    confusable: [KC-6.differential-testing]
+    first_taught: S9.L8
+    families: [GEN-which-stamp, GEN-find-the-witness]
+  - id: KC-9.three-claims
+    name: "Command, compiler and runtime claims kept apart"
+    stage: S9
+    requires: [KC-9.preservation-proof]
+    confusable: [KC-9.tcb]
+    first_taught: S9.L9
+    families: [GEN-call-it]
+  - id: KC-9.tcb
+    name: "Name every unverified piece of the executable system"
+    stage: S9
+    threshold: true
+    requires: [KC-9.three-claims, KC-4.trust-stack]
+    confusable: [KC-4.trust-stack]
+    first_taught: S9.L9
+    families: [GEN-call-it, GEN-which-stamp]
+  # ---- S10 Assembly
+  - id: KC-10.claim-graph-report
+    name: "The report as a traversal of the claim graph"
+    stage: S10
+    requires: [KC-9.tcb]
+    confusable: []
+    first_taught: S10.L7
+    families: [GEN-which-stamp]
+  - id: KC-10.defeater-log
+    name: "Doubts eliminated out of doubts identified, never summed"
+    stage: S10
+    requires: [KC-10.claim-graph-report]
+    confusable: []
+    first_taught: S10.L7
+    families: [GEN-call-it]
+  - id: KC-10.agent-proposal-triage
+    name: "Choose and run the right checker on an agent's proposal, then decide"
+    stage: S10
+    requires: [KC-4.trust-stack, KC-2.kernel-not-requirement]
+    confusable: []
+    first_taught: S10.L6
+    families: [GEN-spot-the-gap, GEN-which-stamp, GEN-call-it]
+  - id: KC-10.publish-limitations
+    name: "State tool versions, statement hashes and known limitations"
+    stage: S10
+    requires: [KC-10.claim-graph-report]
+    requires_soft: [KC-5.bounded-scope, KC-2.statement-pinning]
+    confusable: []
+    first_taught: S10.L7
+    families: [GEN-call-it, GEN-which-stamp]
+
+# Confusable sets for interleaving (M-which-is-it): after the exit item, at most half a session, never across sets.
+confusable_sets:
+  - id: A
+    name: "which stamp"
+    discriminate: "what Z3, Lean, TLC, Spectacle, a differential run, a constraint and a configuration each established"
+    kcs: [KC-1.three-answers, KC-1.unknown-fails-closed, KC-2.axioms-and-trust, KC-5.bounded-scope, KC-6.differential-testing]
+    opens: S2
+  - id: B
+    name: "property kind"
+    discriminate: "safety, liveness, hyperproperty, refinement, requirement"
+    kcs: [KC-5.safety-vs-liveness, KC-7.hyperproperty, KC-6.refinement-relation, KC-2.kernel-not-requirement]
+    opens: S5
+  - id: C
+    name: "gap class"
+    discriminate: "G1–G13 and their subclasses"
+    kcs: [KC-4.trust-stack, KC-10.agent-proposal-triage]
+    audit_families: true
+    opens: S2
+  - id: D
+    name: "anomaly"
+    discriminate: "lost update, write skew, read skew, serialization failure, deadlock"
+    kcs: [KC-6.anomaly-isolation, KC-6.compilation-pattern]
+    opens: S6
+  - id: E
+    name: "fairness"
+    discriminate: "none, weak, strong; lasso shapes"
+    kcs: [KC-5.fairness, KC-5.lasso-reading, KC-8.progress-needs-recovery]
+    opens: S5
+  - id: F
+    name: "encoding"
+    discriminate: "ℤ, BitVec 64, `Nat`, `bigint`, `numeric`"
+    kcs: [KC-1.encoding-is-the-claim, KC-3.nat-truncation, KC-6.overflow-refusal]
+    opens: S3
+  - id: G
+    name: "correspondence"
+    discriminate: "forward simulation, backward simulation, bisimulation, translation validation, differential testing, trace validation"
+    kcs: [KC-9.forward-simulation, KC-9.simulation-kinds, KC-9.translation-validation, KC-6.differential-testing, KC-8.trace-validation]
+    opens: S8
+    opens_note: "its S6 and S8 members are both in hand after S8.L6; the S9 members join at S9"
+  - id: H
+    name: "obligation verdicts"
+    discriminate: "weakest precondition versus symbolic execution; what a `sat` obligation means: not inductive, a CTI or a bug"
+    kcs: [KC-4.wp-assignment, KC-4.symbolic-execution, KC-4.vc-shape, KC-4.invariant-vs-inductive, KC-4.cti-or-bug, KC-1.witness-class]
+    opens: S4
+
+# Fading families: correct worked examples, then backward fading, rungs L0 to L4 on a 3-up, 1-down staircase per KC.
+fading_families:
+  - id: F1
+    name: "Lean list induction with a generalized hypothesis"
+    kc: KC-2.generalized-ih
+  - id: F2
+    name: "step-invariant case analysis"
+    kc: KC-3.step-invariant
+  - id: F3
+    name: "weakest-precondition derivation"
+    kc: KC-4.wp-assignment
+  - id: F4
+    name: "invariant strengthening after a CTI"
+    kc: KC-4.cti-or-bug
+  - id: F5
+    name: "a TLA+ action with its invariant and fairness"
+    kc: KC-5.fairness
+  - id: F6
+    name: "a forward-simulation step"
+    kc: KC-9.forward-simulation
+
+# Set-up whose first use on a path needs its drawer (spine section 3.12): the drawer must name that first stage.
+tools:
+  devcontainer:
+    what: the Bench devcontainer
+    drawer: D-15
+  lane-a:
+    what: Lane A (your Rust as wasm, graded in the tab)
+    drawer: D-14
+
+# Course modules that stand in for a learner artifact on a path that reaches a stage first (spine section 3.0).
+reference_modules:
+  reference-compiler:
+    what: reference compiler
+    label: reference module, earns nothing
+
+# The crossings of spine section 3.0's table of jumps. The default path crosses nothing.
+substitutes:
+  - path: builder
+    soft_edge: [KC-6.rowcount-as-guard, KC-3.big-step-errors]
+    substitute: D-23
+  - path: builder
+    artifact: [LAB-6.6, LAB-6.2]
+    substitute: reference-compiler
+  - path: builder
+    artifact: [LAB-8.5, LAB-6.2]
+    substitute: reference-compiler
+
+# Crossings that spine section 3.0's table does not substitute. On the builder's path S6.L2 runs in the S6-early
+# block, before S3 and LAB-3.7, yet the spine's S6.L2 row has "the S3 self-transfer decision" reach the SQL, and
+# curriculum/S06-correspondence.md's S6.L2 objective and worked example compile a self-transfer by the LAB-3.7
+# decision record. D-23 stands in only for the soft edge into S6.L2, so this crossing waits on the owner.
+pending_crossings:
+  - path: builder
+    artifact: [S6.L2, LAB-3.7]
+    decision: >-
+      what stands in for the LAB-3.7 self-transfer decision record when S6.L2 runs before S3 (for example a
+      reference decision record labeled like the reference compiler, a self-transfer section in D-23, or S6.L2
+      moved after S3), recorded in spine section 3.0's table of jumps
+
+# The lab artifacts a lesson applies, from the stage specs: each place a lesson section of curriculum/S01-S10 names
+# a lab stage whose artifact the lesson consumes. Not here: S5.L3's and S7.L8's
+# erosion forecasts (their specs move them on the builder's path, and GATE-erosions replays both paths); "Build
+# this" pointers to the next stage; S9.L9's rows that name a whole lab (LAB-3, LAB-4), which every path completes
+# before S9; the S10 steps S10.L1-S10.L5, built inside earlier labs and placed by no budget sequence; and the step
+# briefings S10.L6 and S10.L7, which read the whole claim graph from the last block of every path.
+lesson_uses:
+  S6.L2:
+    LAB-3.7: "the self-transfer decision record its compile plan applies"
+  S6.L4:
+    LAB-3.7: "the decision-record form its overflow remedy is recorded in"
+  S8.L4:
+    LAB-6.6: "the retry policy its copy says handles both outcomes of the same-key race"
+  S9.L8:
+    LAB-6.7: "your R(S, D), by which the validator relates balances"
+  S9.L9:
+    LAB-3.8: "the parser it marks tested"
+    LAB-3.9: "the typechecker it marks tested"
+    LAB-6.2: "the SQL compiler it marks validated per run"
+    LAB-6.8: "the runtime and retries it marks tested"
+    LAB-9.3: "the IR compiler it marks proved"
+    LAB-9.11: "the SQL validator and lifter it marks trusted"
+
+lab_stages:
+  # ---- LAB-1: Project 00 (spine section 3.1): uv run or the tab, never the devcontainer, no Lane A
+  LAB-1.1:
+    kcs: [KC-1.violation-as-sat]
+    first_contact: true
+  LAB-1.2:
+    kcs: [KC-1.violation-as-sat]
+  LAB-1.3:
+    kcs: [KC-1.non-vacuity-check, KC-1.implication-vacuity]
+    uses:
+      LAB-1.2: "your transfer encoding and violation query, now guarded"
+  LAB-1.4:
+    kcs: [KC-1.witness-class, KC-1.violation-as-sat]
+  LAB-1.5:
+    kcs: [KC-1.two-state-property]
+    uses:
+      LAB-1.3: "your guarded transfer, rewritten as a step over primed variables"
+  LAB-1.6:
+    kcs: [KC-1.claim-anatomy]
+    uses:
+      LAB-1.3: "the receipt behind CL-1.1"
+      LAB-1.4: "the receipt behind CL-1.4"
+  # ---- LAB-2: the verified ledger (spine section 3.2): the Bench, from LAB-2.1
+  LAB-2.1:
+    kcs: [KC-2.axioms-and-trust]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-2.2:
+    kcs: [KC-2.goal-state-reading, KC-2.props-as-types]
+    tools: [devcontainer]
+  LAB-2.3:
+    kcs: [KC-2.rejection-unchanged]
+    tools: [devcontainer]
+  LAB-2.4:
+    kcs: [KC-2.goal-state-reading]
+    tools: [devcontainer]
+  LAB-2.5:
+    kcs: [KC-2.generalized-ih, KC-2.induction-principle]
+    uses:
+      LAB-2.2: "transfer_conserves, the lemma its induction step uses"
+    tools: [devcontainer]
+  LAB-2.6:
+    kcs: [KC-2.finite-map-update]
+    tools: [devcontainer]
+  LAB-2.7:
+    kcs: [KC-1.claim-anatomy, KC-2.axioms-and-trust, KC-2.statement-pinning]
+    uses:
+      LAB-2.2: "the CL-2.1 proof"
+      LAB-2.3: "the CL-2.3 proof"
+      LAB-2.4: "the CL-2.2 proof"
+      LAB-2.5: "the CL-2.4 proof"
+      LAB-2.6: "the CL-2.5 proofs"
+    tools: [devcontainer]
+  LAB-2.8:
+    stretch: true
+    after: LAB-2.7
+    kcs: [KC-2.props-as-types]
+    uses:
+      LAB-2.2: "the two-account ledger, recast as postings"
+    tools: [devcontainer]
+  # ---- LAB-3: mini-plinth-core (spine section 3.3): the Bench for Lean, Lane A from LAB-3.8 (S10.L1, S10.L2)
+  LAB-3.1:
+    kcs: [KC-3.goldens-as-theorems]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-3.2:
+    kcs: [KC-3.typing-judgment, KC-3.resource-postings, KC-3.abstract-syntax, KC-3.refined-types]
+    tools: [devcontainer]
+  LAB-3.3:
+    kcs: [KC-3.big-step-errors]
+    uses:
+      LAB-3.2: "your AST and HasType"
+    tools: [devcontainer]
+  LAB-3.4:
+    kcs: [KC-3.step-invariant]
+    uses:
+      LAB-3.3: "your evaluator"
+    tools: [devcontainer]
+  LAB-3.5:
+    kcs: [KC-3.step-invariant]
+    uses:
+      LAB-3.4: "the per-operation lemmas"
+    tools: [devcontainer]
+  LAB-3.6:
+    kcs: [KC-3.goldens-as-theorems, KC-3.step-invariant]
+    uses:
+      LAB-3.5: "the step-invariant theorem that fixed/ must still pass"
+    tools: [devcontainer]
+  LAB-3.7:
+    kcs: [KC-3.edge-cases-as-decisions]
+    uses:
+      LAB-3.3: "your policy and the golden module the IR export reads"
+    tools: [devcontainer]
+  LAB-3.8:
+    kcs: [KC-3.abstract-syntax]
+    uses:
+      LAB-3.7: "the Lean IR export your parser must equal"
+    tools: [lane-a]
+  LAB-3.9:
+    kcs: [KC-3.typing-judgment]
+    uses:
+      LAB-3.2: "the typing goldens"
+      LAB-3.8: "your parser's IR"
+    tools: [lane-a]
+  LAB-3.10:
+    kcs: [KC-3.big-step-errors, KC-3.goldens-as-theorems]
+    uses:
+      LAB-3.3: "the evaluator goldens under your policy"
+      LAB-3.8: "your parser's IR"
+    tools: [lane-a]
+  LAB-3.11:
+    kcs: [KC-1.claim-anatomy, KC-3.goldens-as-theorems]
+    uses:
+      LAB-3.5: "the receipt behind CL-3.3"
+      LAB-3.10: "your interpreter, for the differential run and CL-3.5"
+    tools: [lane-a]
+  LAB-3.12:
+    stretch: true
+    after: LAB-3.11
+    kcs: [KC-3.progress-preservation-scope, KC-3.small-step-stuck]
+    uses:
+      LAB-3.3: "your evaluator"
+    tools: [devcontainer]
+  LAB-3.13:
+    stretch: true
+    after: LAB-3.12
+    kcs: [KC-3.progress-preservation-scope]
+    uses:
+      LAB-3.2: "your HasType"
+      LAB-3.3: "your evaluator"
+    tools: [devcontainer]
+  # ---- LAB-4: `miniplinth check` (spine section 3.4): Lane A from LAB-4.2, the Bench at LAB-4.8 (S10.L3 is LAB-4.5)
+  LAB-4.1:
+    kcs: [KC-4.vc-shape]
+    first_contact: true
+  LAB-4.2:
+    kcs: [KC-4.wp-assignment, KC-4.capture-avoiding-substitution]
+    tools: [lane-a]
+  LAB-4.3:
+    kcs: [KC-4.wp-sequence-conditional]
+    uses:
+      LAB-4.2: "your wp_emit, extended to sequences and guards"
+    tools: [lane-a]
+  LAB-4.4:
+    kcs: [KC-4.frame-condition, KC-4.symbolic-execution]
+    uses:
+      LAB-4.3: "the weakest-precondition route the forward route must agree with"
+    tools: [lane-a]
+  LAB-4.5:
+    kcs: [KC-4.vc-shape]
+    uses:
+      LAB-4.4: "your VC emission, whose models it decodes"
+    tools: [lane-a]
+  LAB-4.6:
+    kcs: [KC-4.cti-or-bug, KC-4.invariant-vs-inductive]
+    uses:
+      LAB-4.4: "your VC emission"
+    tools: [lane-a]
+  LAB-4.7:
+    kcs: [KC-4.trust-stack]
+    uses:
+      LAB-4.5: "your decoder: fixed/ reports [R] with a replaying witness"
+    tools: [lane-a]
+  LAB-4.8:
+    kcs: [KC-4.trust-stack, KC-1.claim-anatomy]
+    uses:
+      LAB-4.5: "your checker, for CL-4.2"
+      LAB-4.6: "the CL-4.4 or CL-4.5 verdict"
+      LAB-4.7: "the fixed checker"
+    tools: [devcontainer]
+  LAB-4.9:
+    stretch: true
+    after: LAB-4.8
+    kcs: [KC-4.wp-sequence-conditional]
+    uses:
+      LAB-4.3: "your weakest-precondition emission for assignment and if"
+    tools: [devcontainer]
+  # ---- LAB-5: the holds spec (spine section 3.5): the Bench; first on the builder's path, with D-15
+  LAB-5.1:
+    kcs: [KC-5.tlc-flags-matter]
+    tools: [devcontainer]
+  LAB-5.2:
+    kcs: [KC-5.interleaving-granularity]
+    uses:
+      LAB-5.1: "the DoubleSpend spec you make atomic"
+    tools: [devcontainer]
+  LAB-5.3:
+    kcs: [KC-5.holds-lifecycle]
+    tools: [devcontainer]
+  LAB-5.4:
+    kcs: [KC-5.hostile-environment]
+    uses:
+      LAB-5.3: "your lifecycle model"
+    tools: [devcontainer]
+  LAB-5.5:
+    kcs: [KC-5.fairness, KC-5.lasso-reading]
+    uses:
+      LAB-5.4: "your fixed spec, run with crash actions off"
+    tools: [devcontainer]
+  LAB-5.6:
+    kcs: [KC-5.bounded-scope, KC-1.claim-anatomy]
+    uses:
+      LAB-5.2: "the receipt behind CL-5.1"
+      LAB-5.4: "the receipt behind CL-5.2"
+      LAB-5.5: "the receipt behind CL-5.3"
+    tools: [devcontainer]
+  LAB-5.7:
+    stretch: true
+    after: S5.L9
+    kcs: [KC-5.inductive-invariant-tla]
+    uses:
+      LAB-5.2: "your atomic spec, whose invariant it lifts"
+    tools: [devcontainer]
+  # ---- LAB-6: pg-refinement (spine section 3.6): Lane A and the Bench; on the builder's path LAB-6.1, LAB-6.5 and LAB-6.6 run early (S10.L4 is LAB-6.8)
+  LAB-6.1:
+    kcs: [KC-6.anomaly-isolation]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-6.2:
+    kcs: [KC-6.rowcount-as-guard, KC-6.null-guards]
+    uses:
+      LAB-3.7: "the self-transfer decision record your plan applies"
+    tools: [lane-a]
+  LAB-6.3:
+    kcs: [KC-6.rowcount-as-guard]
+    uses:
+      LAB-6.2: "your compile plan"
+      LAB-3.7: "the self-transfer decision record"
+    tools: [lane-a]
+  LAB-6.4:
+    kcs: [KC-6.differential-testing]
+    uses:
+      LAB-6.2: "your compiler, which the suite drives"
+      LAB-6.3: "your typed errors"
+    tools: [lane-a, devcontainer]
+  LAB-6.5:
+    kcs: [KC-6.anomaly-isolation, KC-6.compilation-pattern]
+    tools: [devcontainer]
+  # LAB-6.6's classifier is Lane A (curriculum/S06-correspondence.md section 3, "Lanes"), so on the builder's path
+  # it, not LAB-8.4, is the first Lane A work; D-14 names LAB-6 and still covers it (GATE-kc warns on the spine's line).
+  LAB-6.6:
+    kcs: [KC-6.serializable-retries]
+    uses:
+      LAB-6.2: "your compiler, which the retry loop wraps"
+    tools: [lane-a, devcontainer]
+  LAB-6.7:
+    kcs: [KC-6.refinement-relation, KC-6.abstract-serializability]
+    tools: [lane-a]
+  LAB-6.8:
+    kcs: [KC-6.serializable-retries, KC-6.abstract-serializability, KC-6.enforce-at-commit]
+    uses:
+      LAB-6.2: "your compiler"
+      LAB-6.4: "the differential suite that must pass through the runtime"
+      LAB-6.6: "your retry loop"
+      LAB-6.7: "your R(S, D) and the checker that accepts the runtime's histories"
+    tools: [devcontainer]
+  LAB-6.9:
+    kcs: [KC-6.db-as-assumption, KC-1.claim-anatomy]
+    uses:
+      LAB-6.4: "the receipt behind CL-6.1"
+      LAB-6.7: "the receipt behind CL-6.3"
+      LAB-6.8: "the Bench receipt that re-stamps CL-6.4"
+  # ---- LAB-7: authz-flow (spine section 3.7): the Bench and Lane A; LAB-7.5 needs your LAB-4 checker
+  LAB-7.1:
+    kcs: [KC-7.policy-as-datalog]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-7.2:
+    kcs: [KC-7.policy-as-datalog]
+    tools: [devcontainer]
+  LAB-7.3:
+    kcs: [KC-7.policy-checking, KC-1.non-vacuity-check]
+    tools: [devcontainer]
+  LAB-7.4:
+    kcs: [KC-7.rls-semantics]
+    tools: [devcontainer]
+  LAB-7.5:
+    kcs: [KC-7.observer-equivalence, KC-7.declassification]
+    uses:
+      LAB-4.4: "your VC generator, which runs the self-composition"
+      LAB-4.5: "your model decoding, whose states INS-pairs replays"
+    tools: [lane-a]
+  LAB-7.6:
+    kcs: [KC-7.revocation-past]
+    tools: [lane-a]
+  LAB-7.7:
+    kcs: [KC-7.declassification, KC-1.claim-anatomy]
+    uses:
+      LAB-7.5: "the release list hashed in its receipt"
+      LAB-7.2: "the receipt behind CL-7.1"
+      LAB-7.3: "the receipt behind CL-7.2"
+      LAB-7.4: "the receipt behind CL-7.4"
+  LAB-7.8:
+    stretch: true
+    after: LAB-7.7
+    kcs: [KC-7.small-scope]
+    uses:
+      LAB-7.2: "your read policy, modeled in Alloy or as a containment query"
+  # ---- LAB-8: effects-sim (spine section 3.8): the Bench and Lane A; on the builder's path LAB-8.1, LAB-8.2, LAB-8.4 and LAB-8.5 run early (S10.L5 is LAB-8.7)
+  LAB-8.1:
+    kcs: [KC-8.trace-validation]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-8.2:
+    kcs: [KC-8.outbox-chain, KC-5.hostile-environment]
+    tools: [devcontainer]
+  LAB-8.3:
+    kcs: [KC-8.progress-needs-recovery, KC-5.fairness]
+    uses:
+      LAB-8.2: "your outbox spec"
+    tools: [devcontainer]
+  LAB-8.4:
+    kcs: [KC-8.crash-windows]
+    tools: [lane-a]
+  LAB-8.5:
+    kcs: [KC-8.untrusted-replies, KC-8.idempotency-keys]
+    uses:
+      LAB-8.4: "your outbox machine, whose replies it validates"
+      LAB-6.6: "your retry policy, which handles the same-key race"
+      LAB-6.2: "your compiler, which the inbound keys run against"
+    tools: [lane-a]
+  LAB-8.6:
+    kcs: [KC-8.trace-validation, KC-8.deterministic-simulation]
+    uses:
+      LAB-8.2: "your spec"
+      LAB-8.4: "your machine's NDJSON traces"
+    tools: [devcontainer]
+  LAB-8.7:
+    kcs: [KC-8.deterministic-simulation]
+    uses:
+      LAB-8.6: "your validated simulation suite"
+      LAB-6.4: "your differential suite"
+    tools: [lane-a, devcontainer]
+  LAB-8.8:
+    kcs: [KC-8.provider-horizon, KC-1.claim-anatomy]
+    uses:
+      LAB-8.2: "the receipt behind CL-8.1"
+      LAB-8.3: "the receipt behind CL-8.4 and CL-8.5"
+      LAB-8.5: "the receipt behind CL-8.2"
+      LAB-8.6: "the receipt behind CL-8.3"
+    tools: [devcontainer]
+  LAB-8.9:
+    stretch: true
+    after: LAB-8.8
+    kcs: [KC-8.provider-horizon]
+    uses:
+      LAB-8.2: "your outbox spec, extended with the key TTL"
+    tools: [devcontainer]
+  # ---- LAB-9: compiler, preservation proof and SQL validator (spine section 3.9): the Bench and Lane A
+  LAB-9.1:
+    kcs: [KC-9.translation-validation]
+    first_contact: true
+  LAB-9.2:
+    kcs: [KC-9.stack-machine-correctness]
+    tools: [devcontainer]
+  LAB-9.3:
+    kcs: [KC-9.target-ir]
+    tools: [devcontainer]
+  LAB-9.4:
+    kcs: [KC-9.observations, KC-9.forward-simulation]
+    uses:
+      LAB-9.3: "the frozen IR semantics (S9/Defs.lean)"
+    tools: [devcontainer]
+  LAB-9.5:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.4: "the frozen observations and relation (S9/Statement.lean)"
+    tools: [devcontainer]
+  LAB-9.6:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.5: "the expression lemma"
+    tools: [devcontainer]
+  LAB-9.7:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.5: "the expression lemma"
+    tools: [devcontainer]
+  LAB-9.8:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.5: "the expression lemma"
+    tools: [devcontainer]
+  LAB-9.9:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.5: "the expression lemma"
+    tools: [devcontainer]
+  LAB-9.10:
+    kcs: [KC-9.preservation-proof]
+    uses:
+      LAB-9.6: "the posting case"
+      LAB-9.7: "the guard case"
+      LAB-9.8: "the sequence case"
+      LAB-9.9: "the abort case"
+    tools: [devcontainer]
+  LAB-9.11:
+    kcs: [KC-9.sql-equivalence]
+    tools: [lane-a]
+  LAB-9.12:
+    kcs: [KC-9.bad-optimization, KC-9.tcb, KC-1.claim-anatomy]
+    uses:
+      LAB-9.2: "the receipt behind CL-9.1"
+      LAB-9.10: "the receipt behind CL-9.2"
+      LAB-9.11: "the receipt behind CL-9.3"
+    tools: [devcontainer]
+  # ---- LAB-10: Core assembly (spine section 3.10): every wired component is your own, never a reference module (LAB-10.c3)
+  LAB-10.1:
+    kcs: [KC-10.agent-proposal-triage]
+    first_contact: true
+    tools: [devcontainer]
+  LAB-10.2:
+    kcs: [KC-4.vc-shape, KC-1.non-vacuity-check]
+    uses:
+      LAB-3.8: "your parser"
+      LAB-3.9: "your typechecker"
+      LAB-3.10: "your interpreter"
+      LAB-4.5: "your checker with model replay"
+    tools: [lane-a]
+  LAB-10.3:
+    kcs: [KC-6.refinement-relation, KC-6.serializable-retries, KC-8.trace-validation]
+    uses:
+      LAB-6.2: "your compiler"
+      LAB-6.6: "your retry policy"
+      LAB-6.7: "your R(S, D)"
+      LAB-6.8: "your runtime"
+      LAB-8.4: "your simulator's machine"
+      LAB-8.6: "your trace module"
+    tools: [devcontainer]
+  LAB-10.4:
+    kcs: [KC-10.agent-proposal-triage]
+    uses:
+      LAB-10.2: "your wired parser and typechecker"
+    tools: [lane-a]
+  LAB-10.5:
+    kcs: [KC-10.agent-proposal-triage, KC-1.witness-class]
+    uses:
+      LAB-10.4: "the proposal and your triage plan"
+    tools: [lane-a, devcontainer]
+  LAB-10.6:
+    kcs: [KC-6.differential-testing, KC-8.deterministic-simulation]
+    uses:
+      LAB-10.5: "the corrected command"
+      LAB-10.3: "your wired compiler and runtime"
+      LAB-6.4: "your differential suite"
+      LAB-8.6: "your simulation suite"
+    tools: [devcontainer]
+  LAB-10.7:
+    kcs: [KC-10.agent-proposal-triage]
+    uses:
+      LAB-10.6: "the PostgreSQL and simulation receipts"
+    tools: [devcontainer]
+  LAB-10.8:
+    kcs: [KC-10.claim-graph-report, KC-10.defeater-log, KC-10.publish-limitations]
+    uses:
+      LAB-10.7: "the recorded demonstration and CL-10.1"
+    tools: [devcontainer]
+  LAB-10.9:
+    kcs: [KC-10.publish-limitations]
+    uses:
+      LAB-10.8: "the report"
+    tools: [devcontainer]
+  LAB-10.10:
+    stretch: true
+    after: LAB-10.9
+    kcs: [KC-10.publish-limitations]
+    uses:
+      LAB-10.5: "your witness, published upstream"

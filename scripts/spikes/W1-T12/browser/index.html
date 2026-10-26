@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>W1-T12 harness</title>
+<script type="module">
+// The page owns one module worker and hands it jobs: window.start() loads Pyodide and the Z3 wheel,
+// window.runJob({name, source, files}) runs one script in a fresh namespace and returns its lines.
+const worker = new Worker('/worker.mjs', { type: 'module' });
+let next = 0;
+const pending = new Map();
+worker.onmessage = (e) => {
+  const { id, ...rest } = e.data;
+  const done = pending.get(id);
+  if (done) { pending.delete(id); done(rest); }
+};
+worker.onerror = (e) => { for (const done of pending.values()) done({ error: `worker error: ${e.message || 'unknown'}` }); pending.clear(); };
+const call = (msg) => new Promise((resolve) => { const id = ++next; pending.set(id, resolve); worker.postMessage({ id, ...msg }); });
+window.start = () => call({ t: 'init' });
+window.runJob = (job) => call({ t: 'run', ...job });
+window.ready = true;
+</script>

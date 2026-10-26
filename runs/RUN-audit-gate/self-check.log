@@ -1,0 +1,137 @@
+held  -              the clean W1-shaped fixture passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  anchor         an anchor whose id is not an anchor ID: aud-1.1: content/audit/aud-1.1.yaml: id must be an anchor ID (AUD-n.k), got "aud-1.1"
+held  anchor         an anchor ID the spine does not register: AUD-1.9: AUD-1.9 is not an audit anchor of the spine's registry (spine section 6.2)
+held  anchor         an anchor file not named after its ID: AUD-1.1: AUD-1.1 lives in content/audit/AUD-1.9.yaml: an anchor's file is named after its ID (content/audit/AUD-1.1.yaml)
+held  anchor         an anchor whose stage is not the spine's: AUD-1.1: AUD-1.1 belongs to S1 in the spine, not S2
+held  anchor         an anchor whose class differs from the spine: AUD-1.2: class G8 differs from spine section 6.2, which gives G4
+held  fields         an anchor without its class: AUD-1.1: class is missing (the anchor's class in spine section 6.2, or none for a sound anchor)
+held  fields         an anchor whose class is not a gap class: AUD-1.1: class G99 is not a gap class of spine section 6.1
+held  fields         an anchor without its medium: AUD-1.1: medium is missing
+held  fields         an anchor scheduled after nothing: AUD-1.1: scheduled_after must list the labs, lab stages or lessons the case is scheduled after, as IDs (AUDIT-DESK 3.1)
+held  fields         an anchor scheduled after a unit the registry does not have: AUD-1.1: scheduled_after names S1.L99, which is not a lab, lab stage or lesson of the registry
+held  fields         an anchor scheduled before its stage's lab: AUD-2.1: scheduled_after names no lab or lab stage of S2; a case is scheduled after the lab that teaches its class (AUDIT-DESK 5.1)
+held  fields         an anchor without its KCs: AUD-1.1: kcs must list the anchor's KCs, as IDs
+held  fields         a KC the registry does not have: AUD-1.1: KC-1.no-such-kc is not a KC of the registry
+held  based-on       an anchor without its "based on" card: AUD-1.1: the "based on" card (based_on: incident, date, date_marks, source) is missing
+held  based-on       a "based on" card without its incident: AUD-1.1: based_on.incident is missing: the dated incident the case is based on
+held  based-on       a "based on" card whose date is not a date: AUD-1.2: based_on.date must be a quoted date (YYYY-MM-DD, YYYY-MM or YYYY), got "August 2010"
+held  based-on       a "based on" card that does not say which event its date marks: AUD-1.1: based_on.date_marks is missing: the card says which event its date marks (spine section 6)
+held  based-on       a "based on" card without its source: AUD-1.1: based_on.source is missing: a URL, or a path in this repository
+held  based-on       a "based on" source that is neither a URL nor a path here: AUD-5.3: based_on.source docs/history/no-such-folder/ is neither a URL nor a path in this repository
+held  based-on       a "based on" card that ships code: AUD-1.1: based_on.incident holds code; a "based on" card cites its incident and never ships exploit code (AUDIT-DESK 1.3)
+held  key-run        no case keyed by a run of spine 6.2's Key run cell: AUD-1.1: no case is keyed by a run of spine section 6.2's Key run cell (RUN-z3-vacuous-unsat)
+held  pairs          an anchor without its sound member: AUD-1.1: an anchor is a matched pair: its cases need a sound and a flawed member (AUDIT-DESK 3)
+held  key            no flawed member keyed with the anchor's class: AUD-1.2: no flawed member is keyed G4, the anchor's class
+held  fields         an anchor without a variants field: AUD-2.1: variants must list the anchor's variants, or say when they land ({pending: {lands: <task>}})
+held  fields         variants pending without their task: AUD-2.1: variants: {pending: {lands: <task>}} names the tracker task its variants land with
+held  fields         an anchor with an empty variants list: AUD-1.1: variants is an empty list: list the anchor's variants, or, for an anchor that spine section 6 ships without them, say when they land ({pending: {lands: <task>}})
+held  fields         a case that is not a mapping: AUD-1.1: /variants/12 is not a mapping
+held  fields         a case without a valid id: AUD-1.1: /variants/0: a case needs an id (lower case, digits and hyphens)
+held  fields         two cases with one id: AUD-1.1/sound: the id sound is used twice in AUD-1.1
+held  key            a case without a key: AUD-1.1/flawed: a case needs a key: none, a gap class, or {class, also}
+held  key            a key that writes primary beside its class: AUD-1.1/flawed: write key: {class: G2, also: [G1]}; `primary` is a KC tag key that GATE-kc reads in every content record
+held  key            a sound key with acceptable classes: AUD-1.1/sound: a sound key has no acceptable classes
+held  key            a key whose acceptable classes are not a list: AUD-1.1/flawed: key.also must be a list of gap classes
+held  key            a key whose class is not a gap class: AUD-1.1/v1-flawed: G99 is not a gap class of spine section 6.1
+held  key            an acceptable class that is not a gap class: AUD-1.1/v1-flawed: the acceptable class G99 is not a gap class of spine section 6.1
+held  fields         a case without a statement: AUD-1.2/v1-sound: statement is missing: the Desk shows the statement first (AUDIT-DESK 5.4, step 1)
+held  fields         a receipt that is not text: AUD-1.2/v1-sound: receipt must be text
+held  evidence       a case without evidence: AUD-2.2/flawed: evidence is missing: {type, load_bearing, ...} (AUDIT-DESK 6.3)
+held  evidence       evidence of a type the class does not take: AUD-1.2/flawed: a G4 finding carries witness evidence, not declaration (AUDIT-DESK 6.3)
+held  evidence       a witness without its reference artifact: AUD-1.2/flawed: witness evidence needs a reference artifact from the key run (evidence.reference), which the replay validates
+held  evidence       a sound case whose evidence is not its restatement: AUD-1.1/sound: a sound case's evidence is its restatement (type: restatement), not declaration
+held  evidence       a restatement without scenarios: AUD-1.1/sound: a restatement holds at least three scenarios, each with its text (AUDIT-DESK 5.4, step 3)
+held  evidence       a restatement with two scenarios: AUD-1.1/sound: a restatement holds at least three scenarios, each with its text (AUDIT-DESK 5.4, step 3)
+held  -              … and one with exactly three, which passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  evidence       a flawed case without load-bearing lines: AUD-2.2/flawed: load_bearing lists the one to three lines that carry the class (AUDIT-DESK 6.3)
+held  evidence       a flawed case with four load-bearing lines: AUD-1.1/flawed: load_bearing lists the one to three lines that carry the class (AUDIT-DESK 6.3)
+held  evidence       line-anchored evidence on a case with three selectable lines: AUD-1.1/flawed: the case has 3 selectable lines; line-anchored evidence needs at least 4, so that selecting every line cannot validate it (AUDIT-DESK 6.3)
+held  -              … and on a case with four, which passes that rule: no evidence finding (battery)
+held  evidence       a load-bearing entry that is not a line reference: AUD-1.1/flawed: load_bearing entries are statement:N, diff:N or receipt:N, got "line 6"
+held  evidence       a load-bearing line the case does not have: AUD-1.1/flawed: statement:99 is not a non-blank line of the case's statement
+held  evidence       a load-bearing line listed twice: AUD-1.1/flawed: statement:7 is listed twice in load_bearing
+held  key-run        a pair member without a key run: AUD-1.2/sound: a pair member names the executed run that keys it (key_run: RUN-...)
+held  key-run        a key run named by a path, not a run ID: AUD-1.1/flawed: key_run must be a run ID, got "../runs/RUN-z3-vacuous-unsat"
+held  key-run        a key run that is not on disk: AUD-1.1/flawed: RUN-z3-no-such-run is not on disk (runs/RUN-z3-no-such-run.json): every key is set by an executed run (spine section 6)
+held  key-run        a key line that is neither a line nor {config, line}: AUD-1.1/flawed: key_lines entries are a line, or {config, line}
+held  key-run        a pair member whose key run quotes no line: AUD-1.1/flawed: key_lines quotes the verdict lines of RUN-z3-vacuous-unsat that carry the key
+held  key-run        a key line its run does not state: AUD-1.1/flawed: RUN-z3-vacuous-unsat states no verdict line "[max0_guarded_premises] sat"
+held  key-run        a key line found in its run only inside a word ('sat' in 'unsat'): AUD-1.1/v1-flawed: RUN-cvc5-alethe states no verdict line "sat"
+held  key-run        a key line in a configuration that does not state it: AUD-5.3/flawed: RUN-tlc-doublespend (1.8.0-deadlock) states no verdict line "Error: Deadlock reached."
+held  battery        the battery keys a case another class: AUD-1.1/flawed: the key changed: the battery keys it G2, the case says G4
+held  battery        a sound case the battery finds vacuous: AUD-1.1/sound: the key changed: the battery keys it G2, the case says none: sound
+held  battery        a flawed case the battery keys sound: AUD-1.1/flawed: the key changed: the battery keys it none: sound, the case says G2
+held  battery        a case whose acceptable set is narrower than the one the battery computes: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2
+held  battery        a case whose acceptable set is wider than the one the battery computes: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2, G1, G12
+held  battery        a case whose acceptable set has the size of the one the battery computes but another class: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2, G12
+held  battery        a case whose evidence type is not the one the battery computes: AUD-1.2/flawed: the key changed: the battery asks for identifiers evidence, the case says witness
+held  battery        load-bearing lines that are not the recomputed unsat core: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:3, statement:7
+held  battery        load-bearing lines that hold the recomputed unsat core and one line more: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:3, statement:6, statement:7
+held  battery        load-bearing lines that hold part of the recomputed unsat core: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:6
+held  battery        the battery keys a subclass of the case's class (G1a where the case says G1): AUD-2.1/flawed: the key changed: the battery keys it G1a, the case says G1
+held  battery        a battery whose keys spell their lines loadBearing, as the case it receives does: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys carry no evidence: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery that recomputes no load-bearing lines for a G2 case: AUD-1.1/flawed: the battery's key recomputed no load-bearing lines for a G2 case, whose lines are the premises' unsat core (AUDIT-DESK 6.3) (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys give their acceptable classes as text, not a list: AUD-1.1/flawed: the battery's key carries no also list of acceptable classes for a flawed case, so its acceptable set was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose sound keys leave out their primary class: AUD-1.1/sound: the battery's key names no primary class (a class, or 'none' for a sound case), so its class was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys carry their lines but no evidence type: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys carry evidence: null: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose G2 keys give their load-bearing lines as numbers, not line references: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys list acceptable classes that are not text: AUD-1.1/flawed: the battery's key carries no also list of acceptable classes for a flawed case, so its acceptable set was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  battery        a battery whose flawed keys name their class as an empty string: AUD-1.1/flawed: the battery's key names no primary class (a class, or 'none' for a sound case), so its class was not compared (scripts/spikes/W1-T40/README.md section 4)
+held  unknown        a check that returns unknown: AUD-1.1/sound: the battery discarded the case (unknown): the premise query returned unknown; a check that returns unknown fails the gate (AUDIT-DESK 4.3)
+held  unknown        a case the battery cannot run (no port for its engine): AUD-1.1/sound: the battery could not key the case: no port for engine fixture-box here
+held  battery        a battery that returns no key: AUD-1.1/sound: the battery returned no key
+held  -              the case as the battery receives it (README section 4): 44 cases, each with its fields and texts as written
+held  battery        re-keyable cases and no battery: packages/generators/src/spot-the-gap/index.ts: no keying battery, so 44 cases cannot be re-keyed: GEN-spot-the-gap (W1-T25) exports auditBattery (scripts/spikes/W1-T40/README.md section 4)
+held  -              a battery whose regenerate() reproduces every listed variant passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  regenerate     a listed variant whose statement drifted from its generator: AUD-1.1/v1-flawed: GEN-spot-the-gap t1 band 1 seed 4096 regenerates another statement: the listed variant drifted from its generator
+held  regenerate     a listed variant whose diff drifted from its generator: AUD-1.1/v1-flawed: GEN-spot-the-gap t1 band 1 seed 4096 regenerates another diff: the listed variant drifted from its generator
+held  regenerate     a listed variant whose receipt drifted from its generator: AUD-1.1/v1-flawed: GEN-spot-the-gap t1 band 1 seed 4096 regenerates another receipt: the listed variant drifted from its generator
+held  regenerate     a listed variant whose regenerated statement differs only by a blank first line: AUD-1.1/v1-flawed: GEN-spot-the-gap t1 band 1 seed 4096 regenerates another statement: the listed variant drifted from its generator
+held  exemplars      a class whose anchors shipped with five exemplars, one short of six: G2: G2 has 5 exemplars; a class whose anchors have shipped needs at least 6 that differ structurally: in operator, artifact or medium, and in their texts beyond numeric literals (shipped: AUD-1.1)
+held  -              … and one with exactly six, which passes: G2 6 exemplars: GATE-audit: green (8 anchors, 50 cases, 42 re-keyed, 8 pending re-key)
+held  exemplars      AUD-1.1's six variant pairs under one label (operator, artifact and medium shared), their texts distinct: G2: G2 has 2 exemplars; a class whose anchors have shipped needs at least 6 that differ structurally: in operator, artifact or medium, and in their texts beyond numeric literals (shipped: AUD-1.1)
+held  exemplars      AUD-1.2's variant pairs as six relabeled copies of its pair v1: AUD-1.2/copy-2-flawed: repeats AUD-1.2/copy-1-flawed under another label (artifact copy-2): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)
+held  exemplars      AUD-1.2's variant pairs as relabeled copies of its pair v1 that differ only in white space: AUD-1.2/respaced-2-flawed: repeats AUD-1.2/respaced-1-flawed under another label (artifact respaced-2): its statement, diff and receipt differ from it only in numeric literals and white space, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)
+held  exemplars      AUD-1.3's variant pairs as pair v1 re-seeded six times under new labels: AUD-1.3/reseed-2-flawed: repeats AUD-1.3/reseed-1-flawed under another label (artifact reseed-2): its statement, diff and receipt differ from it only in numeric literals and white space, so it is not a new exemplar of G5; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)
+held  exemplars      AUD-1.2's variant pairs as pair v1 re-seeded six times in every literal form section 3 names: AUD-1.2/literals-2-flawed: repeats AUD-1.2/literals-1-flawed under another label (artifact literals-2): its statement, diff and receipt differ from it only in numeric literals and white space, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)
+held  exemplars      … whose class is then short of six exemplars: G2: G2 has 1 exemplar; a class whose anchors have shipped needs at least 6 that differ structurally: in operator, artifact or medium, and in their texts beyond numeric literals (shipped: AUD-1.1)
+held  exemplars      the three S1 anchors with empty variants lists: G2: G2 has 1 exemplar; a class whose anchors have shipped needs at least 6 that differ structurally: in operator, artifact or medium, and in their texts beyond numeric literals (shipped: AUD-1.1)
+held  pending        variants pending on an anchor the spine ships with its variants: AUD-1.1: its variants are declared pending until W2-T13, but spine section 6 ships only AUD-2.1–AUD-2.4 and AUD-5.3 without variants: AUD-1.1 ships with its variants
+held  pending        variants pending with a task the tracker marks done: AUD-2.1: the variants: pending until W0-S11, which the tracker marks done
+held  pending        variants pending with a task the tracker does not have: AUD-2.1: the variants: pending until W9-T99, which tracker/tasks.yaml does not have
+held  pending        a re-keying pending with no landing task: AUD-2.2/flawed: the re-keying (engine lean): pending, but no tracker task is named to land it
+held  pending        a malformed re-keying declaration: AUD-2.2/flawed: rekey: {pending: {engine, lands}} names the engine the battery waits for and the task it lands with
+held  pending        a case whose re-keying waits with no key run: AUD-2.2/flawed: a case whose re-keying waits for an engine is keyed by an executed run meanwhile (key_run)
+held  pending        a re-key still pending once its engine has a port: AUD-2.2/sound: its re-keying waits for engine lean, but a port for lean exists here: re-key it with the battery and drop rekey.pending
+held  pairs          a variant that names no pair: AUD-1.1/v1-flawed: a variant names its pair (pair: <id>): the flawed form and its matched sound form share it
+held  pairs          a variant pair without its sound form: AUD-1.1/v1-flawed: AUD-1.1/v1: a variant pair needs its flawed form and its matched sound form (AUDIT-DESK 4)
+held  pairs          a pair whose members carry different claims: AUD-1.1/v1-flawed: AUD-1.1/v1: the members of a pair carry different claims; the claim comes from one phrase bank, so its wording cannot cue the key (AUDIT-DESK 5.3)
+held  operator       a variant that names no operator: AUD-1.1/v1-flawed: a variant names the operator that made it (operator: <slug>)
+held  operator       an operator the spine does not list: AUD-1.1/v1-flawed: flip-a-coin is not an operator of spine section 6.2 (the slugs are listed in scripts/spikes/W1-T40/README.md)
+held  operator       a variant keyed outside its operator's classes: AUD-1.3/v1-flawed: swap-quantifiers keys G1, G12, but the case is keyed G5
+held  fields         a generator reference to template t5, one past t4: AUD-1.1/v1-flawed: generator is {template: t1-t4, band: 1-3, seed: a uint32}
+held  fields         a generator reference to band 4, one past 3: AUD-1.1/v1-flawed: generator is {template: t1-t4, band: 1-3, seed: a uint32}
+held  fields         a generator reference whose seed is not a uint32: AUD-1.1/v1-flawed: generator is {template: t1-t4, band: 1-3, seed: a uint32}
+held  -              … and one to template t4, band 3 and seed 2^32 - 1, the last of each, which passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  clearinghouse  a Clearinghouse family whose naive baseline meets its bar: clearinghouse CH-fixture-overdraft: the naive baseline meets the bar: 0.820 >= 0.7 over 4 recorded seeds
+held  clearinghouse  a Clearinghouse family whose reference misses its bar: clearinghouse CH-fixture-overdraft: the reference misses the bar: 0.520 < 0.7 over 4 recorded seeds
+held  clearinghouse  a Clearinghouse family whose naive baseline meets its bar exactly: clearinghouse CH-at-bar: the naive baseline meets the bar: 0.750 >= 0.75 over 4 recorded seeds
+held  clearinghouse  a Clearinghouse family whose naive mean meets its bar though its first and lowest seed do not: clearinghouse CH-naive-mean: the naive baseline meets the bar: 0.781 >= 0.75 over 4 recorded seeds
+held  clearinghouse  a Clearinghouse family whose reference mean misses its bar though its first and highest seed reach it: clearinghouse CH-reference-mean: the reference misses the bar: 0.719 < 0.75 over 4 recorded seeds
+held  -              a Clearinghouse family whose reference reaches its bar exactly, its naive mean below it, passes: Clearinghouse: CH-reference-at-bar naive 0.563 < bar 0.75 <= reference 0.750 over 4 seeds
+held  clearinghouse  a Clearinghouse family whose scores change between executions: clearinghouse CH-fixture-overdraft: two executions on the recorded seeds gave different scores: the world is not a pure function of its seed (I2)
+held  clearinghouse  a Clearinghouse family whose reference scores change between executions, its naive scores steady: clearinghouse CH-reference-drift: two executions on the recorded seeds gave different scores: the world is not a pure function of its seed (I2)
+held  clearinghouse  a Clearinghouse family without recorded seeds: clearinghouse CH-fixture-overdraft: a family is {id, bar, seeds (non-empty), score(policy, seed)}
+held  clearinghouse  a Clearinghouse family whose score is not a number: clearinghouse CH-fixture-overdraft: a baseline returned a score that is not a number
+held  pending        --strict: a re-key still pending: AUD-2.2/sound: --strict: the case is keyed only by its run until W2-T01 (engine lean)
+held  exemplars      --strict: variants still pending: G1: --strict: G1 has 1 exemplar while its anchors' variants are pending (AUD-2.1 (W2-T13))
+held  pool           --strict: an empty pool: content/audit: --strict: the audit pool is empty
+held  anchor         --only names an anchor the pool lacks: AUD-1.9: no anchor AUD-1.9 in content/audit/
+held  -              the fixture read from files passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  -              a file whose name starts with an underscore, and a readme, are not read as anchors: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)
+held  file           a pool file that does not parse: content/audit/AUD-1.3.json: not valid JSON: Expected double-quoted property name in JSON at position 34 (line 2 column 1)
+held  file           a pool file that holds no mapping: AUD-2.1: content/audit/AUD-2.1.json is not a mapping: an anchor file holds one anchor
+held  anchor         two pool files that define one anchor: AUD-1.3: AUD-1.3 is defined twice: content/audit/AUD-1.3.json and content/audit/AUD-1.3b.json
+GATE-audit self-check: green (136 cases held)

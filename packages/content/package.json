@@ -1,0 +1,23 @@
+{
+  "name": "@statespace/content",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The content pipeline's pure half (ARCHITECTURE.md section 3.3): the six block types, the lesson and drawer sources, their checks against the schema, the ID registry and the runs, the titles-only rail, itemRev, the per-lesson Markdown, the search index and the build that scripts/build-content.mjs runs.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./build": "./src/build/index.ts"
+  },
+  "scripts": {
+    "verify": "node ../../scripts/build-content.mjs --check",
+    "typecheck": "tsc -p . && tsc -p test",
+    "test": "node --test \"test/*.test.ts\""
+  },
+  "dependencies": {
+    "@statespace/ids": "0.0.0",
+    "@statespace/runs": "0.0.0",
+    "@statespace/schema": "0.0.0",
+    "yaml": "2.9.1"
+  }
+}

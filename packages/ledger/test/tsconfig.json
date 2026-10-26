@@ -1,0 +1,11 @@
+{
+  // The tests run under Node (node --test) and also exercise apps/site/src/storage, the IndexedDB adapter,
+  // against fake-indexeddb, so they compile with the DOM types beside Node's.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "tsBuildInfoFile": "../../../node_modules/.tmp/tsconfig.ledger-test.tsbuildinfo"
+  },
+  "include": [".", "../src", "../scripts", "../../../apps/site/src/storage"]
+}

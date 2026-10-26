@@ -1,0 +1,49 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.9",
+  "title": "Bitcoin CVE-2010-5139, values that overflowed when summed",
+  "draft": true,
+  "kcs": [
+    "KC-1.encoding-is-the-claim"
+  ],
+  "found_in": {
+    "lesson": "S1.L5"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L5"
+    ]
+  },
+  "violates": "No transaction creates value: the outputs sum to no more than the inputs.",
+  "because": "The outputs were summed in 64-bit arithmetic without a range check, so a sum that wrapped passed the check while one output alone exceeded the input.",
+  "class": "a sum that wraps because no range check comes first",
+  "cured_by": {
+    "text": "Check each output against a range before summing. The 2010 fix rejected outputs that overflowed and outputs above the supply limit."
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-btc2010",
+      "query": "buggy_creates_value",
+      "direction": "violation"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-btc2010",
+        "query": "fix_each_output",
+        "caption": "With a range check on each output the query has no witness."
+      }
+    ],
+    "minimal": {
+      "kind": "not-applicable",
+      "why": "a dated incident kept as a toy model"
+    }
+  },
+  "incident": {
+    "date": "2010-08-15",
+    "source": {
+      "title": "Bitcoin wiki, CVE-2010-5139",
+      "url": "https://en.bitcoin.it/wiki/CVE-2010-5139"
+    },
+    "toy_model": true
+  }
+}

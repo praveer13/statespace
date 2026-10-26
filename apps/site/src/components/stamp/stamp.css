@@ -1,0 +1,293 @@
+/* Stamp frames (DESIGN.md sections 5.2, 5.3, 2.4 and 2.6). Every colour comes from tokens.css; every rule here is
+   scoped to .stamp, the one place stamp hues may appear (GATE-stamps' hue scope). Frames are written in longhand
+   (border-*-style, border-*-width, outline-*, background-*), so GATE-stamps can read each frame's grayscale
+   signature from this file and check that all nine differ in both themes. */
+
+.stamp {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  max-width: 100%;
+  vertical-align: baseline;
+}
+
+.stamp-frame {
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: var(--stamp-min-height);
+  padding-top: var(--stamp-pad-y);
+  padding-bottom: var(--stamp-pad-y);
+  padding-right: var(--stamp-pad-x);
+  /* a long qualifier wraps inside the frame with a hanging indent (DESIGN.md section 5.2) */
+  padding-left: calc(var(--stamp-pad-x) + 1.5em);
+  text-indent: -1.5em;
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  line-height: var(--lh-stamp);
+  font-variant-numeric: tabular-nums lining-nums;
+  overflow-wrap: anywhere;
+  text-align: start;
+  border-top-style: none;
+  border-right-style: none;
+  border-bottom-style: none;
+  border-left-style: none;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-left-width: 0;
+  outline-style: none;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* The word: Archivo 700 at width 118, uppercase; the code and qualifier in JuliaMono 600 at the same size. Word and
+   code never wrap apart. */
+.stamp-head {
+  white-space: nowrap;
+}
+
+.stamp-word {
+  font-family: var(--font-structure);
+  font-weight: 700;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-stamp);
+}
+
+/* [P] PROVED: a solid fill, no ring. */
+.stamp-p .stamp-frame {
+  color: var(--st-p-text);
+  background-color: var(--st-p-fill);
+}
+
+/* [M] MODEL-CHECKED: a 2-px dotted frame on a tint. */
+.stamp-m .stamp-frame {
+  color: var(--st-m-text);
+  background-color: var(--st-m-fill);
+  border-top-style: dotted;
+  border-right-style: dotted;
+  border-bottom-style: dotted;
+  border-left-style: dotted;
+  border-top-width: var(--border-stamp);
+  border-right-width: var(--border-stamp);
+  border-bottom-width: var(--border-stamp);
+  border-left-width: var(--border-stamp);
+  border-color: var(--st-m-line);
+}
+
+/* [T] TESTED: a 2-px solid frame, no fill. */
+.stamp-t .stamp-frame {
+  color: var(--st-t);
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-top-width: var(--border-stamp);
+  border-right-width: var(--border-stamp);
+  border-bottom-width: var(--border-stamp);
+  border-left-width: var(--border-stamp);
+  border-color: var(--st-t);
+}
+
+/* [E] ENFORCED: a 4-px double frame, no fill. */
+.stamp-e .stamp-frame {
+  color: var(--st-e);
+  border-top-style: double;
+  border-right-style: double;
+  border-bottom-style: double;
+  border-left-style: double;
+  border-top-width: var(--border-double);
+  border-right-width: var(--border-double);
+  border-bottom-width: var(--border-double);
+  border-left-width: var(--border-double);
+  border-color: var(--st-e);
+}
+
+/* [C] CONFIGURED: 1-px rules above and below, open sides. */
+.stamp-c .stamp-frame {
+  color: var(--st-c);
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-width: var(--border-component);
+  border-bottom-width: var(--border-component);
+  border-color: var(--st-c);
+}
+
+/* [A] ASSUMED: a 2-px dashed frame, no fill. */
+.stamp-a .stamp-frame {
+  color: var(--st-a-text);
+  border-top-style: dashed;
+  border-right-style: dashed;
+  border-bottom-style: dashed;
+  border-left-style: dashed;
+  border-top-width: var(--border-stamp);
+  border-right-width: var(--border-stamp);
+  border-bottom-width: var(--border-stamp);
+  border-left-width: var(--border-stamp);
+  border-color: var(--st-a-line);
+}
+
+/* [?] UNKNOWN: a 2-px solid frame over a 45° hatch at 6-px pitch, a neutral gray in both themes. The hatch is the
+   one pattern the design allows, and it means nothing else (DESIGN.md section 4.2). */
+.stamp-q .stamp-frame {
+  color: var(--st-q-text);
+  background-color: var(--sheet);
+  background-image: repeating-linear-gradient(45deg, var(--st-q-stripe) 0, var(--st-q-stripe) 3px, var(--sheet) 3px, var(--sheet) 6px);
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-top-width: var(--border-stamp);
+  border-right-width: var(--border-stamp);
+  border-bottom-width: var(--border-stamp);
+  border-left-width: var(--border-stamp);
+  border-color: var(--st-q-line);
+}
+
+/* [N] NOT COVERED: bare, no frame and no fill. */
+.stamp-n .stamp-frame {
+  color: var(--st-n-text);
+}
+
+/* [R] REFUTED: a solid vermilion fill ringed by a heavy outer rule with a 2-px gap, so it separates from [P] in
+   grayscale at night (spine section 8.7; DESIGN.md section 2.6). */
+.stamp-r .stamp-frame {
+  color: var(--st-r-text);
+  background-color: var(--st-r-fill);
+  outline-style: solid;
+  outline-width: var(--border-violation);
+  outline-color: var(--st-r-fill);
+  outline-offset: 2px;
+  margin: 5px;
+}
+
+/* Forced colors drop fills and the hatch but keep border styles, widths and outlines, so the frames that rest on a
+   fill gain a border cue: [P] a 4-px solid border, [?] a 6-px left border, [R] its ring as an outline. */
+@media (forced-colors: active) {
+  .stamp-p .stamp-frame {
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-top-width: var(--border-double);
+    border-right-width: var(--border-double);
+    border-bottom-width: var(--border-double);
+    border-left-width: var(--border-double);
+  }
+
+  .stamp-q .stamp-frame {
+    border-left-width: 6px;
+  }
+
+  .stamp-r .stamp-frame {
+    outline-style: solid;
+    outline-width: var(--border-violation);
+  }
+}
+
+/* A stamp that opens details: a button whose target, padding included, is at least 44 × 44 px. The frame stays the
+   stamp's; the button adds no frame of its own. */
+.stamp-button {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--target);
+  min-height: var(--target);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.stamp-button:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* A stamp lands: opacity in and a scale from 104% to 100%, identical for all nine (DESIGN.md section 9.2). Only a
+   stamp that arrives as a result lands; a page that loads with its stamps is idle and never animates (section 9.3). */
+.stamp-landing .stamp-frame {
+  animation: stamp-lands var(--motion-stamp) ease-out;
+}
+
+@keyframes stamp-lands {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The lane badge: pencil text with a line icon, never framed (DESIGN.md section 5.5). */
+.lane-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--pencil);
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+}
+
+/* A derivation with no stamp, or a "modulo" reading: ink and pencil words, never a frame. */
+.derivation {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.derivation-note {
+  color: var(--pencil);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.derivation-modulo {
+  color: var(--ink);
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+.derivation-assumed {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* An agent's words: quoted, pencil, a 1-px pencil rule, never framed (I8; DESIGN.md section 6.15). */
+.unreviewed {
+  margin: 0;
+  padding-left: var(--space-3);
+  border-left: var(--border-component) solid var(--pencil);
+  color: var(--pencil);
+}
+
+.unreviewed-label {
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  font-stretch: 118%;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.unreviewed-quote {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+}
+
+.unreviewed-quote p {
+  margin: 0;
+}

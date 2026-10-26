@@ -1,0 +1,1539 @@
+{
+  "id": "RUN-z3-double-capture",
+  "title": "A capture applied twice to one hold conserves money and breaks at-most-once; the held >= h patch fixes the instance and not the class; the status guard is unsat",
+  "task": "W1-T12",
+  "origin": "recorded",
+  "records": "S1.L4 cell 2 (queries i to v), SP-1.2 and CL-1.3: conservation holds under a double capture, at-most-once fails by a gain of 2h, the held >= h patch refuses the single-hold instance and lets pooled holds through, the status guard is unsat and one fixed capture succeeds; Optimize on the hold amount and on the pooled balance, each checked by a plain query",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "libz3.so from the z3-solver 5.3.1.0 wheel (z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl) installed by uv; the Pyodide configurations use the pyemscripten wheel (sha256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": null,
+  "recorded_at": "2026-10-26T02:12:35.552Z",
+  "started_at": "2026-10-26T02:12:33.550Z",
+  "duration_s": 0.104,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "--with",
+    "z3-solver==5.3.1",
+    "python",
+    "-I",
+    "double_capture.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+      "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+      "bytes": 11044,
+      "role": "script"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "bytes": 36561071,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+      "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+      "bytes": 2736,
+      "role": "harness"
+    },
+    {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "file": "pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "bytes": 6488647,
+      "role": "engine"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "bytes": 6525334,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+      "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+      "bytes": 5270,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/index.html",
+      "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+      "bytes": 944,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+      "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+      "bytes": 2256,
+      "role": "harness"
+    },
+    {
+      "name": "node_modules/playwright-core/package.json",
+      "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+      "role": "harness dependency, playwright-core 1.63.0"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+      "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+      "bytes": 643,
+      "role": "harness"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_buggy.smt2",
+      "sha256": "69de44bd80cffa810e259c18e3b71f69b5ebaf0319142bd1ea6dd65959c506c4",
+      "bytes": 997,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_fixed.smt2",
+      "sha256": "2c5be94675d0bcbf514077bc86beb8f87acd02f6a47a8fc7204008d580ab3d2d",
+      "bytes": 1119,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_one_hold.smt2",
+      "sha256": "9c6926613bbef358d5d56bb1e7297ac16bdbba36478ce9d3852d2bbf02596d87",
+      "bytes": 1113,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_pooled.smt2",
+      "sha256": "e6655528c2fd869fa904ca1a2e4a0718e4361f23ce62d7e971a1f04fbe749226",
+      "bytes": 1092,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/conservation_buggy_twice.smt2",
+      "sha256": "a0f5aed9f550115de82c172f23d837de5fb75a829644ae8b9c4d65464ba8677a",
+      "bytes": 1053,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/fixed_one_capture.smt2",
+      "sha256": "e764320de61ef9027ac3d25d06fecae33475be336487d56d91a81e517c2e1523",
+      "bytes": 730,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_one_hold.smt2",
+      "sha256": "98253dc64dfeb032d66cdd44b6f12943159db56a76690c5440de7b3fb49228b9",
+      "bytes": 1001,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_pooled.smt2",
+      "sha256": "9425b7d77296f601551906b88abc26c65a4e9fe588fad67ce7043e746735c0a2",
+      "bytes": 1027,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/no_smaller_hold.smt2",
+      "sha256": "fec4f4ba511e4d3095c09ea2882455b44bd402451afe5b1d81df14a78f4d7e06",
+      "bytes": 1015,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/no_smaller_pool_patched.smt2",
+      "sha256": "253467ec958402d557fcd2b38f8843cd95b76f4b38077733397794fa90125f9f",
+      "bytes": 1113,
+      "role": "query"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "harness_timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[conservation_buggy_twice] unsat",
+    "[at_most_once_buggy] sat [avail = 0, held_pp = 0, merchant = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+    "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+    "[at_most_once_patched_one_hold] unsat",
+    "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, merchant_p = 1, avail = 0, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+    "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+    "[at_most_once_fixed] unsat",
+    "[fixed_one_capture] sat [merchant = 0, avail = 0, held_p = 0, merchant_p = 1, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+    "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+    "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+    "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+    "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+    "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+    "[no_smaller_hold] unsat",
+    "[no_smaller_pool_patched] unsat",
+    "[held_nonneg_one_hold] sat [avail = 0, merchant = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+    "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+    "[held_nonneg_pooled] unsat"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-double-capture/native.log",
+      "sha256": "a147b480d4b04262fbb20bdecac7ad0cdefe378dded9f1090f10aaf598539283",
+      "bytes": 7686,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_buggy.smt2",
+      "sha256": "69de44bd80cffa810e259c18e3b71f69b5ebaf0319142bd1ea6dd65959c506c4",
+      "bytes": 997,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_fixed.smt2",
+      "sha256": "2c5be94675d0bcbf514077bc86beb8f87acd02f6a47a8fc7204008d580ab3d2d",
+      "bytes": 1119,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_one_hold.smt2",
+      "sha256": "9c6926613bbef358d5d56bb1e7297ac16bdbba36478ce9d3852d2bbf02596d87",
+      "bytes": 1113,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_pooled.smt2",
+      "sha256": "e6655528c2fd869fa904ca1a2e4a0718e4361f23ce62d7e971a1f04fbe749226",
+      "bytes": 1092,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/conservation_buggy_twice.smt2",
+      "sha256": "a0f5aed9f550115de82c172f23d837de5fb75a829644ae8b9c4d65464ba8677a",
+      "bytes": 1053,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/fixed_one_capture.smt2",
+      "sha256": "e764320de61ef9027ac3d25d06fecae33475be336487d56d91a81e517c2e1523",
+      "bytes": 730,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_one_hold.smt2",
+      "sha256": "98253dc64dfeb032d66cdd44b6f12943159db56a76690c5440de7b3fb49228b9",
+      "bytes": 1001,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_pooled.smt2",
+      "sha256": "9425b7d77296f601551906b88abc26c65a4e9fe588fad67ce7043e746735c0a2",
+      "bytes": 1027,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/no_smaller_hold.smt2",
+      "sha256": "fec4f4ba511e4d3095c09ea2882455b44bd402451afe5b1d81df14a78f4d7e06",
+      "bytes": 1015,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/smt2/no_smaller_pool_patched.smt2",
+      "sha256": "253467ec958402d557fcd2b38f8843cd95b76f4b38077733397794fa90125f9f",
+      "bytes": 1113,
+      "kind": "SMT-LIB export of a query"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/pyodide-node.log",
+      "sha256": "564b593953ca8a4be5f98c6ebc40a721a5fdd9d52ea968077799be5359309a1d",
+      "bytes": 7685,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/pyodide-chromium.log",
+      "sha256": "2aead37c459f78ab697d8daecae344c66a94147e71d8acea2f84f7d28615a6f8",
+      "bytes": 7676,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/pyodide-firefox.log",
+      "sha256": "89a038b3506078eaff7c849a406fb88779fa9f103c5de0158ff1035c82df2ab7",
+      "bytes": 7676,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/pyodide-webkit.log",
+      "sha256": "d1fee78e511a59af6c21be354481fa5c12ac441054ded888bea946f47a757595",
+      "bytes": 7676,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-double-capture/cvc5-bench.log",
+      "sha256": "112e13d85df148cb2da485b039cba4a885df15d25c07ab3f159875d927f7bde8",
+      "bytes": 321,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "queries": {
+      "conservation_buggy_twice": {
+        "verdict": "unsat",
+        "smt2_sha256": "a0f5aed9f550115de82c172f23d837de5fb75a829644ae8b9c4d65464ba8677a",
+        "smt2_raw_sha256_by_engine": {
+          "native": "795a55150f67fe06a84bb6a7c12c2d5cd674258da7be8c9bffcc599f8a6a4137",
+          "pyodide-node": "795a55150f67fe06a84bb6a7c12c2d5cd674258da7be8c9bffcc599f8a6a4137",
+          "pyodide-chromium": "f20c6216583644ab50f81c4562f51d746f0c404aded007eb140fe4fd1e453082",
+          "pyodide-firefox": "f20c6216583644ab50f81c4562f51d746f0c404aded007eb140fe4fd1e453082",
+          "pyodide-webkit": "f20c6216583644ab50f81c4562f51d746f0c404aded007eb140fe4fd1e453082"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "at_most_once_buggy": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "avail_pp": "0",
+          "h": "1",
+          "held": "2",
+          "held_p": "1",
+          "held_pp": "0",
+          "merchant": "0",
+          "merchant_p": "1",
+          "merchant_pp": "2",
+          "status": "HELD",
+          "status_p": "CAPTURED",
+          "status_pp": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "smt2_sha256": "69de44bd80cffa810e259c18e3b71f69b5ebaf0319142bd1ea6dd65959c506c4",
+        "smt2_raw_sha256_by_engine": {
+          "native": "550bd1ddfe20d044815eac325b63f50f6a79e0f0931c513ceca25b4856f9bfc4",
+          "pyodide-node": "550bd1ddfe20d044815eac325b63f50f6a79e0f0931c513ceca25b4856f9bfc4",
+          "pyodide-chromium": "e5a5b6749c8a5a0a64576a30a5440d4da9085afea9d8e56f40b5633ab641a193",
+          "pyodide-firefox": "e5a5b6749c8a5a0a64576a30a5440d4da9085afea9d8e56f40b5633ab641a193",
+          "pyodide-webkit": "e5a5b6749c8a5a0a64576a30a5440d4da9085afea9d8e56f40b5633ab641a193"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "at_most_once_patched_one_hold": {
+        "verdict": "unsat",
+        "smt2_sha256": "9c6926613bbef358d5d56bb1e7297ac16bdbba36478ce9d3852d2bbf02596d87",
+        "smt2_raw_sha256_by_engine": {
+          "native": "55cd5d8f412a93eebd8e53d4a6675a5079ba9fb466d680aad262443c80981cf8",
+          "pyodide-node": "55cd5d8f412a93eebd8e53d4a6675a5079ba9fb466d680aad262443c80981cf8",
+          "pyodide-chromium": "cab614e5f0f67e1f54d53ae61e1a884dcd3c8ae75f664b6e63dd3bbb04c93204",
+          "pyodide-firefox": "cab614e5f0f67e1f54d53ae61e1a884dcd3c8ae75f664b6e63dd3bbb04c93204",
+          "pyodide-webkit": "cab614e5f0f67e1f54d53ae61e1a884dcd3c8ae75f664b6e63dd3bbb04c93204"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "at_most_once_patched_pooled": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "avail_pp": "0",
+          "h": "1",
+          "held": "2",
+          "held_p": "1",
+          "held_pp": "0",
+          "merchant": "0",
+          "merchant_p": "1",
+          "merchant_pp": "2",
+          "status": "HELD",
+          "status_p": "CAPTURED",
+          "status_pp": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "smt2_sha256": "e6655528c2fd869fa904ca1a2e4a0718e4361f23ce62d7e971a1f04fbe749226",
+        "smt2_raw_sha256_by_engine": {
+          "native": "8e18c1b252831993e74155fb20483f7376f4fd17c61eaedec7a695255f5b3728",
+          "pyodide-node": "8e18c1b252831993e74155fb20483f7376f4fd17c61eaedec7a695255f5b3728",
+          "pyodide-chromium": "0afb995603592e3eeeda53f13403149283d621efc9f045fd366f00e798768ddd",
+          "pyodide-firefox": "0afb995603592e3eeeda53f13403149283d621efc9f045fd366f00e798768ddd",
+          "pyodide-webkit": "0afb995603592e3eeeda53f13403149283d621efc9f045fd366f00e798768ddd"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "at_most_once_fixed": {
+        "verdict": "unsat",
+        "smt2_sha256": "2c5be94675d0bcbf514077bc86beb8f87acd02f6a47a8fc7204008d580ab3d2d",
+        "smt2_raw_sha256_by_engine": {
+          "native": "887870f04acd9374e8b706bbaca3a48c3da176a044b3770353c6b23af8f4e1e1",
+          "pyodide-node": "887870f04acd9374e8b706bbaca3a48c3da176a044b3770353c6b23af8f4e1e1",
+          "pyodide-chromium": "f33cae771625ad93eec6b537fbe8bf3cf596da4e5506827291c120e3083747e8",
+          "pyodide-firefox": "f33cae771625ad93eec6b537fbe8bf3cf596da4e5506827291c120e3083747e8",
+          "pyodide-webkit": "f33cae771625ad93eec6b537fbe8bf3cf596da4e5506827291c120e3083747e8"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "fixed_one_capture": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "h": "1",
+          "held": "1",
+          "held_p": "0",
+          "merchant": "0",
+          "merchant_p": "1",
+          "status": "HELD",
+          "status_p": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "smt2_sha256": "e764320de61ef9027ac3d25d06fecae33475be336487d56d91a81e517c2e1523",
+        "smt2_raw_sha256_by_engine": {
+          "native": "ea9287e5fa887ea35dd5a182e8b3ef227c1cc11f9186320644fa6a6cc9e553f7",
+          "pyodide-node": "ea9287e5fa887ea35dd5a182e8b3ef227c1cc11f9186320644fa6a6cc9e553f7",
+          "pyodide-chromium": "3cc4ac984271ae5a9c9d6b8f91918b847b4606e663211befde48127c0e98122d",
+          "pyodide-firefox": "3cc4ac984271ae5a9c9d6b8f91918b847b4606e663211befde48127c0e98122d",
+          "pyodide-webkit": "3cc4ac984271ae5a9c9d6b8f91918b847b4606e663211befde48127c0e98122d"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "minimize_hold": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "avail_pp": "0",
+          "h": "1",
+          "held": "2",
+          "held_p": "1",
+          "held_pp": "0",
+          "merchant": "0",
+          "merchant_p": "1",
+          "merchant_pp": "2",
+          "status": "HELD",
+          "status_p": "CAPTURED",
+          "status_pp": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "objective": "h",
+        "minimum": "1",
+        "minimum_agrees_across_engines": true,
+        "smt2_sha256": null,
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat"
+        },
+        "engines_agree": true
+      },
+      "minimize_pool_patched": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "avail_pp": "0",
+          "h": "1",
+          "held": "2",
+          "held_p": "1",
+          "held_pp": "0",
+          "merchant": "0",
+          "merchant_p": "1",
+          "merchant_pp": "2",
+          "status": "HELD",
+          "status_p": "CAPTURED",
+          "status_pp": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "objective": "held",
+        "minimum": "2",
+        "minimum_agrees_across_engines": true,
+        "smt2_sha256": null,
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat"
+        },
+        "engines_agree": true
+      },
+      "no_smaller_hold": {
+        "verdict": "unsat",
+        "smt2_sha256": "fec4f4ba511e4d3095c09ea2882455b44bd402451afe5b1d81df14a78f4d7e06",
+        "smt2_raw_sha256_by_engine": {
+          "native": "772e28e9d059680817e77619caa2fe26c1dd3a18aabc596833ab4af54a6313da",
+          "pyodide-node": "578d810c103f9c9d3d07026dd6bacd8412aea7e55d51b9af207f0ee715ad2ca4",
+          "pyodide-chromium": "06bcf63ff7c1a6fba655ea17d71ab1c7f622539b4ed6b1cb80ec11f524b00614",
+          "pyodide-firefox": "06bcf63ff7c1a6fba655ea17d71ab1c7f622539b4ed6b1cb80ec11f524b00614",
+          "pyodide-webkit": "06bcf63ff7c1a6fba655ea17d71ab1c7f622539b4ed6b1cb80ec11f524b00614"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "no_smaller_pool_patched": {
+        "verdict": "unsat",
+        "smt2_sha256": "253467ec958402d557fcd2b38f8843cd95b76f4b38077733397794fa90125f9f",
+        "smt2_raw_sha256_by_engine": {
+          "native": "044ec6f10a78f87f3b0acc3611572e28d0b9687bf5f3ab689c0d370883587a74",
+          "pyodide-node": "be96725b7fd518be63c6bccc9f499ca28d01165d99e8ba02ce183ea8d8ad5f76",
+          "pyodide-chromium": "c9c943e3210b4d8dfb318b6d68bcb3a6e080eb36b83cd03a2992773eacc99d7e",
+          "pyodide-firefox": "c9c943e3210b4d8dfb318b6d68bcb3a6e080eb36b83cd03a2992773eacc99d7e",
+          "pyodide-webkit": "c9c943e3210b4d8dfb318b6d68bcb3a6e080eb36b83cd03a2992773eacc99d7e"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "held_nonneg_one_hold": {
+        "verdict": "sat",
+        "witness": {
+          "avail": "0",
+          "avail_p": "0",
+          "avail_pp": "0",
+          "h": "1",
+          "held": "1",
+          "held_p": "0",
+          "held_pp": "-1",
+          "merchant": "0",
+          "merchant_p": "1",
+          "merchant_pp": "2",
+          "status": "HELD",
+          "status_p": "CAPTURED",
+          "status_pp": "CAPTURED"
+        },
+        "witnesses_differ_across_engines": false,
+        "witness_replays": true,
+        "replay": "held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "smt2_sha256": "98253dc64dfeb032d66cdd44b6f12943159db56a76690c5440de7b3fb49228b9",
+        "smt2_raw_sha256_by_engine": {
+          "native": "e6ab3957554236d7ec1f26a74196fce2d4d0101ab310594e6e6a7ff9c9d60b85",
+          "pyodide-node": "6e0802108185105e31dff7a5c2dae8953db1cd96883c0136f80b3447d86824a1",
+          "pyodide-chromium": "8a35309cb1d838f69d0f8234d9a03825e422368a84aa2b04ba0b401a1beee770",
+          "pyodide-firefox": "8a35309cb1d838f69d0f8234d9a03825e422368a84aa2b04ba0b401a1beee770",
+          "pyodide-webkit": "8a35309cb1d838f69d0f8234d9a03825e422368a84aa2b04ba0b401a1beee770"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "held_nonneg_pooled": {
+        "verdict": "unsat",
+        "smt2_sha256": "9425b7d77296f601551906b88abc26c65a4e9fe588fad67ce7043e746735c0a2",
+        "smt2_raw_sha256_by_engine": {
+          "native": "cf270c041e6e97a34e436aeabd38d3d13c422abcd3f965323b7d88764f54c931",
+          "pyodide-node": "7de7e8bf4e9e0d3eee9fd0405d0cfe1c12827a3325c41ebccafb3f56d7349b1d",
+          "pyodide-chromium": "54b2585cf42d59860520aadbb281db1b8455b5fe3fb77055a05cd4ce1082b59e",
+          "pyodide-firefox": "54b2585cf42d59860520aadbb281db1b8455b5fe3fb77055a05cd4ce1082b59e",
+          "pyodide-webkit": "54b2585cf42d59860520aadbb281db1b8455b5fe3fb77055a05cd4ce1082b59e"
+        },
+        "rlimit": 5000000,
+        "engines": {
+          "native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      }
+    },
+    "engines": [
+      "native",
+      "pyodide-node",
+      "pyodide-chromium",
+      "pyodide-firefox",
+      "pyodide-webkit"
+    ],
+    "verdicts_agree": true,
+    "witnesses_replay": true,
+    "exports_identical": true,
+    "raw_exports_identical": false,
+    "cvc5": {
+      "configuration": "cvc5-bench",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "queries_checked": 10,
+      "agree": 10
+    }
+  },
+  "checks": [
+    {
+      "id": "conservation_buggy_twice",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "at_most_once_buggy",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "at_most_once_patched_one_hold",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "at_most_once_patched_pooled",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "at_most_once_fixed",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "fixed_one_capture",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "minimize_hold",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat"
+      },
+      "witness_replays": true,
+      "checked_by": "no_smaller_hold"
+    },
+    {
+      "id": "minimize_pool_patched",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat"
+      },
+      "witness_replays": true,
+      "checked_by": "no_smaller_pool_patched"
+    },
+    {
+      "id": "no_smaller_hold",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "no_smaller_pool_patched",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "held_nonneg_one_hold",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      },
+      "witness_replays": true
+    },
+    {
+      "id": "held_nonneg_pooled",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "no-unexpected-queries",
+      "pass": true
+    },
+    {
+      "id": "exports-identical",
+      "pass": true,
+      "detail": "the 5 Z3 configurations (native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit) exported the same SMT-LIB text for each of the 10 queries that have an export; the other 2 (minimize_hold, minimize_pool_patched: Optimize answers) have none in any configuration"
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2",
+    "containers": {
+      "playwright": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "bench": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+    }
+  },
+  "primary_config": "native",
+  "configs": [
+    {
+      "id": "native",
+      "purpose": "the script under uv with the z3-solver 5.3.1.0 wheel on CPython, the LAB-1 way (labs/TOOLS.md section 2.1); the primary configuration",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "started_at": "2026-10-26T02:12:33.550Z",
+      "duration_s": 0.104,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "python",
+        "-I",
+        "double_capture.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+          "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+          "bytes": 11044,
+          "role": "script"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[conservation_buggy_twice] unsat",
+        "[at_most_once_buggy] sat [avail = 0, held_pp = 0, merchant = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_patched_one_hold] unsat",
+        "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, merchant_p = 1, avail = 0, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_fixed] unsat",
+        "[fixed_one_capture] sat [merchant = 0, avail = 0, held_p = 0, merchant_p = 1, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[no_smaller_hold] unsat",
+        "[no_smaller_pool_patched] unsat",
+        "[held_nonneg_one_hold] sat [avail = 0, merchant = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "[held_nonneg_pooled] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/native.log",
+        "runs/RUN-z3-double-capture/smt2/at_most_once_buggy.smt2",
+        "runs/RUN-z3-double-capture/smt2/at_most_once_fixed.smt2",
+        "runs/RUN-z3-double-capture/smt2/at_most_once_patched_one_hold.smt2",
+        "runs/RUN-z3-double-capture/smt2/at_most_once_patched_pooled.smt2",
+        "runs/RUN-z3-double-capture/smt2/conservation_buggy_twice.smt2",
+        "runs/RUN-z3-double-capture/smt2/fixed_one_capture.smt2",
+        "runs/RUN-z3-double-capture/smt2/held_nonneg_one_hold.smt2",
+        "runs/RUN-z3-double-capture/smt2/held_nonneg_pooled.smt2",
+        "runs/RUN-z3-double-capture/smt2/no_smaller_hold.smt2",
+        "runs/RUN-z3-double-capture/smt2/no_smaller_pool_patched.smt2"
+      ],
+      "environment": {
+        "python": "CPython 3.13.12",
+        "uv": "uv 0.10.2",
+        "library": "libz3.so 27688808 bytes"
+      }
+    },
+    {
+      "id": "pyodide-node",
+      "purpose": "the script in Pyodide under Node with this task's harness, pyodide-node.mjs: the setting in which RUN-z3-bv64-pyodide ran (with a harness of its own) and in which the spine's GATE-calls reproduces a Call It answer; Pyodide 314.0.7 and the Z3 5.3.1.0 wheel, a fresh engine and a fresh Python namespace for the script",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": null,
+      "started_at": "2026-10-26T02:12:33.655Z",
+      "duration_s": 1.6,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T12/pyodide-node.mjs",
+        "--pyodide",
+        "<sandbox>/engines/pyodide",
+        "--wheel",
+        "<sandbox>/engines/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+        "--script",
+        "double_capture.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+          "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+          "bytes": 11044,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+          "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+          "bytes": 2736,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[conservation_buggy_twice] unsat",
+        "[at_most_once_buggy] sat [avail = 0, held_pp = 0, merchant = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_patched_one_hold] unsat",
+        "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, merchant_p = 1, avail = 0, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_fixed] unsat",
+        "[fixed_one_capture] sat [merchant = 0, avail = 0, held_p = 0, merchant_p = 1, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[no_smaller_hold] unsat",
+        "[no_smaller_pool_patched] unsat",
+        "[held_nonneg_one_hold] sat [avail = 0, merchant = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "[held_nonneg_pooled] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/pyodide-node.log"
+      ],
+      "environment": {
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "node": "v22.22.2 x64",
+        "load_pyodide_ms": 1022,
+        "load_wheel_ms": 232,
+        "script_ms": 311
+      }
+    },
+    {
+      "id": "pyodide-chromium",
+      "purpose": "the script in Pyodide in a module worker in chromium 153.0.8010.12 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:15.582Z",
+      "duration_s": 0.058,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-chromium",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers chromium; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+          "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+          "bytes": 11044,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[conservation_buggy_twice] unsat",
+        "[at_most_once_buggy] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_patched_one_hold] unsat",
+        "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_fixed] unsat",
+        "[fixed_one_capture] sat [merchant = 0, held_p = 0, merchant_p = 1, avail = 0, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[no_smaller_hold] unsat",
+        "[no_smaller_pool_patched] unsat",
+        "[held_nonneg_one_hold] sat [merchant = 0, avail = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "[held_nonneg_pooled] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/pyodide-chromium.log"
+      ],
+      "environment": {
+        "browser": "chromium 153.0.8010.12",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1016,
+        "load_wheel_ms": 243,
+        "script_ms": 58,
+        "session_wall_ms": 3092,
+        "docker_run_started_at": "2026-10-26T02:12:15.227Z",
+        "docker_run_wall_ms": 3512
+      }
+    },
+    {
+      "id": "pyodide-firefox",
+      "purpose": "the script in Pyodide in a module worker in firefox 155.0 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:19.281Z",
+      "duration_s": 0.067,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-firefox",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers firefox; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+          "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+          "bytes": 11044,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[conservation_buggy_twice] unsat",
+        "[at_most_once_buggy] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_patched_one_hold] unsat",
+        "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_fixed] unsat",
+        "[fixed_one_capture] sat [merchant = 0, held_p = 0, merchant_p = 1, avail = 0, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[no_smaller_hold] unsat",
+        "[no_smaller_pool_patched] unsat",
+        "[held_nonneg_one_hold] sat [merchant = 0, avail = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "[held_nonneg_pooled] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/pyodide-firefox.log"
+      ],
+      "environment": {
+        "browser": "firefox 155.0",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1083,
+        "load_wheel_ms": 338,
+        "script_ms": 67,
+        "session_wall_ms": 3724,
+        "docker_run_started_at": "2026-10-26T02:12:18.749Z",
+        "docker_run_wall_ms": 4518
+      }
+    },
+    {
+      "id": "pyodide-webkit",
+      "purpose": "the script in Pyodide in a module worker in webkit 26.6 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:23.814Z",
+      "duration_s": 0.055,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-webkit",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers webkit; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-double-capture/double_capture.py",
+          "sha256": "5bfd69a38f64de535ca551603964ca8e2169869f01d96f5a1ca38c4cb1dc32ef",
+          "bytes": 11044,
+          "role": "script"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1 rlimit=5000000",
+        "[conservation_buggy_twice] unsat",
+        "[at_most_once_buggy] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_patched_one_hold] unsat",
+        "[at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[at_most_once_fixed] unsat",
+        "[fixed_one_capture] sat [merchant = 0, held_p = 0, merchant_p = 1, avail = 0, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok",
+        "[minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]",
+        "  replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok",
+        "[no_smaller_hold] unsat",
+        "[no_smaller_pool_patched] unsat",
+        "[held_nonneg_one_hold] sat [merchant = 0, avail = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]",
+        "  replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok",
+        "[held_nonneg_pooled] unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/pyodide-webkit.log"
+      ],
+      "environment": {
+        "browser": "webkit 26.6",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1014,
+        "load_wheel_ms": 270,
+        "script_ms": 55,
+        "session_wall_ms": 3135,
+        "docker_run_started_at": "2026-10-26T02:12:23.278Z",
+        "docker_run_wall_ms": 3757
+      }
+    },
+    {
+      "id": "cvc5-bench",
+      "purpose": "a second solver on the queries: every sat or unsat query of the run that has an SMT-LIB export, as that text, on cvc5 1.4.2 [git 282d5e0 on branch HEAD], the Bench binary (the spine's \"authored unsat cross-checked on cvc5\")",
+      "origin": "recorded",
+      "engine": "cvc5",
+      "version": "1.4.2",
+      "version_string": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "started_at": "2026-10-26T02:12:35.294Z",
+      "duration_s": 0.191,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w1t12-cvc5-z3-double-capture",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/smt2:/q:ro",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "sh",
+        "/s/cvc5-check.sh",
+        "/q"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+          "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+          "bytes": 643,
+          "role": "harness"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/at_most_once_buggy.smt2",
+          "sha256": "69de44bd80cffa810e259c18e3b71f69b5ebaf0319142bd1ea6dd65959c506c4",
+          "bytes": 997,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/at_most_once_fixed.smt2",
+          "sha256": "2c5be94675d0bcbf514077bc86beb8f87acd02f6a47a8fc7204008d580ab3d2d",
+          "bytes": 1119,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_one_hold.smt2",
+          "sha256": "9c6926613bbef358d5d56bb1e7297ac16bdbba36478ce9d3852d2bbf02596d87",
+          "bytes": 1113,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/at_most_once_patched_pooled.smt2",
+          "sha256": "e6655528c2fd869fa904ca1a2e4a0718e4361f23ce62d7e971a1f04fbe749226",
+          "bytes": 1092,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/conservation_buggy_twice.smt2",
+          "sha256": "a0f5aed9f550115de82c172f23d837de5fb75a829644ae8b9c4d65464ba8677a",
+          "bytes": 1053,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/fixed_one_capture.smt2",
+          "sha256": "e764320de61ef9027ac3d25d06fecae33475be336487d56d91a81e517c2e1523",
+          "bytes": 730,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_one_hold.smt2",
+          "sha256": "98253dc64dfeb032d66cdd44b6f12943159db56a76690c5440de7b3fb49228b9",
+          "bytes": 1001,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/held_nonneg_pooled.smt2",
+          "sha256": "9425b7d77296f601551906b88abc26c65a4e9fe588fad67ce7043e746735c0a2",
+          "bytes": 1027,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/no_smaller_hold.smt2",
+          "sha256": "fec4f4ba511e4d3095c09ea2882455b44bd402451afe5b1d81df14a78f4d7e06",
+          "bytes": 1015,
+          "role": "query"
+        },
+        {
+          "path": "runs/RUN-z3-double-capture/smt2/no_smaller_pool_patched.smt2",
+          "sha256": "253467ec958402d557fcd2b38f8843cd95b76f4b38077733397794fa90125f9f",
+          "bytes": 1113,
+          "role": "query"
+        }
+      ],
+      "budget": {
+        "per_file_timeout_s": 60,
+        "harness_timeout_s": 600,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+        "at_most_once_buggy: sat",
+        "at_most_once_fixed: unsat",
+        "at_most_once_patched_one_hold: unsat",
+        "at_most_once_patched_pooled: sat",
+        "conservation_buggy_twice: unsat",
+        "fixed_one_capture: sat",
+        "held_nonneg_one_hold: sat",
+        "held_nonneg_pooled: unsat",
+        "no_smaller_hold: unsat",
+        "no_smaller_pool_patched: unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-double-capture/cvc5-bench.log"
+      ],
+      "environment": {
+        "container_image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+      }
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the primary configuration ran on the host under uv, in no container; the container configurations name their images"
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T12. values.queries.<query> holds each query's verdict and rlimit; for a sat query, its witness (the primary configuration's model, as strings), the text of the primary configuration's replay (replay) and whether every configuration's model for it replayed (witness_replays); its unsat_core or minimum where it has one; the SHA-256 of its SMT-LIB export (null for the 2 queries without one: minimize_hold and minimize_pool_patched); and the verdict of each configuration that ran it (engines, cvc5's on the 10 queries it ran). Cite one as {{run:RUN-z3-double-capture#values.queries.<name>.verdict}}. 12 queries in all.",
+    "Where each configuration ran: native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit, cvc5-bench. native is the host under uv (CPython 3.13, the wheel z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl from PyPI, no container); pyodide-node is Pyodide 314.0.7 with the z3_solver 5.3.1.0 pyemscripten wheel under Node 22 on the host (CPython 3.14 inside Pyodide); the pyodide-chromium, pyodide-firefox and pyodide-webkit configurations are the same engine in a module worker of each browser inside the pinned Playwright container (desktop builds, headless, not phones); cvc5-bench is cvc5 1.4.2, the Bench binary, in the Bench image with the network off.",
+    "Witnesses are recorded by property and never compared by value across engines [X RUN-z3-bv64-pyodide]: every sat query's model is replayed in plain Python integers by the script itself, in each configuration that gave one (native, pyodide-node, pyodide-chromium, pyodide-firefox and pyodide-webkit; cvc5-bench gives verdicts only), and the check is that every one of them replays. In this run the configurations in values.engines returned the same model for every sat query, which is a fact about this run and no promise.",
+    "Every query ran with rlimit 5000000 (spine section 9.1; values.queries.<query>.rlimit). The SMT-LIB exports are Z3's to_smt2() text with its let names (?x60, $x34) renamed in order of appearance, because Z3 names them after AST ids and the ids are not the same in every process: the raw text differed between Z3 configurations on 10 of the 10 queries that have an export (smt2_raw_sha256_by_engine). The renamed text is the same in every Z3 configuration, and its SHA-256 is values.queries.<query>.smt2_sha256 (null for minimize_hold and minimize_pool_patched, which have no export).",
+    "started_at and duration_s of a configuration that ran its own command (native, pyodide-node and cvc5-bench) are when that command started and how long it took, start-up included. Each browser configuration (pyodide-chromium, pyodide-firefox and pyodide-webkit) comes from one docker run, in which one browser session ran every Z3 script of runs/inputs/S1 in turn; that session is shared by the 9 Z3 records of runs/inputs/S1, and the configuration's argv and exit_code are its docker run's. A browser configuration's started_at is when its session began, after the browser had launched and before its page opened, and its duration_s is this script's own time in the worker, measured around the call without the engine's start-up and rounded to whole milliseconds by the harness. Its environment holds two spans that cover every script: session_wall_ms, from started_at to when the last script had finished (the page's and the engine's load and every script, not the browser's close), and docker_run_wall_ms, the docker run from docker_run_started_at, when the recording script started it, to its exit (adding the container's start and the launch of Node and the browser before started_at, and the browser's close and the output's chown after the last script). budget.harness_timeout_s is the wall time after which the recording script would have stopped a configuration's command (for a browser configuration, the docker run). The ms figure on an @@ line is the script's own measurement of that query's solver call, rounded to hundredths of a millisecond; in this record's browser logs pyodide-firefox and pyodide-webkit gave whole milliseconds, and pyodide-chromium gave multiples of 0.1 ms, on all 12 queries, so a browser figure of a few milliseconds is a rough one.",
+    "cvc5 1.4.2 [git 282d5e0 on branch HEAD] ran 10 of the 12 queries, each file under a 60 s limit (budget.per_file_timeout_s): every sat or unsat query that has an SMT-LIB export, as that text. The 2 Optimize answers have no export, and each is checked by a plain query that cvc5 ran and that asks for anything below the minimum (minimize_hold by no_smaller_hold, minimize_pool_patched by no_smaller_pool_patched). The checks require its verdict to equal Z3's on each one it ran (values.cvc5, and engines in each entry), and the plain query named for each query without an export to be unsat (checked_by in that query's check).",
+    "In native and pyodide-node, which ran on the host, argv's paths to the script are relative to a scratch folder that held copies of the configuration's inputs from runs/inputs/S1/RUN-z3-double-capture/ at the same relative paths, and the command ran in that folder; pyodide-node.mjs is named by its path from the repository root, and the <sandbox> paths are placeholders (next note).",
+    "Placeholders in argv: <sandbox>/engines is a scratch directory with Pyodide's npm package unpacked in pyodide/ and the Z3 wheel, both fetched and checked against their published digests (the inputs list them); <sandbox>/out is the browser container's output directory; <sandbox>/smt2 is a scratch copy of the SMT-LIB files the cvc5 configuration reads (the inputs list them). Repository paths are relative to the repository root.",
+    "Optimize (minimize_hold, minimize_pool_patched) answers are checked by a plain query that cvc5 also runs (no_smaller_hold, no_smaller_pool_patched), which asks for anything below the minimum: h < 1 and held < 2. Optimize has no SMT-LIB export, so smt2_sha256 is null for those two. no_smaller_hold is unsat by the premise h > 0 alone, h being an integer; no_smaller_pool_patched depends on the patch, which needs held >= h before each capture, so that held starts at 2h or more, which is at least 2."
+  ]
+}

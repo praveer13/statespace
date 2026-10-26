@@ -1,0 +1,1107 @@
+{
+  "about": "Z3 verdict-line fixtures for the Z3 lane's reader (bench/statespace/lanes/z3.py) and the tab's (W1-T14): each captured case is the pinned engine's whole output, verbatim, with the verdict lines, verdict and reason the grammar gives, and the constants that the model printed after sat defines (expect.model: sorted names, [] for an empty model, null when no model is printed; the model is the last block after sat that is a list of define-fun items, with the declare-fun and forall items of a sort's universe); the synthetic cases are the grammar's edges. Written by scripts/spikes/W1-T29/capture-z3-lines.py, which records the execution as RUN-z3-verdict-lines; the expectations are stated there by hand, not computed by the lane.",
+  "captured": {
+    "engine": "z3",
+    "version": "5.3.1",
+    "version_line": "Z3 version 5.3.1 - 64 bit",
+    "wheel": "z3-solver 5.3.1.0 (bench/uv.lock)",
+    "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+    "library_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+    "rlimit": 5000000,
+    "date": "2026-10-26",
+    "run": "RUN-z3-verdict-lines"
+  },
+  "cases": [
+    {
+      "id": "cli-unsat",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (<= amount a))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-unsat.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n(:reason-unknown \"\")\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      }
+    },
+    {
+      "id": "cli-sat-model",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-sat-model.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      }
+    },
+    {
+      "id": "cli-unknown-rlimit",
+      "entry": "cli",
+      "input": "(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (> x 0))\n(assert (> y 0))\n(assert (> z 0))\n(assert (= (+ (* x x x) (* y y y)) (* z z z)))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-unknown-rlimit.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unknown\n(:reason-unknown \"canceled\")\n",
+      "expect": {
+        "verdictLines": [
+          "unknown",
+          "(:reason-unknown \"canceled\")"
+        ],
+        "verdict": "unknown",
+        "reason": "canceled",
+        "model": null
+      }
+    },
+    {
+      "id": "cli-bitvector-model",
+      "entry": "cli",
+      "input": "(declare-const b (_ BitVec 64))\n(declare-const m (_ BitVec 64))\n(assert (bvsge b #x0000000000000000))\n(assert (bvsgt m #x0000000000000000))\n(assert (bvslt (bvadd b m) #x0000000000000000))\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-bitvector-model.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun b () (_ BitVec 64)\n    #x7fffdfffffffffff)\n  (define-fun m () (_ BitVec 64)\n    #x7ffffffffffffffb)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "b",
+          "m"
+        ]
+      }
+    },
+    {
+      "id": "cli-error-then-sat",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(assert (> q 0))\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-error-then-sat.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 2 column 11: unknown constant q\")\nsat\n(\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 2 column 11: unknown constant q\")",
+          "sat"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": [
+          "a"
+        ]
+      }
+    },
+    {
+      "id": "cli-not-boolean-then-sat",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(assert (+ a 1))\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-not-boolean-then-sat.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 2 column 15: invalid assert command, term is not Boolean\")\nsat\n(\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 2 column 15: invalid assert command, term is not Boolean\")",
+          "sat"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": [
+          "a"
+        ]
+      }
+    },
+    {
+      "id": "cli-syntax-error-no-answer",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(assert (> a 0)\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-syntax-error-no-answer.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 3 column 0: invalid assert command, ')' expected\")\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 3 column 0: invalid assert command, ')' expected\")"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": null
+      },
+      "note": "Z3's own output for a script that does not parse: an error and no answer; check_script refuses a script it cannot read, so the lane never runs this one"
+    },
+    {
+      "id": "cli-model-asked-after-unsat",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(assert (> a 0))\n(assert (< a 0))\n(check-sat)\n(get-model)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-asked-after-unsat.smt2"
+      ],
+      "exitCode": 1,
+      "output": "unsat\n(error \"line 5 column 10: model is not available\")\n",
+      "expect": {
+        "verdictLines": [
+          "unsat",
+          "(error \"line 5 column 10: model is not available\")"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      }
+    },
+    {
+      "id": "cli-rlimit-too-large",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (<= amount a))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=4294967296",
+        "cli-rlimit-too-large.smt2"
+      ],
+      "exitCode": 110,
+      "output": "ERROR: invalid value '4294967296' for unsigned int parameter 'rlimit'\n",
+      "expect": {
+        "verdictLines": [],
+        "verdict": null,
+        "reason": null,
+        "model": null
+      }
+    },
+    {
+      "id": "cli-check-sat-assuming",
+      "entry": "cli",
+      "input": "(declare-const p Bool)\n(assert (not p))\n(check-sat-assuming (p))\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-check-sat-assuming.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the question's assumption p contradicts the assertion (not p)"
+    },
+    {
+      "id": "cli-assert-after-question",
+      "entry": "cli",
+      "input": "(declare-const x Int)\n(assert (> x 0))\n(check-sat)\n(assert false)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-assert-after-question.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": null
+      },
+      "note": "Z3 answers the question before it reads the later (assert false); check_script refuses such a script, whose last line would read as part of the question"
+    },
+    {
+      "id": "cli-script-rlimit-overrides",
+      "entry": "cli",
+      "input": "(set-option :rlimit 0)\n(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (> x 0))\n(assert (> y 0))\n(assert (> z 0))\n(assert (= (+ (* x x x) (* y y y)) (* z z z)))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-script-rlimit-overrides.smt2"
+      ],
+      "exitCode": null,
+      "output": "",
+      "stoppedAfterS": 3.0,
+      "expect": {
+        "verdictLines": [],
+        "verdict": null,
+        "reason": null,
+        "model": null
+      },
+      "note": "the script's (set-option :rlimit 0) replaces the rlimit=5000000 of the command line, which stops the same query with unknown (canceled) in cli-unknown-rlimit: Z3 gave no answer within the capture's 3 s limit and was stopped; check_script refuses any script that sets :rlimit, :timeout or a memory limit"
+    },
+    {
+      "id": "cli-printed-word-before-question",
+      "entry": "cli",
+      "input": "(declare-const sat Bool)\n(simplify sat)\n(check-sat-assuming (nonexistent))\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-printed-word-before-question.smt2"
+      ],
+      "exitCode": 1,
+      "output": "sat\n(error \"line 3 column 21: unknown constant nonexistent\")\n",
+      "expect": {
+        "verdictLines": [
+          "sat",
+          "(error \"line 3 column 21: unknown constant nonexistent\")"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": null
+      },
+      "note": "(simplify sat) prints the constant's name, sat, and the question then fails, so the grammar reads an answer that no question gave; check_script refuses simplify, eval and display before the question"
+    },
+    {
+      "id": "cli-stray-paren-after-echo",
+      "entry": "cli",
+      "input": "(declare-const x Int)\n(assert (> x 0))\n(echo \"unsat\")\n(exit)\n)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-stray-paren-after-echo.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the script asks no question: Z3 runs (echo \"unsat\") and (exit) before it would read the stray ), and exits 0 with one line that reads as unsat; check_script refuses a script it cannot read, since Z3 runs every command before a fault"
+    },
+    {
+      "id": "cli-block-comment-hides-echo",
+      "entry": "cli",
+      "input": "#| a | b |#\n(echo \"unsat\")\n| (check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-block-comment-hides-echo.smt2"
+      ],
+      "exitCode": 1,
+      "output": "unsat\n(error \"line 4 column 1: unexpected end of quoted symbol\")\n",
+      "expect": {
+        "verdictLines": [
+          "unsat",
+          "(error \"line 4 column 1: unexpected end of quoted symbol\")"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "Z3 ends the #| block comment at the first |#, runs (echo \"unsat\"), and reads | (check-sat) as a quoted symbol that never ends, so no question is asked and the grammar reads unsat; a reader that takes each | for a quoted symbol sees one (check-sat) and no echo, so check_script refuses #| block comments"
+    },
+    {
+      "id": "cli-backslash-in-quoted-symbol",
+      "entry": "cli",
+      "input": "(declare-const |a\\|b| Int)\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-backslash-in-quoted-symbol.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 1 column 18: invalid character '\\' in quoted symbol\")\n(error \"line 1 column 18: unexpected character\")\nsat\n(\n)\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 1 column 18: invalid character '\\' in quoted symbol\")",
+          "(error \"line 1 column 18: unexpected character\")",
+          "sat"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": []
+      },
+      "note": "SMT-LIB allows no backslash in a |quoted symbol|: Z3 reports an error and reads on from the backslash, where a reader that ends the symbol at the next | would not; check_script refuses such a script"
+    },
+    {
+      "id": "cli-named-premises",
+      "entry": "cli",
+      "input": "(set-option :produce-unsat-cores true)\n(declare-const amount Int)\n(define-fun MAX_TRANSFER () Int 0)\n(assert (! (> amount 0) :named amount-pos))\n(assert (! (<= amount MAX_TRANSFER) :named under-max))\n(check-sat)\n(get-unsat-core)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-named-premises.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n(amount-pos under-max)\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the named premises amount > 0 and amount <= MAX_TRANSFER contradict each other when MAX_TRANSFER = 0, so a claim guarded by them holds vacuously; the unsat core names both"
+    },
+    {
+      "id": "cli-nonlinear-in-qf-lia-then-sat",
+      "entry": "cli",
+      "input": "(set-logic QF_LIA)\n(declare-const x Int)\n(assert (> (* x x) 3))\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-nonlinear-in-qf-lia-then-sat.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")\nsat\n(\n  (define-fun x () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")",
+          "sat"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": [
+          "x"
+        ]
+      },
+      "note": "QF_LIA has no nonlinear terms: Z3 drops the assertion with an error and answers about what is left"
+    },
+    {
+      "id": "cli-nul-in-comment",
+      "entry": "cli",
+      "input": "(declare-const amount Int)\n(assert (> amount 0))\n; MAX_TRANSFER = 0 \u0000\n(assert (<= amount 0))\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-nul-in-comment.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the command line reads past the NUL inside the ; comment, so both premises hold and contradict each other; Solver.from_string reads the same text only up to the NUL and answered sat (values.from_string_nul_reading); check_script refuses a script that holds a NUL, so the lane runs neither entry on this one"
+    },
+    {
+      "id": "cli-cr-in-comment",
+      "entry": "cli",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n; guard\r(assert (<= amount a))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-cr-in-comment.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      },
+      "note": "Z3 ends a ; comment only at a line feed, so the guard after the bare carriage return of '; guard' is part of the comment and the overdraft is reachable; read with Path.read_text, which turns the carriage return into a line feed, the same file answered unsat (values.read_text_cr_reading)"
+    },
+    {
+      "id": "cli-crlf-string",
+      "entry": "cli",
+      "input": "(declare-const s String)\r\n(assert (= s \"a\r\nb\"))\r\n(assert (= (str.len s) 4))\r\n(check-sat)\r\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-crlf-string.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun s () String\n    \"a\\u{d}\\u{a}b\")\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "s"
+        ]
+      },
+      "note": "in a CRLF file, the string literal that spans a line keeps its carriage return, so its length is 4"
+    },
+    {
+      "id": "cli-dimacs-prefix",
+      "entry": "cli",
+      "input": "p cnf 1 2\n1 0\n-1 0\n(check-sat)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-dimacs-prefix.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 1 column 1: invalid command, '(' expected\")\nsat\n(\n)\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 1 column 1: invalid command, '(' expected\")",
+          "sat"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": []
+      },
+      "note": "the command line reads the file as SMT-LIB: p is not a command, so Z3 reports an error, skips to the (check-sat) and answers sat about no assertions; Solver.from_string reads a text that starts 'p c' as DIMACS and answered unsat to the same clauses (values.from_string_dimacs_reading); check_script refuses a form outside any command"
+    },
+    {
+      "id": "cli-named-assumption",
+      "entry": "cli",
+      "input": "(set-option :produce-unsat-cores true)\n(declare-const amount Int)\n(define-fun MAX_TRANSFER () Int 0)\n(assert (> amount 0))\n(check-sat-assuming ((! (<= amount MAX_TRANSFER) :named under-max)))\n(get-unsat-core)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-named-assumption.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n((<= amount 0))\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the command line assumes the named formula amount <= MAX_TRANSFER, which contradicts amount > 0 when MAX_TRANSFER = 0, and the unsat core it prints is that formula with MAX_TRANSFER replaced by 0; parse_smt2_string, which reads the api entry's assumptions, returns the named assumption as an implication from its name, which the name's being false satisfies, and the same question was sat read that way (values.parse_smt2_string_assumption_reading); check_script refuses an annotation in the question, so the lane runs neither entry on this one"
+    },
+    {
+      "id": "cli-quoted-annotation-assumption",
+      "entry": "cli",
+      "input": "(declare-const p Bool)\n(assert (not p))\n(check-sat-assuming ((|!| p :named q)))\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-quoted-annotation-assumption.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "Z3 reads the quoted symbol |!| as the keyword !, so the question assumes p, which contradicts the assertion (not p), and Z3 reports no error; check_script removes the bars of a quoted symbol before it looks for an annotation, so it refuses this question too"
+    },
+    {
+      "id": "cli-assumed-constant",
+      "entry": "cli",
+      "input": "(set-option :produce-unsat-cores true)\n(declare-const amount Int)\n(define-fun MAX_TRANSFER () Int 0)\n(assert (> amount 0))\n(declare-const under-max Bool)\n(assert (=> under-max (<= amount MAX_TRANSFER)))\n(check-sat-assuming (under-max))\n(get-unsat-core)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-assumed-constant.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n(under-max)\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "what check_script suggests instead of a named assumption: the Boolean constant under-max, assumed, which an assertion ties to amount <= MAX_TRANSFER; the premises contradict each other, so the question is unsat, and the unsat core names the constant"
+    },
+    {
+      "id": "cli-get-value-after-sat",
+      "entry": "cli",
+      "input": "(set-option :produce-assignments true)\n(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n(get-model)\n(get-value (a b amount))\n(eval (- a amount))\n(get-assignment)\n(exit)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-get-value-after-sat.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n((a 0)\n (b 0)\n (amount 1))\n(- 1)\n()\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      },
+      "note": "the model that (get-model) prints, the values that (get-value ...) prints, the term that (eval ...) prints and the empty list that (get-assignment) prints with nothing named come before the model that -model prints after the output of every other command, (exit) included; of these blocks only the two models are lists of define-fun items with an item, so the model read is the last block, the one -model prints"
+    },
+    {
+      "id": "cli-produce-models-off",
+      "entry": "cli",
+      "input": "(set-option :produce-models false)\n(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-produce-models-off.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": null
+      },
+      "note": "with models off, the command line prints no model after sat, so a check has no witness to replay; check_script refuses :produce-models and :model set to anything but true"
+    },
+    {
+      "id": "cli-model-off",
+      "entry": "cli",
+      "input": "(set-option :model false)\n(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-off.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": null
+      },
+      "note": "Z3's own :model parameter, set to false, also leaves the command line with no model after sat; check_script refuses it as it refuses :produce-models false"
+    },
+    {
+      "id": "cli-model-v1-text",
+      "entry": "cli",
+      "input": "(set-option :model.v1 true)\n(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-v1-text.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(:reason-unknown \"\")\n\"b -> 0\namount -> 1\na -> 0\"\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": null
+      },
+      "note": "under :model.v1 the command line prints the model as a quoted string of name -> value lines, not as define-fun items; check_script refuses :model.v1 and :model.v2 set to anything but false"
+    },
+    {
+      "id": "api-unsat",
+      "entry": "api",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (<= amount a))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-unsat.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      }
+    },
+    {
+      "id": "api-sat-model",
+      "entry": "api",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-sat-model.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      }
+    },
+    {
+      "id": "api-unknown-rlimit",
+      "entry": "api",
+      "input": "(declare-const x Int)\n(declare-const y Int)\n(declare-const z Int)\n(assert (> x 0))\n(assert (> y 0))\n(assert (> z 0))\n(assert (= (+ (* x x x) (* y y y)) (* z z z)))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-unknown-rlimit.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unknown\n(:reason-unknown \"canceled\")\n",
+      "expect": {
+        "verdictLines": [
+          "unknown",
+          "(:reason-unknown \"canceled\")"
+        ],
+        "verdict": "unknown",
+        "reason": "canceled",
+        "model": null
+      }
+    },
+    {
+      "id": "api-error",
+      "entry": "api",
+      "input": "(declare-const a Int)\n(assert (> q 0))\n(check-sat)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-error.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 2 column 11: unknown constant q\")\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 2 column 11: unknown constant q\")"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": null
+      }
+    },
+    {
+      "id": "api-check-sat-assuming",
+      "entry": "api",
+      "input": "(declare-const p Bool)\n(assert (not p))\n(check-sat-assuming (p))\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-check-sat-assuming.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the api entry checks under the question's assumptions, as the command line does"
+    },
+    {
+      "id": "api-named-premises",
+      "entry": "api",
+      "input": "(set-option :produce-unsat-cores true)\n(declare-const amount Int)\n(define-fun MAX_TRANSFER () Int 0)\n(assert (! (> amount 0) :named amount-pos))\n(assert (! (<= amount MAX_TRANSFER) :named under-max))\n(check-sat)\n(get-unsat-core)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-named-premises.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the api entry reads the script with Solver.from_string, which keeps named assertions as the command line does; read with parse_smt2_string, each came back as (=> name formula) with nothing assuming the name, and the same script answered sat"
+    },
+    {
+      "id": "api-nonlinear-in-qf-lia",
+      "entry": "api",
+      "input": "(set-logic QF_LIA)\n(declare-const x Int)\n(assert (> (* x x) 3))\n(check-sat)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-nonlinear-in-qf-lia.smt2"
+      ],
+      "exitCode": 1,
+      "output": "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")\n",
+      "expect": {
+        "verdictLines": [
+          "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")"
+        ],
+        "verdict": "error",
+        "reason": null,
+        "model": null
+      },
+      "note": "Solver.from_string reads (set-logic QF_LIA) as the command line does and reports the same error, so the verdict is error through both entries"
+    },
+    {
+      "id": "api-cr-in-comment",
+      "entry": "api",
+      "input": "(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n; guard\r(assert (<= amount a))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-cr-in-comment.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      },
+      "note": "the api runner reads the file's bytes with no line-ending translation, so the guard is part of the comment through both entries"
+    },
+    {
+      "id": "api-crlf-string",
+      "entry": "api",
+      "input": "(declare-const s String)\r\n(assert (= s \"a\r\nb\"))\r\n(assert (= (str.len s) 4))\r\n(check-sat)\r\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-crlf-string.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun s () String\n    \"a\\u{d}\\u{a}b\")\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "s"
+        ]
+      },
+      "note": "the api runner keeps the \\r\\n inside the string, as the command line does"
+    },
+    {
+      "id": "api-assumed-constant",
+      "entry": "api",
+      "input": "(set-option :produce-unsat-cores true)\n(declare-const amount Int)\n(define-fun MAX_TRANSFER () Int 0)\n(assert (> amount 0))\n(declare-const under-max Bool)\n(assert (=> under-max (<= amount MAX_TRANSFER)))\n(check-sat-assuming (under-max))\n(get-unsat-core)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-assumed-constant.smt2"
+      ],
+      "exitCode": 0,
+      "output": "unsat\n",
+      "expect": {
+        "verdictLines": [
+          "unsat"
+        ],
+        "verdict": "unsat",
+        "reason": null,
+        "model": null
+      },
+      "note": "the assumed constant reads the same through the api entry, which checks under it, as the command line does"
+    },
+    {
+      "id": "api-get-value-after-sat",
+      "entry": "api",
+      "input": "(set-option :produce-assignments true)\n(declare-const a Int)\n(declare-const b Int)\n(declare-const amount Int)\n(assert (>= a 0))\n(assert (>= b 0))\n(assert (> amount 0))\n(assert (< (- a amount) 0))\n(check-sat)\n(get-info :reason-unknown)\n(get-model)\n(get-value (a b amount))\n(eval (- a amount))\n(get-assignment)\n(exit)\n",
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-get-value-after-sat.smt2"
+      ],
+      "exitCode": 0,
+      "output": "sat\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n",
+      "expect": {
+        "verdictLines": [
+          "sat"
+        ],
+        "verdict": "sat",
+        "reason": null,
+        "model": [
+          "a",
+          "amount",
+          "b"
+        ]
+      },
+      "note": "the api entry asks only the script's question and prints the answer and the model, so the model it prints defines the constants the command line's does"
+    }
+  ],
+  "synthetic": [
+    {
+      "id": "two-answers",
+      "verdictLines": [
+        "sat",
+        "unsat"
+      ],
+      "verdict": "error",
+      "why": "a run carries one answer"
+    },
+    {
+      "id": "no-answer",
+      "verdictLines": [
+        "(:reason-unknown \"canceled\")"
+      ],
+      "verdict": "error",
+      "why": "a reason without an answer"
+    },
+    {
+      "id": "cli-note",
+      "verdictLines": [
+        "statespace: z3 gave no answer within 120 s of wall-clock time and was stopped"
+      ],
+      "verdict": "error",
+      "why": "a line of the CLI's own: no verdict was reached"
+    },
+    {
+      "id": "note-after-answer",
+      "verdictLines": [
+        "sat",
+        "statespace: z3 gave no answer within 120 s of wall-clock time and was stopped"
+      ],
+      "verdict": "error",
+      "why": "a note outranks an answer"
+    },
+    {
+      "id": "multi-line-error",
+      "verdictLines": [
+        "(error \"line 3 column 2: first part",
+        "second part\")",
+        "unsat"
+      ],
+      "verdict": "error",
+      "why": "an error continues until a line ends with \")"
+    },
+    {
+      "id": "reason-with-sat-ignored",
+      "verdictLines": [
+        "sat",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "verdict": "sat",
+      "reason": null,
+      "why": "a reason is read only with unknown"
+    },
+    {
+      "id": "quote-in-reason",
+      "verdictLines": [
+        "unknown",
+        "(:reason-unknown \"a \"\"quoted\"\" word\")"
+      ],
+      "verdict": "unknown",
+      "reason": "a \"quoted\" word",
+      "why": "SMT-LIB doubles a quote inside a string"
+    },
+    {
+      "id": "uppercase-answer",
+      "verdictLines": [
+        "SAT"
+      ],
+      "verdict": null,
+      "why": "not a Z3 verdict line: the receipt is rejected"
+    },
+    {
+      "id": "answer-with-space",
+      "verdictLines": [
+        "sat "
+      ],
+      "verdict": null,
+      "why": "lines are read verbatim"
+    },
+    {
+      "id": "model-line",
+      "verdictLines": [
+        "sat",
+        "(define-fun a () Int 1)"
+      ],
+      "verdict": null,
+      "why": "a model is not a verdict line"
+    },
+    {
+      "id": "empty",
+      "verdictLines": [],
+      "verdict": null,
+      "why": "receipt@1 requires at least one verdict line"
+    },
+    {
+      "id": "unterminated-error",
+      "verdictLines": [
+        "(error \"never closed"
+      ],
+      "verdict": null,
+      "why": "an error line must be terminated"
+    }
+  ]
+}

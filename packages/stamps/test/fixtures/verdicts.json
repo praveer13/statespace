@@ -1,0 +1,483 @@
+{
+  "schema": "statespace/stamp-fixtures@1",
+  "about": "GATE-stamps' fixture table (ARCHITECTURE.md section 8.5): raw outputs drawn from executed runs, each with the stamp spine section 8.8 derives from it. An executed fixture names its run and quotes its lines verbatim; the gate fails unless every quoted line is a whole line of that run's record (verdict_lines, a configuration's verdict_lines, or an output file on disk), and one configuration of that run prints them all (a fixture names it in config when configurations of several checkers print the same lines), and every number in its context stands as a whole token in those lines or that configuration's verdict lines, command line, budget, values or exit code (a solver's rlimit is the one its budget records). A fixture marked \"executed\": false stands for a row of section 8.8 that no run on disk exercises yet, or whose run prints output no parser in this package reads yet (PostgreSQL's, until S6 and S7); its note names the run, and the gate reports those rows. An executed fixture is always read by one of the package's parsers (solver, tlc, lean, trace), never typed as a raw output. Engine and version always come from the configuration that printed the lines (its own, or the record's), never from the fixture.",
+  "fixtures": [
+    {
+      "id": "z3-guard-unsat",
+      "row": "smt-unsat",
+      "executed": true,
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": ["[1.3 guard added] unsat (0.00s) "],
+      "context": { "direction": "violation" },
+      "note": "CL-1.1's violation query. The research harness set no rlimit, so the qualifier prints none; a receipt always carries one (receipt@1 z3.rlimit).",
+      "expect": { "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified", "defeaters": ["encoding unverified"] }
+    },
+    {
+      "id": "z3-guard-unsat-cvc5-other-input",
+      "row": "smt-unsat",
+      "executed": true,
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": ["[1.3 guard added] unsat (0.00s) "],
+      "context": { "direction": "violation", "crossCheck": { "run": "RUN-cvc5-alethe", "lines": ["cvc5 b'1.4.2-modified' -> unsat"], "sameInput": false } },
+      "note": "The cvc5 run is not on the same input file as the Z3 run (different harnesses, no shared input hash), so the deriver must not say \"agree\".",
+      "expect": { "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified", "defeaters": ["encoding unverified"] }
+    },
+    {
+      "id": "z3-overdraft-sat-replayed",
+      "row": "smt-sat",
+      "executed": true,
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": ["[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]"],
+      "context": { "direction": "violation", "replay": "replayed", "witness": { "length": 1, "unit": "steps" } },
+      "note": "SP-1.1. The query is one transfer, so the witness is one step; the model replays because a − amount = −1 violates a − amount ≥ 0.",
+      "expect": { "stamp": "REFUTED [R] · 1 step" }
+    },
+    {
+      "id": "z3-overdraft-sat-not-yet-replayed",
+      "row": "smt-sat",
+      "executed": true,
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": ["[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]"],
+      "context": { "direction": "violation" },
+      "note": "Before the witness replays there is no [R].",
+      "expect": { "none": "replay-pending" }
+    },
+    {
+      "id": "z3-sat-model-does-not-replay",
+      "row": "smt-sat-no-replay",
+      "executed": true,
+      "run": "RUN-z3-starter",
+      "parser": "solver",
+      "lines": ["[1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]"],
+      "context": { "direction": "violation", "replay": "failed", "witness": { "length": 1, "unit": "steps" } },
+      "note": "The line is executed; the failed replay is the row's hypothesis (no run on disk has a model that fails to replay).",
+      "expect": { "none": "no-replay", "defeater": "vc-generator" }
+    },
+    {
+      "id": "z3-unknown-theory-arithmetic",
+      "row": "smt-unknown",
+      "executed": true,
+      "run": "RUN-z3-unknown-pow",
+      "config": "RUN-z3-unknown-pow",
+      "parser": "solver",
+      "lines": ["[Int x**y == 8, y>1] unknown (0.00s) smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic)) "],
+      "context": {},
+      "note": "SP-1.7. Z3 5.3.1's line, the record's own; the native-4.15.4 configuration prints the same line, so the fixture names the configuration it quotes.",
+      "expect": { "stamp": "UNKNOWN [?] · incomplete (theory arithmetic)" }
+    },
+    {
+      "id": "z3-unknown-canceled-at-rlimit",
+      "row": "smt-unknown",
+      "executed": true,
+      "run": "RUN-z3-budget-pyodide",
+      "parser": "solver",
+      "lines": ["2806ms py: rlimit-case unknown canceled 1.1 s"],
+      "context": { "rlimit": 5000000, "guardsEnforcement": true },
+      "note": "SP-1.8; the rlimit is the run record's budget. On a deploy gate the [?] fails closed (S1.L2's exit item).",
+      "expect": { "stamp": "UNKNOWN [?] · canceled at rlimit 5e6", "enforcement": "fail-closed" }
+    },
+    {
+      "id": "tlc-atomic-complete",
+      "row": "tlc-complete",
+      "executed": true,
+      "run": "RUN-tlc-atomic",
+      "parser": "tlc",
+      "lines": ["Model checking completed. No error has been found.", "5 states generated, 4 distinct states found, 0 states left on queue."],
+      "context": { "constantsFrom": "research/spikes/tla/DoubleSpendAtomic.cfg" },
+      "note": "CL-5.1; the constants are parsed from the run's own configuration file.",
+      "expect": { "stamp": "MODEL-CHECKED [M] · Init = 100, Amount = 80, Workers = {w1, w2} · complete · 4 distinct states" }
+    },
+    {
+      "id": "tlc-doublespend-deadlock",
+      "row": "tlc-deadlock",
+      "executed": true,
+      "run": "RUN-tlc-doublespend",
+      "config": "1.8.0-default",
+      "parser": "tlc",
+      "lines": ["Error: Deadlock reached.", "11 states generated, 10 distinct states found, 3 states left on queue."],
+      "context": { "constantsFrom": "research/evidence/A5r3/tla/DoubleSpend.cfg", "deadlockFreedom": false },
+      "note": "SP-5.2 and GEN-which-stamp's worked example (ASSESSMENT.md section 4.13): the invariant NoOverspend, not deadlock freedom, was under check. TLC 1.8.0's default-flags configuration; 1.7.4 prints the same two lines, so the fixture names the configuration it quotes.",
+      "expect": { "stamp": "UNKNOWN [?] · stopped at deadlock, 10 distinct states" }
+    },
+    {
+      "id": "tlc-rtw3-violation",
+      "row": "tlc-violation",
+      "executed": true,
+      "run": "RUN-tlc-rtw3",
+      "parser": "tlc",
+      "lines": [
+        "Error: Invariant NoOverspend is violated.",
+        "State 1: <Initial predicate>",
+        "State 2: <Read(w1) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 3: <Check(w1) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 4: <Read(w2) line 10, col 13 to line 11, col 75 of module RTW3>",
+        "State 5: <Write(w1) line 15, col 13 to line 16, col 64 of module RTW3>",
+        "State 6: <Check(w2) line 12, col 13 to line 14, col 45 of module RTW3>",
+        "State 7: <Write(w2) line 15, col 13 to line 16, col 64 of module RTW3>"
+      ],
+      "context": { "constantsFrom": "research/evidence/a2r3/tla/rtw3/RTW3.cfg" },
+      "note": "The read/check/write split: a 7-state, 6-action trace (spine section 9.5).",
+      "expect": { "stamp": "REFUTED [R] · 6 actions (7 states)" }
+    },
+    {
+      "id": "lean-comparator-okay",
+      "row": "lean-accepted",
+      "executed": true,
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": ["== good comparator(no-sandbox) rc=0 :: Your solution is okay! "],
+      "context": {},
+      "expect": { "stamp": "PROVED [P] · Lean 4.35.0 kernel · axioms listed" }
+    },
+    {
+      "id": "lean-comparator-paranoid",
+      "row": "lean-accepted",
+      "executed": true,
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": [
+        "Lean paranoid kernel accepts the solution",
+        "lean4lean kernel accepts the solution",
+        "nanoda kernel accepts the solution",
+        "con-leche kernel accepts the solution",
+        "con-ron kernel accepts the solution",
+        "Lean default kernel accepts the solution"
+      ],
+      "context": { "paranoid": true },
+      "note": "--paranoid runs six checkers; the qualifier counts the ones that accepted.",
+      "expect": { "stamp": "PROVED [P] · Lean 4.35.0 kernel · axioms listed · 6 checkers" }
+    },
+    {
+      "id": "lean-sorry",
+      "row": "lean-sorry",
+      "executed": true,
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": ["warning: Ledger/Bad.lean:4:8: declaration uses `sorry`", "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]"],
+      "context": {},
+      "expect": { "modulo": "PROVED modulo 1 assumed lemma", "assumed": ["ASSUMED [A] · with_sorry is left as sorry"] }
+    },
+    {
+      "id": "lean-custom-axiom",
+      "row": "lean-custom-axiom",
+      "executed": true,
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": ["info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]"],
+      "context": {},
+      "expect": { "modulo": "PROVED modulo 1 assumed axiom", "assumed": ["ASSUMED [A] · axiom cheat is assumed"] }
+    },
+    {
+      "id": "lean-native-not-permitted",
+      "row": "lean-rejected",
+      "executed": true,
+      "run": "RUN-lean-axioms",
+      "parser": "lean",
+      "lines": ["error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'", "Lean default kernel accepts the solution"],
+      "context": {},
+      "note": "The check-bad configuration, both of its lines: lake check logs that the default kernel accepts while it errors that the native axiom is not permitted. The error line is a rejection, as spine section 3.2's Defence B and section 15's M8 read this run (statespace check rejects a native_decide mutant as not permitted), so the accept line beside it earns nothing: an acceptance needs no error line (section 9.6).",
+      "expect": { "none": "checker-rejected" }
+    },
+    {
+      "id": "lean-error-not-a-rejection",
+      "row": "lean-no-verdict",
+      "executed": true,
+      "run": "RUN-lean-bv-decide",
+      "parser": "lean",
+      "lines": ["BitsBad.lean:2:67: error: The prover found a counterexample, consider the following assignment:", "a = 0#64", "amt = 9223372036854775808#64"],
+      "context": { "exitCode": 1 },
+      "note": "The bits-bad configuration, all three lines, exit 1: bv_decide refutes the claim, so the file does not build. The error line is not on the closed list of rejections, so the Lean check reached no verdict (spine section 9.6); the counterexample would need its own replay before any [R].",
+      "expect": { "none": "no-verdict" }
+    },
+    {
+      "id": "lean-statement-mismatch",
+      "row": "lean-mismatch",
+      "executed": true,
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": ["== weak comparator(no-sandbox) rc=1 :: error: Challenge and solution theorem statement do not match: 'transfer_conserves' "],
+      "context": {},
+      "note": "SP-2.7.",
+      "expect": { "stamp": "UNKNOWN [?] · statement mismatch" }
+    },
+    {
+      "id": "lean-constant-mismatch",
+      "row": "lean-mismatch",
+      "executed": true,
+      "run": "RUN-lean-comparator",
+      "parser": "lean",
+      "lines": ["== redef comparator(no-sandbox) rc=1 :: error: Const does not match between challenge and target 'transfer' "],
+      "context": {},
+      "expect": { "stamp": "UNKNOWN [?] · statement mismatch (a constant differs)" }
+    },
+    {
+      "id": "lean-sandbox-failed",
+      "row": "lean-tool-error",
+      "executed": true,
+      "run": "RUN-lean-bwrap-docker",
+      "parser": "lean",
+      "lines": ["== good sandboxed(bwrap, default docker) rc=1 :: bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>. error: Child exited with 1 Resolving dependencies "],
+      "context": {},
+      "note": "Exit 1 is the code of a rejection too; the bwrap: line, not the exit code, says the sandbox failed.",
+      "expect": { "none": "tool-error" }
+    },
+    {
+      "id": "lean-checker-rejects",
+      "row": "lean-rejected",
+      "executed": true,
+      "run": "RUN-lean-skipkernel",
+      "parser": "lean",
+      "lines": ["'oops' does not depend on any axioms", "leanchecker found a problem in Probe.Bypass"],
+      "context": {},
+      "note": "A debug.skipKernelTC proof of False builds with exit 0; only leanchecker rejects it.",
+      "expect": { "none": "checker-rejected" }
+    },
+    {
+      "id": "trace-validation-safety",
+      "row": "trace-validation",
+      "executed": true,
+      "run": "RUN-tlc-tracemodule",
+      "parser": "trace",
+      "lines": [
+        "<<\"trace-validation\", [diameter |-> 15, verdict |-> \"accepted\", lines |-> 11, matched |-> 11, first_unmatched |-> 0, end_record |-> TRUE, paper_accepted |-> FALSE]>>",
+        "<<\"trace-validation\", [diameter |-> 11, verdict |-> \"rejected\", lines |-> 11, matched |-> 7, first_unmatched |-> 8, end_record |-> TRUE, paper_accepted |-> FALSE]>>",
+        "<<\"trace-validation\", [diameter |-> 12, verdict |-> \"partial\", lines |-> 8, matched |-> 8, first_unmatched |-> 0, end_record |-> FALSE, paper_accepted |-> FALSE]>>"
+      ],
+      "context": { "traces": ["accepted", "rejected", "partial"], "property": "safety" },
+      "note": "Only the accepted trace counts; the rejected one is a witness, the partial one counts for nothing.",
+      "expect": { "stamp": "TESTED [T] · 1 seed · TLC 1.8.0 trace validation", "witnesses": [{ "trace": "rejected", "firstNonConformingLine": 8 }] }
+    },
+    {
+      "id": "trace-validation-liveness",
+      "row": "trace-validation",
+      "executed": true,
+      "run": "RUN-tlc-tracemodule",
+      "parser": "trace",
+      "lines": ["<<\"trace-validation\", [diameter |-> 15, verdict |-> \"accepted\", lines |-> 11, matched |-> 11, first_unmatched |-> 0, end_record |-> TRUE, paper_accepted |-> FALSE]>>"],
+      "context": { "traces": ["accepted"], "property": "liveness" },
+      "note": "Finite traces cannot test eventuality: a liveness claim keeps its correspondence [A].",
+      "expect": { "none": "liveness-untestable" }
+    },
+    {
+      "id": "pg-rls-read-back",
+      "row": "setting-read-back",
+      "executed": false,
+      "raw": { "kind": "setting-read-back", "setting": "relrowsecurity and relforcerowsecurity", "source": "pg_class", "at": "2026-10-24T13:28:21.423Z" },
+      "note": "CL-7.4's [C], typed from RUN-pglite-rls's read-back line and its recorded_at. No parser in this package reads PostgreSQL's output yet (S6 and S7 bring PostgreSQL receipts, in W4), so this row stands as synthetic until one derives it from the run's lines.",
+      "expect": { "stamp": "CONFIGURED [C] · relrowsecurity and relforcerowsecurity read back from pg_class · at 2026-10-24T13:28:21.423Z" }
+    },
+    {
+      "id": "pg-bigint-range-enforced",
+      "row": "runtime-check",
+      "executed": false,
+      "raw": { "kind": "runtime-check", "where": "the bigint range check on each UPDATE, SQLSTATE 22003" },
+      "note": "PostgreSQL refuses the step instead of wrapping, a runtime check in place, typed from RUN-pg-claims's E6 line. No parser in this package reads PostgreSQL's output yet (S6 and S7 bring PostgreSQL receipts, in W4), so this row stands as synthetic until one derives it from the run's lines.",
+      "expect": { "stamp": "ENFORCED [E] · the bigint range check on each UPDATE, SQLSTATE 22003" }
+    },
+
+    {
+      "id": "agree-cvc5-same-input",
+      "row": "smt-unsat",
+      "executed": false,
+      "note": "CL-4.2's shape; RUN-check-fragment, which the spine lists to record (W3-T07), will exercise it.",
+      "raw": { "kind": "smt-unsat", "solver": { "name": "Z3", "version": "5.3.1" }, "crossCheck": { "solver": { "name": "cvc5", "version": "1.4.2" }, "verdict": "unsat", "sameInput": true }, "premise": "sat" },
+      "expect": { "stamp": "PROVED [P] · Z3 5.3.1 and cvc5 1.4.2 agree · uncertified", "defeaters": ["encoding unverified"] }
+    },
+    {
+      "id": "solvers-disagree",
+      "row": "shadow-mismatch",
+      "executed": false,
+      "note": "Two solvers that disagree on one input: neither side is stamped.",
+      "raw": { "kind": "smt-unsat", "solver": { "name": "Z3", "version": "5.3.1" }, "crossCheck": { "solver": { "name": "cvc5", "version": "1.4.2" }, "verdict": "sat", "sameInput": true } },
+      "expect": { "none": "shadow-mismatch", "defeater": "both-sides" }
+    },
+    {
+      "id": "vacuous-unsat",
+      "row": "smt-unsat",
+      "executed": false,
+      "note": "SP-1.6's shape; RUN-z3-vacuous-unsat (W1-T12) will exercise it.",
+      "raw": { "kind": "smt-unsat", "solver": { "name": "Z3", "version": "5.3.1" }, "rlimit": 1000000, "premise": "unsat" },
+      "expect": { "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified · rlimit 1e6", "defeaters": ["encoding unverified", "the premises are unsatisfiable, so the claim holds vacuously"] }
+    },
+    {
+      "id": "premise-witness-sat",
+      "row": "smt-premise",
+      "executed": false,
+      "note": "A premise witness is good news and earns no stamp of its own (DESIGN.md section 5.4).",
+      "raw": { "kind": "smt-premise", "solver": { "name": "Z3", "version": "5.3.1" }, "verdict": "sat" },
+      "expect": { "none": "premise-witness" }
+    },
+    {
+      "id": "direction-unknown",
+      "row": "smt-premise",
+      "executed": false,
+      "note": "A sat whose query direction is not stated is read neither way.",
+      "raw": { "kind": "smt-direction-unknown", "solver": { "name": "Z3", "version": "5.3.1" }, "verdict": "sat" },
+      "expect": { "none": "direction-unknown" }
+    },
+    {
+      "id": "spectacle-bound",
+      "row": "model-check-bounded",
+      "executed": false,
+      "note": "No run on disk stops at a bound yet (ASSESSMENT.md section 8.1: none recorded).",
+      "raw": { "kind": "model-check-bounded", "engine": { "name": "Spectacle", "version": "5827c22" }, "bound": "depth 6", "constants": [["Workers", "{w1, w2}"]], "distinctStates": 30 },
+      "expect": { "stamp": "MODEL-CHECKED [M] · depth 6 · Workers = {w1, w2} · partial · 30 distinct states" }
+    },
+    {
+      "id": "tlc-simulate",
+      "row": "tlc-simulate",
+      "executed": false,
+      "note": "No -simulate run on disk yet.",
+      "raw": { "kind": "tlc-simulate", "engine": { "name": "TLC", "version": "1.8.0" }, "n": 100, "unit": "traces", "constants": [["Workers", "{w1, w2}"]] },
+      "expect": { "stamp": "TESTED [T] · 100 traces · Workers = {w1, w2} · TLC 1.8.0" }
+    },
+    {
+      "id": "tlc-deadlock-freedom",
+      "row": "tlc-deadlock",
+      "executed": false,
+      "note": "When deadlock freedom is the property, the deadlock is the violation.",
+      "raw": { "kind": "tlc-deadlock", "engine": { "name": "TLC", "version": "1.8.0" }, "distinctStates": 10, "deadlockFreedom": true, "witness": { "length": 3, "unit": "actions", "states": 4 } },
+      "expect": { "stamp": "REFUTED [R] · 3 actions (4 states)" }
+    },
+    {
+      "id": "tlc-inductive-at-n",
+      "row": "inductive-bounded",
+      "executed": false,
+      "note": "CL-5.4's supporting check; RUN-tlc-inductive (W3-T07) will exercise it.",
+      "raw": { "kind": "inductive-bounded", "engine": { "name": "TLC", "version": "1.8.0" }, "constants": [["N", "3"]], "at": "N = 3" },
+      "expect": { "stamp": "MODEL-CHECKED [M] · N = 3 · inductive at N = 3 · TLC 1.8.0" }
+    },
+    {
+      "id": "z3-inductive-param",
+      "row": "smt-inductive-param",
+      "executed": false,
+      "note": "CL-5.4; RUN-z3-inductive-param (W3-T07) will exercise it.",
+      "raw": { "kind": "smt-inductive-param", "solver": { "name": "Z3", "version": "5.3.1" }, "parameter": "N", "premise": "sat" },
+      "expect": { "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified · for every N", "defeaters": ["encoding unverified (the SMT translation of the spec)"] }
+    },
+    {
+      "id": "lean-native-permitted",
+      "row": "lean-native",
+      "executed": false,
+      "note": "No run on disk exercises this row, and spine section 9.5 registers none for it yet. The run to record: a lake comparator acceptance (exit 0, \"Your solution is okay!\", no error line) of a solution whose comparator.json permits the _native axiom that #print axioms lists. Under the default permitted axioms the same axiom is rejected as not permitted (fixture lean-native-not-permitted, RUN-lean-axioms).",
+      "raw": { "kind": "lean-native", "lean": { "name": "Lean", "version": "4.35.0" }, "nativeAxioms": ["big_native._native.native_decide.ax_1_1"] },
+      "expect": { "stamp": "PROVED [P] · Lean 4.35.0 kernel + compiler · axioms listed" }
+    },
+    {
+      "id": "differential",
+      "row": "differential",
+      "executed": false,
+      "note": "CL-6.1; RUN-drt-transfers (W4-T10) will exercise it.",
+      "raw": { "kind": "differential", "n": 200, "statistics": "outcome classes committed and refused", "engines": [{ "name": "PGlite", "version": "0.5.11" }, { "name": "PostgreSQL", "version": "18.6" }] },
+      "expect": { "stamp": "TESTED [T] · n = 200 · outcome classes committed and refused · PGlite 0.5.11 and PostgreSQL 18.6" }
+    },
+    {
+      "id": "gold-mismatch",
+      "row": "shadow-mismatch",
+      "executed": false,
+      "note": "No mismatch on disk.",
+      "raw": { "kind": "shadow-mismatch", "sides": ["the implementation", "the kernel-checked goldens"], "detail": "1 of 40 goldens differ" },
+      "expect": { "none": "shadow-mismatch", "defeater": "both-sides" }
+    },
+    {
+      "id": "one-database",
+      "row": "one-database",
+      "executed": false,
+      "note": "SP-9.4; RUN-pg-one-db (W5-T03) will exercise it.",
+      "raw": { "kind": "one-database", "engine": { "name": "PostgreSQL", "version": "18.6" } },
+      "expect": { "stamp": "TESTED [T] · 1 instance · PostgreSQL 18.6" }
+    },
+    {
+      "id": "model-says-equivalent",
+      "row": "model-assertion",
+      "executed": false,
+      "note": "A rule about text, which no run can exercise.",
+      "raw": { "kind": "model-assertion", "text": "These two queries are equivalent.", "by": "a language model" },
+      "expect": { "none": "model-assertion", "quote": "These two queries are equivalent." }
+    },
+    {
+      "id": "clearinghouse-quiet",
+      "row": "clearinghouse-quiet",
+      "executed": false,
+      "note": "The Clearinghouse arrives in S3 (W3-T14).",
+      "raw": { "kind": "clearinghouse-quiet", "rule": "NoDoubleCharge", "calls": 40 },
+      "expect": { "stamp": "TESTED [T] · 40 world calls · NoDoubleCharge stayed quiet" }
+    },
+    {
+      "id": "clearinghouse-fires",
+      "row": "clearinghouse-fires",
+      "executed": false,
+      "note": "The Clearinghouse arrives in S3 (W3-T14).",
+      "raw": { "kind": "clearinghouse-fires", "rule": "NoDoubleCharge", "witness": { "length": 3, "unit": "actions", "states": 4 }, "replay": "replayed" },
+      "expect": { "stamp": "REFUTED [R] · 3 actions (4 states)" }
+    },
+    {
+      "id": "course-claim-under-audit",
+      "row": "course-claim-under-audit",
+      "executed": false,
+      "note": "A rule about text.",
+      "raw": { "kind": "course-claim-under-audit", "text": "The reference compiler preserves the semantics." },
+      "expect": { "none": "course-claim-under-audit", "quote": "The reference compiler preserves the semantics." }
+    },
+    {
+      "id": "statement-hash-changed",
+      "row": "statement-hash-changed",
+      "executed": false,
+      "note": "I7: the void rule, exercised on receipts by the package's tests.",
+      "raw": { "kind": "statement-hash-changed", "path": "claims/cl-1-1.smt2" },
+      "expect": { "stamp": "UNKNOWN [?] · statement hash changed" }
+    },
+    {
+      "id": "agent-says-proved",
+      "row": "agent-assertion",
+      "executed": false,
+      "note": "I8: an agent's assertion has no path to a stamp.",
+      "raw": { "kind": "agent-assertion", "text": "Proved: transfer never overdraws. 200 tests green." },
+      "expect": { "none": "agent-assertion", "quote": "Proved: transfer never overdraws. 200 tests green." }
+    },
+    {
+      "id": "defence-part",
+      "row": "grader",
+      "executed": false,
+      "note": "The course stamps its own graders (I10); the spine's worked interval [D].",
+      "raw": { "kind": "grader", "n": 12, "passed": 10, "unit": "unseen items", "interval": [0.55, 0.95] },
+      "expect": { "stamp": "TESTED [T] · 10 of 12 unseen items · Wilson 0.55–0.95" }
+    },
+    {
+      "id": "self-grade",
+      "row": "self-grade",
+      "executed": false,
+      "note": "A self-grade is [A], in the self-assessed lane.",
+      "raw": { "kind": "self-grade" },
+      "expect": { "stamp": "ASSUMED [A] · self-assessed", "lane": "self-assessed" }
+    },
+    {
+      "id": "seam-1",
+      "row": "assumption",
+      "executed": false,
+      "note": "SEAM-1's text (spine section 5.3).",
+      "raw": { "kind": "assumption", "why": "balances are unbounded integers" },
+      "expect": { "stamp": "ASSUMED [A] · balances are unbounded integers" }
+    },
+    {
+      "id": "recipient-not-covered",
+      "row": "not-covered",
+      "executed": false,
+      "note": "CL-1.5's requirement row (DESIGN.md section 5.2).",
+      "raw": { "kind": "not-covered", "what": "the recipient's balance" },
+      "expect": { "stamp": "NOT COVERED [N] · the recipient's balance" }
+    },
+    {
+      "id": "requirement-scenarios",
+      "row": "requirement-scenarios",
+      "executed": false,
+      "note": "Requirement fit over authored scenarios (DESIGN.md section 5.6).",
+      "raw": { "kind": "requirement-scenarios", "n": 5 },
+      "expect": { "stamp": "TESTED [T] · 5 requirement scenarios" }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.5",
+  "title": "A guard mixing unsigned and signed comparisons readmits the overdraft",
+  "draft": true,
+  "kcs": [
+    "KC-1.encoding-is-the-claim"
+  ],
+  "found_in": {
+    "lesson": "S1.L5"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L5"
+    ]
+  },
+  "violates": "The sender's balance stays at zero or above, read as a signed number: `A − X ≥ 0`.",
+  "because": "The guard compares the bits as unsigned numbers and the property compares the same bits as signed ones, and the sender's balance has its top bit set.",
+  "class": "a guard and a property that read the same bits with different signs",
+  "cured_by": {
+    "text": "Pick one reading of the bits and use it in every comparison."
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-bv64",
+      "query": "1.5 BitVec64 unsigned guard, signed check",
+      "direction": "violation",
+      "replay": {
+        "run": "RUN-specimens-replay",
+        "query": "sp_1_5_mixed_signedness"
+      }
+    },
+    "minimal": {
+      "kind": "none"
+    }
+  }
+}

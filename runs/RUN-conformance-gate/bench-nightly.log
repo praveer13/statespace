@@ -1,0 +1,27 @@
+GATE-conformance
+  held     z3-same-query      Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)
+           11 of 11 queries equal (3.2 s)
+           native z3 5.3.1 (CPython 3.13.12, linux; python3 on PATH)
+           pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)
+           query                             specimen native   pyodide  witness
+           starter-overdraft                 SP-1.1   sat      sat      valid on both; the values are equal here (never required)
+           starter-guarded                   SP-1.1   unsat    unsat    -
+           optimize-min                      SP-1.1   sat      sat      valid on both; the values are equal here (never required)
+           int-conservation-noguard          SP-2.2   unsat    unsat    -
+           bv64-sender-guarded               SP-1.4   unsat    unsat    -
+           bv64-recipient-wrap               SP-1.4   sat      sat      valid on both; the values are equal here (never required)
+           bv64-conservation                 SP-1.4   unsat    unsat    -
+           bv64-unsigned-guard-signed-check  SP-1.5   sat      sat      valid on both; the values are equal here (never required)
+           vacuous-premises                  SP-1.6   unsat    unsat    -
+           unknown-pow                       SP-1.7   unknown  unknown  reason: smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))
+           rlimit-cubes                      SP-1.8   unknown  unknown  reason: canceled
+  absent   z3-pyodide-native  Pyodide Z3 = native Z3, on every authored cell and generator template
+  absent   pocket-z3          Pocket checkers = Z3
+  absent   spectacle-tlc      Spectacle = TLC
+  absent   lasso-tlc          Lasso validator = TLC
+  absent   pglite-pg          PGlite = PostgreSQL 18.6
+  absent   datalog-souffle    Tab Datalog = Soufflé
+  absent   provider-tlc       The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC
+  claims   GATE-conformance backs SEAM-13 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red
+  absent   not built yet (7): z3-pyodide-native (W1-T37), pocket-z3 (W1-T19), spectacle-tlc (W3-T08), lasso-tlc (W3-T09), pglite-pg (W4-T04), datalog-souffle (W4-T07), provider-tlc (W5-T35)
+GATE-conformance: PASS (1 pair held, 11 comparisons, 0 differ; 7 not built yet; 4.7 s)

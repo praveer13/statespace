@@ -1,38 +1,145 @@
-/* Scaffold styles only: system fonts, two themes by the system setting, no external requests. The drafting-table
-   design system (DESIGN.md) arrives with W1-T01. */
-:root {
-  color-scheme: light dark;
-  --ink: #1b1b1b;
-  --paper: #fafaf7;
-  --rule: #b8b8b0;
-  --link: #14507a;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ink: #e8e8e4;
-    --paper: #1b1b1c;
-    --rule: #555;
-    --link: #9cc7e8;
-  }
-}
+/* The interim shell's styles. Every value comes from styles/tokens.css (DESIGN.md section 2), which main.tsx loads
+   first; the night theme follows from the tokens. */
+
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--ground);
   color: var(--ink);
-  font: 17px/1.6 system-ui, sans-serif;
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+  font-variant-numeric: lining-nums;
 }
+
 a {
   color: var(--link);
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.skip {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--sheet);
+  border: 1px solid var(--ink);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  z-index: 10;
+}
+
+.skip:focus {
+  top: var(--space-2);
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
 .shell-head {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--gutter);
+  border-bottom: 2px solid var(--ink);
+  background: var(--sheet);
 }
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
 .mark {
-  font-weight: 600;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink);
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: 1;
 }
+
+.word {
+  font-family: var(--font-structure);
+  font-weight: 700;
+  font-stretch: 118%;
+  font-size: var(--fs-section);
+  line-height: 1;
+}
+
+.shell-nav {
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: var(--lh-interface);
+}
+
+.shell-nav a {
+  color: var(--ink);
+  text-decoration: none;
+  padding-block: var(--space-2);
+}
+
+.shell-nav a[aria-current='page'] {
+  font-weight: 700;
+}
+
+.shell-nav a[aria-current='page']::before {
+  content: '▸ ';
+  color: var(--here);
+}
+
 .shell-main {
-  max-width: 680px;
-  padding: 16px;
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-5) var(--gutter) var(--space-7);
+  box-sizing: border-box;
+  outline: none;
+}
+
+.shell-foot {
+  border-top: 1px solid var(--rule);
+  padding: var(--space-4) var(--gutter);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+}
+
+.shell-foot p {
+  margin: 0 auto;
+  max-width: var(--content-max);
+}
+
+@media (min-width: 600px) {
+  .shell-head,
+  .shell-main,
+  .shell-foot {
+    padding-inline: 24px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .shell-head,
+  .shell-main,
+  .shell-foot {
+    padding-inline: 32px;
+  }
 }

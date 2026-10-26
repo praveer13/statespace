@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:specimen@1",
+  "title": "statespace specimen, version 1",
+  "description": "A specimen: a counterexample kept beside its fix, with a label that is generated from the run that found it (spine section 5.1; DESIGN.md section 6.5). A course specimen is a record in content/specimens/ (SP-1.1 to SP-1.10 in W1); a learner's own specimen is a record in specimens/ of the lab repository (ARCHITECTURE.md section 8.2), whose ID is minted when it is mounted. The record holds what a run cannot say: the title, the property it violates, the cause, the class, the fix, the KC tags, and where in the course it is found. It holds pointers to what a run can say: the runs and the queries in them. It holds no witness, no stamp, no engine version, no date and no status, so no label can be typed: the witness, the stamp, the tool version, the date and whether the witness is minimal are read from the cited runs, and the status (mounted, then kept after a re-find on a fresh variant at least 7 days later) is derived from the learner's events at read time (I2). A field that is not listed here is an error, which is how a stamp, a tool version or a stored status typed into a record is refused. This schema checks the shape; the label builder and the cabinet's checks also confirm that every pointer names a verdict line that the run holds, that each witness replays, and that a minimal claim rests on an Optimize query or an unsat core.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "title", "kcs", "found_in", "violates", "because", "class", "cured_by", "evidence"],
+  "properties": {
+    "schema": { "const": "statespace/specimen@1" },
+    "id": {
+      "description": "SP-n.k for a course specimen, which the ID registry (generated from the spine) holds; a learner's specimen has an ID minted when it is mounted, never typed, and not of the form SP-n.k. At most 64 characters.",
+      "$ref": "urn:statespace:defs@1#/$defs/localId"
+    },
+    "title": {
+      "description": "What the specimen is called on its label: a short name, one line. For a course specimen it is words of the spine's table (section 5.1).",
+      "$ref": "#/$defs/title"
+    },
+    "draft": {
+      "description": "True while the record is unreviewed: the cabinet then says \"Draft: first-learner pass pending.\" Absent means false.",
+      "type": "boolean"
+    },
+    "kcs": {
+      "description": "The knowledge components the specimen teaches, the primary one first. Every specimen carries KC tags (spine section 4; GATE-kc).",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/kcId" }
+    },
+    "found_in": {
+      "description": "Where in the course the specimen is found: the lesson of the spine's table (section 5.1), or, for a learner's own specimen, the lab stage whose check found it.",
+      "$ref": "#/$defs/foundIn"
+    },
+    "mount": {
+      "description": "How a course specimen comes to be mounted for a learner: at the learner's first call on a cell of one of these lessons (a call event whose ref is call:S{n}.L{k}/{cell}). Absent for a learner's own specimen.",
+      "$ref": "#/$defs/mount"
+    },
+    "violates": {
+      "description": "The property the witness violates, as one line (the label's Violates row). For a specimen about a verdict, what the verdict does not establish.",
+      "$ref": "#/$defs/text"
+    },
+    "because": {
+      "description": "The cause, as one line (the label's Because row).",
+      "$ref": "#/$defs/text"
+    },
+    "class": {
+      "description": "The class of witness it belongs to, in words (the label's Class row; M-class-hint), as the generators that serve a re-find name it.",
+      "$ref": "#/$defs/text"
+    },
+    "cured_by": {
+      "description": "The fix (the label's Cured by row), linked to the claim it mints.",
+      "$ref": "#/$defs/curedBy"
+    },
+    "evidence": {
+      "description": "The runs the label is generated from.",
+      "$ref": "#/$defs/evidence"
+    },
+    "incident": {
+      "description": "Present when the specimen is a dated incident, kept as a toy model (SP-1.9, SP-1.10, SP-4.5, SP-5.7, SP-6.11 and SP-8.5; spine section 12 item 16): the date, the source, and that the model is a toy. Never exploit code.",
+      "$ref": "#/$defs/incident"
+    }
+  },
+  "$defs": {
+    "title": {
+      "x-typeName": "SpecimenTitle",
+      "description": "A title: 1 to 120 characters and no line break.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\n\\r]+(?![\\s\\S])"
+    },
+    "text": {
+      "x-typeName": "SpecimenText",
+      "description": "One line of learner copy: 1 to 300 characters and no line break. {{run:RUN-id}} stands for a run chip; a value reference ({{run:RUN-id#values.name}}) is not used here, because the label reads values from the cited lines.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "^[^\\n\\r]+(?![\\s\\S])"
+    },
+    "kcId": {
+      "x-typeName": "SpecimenKcId",
+      "description": "A knowledge component, such as KC-1.violation-as-sat.",
+      "type": "string",
+      "pattern": "^KC-[1-9][0-9]*\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "runId": {
+      "x-typeName": "SpecimenRunId",
+      "description": "A run, such as RUN-z3-starter.",
+      "type": "string",
+      "pattern": "^RUN-[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "lessonId": {
+      "x-typeName": "SpecimenLessonId",
+      "description": "A lesson, such as S1.L1.",
+      "type": "string",
+      "pattern": "^S[1-9][0-9]*\\.L[0-9]+(?![\\s\\S])"
+    },
+    "query": {
+      "x-typeName": "SpecimenQuery",
+      "description": "The name of a query in a run: the label of its verdict line, `[variant_violation] sat ...` or `rlimit-case unknown ...`, without the brackets. The run's lines hold exactly one verdict line of that name.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\n\\r]+(?![\\s\\S])"
+    },
+    "queryRef": {
+      "x-typeName": "SpecimenQueryRef",
+      "description": "A query of a run.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run", "query"],
+      "properties": {
+        "run": { "$ref": "#/$defs/runId" },
+        "query": { "$ref": "#/$defs/query" }
+      }
+    },
+    "foundIn": {
+      "x-typeName": "SpecimenFoundIn",
+      "description": "Where the specimen is found: a lesson, a lab stage, or both.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "lesson": { "$ref": "#/$defs/lessonId" },
+        "lab_stage": { "$ref": "urn:statespace:defs@1#/$defs/labStageId" }
+      }
+    },
+    "mount": {
+      "x-typeName": "SpecimenMount",
+      "description": "The lessons whose first call mounts the specimen: the earliest call event on a cell of any of them, by an unassisted or assisted learner and never an agent, is the instant it was mounted.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lessons"],
+      "properties": {
+        "lessons": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/lessonId" }
+        }
+      }
+    },
+    "curedBy": {
+      "x-typeName": "SpecimenCuredBy",
+      "description": "The fix, in words, with the claim it mints and, for a lab specimen, the file in fixed/ that holds it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "$ref": "#/$defs/text" },
+        "claim": {
+          "description": "The claim template whose card the fix mints, such as CL-1.1.",
+          "$ref": "urn:statespace:defs@1#/$defs/claimTemplateId"
+        },
+        "fixed": {
+          "description": "The fixed version, kept beside the broken one: a path in the lab repository.",
+          "$ref": "urn:statespace:defs@1#/$defs/repoPath"
+        }
+      }
+    },
+    "evidence": {
+      "x-typeName": "SpecimenEvidence",
+      "description": "The runs behind the label: the main query, whose verdict line gives the witness (or the raw answer) and the stamp; further queries shown beside it; and how the witness was minimized, if it was.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["main", "minimal"],
+      "properties": {
+        "main": { "$ref": "#/$defs/main" },
+        "also": {
+          "description": "Further queries the label shows beneath the main one, each with its caption: a second witness, the violation query beside a premise query.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/also" }
+        },
+        "minimal": { "$ref": "#/$defs/minimal" }
+      }
+    },
+    "main": {
+      "x-typeName": "SpecimenMain",
+      "description": "The query the stamp is read from. A solver's sat or unsat means opposite things for a violation query and a premise query (DESIGN.md section 5.4), and a run's lines do not say which it is, so the record does.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run", "query", "direction"],
+      "properties": {
+        "run": { "$ref": "#/$defs/runId" },
+        "query": { "$ref": "#/$defs/query" },
+        "direction": {
+          "description": "What the query asserts: a violation of the property (a sat is then a counterexample), or the premises alone (an unsat is then a sign that they contradict each other).",
+          "enum": ["violation", "premise"]
+        },
+        "steps": {
+          "description": "The witness's length in steps, when it is not one transfer: a witness of two captures is 2. Absent means 1.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "premise": {
+          "description": "The premise query that sits beside a violation query's unsat: the label reads its verdict, and an unsat there means the claim holds vacuously.",
+          "$ref": "#/$defs/queryRef"
+        },
+        "replay": {
+          "description": "Where the witness was replayed when the main query's own lines do not say it (a replay line beginning \"replay ok\"): a query of another run whose line replays this very witness.",
+          "$ref": "#/$defs/queryRef"
+        }
+      }
+    },
+    "also": {
+      "x-typeName": "SpecimenAlso",
+      "description": "A further query the label shows, with a caption in one line. A sat that the label shows must replay, as the main one must: replay names the query of another run whose line replays it, when the query's own lines do not.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run", "query", "caption"],
+      "properties": {
+        "run": { "$ref": "#/$defs/runId" },
+        "query": { "$ref": "#/$defs/query" },
+        "caption": { "$ref": "#/$defs/text" },
+        "replay": { "$ref": "#/$defs/queryRef" }
+      }
+    },
+    "minimal": {
+      "x-typeName": "SpecimenMinimal",
+      "description": "Whether the witness is minimal, per engine (DESIGN.md section 6.5): for Z3, only under an explicit Optimize objective (optimize) or as an unsat core whose members are each needed (core); none says it was not minimized; not-applicable says the question does not arise, as for a verdict.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["optimize", "core", "none", "not-applicable"] },
+        "run": { "$ref": "#/$defs/runId" },
+        "query": { "$ref": "#/$defs/query" },
+        "objective": {
+          "description": "For optimize: the variable or quantity the Optimize query minimizes, whose value the label prints.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*(?![\\s\\S])"
+        },
+        "confirm": {
+          "description": "For optimize: a plain query of the same run that asks for anything below the minimum and answers unsat, the check that the minimum is one.",
+          "$ref": "#/$defs/query"
+        },
+        "why": {
+          "description": "For not-applicable: why the question does not arise.",
+          "$ref": "#/$defs/text"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["kind"], "properties": { "kind": { "const": "optimize" } } },
+          "then": { "required": ["run", "query", "objective"] }
+        },
+        {
+          "if": { "required": ["kind"], "properties": { "kind": { "const": "core" } } },
+          "then": { "required": ["run", "query"] }
+        },
+        {
+          "if": { "required": ["kind"], "properties": { "kind": { "const": "not-applicable" } } },
+          "then": { "required": ["why"] }
+        },
+        {
+          "if": { "required": ["kind"], "properties": { "kind": { "enum": ["none", "not-applicable"] } } },
+          "then": { "not": { "anyOf": [{ "required": ["run"] }, { "required": ["query"] }, { "required": ["objective"] }, { "required": ["confirm"] }] } }
+        }
+      ]
+    },
+    "incident": {
+      "x-typeName": "SpecimenIncident",
+      "description": "A dated incident kept as a toy model: the day it was found or published, its source, and that the model is a toy of it. The source is a public page, named and linked.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "source", "toy_model"],
+      "properties": {
+        "date": { "$ref": "urn:statespace:defs@1#/$defs/localDate" },
+        "source": { "$ref": "#/$defs/incidentSource" },
+        "toy_model": {
+          "description": "True: the run is a model of the incident's mechanism, not the incident's code.",
+          "type": "boolean"
+        }
+      }
+    },
+    "incidentSource": {
+      "x-typeName": "SpecimenIncidentSource",
+      "description": "A public source: its title and its https address.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "url"],
+      "properties": {
+        "title": { "$ref": "#/$defs/title" },
+        "url": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 300,
+          "pattern": "^https://[!-~]+(?![\\s\\S])"
+        }
+      }
+    }
+  }
+}

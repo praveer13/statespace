@@ -1,0 +1,3011 @@
+{
+  "id": "RUN-z3-verdict-lines",
+  "title": "Z3 5.3.1's whole output for 40 SMT-LIB queries through the command line and the Python API under an rlimit: the verdict-line fixtures of the Z3 lane",
+  "task": "W1-T29",
+  "origin": "recorded",
+  "records": "the outputs that the Z3 lane's verdict-line grammar and its fixture are written from: answers, reasons, errors before and after the answer with their exit codes, Z3's refusal of an rlimit above 2^32 - 1, check-sat-assuming through both entries, an assertion after the question, a script's own :rlimit replacing the command line's, a printed word that reads as an answer, an echoed answer before a stray parenthesis, a block comment that hides an echo, a backslash in a quoted symbol, named premises through both entries (with the answer of the parse_smt2_string reading the api entry no longer uses), a nonlinear term under QF_LIA through both entries, premises split by a NUL in a comment, a guard after a bare carriage return in a comment and a CRLF string literal through both entries (with the Path.read_text reading the api entry no longer uses), a DIMACS header, a named assumption, an assumption annotated with the quoted symbol |!|, an assumed Boolean constant tied to the formula through both entries, values and a term printed after the answer and before the model through both entries, and models turned off or printed as text; with the answers Solver.from_string gives to the NUL and DIMACS texts, and the answer under the named assumption read as the api entry reads an assumption, all of which the lane refuses",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "Z3 version 5.3.1 - 64 bit",
+  "binary": "bin/z3 from the z3-solver 5.3.1.0 wheel (bench/uv.lock), which statespace doctor pins as z3-cli; the api cases load lib/libz3.so from the same wheel (sha256 under configs and values), which doctor pins as z3",
+  "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+  "image": null,
+  "recorded_at": "2026-10-26T04:34:07.405Z",
+  "started_at": "2026-10-26T04:33:59.792Z",
+  "duration_s": 7.605,
+  "argv": [
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-unsat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-sat-model.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-unknown-rlimit.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-bitvector-model.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-error-then-sat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-not-boolean-then-sat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-syntax-error-no-answer.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-model-asked-after-unsat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=4294967296",
+      "cli-rlimit-too-large.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-check-sat-assuming.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-assert-after-question.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-script-rlimit-overrides.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-printed-word-before-question.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-stray-paren-after-echo.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-block-comment-hides-echo.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-backslash-in-quoted-symbol.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-named-premises.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-nonlinear-in-qf-lia-then-sat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-nul-in-comment.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-cr-in-comment.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-crlf-string.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-dimacs-prefix.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-named-assumption.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-quoted-annotation-assumption.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-assumed-constant.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-get-value-after-sat.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-produce-models-off.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-model-off.smt2"
+    ],
+    [
+      "z3",
+      "-smt2",
+      "-model",
+      "rlimit=5000000",
+      "cli-model-v1-text.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-unsat.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-sat-model.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-unknown-rlimit.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-error.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-check-sat-assuming.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-named-premises.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-nonlinear-in-qf-lia.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-cr-in-comment.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-crlf-string.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-assumed-constant.smt2"
+    ],
+    [
+      "python",
+      "-P",
+      "-m",
+      "statespace.lanes.z3",
+      "--rlimit",
+      "5000000",
+      "--model",
+      "api-get-value-after-sat.smt2"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-unsat.smt2",
+      "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+      "bytes": 219,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-sat-model.smt2",
+      "sha256": "4474aa610a2f41dedd5b7ff697e0b2fed1ad3218ade307fa9e030296045eab7b",
+      "bytes": 196,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-unknown-rlimit.smt2",
+      "sha256": "a9933aaabb6a577f8b21de95c1ad86e9447f99d161db1757cffb95c90ddd636f",
+      "bytes": 203,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-bitvector-model.smt2",
+      "sha256": "fb2ea2e33835e4063891009612f80ed3a48be71bf9504ffde5ba6bf529b8c45d",
+      "bytes": 200,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-error-then-sat.smt2",
+      "sha256": "0739ca0537f100b0d21f9f74ce1aee9a43c0100b5018f8758979f70767103ed6",
+      "bytes": 51,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-not-boolean-then-sat.smt2",
+      "sha256": "b45ee5bf4219b16b10544e93720ef838d57997b61c0fc7d40a0b59b6d3f4d599",
+      "bytes": 51,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-syntax-error-no-answer.smt2",
+      "sha256": "2ea54c583feff28fb9297a7950a63ab7e4af2f82e43e177ef46c70256a0b8abf",
+      "bytes": 50,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-model-asked-after-unsat.smt2",
+      "sha256": "3f4da8ac1cc137809faa0fefad7d37c8e074737f8cced9ed826c8fba76eccdf7",
+      "bytes": 80,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-rlimit-too-large.smt2",
+      "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+      "bytes": 219,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-check-sat-assuming.smt2",
+      "sha256": "63dbfce8380fcce54c64dd33d1dd0cd043acb08f14fd7ead20b0c98df4f53563",
+      "bytes": 65,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-assert-after-question.smt2",
+      "sha256": "a9c673c52db7d63be21d38cb0be2a242d7568db0052b2a5d58047e3994ebee37",
+      "bytes": 66,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-script-rlimit-overrides.smt2",
+      "sha256": "e92415d412089b26fde7e5e515f0dd9c9dbbe7ce486416a435393544e024b8b8",
+      "bytes": 226,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-printed-word-before-question.smt2",
+      "sha256": "29e169c53e4c6a1bc3c1cd6366a202184e4ff7f88ff33e773346f2034813f2e7",
+      "bytes": 75,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-stray-paren-after-echo.smt2",
+      "sha256": "b8b1ff604e209588a766022aa68221bbb5549ef3d940f35ef2b1c986026bb26c",
+      "bytes": 63,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-block-comment-hides-echo.smt2",
+      "sha256": "ba386fa240ed665dcf09ffaa0f12aab67f1012f6ee368ae7d5cba5934c5e2ebb",
+      "bytes": 41,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-backslash-in-quoted-symbol.smt2",
+      "sha256": "f66b708207888f240c7601f8dd71862a53c8b46f45ae1a1836faf7cd30fd4f1c",
+      "bytes": 39,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-named-premises.smt2",
+      "sha256": "1cec8690c78838b437c26a32350ffd740dccc6c71bae8e3ba6e2ab5032b4b75d",
+      "bytes": 229,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-nonlinear-in-qf-lia-then-sat.smt2",
+      "sha256": "86bf30caeafa465b24b8f90ec2664766f83cadd750ac95e3a20eb2299bfe730e",
+      "bytes": 76,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-nul-in-comment.smt2",
+      "sha256": "34f6479f9abe51e766559712a9ddea4995899d832984cb2ac149a85f41373aa1",
+      "bytes": 105,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-cr-in-comment.smt2",
+      "sha256": "f8c2b522de064309c9dfb64c52676af7619fa242fb5e4dfd92fd02af73793a84",
+      "bytes": 227,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-crlf-string.smt2",
+      "sha256": "88d068a277ccbd1ce82301bc0a0d56e4fd98ee18170fcafb66e96aedb872cbfb",
+      "bytes": 90,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-dimacs-prefix.smt2",
+      "sha256": "6b3eaa5cb644f6e96d59aa4d95f22ce9fcc7e73c8cac6ed789585d0d25723108",
+      "bytes": 31,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-named-assumption.smt2",
+      "sha256": "baa20272421f1586652c12440878f49ca5850a3899794ca3848e9c05b0ab45c8",
+      "bytes": 209,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-quoted-annotation-assumption.smt2",
+      "sha256": "dad40727549f1fd71cddf64d99f46de06f5f12975789d77468e17962c6ce4f6d",
+      "bytes": 80,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-assumed-constant.smt2",
+      "sha256": "a127ee3bd68f5c031dcbaef4fbb120a2202791c470b788513a3d04548ff815c7",
+      "bytes": 253,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-get-value-after-sat.smt2",
+      "sha256": "a89cd9fadc139bc1fbbd35aa232a0ede830f476956a3f261f65f05df326ffc3b",
+      "bytes": 316,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-produce-models-off.smt2",
+      "sha256": "079c378a28cd81b9bf88e17e5f6a734229ffa0047f400e6638093bce09776b55",
+      "bytes": 231,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-model-off.smt2",
+      "sha256": "56dc157de17176c1553d74a4cb12f34da0689f0f6d6487fbb921c423239137f3",
+      "bytes": 222,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/cli-model-v1-text.smt2",
+      "sha256": "7c4c292c77f2ece820baa8958fc75818f6870b2f5e77b274329f618108a44c62",
+      "bytes": 224,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-unsat.smt2",
+      "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+      "bytes": 219,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-sat-model.smt2",
+      "sha256": "4474aa610a2f41dedd5b7ff697e0b2fed1ad3218ade307fa9e030296045eab7b",
+      "bytes": 196,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-unknown-rlimit.smt2",
+      "sha256": "a9933aaabb6a577f8b21de95c1ad86e9447f99d161db1757cffb95c90ddd636f",
+      "bytes": 203,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-error.smt2",
+      "sha256": "0739ca0537f100b0d21f9f74ce1aee9a43c0100b5018f8758979f70767103ed6",
+      "bytes": 51,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-check-sat-assuming.smt2",
+      "sha256": "63dbfce8380fcce54c64dd33d1dd0cd043acb08f14fd7ead20b0c98df4f53563",
+      "bytes": 65,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-named-premises.smt2",
+      "sha256": "1cec8690c78838b437c26a32350ffd740dccc6c71bae8e3ba6e2ab5032b4b75d",
+      "bytes": 229,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-nonlinear-in-qf-lia.smt2",
+      "sha256": "86bf30caeafa465b24b8f90ec2664766f83cadd750ac95e3a20eb2299bfe730e",
+      "bytes": 76,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-cr-in-comment.smt2",
+      "sha256": "f8c2b522de064309c9dfb64c52676af7619fa242fb5e4dfd92fd02af73793a84",
+      "bytes": 227,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-crlf-string.smt2",
+      "sha256": "88d068a277ccbd1ce82301bc0a0d56e4fd98ee18170fcafb66e96aedb872cbfb",
+      "bytes": 90,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-assumed-constant.smt2",
+      "sha256": "a127ee3bd68f5c031dcbaef4fbb120a2202791c470b788513a3d04548ff815c7",
+      "bytes": 253,
+      "role": "query"
+    },
+    {
+      "path": "runs/RUN-z3-verdict-lines/queries/api-get-value-after-sat.smt2",
+      "sha256": "a89cd9fadc139bc1fbbd35aa232a0ede830f476956a3f261f65f05df326ffc3b",
+      "bytes": 316,
+      "role": "query"
+    },
+    {
+      "path": "bench/statespace/lanes/z3.py",
+      "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+      "bytes": 76032,
+      "role": "runner (the api entry)"
+    },
+    {
+      "path": "scripts/spikes/W1-T29/capture-z3-lines.py",
+      "sha256": "c69b8786138e993658b950e61c64abd07bcb20fbee54823c7b26fb6eafd991ae",
+      "bytes": 46034,
+      "role": "harness"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "bytes": 36561071,
+      "role": "wheel"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "timeout_s": 120.0,
+    "cases": "every case ran under rlimit=5000000 except cli-rlimit-too-large (4294967296, which Z3 refuses); timeout_s is the capture's wall-clock backstop, 3 s for cli-script-rlimit-overrides"
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== cli-unsat: z3 -smt2 -model rlimit=5000000 cli-unsat.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-sat-model: z3 -smt2 -model rlimit=5000000 cli-sat-model.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-unknown-rlimit: z3 -smt2 -model rlimit=5000000 cli-unknown-rlimit.smt2",
+    "unknown",
+    "(:reason-unknown \"canceled\")",
+    "-- exit 0",
+    "== cli-bitvector-model: z3 -smt2 -model rlimit=5000000 cli-bitvector-model.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-error-then-sat: z3 -smt2 -model rlimit=5000000 cli-error-then-sat.smt2",
+    "(error \"line 2 column 11: unknown constant q\")",
+    "sat",
+    "-- exit 1",
+    "== cli-not-boolean-then-sat: z3 -smt2 -model rlimit=5000000 cli-not-boolean-then-sat.smt2",
+    "(error \"line 2 column 15: invalid assert command, term is not Boolean\")",
+    "sat",
+    "-- exit 1",
+    "== cli-syntax-error-no-answer: z3 -smt2 -model rlimit=5000000 cli-syntax-error-no-answer.smt2",
+    "(error \"line 3 column 0: invalid assert command, ')' expected\")",
+    "-- exit 1",
+    "== cli-model-asked-after-unsat: z3 -smt2 -model rlimit=5000000 cli-model-asked-after-unsat.smt2",
+    "unsat",
+    "(error \"line 5 column 10: model is not available\")",
+    "-- exit 1",
+    "== cli-rlimit-too-large: z3 -smt2 -model rlimit=4294967296 cli-rlimit-too-large.smt2",
+    "ERROR: invalid value '4294967296' for unsigned int parameter 'rlimit'",
+    "-- exit 110",
+    "== cli-check-sat-assuming: z3 -smt2 -model rlimit=5000000 cli-check-sat-assuming.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-assert-after-question: z3 -smt2 -model rlimit=5000000 cli-assert-after-question.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-script-rlimit-overrides: z3 -smt2 -model rlimit=5000000 cli-script-rlimit-overrides.smt2",
+    "-- stopped after 3 s by the capture's wall-clock limit",
+    "== cli-printed-word-before-question: z3 -smt2 -model rlimit=5000000 cli-printed-word-before-question.smt2",
+    "sat",
+    "(error \"line 3 column 21: unknown constant nonexistent\")",
+    "-- exit 1",
+    "== cli-stray-paren-after-echo: z3 -smt2 -model rlimit=5000000 cli-stray-paren-after-echo.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-block-comment-hides-echo: z3 -smt2 -model rlimit=5000000 cli-block-comment-hides-echo.smt2",
+    "unsat",
+    "(error \"line 4 column 1: unexpected end of quoted symbol\")",
+    "-- exit 1",
+    "== cli-backslash-in-quoted-symbol: z3 -smt2 -model rlimit=5000000 cli-backslash-in-quoted-symbol.smt2",
+    "(error \"line 1 column 18: invalid character '\\' in quoted symbol\")",
+    "(error \"line 1 column 18: unexpected character\")",
+    "sat",
+    "-- exit 1",
+    "== cli-named-premises: z3 -smt2 -model rlimit=5000000 cli-named-premises.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-nonlinear-in-qf-lia-then-sat: z3 -smt2 -model rlimit=5000000 cli-nonlinear-in-qf-lia-then-sat.smt2",
+    "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")",
+    "sat",
+    "-- exit 1",
+    "== cli-nul-in-comment: z3 -smt2 -model rlimit=5000000 cli-nul-in-comment.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-cr-in-comment: z3 -smt2 -model rlimit=5000000 cli-cr-in-comment.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-crlf-string: z3 -smt2 -model rlimit=5000000 cli-crlf-string.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-dimacs-prefix: z3 -smt2 -model rlimit=5000000 cli-dimacs-prefix.smt2",
+    "(error \"line 1 column 1: invalid command, '(' expected\")",
+    "sat",
+    "-- exit 1",
+    "== cli-named-assumption: z3 -smt2 -model rlimit=5000000 cli-named-assumption.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-quoted-annotation-assumption: z3 -smt2 -model rlimit=5000000 cli-quoted-annotation-assumption.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-assumed-constant: z3 -smt2 -model rlimit=5000000 cli-assumed-constant.smt2",
+    "unsat",
+    "-- exit 0",
+    "== cli-get-value-after-sat: z3 -smt2 -model rlimit=5000000 cli-get-value-after-sat.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-produce-models-off: z3 -smt2 -model rlimit=5000000 cli-produce-models-off.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-model-off: z3 -smt2 -model rlimit=5000000 cli-model-off.smt2",
+    "sat",
+    "-- exit 0",
+    "== cli-model-v1-text: z3 -smt2 -model rlimit=5000000 cli-model-v1-text.smt2",
+    "sat",
+    "-- exit 0",
+    "== api-unsat: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-unsat.smt2",
+    "unsat",
+    "-- exit 0",
+    "== api-sat-model: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-sat-model.smt2",
+    "sat",
+    "-- exit 0",
+    "== api-unknown-rlimit: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-unknown-rlimit.smt2",
+    "unknown",
+    "(:reason-unknown \"canceled\")",
+    "-- exit 0",
+    "== api-error: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-error.smt2",
+    "(error \"line 2 column 11: unknown constant q\")",
+    "-- exit 1",
+    "== api-check-sat-assuming: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-check-sat-assuming.smt2",
+    "unsat",
+    "-- exit 0",
+    "== api-named-premises: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-named-premises.smt2",
+    "unsat",
+    "-- exit 0",
+    "== api-nonlinear-in-qf-lia: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-nonlinear-in-qf-lia.smt2",
+    "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")",
+    "-- exit 1",
+    "== api-cr-in-comment: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-cr-in-comment.smt2",
+    "sat",
+    "-- exit 0",
+    "== api-crlf-string: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-crlf-string.smt2",
+    "sat",
+    "-- exit 0",
+    "== api-assumed-constant: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-assumed-constant.smt2",
+    "unsat",
+    "-- exit 0",
+    "== api-get-value-after-sat: python -P -m statespace.lanes.z3 --rlimit 5000000 --model api-get-value-after-sat.smt2",
+    "sat",
+    "-- exit 0",
+    "== parse_smt2_string reading of api-named-premises (the api entry's reading before Solver.from_string)",
+    "sat",
+    "== Solver.from_string reading of cli-nul-in-comment (why check_script refuses a NUL)",
+    "sat",
+    "== Solver.from_string reading of cli-dimacs-prefix (why check_script refuses a form outside any command)",
+    "unsat",
+    "== Path.read_text reading of cli-cr-in-comment (the api runner's reading before it read bytes)",
+    "unsat",
+    "== parse_smt2_string reading of cli-named-assumption's assumption (why check_script refuses an annotation in the question)",
+    "assumption (! (<= amount MAX_TRANSFER) :named under-max) read as (=> under-max (<= amount 0))",
+    "sat",
+    "== Solver.from_string reading of cli-produce-models-off, with its model (why check_script refuses models turned off)",
+    "sat",
+    "(define-fun b () Int",
+    "  0)",
+    "(define-fun amount () Int",
+    "  1)",
+    "(define-fun a () Int",
+    "  0)",
+    "== Solver.from_string reading of cli-model-v1-text, with its model (why check_script refuses models printed as text)",
+    "sat",
+    "(define-fun b () Int",
+    "  0)",
+    "(define-fun amount () Int",
+    "  1)",
+    "(define-fun a () Int",
+    "  0)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-verdict-lines/capture.log",
+      "sha256": "2ff004bb915a5f54642afe41cdf73c138ac55691e63940db9ac496000d2647aa",
+      "bytes": 7421,
+      "kind": "log"
+    },
+    {
+      "path": "bench/statespace/check/fixtures/z3-verdict-lines.json",
+      "sha256": "2a213fa3b2b3f39eac832fd2132b16e6c180ee709f542dafeb2c7c535ce66a99",
+      "bytes": 37720,
+      "kind": "fixture"
+    }
+  ],
+  "values": {
+    "cases": {
+      "cli-unsat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 12,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-sat-model": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 9,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-unknown-rlimit": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 566,
+        "verdict": "unknown",
+        "reason": "canceled"
+      },
+      "cli-bitvector-model": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 16,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-error-then-sat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 8,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-not-boolean-then-sat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 8,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-syntax-error-no-answer": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 9,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-model-asked-after-unsat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-rlimit-too-large": {
+        "entry": "cli",
+        "rlimit": 4294967296,
+        "exit_code": 110,
+        "stopped_after_s": null,
+        "ms": 2,
+        "verdict": null,
+        "reason": null
+      },
+      "cli-check-sat-assuming": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 9,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-assert-after-question": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 10,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-script-rlimit-overrides": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": null,
+        "stopped_after_s": 3.0,
+        "ms": 3006,
+        "verdict": null,
+        "reason": null
+      },
+      "cli-printed-word-before-question": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 10,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-stray-paren-after-echo": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 9,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-block-comment-hides-echo": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 3,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-backslash-in-quoted-symbol": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-named-premises": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 12,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-nonlinear-in-qf-lia-then-sat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-nul-in-comment": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 9,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-cr-in-comment": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-crlf-string": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-dimacs-prefix": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "error",
+        "reason": null
+      },
+      "cli-named-assumption": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-quoted-annotation-assumption": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 12,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-assumed-constant": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 12,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "cli-get-value-after-sat": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 13,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-produce-models-off": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 16,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-model-off": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 11,
+        "verdict": "sat",
+        "reason": null
+      },
+      "cli-model-v1-text": {
+        "entry": "cli",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 15,
+        "verdict": "sat",
+        "reason": null
+      },
+      "api-unsat": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 172,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "api-sat-model": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 147,
+        "verdict": "sat",
+        "reason": null
+      },
+      "api-unknown-rlimit": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 1237,
+        "verdict": "unknown",
+        "reason": "canceled"
+      },
+      "api-error": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 168,
+        "verdict": "error",
+        "reason": null
+      },
+      "api-check-sat-assuming": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 152,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "api-named-premises": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 181,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "api-nonlinear-in-qf-lia": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 1,
+        "stopped_after_s": null,
+        "ms": 157,
+        "verdict": "error",
+        "reason": null
+      },
+      "api-cr-in-comment": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 155,
+        "verdict": "sat",
+        "reason": null
+      },
+      "api-crlf-string": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 132,
+        "verdict": "sat",
+        "reason": null
+      },
+      "api-assumed-constant": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 152,
+        "verdict": "unsat",
+        "reason": null
+      },
+      "api-get-value-after-sat": {
+        "entry": "api",
+        "rlimit": 5000000,
+        "exit_code": 0,
+        "stopped_after_s": null,
+        "ms": 141,
+        "verdict": "sat",
+        "reason": null
+      }
+    },
+    "parse_smt2_string_reading": {
+      "case": "api-named-premises",
+      "answer": "sat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, add(parse_smt2_string(<prefix>)) with <prefix> = the case's text before (check-sat), check()",
+      "why": "parse_smt2_string returns each named assertion as (=> name formula), and nothing assumes the name"
+    },
+    "from_string_nul_reading": {
+      "case": "cli-nul-in-comment",
+      "answer": "sat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = the case's text before (check-sat), check()",
+      "why": "from_string passes the text to Z3 as a C string, which ends at the NUL, so it reads the first premise alone"
+    },
+    "from_string_dimacs_reading": {
+      "case": "cli-dimacs-prefix",
+      "answer": "unsat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = the case's text before (check-sat), check()",
+      "why": "from_string reads a text that starts 'p c' as DIMACS, whose clauses 1 and -1 contradict each other"
+    },
+    "read_text_cr_reading": {
+      "case": "cli-cr-in-comment",
+      "answer": "unsat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = Path.read_text of a file holding the case's text, then its text before (check-sat), check()",
+      "why": "Path.read_text turns the bare carriage return into a line feed, which ends the comment before the guard"
+    },
+    "parse_smt2_string_assumption_reading": {
+      "case": "cli-named-assumption",
+      "answer": "sat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = the case's text before (check-sat-assuming, check(*assumptions), each of the question's assumptions read as the api entry reads one, the last formula of parse_smt2_string(<prefix> + (assert <assumption>))",
+      "why": "with unsat cores on, parse_smt2_string returns the named assumption as an implication from its name (assumptions_read), which the name's being false satisfies",
+      "assumptions": [
+        "(! (<= amount MAX_TRANSFER) :named under-max)"
+      ],
+      "assumptions_read": [
+        "(=> under-max (<= amount 0))"
+      ]
+    },
+    "from_string_produce_models_off_reading": {
+      "case": "cli-produce-models-off",
+      "answer": "sat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = the case's text before (check-sat), check()",
+      "why": "the api entry read the script this way and printed its solver's model, model().sexpr(), where the command line prints none",
+      "model": "(define-fun b () Int\n  0)\n(define-fun amount () Int\n  1)\n(define-fun a () Int\n  0)",
+      "model_defines": [
+        "a",
+        "amount",
+        "b"
+      ]
+    },
+    "from_string_model_v1_reading": {
+      "case": "cli-model-v1-text",
+      "answer": "sat",
+      "how": "in a fresh Python process (python -I), on the library the api cases load: z3.Solver() under rlimit=5000000, from_string(<prefix>) with <prefix> = the case's text before (check-sat), check()",
+      "why": "the api entry read the script this way and printed its solver's model, model().sexpr(), where the command line prints the model as a quoted string",
+      "model": "(define-fun b () Int\n  0)\n(define-fun amount () Int\n  1)\n(define-fun a () Int\n  0)",
+      "model_defines": [
+        "a",
+        "amount",
+        "b"
+      ]
+    },
+    "z3_cli_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+    "libz3_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2"
+  },
+  "configs": [
+    {
+      "id": "cli-unsat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-unsat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-unsat.smt2",
+          "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+          "bytes": 219,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-sat-model",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-sat-model.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-sat-model.smt2",
+          "sha256": "4474aa610a2f41dedd5b7ff697e0b2fed1ad3218ade307fa9e030296045eab7b",
+          "bytes": 196,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-unknown-rlimit",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-unknown-rlimit.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-unknown-rlimit.smt2",
+          "sha256": "a9933aaabb6a577f8b21de95c1ad86e9447f99d161db1757cffb95c90ddd636f",
+          "bytes": 203,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-bitvector-model",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-bitvector-model.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-bitvector-model.smt2",
+          "sha256": "fb2ea2e33835e4063891009612f80ed3a48be71bf9504ffde5ba6bf529b8c45d",
+          "bytes": 200,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-error-then-sat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-error-then-sat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-error-then-sat.smt2",
+          "sha256": "0739ca0537f100b0d21f9f74ce1aee9a43c0100b5018f8758979f70767103ed6",
+          "bytes": 51,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 2 column 11: unknown constant q\")",
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-not-boolean-then-sat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-not-boolean-then-sat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-not-boolean-then-sat.smt2",
+          "sha256": "b45ee5bf4219b16b10544e93720ef838d57997b61c0fc7d40a0b59b6d3f4d599",
+          "bytes": 51,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 2 column 15: invalid assert command, term is not Boolean\")",
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-syntax-error-no-answer",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3's own output for a script that does not parse: an error and no answer; check_script refuses a script it cannot read, so the lane never runs this one",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-syntax-error-no-answer.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-syntax-error-no-answer.smt2",
+          "sha256": "2ea54c583feff28fb9297a7950a63ab7e4af2f82e43e177ef46c70256a0b8abf",
+          "bytes": 50,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 3 column 0: invalid assert command, ')' expected\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-model-asked-after-unsat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-asked-after-unsat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-model-asked-after-unsat.smt2",
+          "sha256": "3f4da8ac1cc137809faa0fefad7d37c8e074737f8cced9ed826c8fba76eccdf7",
+          "bytes": 80,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "unsat",
+        "(error \"line 5 column 10: model is not available\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-rlimit-too-large",
+      "purpose": "the z3 binary, the Z3 lane's cli entry",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=4294967296",
+        "cli-rlimit-too-large.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-rlimit-too-large.smt2",
+          "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+          "bytes": 219,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 4294967296,
+        "timeout_s": 120.0
+      },
+      "exit_code": 110,
+      "verdict_lines": [
+        "ERROR: invalid value '4294967296' for unsigned int parameter 'rlimit'"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-check-sat-assuming",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the question's assumption p contradicts the assertion (not p)",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-check-sat-assuming.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-check-sat-assuming.smt2",
+          "sha256": "63dbfce8380fcce54c64dd33d1dd0cd043acb08f14fd7ead20b0c98df4f53563",
+          "bytes": 65,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-assert-after-question",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3 answers the question before it reads the later (assert false); check_script refuses such a script, whose last line would read as part of the question",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-assert-after-question.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-assert-after-question.smt2",
+          "sha256": "a9c673c52db7d63be21d38cb0be2a242d7568db0052b2a5d58047e3994ebee37",
+          "bytes": 66,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-script-rlimit-overrides",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the script's (set-option :rlimit 0) replaces the rlimit=5000000 of the command line, which stops the same query with unknown (canceled) in cli-unknown-rlimit: Z3 gave no answer within the capture's 3 s limit and was stopped; check_script refuses any script that sets :rlimit, :timeout or a memory limit",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-script-rlimit-overrides.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-script-rlimit-overrides.smt2",
+          "sha256": "e92415d412089b26fde7e5e515f0dd9c9dbbe7ce486416a435393544e024b8b8",
+          "bytes": 226,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 3.0
+      },
+      "exit_code": null,
+      "verdict_lines": [],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-printed-word-before-question",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: (simplify sat) prints the constant's name, sat, and the question then fails, so the grammar reads an answer that no question gave; check_script refuses simplify, eval and display before the question",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-printed-word-before-question.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-printed-word-before-question.smt2",
+          "sha256": "29e169c53e4c6a1bc3c1cd6366a202184e4ff7f88ff33e773346f2034813f2e7",
+          "bytes": 75,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "sat",
+        "(error \"line 3 column 21: unknown constant nonexistent\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-stray-paren-after-echo",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the script asks no question: Z3 runs (echo \"unsat\") and (exit) before it would read the stray ), and exits 0 with one line that reads as unsat; check_script refuses a script it cannot read, since Z3 runs every command before a fault",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-stray-paren-after-echo.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-stray-paren-after-echo.smt2",
+          "sha256": "b8b1ff604e209588a766022aa68221bbb5549ef3d940f35ef2b1c986026bb26c",
+          "bytes": 63,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-block-comment-hides-echo",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3 ends the #| block comment at the first |#, runs (echo \"unsat\"), and reads | (check-sat) as a quoted symbol that never ends, so no question is asked and the grammar reads unsat; a reader that takes each | for a quoted symbol sees one (check-sat) and no echo, so check_script refuses #| block comments",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-block-comment-hides-echo.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-block-comment-hides-echo.smt2",
+          "sha256": "ba386fa240ed665dcf09ffaa0f12aab67f1012f6ee368ae7d5cba5934c5e2ebb",
+          "bytes": 41,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "unsat",
+        "(error \"line 4 column 1: unexpected end of quoted symbol\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-backslash-in-quoted-symbol",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: SMT-LIB allows no backslash in a |quoted symbol|: Z3 reports an error and reads on from the backslash, where a reader that ends the symbol at the next | would not; check_script refuses such a script",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-backslash-in-quoted-symbol.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-backslash-in-quoted-symbol.smt2",
+          "sha256": "f66b708207888f240c7601f8dd71862a53c8b46f45ae1a1836faf7cd30fd4f1c",
+          "bytes": 39,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 1 column 18: invalid character '\\' in quoted symbol\")",
+        "(error \"line 1 column 18: unexpected character\")",
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-named-premises",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the named premises amount > 0 and amount <= MAX_TRANSFER contradict each other when MAX_TRANSFER = 0, so a claim guarded by them holds vacuously; the unsat core names both",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-named-premises.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-named-premises.smt2",
+          "sha256": "1cec8690c78838b437c26a32350ffd740dccc6c71bae8e3ba6e2ab5032b4b75d",
+          "bytes": 229,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-nonlinear-in-qf-lia-then-sat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: QF_LIA has no nonlinear terms: Z3 drops the assertion with an error and answers about what is left",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-nonlinear-in-qf-lia-then-sat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-nonlinear-in-qf-lia-then-sat.smt2",
+          "sha256": "86bf30caeafa465b24b8f90ec2664766f83cadd750ac95e3a20eb2299bfe730e",
+          "bytes": 76,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")",
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-nul-in-comment",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the command line reads past the NUL inside the ; comment, so both premises hold and contradict each other; Solver.from_string reads the same text only up to the NUL and answered sat (values.from_string_nul_reading); check_script refuses a script that holds a NUL, so the lane runs neither entry on this one",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-nul-in-comment.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-nul-in-comment.smt2",
+          "sha256": "34f6479f9abe51e766559712a9ddea4995899d832984cb2ac149a85f41373aa1",
+          "bytes": 105,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-cr-in-comment",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3 ends a ; comment only at a line feed, so the guard after the bare carriage return of '; guard' is part of the comment and the overdraft is reachable; read with Path.read_text, which turns the carriage return into a line feed, the same file answered unsat (values.read_text_cr_reading)",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-cr-in-comment.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-cr-in-comment.smt2",
+          "sha256": "f8c2b522de064309c9dfb64c52676af7619fa242fb5e4dfd92fd02af73793a84",
+          "bytes": 227,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-crlf-string",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: in a CRLF file, the string literal that spans a line keeps its carriage return, so its length is 4",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-crlf-string.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-crlf-string.smt2",
+          "sha256": "88d068a277ccbd1ce82301bc0a0d56e4fd98ee18170fcafb66e96aedb872cbfb",
+          "bytes": 90,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-dimacs-prefix",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the command line reads the file as SMT-LIB: p is not a command, so Z3 reports an error, skips to the (check-sat) and answers sat about no assertions; Solver.from_string reads a text that starts 'p c' as DIMACS and answered unsat to the same clauses (values.from_string_dimacs_reading); check_script refuses a form outside any command",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-dimacs-prefix.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-dimacs-prefix.smt2",
+          "sha256": "6b3eaa5cb644f6e96d59aa4d95f22ce9fcc7e73c8cac6ed789585d0d25723108",
+          "bytes": 31,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 1 column 1: invalid command, '(' expected\")",
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-named-assumption",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the command line assumes the named formula amount <= MAX_TRANSFER, which contradicts amount > 0 when MAX_TRANSFER = 0, and the unsat core it prints is that formula with MAX_TRANSFER replaced by 0; parse_smt2_string, which reads the api entry's assumptions, returns the named assumption as an implication from its name, which the name's being false satisfies, and the same question was sat read that way (values.parse_smt2_string_assumption_reading); check_script refuses an annotation in the question, so the lane runs neither entry on this one",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-named-assumption.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-named-assumption.smt2",
+          "sha256": "baa20272421f1586652c12440878f49ca5850a3899794ca3848e9c05b0ab45c8",
+          "bytes": 209,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-quoted-annotation-assumption",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3 reads the quoted symbol |!| as the keyword !, so the question assumes p, which contradicts the assertion (not p), and Z3 reports no error; check_script removes the bars of a quoted symbol before it looks for an annotation, so it refuses this question too",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-quoted-annotation-assumption.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-quoted-annotation-assumption.smt2",
+          "sha256": "dad40727549f1fd71cddf64d99f46de06f5f12975789d77468e17962c6ce4f6d",
+          "bytes": 80,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-assumed-constant",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: what check_script suggests instead of a named assumption: the Boolean constant under-max, assumed, which an assertion ties to amount <= MAX_TRANSFER; the premises contradict each other, so the question is unsat, and the unsat core names the constant",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-assumed-constant.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-assumed-constant.smt2",
+          "sha256": "a127ee3bd68f5c031dcbaef4fbb120a2202791c470b788513a3d04548ff815c7",
+          "bytes": 253,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-get-value-after-sat",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: the model that (get-model) prints, the values that (get-value ...) prints, the term that (eval ...) prints and the empty list that (get-assignment) prints with nothing named come before the model that -model prints after the output of every other command, (exit) included; of these blocks only the two models are lists of define-fun items with an item, so the model read is the last block, the one -model prints",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-get-value-after-sat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-get-value-after-sat.smt2",
+          "sha256": "a89cd9fadc139bc1fbbd35aa232a0ede830f476956a3f261f65f05df326ffc3b",
+          "bytes": 316,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-produce-models-off",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: with models off, the command line prints no model after sat, so a check has no witness to replay; check_script refuses :produce-models and :model set to anything but true",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-produce-models-off.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-produce-models-off.smt2",
+          "sha256": "079c378a28cd81b9bf88e17e5f6a734229ffa0047f400e6638093bce09776b55",
+          "bytes": 231,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-model-off",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: Z3's own :model parameter, set to false, also leaves the command line with no model after sat; check_script refuses it as it refuses :produce-models false",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-off.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-model-off.smt2",
+          "sha256": "56dc157de17176c1553d74a4cb12f34da0689f0f6d6487fbb921c423239137f3",
+          "bytes": 222,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "cli-model-v1-text",
+      "purpose": "the z3 binary, the Z3 lane's cli entry: under :model.v1 the command line prints the model as a quoted string of name -> value lines, not as define-fun items; check_script refuses :model.v1 and :model.v2 set to anything but false",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "argv": [
+        "z3",
+        "-smt2",
+        "-model",
+        "rlimit=5000000",
+        "cli-model-v1-text.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/cli-model-v1-text.smt2",
+          "sha256": "7c4c292c77f2ece820baa8958fc75818f6870b2f5e77b274329f618108a44c62",
+          "bytes": 224,
+          "role": "query"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-unsat",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-unsat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-unsat.smt2",
+          "sha256": "cd1b510d67a3518bc9ff0e08e7d4fc91c4252c93c174ae257ab9942a53e8d779",
+          "bytes": 219,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-sat-model",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-sat-model.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-sat-model.smt2",
+          "sha256": "4474aa610a2f41dedd5b7ff697e0b2fed1ad3218ade307fa9e030296045eab7b",
+          "bytes": 196,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-unknown-rlimit",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-unknown-rlimit.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-unknown-rlimit.smt2",
+          "sha256": "a9933aaabb6a577f8b21de95c1ad86e9447f99d161db1757cffb95c90ddd636f",
+          "bytes": 203,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-error",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-error.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-error.smt2",
+          "sha256": "0739ca0537f100b0d21f9f74ce1aee9a43c0100b5018f8758979f70767103ed6",
+          "bytes": 51,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 2 column 11: unknown constant q\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-check-sat-assuming",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the api entry checks under the question's assumptions, as the command line does",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-check-sat-assuming.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-check-sat-assuming.smt2",
+          "sha256": "63dbfce8380fcce54c64dd33d1dd0cd043acb08f14fd7ead20b0c98df4f53563",
+          "bytes": 65,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-named-premises",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the api entry reads the script with Solver.from_string, which keeps named assertions as the command line does; read with parse_smt2_string, each came back as (=> name formula) with nothing assuming the name, and the same script answered sat",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-named-premises.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-named-premises.smt2",
+          "sha256": "1cec8690c78838b437c26a32350ffd740dccc6c71bae8e3ba6e2ab5032b4b75d",
+          "bytes": 229,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-nonlinear-in-qf-lia",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: Solver.from_string reads (set-logic QF_LIA) as the command line does and reports the same error, so the verdict is error through both entries",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-nonlinear-in-qf-lia.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-nonlinear-in-qf-lia.smt2",
+          "sha256": "86bf30caeafa465b24b8f90ec2664766f83cadd750ac95e3a20eb2299bfe730e",
+          "bytes": 76,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "(error \"line 3 column 21: logic does not support nonlinear arithmetic\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-cr-in-comment",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the api runner reads the file's bytes with no line-ending translation, so the guard is part of the comment through both entries",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-cr-in-comment.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-cr-in-comment.smt2",
+          "sha256": "f8c2b522de064309c9dfb64c52676af7619fa242fb5e4dfd92fd02af73793a84",
+          "bytes": 227,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-crlf-string",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the api runner keeps the \\r\\n inside the string, as the command line does",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-crlf-string.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-crlf-string.smt2",
+          "sha256": "88d068a277ccbd1ce82301bc0a0d56e4fd98ee18170fcafb66e96aedb872cbfb",
+          "bytes": 90,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-assumed-constant",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the assumed constant reads the same through the api entry, which checks under it, as the command line does",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-assumed-constant.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-assumed-constant.smt2",
+          "sha256": "a127ee3bd68f5c031dcbaef4fbb120a2202791c470b788513a3d04548ff815c7",
+          "bytes": 253,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    },
+    {
+      "id": "api-get-value-after-sat",
+      "purpose": "the Python API, the Z3 lane's api entry, with PYTHONPATH set to the repository's bench/ so that the runner is this repository's code: the api entry asks only the script's question and prints the answer and the model, so the model it prints defines the constants the command line's does",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "argv": [
+        "python",
+        "-P",
+        "-m",
+        "statespace.lanes.z3",
+        "--rlimit",
+        "5000000",
+        "--model",
+        "api-get-value-after-sat.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-z3-verdict-lines/queries/api-get-value-after-sat.smt2",
+          "sha256": "a89cd9fadc139bc1fbbd35aa232a0ede830f476956a3f261f65f05df326ffc3b",
+          "bytes": 316,
+          "role": "query"
+        },
+        {
+          "path": "bench/statespace/lanes/z3.py",
+          "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+          "bytes": 76032,
+          "role": "runner (the api entry)"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "timeout_s": 120.0
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "sat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-verdict-lines/capture.log"
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is 40 commands, each with its own exit code: values.cases.<case>.exit_code, and the -- exit line after each case in verdict_lines and capture.log"
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T29 with scripts/spikes/W1-T29/capture-z3-lines.py, which writes this record, the fixture bench/statespace/check/fixtures/z3-verdict-lines.json, the queries under runs/RUN-z3-verdict-lines/queries/ and the transcript runs/RUN-z3-verdict-lines/capture.log from one execution. Each case ran in a scratch directory holding its query, so argv names the input by file name.",
+    "verdict_lines holds, for each case, the transcript's == line naming the case and its command, the lines of Z3's output that the Z3 lane's grammar keeps (the answer, a reason that is not empty, every (error ...) line), or Z3's whole output when it holds none of those, and the transcript's -- line with the exit code. Models are not verdict lines; capture.log and the fixture hold every output verbatim.",
+    "One configuration per case, named by the case: its command, its query, the hash of what ran (the z3 binary for a cli case, the native library for an api case), its exit code and its verdict lines. The top level lists every command in the order they ran, so it names no primary configuration.",
+    "The expectations in the fixture (verdict lines, verdict, reason) are stated by hand in the capture script from the grammar, not computed by the lane, and the lane's tests read every captured output against them; the drift test in bench/statespace/check/tests/test_z3_lane.py re-executes every case against the pinned engine. statespace run re-executes a cli case with --config <case> where the pinned z3 is on PATH (uv run --project bench --group image); it does not re-execute the top level, whose argv holds several commands, or an api case, whose runner is the CLI's own code.",
+    "cli-script-rlimit-overrides: a 3 s wall-clock limit of the capture's own stopped Z3, so its exit code is null; the same query under the command line's rlimit=5000000 without the option stops with unknown (canceled) in cli-unknown-rlimit.",
+    "cli-syntax-error-no-answer, cli-stray-paren-after-echo, cli-block-comment-hides-echo, cli-backslash-in-quoted-symbol, cli-nul-in-comment, cli-dimacs-prefix, cli-named-assumption, cli-quoted-annotation-assumption, cli-produce-models-off, cli-model-off and cli-model-v1-text run Z3 directly on scripts that the Z3 lane refuses before they reach Z3 (check_script): they record why it refuses them.",
+    "Each case's query is written and read as bytes, and its output decoded as UTF-8 with no line-ending translation, so the carriage returns of cli-cr-in-comment, cli-crlf-string and their api twins reach Z3 as given, and the NUL of cli-nul-in-comment too.",
+    "values.<reading>: readings of a case's text through Z3's Python API, each in a fresh Python process (python -I; within one process, the API kept the names earlier texts defined, and a later reading's model defined them too), on the library the api cases load, each the text before the case's question read into z3.Solver() under rlimit=5000000 and checked, under the question's assumptions when the reading lists them (each read as the api entry reads an assumption, and listed as read under assumptions_read), and for the readings that record it, the model after sat as the api entry printed it, model().sexpr() (under model, with the names it defines under model_defines); they are the last == blocks of capture.log and of verdict_lines. parse_smt2_string_reading: sat for api-named-premises (parse_smt2_string returns each named assertion as (=> name formula), and nothing assumes the name); from_string_nul_reading: sat for cli-nul-in-comment (from_string passes the text to Z3 as a C string, which ends at the NUL, so it reads the first premise alone); from_string_dimacs_reading: unsat for cli-dimacs-prefix (from_string reads a text that starts 'p c' as DIMACS, whose clauses 1 and -1 contradict each other); read_text_cr_reading: unsat for cli-cr-in-comment (Path.read_text turns the bare carriage return into a line feed, which ends the comment before the guard); parse_smt2_string_assumption_reading: sat for cli-named-assumption (with unsat cores on, parse_smt2_string returns the named assumption as an implication from its name (assumptions_read), which the name's being false satisfies); from_string_produce_models_off_reading: sat for cli-produce-models-off (the api entry read the script this way and printed its solver's model, model().sexpr(), where the command line prints none); from_string_model_v1_reading: sat for cli-model-v1-text (the api entry read the script this way and printed its solver's model, model().sexpr(), where the command line prints the model as a quoted string). Through the lane, both entries answer unsat to the named premises and sat to the guard after a carriage return, and the NUL and DIMACS texts, the annotated questions and the scripts that turn models off or print them as text never reach Z3."
+  ]
+}

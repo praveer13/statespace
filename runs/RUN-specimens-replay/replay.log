@@ -1,0 +1,4 @@
+[sp_1_1_starter] replay ok: a=0 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a - amount = -1 < 0 ok
+[sp_1_4_recipient_wrap] replay ok: A=9223372036854775806 B=9223372036850581504 X=4194304 (signed 64-bit): A >= 0 ok, B >= 0 ok, X > 0 ok, X <= A ok, B + X wraps to -9223372036854775808 < 0 (the integers give 9223372036854775808) ok
+[sp_1_4_pyodide_related_query] replay ok: M=9223372036854775803 B=9223336852482686975 (signed 64-bit): B >= 0 ok, M > 0 ok, B + M wraps to -35184372088838 < 0 (the integers give 18446708889337462778) ok
+[sp_1_5_mixed_signedness] replay ok: A=13835060254305419776 X=4611686018427387904 (guard unsigned, check signed): X > 0 (unsigned) ok, X <= A (unsigned) ok, A reads as -4611683819404131840 signed ok, A - X reads as -9223369837831519744 < 0 signed ok

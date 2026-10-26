@@ -1,0 +1,34 @@
+RUN-z3-smtlib-tour · D-13's SMT-LIB examples through the Z3 command line, its API interpreter and Pyodide: sat with a model, unsat, unknown with its reason, and a budget set with (set-option :rlimit)
+  config    cli-native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 sh tour_cli.sh   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh (sha256 67b905add72bc09a..., as recorded, staged as tour_cli.sh)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2 (sha256 ac6500be32aa8d08..., as recorded, staged as smtlib/starter.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2 (sha256 22dbf775f4ac7a6c..., as recorded, staged as smtlib/starter_guarded.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2 (sha256 c501b54d15e797cd..., as recorded, staged as smtlib/starter_guarded_get_model.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2 (sha256 99d86a765d9aed3c..., as recorded, staged as smtlib/unknown_canceled.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2 (sha256 277f4236f8e0d683..., as recorded, staged as smtlib/unknown_theory.smt2)
+  exit      0 after 0.5 s; recorded 0
+  same      Z3 version 5.3.1 - 64 bit
+  same      == starter.smt2
+  same      sat
+  same      (
+  skipped     (define-fun b () Int
+  skipped       0)
+  skipped     (define-fun amount () Int
+  skipped       1)
+  skipped     (define-fun a () Int
+  skipped       0)
+  same      )
+  same      == starter_guarded.smt2
+  same      unsat
+  same      == starter_guarded_get_model.smt2
+  same      unsat
+  same      (error "line 8 column 10: model is not available")
+  same      == unknown_theory.smt2
+  same      unknown
+  same      (:reason-unknown "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))")
+  same      == unknown_canceled.smt2
+  same      unknown
+  same      (:reason-unknown "canceled")
+reproduced: 16 of 16 verdict lines

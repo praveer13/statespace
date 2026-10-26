@@ -1,0 +1,24 @@
+{
+  "name": "@statespace/ledger",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The browser's evidence log as pure code: event@1 records, the canonical conflict rule, merge, fold, codec, read-time provenance weights, the keep/kill experiment seed and the keep/kill allocation, entry and read functions.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./keepkill": "./src/keepkill/index.ts"
+  },
+  "scripts": {
+    "generate": "node scripts/build-rules.ts",
+    "typecheck": "tsc -p . && tsc -p test",
+    "test": "node scripts/build-rules.ts --check && node --test \"test/*.test.ts\" \"test/storage/*.test.ts\""
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.5"
+  },
+  "dependencies": {
+    "@statespace/rng": "0.0.0",
+    "@statespace/schema": "0.0.0"
+  }
+}

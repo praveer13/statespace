@@ -1,0 +1,6 @@
+(declare-const x Int)
+(declare-const y Int)
+(assert (= (^ x y) 8))
+(assert (> y 1))
+(check-sat)
+(get-info :reason-unknown)

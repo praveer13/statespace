@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "id": "queue",
+      "ok": true,
+      "summary": "queue: 0 h now, 0.25 h with W0-T11 in review; the gate is 10 h; W1 plans 33.25 h",
+      "lines": [
+        "      queue  0 tasks in review: 0 h",
+        "      queue  W0-T11 (todo) counted as in review: 0.25 h",
+        "      queue  with W0-T11 in review: 0.25 h",
+        "  ok    gate   the queue is under 10 h now and with the assumed task (OD-7)",
+        "      tasks  263: done 23, todo 240; W0 24: done 23, todo 1",
+        "  ok    plan   W1 plans 44 tasks with owner review and 33.25 h; waves[].review_h says 33.25 h"
+      ],
+      "data": {
+        "in_review": [],
+        "hours": 0,
+        "assumed": [
+          {
+            "id": "W0-T11",
+            "status": "todo",
+            "review_h": 0.25
+          }
+        ],
+        "hours_with_assumed": 0.25,
+        "gate_h": 10,
+        "under_gate": true,
+        "under_gate_with_assumed": true,
+        "statuses": {
+          "done": 23,
+          "todo": 240
+        },
+        "w0_tasks": 24,
+        "plan_w1": {
+          "wave": "W1",
+          "tasks": 44,
+          "hours": 33.25,
+          "declared_h": 33.25,
+          "agrees": true
+        }
+      }
+    }
+  ]
+}

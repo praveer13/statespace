@@ -1,0 +1,563 @@
+{
+  "id": "RUN-audit-gate",
+  "title": "GATE-audit: green on this repository (no pool yet), failing closed on the W1-shaped fixture pool without a keying battery, green on it with the stand-in battery and failing on relabeled copies counted as exemplars and on a battery whose keys spell their load-bearing lines otherwise, the planted-fault self-check holding and failing on every weakened rule, and the tests passing",
+  "task": "W1-T40",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-26T09:33:00.449Z",
+  "started_at": "2026-10-26T09:30:05.661Z",
+  "duration_s": 174.627,
+  "argv": [
+    "node",
+    "scripts/verify-audit.mjs",
+    "--root",
+    "<sandbox>/audit-tree-battery"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-audit.mjs",
+      "sha256": "5df9b27c8a0f5b22fc6abb1011ba9762741ca332366279f6820762ace7106b28",
+      "bytes": 70963,
+      "role": "gate"
+    },
+    {
+      "path": "scripts/verify-audit-blind.mjs",
+      "sha256": "7d9256506b8152ac1069cfbc76cebe239902e5048b6b20247e20902f0cd043c7",
+      "bytes": 94572,
+      "role": "the other gate, which the tests also run"
+    },
+    {
+      "path": "scripts/spikes/W1-T40",
+      "sha256": "fa60f84ef9b0b2ad34746e44cb753118b1502a449a08c800060e9825612a738a",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path but README.md",
+      "files": 9,
+      "role": "the gates' library, fixtures, calibration, tests and this recording script"
+    },
+    {
+      "path": "packages/ids/src/registry.json",
+      "sha256": "f5ebbaa50f23938f796902f66b654454d6e6ad33d46dd1a34ffbd818dbcd8c1f",
+      "bytes": 163471,
+      "role": "the spine registry (anchors, stages, gap classes, KCs, lessons, labs)"
+    },
+    {
+      "path": "docs/spine/SPINE.md",
+      "sha256": "a595b3064ebba5244ae1a0dbb9f5d66201dc9830260bfd49f3989c21b6a4035d",
+      "bytes": 460920,
+      "role": "section 6.2, the anchors' classes and key runs"
+    },
+    {
+      "path": "content/stages/budget.yaml",
+      "sha256": "2380fb5c461ab3b6396eae7e1a3dc784f7382dd3de42647f00c9855f6d3c065a",
+      "bytes": 23362,
+      "role": "the two published paths"
+    },
+    {
+      "path": "tracker/tasks.yaml",
+      "sha256": "1abb42088ed9d98471c6d9f90a6112b1d5df8ee3748c342c102a5a5aae5f76a9",
+      "bytes": 351876,
+      "role": "the landing tasks of pending declarations"
+    },
+    {
+      "path": "packages/rng/src/draw.ts",
+      "sha256": "737d89332296ee72f824f937c2568d84672652af90df279448f87bde599f711f",
+      "bytes": 6390,
+      "role": "the seeded draws"
+    },
+    {
+      "path": "packages/generators/src/core/fixture/engine.ts",
+      "sha256": "2747361d5712686291ce5d3e4308acacb74de43020f76a924fe8514ca4fdbe84",
+      "bytes": 4204,
+      "role": "the box engine the stand-in battery runs"
+    }
+  ],
+  "budget": {
+    "network": "none",
+    "engines": "the generator framework's box engine (fixture-box), in-process"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-audit: 8 anchors, 52 cases; 44 re-keyed by the battery (packages/generators/src/spot-the-gap/index.ts; ports: fixture-box), 8 keyed by their runs while their engine's lane is pending",
+    "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+    "  Clearinghouse: no family shipped yet (W3-T14)",
+    "  note: the battery exports no regenerate(): listed variants are not compared with their generator",
+    "GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-audit-gate/nightly.log",
+      "sha256": "b43e529d57b5f2b74fad7d2af21ffb340d3ece7723a3eed027b102570e1bac83",
+      "bytes": 167,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/fixture-pool-no-battery.log",
+      "sha256": "44068373b8f978816ea5b31412a1b98f1032a923d61b16e5d5f112803783fea5",
+      "bytes": 609,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/fixture-pool-battery.log",
+      "sha256": "ff0e71b7485f4575472eeba79591028257fa9962a0ce8b6c73028208eb5e8b2d",
+      "bytes": 583,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/fixture-pool-relabeled-copies.log",
+      "sha256": "0e62415e5e49dfc35a8034ff1e5c8d10bf559baabaf4b2a5bc3a2d557fd0cc16",
+      "bytes": 2192,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/fixture-pool-battery-misspelled-lines.log",
+      "sha256": "ea3cc5eb614057d755f93403fbcd3012a47db74cc035929d32479878c2553886",
+      "bytes": 4701,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/self-check.log",
+      "sha256": "a300d83cbc7edb4a4cf96e26dde6d40c503f8014ffaa3670239d64a9256c11f6",
+      "bytes": 24483,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/tests.log",
+      "sha256": "24fba8245d465bc580f7bdfc351522175ac0805c62cc63d9d93dbdcb040b9bb2",
+      "bytes": 12058,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-audit-gate/mutants.log",
+      "sha256": "f3a3a9da09ca75dccd2fbe6d81c02fe6e24383e4360a47b51fa909236635d12d",
+      "bytes": 25173,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "fixture": {
+      "anchors": 8,
+      "cases": 52,
+      "rekeyed": 44,
+      "pending_rekey": 8
+    },
+    "exemplars_line": "exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+    "relabeled_copies": {
+      "exemplars_line": "exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 2 (short of 6); G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+      "verdict": "GATE-audit: FAIL (6 findings: exemplars 6)"
+    },
+    "self_check_cases": 136,
+    "tests": "48",
+    "mutants": "mutants: 143 of 143 killed, 0 survived, 0 errors (GATE-audit 143 of 143)"
+  },
+  "checks": [
+    {
+      "id": "nightly-green",
+      "pass": true
+    },
+    {
+      "id": "fails-closed-without-battery",
+      "pass": true
+    },
+    {
+      "id": "fixture-pool-green-with-battery",
+      "pass": true
+    },
+    {
+      "id": "relabeled-copies-fail",
+      "pass": true
+    },
+    {
+      "id": "battery-key-shape-fails",
+      "pass": true
+    },
+    {
+      "id": "self-check-holds",
+      "pass": true
+    },
+    {
+      "id": "tests-pass",
+      "pass": true
+    },
+    {
+      "id": "every-mutant-killed",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "fixture-pool-battery",
+  "configs": [
+    {
+      "id": "nightly",
+      "origin": "recorded",
+      "purpose": "GATE-audit as the nightly lane runs it, on this repository, whose pool does not exist yet",
+      "started_at": "2026-10-26T09:30:05.661Z",
+      "duration_s": 0.086,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "GATE-audit: there is no audit pool yet (content/audit/ arrives with W1-T33 and W1-T34)",
+        "  Clearinghouse: no family shipped yet (W3-T14)",
+        "GATE-audit: green (no pool yet)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/nightly.log",
+          "sha256": "b43e529d57b5f2b74fad7d2af21ffb340d3ece7723a3eed027b102570e1bac83",
+          "bytes": 167,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fixture-pool-no-battery",
+      "origin": "recorded",
+      "purpose": "the gate on the W1-shaped fixture pool with no keying battery: it fails closed on every case it cannot re-key and names W1-T25",
+      "started_at": "2026-10-26T09:30:05.747Z",
+      "duration_s": 0.13,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs",
+        "--root",
+        "<sandbox>/audit-tree"
+      ],
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "verdict_lines": [
+        "GATE-audit: 8 anchors, 52 cases; 0 re-keyed by the battery (no battery: W1-T25), 8 keyed by their runs while their engine's lane is pending",
+        "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+        "  Clearinghouse: no family shipped yet (W3-T14)",
+        "FAIL  battery  packages/generators/src/spot-the-gap/index.ts  no keying battery, so 44 cases cannot be re-keyed: GEN-spot-the-gap (W1-T25) exports auditBattery (scripts/spikes/W1-T40/README.md section 4)",
+        "GATE-audit: FAIL (1 finding: battery 1)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/fixture-pool-no-battery.log",
+          "sha256": "44068373b8f978816ea5b31412a1b98f1032a923d61b16e5d5f112803783fea5",
+          "bytes": 609,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fixture-pool-battery",
+      "origin": "recorded",
+      "purpose": "the gate on the same pool with the stand-in battery in GEN-spot-the-gap's place: every pair member and variant re-keyed on the box engine or keyed by its executed run, and six structurally distinct exemplars or more for G2, G4 and G5 (each S1 anchor's seven flawed cases differ in label and in their texts beyond numeric literals)",
+      "started_at": "2026-10-26T09:30:05.878Z",
+      "duration_s": 0.276,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs",
+        "--root",
+        "<sandbox>/audit-tree-battery"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "GATE-audit: 8 anchors, 52 cases; 44 re-keyed by the battery (packages/generators/src/spot-the-gap/index.ts; ports: fixture-box), 8 keyed by their runs while their engine's lane is pending",
+        "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+        "  Clearinghouse: no family shipped yet (W3-T14)",
+        "  note: the battery exports no regenerate(): listed variants are not compared with their generator",
+        "GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/fixture-pool-battery.log",
+          "sha256": "ff0e71b7485f4575472eeba79591028257fa9962a0ce8b6c73028208eb5e8b2d",
+          "bytes": 583,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fixture-pool-relabeled-copies",
+      "origin": "recorded",
+      "purpose": "the same pool with the battery, AUD-1.2's six variant pairs replaced by byte-identical copies of its pair v1 relabeled copy-1 to copy-6: the gate must fail, each copy after the first repeating copy-1 under another label and G4 short of six exemplars",
+      "started_at": "2026-10-26T09:30:06.154Z",
+      "duration_s": 0.187,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs",
+        "--root",
+        "<sandbox>/audit-tree-relabeled-copies"
+      ],
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "verdict_lines": [
+        "GATE-audit: 8 anchors, 52 cases; 44 re-keyed by the battery (packages/generators/src/spot-the-gap/index.ts; ports: fixture-box), 8 keyed by their runs while their engine's lane is pending",
+        "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 2 (short of 6); G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+        "  Clearinghouse: no family shipped yet (W3-T14)",
+        "  note: the battery exports no regenerate(): listed variants are not compared with their generator",
+        "FAIL  exemplars  AUD-1.2/copy-2-flawed  repeats AUD-1.2/copy-1-flawed under another label (artifact copy-2): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)",
+        "FAIL  exemplars  AUD-1.2/copy-3-flawed  repeats AUD-1.2/copy-1-flawed under another label (artifact copy-3): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)",
+        "FAIL  exemplars  AUD-1.2/copy-4-flawed  repeats AUD-1.2/copy-1-flawed under another label (artifact copy-4): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)",
+        "FAIL  exemplars  AUD-1.2/copy-5-flawed  repeats AUD-1.2/copy-1-flawed under another label (artifact copy-5): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)",
+        "FAIL  exemplars  AUD-1.2/copy-6-flawed  repeats AUD-1.2/copy-1-flawed under another label (artifact copy-6): its statement, diff and receipt are the same, so it is not a new exemplar of G4; an exemplar differs structurally, not by its label or by re-seeded constants (AUDIT-DESK 4)",
+        "FAIL  exemplars  G4  G4 has 2 exemplars; a class whose anchors have shipped needs at least 6 that differ structurally: in operator, artifact or medium, and in their texts beyond numeric literals (shipped: AUD-1.2)",
+        "GATE-audit: FAIL (6 findings: exemplars 6)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/fixture-pool-relabeled-copies.log",
+          "sha256": "0e62415e5e49dfc35a8034ff1e5c8d10bf559baabaf4b2a5bc3a2d557fd0cc16",
+          "bytes": 2192,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fixture-pool-battery-misspelled-lines",
+      "origin": "recorded",
+      "purpose": "the same pool with AUD-1.1's flawed member declaring load-bearing lines that are not its unsat core, and a battery in GEN-spot-the-gap's place that wraps the stand-in and returns each flawed key's lines as loadBearing, the spelling of the case it receives: the gate must fail on every flawed key that carries no evidence {type, load_bearing}, instead of reading the missing lines as agreement",
+      "started_at": "2026-10-26T09:30:06.341Z",
+      "duration_s": 0.209,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs",
+        "--root",
+        "<sandbox>/audit-tree-battery-misspelled-lines"
+      ],
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "verdict_lines": [
+        "GATE-audit: 8 anchors, 52 cases; 44 re-keyed by the battery (packages/generators/src/spot-the-gap/index.ts; ports: fixture-box), 8 keyed by their runs while their engine's lane is pending",
+        "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
+        "  Clearinghouse: no family shipped yet (W3-T14)",
+        "  note: the battery exports no regenerate(): listed variants are not compared with their generator",
+        "FAIL  battery  AUD-1.1/flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v1-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v2-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v3-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v4-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v5-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.1/v6-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v1-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v2-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v3-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v4-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v5-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.2/v6-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v1-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v2-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v3-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v4-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v5-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-1.3/v6-flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  AUD-2.1/flawed  the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "GATE-audit: FAIL (22 findings: battery 22)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/fixture-pool-battery-misspelled-lines.log",
+          "sha256": "ea3cc5eb614057d755f93403fbcd3012a47db74cc035929d32479878c2553886",
+          "bytes": 4701,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "one planted fault at a time in the fixture pool, each of which must fail the gate: the anchor (its ID, registration, file name, stage, class, medium, scheduling, KCs, its \"based on\" card with its incident, date, date marks and source and without code, spine 6.2's key-run cell, the pair, the anchor's class on a flawed member, the variants field); the cases (form, id, duplicates, keys and acceptable classes, a key that writes primary, a sound key with acceptable classes, acceptable classes that are not a list, statement, texts); typed evidence (missing, of the wrong type, without its artifact, a sound case's restatement with no scenarios or two while three pass, no load-bearing lines or four, malformed, out of range or repeated ones, line-anchored evidence on three lines while four pass); key runs and key lines (missing, not a run ID, not on disk, malformed, empty, not stated, stated only inside a word, not stated in the configuration named); the keying battery (another class or a subclass of the case's, a flawed case keyed sound, an acceptable set narrower, wider, or of the same size with another class, another evidence type, load-bearing lines that differ, hold one line more or hold part of the core, a vacuous sound case, unknown, no port, no key, no battery, a variant whose statement, diff or receipt drifted, or whose statement gained a blank first line, while a faithful regenerate passes, and the case as the battery receives it); the key's shape (keys that spell their lines loadBearing, flawed keys without evidence, with evidence null or without its type, with their acceptable classes as text or as numbers, or with an empty class, G2 keys without their recomputed lines or with their lines as numbers, sound keys without their primary class); exemplars (five while exactly six pass, one shared label, relabeled copies, copies that differ only in white space, copies re-seeded in decimal literals or in every literal form README section 3 names, a flipped sign included, empty variants lists); pending declarations (variants on an anchor that ships with them, done or unknown tasks, a re-keying with no task, malformed or without a key run, a re-key still pending once its engine has a port); variants (no pair, no sound form, two claims, no operator, an operator the spine does not list or one that cannot key the class, a generator reference to template t5, to band 4 or with a seed past the uint32 range, while t4, band 3 and seed 2^32 - 1 pass); nine Clearinghouse faults (a naive baseline above its bar, a naive mean exactly at it, a naive mean that meets it though its first and lowest seed does not, a reference below its bar, a reference mean below it though its first and highest seed reaches it, scores that change between executions, reference scores alone that change, no recorded seeds, a score that is not a number), with a reference exactly at its bar passing; --strict on a pending re-key, pending variants and an empty pool; --only naming a missing anchor; and three file faults (a file that does not parse, one that holds no mapping, two files for one anchor). The clean pool must pass, in memory and read from files, with a draft file named with an underscore and a readme beside it",
+      "started_at": "2026-10-26T09:30:06.551Z",
+      "duration_s": 1.582,
+      "argv": [
+        "node",
+        "scripts/verify-audit.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "held  -              the clean W1-shaped fixture passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)",
+        "held  anchor         an anchor whose id is not an anchor ID: aud-1.1: content/audit/aud-1.1.yaml: id must be an anchor ID (AUD-n.k), got \"aud-1.1\"",
+        "held  anchor         an anchor ID the spine does not register: AUD-1.9: AUD-1.9 is not an audit anchor of the spine's registry (spine section 6.2)",
+        "held  anchor         an anchor file not named after its ID: AUD-1.1: AUD-1.1 lives in content/audit/AUD-1.9.yaml: an anchor's file is named after its ID (content/audit/AUD-1.1.yaml)",
+        "held  anchor         an anchor whose stage is not the spine's: AUD-1.1: AUD-1.1 belongs to S1 in the spine, not S2",
+        "held  anchor         an anchor whose class differs from the spine: AUD-1.2: class G8 differs from spine section 6.2, which gives G4",
+        "held  fields         an anchor without its class: AUD-1.1: class is missing (the anchor's class in spine section 6.2, or none for a sound anchor)",
+        "held  fields         an anchor whose class is not a gap class: AUD-1.1: class G99 is not a gap class of spine section 6.1",
+        "held  fields         an anchor without its medium: AUD-1.1: medium is missing",
+        "held  fields         an anchor scheduled after nothing: AUD-1.1: scheduled_after must list the labs, lab stages or lessons the case is scheduled after, as IDs (AUDIT-DESK 3.1)",
+        "held  fields         an anchor scheduled after a unit the registry does not have: AUD-1.1: scheduled_after names S1.L99, which is not a lab, lab stage or lesson of the registry",
+        "held  fields         an anchor scheduled before its stage's lab: AUD-2.1: scheduled_after names no lab or lab stage of S2; a case is scheduled after the lab that teaches its class (AUDIT-DESK 5.1)",
+        "held  fields         an anchor without its KCs: AUD-1.1: kcs must list the anchor's KCs, as IDs",
+        "held  fields         a KC the registry does not have: AUD-1.1: KC-1.no-such-kc is not a KC of the registry",
+        "held  based-on       an anchor without its \"based on\" card: AUD-1.1: the \"based on\" card (based_on: incident, date, date_marks, source) is missing",
+        "held  based-on       a \"based on\" card without its incident: AUD-1.1: based_on.incident is missing: the dated incident the case is based on",
+        "held  based-on       a \"based on\" card whose date is not a date: AUD-1.2: based_on.date must be a quoted date (YYYY-MM-DD, YYYY-MM or YYYY), got \"August 2010\"",
+        "held  based-on       a \"based on\" card that does not say which event its date marks: AUD-1.1: based_on.date_marks is missing: the card says which event its date marks (spine section 6)",
+        "held  based-on       a \"based on\" card without its source: AUD-1.1: based_on.source is missing: a URL, or a path in this repository",
+        "held  based-on       a \"based on\" source that is neither a URL nor a path here: AUD-5.3: based_on.source docs/history/no-such-folder/ is neither a URL nor a path in this repository",
+        "held  based-on       a \"based on\" card that ships code: AUD-1.1: based_on.incident holds code; a \"based on\" card cites its incident and never ships exploit code (AUDIT-DESK 1.3)",
+        "held  key-run        no case keyed by a run of spine 6.2's Key run cell: AUD-1.1: no case is keyed by a run of spine section 6.2's Key run cell (RUN-z3-vacuous-unsat)",
+        "held  pairs          an anchor without its sound member: AUD-1.1: an anchor is a matched pair: its cases need a sound and a flawed member (AUDIT-DESK 3)",
+        "held  key            no flawed member keyed with the anchor's class: AUD-1.2: no flawed member is keyed G4, the anchor's class",
+        "held  fields         an anchor without a variants field: AUD-2.1: variants must list the anchor's variants, or say when they land ({pending: {lands: <task>}})",
+        "held  fields         variants pending without their task: AUD-2.1: variants: {pending: {lands: <task>}} names the tracker task its variants land with",
+        "held  fields         an anchor with an empty variants list: AUD-1.1: variants is an empty list: list the anchor's variants, or, for an anchor that spine section 6 ships without them, say when they land ({pending: {lands: <task>}})",
+        "held  fields         a case that is not a mapping: AUD-1.1: /variants/12 is not a mapping",
+        "held  fields         a case without a valid id: AUD-1.1: /variants/0: a case needs an id (lower case, digits and hyphens)",
+        "held  fields         two cases with one id: AUD-1.1/sound: the id sound is used twice in AUD-1.1",
+        "held  key            a case without a key: AUD-1.1/flawed: a case needs a key: none, a gap class, or {class, also}",
+        "held  key            a key that writes primary beside its class: AUD-1.1/flawed: write key: {class: G2, also: [G1]}; `primary` is a KC tag key that GATE-kc reads in every content record",
+        "held  key            a sound key with acceptable classes: AUD-1.1/sound: a sound key has no acceptable classes",
+        "held  key            a key whose acceptable classes are not a list: AUD-1.1/flawed: key.also must be a list of gap classes",
+        "held  key            a key whose class is not a gap class: AUD-1.1/v1-flawed: G99 is not a gap class of spine section 6.1",
+        "held  key            an acceptable class that is not a gap class: AUD-1.1/v1-flawed: the acceptable class G99 is not a gap class of spine section 6.1",
+        "held  fields         a case without a statement: AUD-1.2/v1-sound: statement is missing: the Desk shows the statement first (AUDIT-DESK 5.4, step 1)",
+        "held  fields         a receipt that is not text: AUD-1.2/v1-sound: receipt must be text",
+        "held  evidence       a case without evidence: AUD-2.2/flawed: evidence is missing: {type, load_bearing, ...} (AUDIT-DESK 6.3)",
+        "held  evidence       evidence of a type the class does not take: AUD-1.2/flawed: a G4 finding carries witness evidence, not declaration (AUDIT-DESK 6.3)",
+        "held  evidence       a witness without its reference artifact: AUD-1.2/flawed: witness evidence needs a reference artifact from the key run (evidence.reference), which the replay validates",
+        "held  evidence       a sound case whose evidence is not its restatement: AUD-1.1/sound: a sound case's evidence is its restatement (type: restatement), not declaration",
+        "held  evidence       a restatement without scenarios: AUD-1.1/sound: a restatement holds at least three scenarios, each with its text (AUDIT-DESK 5.4, step 3)",
+        "held  evidence       a restatement with two scenarios: AUD-1.1/sound: a restatement holds at least three scenarios, each with its text (AUDIT-DESK 5.4, step 3)",
+        "held  -              … and one with exactly three, which passes: GATE-audit: green (8 anchors, 52 cases, 44 re-keyed, 8 pending re-key)",
+        "held  evidence       a flawed case without load-bearing lines: AUD-2.2/flawed: load_bearing lists the one to three lines that carry the class (AUDIT-DESK 6.3)",
+        "held  evidence       a flawed case with four load-bearing lines: AUD-1.1/flawed: load_bearing lists the one to three lines that carry the class (AUDIT-DESK 6.3)",
+        "held  evidence       line-anchored evidence on a case with three selectable lines: AUD-1.1/flawed: the case has 3 selectable lines; line-anchored evidence needs at least 4, so that selecting every line cannot validate it (AUDIT-DESK 6.3)",
+        "held  -              … and on a case with four, which passes that rule: no evidence finding (battery)",
+        "held  evidence       a load-bearing entry that is not a line reference: AUD-1.1/flawed: load_bearing entries are statement:N, diff:N or receipt:N, got \"line 6\"",
+        "held  evidence       a load-bearing line the case does not have: AUD-1.1/flawed: statement:99 is not a non-blank line of the case's statement",
+        "held  evidence       a load-bearing line listed twice: AUD-1.1/flawed: statement:7 is listed twice in load_bearing",
+        "held  key-run        a pair member without a key run: AUD-1.2/sound: a pair member names the executed run that keys it (key_run: RUN-...)",
+        "held  key-run        a key run named by a path, not a run ID: AUD-1.1/flawed: key_run must be a run ID, got \"../runs/RUN-z3-vacuous-unsat\"",
+        "held  key-run        a key run that is not on disk: AUD-1.1/flawed: RUN-z3-no-such-run is not on disk (runs/RUN-z3-no-such-run.json): every key is set by an executed run (spine section 6)",
+        "held  key-run        a key line that is neither a line nor {config, line}: AUD-1.1/flawed: key_lines entries are a line, or {config, line}",
+        "held  key-run        a pair member whose key run quotes no line: AUD-1.1/flawed: key_lines quotes the verdict lines of RUN-z3-vacuous-unsat that carry the key",
+        "held  key-run        a key line its run does not state: AUD-1.1/flawed: RUN-z3-vacuous-unsat states no verdict line \"[max0_guarded_premises] sat\"",
+        "held  key-run        a key line found in its run only inside a word ('sat' in 'unsat'): AUD-1.1/v1-flawed: RUN-cvc5-alethe states no verdict line \"sat\"",
+        "held  key-run        a key line in a configuration that does not state it: AUD-5.3/flawed: RUN-tlc-doublespend (1.8.0-deadlock) states no verdict line \"Error: Deadlock reached.\"",
+        "held  battery        the battery keys a case another class: AUD-1.1/flawed: the key changed: the battery keys it G2, the case says G4",
+        "held  battery        a sound case the battery finds vacuous: AUD-1.1/sound: the key changed: the battery keys it G2, the case says none: sound",
+        "held  battery        a flawed case the battery keys sound: AUD-1.1/flawed: the key changed: the battery keys it none: sound, the case says G2",
+        "held  battery        a case whose acceptable set is narrower than the one the battery computes: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2",
+        "held  battery        a case whose acceptable set is wider than the one the battery computes: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2, G1, G12",
+        "held  battery        a case whose acceptable set has the size of the one the battery computes but another class: AUD-1.1/flawed: the key changed: the battery's acceptable set is G2, G1, the case says G2, G12",
+        "held  battery        a case whose evidence type is not the one the battery computes: AUD-1.2/flawed: the key changed: the battery asks for identifiers evidence, the case says witness",
+        "held  battery        load-bearing lines that are not the recomputed unsat core: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:3, statement:7",
+        "held  battery        load-bearing lines that hold the recomputed unsat core and one line more: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:3, statement:6, statement:7",
+        "held  battery        load-bearing lines that hold part of the recomputed unsat core: AUD-1.1/flawed: the key changed: the battery's load-bearing lines are statement:6, statement:7, the case says statement:6",
+        "held  battery        the battery keys a subclass of the case's class (G1a where the case says G1): AUD-2.1/flawed: the key changed: the battery keys it G1a, the case says G1",
+        "held  battery        a battery whose keys spell their lines loadBearing, as the case it receives does: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose flawed keys carry no evidence: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery that recomputes no load-bearing lines for a G2 case: AUD-1.1/flawed: the battery's key recomputed no load-bearing lines for a G2 case, whose lines are the premises' unsat core (AUDIT-DESK 6.3) (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose flawed keys give their acceptable classes as text, not a list: AUD-1.1/flawed: the battery's key carries no also list of acceptable classes for a flawed case, so its acceptable set was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose sound keys leave out their primary class: AUD-1.1/sound: the battery's key names no primary class (a class, or 'none' for a sound case), so its class was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose flawed keys carry their lines but no evidence type: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose flawed keys carry evidence: null: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose G2 keys give their load-bearing lines as numbers, not line references: AUD-1.1/flawed: the battery's key carries no evidence {type, load_bearing} for a flawed case, so its evidence was not compared (scripts/spikes/W1-T40/README.md section 4)",
+        "held  battery        a battery whose flawed keys list acceptable classes that are not text: AUD-1.1/flawed: the battery's key carries no also list of acceptable classes for a flawed case, so its acceptable set was not compared (scripts/spikes/W1-T40/README.md section 4)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/self-check.log",
+          "sha256": "a300d83cbc7edb4a4cf96e26dde6d40c503f8014ffaa3670239d64a9256c11f6",
+          "bytes": 24483,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "tests",
+      "origin": "recorded",
+      "purpose": "the tests of both gates and their library",
+      "started_at": "2026-10-26T09:30:08.133Z",
+      "duration_s": 99.196,
+      "argv": [
+        "node",
+        "--test",
+        "scripts/spikes/W1-T40/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "# tests 48",
+        "# pass 48",
+        "# fail 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/tests.log",
+          "sha256": "24fba8245d465bc580f7bdfc351522175ac0805c62cc63d9d93dbdcb040b9bb2",
+          "bytes": 12058,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "mutants",
+      "origin": "recorded",
+      "purpose": "GATE-audit's rules weakened one at a time in a scratch copy of the gates and lib/ (scripts/spikes/W1-T40/mutants.mjs): the exemplar count, the battery's comparisons in both directions and the key's shape, the regenerated texts, the pending declarations, --strict and --only, the Clearinghouse at its bar and over every seed, and every rule of the pool contract with the edges of its counts and literal forms, plus, made stricter, the values at an edge that pass; its self-check must fail on every one",
+      "started_at": "2026-10-26T09:31:47.329Z",
+      "duration_s": 72.961,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T40/mutants.mjs",
+        "--gate",
+        "audit"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "mutants: 143 of 143 killed, 0 survived, 0 errors (GATE-audit 143 of 143)"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-audit-gate/mutants.log",
+          "sha256": "f3a3a9da09ca75dccd2fbe6d81c02fe6e24383e4360a47b51fa909236635d12d",
+          "bytes": 25173,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "every configuration ran on the host with no container"
+    }
+  ],
+  "notes": [
+    "The repository has no audit pool yet (W1-T33, W1-T34) and no keying battery (W1-T25); the fixture configurations run the gate on the W1-shaped pool of scripts/spikes/W1-T40/lib/fixtures.mjs written as files, first with no battery, then with the stand-in battery placed where GEN-spot-the-gap will live.",
+    "The stand-in battery keys G2 and sound cases by running the box engine (the premises, their smallest unsat subset, the violation query) and reads the other classes from a recorded verdict; it tests the gate, not the classes. The eight cases of AUD-2.2, AUD-2.3, AUD-2.4 and AUD-5.3 wait for their engines' lanes (W2-T01, W3-T05) and are keyed by their executed runs meanwhile.",
+    "Exemplars (AUDIT-DESK 4): a flawed case counts only when its label (operator, artifact, medium) is new for its class and its statement, diff and receipt differ from every exemplar counted there once white space is collapsed and numeric literals are replaced; a new label on a counted structure is a finding. The fixture's S1 variants are structurally distinct (six contradictions with their own unsat cores for G2, six arithmetic slips for G4, six inconclusive or bounded results reported as verdicts for G5), and fixture-pool-relabeled-copies plants the copies the rule exists to catch.",
+    "fixture-pool-battery-misspelled-lines: the key a battery returns carries primary, also and evidence {type, load_bearing} (README section 4). A battery that returns its lines as loadBearing, the spelling of the case it receives, would otherwise have its lines read as absent and the comparison skipped, so AUD-1.1's wrong lines would pass; the gate fails on each flawed key whose evidence it cannot read.",
+    "mutants: each mutant of scripts/spikes/W1-T40/mutants.mjs replaces one exact piece of the gate's source in a scratch copy, which weakens one rule that the gate's header, the README or the spine names (those named *-strict make it stricter instead, failing a valid value at the edge of a rule), and runs the gate's self-check; every one must make it fail. The list holds one plain weakening per rule and per edge, not every weakening a rule admits.",
+    "This ran on the development host, not on a CI runner.",
+    "Spine section 9.5 registers no run for this task; the ID is proposed once a scanned document cites it."
+  ]
+}

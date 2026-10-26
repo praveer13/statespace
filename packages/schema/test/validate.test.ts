@@ -11,7 +11,13 @@ const jsonFiles = (dir: string): string[] => readdirSync(new URL(`${dir}/`, fixt
 const RECORDS = ['claim', 'event', 'ir']
 
 test('the package embeds every published schema', () => {
-  assert.deepEqual([...SCHEMA_NAMES].sort(), ['claim', 'defs', 'event', 'ir', 'receipt', 'run'])
+  // Every schemas/<name>.schema.json is published (drafts/ is not); W1 tasks add more, so the list is read from schemas/.
+  const published = readdirSync(new URL('../../../schemas/', import.meta.url))
+    .filter((f) => f.endsWith('.schema.json'))
+    .map((f) => f.slice(0, -'.schema.json'.length))
+    .sort()
+  for (const name of ['claim', 'defs', 'event', 'ir', 'lesson', 'receipt', 'run']) assert.ok(published.includes(name), `schemas/${name}.schema.json is published`)
+  assert.deepEqual([...SCHEMA_NAMES].sort(), published)
   for (const doc of SCHEMA_DOCUMENTS) assert.match(doc.id, /^urn:statespace:[a-z]+@1$/)
 })
 

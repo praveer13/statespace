@@ -1,0 +1,29 @@
+z3 5.3.1 rlimit=5000000
+[clamp_mint] sat [c = 0, m = 0, r = 1]
+  replay ok: c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+@@ {"model": {"c": "0", "m": "0", "r": "1"}, "ms": 1.3, "q": "clamp_mint", "replay": "c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "c778a94960fb1cce1a6bf54248d17c654d62686bab0b8031e48b7e66b4f1c6be", "smt2_sha256": "68c642919b1f2e7ad6545df65a05a8ea1aa0fff64a3adf77f2ec6caf146eec9a", "verdict": "sat"}
+[clamp_merchant_nonneg] unsat
+@@ {"ms": 0.7, "q": "clamp_merchant_nonneg", "rlimit": 5000000, "smt2_raw_sha256": "7f3d01a86d3525cf3cffb3a21ec0246c5a17110299a35559748810cddf974eb2", "smt2_sha256": "7f3d01a86d3525cf3cffb3a21ec0246c5a17110299a35559748810cddf974eb2", "verdict": "unsat"}
+[minimize_minted] sat minimum minted = 1 [c = 0, m = 0, r = 1]
+  replay ok: c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+@@ {"minimum": "1", "model": {"c": "0", "m": "0", "r": "1"}, "ms": 0.52, "objective": "minted", "q": "minimize_minted", "replay": "c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok", "replays": true, "rlimit": 5000000, "smt2_sha256": null, "verdict": "sat"}
+[patch_empty_merchant_mint] sat [c = 0, r = 2, m = 1]
+  replay ok: c=0 m=1 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+@@ {"model": {"c": "0", "m": "1", "r": "2"}, "ms": 0.86, "q": "patch_empty_merchant_mint", "replay": "c=0 m=1 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "ccb8be228f6311230c8ae707e4c7410d322509b0d4f559eb96b2b677da33a5e6", "smt2_sha256": "df3982852423ae6b20b6a0d69d7cb57b124ed1007b5343c26715ab7662b6a35e", "verdict": "sat"}
+[patch_exact_witness_mint] sat [r = 2, c = 0, m = 0]
+  replay ok: c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok
+@@ {"model": {"c": "0", "m": "0", "r": "2"}, "ms": 0.91, "q": "patch_exact_witness_mint", "replay": "c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "f5b2d01592021ac4d7323a2acc09d5d6acbf7963f4251bf10b8e9c24e94444ac", "smt2_sha256": "34007627ece1eab17415289c85b9afac0711cad4cc4008ab1d47bd43826ae1ea", "verdict": "sat"}
+[minimize_minted_patch_exact] sat minimum minted = 2 [c = 0, m = 0, r = 2]
+  replay ok: c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok
+@@ {"minimum": "2", "model": {"c": "0", "m": "0", "r": "2"}, "ms": 0.76, "objective": "minted", "q": "minimize_minted_patch_exact", "replay": "c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok", "replays": true, "rlimit": 5000000, "smt2_sha256": null, "verdict": "sat"}
+[no_smaller_mint] unsat
+@@ {"ms": 0.72, "q": "no_smaller_mint", "rlimit": 5000000, "smt2_raw_sha256": "733170bd31c0bd00f6b8aa3cc1312e57de39a49071d16107e880b62b791bf0b2", "smt2_sha256": "7d61db1c1a3c726a1050f5be78edbd3c5c72a527dba93c6db9ce5d2d1ce2c564", "verdict": "unsat"}
+[no_smaller_mint_patch_exact] unsat
+@@ {"ms": 0.86, "q": "no_smaller_mint_patch_exact", "rlimit": 5000000, "smt2_raw_sha256": "cd69794d6217d55fa60a63245f0e242954caa40e40906687e41b93a948974378", "smt2_sha256": "91acf9372dd546878315f815cfa00e6f63f3f66e3906216c82680ba8591261d5", "verdict": "unsat"}
+[fixed_mint] unsat
+@@ {"ms": 0.76, "q": "fixed_mint", "rlimit": 5000000, "smt2_raw_sha256": "b6ed796fe71efc299db06d0975c81607565d271c6b9c17cacbfc86e2ae4544d4", "smt2_sha256": "129bec89e55dae44f782b97a7318f177442272b5f17c71491afe058430cb680b", "verdict": "unsat"}
+[fixed_premises] sat [c = 0, m = 1, r = 1]
+  replay ok: c=0 m=1 r=1: c >= 0, m >= 0, r > 0 ok, r <= m, so the refund is accepted ok
+@@ {"model": {"c": "0", "m": "1", "r": "1"}, "ms": 0.67, "q": "fixed_premises", "replay": "c=0 m=1 r=1: c >= 0, m >= 0, r > 0 ok, r <= m, so the refund is accepted ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "efffa79a346c4bdd107af5eb49d4a71fed9e4e017027cda44b541c2a61bb7de8", "smt2_sha256": "efffa79a346c4bdd107af5eb49d4a71fed9e4e017027cda44b541c2a61bb7de8", "verdict": "sat"}
+[fixed_rejected_unchanged] unsat
+@@ {"ms": 0.45, "q": "fixed_rejected_unchanged", "rlimit": 5000000, "smt2_raw_sha256": "b36ccdeac8c5c714af2dc53690076067326a449e07cd1056b4c077b4b705c5ef", "smt2_sha256": "126b5f79be35c9b6f4a22fc75cd8adba4e656f0e7b443f469bad28c2a4c6f65f", "verdict": "unsat"}

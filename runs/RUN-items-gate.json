@@ -1,0 +1,538 @@
+{
+  "id": "RUN-items-gate",
+  "title": "GATE-items on this repository: the generator fixture family's pool, a planted fixture for every check and the clean controls, the weakened lints, and the fixture with the t3 cue it shipped with",
+  "task": "W1-T39",
+  "origin": "recorded",
+  "engine": "node",
+  "version": "22.22.2",
+  "binary": "node (the host binary; no container)",
+  "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
+  "image": null,
+  "recorded_at": "2026-10-26T04:46:10.224Z",
+  "started_at": "2026-10-26T04:41:47.300Z",
+  "duration_s": 262.832,
+  "argv": [
+    "node",
+    "scripts/verify-items.mjs"
+  ],
+  "inputs": [
+    {
+      "path": "scripts/verify-items.mjs",
+      "sha256": "024a9e7905cec38a3713571b5f27dc7eb6e156ad73f0af3bc271af7e0412a688",
+      "bytes": 168801,
+      "role": "gate"
+    },
+    {
+      "path": "vendor/kernelspace/scripts/item-cues.ts",
+      "sha256": "6eac86137d783fec3ef4123ceeeb0fb692e68955f98b03110e33de134cb29c9c",
+      "bytes": 16441,
+      "role": "vendored strategies, imported unchanged"
+    },
+    {
+      "path": "scripts/verify-generators.mjs",
+      "sha256": "7814543f1e20b2aa69139069d38bfbdfb3d429ef3cbd66182aac495711e39bd7",
+      "bytes": 33149,
+      "role": "GATE-generators' discovery of families and the registry, shared"
+    },
+    {
+      "path": "packages/generators/src/core",
+      "sha256": "3d43e8e80032710ac79acd09e1509fdaf3e339421f62f9180d63b0c33e464269",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 20,
+      "role": "the generator framework and its fixture family (with W1-T39's change to t3 and the re-recorded determinism.json), the pool judged here"
+    },
+    {
+      "path": "packages/content/src",
+      "sha256": "22e74714e3283531addf64be7316676a7c8f210bb95d14f6894e6b88c78676d4",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 23,
+      "role": "the content build's reader of lessons and drawers"
+    },
+    {
+      "path": "packages/rng/src",
+      "sha256": "28b2b1d7d33e337d90063af29631f292b96298c12ee11d3eeb631c52471bc448",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 4,
+      "role": "seeded draws for the samples"
+    },
+    {
+      "path": "packages/ids/src/registry.json",
+      "sha256": "f5ebbaa50f23938f796902f66b654454d6e6ad33d46dd1a34ffbd818dbcd8c1f",
+      "bytes": 163471,
+      "role": "the spine registry (misconception keys)"
+    },
+    {
+      "path": "scripts/spikes/W1-T39/verify-items.test.mjs",
+      "sha256": "1f0e5012383b5ad21ac7fb572c5b7fdd11be6208133cf77d045c0ab5fde1d200",
+      "bytes": 36696,
+      "role": "tests"
+    },
+    {
+      "path": "scripts/spikes/W1-T39/weakenings.mjs",
+      "sha256": "09ca7e05416d57dbd0f0c13134ec5d7d7e7c034d723e0caab188fceaa35f85fb",
+      "bytes": 26725,
+      "role": "the weakened copies of the gate the tests require the planted fixtures, or the gate's run, to catch"
+    },
+    {
+      "path": "scripts/spikes/W1-T39/shipped-cue.mjs",
+      "sha256": "e2d81c5843a6f83f15f44e3de7fce4c77e3d6e2b44858131e663366534d757b8",
+      "bytes": 2107,
+      "role": "GEN-fixture with its shipped t3 cue put back, judged by the gate"
+    },
+    {
+      "path": "scripts/spikes/W1-T39/W1-T21-t3-mutant.patch",
+      "sha256": "918c1334ef7cc7c8b24ff27b562d0d521612432ed6c32b5bc8c5d1c297ec3584",
+      "bytes": 8486,
+      "role": "the change W1-T39 made to W1-T21's fixture family and README on 2026-10-25, kept as its record"
+    },
+    {
+      "path": "scripts/spikes/W1-T39/record.mjs",
+      "sha256": "7baaf13a1599595b1924266aee1398d44a7232f07f51b365e7f191d3b44df956",
+      "bytes": 18645,
+      "role": "recording script"
+    }
+  ],
+  "budget": {
+    "seeds_per_template_and_band": 200,
+    "samples": [
+      "primary",
+      "replicate"
+    ],
+    "sd_multiple": 2,
+    "vendored_cue_margin_points": 15,
+    "vendored_cue_min_items": 100,
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "GATE-items: 1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s)",
+    "  ok    GEN-fixture (fixture)  1800 items + 1800 replicate from 200 seeds per template and band, served by its own engine; live t1, t2, t3",
+    "  ----  CTI dose: inactive until GEN-cti-or-bug ships (W3) or a page names it",
+    "planted fixtures: 197 of 197 held (each of the 92 checks tripped by its planted fixture, the clean controls green)",
+    "GATE-items: green (1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s))"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-items-gate/fast.log",
+      "sha256": "239429159a6c5679ca6ede9d92dab85ee6b063e4f6fdbaee54373885a2067712",
+      "bytes": 622,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-items-gate/fast-json.log",
+      "sha256": "cc3743af34885cfb2e0e5d6d68ac9547c0c3b8c4b29ac94153beaf9c0b3994a5",
+      "bytes": 150972,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-items-gate/verbose.log",
+      "sha256": "bce87b02a8e33c0e62db9ae9f1fcfd5d4714606cbcc30a82fcb5ef2e5b705833",
+      "bytes": 1223,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-items-gate/self-check.log",
+      "sha256": "8c28e364f9d9a57bee2fa79a4f475c41d4cf6c5a734f7e887ef09b9f018d1941",
+      "bytes": 50542,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-items-gate/tests.log",
+      "sha256": "6dcf497c793c2e51a3ee4c4d84b17b7da3ea5290338ebf9574d4d768ba6c9390",
+      "bytes": 39148,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-items-gate/shipped-cue.log",
+      "sha256": "c1c1931f31b3f4132347077949f3f9d6afd1e7c6fa1c9bd2994c0c10b8b77873",
+      "bytes": 943,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "families": [
+      {
+        "id": "GEN-fixture",
+        "mode": "served",
+        "live": [
+          "t1",
+          "t2",
+          "t3"
+        ],
+        "pending": [],
+        "seeds_per_cell": 200,
+        "items": 1800,
+        "replicate": 1800
+      }
+    ],
+    "pages": 0,
+    "findings": 0,
+    "findings_by_check": {},
+    "checks": 92,
+    "planted_cases": 196,
+    "planted_cases_held": 196,
+    "clean_controls": 1,
+    "clean_controls_green": 1,
+    "weakened_lints": 139,
+    "weakened_lints_by_run": 2,
+    "weakened_lints_caught": 139,
+    "fixture_always_longest": {
+      "score": 450,
+      "chance": 450,
+      "bar": 486.7,
+      "replicate_score": 450,
+      "replicate_bar": 486.7,
+      "n": 1800,
+      "fail": false
+    },
+    "shipped_t3_cue": {
+      "mode": "served",
+      "seeds_per_cell": 200,
+      "always_longest": {
+        "score": 500,
+        "chance": 450,
+        "bar": 486.7,
+        "n": 1800,
+        "replicateScore": 500,
+        "replicateBar": 486.7,
+        "fail": true
+      },
+      "length_ratio": {
+        "cell": "t3/b3",
+        "over": 130,
+        "of": 400,
+        "largest": 1.31
+      },
+      "findings": [
+        "length/ratio",
+        "blind/always-longest"
+      ]
+    },
+    "tools": {
+      "typescript": "5.9.3",
+      "yaml": "2.9.1"
+    }
+  },
+  "checks": [
+    {
+      "id": "self-check-holds",
+      "pass": true
+    },
+    {
+      "id": "every-check-tripped-by-a-planted-fixture",
+      "pass": true
+    },
+    {
+      "id": "clean-controls-green",
+      "pass": true
+    },
+    {
+      "id": "weakened-lints-caught",
+      "pass": true
+    },
+    {
+      "id": "tests-pass",
+      "pass": true
+    },
+    {
+      "id": "shipped-t3-cue-fails",
+      "pass": true
+    },
+    {
+      "id": "fix-framed-before-the-cell-fails",
+      "pass": true
+    },
+    {
+      "id": "fast-lane-green",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": null
+  },
+  "primary_config": "fast",
+  "configs": [
+    {
+      "id": "fast",
+      "origin": "recorded",
+      "purpose": "GATE-items as the fast lane runs it: every family, every page, and the planted fixtures",
+      "started_at": "2026-10-26T04:41:47.300Z",
+      "duration_s": 37.367,
+      "argv": [
+        "node",
+        "scripts/verify-items.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0,
+        1
+      ],
+      "verdict_lines": [
+        "GATE-items: 1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s)",
+        "  ok    GEN-fixture (fixture)  1800 items + 1800 replicate from 200 seeds per template and band, served by its own engine; live t1, t2, t3",
+        "  ----  CTI dose: inactive until GEN-cti-or-bug ships (W3) or a page names it",
+        "planted fixtures: 197 of 197 held (each of the 92 checks tripped by its planted fixture, the clean controls green)",
+        "GATE-items: green (1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s))"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/fast.log",
+          "sha256": "239429159a6c5679ca6ede9d92dab85ee6b063e4f6fdbaee54373885a2067712",
+          "bytes": 622,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fast-json",
+      "origin": "recorded",
+      "purpose": "the same run as JSON, for the values below",
+      "started_at": "2026-10-26T04:42:24.669Z",
+      "duration_s": 32.411,
+      "argv": [
+        "node",
+        "scripts/verify-items.mjs",
+        "--json"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0,
+        1
+      ],
+      "verdict_lines": [],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/fast-json.log",
+          "sha256": "cc3743af34885cfb2e0e5d6d68ac9547c0c3b8c4b29ac94153beaf9c0b3994a5",
+          "bytes": 150972,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "verbose",
+      "origin": "recorded",
+      "purpose": "the same run with every strategy's score, both samples, and the notes",
+      "started_at": "2026-10-26T04:42:57.082Z",
+      "duration_s": 33.459,
+      "argv": [
+        "node",
+        "scripts/verify-items.mjs",
+        "--verbose"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0,
+        1
+      ],
+      "verdict_lines": [
+        "GATE-items: 1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s)",
+        "  ok    GEN-fixture (fixture)  1800 items + 1800 replicate from 200 seeds per template and band, served by its own engine; live t1, t2, t3",
+        "  ----  CTI dose: inactive until GEN-cti-or-bug ships (W3) or a page names it",
+        "planted fixtures: 197 of 197 held (each of the 92 checks tripped by its planted fixture, the clean controls green)",
+        "GATE-items: green (1 family (1 fixture), 1800 sampled items and 1800 replicate; 0 page(s), 0 authored item(s), 0 call(s); stages none; 0 finding(s))"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/verbose.log",
+          "sha256": "bce87b02a8e33c0e62db9ae9f1fcfd5d4714606cbcc30a82fcb5ef2e5b705833",
+          "bytes": 1223,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "self-check",
+      "origin": "recorded",
+      "purpose": "the planted fixtures: one or more per rule/check pair of CHECKS, each of which must trip its own check on its own pool, each fixture of a limit just past it, each half of a two-half strategy and each verdict of a rule that counts verdicts with a fixture of its own, each branch of the centroid's tokenizer with a fixture of its own, the planted tree found by the gate's own discovery and read by the content build's reader (its scenes framed in each place a narrative can sit), GEN-call-it-shaped instances read by the gate's own sampler and instance reader, the default sample checked against 200 seeds per template and band, and the clean controls, which must stay green",
+      "started_at": "2026-10-26T04:43:30.541Z",
+      "duration_s": 22.141,
+      "argv": [
+        "node",
+        "scripts/verify-items.mjs",
+        "--self-check"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "held  structure/options               a choice with one option: page:S9.L1: 1 option(s); a choice has at least two",
+        "held  structure/key                   a choice with two keyed options: page:S9.L1: 2 keyed options; a choice has exactly one",
+        "held  structure/key                   a choice whose key names no option: page:S9.L1: 0 keyed options; a choice has exactly one",
+        "held  structure/ids                   two options that share an id: page:S9.L1: two options share an id",
+        "held  structure/ids                   two statements that share an id: page:S9.L1: two statements share an id",
+        "held  structure/text                  an option with no text: page:S9.L1: option B has no text",
+        "held  structure/statements            a true/false set of one statement: page:S9.L1: 1 statement(s); a true/false set has at least two",
+        "held  structure/pending               a page that names a pending template: page:S9.L1: S9.L1/s1 segment GEN-planted t2: GEN-planted t2 is pending until W3-T27 and is never served; name a live template",
+        "held  structure/module                a family module that does not load: packages/generators/src/planted/index.ts exports no generator; its items cannot be checked",
+        "held  structure/module                a family asked for that does not exist: no family GEN-absent under packages/generators/src",
+        "held  structure/sample                a family sampled at 199 seeds per template and band, one short of the gate's pool, beside the default sample of 200: family:GEN-planted: sampled at 199 seed(s) per template and band; the gate's pool is 200 (ASSESSMENT.md section 7.3), so this run is a preview, not a pass",
+        "held  why-tag/why                     an option with no why: page:S9.L1: option B has no why",
+        "held  why-tag/why                     an option whose why is only spaces: page:S9.L1: option B has no why",
+        "held  why-tag/why                     a generated distractor with no why: family:GEN-planted: t1/b1: option D has no why (144 instances, first gen:GEN-planted:t1:b1:0)",
+        "held  why-tag/why                     one generated distractor with no why, in the replicate sample only: family:GEN-planted: t1/b1: option C has no why (1 instance, first gen:GEN-planted:t1:b1:r150)",
+        "held  why-tag/why                     a statement whose why is only spaces: page:S9.L1: statement s2 has no why",
+        "held  why-tag/key-tag                 a key that carries a misconception key: page:S9.L1: the key A carries a misconception key (dp:G1); only distractors do",
+        "held  why-tag/tag                     a distractor with no misconception key: page:S9.L1: option B carries no misconception key (dp:)",
+        "held  why-tag/tag                     a distractor whose misconception key is a bare 'dp:': page:S9.L1: option B carries no misconception key (dp:)",
+        "held  why-tag/tag                     a distractor whose misconception key is not a dp: key: page:S9.L1: option B carries no misconception key (dp:)",
+        "held  why-tag/tag                     a generated distractor with no misconception key: family:GEN-planted: t1/b1: option D carries no misconception key (dp:) (144 instances, first gen:GEN-planted:t1:b1:0)",
+        "held  why-tag/tag                     a false statement with no misconception key: page:S9.L1: false statement s2 carries no misconception key (dp:)",
+        "held  why-tag/registered              a misconception key the registry does not hold: page:S9.L1: option B's dp:Q999 is not a misconception key of docs/EVIDENCE.md section 6",
+        "held  why-tag/registered              a false statement's misconception key the registry does not hold: page:S9.L1: statement s2's dp:Q999 is not a misconception key of docs/EVIDENCE.md section 6",
+        "held  distinct/text                   two options that read the same: page:S9.L1: options A and B read the same (\"sat.\")",
+        "held  distinct/text                   two statements that read the same: page:S9.L1: statements s1 and s2 read the same",
+        "held  length/ratio                    a key 1.31 times its distractors' mean length and 1.13 times the longer one: stage:S9/authored: the key is 1.31 times its distractors' mean length (limit 1.3); lengthen the distractors or shorten the key",
+        "held  length/ratio                    a long key among options that name verdicts, one of them in six words: stage:S9/authored: the key is 2.69 times its distractors' mean length (limit 1.3); lengthen the distractors or shorten the key",
+        "held  length/ratio                    generated keys twice their distractors: family:GEN-planted: t1/b1: 600 of 600 keys exceed 1.3 times their distractors' mean length (largest 2.14, gen:GEN-planted:t1:b1:0); a key longer than its distractors is a cue, whether the key is elaborated or a distractor cut short",
+        "held  length/ratio                    one generated key 1.31 times its distractors' mean length, in the replicate sample only: family:GEN-planted: t1/b1: 1 of 600 keys exceed 1.3 times their distractors' mean length (largest 1.31, gen:GEN-planted:t1:b1:r150); a key longer than its distractors is a cue, whether the key is elaborated or a distractor cut short",
+        "held  length/ratio                    a drawer page, found by discovery, whose key is 1.31 times its distractors: drawers: the key is 1.31 times its distractors' mean length (limit 1.3); lengthen the distractors or shorten the key",
+        "held  length/share                    a family whose key is strictly the longest in 91 of 300 items: family:GEN-planted: the key is strictly the longest option in 91 of 300 items (30.3%; replicate 91 of 300, 30.3%; limit 30%); shorten the key or lengthen distractors",
+        "held  length/share                    a stage whose key is strictly the longest in 4 of its 10 items: stage:S9/authored: the key is strictly the longest option in 4 of 10 items (40.0%; limit 30%); shorten the key or lengthen distractors",
+        "held  blind/always-longest            a family whose key always ties for the longest: family:GEN-planted: always the longest option scores 150.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 150.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  blind/always-longest            a family whose key is often strictly the longest: family:GEN-planted: always the longest option scores 117.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 117.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  blind/always-longest            GEN-fixture with the t3 cue it shipped with, sampled as make() offers it at the gate's seeds per template and band: family:GEN-fixture: always the longest option scores 500.0 of 1800 (chance 450.0 + 2 SD 36.7 = 486.7); replicate 500.0 of 1800 (chance 450.0 + 2 SD 36.7 = 486.7); by template: t1 150.0 of 600 (chance 150.0), t2 150.0 of 600 (chance 150.0), t3 200.0 of 600 (chance 150.0)",
+        "held  blind/always-first              authored calls whose key is always the first option: stage:S9/authored: always the first option scores 12.0 of 12 (chance 4.0 + 2 SD 3.3 = 7.3)",
+        "held  blind/always-first              a family whose key is first in 89 of 296 items, 0.1 over chance + 2 SD: family:GEN-planted: always the first option scores 89.0 of 296 (chance 74.0 + 2 SD 14.9 = 88.9); replicate 89.0 of 296 (chance 74.0 + 2 SD 14.9 = 88.9)",
+        "held  blind/always-last               authored calls whose key is always the last option: stage:S9/authored: always the last option scores 12.0 of 12 (chance 4.0 + 2 SD 3.3 = 7.3)",
+        "held  blind/majority-verdict          40 calls on which always the majority verdict (unknown) beats chance + 2 SD: stage:S9/authored: always the majority verdict (unknown) scores 22.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/majority-verdict          40 calls on which always the majority verdict (violated) beats chance + 2 SD: stage:S9/authored: always the majority verdict (violated) scores 22.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/majority-verdict          40 calls on which always the majority verdict (holds) beats chance + 2 SD: stage:S9/authored: always the majority verdict (holds) scores 22.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/always-reject             40 calls on which always-reject beats chance + 2 SD: stage:S9/authored: always reject (\"sat\", \"violated\") scores 22.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/always-reject             50 calls on which always-reject beats chance + 2 SD only with its uniform pick on the 10 that offer no reject: stage:S9/authored: always reject (\"sat\", \"violated\") scores 26.0 of 50 (chance 18.3 + 2 SD 6.7 = 25.1)",
+        "held  blind/always-accept             40 calls on which always-accept beats chance + 2 SD: stage:S9/authored: always accept (\"unsat\", \"holds\") scores 22.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/always-accept             50 calls on which always-accept beats chance + 2 SD only with its uniform pick on the 10 that offer no holds: stage:S9/authored: always accept (\"unsat\", \"holds\") scores 26.0 of 50 (chance 18.3 + 2 SD 6.7 = 25.1)",
+        "held  blind/narrative-blind           40 calls on which the narrative-blind strategy beats chance + 2 SD: stage:S9/authored: narrative-blind: violated on a first run, holds after a fix scores 26.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/narrative-blind           40 calls on which the narrative-blind strategy beats chance + 2 SD only with both its halves: stage:S9/authored: narrative-blind: violated on a first run, holds after a fix scores 21.0 of 40 (chance 13.3 + 2 SD 6.0 = 19.3)",
+        "held  blind/last-is-sound             pages whose last call is keyed holds and whose other two split between violated and unknown: stage:S9/authored: last-is-sound: accept each page's last call, reject the rest scores 40.0 of 60 (chance 20.0 + 2 SD 7.3 = 27.3)",
+        "held  blind/last-is-sound             pages whose last calls lean holds and whose other calls lean violated, each half of last-is-sound alone below the bar: stage:S9/authored: last-is-sound: accept each page's last call, reject the rest scores 20.0 of 36 (chance 12.0 + 2 SD 5.7 = 17.7)",
+        "held  blind/all-true                  six true/false sets with every statement true: stage:S9/authored: all true scores 6.0 of 6 (chance 0.4 + 2 SD 1.2 = 1.6)",
+        "held  blind/all-false                 six true/false sets with every statement false: stage:S9/authored: all false scores 6.0 of 6 (chance 0.4 + 2 SD 1.2 = 1.6)",
+        "held  blind/always-last               a stage's pool on which always-last beats chance + 2 SD, though neither its authored calls nor its named template does: stage:S9: always the last option scores 96.0 of 312 (chance 79.0 + 2 SD 15.4 = 94.4); replicate 96.0 of 312 (chance 79.0 + 2 SD 15.4 = 94.4)",
+        "held  blind/always-first              drawer items whose key is always the first option: drawers: always the first option scores 12.0 of 12 (chance 4.0 + 2 SD 3.3 = 7.3)",
+        "held  blind/always-reject             41 calls on which always-reject beats chance + 2 SD by 0.3, beside Boot's first-contact call: stage:S9/authored: always reject (\"sat\", \"violated\") scores 20.0 of 41 (chance 13.7 + 2 SD 6.0 = 19.7)",
+        "held  convergence/centroid            one-edit mutants that make the key the centroid: family:GEN-planted: the centroid (most tokens shared with the other options) scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  convergence/centroid            one-edit mutants of a formula, each flipping one comparison, that make the key the centroid through its symbols alone: family:GEN-planted: the centroid (most tokens shared with the other options) scores 125.3 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 139.3 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/absolute-option       absolute keys among hedged distractors: family:GEN-planted: the option with an absolute word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/absolute-option       absolute keys in 66 of 300 items, absolute distractors in 134, and 100 items with no absolute option: family:GEN-planted: the option with an absolute word scores 91.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 91.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"may\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"might\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"could\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"possibly\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"perhaps\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"probably\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"likely\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"usually\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"often\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"sometimes\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"typically\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"generally\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"tends\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"tend\") among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  absolutes/hedged-option         hedged keys (\"Perhaps\", capitalized) among absolute distractors: family:GEN-planted: the option with a hedge word scores 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0); replicate 300.0 of 300 (chance 75.0 + 2 SD 15.0 = 90.0)",
+        "held  calls/surprises                 a stage whose calls hold 11 genuine surprises in 37 (29.7%), two keyed by amounts: stage:S9/authored: 11 of 37 calls are genuine surprises (29.7%; at least 30%): the narrative-blind strategy predicts cell:S9.L1#1 (violated, first-run), cell:S9.L1#2 (violated, first-run), cell:S9.L1#3 (violated, first-run), cell:S9.L1#4 (violated, first-run), cell:S9.L1#5 (violated, first-run), cell:S9.L1#6 (violated, first-run), ...",
+        "held  calls/balance                   a stage whose calls are 31 of 51 holds (60.8%), beside Boot's first-contact call: stage:S9/authored: holds keys 31 of 51 calls (60.8%; at most 60%): violated 10, holds 31, unknown 10",
+        "held  calls/generated-balance         generated calls keyed sat in 181 of 300 (60.3%), in a template no page names: family:GEN-call-it: generated calls: violated keys 181 of 300 (60.3%; replicate violated 60.3%; at most 60%)",
+        "held  calls/generated-balance         generated calls keyed sat in 181 of 300 (60.3%), in a template a stage names: stage:S9: generated calls: violated keys 181 of 300 (60.3%; replicate violated 60.3%; at most 60%)",
+        "held  calls/balance                   a stage whose 11 calls are 7 unknown (63.6%), four of the calls two-way: stage:S9/authored: unknown keys 7 of 11 calls (63.6%; at most 60%): violated 2, holds 2, unknown 7",
+        "held  calls/balance                   a stage whose 11 calls are 7 violated (63.6%): stage:S9/authored: violated keys 7 of 11 calls (63.6%; at most 60%): violated 7, holds 2, unknown 2"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/self-check.log",
+          "sha256": "8c28e364f9d9a57bee2fa79a4f475c41d4cf6c5a734f7e887ef09b9f018d1941",
+          "bytes": 50542,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "tests",
+      "origin": "recorded",
+      "purpose": "the tests: the planted fixtures, 139 weakened copies of the gate (each must fail the planted fixtures of the check it weakens, or, for a change to how a run samples the families, turn the gate's own run on GEN-fixture red: a strategy, check, reader or pool taken out, a strategy a neighbour stands in for or one of its two halves dropped, a verdict left out of a rule that counts them, a limit, the bar or the sample loosened a little, half of a condition dropped, a word of a vocabulary dropped, added or read case-sensitively, a reader losing a field, a source of narrative or a branch of the centroid's tokenizer dropped, discovery broken), the bar of ASSESSMENT.md section 7.3, the readers of verdicts and scenes, and the gate over pages in the content format read by the content build's own reader, among them a stage whose fixes are framed in each of five places before or in the cell",
+      "started_at": "2026-10-26T04:43:52.683Z",
+      "duration_s": 126.341,
+      "argv": [
+        "node",
+        "--test",
+        "scripts/spikes/W1-T39/verify-items.test.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "# tests 176",
+        "# pass 176",
+        "# fail 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/tests.log",
+          "sha256": "6dcf497c793c2e51a3ee4c4d84b17b7da3ea5290338ebf9574d4d768ba6c9390",
+          "bytes": 39148,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "shipped-cue",
+      "origin": "recorded",
+      "purpose": "GEN-fixture with the t3 cue it shipped with (the dp:Z5 mutant \"drop a conjunct\" put back where the family now offers dp:G5 \"flip the connective only\"), served by its own box engine at the gate's 200 seeds per template and band, as GATE-items sampled the family before W1-T39 changed it, and judged by every rule of the gate; the gate must fail it",
+      "started_at": "2026-10-26T04:45:59.025Z",
+      "duration_s": 11.113,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T39/shipped-cue.mjs"
+      ],
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "verdict_lines": [
+        "    \"score\": 500,",
+        "    \"bar\": 486.7,",
+        "    \"replicateScore\": 500,",
+        "    \"replicateBar\": 486.7,",
+        "      \"rule\": \"length\",",
+        "      \"check\": \"ratio\",",
+        "      \"message\": \"t3/b3: 130 of 400 keys exceed 1.3 times their distractors' mean length (largest 1.31, gen:GEN-fixture:t3:b3:0x4cd3e386#main); a key longer than its distractors is a cue, whether the key is elaborated or a distractor cut short\"",
+        "      \"rule\": \"blind\",",
+        "      \"check\": \"always-longest\",",
+        "      \"message\": \"always the longest option scores 500.0 of 1800 (chance 450.0 + 2 SD 36.7 = 486.7); replicate 500.0 of 1800 (chance 450.0 + 2 SD 36.7 = 486.7); by template: t1 150.0 of 600 (chance 150.0), t2 150.0 of 600 (chance 150.0), t3 200.0 of 600 (chance 150.0)\""
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-items-gate/shipped-cue.log",
+          "sha256": "c1c1931f31b3f4132347077949f3f9d6afd1e7c6fa1c9bd2994c0c10b8b77873",
+          "bytes": 943,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "every step ran on the host with no container"
+    }
+  ],
+  "notes": [
+    "Families judged: GEN-fixture (served by its own engine, 200 seeds per template and band). No lesson or drawer page existed when this was recorded; the S1 pages and the drawers are judged by the same run as they land.",
+    "GEN-fixture's t3 carried a length cue as W1-T21 shipped it: the dp:Z5 mutant \"drop a conjunct\" was always the shortest option. The shipped-cue step puts that mutant back, serves the family by its box engine at 200 seeds per template and band as GATE-items sampled it before the change, and the gate fails it: always-longest 500 of 1800 against a bar of 486.7 (replicate 500 against 486.7), and t3/b3 has 130 of 400 keys over 1.3 times their distractors' mean length. As this round permits, W1-T39 made the change in W1-T21's files that the earlier rounds asked of W1-T21: \"flip the connective only\" (dp:G5) replaces that mutant in packages/generators/src/core/fixture/index.ts, the framework README's section 9 stops listing dp:Z5 among the fixture's tags (scripts/spikes/W1-T39/W1-T21-t3-mutant.patch), and scripts/spikes/W1-T21/record.mjs re-recorded determinism.json, whose t3 digests and family digest changed, in Node, Chromium, Firefox and WebKit, re-recording RUN-generators-gate with it. On the changed family always-longest scores 450 of 1800 against a bar of 486.7.",
+    "Every finding carries a rule/check pair of the gate's CHECKS list (finding() refuses any other), and every pair has a planted fixture that must trip it; where a check is read on several pools (a family, one template of a family, a stage's authored items, a stage's pool, the drawers) a fixture trips it on each. The fixtures are built so that only the lint as written trips them: a fixture of a limit sits just past it (a key 1.31 times its distractors' mean length, 91 of 300 keys strictly longest, 11 surprises in 37 calls, 31 of 51 and 181 of 300 calls one verdict, 60.25% and 39.75% true, 100 items for the vendored strategies, a score 0.1 over chance + 2 SD, 199 seeds per template and band); a strategy's fixture is one its neighbours do not trip, and each half of a two-half strategy (last-is-sound, narrative-blind, each odd-one-out flag) has a fixture that half alone stays under; each verdict has a fixture where a rule counts verdicts, and the CTI dose has fixtures for stages outside S4 to S9 and for each way it turns on; each word of a vocabulary the gate reads has its own fixture, and a capitalized verdict, fix, hedge and budget-stop word is read too; lesson pages (one numbered S10.L10), a drawer, a run record and generator sources are written to a scratch tree and found by the gate's own discovery, with fixes framed in a cell's own text, its @direction and its call's prompt, and before the cell in a prose block, a card's title or text, a free-run cell's text, @direction or @after, and the previous call's @after (each in one place alone; a call after a fix whose own narrative frames none is a new query, and a free-run cell's code is not narrative), and keys resting on the call's run and on the cell's recorded run; the centroid has a fixture for each branch of its tokenizer, one-edit mutants of a phrase (words) and of a formula's comparisons (symbols alone: the options share every word and number and have one length); GEN-call-it-shaped instances go through the gate's own sampler and instance reader; and GEN-fixture with the t3 cue it shipped with is sampled at the gate's 200 seeds per template and band, which the cue needs (at 100 it passes). The vendored strategies each get a generated pool keyed by their own pick.",
+    "Scenes: the first call of a segment opens a scene whatever its words, and a later call is a fix when the narrative since the previous call frames an edit as one (that call's @after, the prose, cards and free-run cells between, and the cell's own text, @direction and prompt, never code). The tests run ASSESSMENT.md section 5.5's most predictable narrative (on seven pages a first run keyed sat, then a fix keyed unsat, then a new segment's query keyed sat; three more pages of unknowns and a first-run unsat) with the fix framed in each of five places, and the stage fails the surprise share in every one (8 of 30 calls, 26.7%) and the narrative-blind strategy too (22.0 of 30 against a bar of 15.2).",
+    "A run's families carry the seeds each template and band was drawn from, and a family drawn from fewer than 200 fails structure/sample, so a smaller run (--seeds, a lowered default, or a change to how a run samples) is red, never green; the self-check also checks the default sample against 200, written out.",
+    "The tests weaken the gate 139 ways (scripts/spikes/W1-T39/weakenings.mjs) and require the planted fixtures of the weakened check to fail on each copy, or, for the 2 that change how a run samples the families, the weakened gate's own run on GEN-fixture to carry a structure/sample finding.",
+    "A generated pool fails a strategy only when the primary sample and a disjoint replicate sample both beat chance + 2 SD; an authored pool is exact. Seeds come from fixed labels in the graded half.",
+    "This ran on the development host, not on a CI runner.",
+    "Spine section 9.5 registers no run for this task; the ID is proposed once a scanned document cites it."
+  ]
+}

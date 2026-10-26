@@ -1,0 +1,17 @@
+{
+  // See packages/rng/tsconfig.json: sources compile with no DOM, no WebWorker and no Node types, so a package
+  // that names window, indexedDB or localStorage fails here; packages/purity-lint checks the same rule on the
+  // text. The storage adapter that does touch IndexedDB lives in apps/site/src/storage. Tests compile
+  // separately (test/tsconfig.json), because they use Node's test runner, fake-indexeddb and the DOM types of
+  // that adapter. hash32 comes from @statespace/rng, which brings the vendored rng.ts into this program, so the
+  // options stay at the base's (kernelspace's) and rng's one ambient declaration is included;
+  // exactOptionalPropertyTypes matches packages/schema, whose generated types this package builds records of.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": [],
+    "exactOptionalPropertyTypes": true,
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.ledger.tsbuildinfo"
+  },
+  "include": ["src", "../rng/src/ambient.d.ts"]
+}

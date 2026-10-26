@@ -1,0 +1,606 @@
+{
+  "schema": "statespace/font-manifest@1",
+  "about": "The self-hosted font subsets (DESIGN.md section 3.4; spine section 10.2): each file pinned by SHA-256 and counted against GATE-bundle's budgets, each source pinned by URL and SHA-256, each face under the SIL Open Font License with its license file beside the subsets. Each face is a core file and an extension file with unicode-range, so a page downloads the extension only when it sets one of its characters. Written by scripts/spikes/W1-T01/build-fonts.mjs; never edited by hand. GATE-stamps checks every file's hash, and that tokens.css declares exactly these files with these ranges.",
+  "tool": {
+    "fonttools": "4.67.0",
+    "brotli": "1.1.0",
+    "python": "3.13.12",
+    "uv": "uv 0.10.2"
+  },
+  "command": [
+    "node",
+    "scripts/spikes/W1-T01/build-fonts.mjs",
+    "--work",
+    "<scratch>"
+  ],
+  "subsetCommand": [
+    "uv",
+    "run",
+    "--no-project",
+    "--with",
+    "fonttools==4.67.0",
+    "--with",
+    "brotli==1.1.0",
+    "python",
+    "-I",
+    "scripts/spikes/W1-T01/subset-fonts.py",
+    "<plan.json>",
+    "<out>"
+  ],
+  "corpus": {
+    "path": "runs/RUN-juliamono-glyphs/codepoints.tsv",
+    "sha256": "4782f43349ee78707befd05fc4d66a3037d22e438a25993e71b11c9121374b6b",
+    "codepoints": 120
+  },
+  "sample": "Every result wears its status. A transfer never overdraws the sender; the checker states what it established, within its bound, at version 5.3.1. Call it before you run it.",
+  "sources": {
+    "archivo": {
+      "url": "https://raw.githubusercontent.com/google/fonts/08dc85da6bca7ae308a6f1d38d0b137465646071/ofl/archivo/Archivo%5Bwdth%2Cwght%5D.ttf",
+      "sha256": "0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053"
+    },
+    "archivoLicense": {
+      "url": "https://raw.githubusercontent.com/google/fonts/08dc85da6bca7ae308a6f1d38d0b137465646071/ofl/archivo/OFL.txt",
+      "sha256": "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b"
+    },
+    "serif": {
+      "url": "https://raw.githubusercontent.com/google/fonts/08dc85da6bca7ae308a6f1d38d0b137465646071/ofl/sourceserif4/SourceSerif4%5Bopsz%2Cwght%5D.ttf",
+      "sha256": "97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b"
+    },
+    "serifItalic": {
+      "url": "https://raw.githubusercontent.com/google/fonts/08dc85da6bca7ae308a6f1d38d0b137465646071/ofl/sourceserif4/SourceSerif4-Italic%5Bopsz%2Cwght%5D.ttf",
+      "sha256": "15fbc7e4679489a501998c3669272637a6646388ef7e4bd77eebb5bf967a1f42"
+    },
+    "serifLicense": {
+      "url": "https://raw.githubusercontent.com/google/fonts/08dc85da6bca7ae308a6f1d38d0b137465646071/ofl/sourceserif4/OFL.txt",
+      "sha256": "5f94c3fd3a23131a417ab5a0c8452de57e70c3cfb9f604d88241f7065ebf9fd9"
+    },
+    "juliamono": {
+      "url": "https://github.com/cormullion/juliamono/releases/download/v0.63.2/JuliaMono-ttf.tar.gz",
+      "sha256": "be6517295198ec5c92bdbaad42f4f6f8d83f921d80512b79f54fe036add95c0c",
+      "members": {
+        "JuliaMono-Regular.ttf": "40a07da0d1601215eb6b89312eb44128a3e2f36675d3e1f518264bd391fc7023",
+        "JuliaMono-SemiBold.ttf": "6c455a2488c1a69585d8a8f9d07e6ee394fc060b705dc607e7a4120bb2e3e630",
+        "LICENSE": "bae3beff9e15f1a680c2764c4bbdb25b995b9bf539aeaf8467482a495c75ad0c"
+      }
+    }
+  },
+  "licenses": {
+    "OFL-Archivo.txt": "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b",
+    "OFL-SourceSerif4.txt": "5f94c3fd3a23131a417ab5a0c8452de57e70c3cfb9f604d88241f7065ebf9fd9",
+    "OFL-JuliaMono.txt": "bae3beff9e15f1a680c2764c4bbdb25b995b9bf539aeaf8467482a495c75ad0c"
+  },
+  "faces": [
+    {
+      "family": "Archivo",
+      "weight": "400 800",
+      "style": "normal",
+      "stretch": "100% 125%",
+      "files": [
+        {
+          "file": "archivo-var-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00FF, U+2009, U+2010-2011, U+2013-2015, U+2017-201A, U+201C-201E, U+2020-2022, U+2026, U+2030, U+2032-2033, U+2039-203A, U+203E, U+2044, U+2052, U+20AC, U+2122, U+2212"
+        },
+        {
+          "file": "archivo-var-ext.woff2",
+          "unicodeRange": "U+0100-017F, U+0192, U+02BC, U+02C6, U+02DA, U+02DC"
+        }
+      ]
+    },
+    {
+      "family": "Source Serif 4",
+      "weight": "400",
+      "style": "normal",
+      "files": [
+        {
+          "file": "source-serif-4-400-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00FF, U+2002-2007, U+2009-200B, U+2010, U+2012-2015, U+2018-201A, U+201C-201E, U+2020-2022, U+2025-2026, U+202F-2030, U+2032-2033, U+2039-203A, U+203C, U+2044, U+2047-2049, U+20AC, U+2122, U+2212"
+        },
+        {
+          "file": "source-serif-4-400-ext.woff2",
+          "unicodeRange": "U+0100-012B, U+012E-0131, U+0134-0165, U+0168-017F, U+0192, U+02BB-02BC, U+02C6, U+02DA, U+02DC"
+        }
+      ]
+    },
+    {
+      "family": "Source Serif 4",
+      "weight": "600",
+      "style": "normal",
+      "files": [
+        {
+          "file": "source-serif-4-600-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00FF, U+2002-2007, U+2009-200B, U+2010, U+2012-2015, U+2018-201A, U+201C-201E, U+2020-2022, U+2025-2026, U+202F-2030, U+2032-2033, U+2039-203A, U+203C, U+2044, U+2047-2049, U+20AC, U+2122, U+2212"
+        },
+        {
+          "file": "source-serif-4-600-ext.woff2",
+          "unicodeRange": "U+0100-012B, U+012E-0131, U+0134-0165, U+0168-017F, U+0192, U+02BB-02BC, U+02C6, U+02DA, U+02DC"
+        }
+      ]
+    },
+    {
+      "family": "Source Serif 4",
+      "weight": "400",
+      "style": "italic",
+      "files": [
+        {
+          "file": "source-serif-4-400-italic-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00FF, U+2002-2007, U+2009-200B, U+2010, U+2012-2015, U+2018-201A, U+201C-201E, U+2020-2022, U+2025-2026, U+202F-2030, U+2032-2033, U+2039-203A, U+203C, U+2044, U+2047-2049, U+20AC, U+2122, U+2212"
+        },
+        {
+          "file": "source-serif-4-400-italic-ext.woff2",
+          "unicodeRange": "U+0100-012B, U+012E-0131, U+0134-0165, U+0168-017F, U+0192, U+02BB-02BC, U+02C6, U+02DA, U+02DC"
+        }
+      ]
+    },
+    {
+      "family": "JuliaMono",
+      "weight": "400",
+      "style": "normal",
+      "files": [
+        {
+          "file": "juliamono-400-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00AC, U+00AE-00FF, U+0151, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D5, U+03F5, U+1D62, U+2000-2064, U+2066-206B, U+206E-2071, U+2074-209F, U+2115, U+211A, U+211D, U+2124, U+2190-2194, U+21A6, U+21C4, U+21D2, U+21D4, U+2200, U+2203-2205, U+2208-2209, U+220B, U+220F, U+2211-2212, U+2216, U+2218, U+221A, U+221E, U+2223, U+2227-222A, U+223C, U+2248, U+2254, U+225C, U+2260-2261, U+2264-2265, U+2282-2283, U+2286-2287, U+2291-2295, U+2297, U+22A2, U+22A4-22A5, U+22A8, U+22EE, U+2308-230B, U+2315, U+2318, U+2500, U+2502-2503, U+2506, U+250C, U+2510, U+2514, U+2518, U+251C, U+2524, U+252C, U+2534, U+2571-2572, U+25A1, U+25B3, U+25B8, U+25BE, U+25C2, U+25C7, U+25C9, U+25CB, U+25CF-25D0, U+2713, U+2717, U+27E6-27E9, U+27F6, U+27F9"
+        },
+        {
+          "file": "juliamono-400-ext.woff2",
+          "unicodeRange": "U+2100-2114, U+2116-2119, U+211B-211C, U+211E-2123, U+2125-214F, U+2195-21A5, U+21A7-21C3, U+21C5-21D1, U+21D3, U+21D5-21FF, U+2201-2202, U+2206-2207, U+220A, U+220C-220E, U+2210, U+2213-2215, U+2217, U+2219, U+221B-221D, U+221F-2222, U+2224-2226, U+222B-223B, U+223D-2247, U+2249-2253, U+2255-225B, U+225D-225F, U+2262-2263, U+2266-2281, U+2284-2285, U+2288-2290, U+2296, U+2298-22A1, U+22A3, U+22A6-22A7, U+22A9-22ED, U+22EF-22FF, U+2501, U+2504-2505, U+2507-250B, U+250D-250F, U+2511-2513, U+2515-2517, U+2519-251B, U+251D-2523, U+2525-252B, U+252D-2533, U+2535-2570, U+2573-257F, U+25A0, U+25A2-25B2, U+25B4-25B7, U+25B9-25BD, U+25BF-25C1, U+25C3-25C6, U+25C8, U+25CA, U+25CC-25CE, U+25D1-25FF, U+27C0-27E5, U+27EA-27F5, U+27F7-27F8, U+27FA-27FF, U+2A7D-2A7E"
+        }
+      ]
+    },
+    {
+      "family": "JuliaMono",
+      "weight": "600",
+      "style": "normal",
+      "files": [
+        {
+          "file": "juliamono-600-core.woff2",
+          "unicodeRange": "U+0020-007E, U+00A0-00AC, U+00AE-00FF, U+0151, U+0391-03A1, U+03A3-03A9, U+03B1-03C9, U+03D5, U+03F5, U+1D62, U+2000-2064, U+2066-206B, U+206E-2071, U+2074-209F, U+2115, U+211A, U+211D, U+2124, U+2190-2194, U+21A6, U+21C4, U+21D2, U+21D4, U+2200, U+2203-2205, U+2208-2209, U+220B, U+220F, U+2211-2212, U+2216, U+2218, U+221A, U+221E, U+2223, U+2227-222A, U+223C, U+2248, U+2254, U+225C, U+2260-2261, U+2264-2265, U+2282-2283, U+2286-2287, U+2291-2295, U+2297, U+22A2, U+22A4-22A5, U+22A8, U+22EE, U+2308-230B, U+2315, U+2318, U+2500, U+2502-2503, U+2506, U+250C, U+2510, U+2514, U+2518, U+251C, U+2524, U+252C, U+2534, U+2571-2572, U+25A1, U+25B3, U+25B8, U+25BE, U+25C2, U+25C7, U+25C9, U+25CB, U+25CF-25D0, U+2713, U+2717, U+27E6-27E9, U+27F6, U+27F9"
+        },
+        {
+          "file": "juliamono-600-ext.woff2",
+          "unicodeRange": "U+2100-2114, U+2116-2119, U+211B-211C, U+211E-2123, U+2125-214F, U+2195-21A5, U+21A7-21C3, U+21C5-21D1, U+21D3, U+21D5-21FF, U+2201-2202, U+2206-2207, U+220A, U+220C-220E, U+2210, U+2213-2215, U+2217, U+2219, U+221B-221D, U+221F-2222, U+2224-2226, U+222B-223B, U+223D-2247, U+2249-2253, U+2255-225B, U+225D-225F, U+2262-2263, U+2266-2281, U+2284-2285, U+2288-2290, U+2296, U+2298-22A1, U+22A3, U+22A6-22A7, U+22A9-22ED, U+22EF-22FF, U+2501, U+2504-2505, U+2507-250B, U+250D-250F, U+2511-2513, U+2515-2517, U+2519-251B, U+251D-2523, U+2525-252B, U+252D-2533, U+2535-2570, U+2573-257F, U+25A0, U+25A2-25B2, U+25B4-25B7, U+25B9-25BD, U+25BF-25C1, U+25C3-25C6, U+25C8, U+25CA, U+25CC-25CE, U+25D1-25FF, U+27C0-27E5, U+27EA-27F5, U+27F7-27F8, U+27FA-27FF, U+2A7D-2A7E"
+        }
+      ]
+    }
+  ],
+  "fallbacks": [
+    {
+      "family": "Archivo fallback",
+      "locals": [
+        "Arial",
+        "Liberation Sans",
+        "Arimo"
+      ],
+      "measuredOn": {
+        "face": "Liberation Sans",
+        "version": 2.0999908447265625,
+        "averageAdvance": 0.42365211664244184
+      },
+      "sizeAdjust": "102.27%",
+      "ascentOverride": "85.85%",
+      "descentOverride": "20.53%",
+      "lineGapOverride": "0.00%"
+    },
+    {
+      "family": "Source Serif 4 fallback",
+      "locals": [
+        "Times New Roman",
+        "Liberation Serif",
+        "Tinos"
+      ],
+      "measuredOn": {
+        "face": "Liberation Serif",
+        "version": 2.0999908447265625,
+        "averageAdvance": 0.38378054596656974
+      },
+      "sizeAdjust": "111.20%",
+      "ascentOverride": "93.16%",
+      "descentOverride": "30.13%",
+      "lineGapOverride": "0.00%"
+    },
+    {
+      "family": "JuliaMono fallback",
+      "locals": [
+        "Courier New",
+        "Liberation Mono",
+        "Cousine"
+      ],
+      "measuredOn": {
+        "face": "Liberation Mono",
+        "version": 2.0999908447265625,
+        "averageAdvance": 0.60009765625
+      },
+      "sizeAdjust": "99.98%",
+      "ascentOverride": "95.02%",
+      "descentOverride": "22.50%",
+      "lineGapOverride": "0.00%"
+    }
+  ],
+  "files": [
+    {
+      "file": "archivo-var-core.woff2",
+      "sha256": "c9a9a7687d86b66192b2d29afaacfd3ca3e57de3eb00ac1afa7e5fc3c39e8dfd",
+      "bytes": 52048,
+      "source": "Archivo[wdth,wght].ttf",
+      "sourceSha256": "0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053",
+      "axes": {
+        "wght": [
+          400,
+          800
+        ],
+        "wdth": [
+          100,
+          125
+        ]
+      },
+      "variationAxes": [
+        {
+          "tag": "wght",
+          "min": 400,
+          "default": 600,
+          "max": 800
+        },
+        {
+          "tag": "wdth",
+          "min": 100,
+          "default": 100,
+          "max": 125
+        }
+      ],
+      "glyphs": 270,
+      "codepointsKept": 219,
+      "codepointsAbsentFromFace": 87,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 878,
+        "hheaDescender": -210,
+        "hheaLineGap": 0,
+        "typoAscender": 878,
+        "typoDescender": -210,
+        "typoLineGap": 0,
+        "winAscent": 1100,
+        "winDescent": 410,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 575,
+        "capHeight": 686,
+        "xHeight": 526
+      }
+    },
+    {
+      "file": "archivo-var-ext.woff2",
+      "sha256": "aa9c8916a4342a2fd1b04720f68c9d2f73d1a55dd2227dfb0e876c3c36c0b1d2",
+      "bytes": 30320,
+      "source": "Archivo[wdth,wght].ttf",
+      "sourceSha256": "0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053",
+      "axes": {
+        "wght": [
+          400,
+          800
+        ],
+        "wdth": [
+          100,
+          125
+        ]
+      },
+      "variationAxes": [
+        {
+          "tag": "wght",
+          "min": 400,
+          "default": 600,
+          "max": 800
+        },
+        {
+          "tag": "wdth",
+          "min": 100,
+          "default": 100,
+          "max": 125
+        }
+      ],
+      "glyphs": 152,
+      "codepointsKept": 133,
+      "codepointsAbsentFromFace": 1,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 878,
+        "hheaDescender": -210,
+        "hheaLineGap": 0,
+        "typoAscender": 878,
+        "typoDescender": -210,
+        "typoLineGap": 0,
+        "winAscent": 1100,
+        "winDescent": 410,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 575,
+        "capHeight": 686,
+        "xHeight": 526
+      }
+    },
+    {
+      "file": "source-serif-4-400-core.woff2",
+      "sha256": "61f9fca907c6c00576d49231fff967b40050c3d2a9bb26c3fe9a9b1a61d2cdbc",
+      "bytes": 18408,
+      "source": "SourceSerif4[opsz,wght].ttf",
+      "sourceSha256": "97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b",
+      "axes": {
+        "wght": 400,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 314,
+      "codepointsKept": 230,
+      "codepointsAbsentFromFace": 76,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 558,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "source-serif-4-400-ext.woff2",
+      "sha256": "b7d730776e50d83779dc99be4172d08d8788c406a23159cc6d14cf67a8aeeb78",
+      "bytes": 8256,
+      "source": "SourceSerif4[opsz,wght].ttf",
+      "sourceSha256": "97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b",
+      "axes": {
+        "wght": 400,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 191,
+      "codepointsKept": 128,
+      "codepointsAbsentFromFace": 6,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 558,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "source-serif-4-600-core.woff2",
+      "sha256": "e26c894725b5291ee692b10958b8fa73fe3d12e1f801b5a0ef84dfd077cb64eb",
+      "bytes": 19800,
+      "source": "SourceSerif4[opsz,wght].ttf",
+      "sourceSha256": "97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b",
+      "axes": {
+        "wght": 600,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 314,
+      "codepointsKept": 230,
+      "codepointsAbsentFromFace": 76,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 567,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "source-serif-4-600-ext.woff2",
+      "sha256": "246b86d97cc7d6d58df31937d240f9c2616323dd7dc190dce9d8b7f8ae773554",
+      "bytes": 8536,
+      "source": "SourceSerif4[opsz,wght].ttf",
+      "sourceSha256": "97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b",
+      "axes": {
+        "wght": 600,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 191,
+      "codepointsKept": 128,
+      "codepointsAbsentFromFace": 6,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 567,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "source-serif-4-400-italic-core.woff2",
+      "sha256": "f92a62f74b5914ed10c62c4fac46e9a816874277c9470c67488651b64edaad9c",
+      "bytes": 18632,
+      "source": "SourceSerif4-Italic[opsz,wght].ttf",
+      "sourceSha256": "15fbc7e4679489a501998c3669272637a6646388ef7e4bd77eebb5bf967a1f42",
+      "axes": {
+        "wght": 400,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 322,
+      "codepointsKept": 230,
+      "codepointsAbsentFromFace": 76,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 532,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "source-serif-4-400-italic-ext.woff2",
+      "sha256": "3b17f5fe195814615a26577d8a76bfd1b1de5f511e81960d4549ab616cd39065",
+      "bytes": 8492,
+      "source": "SourceSerif4-Italic[opsz,wght].ttf",
+      "sourceSha256": "15fbc7e4679489a501998c3669272637a6646388ef7e4bd77eebb5bf967a1f42",
+      "axes": {
+        "wght": 400,
+        "opsz": "default"
+      },
+      "variationAxes": [],
+      "glyphs": 190,
+      "codepointsKept": 128,
+      "codepointsAbsentFromFace": 6,
+      "metrics": {
+        "unitsPerEm": 1000,
+        "hheaAscender": 1036,
+        "hheaDescender": -335,
+        "hheaLineGap": 0,
+        "typoAscender": 1036,
+        "typoDescender": -335,
+        "typoLineGap": 0,
+        "winAscent": 1009,
+        "winDescent": 324,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 532,
+        "capHeight": 670,
+        "xHeight": 475
+      }
+    },
+    {
+      "file": "juliamono-400-core.woff2",
+      "sha256": "6104588ce87b8690f9d4019199bfd90ea3d1876e42230f0b5a1eeadcd92b9066",
+      "bytes": 23004,
+      "source": "JuliaMono-ttf.tar.gz:JuliaMono-Regular.ttf",
+      "sourceSha256": "40a07da0d1601215eb6b89312eb44128a3e2f36675d3e1f518264bd391fc7023",
+      "axes": {},
+      "variationAxes": [],
+      "glyphs": 532,
+      "codepointsKept": 491,
+      "codepointsAbsentFromFace": 7,
+      "metrics": {
+        "unitsPerEm": 2000,
+        "hheaAscender": 1900,
+        "hheaDescender": -450,
+        "hheaLineGap": 0,
+        "typoAscender": 1900,
+        "typoDescender": -450,
+        "typoLineGap": 0,
+        "winAscent": 2400,
+        "winDescent": 450,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 1200,
+        "capHeight": 1450,
+        "xHeight": 1100
+      }
+    },
+    {
+      "file": "juliamono-400-ext.woff2",
+      "sha256": "860d7a0d6202606428433ed6265caec57b3cfd2d8334f80c1ad800fa42b3efd3",
+      "bytes": 35872,
+      "source": "JuliaMono-ttf.tar.gz:JuliaMono-Regular.ttf",
+      "sourceSha256": "40a07da0d1601215eb6b89312eb44128a3e2f36675d3e1f518264bd391fc7023",
+      "axes": {},
+      "variationAxes": [],
+      "glyphs": 670,
+      "codepointsKept": 653,
+      "codepointsAbsentFromFace": 0,
+      "metrics": {
+        "unitsPerEm": 2000,
+        "hheaAscender": 1900,
+        "hheaDescender": -450,
+        "hheaLineGap": 0,
+        "typoAscender": 1900,
+        "typoDescender": -450,
+        "typoLineGap": 0,
+        "winAscent": 2400,
+        "winDescent": 450,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 1200,
+        "capHeight": 1450,
+        "xHeight": 1100
+      }
+    },
+    {
+      "file": "juliamono-600-core.woff2",
+      "sha256": "8e305142a4d06c84ff1d234048f8266a997f5ad01c622716549a66d24514d728",
+      "bytes": 23140,
+      "source": "JuliaMono-ttf.tar.gz:JuliaMono-SemiBold.ttf",
+      "sourceSha256": "6c455a2488c1a69585d8a8f9d07e6ee394fc060b705dc607e7a4120bb2e3e630",
+      "axes": {},
+      "variationAxes": [],
+      "glyphs": 532,
+      "codepointsKept": 491,
+      "codepointsAbsentFromFace": 7,
+      "metrics": {
+        "unitsPerEm": 2000,
+        "hheaAscender": 1900,
+        "hheaDescender": -450,
+        "hheaLineGap": 0,
+        "typoAscender": 1900,
+        "typoDescender": -450,
+        "typoLineGap": 0,
+        "winAscent": 2400,
+        "winDescent": 450,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 1200,
+        "capHeight": 1450,
+        "xHeight": 1100
+      }
+    },
+    {
+      "file": "juliamono-600-ext.woff2",
+      "sha256": "61997cd66716321125c94c1aa55635dd945ed1bedefa77a516400810f7503be8",
+      "bytes": 36196,
+      "source": "JuliaMono-ttf.tar.gz:JuliaMono-SemiBold.ttf",
+      "sourceSha256": "6c455a2488c1a69585d8a8f9d07e6ee394fc060b705dc607e7a4120bb2e3e630",
+      "axes": {},
+      "variationAxes": [],
+      "glyphs": 670,
+      "codepointsKept": 653,
+      "codepointsAbsentFromFace": 0,
+      "metrics": {
+        "unitsPerEm": 2000,
+        "hheaAscender": 1900,
+        "hheaDescender": -450,
+        "hheaLineGap": 0,
+        "typoAscender": 1900,
+        "typoDescender": -450,
+        "typoLineGap": 0,
+        "winAscent": 2400,
+        "winDescent": 450,
+        "useTypoMetrics": true,
+        "xAvgCharWidth": 1200,
+        "capHeight": 1450,
+        "xHeight": 1100
+      }
+    }
+  ]
+}

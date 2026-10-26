@@ -1,0 +1,72 @@
+{
+  "schema": "statespace/lesson@1",
+  "id": "S1.L0",
+  "tier": "boot",
+  "title": "Boot: \"safe, 200 tests green\"",
+  "draft": true,
+  "kcs": [
+    "KC-1.violation-as-sat"
+  ],
+  "segments": [
+    {
+      "id": "s1",
+      "title": "The pull request",
+      "minutes": 2,
+      "blocks": [
+        {
+          "type": "prose",
+          "md": "An agent opened a pull request. It says: \"Transfer is now guarded. Safe: 200 tests green.\""
+        },
+        {
+          "type": "instrument",
+          "ins": "INS-z3",
+          "cell": 1,
+          "callOnFirstRun": true,
+          "recorded": "RUN-z3-starter",
+          "call": {
+            "prompt": "This query asks for a transfer that leaves both balances negative. What will Z3 return?",
+            "options": [
+              {
+                "id": "A",
+                "text": "`sat`",
+                "why": "The recipient only gains, so no transfer leaves both balances negative.",
+                "mis": "dp:Z5"
+              },
+              {
+                "id": "B",
+                "text": "`unsat`",
+                "why": "No input meets both constraints, so Z3 has nothing to return but `unsat`."
+              },
+              {
+                "id": "C",
+                "text": "`unknown`",
+                "why": "Three linear integer constraints are decided outright.",
+                "mis": "dp:Z6"
+              }
+            ],
+            "key": "B",
+            "keyRun": "RUN-z3-starter",
+            "surprise": "yes"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "The reveal",
+      "minutes": 3,
+      "blocks": [
+        {
+          "type": "specimen",
+          "id": "SP-1.4",
+          "mount": false
+        },
+        {
+          "type": "card",
+          "variant": "feels-harder",
+          "md": "Effortful practice often feels slower than rereading, and it tends to stick better. Expect that here."
+        }
+      ]
+    }
+  ]
+}

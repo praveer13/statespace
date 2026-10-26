@@ -1,0 +1,20 @@
+schema: "statespace/specimen@1"
+id: "refund-clamp-3f9a"
+title: "The clamp that mints money"
+kcs:
+  - "KC-1.two-state-property"
+found_in:
+  lab_stage: "LAB-1.4"
+violates: "A refund never creates money."
+because: "The rule clamps the merchant's balance at zero instead of rejecting a refund above it."
+class: "a clamp that hides a refund above the balance"
+cured_by:
+  text: "Reject a refund above the merchant balance."
+  fixed: "labs/LAB-1/fixed/refund.py"
+evidence:
+  main:
+    run: "RUN-z3-refund-mint"
+    query: "clamp_mint"
+    direction: "violation"
+  minimal:
+    kind: "none"

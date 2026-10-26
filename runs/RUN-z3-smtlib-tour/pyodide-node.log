@@ -1,0 +1,27 @@
+z3 5.3.1
+== starter.smt2
+sat
+(
+  (define-fun b () Int
+    0)
+  (define-fun amount () Int
+    1)
+  (define-fun a () Int
+    0)
+)
+@@ {"error": false, "input_sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4", "ms": 19.31, "output": "sat\n(\n  (define-fun b () Int\n    0)\n  (define-fun amount () Int\n    1)\n  (define-fun a () Int\n    0)\n)\n", "q": "starter"}
+== starter_guarded.smt2
+unsat
+@@ {"error": false, "input_sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27", "ms": 1.81, "output": "unsat\n", "q": "starter_guarded"}
+== starter_guarded_get_model.smt2
+unsat
+(error "line 8 column 10: model is not available")
+@@ {"error": true, "input_sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a", "ms": 1.92, "output": "unsat\n(error \"line 8 column 10: model is not available\")\n", "q": "starter_guarded_get_model"}
+== unknown_theory.smt2
+unknown
+(:reason-unknown "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))")
+@@ {"error": false, "input_sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115", "ms": 8.2, "output": "unknown\n(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")\n", "q": "unknown_theory"}
+== unknown_canceled.smt2
+unknown
+(:reason-unknown "canceled")
+@@ {"error": false, "input_sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712", "ms": 1089.94, "output": "unknown\n(:reason-unknown \"canceled\")\n", "q": "unknown_canceled"}

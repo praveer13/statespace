@@ -1,0 +1,41 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.8",
+  "title": "Tool trust",
+  "draft": true,
+  "kcs": [
+    "KC-1.unknown-fails-closed"
+  ],
+  "found_in": {
+    "lesson": "S1.L2"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L2"
+    ]
+  },
+  "violates": "The expectation that a budget you set bounds the run.",
+  "because": "Under Pyodide, in a Node harness and in three desktop browsers (Chromium, Firefox and WebKit, not phones), the `timeout` option never returned while `rlimit` cancelled the same query {{run:RUN-phone-pyodide}}. The cause was not established.",
+  "class": "a budget that does not bound the run",
+  "cured_by": {
+    "text": "Budget with `rlimit`, and stop a runaway query from outside by terminating its worker."
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-budget-pyodide",
+      "query": "rlimit-case",
+      "direction": "violation"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-budget-pyodide",
+        "query": "timeout-case",
+        "caption": "The same query with the `timeout` option set did not return, and an outside limit stopped it."
+      }
+    ],
+    "minimal": {
+      "kind": "not-applicable",
+      "why": "a verdict, not a witness"
+    }
+  }
+}

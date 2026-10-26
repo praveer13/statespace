@@ -1,0 +1,6 @@
+(declare-const b (_ BitVec 64))
+(declare-const m (_ BitVec 64))
+(assert (bvsge b #x0000000000000000))
+(assert (bvsgt m #x0000000000000000))
+(assert (bvslt (bvadd b m) #x0000000000000000))
+(check-sat)

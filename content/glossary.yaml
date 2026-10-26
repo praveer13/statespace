@@ -1,0 +1,254 @@
+# The course's vocabulary as data: the 25 coined terms learners meet and the internal names that stay out of
+# learner copy. Source: spine section 0 ("Nouns, kept few", OD-14). GATE-lessons (scripts/verify-lessons.mjs)
+# reads this file; scripts/spikes/W1-T38/README.md explains the rules and each field.
+#
+# A change to the glossary starts in the spine: the gate compares this file's terms and "introduced" column with
+# the spine's table and fails when they differ. This file adds what the table cannot hold: the words that count
+# as using a term, and the first lesson whose copy may use it.
+
+format: glossary/1
+
+# terms: learner-facing coined terms, at most 25; Boot introduces terms 1 to 5 and no others.
+#   n           the spine's row number
+#   term        the spine's text for the term
+#   introduced  the spine's "First introduced" column, as it reads there (markup removed)
+#   from        the first lesson whose copy may use the term. A stage in the column means the stage's first
+#               lesson, except that Boot (S1.L0) is not part of S1 for this purpose: "Boot's copy uses terms
+#               1-5 only" (spine section 11.2). A stage page, a lab page and a drawer sit at the end of their
+#               stage, so they may use any term introduced up to there.
+#   forms       the words that count as using the term. Matching is by whole word, ignoring case unless
+#               caseSensitive is true; a space in a form also matches a hyphen (Audit Desk is Audit-Desk, and
+#               "Hall of Records" below is Hall-of-Records); an ID such as SEAM-1 or RUN-z3-starter is not a use
+#               of seam or run.
+#   until       what copy says before the term arrives, where the spine says (Boot's study blocks and recorded result)
+#   unmatched   words that are plain English in this course and are not matched, with the reason
+#   meaning     the learner-facing gloss, shortened from the spine's where the spine's wording holds a word that
+#               GATE-codes reserves for stamps
+terms:
+  - n: 1
+    term: call
+    meaning: a verdict and a confidence committed before a run (Call It)
+    introduced: Boot
+    from: S1.L0
+    forms: [call, calls, called]
+  - n: 2
+    term: stamp
+    meaning: a word plus a bracketed code saying what a check established, with its qualifier
+    introduced: Boot
+    from: S1.L0
+    forms: [stamp, stamps, stamped]
+  - n: 3
+    term: specimen
+    meaning: a counterexample kept beside its fix
+    introduced: Boot
+    from: S1.L0
+    forms: [specimen, specimens]
+  - n: 4
+    term: Today
+    meaning: the 10-12-minute practice session
+    introduced: Boot
+    from: S1.L0
+    forms: [Today]
+    caseSensitive: true
+  - n: 5
+    term: Keep block
+    meaning: the weekly block that holds Today sessions, audit cases, the Clearinghouse's incidents and reviews
+    introduced: Boot (Set your week)
+    from: S1.L0
+    forms: [Keep block, Keep blocks]
+  - n: 6
+    term: run
+    meaning: a recorded tool execution with an id, which anyone can re-execute
+    introduced: S1.L1
+    from: S1.L1
+    until: say "result", and label the cold-start fallback "recorded result"
+    forms: [run, runs, running, ran, rerun, reruns]
+  - n: 7
+    term: lab · check
+    meaning: a staged build on your machine; one per-stage result
+    introduced: S1 (LAB-1)
+    from: S1.L1
+    forms: [lab, labs]
+    unmatched:
+      - word: check
+        why: plain English ("Check with Z3" is Boot's own button); only the lab's per-stage check is the term
+  - n: 8
+    term: receipt
+    meaning: a run's verdict lines, versions and statement hashes, imported from your machine
+    introduced: S1 (LAB-1)
+    from: S1.L1
+    forms: [receipt, receipts]
+  - n: 9
+    term: claim
+    meaning: a six-part guarantee card with a three-segment strip
+    introduced: S1.L3
+    from: S1.L3
+    forms: [claim, claims, claimed, claiming]
+  - n: 10
+    term: seam
+    meaning: an assumption planted on purpose; some erode later, some are tested and hold
+    introduced: S1.L3
+    from: S1.L3
+    forms: [seam, seams]
+  - n: 11
+    term: drawer
+    meaning: side material, always open; deferred topics carry a "deferred" tag
+    introduced: S1.L1
+    from: S1.L1
+    forms: [drawer, drawers]
+  - n: 12
+    term: Bench
+    meaning: your machine with the real tools; the devcontainer from S2
+    introduced: S1 (LAB-1)
+    from: S1.L1
+    until: say "study blocks"
+    forms: [Bench]
+    caseSensitive: true
+  - n: 13
+    term: Audit Desk
+    meaning: judge whether a claim is justified, with typed evidence
+    introduced: S1
+    from: S1.L1
+    forms: [Audit Desk]
+  - n: 14
+    term: Defence
+    meaning: the four-part sign-off assessment
+    introduced: S1
+    from: S1.L1
+    forms: [Defence, Defences, Defense]
+    caseSensitive: true
+  - n: 15
+    term: signed off · settled
+    meaning: "learner states: the Defence passed plus three spaced sessions; then a fresh probe passed 30 days or more after sign-off"
+    introduced: S1
+    from: S1.L1
+    forms: [signed off, signed-off, settled]
+  - n: 16
+    term: Mirror
+    meaning: private calibration and the VRK₃₀ count
+    introduced: S1
+    from: S1.L1
+    forms: [Mirror]
+    caseSensitive: true
+  - n: 17
+    term: re-find
+    meaning: the same move on a new specimen
+    introduced: S1
+    from: S1.L1
+    forms: [re-find, re-finds, re-finding, refind, refinds]
+  - n: 18
+    term: Prove-it
+    meaning: predictions about seeded mutations of your own artifact
+    introduced: S1 (LAB-1)
+    from: S1.L1
+    forms: [Prove-it]
+    caseSensitive: true
+  - n: 19
+    term: twin
+    meaning: "a production system that met the same problem, pinned at a SHA (a documentation page by content hash and read date); matched sound and flawed audit cases are \"pairs\", never twins"
+    introduced: S1
+    from: S1.L1
+    forms: [twin, twins]
+  - n: 20
+    term: Goal Replay
+    meaning: Lean goal strips generated from real elaboration
+    introduced: S2
+    from: S2.L0
+    forms: [Goal Replay]
+  - n: 21
+    term: parked goal
+    meaning: a proof goal set aside by the stuck protocol and carried as an assumption
+    introduced: S2
+    from: S2.L0
+    forms: [parked goal, parked goals]
+  - n: 22
+    term: erosion
+    meaning: the event in which a seam cracks
+    introduced: S3 (ER-6)
+    from: S3.L1
+    forms: [erosion, erosions]
+  - n: 23
+    term: Clearinghouse
+    meaning: the persistent world your components plug into
+    introduced: S3, after LAB-3
+    from: S3.L9
+    forms: [Clearinghouse]
+    caseSensitive: true
+  - n: 24
+    term: Derivation Board
+    meaning: weakest preconditions step by step, each step checked by Z3
+    introduced: S4
+    from: S4.L1
+    forms: [Derivation Board]
+  - n: 25
+    term: Theater
+    meaning: concurrency played by hand on real TLC state graphs
+    introduced: S5
+    from: S5.L1
+    forms: [Theater]
+    caseSensitive: true
+
+# internal: names that stay out of learner copy (spine section 0; DESIGN.md section 11.4; curriculum/D-drawers.md
+# section 1.6). `say` is what learners see instead. A sentence that names the design notes or design documents is a
+# labeled cross-reference and may name one internal term (the spine allows it once).
+internal:
+  - name: lane
+    forms: [lane, lanes]
+    say: the badge words re-checked here, reported from your machine and self-assessed
+    source: spine section 0
+  - name: Shelf
+    forms: [Shelf]
+    caseSensitive: true
+    say: drawers tagged "deferred"
+    source: spine section 0
+  - name: docket
+    forms: [docket, dockets]
+    say: the Clearinghouse's weekly incidents
+    source: spine section 0
+  - name: pocket checker
+    forms: [pocket checker, pocket checkers]
+    say: checked offline
+    source: spine section 0; DESIGN.md section 11.4
+  - name: telescope
+    forms: [telescope, telescopes]
+    say: the Spectacle view's minimap
+    source: spine section 0
+  - name: Hall of Records
+    forms: [Hall of Records]
+    say: a "dated incidents" filter in the specimen cabinet
+    source: spine section 0
+  - name: proof debt
+    forms: [proof debt, proof debts]
+    say: parked goal
+    source: spine section 0
+  - name: Judgment
+    forms: [Judgment]
+    caseSensitive: true
+    say: audit accuracy
+    source: spine section 0 and section 2.2
+  - name: Boot
+    forms: [Boot]
+    caseSensitive: true
+    say: Start here
+    source: spine section 0 ("Tier names stay internal")
+  - name: tier
+    forms: [core lesson, core lessons, bridge lesson, bridge lessons, "[core]", "[bridge]", "[boot]", "[step]"]
+    say: the plain formats "full lesson" and "short lesson with reading"
+    source: spine section 0 ("Tier names stay internal"); DESIGN.md section 11.5
+  - name: KC
+    forms: [KC, KCs]
+    caseSensitive: true
+    say: idea
+    source: curriculum/D-drawers.md section 1.6
+  - name: knowledge component
+    forms: [knowledge component, knowledge components]
+    say: idea
+    source: curriculum/D-drawers.md section 1.6
+
+# internalIds: kinds of registry ID that name the course's machinery, never anything a learner works with. An ID of
+# one of these kinds in learner copy is an internal name (an ID in a code span, a front matter field, a block
+# attribute or a record field that holds IDs alone is data and is not read). A knowledge component is one: learners
+# see the idea in words, never its ID (curriculum/D-drawers.md section 1.6; DESIGN.md section 11.4). The wave and
+# invariant kinds are left out on purpose: W1, W2 and I1 are also names of steps and invariants inside the course's
+# own examples (the double-spend model's R1, R2, W1, W2).
+internalIds: [kc, gate, mechanic, generator, instrument, screen, task, owner-decision, brief-change, misconception]

@@ -1,0 +1,276 @@
+{
+  "id": "RUN-rust-i64",
+  "title": "Rust 1.96.0 i64: the dev profile panics on overflow, the release profile wraps, and checked_add returns None",
+  "task": "W1-T12",
+  "origin": "recorded",
+  "records": "S1.L5's six-row table, CL-1.5's assumption and the D-30 card: an i64 sum that overflows, in the dev and release profiles, and checked_add",
+  "engine": "rustc",
+  "version": "1.96.0",
+  "version_string": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "binary": "rustc 1.96.0 from the Bench image's toolchain (the compiler that built both binaries)",
+  "binary_sha256": "ba4b837efb6612dfa8d941c5a72b8a50d1d03a0f36216743b173949aa8d9eb75",
+  "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+  "recorded_at": "2026-10-26T02:12:49.641Z",
+  "started_at": "2026-10-26T02:12:49.207Z",
+  "duration_s": 0.284,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "w1t12-rust",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/crate:/w",
+    "-w",
+    "/w",
+    "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+    "sh",
+    "rust_i64.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S1/RUN-rust-i64/rust_i64.sh",
+      "sha256": "2b9b1bb9147c92ff44a643931d75884e54cc6f70d514dbd76e277ae58bd488c7",
+      "bytes": 1047,
+      "role": "script"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-rust-i64/ovf/src/main.rs",
+      "sha256": "1a277cee5793cd1481ef7d4af17f529a6a1b03ebc002ca72e742e798bb021817",
+      "bytes": 467,
+      "role": "source"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-rust-i64/ovf/Cargo.toml",
+      "sha256": "260bb16c4171fa44a25777e647577737533981d31c6ae72ec9b9bab73cc2168c",
+      "bytes": 73,
+      "role": "manifest"
+    },
+    {
+      "path": "research/evidence/a2r3/rust/src/main.rs",
+      "sha256": "1a277cee5793cd1481ef7d4af17f529a6a1b03ebc002ca72e742e798bb021817",
+      "bytes": 467,
+      "role": "source (the original, same bytes)"
+    },
+    {
+      "path": "research/evidence/a2r3/rust/Cargo.toml",
+      "sha256": "260bb16c4171fa44a25777e647577737533981d31c6ae72ec9b9bab73cc2168c",
+      "bytes": 73,
+      "role": "manifest (the original, same bytes)"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none",
+    "harness_timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== toolchain",
+    "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "cargo 1.96.0 (30a34c682 2026-05-25)",
+    "== build: cargo build  (the dev profile)",
+    "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s",
+    "== run: target/debug/ovf, stdout",
+    "b + x panicked (overflow check)",
+    "checked_add = None",
+    "== run: target/debug/ovf, stderr",
+    "thread 'main' (89) panicked at src/main.rs:6:41:",
+    "attempt to add with overflow",
+    "note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+    "== run: target/debug/ovf, exit code",
+    "0",
+    "== build: cargo build --release (the release profile)",
+    "    Finished `release` profile [optimized] target(s) in 0.05s",
+    "== run: target/release/ovf, stdout",
+    "b + x = -9223372036854775808 (wrapped; non-negativity broken; i128 total changed by -18446744073709551616)",
+    "checked_add = None",
+    "== run: target/release/ovf, stderr",
+    "== run: target/release/ovf, exit code",
+    "0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-rust-i64/bench.log",
+      "sha256": "b301eede90cebd65308fadf66e7d0e5c8651f8704d3728200851aa76afa87b6a",
+      "bytes": 1934,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "debug": {
+      "panicked": true,
+      "panic_message": "attempt to add with overflow",
+      "exit_code": 0,
+      "checked_add": "None",
+      "stdout": [
+        "b + x panicked (overflow check)",
+        "checked_add = None"
+      ]
+    },
+    "release": {
+      "wrapped": true,
+      "b_plus_x": "-9223372036854775808",
+      "panicked": false,
+      "exit_code": 0,
+      "checked_add": "None",
+      "stdout": [
+        "b + x = -9223372036854775808 (wrapped; non-negativity broken; i128 total changed by -18446744073709551616)",
+        "checked_add = None"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "id": "debug-build-panics",
+      "pass": true,
+      "observed": "attempt to add with overflow"
+    },
+    {
+      "id": "release-build-wraps",
+      "pass": true,
+      "observed": "-9223372036854775808"
+    },
+    {
+      "id": "checked_add-returns-None",
+      "pass": true,
+      "observed": [
+        "None",
+        "None"
+      ]
+    },
+    {
+      "id": "rustc-1.96.0",
+      "pass": true,
+      "observed": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "network": "none"
+    }
+  },
+  "primary_config": "bench",
+  "configs": [
+    {
+      "id": "bench",
+      "purpose": "the crate built and run in the Bench image, offline, in the dev and release profiles; the primary configuration",
+      "origin": "recorded",
+      "engine": "rustc",
+      "version": "1.96.0",
+      "version_string": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+      "binary_sha256": "ba4b837efb6612dfa8d941c5a72b8a50d1d03a0f36216743b173949aa8d9eb75",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "started_at": "2026-10-26T02:12:49.207Z",
+      "duration_s": 0.284,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w1t12-rust",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/crate:/w",
+        "-w",
+        "/w",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "sh",
+        "rust_i64.sh"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-rust-i64/rust_i64.sh",
+          "sha256": "2b9b1bb9147c92ff44a643931d75884e54cc6f70d514dbd76e277ae58bd488c7",
+          "bytes": 1047,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-rust-i64/ovf/src/main.rs",
+          "sha256": "1a277cee5793cd1481ef7d4af17f529a6a1b03ebc002ca72e742e798bb021817",
+          "bytes": 467,
+          "role": "source"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-rust-i64/ovf/Cargo.toml",
+          "sha256": "260bb16c4171fa44a25777e647577737533981d31c6ae72ec9b9bab73cc2168c",
+          "bytes": 73,
+          "role": "manifest"
+        },
+        {
+          "path": "research/evidence/a2r3/rust/src/main.rs",
+          "sha256": "1a277cee5793cd1481ef7d4af17f529a6a1b03ebc002ca72e742e798bb021817",
+          "bytes": 467,
+          "role": "source (the original, same bytes)"
+        },
+        {
+          "path": "research/evidence/a2r3/rust/Cargo.toml",
+          "sha256": "260bb16c4171fa44a25777e647577737533981d31c6ae72ec9b9bab73cc2168c",
+          "bytes": 73,
+          "role": "manifest (the original, same bytes)"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none",
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "== toolchain",
+        "rustc 1.96.0 (ac68faa20 2026-05-25)",
+        "cargo 1.96.0 (30a34c682 2026-05-25)",
+        "== build: cargo build  (the dev profile)",
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s",
+        "== run: target/debug/ovf, stdout",
+        "b + x panicked (overflow check)",
+        "checked_add = None",
+        "== run: target/debug/ovf, stderr",
+        "thread 'main' (89) panicked at src/main.rs:6:41:",
+        "attempt to add with overflow",
+        "note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+        "== run: target/debug/ovf, exit code",
+        "0",
+        "== build: cargo build --release (the release profile)",
+        "    Finished `release` profile [optimized] target(s) in 0.05s",
+        "== run: target/release/ovf, stdout",
+        "b + x = -9223372036854775808 (wrapped; non-negativity broken; i128 total changed by -18446744073709551616)",
+        "checked_add = None",
+        "== run: target/release/ovf, stderr",
+        "== run: target/release/ovf, exit code",
+        "0"
+      ],
+      "outputs": [
+        "runs/RUN-rust-i64/bench.log"
+      ],
+      "environment": {
+        "container_image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "rustc_path": "toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/rustc",
+        "user": "the image's learner user, uid 1000"
+      }
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T12. values.debug and values.release hold what each binary did: debug.panicked and debug.panic_message (the dev profile's overflow check fired inside the source's catch_unwind), release.wrapped and release.b_plus_x (the release profile wrapped), and checked_add in both. Cite one as {{run:RUN-rust-i64#values.release.b_plus_x}}.",
+    "The crate is byte-identical to research/evidence/a2r3/rust (spine section 9.5: its source existed and its output was never committed); `record.mjs check` compares the copies. The program catches its own panic, so both binaries exit 0: the debug build's panic is the message on stderr and the line \"b + x panicked (overflow check)\" on stdout.",
+    "The two `Running` lines in the log show the exact rustc arguments: the dev profile (cargo's default) passes no -C opt-level, and the release profile passes -C opt-level=3. That the dev build checks overflow and the release build wraps is what the two binaries printed; the profile defaults that explain it are cargo's and rustc's documented ones [D]. The log keeps the panic's thread id verbatim (89 in this recording): it is the id of the main thread in the container's process numbering and not part of the result, and no check reads it. The two `Finished` lines carry cargo's own elapsed time, which differs between runs of the same command, so a replay can differ from this log on those lines.",
+    "stdout and stderr of each binary are printed in separate sections by rust_i64.sh, so the order of the two streams is never in question.",
+    "Placeholder in argv: <sandbox>/crate is a scratch copy of the crate (Cargo.toml and src/main.rs) with rust_i64.sh beside it (the inputs list them); the container sees it as /w.",
+    "budget.harness_timeout_s is the wall time after which the recording script would have stopped the docker run (600 s); started_at and duration_s are that docker run's, the container's start and both builds included."
+  ]
+}

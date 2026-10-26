@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "The seeded RNG: a wrapper over the vendored kernelspace module (vendor/kernelspace/VENDOR.md, module rng).",
+  "description": "The seeded RNG: a wrapper over the vendored kernelspace module (vendor/kernelspace/VENDOR.md, module rng), with exactly uniform integer draws for generators and the determinism lint of GATE-generators (@statespace/rng/lint).",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./lint": "./src/lint.ts"
   },
   "scripts": {
     "typecheck": "tsc -p . && tsc -p test",
     "test": "node --test \"test/*.test.ts\""
-  }
+  },
+  "sideEffects": false
 }

@@ -1,0 +1,177 @@
+/* The three-segment claim strip (DESIGN.md section 5.6): three equal cells under a 1.5-px frame, each headed by a
+   12-px label, when there is room; stacked rows when there is not. The strip answers to its own width (a container
+   query), so a strip in a narrow card on a desktop stacks too:
+     below 440 px   rows, each label above its stamp (at 320 and 360 px a label beside the stamp would leave the
+                    stamp too narrow to read)
+     440–539 px     rows, label on the left
+     from 540 px    three cells across
+   Every rule is scoped to .strip, where stamp hues may appear (GATE-stamps' hue scope); the strip itself draws in
+   ink. */
+
+.strip {
+  container-type: inline-size;
+  box-sizing: border-box;
+  max-width: 100%;
+  border: var(--border-structure) solid var(--structure);
+  border-radius: 0;
+  background: var(--sheet);
+}
+
+.strip-segments {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+}
+
+.strip-cell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  align-content: start;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-5);
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.strip-cell:first-child {
+  border-top: 0;
+}
+
+.strip-label {
+  margin: 0;
+  color: var(--pencil);
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  font-stretch: 118%;
+  line-height: var(--lh-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.strip-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+}
+
+.strip-primary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.strip-modulo {
+  color: var(--ink);
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+.strip-note {
+  color: var(--pencil);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+/* A seam the segment rests on: a short dashed tick on the segment's leading edge, inside its padding (the line
+   language's "assumed"). Several seams stack their ticks down the edge; the disclosure lists them in words. */
+.strip-ticks {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  display: grid;
+  gap: var(--space-1);
+}
+
+.strip-tick {
+  display: block;
+  width: var(--space-2);
+  height: 1.25em;
+  border-left-width: var(--border-stamp);
+}
+
+/* The "+n" disclosure: a native details element, its summary a 44-px target. */
+.strip-more {
+  width: 100%;
+  min-width: 0;
+}
+
+.strip-more > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--target);
+  min-height: var(--target);
+  color: var(--ink);
+  font-family: var(--font-code);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.strip-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.strip-more > summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.strip-more-list {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 var(--space-2);
+  list-style: none;
+}
+
+.strip-more-list > li {
+  min-width: 0;
+}
+
+.strip-defeater,
+.strip-assumption {
+  color: var(--ink);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+}
+
+/* An assumption record's link: a 44-px target (DESIGN.md section 2.8). */
+.strip-assumption > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+}
+
+@container (min-width: 440px) {
+  .strip-cell {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    column-gap: var(--space-3);
+  }
+}
+
+@container (min-width: 540px) {
+  .strip-segments {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .strip-cell {
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 0;
+    border-left: var(--border-component) solid var(--rule);
+  }
+
+  .strip-cell:first-child {
+    border-left: 0;
+  }
+}

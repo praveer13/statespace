@@ -1,0 +1,55 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.1",
+  "title": "The overdraft",
+  "draft": true,
+  "kcs": [
+    "KC-1.violation-as-sat",
+    "KC-1.witness-class"
+  ],
+  "found_in": {
+    "lesson": "S1.L1"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L0",
+      "S1.L1"
+    ]
+  },
+  "violates": "The sender's balance stays at zero or above after a transfer: `a − amount ≥ 0`.",
+  "because": "The transfer puts no condition on the sender's balance, so an amount above it can be sent.",
+  "class": "an overdraft by an unguarded debit",
+  "cured_by": {
+    "text": "Guard the debit with `amount ≤ a`. With the guard the same query has no witness (shown above), and CL-1.1 keeps that result beside its premise query.",
+    "claim": "CL-1.1"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-starter",
+      "query": "1.2 starter: overdraft search",
+      "direction": "violation",
+      "replay": {
+        "run": "RUN-specimens-replay",
+        "query": "sp_1_1_starter"
+      }
+    },
+    "also": [
+      {
+        "run": "RUN-z3-boot-variant",
+        "query": "variant_violation",
+        "caption": "The variant from Start here, where the guard reads the recipient's balance, has a witness too, and it replays."
+      },
+      {
+        "run": "RUN-z3-starter",
+        "query": "1.3 guard added",
+        "caption": "The same query once the guard `amount ≤ a` is added."
+      }
+    ],
+    "minimal": {
+      "kind": "optimize",
+      "run": "RUN-z3-optimize-min",
+      "query": "S1.2 minimal amount via Optimize",
+      "objective": "amount"
+    }
+  }
+}

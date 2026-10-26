@@ -1,0 +1,20 @@
+{
+  "name": "@statespace/kc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The KC graph v0 (spine section 4) as data and code: types, the loader for content/kc/graph.yaml, graph queries (prerequisites, credit order, confusable sets, fading families), the published paths, and the pure checks of GATE-kc.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@statespace/ids": "0.0.0"
+  },
+  "scripts": {
+    "generate": "node ../../scripts/verify-kc.mjs --write",
+    "verify": "node ../../scripts/verify-kc.mjs",
+    "typecheck": "tsc -p . && tsc -p test",
+    "test": "node --test \"test/*.test.ts\""
+  }
+}

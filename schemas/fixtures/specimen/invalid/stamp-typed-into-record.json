@@ -1,0 +1,52 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.1",
+  "title": "The overdraft",
+  "draft": true,
+  "kcs": [
+    "KC-1.violation-as-sat",
+    "KC-1.witness-class"
+  ],
+  "found_in": {
+    "lesson": "S1.L1"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L0",
+      "S1.L1"
+    ]
+  },
+  "violates": "The sender's balance stays at zero or above after a transfer.",
+  "because": "The transfer puts no condition on the sender's balance, so an amount above it can be sent.",
+  "class": "an overdraft by an unguarded debit",
+  "cured_by": {
+    "text": "Guard the debit with amount <= a: the same query is then unsat, and a premise query shows the guard still lets some transfer through.",
+    "claim": "CL-1.1"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-starter",
+      "query": "1.2 starter: overdraft search",
+      "direction": "violation",
+      "replay": {
+        "run": "RUN-specimens-replay",
+        "query": "sp_1_1_starter"
+      }
+    },
+    "also": [
+      {
+        "run": "RUN-z3-boot-variant",
+        "query": "variant_violation",
+        "caption": "Boot's variant, where the guard read the recipient's balance"
+      }
+    ],
+    "minimal": {
+      "kind": "optimize",
+      "run": "RUN-z3-optimize-min",
+      "query": "S1.2 minimal amount via Optimize",
+      "objective": "amount",
+      "confirm": "no_smaller_amount"
+    }
+  },
+  "stamp": "REFUTED [R] · 1 step"
+}

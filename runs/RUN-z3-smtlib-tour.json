@@ -1,0 +1,1301 @@
+{
+  "id": "RUN-z3-smtlib-tour",
+  "title": "D-13's SMT-LIB examples through the Z3 command line, its API interpreter and Pyodide: sat with a model, unsat, unknown with its reason, and a budget set with (set-option :rlimit)",
+  "task": "W1-T12",
+  "origin": "recorded",
+  "records": "D-13: the starter as SMT-LIB gives sat with a model, the guard added gives unsat, `(get-model)` after unsat is an interpreter error, an exponent query gives unknown with Z3's reason, and a cubes query under (set-option :rlimit 5000000) gives unknown with the reason canceled",
+  "engine": "z3",
+  "version": "5.3.1",
+  "binary": "bin/z3, the command-line executable installed by the z3-solver 5.3.1.0 wheel (z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl); the API configurations use libz3.so from the same wheel (sha256 8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7); the Pyodide configurations use the pyemscripten wheel (sha256 62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90)",
+  "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+  "image": null,
+  "recorded_at": "2026-10-26T02:12:47.685Z",
+  "started_at": "2026-10-26T02:12:43.726Z",
+  "duration_s": 0.5,
+  "argv": [
+    "uv",
+    "run",
+    "--no-project",
+    "--quiet",
+    "--with",
+    "z3-solver==5.3.1",
+    "sh",
+    "tour_cli.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh",
+      "sha256": "67b905add72bc09a6f758288275cc83b48072458f08bdd25c2284cf5bc43bc22",
+      "bytes": 745,
+      "role": "script"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+      "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+      "bytes": 194,
+      "role": "query"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+      "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+      "bytes": 224,
+      "role": "query"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+      "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+      "bytes": 236,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+      "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+      "bytes": 232,
+      "role": "fixture"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+      "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+      "bytes": 123,
+      "role": "fixture"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+      "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+      "bytes": 36561071,
+      "role": "wheel"
+    },
+    {
+      "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+      "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+      "bytes": 1517,
+      "role": "script"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+      "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+      "bytes": 2736,
+      "role": "harness"
+    },
+    {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "file": "pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "bytes": 6488647,
+      "role": "engine"
+    },
+    {
+      "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+      "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "bytes": 6525334,
+      "role": "wheel"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+      "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+      "bytes": 5270,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/index.html",
+      "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+      "bytes": 944,
+      "role": "harness"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+      "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+      "bytes": 2256,
+      "role": "harness"
+    },
+    {
+      "name": "node_modules/playwright-core/package.json",
+      "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+      "role": "harness dependency, playwright-core 1.63.0"
+    },
+    {
+      "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+      "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+      "bytes": 643,
+      "role": "harness"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+    "harness_timeout_s": 600
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "Z3 version 5.3.1 - 64 bit",
+    "== starter.smt2",
+    "sat",
+    "(",
+    "  (define-fun b () Int",
+    "    0)",
+    "  (define-fun amount () Int",
+    "    1)",
+    "  (define-fun a () Int",
+    "    0)",
+    ")",
+    "== starter_guarded.smt2",
+    "unsat",
+    "== starter_guarded_get_model.smt2",
+    "unsat",
+    "(error \"line 8 column 10: model is not available\")",
+    "== unknown_theory.smt2",
+    "unknown",
+    "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+    "== unknown_canceled.smt2",
+    "unknown",
+    "(:reason-unknown \"canceled\")"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-smtlib-tour/cli-native.log",
+      "sha256": "a0c0e81723e9f822f307556bcfa0e0795aedf85979b3a48835f4aa8eae641bf6",
+      "bytes": 553,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/api-native.log",
+      "sha256": "880347c3d741aeea66653a6d2be06cc5f7339b9c360f7cb4e489316962839613",
+      "bytes": 1547,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/pyodide-node.log",
+      "sha256": "2f30d3fc5fa11f31a6c7f7295b0687bb9a1bc843f3d944c7a57901f02f733856",
+      "bytes": 1549,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/pyodide-chromium.log",
+      "sha256": "73516fbba0255ac54248d072323684a62167c9226bac624c716820209e03b135",
+      "bytes": 1544,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/pyodide-firefox.log",
+      "sha256": "02853b2b317e960f9a17f5cbacf6ded0426c45a7c18115dfb9a95af28a02de2c",
+      "bytes": 1544,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/pyodide-webkit.log",
+      "sha256": "8822bf2b2cdfe4f1ff70c7beb93280a6a9da31cab5b223b282f24372c0d3db84",
+      "bytes": 1544,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-z3-smtlib-tour/cvc5-bench.log",
+      "sha256": "483fb7a92d768f9a2c7c8ee09ac2d871ca3b671dbcfa2e4b7482fba76242a287",
+      "bytes": 76,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "files": {
+      "starter": {
+        "verdict": "sat",
+        "model": {
+          "b": "0",
+          "amount": "1",
+          "a": "0"
+        },
+        "witness_replays": true,
+        "replay": "a=0 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a - amount = -1 < 0 ok",
+        "witnesses_differ_across_engines": false,
+        "command_line_exit_code": 0,
+        "engines": {
+          "cli-native": "sat",
+          "api-native": "sat",
+          "pyodide-node": "sat",
+          "pyodide-chromium": "sat",
+          "pyodide-firefox": "sat",
+          "pyodide-webkit": "sat",
+          "cvc5-bench": "sat"
+        },
+        "engines_agree": true
+      },
+      "starter_guarded": {
+        "verdict": "unsat",
+        "command_line_exit_code": 0,
+        "engines": {
+          "cli-native": "unsat",
+          "api-native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat",
+          "cvc5-bench": "unsat"
+        },
+        "engines_agree": true
+      },
+      "starter_guarded_get_model": {
+        "verdict": "unsat",
+        "error": "line 8 column 10: model is not available",
+        "command_line_exit_code": 1,
+        "engines": {
+          "cli-native": "unsat",
+          "api-native": "unsat",
+          "pyodide-node": "unsat",
+          "pyodide-chromium": "unsat",
+          "pyodide-firefox": "unsat",
+          "pyodide-webkit": "unsat"
+        },
+        "engines_agree": true
+      },
+      "unknown_theory": {
+        "verdict": "unknown",
+        "reason_unknown": "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+        "command_line_exit_code": 0,
+        "engines": {
+          "cli-native": "unknown",
+          "api-native": "unknown",
+          "pyodide-node": "unknown",
+          "pyodide-chromium": "unknown",
+          "pyodide-firefox": "unknown",
+          "pyodide-webkit": "unknown"
+        },
+        "engines_agree": true
+      },
+      "unknown_canceled": {
+        "verdict": "unknown",
+        "reason_unknown": "canceled",
+        "command_line_exit_code": 0,
+        "engines": {
+          "cli-native": "unknown",
+          "api-native": "unknown",
+          "pyodide-node": "unknown",
+          "pyodide-chromium": "unknown",
+          "pyodide-firefox": "unknown",
+          "pyodide-webkit": "unknown"
+        },
+        "engines_agree": true
+      }
+    },
+    "engines": [
+      "cli-native",
+      "api-native",
+      "pyodide-node",
+      "pyodide-chromium",
+      "pyodide-firefox",
+      "pyodide-webkit"
+    ],
+    "verdicts_agree": true,
+    "witnesses_replay": true,
+    "cvc5": {
+      "configuration": "cvc5-bench",
+      "version": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "files_checked": 2
+    }
+  },
+  "checks": [
+    {
+      "id": "starter",
+      "pass": true,
+      "expected": "sat",
+      "observed": "sat",
+      "engines": {
+        "cli-native": "sat",
+        "api-native": "sat",
+        "pyodide-node": "sat",
+        "pyodide-chromium": "sat",
+        "pyodide-firefox": "sat",
+        "pyodide-webkit": "sat",
+        "cvc5-bench": "sat"
+      }
+    },
+    {
+      "id": "starter_guarded",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "cli-native": "unsat",
+        "api-native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat",
+        "cvc5-bench": "unsat"
+      }
+    },
+    {
+      "id": "starter_guarded_get_model",
+      "pass": true,
+      "expected": "unsat",
+      "observed": "unsat",
+      "engines": {
+        "cli-native": "unsat",
+        "api-native": "unsat",
+        "pyodide-node": "unsat",
+        "pyodide-chromium": "unsat",
+        "pyodide-firefox": "unsat",
+        "pyodide-webkit": "unsat"
+      }
+    },
+    {
+      "id": "unknown_theory",
+      "pass": true,
+      "expected": "unknown",
+      "observed": "unknown",
+      "engines": {
+        "cli-native": "unknown",
+        "api-native": "unknown",
+        "pyodide-node": "unknown",
+        "pyodide-chromium": "unknown",
+        "pyodide-firefox": "unknown",
+        "pyodide-webkit": "unknown"
+      }
+    },
+    {
+      "id": "unknown_canceled",
+      "pass": true,
+      "expected": "unknown",
+      "observed": "unknown",
+      "engines": {
+        "cli-native": "unknown",
+        "api-native": "unknown",
+        "pyodide-node": "unknown",
+        "pyodide-chromium": "unknown",
+        "pyodide-firefox": "unknown",
+        "pyodide-webkit": "unknown"
+      }
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "node": "v22.22.2",
+    "python": "CPython 3.13.12",
+    "uv": "uv 0.10.2",
+    "containers": {
+      "playwright": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "bench": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+    }
+  },
+  "primary_config": "cli-native",
+  "configs": [
+    {
+      "id": "cli-native",
+      "purpose": "the Z3 command line, `z3 file.smt2`, on each file; the executable the z3-solver wheel installs; the primary configuration",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": null,
+      "started_at": "2026-10-26T02:12:43.726Z",
+      "duration_s": 0.5,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "sh",
+        "tour_cli.sh"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh",
+          "sha256": "67b905add72bc09a6f758288275cc83b48072458f08bdd25c2284cf5bc43bc22",
+          "bytes": 745,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "Z3 version 5.3.1 - 64 bit",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/cli-native.log"
+      ],
+      "environment": {
+        "uv": "uv 0.10.2",
+        "executable": "bin/z3 27791912 bytes",
+        "version_line": "Z3 version 5.3.1 - 64 bit"
+      }
+    },
+    {
+      "id": "api-native",
+      "purpose": "the same files through the Z3Py interpreter, Z3_eval_smtlib2_string, natively: the call Pyodide makes",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+      "image": null,
+      "started_at": "2026-10-26T02:12:44.227Z",
+      "duration_s": 0.527,
+      "argv": [
+        "uv",
+        "run",
+        "--no-project",
+        "--quiet",
+        "--with",
+        "z3-solver==5.3.1",
+        "python",
+        "-I",
+        "smtlib_tour.py"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+          "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+          "bytes": 1517,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/e9/ed/c327d486ef65228c367ef0f5c306abb3c805538c75db99600f68714ebb46/z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl",
+          "sha256": "3e2e00bc80e776849d917daa194f33759ffa61d6528a859cfc4923ee3277a386",
+          "bytes": 36561071,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/api-native.log"
+      ],
+      "environment": {
+        "python": "CPython 3.13.12",
+        "uv": "uv 0.10.2",
+        "library": "libz3.so 27688808 bytes"
+      }
+    },
+    {
+      "id": "pyodide-node",
+      "purpose": "the script in Pyodide under Node with this task's harness, pyodide-node.mjs: the setting in which RUN-z3-bv64-pyodide ran (with a harness of its own) and in which the spine's GATE-calls reproduces a Call It answer; Pyodide 314.0.7 and the Z3 5.3.1.0 wheel, a fresh engine and a fresh Python namespace for the script",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": null,
+      "started_at": "2026-10-26T02:12:44.756Z",
+      "duration_s": 2.668,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T12/pyodide-node.mjs",
+        "--pyodide",
+        "<sandbox>/engines/pyodide",
+        "--wheel",
+        "<sandbox>/engines/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+        "--script",
+        "smtlib_tour.py",
+        "--file",
+        "smtlib/starter.smt2=smtlib/starter.smt2",
+        "--file",
+        "smtlib/starter_guarded.smt2=smtlib/starter_guarded.smt2",
+        "--file",
+        "smtlib/starter_guarded_get_model.smt2=smtlib/starter_guarded_get_model.smt2",
+        "--file",
+        "smtlib/unknown_canceled.smt2=smtlib/unknown_canceled.smt2",
+        "--file",
+        "smtlib/unknown_theory.smt2=smtlib/unknown_theory.smt2"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+          "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+          "bytes": 1517,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-node.mjs",
+          "sha256": "2798c6c61a444146e4b7cdab092251d78c70a98d7afc00c48e96a3459be03368",
+          "bytes": 2736,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 600
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/pyodide-node.log"
+      ],
+      "environment": {
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "node": "v22.22.2 x64",
+        "load_pyodide_ms": 1035,
+        "load_wheel_ms": 240,
+        "script_ms": 1358
+      }
+    },
+    {
+      "id": "pyodide-chromium",
+      "purpose": "the script in Pyodide in a module worker in chromium 153.0.8010.12 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:15.582Z",
+      "duration_s": 1.05,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-chromium",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers chromium; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+          "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+          "bytes": 1517,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/pyodide-chromium.log"
+      ],
+      "environment": {
+        "browser": "chromium 153.0.8010.12",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1016,
+        "load_wheel_ms": 243,
+        "script_ms": 1050,
+        "session_wall_ms": 3092,
+        "docker_run_started_at": "2026-10-26T02:12:15.227Z",
+        "docker_run_wall_ms": 3512
+      }
+    },
+    {
+      "id": "pyodide-firefox",
+      "purpose": "the script in Pyodide in a module worker in firefox 155.0 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:19.281Z",
+      "duration_s": 1.044,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-firefox",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers firefox; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+          "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+          "bytes": 1517,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/pyodide-firefox.log"
+      ],
+      "environment": {
+        "browser": "firefox 155.0",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1083,
+        "load_wheel_ms": 338,
+        "script_ms": 1044,
+        "session_wall_ms": 3724,
+        "docker_run_started_at": "2026-10-26T02:12:18.749Z",
+        "docker_run_wall_ms": 4518
+      }
+    },
+    {
+      "id": "pyodide-webkit",
+      "purpose": "the script in Pyodide in a module worker in webkit 26.6 (a desktop build, headless, not a phone; a page from a local static server without COOP or COEP, so not cross-origin isolated, as static hosting serves it), a fresh Python namespace: the tab's engine as INS-z3 will start it",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T02:12:23.814Z",
+      "duration_s": 1.068,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--init",
+        "--name",
+        "w1t12-webkit",
+        "--memory=6g",
+        "--shm-size=1g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/engines:/engines:ro",
+        "-v",
+        "runs/inputs/S1:/inputs:ro",
+        "-v",
+        "node_modules/playwright-core:/pw:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "-e",
+        "HOST_UID=1000",
+        "-e",
+        "HOST_GID=100",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "sh",
+        "-c",
+        "node /s/pyodide-browser.mjs --engines /engines --inputs /inputs --out /out --playwright /pw/index.mjs --browsers webkit; code=$?; chown -R $HOST_UID:$HOST_GID /out; exit $code"
+      ],
+      "inputs": [
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib_tour.py",
+          "sha256": "471b1c0811c949fd60e60455f2ed154784c6f790d5b86f453357ef0164e2f159",
+          "bytes": 1517,
+          "role": "script"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2",
+          "sha256": "c501b54d15e797cd018a0ee6da335fcf1bca73fed95d5d971d1487928e84992a",
+          "bytes": 236,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2",
+          "sha256": "99d86a765d9aed3cbd59f97c93dfa864cf5a8666458aed81a7ab768a499c6712",
+          "bytes": 232,
+          "role": "fixture"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2",
+          "sha256": "277f4236f8e0d68365dda76ff0121867d65828528d3d13e71a0b979ceb1d4115",
+          "bytes": 123,
+          "role": "fixture"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/pyodide-browser.mjs",
+          "sha256": "7f5a5625496a03a041167250f1073b103c55b6208fdddbb2ff2b3afc938fc88b",
+          "bytes": 5270,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/index.html",
+          "sha256": "479cde3496268899254deab02f5cf221c7f5dd738e877df6484616ee413ef8e6",
+          "bytes": 944,
+          "role": "harness"
+        },
+        {
+          "path": "scripts/spikes/W1-T12/browser/worker.mjs",
+          "sha256": "b9551699700a56afb00670d50c1e3ab76ff1b1040cd745f9a690e1d774d426d1",
+          "bytes": 2256,
+          "role": "harness"
+        },
+        {
+          "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+          "file": "pyodide-314.0.7.tgz",
+          "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+          "bytes": 6488647,
+          "role": "engine"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/7b/05/574cc7c432cbd8dd2f29fce6dbe0dffc3dc34d48ec73723de44dc3905489/z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "file": "z3_solver-5.3.1.0-py3-none-pyemscripten_2026_0_wasm32.whl",
+          "sha256": "62143abf1f1f94e9b1c173db60b2f6b747f4b0780da81f4b05342bdef006bf90",
+          "bytes": 6525334,
+          "role": "wheel"
+        },
+        {
+          "name": "node_modules/playwright-core/package.json",
+          "sha256": "f061c58427e47e843e26d201f0a57076c734e57c734ecbbd87d4a23b7a20db9b",
+          "role": "harness dependency, playwright-core 1.63.0"
+        }
+      ],
+      "budget": {
+        "rlimit": 5000000,
+        "set_in": "smtlib/unknown_canceled.smt2, by (set-option :rlimit 5000000); the other four files run without a budget",
+        "harness_timeout_s": 900,
+        "container_memory": "6g",
+        "network": "none",
+        "shm_size": "1g"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "z3 5.3.1",
+        "== starter.smt2",
+        "sat",
+        "(",
+        "  (define-fun b () Int",
+        "    0)",
+        "  (define-fun amount () Int",
+        "    1)",
+        "  (define-fun a () Int",
+        "    0)",
+        ")",
+        "== starter_guarded.smt2",
+        "unsat",
+        "== starter_guarded_get_model.smt2",
+        "unsat",
+        "(error \"line 8 column 10: model is not available\")",
+        "== unknown_theory.smt2",
+        "unknown",
+        "(:reason-unknown \"smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))\")",
+        "== unknown_canceled.smt2",
+        "unknown",
+        "(:reason-unknown \"canceled\")"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/pyodide-webkit.log"
+      ],
+      "environment": {
+        "browser": "webkit 26.6",
+        "pyodide": "314.0.7",
+        "python": "CPython 3.14.2",
+        "load_pyodide_ms": 1014,
+        "load_wheel_ms": 270,
+        "script_ms": 1068,
+        "session_wall_ms": 3135,
+        "docker_run_started_at": "2026-10-26T02:12:23.278Z",
+        "docker_run_wall_ms": 3757
+      }
+    },
+    {
+      "id": "cvc5-bench",
+      "purpose": "a second solver on the queries: the tour's starter and its guarded form, as SMT-LIB text, on cvc5 1.4.2 [git 282d5e0 on branch HEAD], the Bench binary (the spine's \"authored unsat cross-checked on cvc5\")",
+      "origin": "recorded",
+      "engine": "cvc5",
+      "version": "1.4.2",
+      "version_string": "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+      "binary_sha256": "6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102",
+      "image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+      "started_at": "2026-10-26T02:12:47.464Z",
+      "duration_s": 0.152,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "w1t12-cvc5-z3-smtlib-tour",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "scripts/spikes/W1-T12:/s:ro",
+        "-v",
+        "<sandbox>/smt2:/q:ro",
+        "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09",
+        "sh",
+        "/s/cvc5-check.sh",
+        "/q"
+      ],
+      "inputs": [
+        {
+          "path": "scripts/spikes/W1-T12/cvc5-check.sh",
+          "sha256": "f285031693b59ceb380ab048613b5666d7d9c63f032db7422b742a4677d92617",
+          "bytes": 643,
+          "role": "harness"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2",
+          "sha256": "ac6500be32aa8d087ca3d88ca410eb10de5437177e4c391ee7c2d5d7d0a633c4",
+          "bytes": 194,
+          "role": "query"
+        },
+        {
+          "path": "runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2",
+          "sha256": "22dbf775f4ac7a6caf53a36555d45ac4d1a77f9e0cae23764a6c824eb53d2c27",
+          "bytes": 224,
+          "role": "query"
+        }
+      ],
+      "budget": {
+        "per_file_timeout_s": 60,
+        "harness_timeout_s": 600,
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "cvc5 1.4.2 [git 282d5e0 on branch HEAD]",
+        "starter: sat",
+        "starter_guarded: unsat"
+      ],
+      "outputs": [
+        "runs/RUN-z3-smtlib-tour/cvc5-bench.log"
+      ],
+      "environment": {
+        "container_image": "statespace-bench:w0t05@sha256:b161b2a1d80430f47efa4f326db727f5c44e7a946ecd4aad4f13616b58a02e09"
+      }
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "image",
+      "reason": "the primary configuration ran on the host under uv, in no container; the container configurations name their images"
+    }
+  ],
+  "notes": [
+    "Recorded by W1-T12. values.files.<name> holds each tour file's verdict, the first line the interpreter printed; its reason_unknown, error or model where the interpreter printed one, and for a file with a model whether every configuration's model for it replayed (witness_replays); the command line's exit code (command_line_exit_code); and the verdict of each configuration that ran the file (engines; cvc5 ran 2 of the 5). Cite one as {{run:RUN-z3-smtlib-tour#values.files.<name>.verdict}}. 5 files in all.",
+    "Where each configuration ran: cli-native, api-native, pyodide-node, pyodide-chromium, pyodide-firefox, pyodide-webkit, cvc5-bench. cli-native is the z3 command line that the wheel z3_solver-5.3.1.0-py3-none-manylinux_2_27_x86_64.whl installs, on the host under uv; api-native is the Python API of the same wheel, on the host under uv (CPython 3.13); pyodide-node is Pyodide 314.0.7 with the z3_solver 5.3.1.0 pyemscripten wheel under Node 22 on the host (CPython 3.14 inside Pyodide); the pyodide-chromium, pyodide-firefox and pyodide-webkit configurations are the same engine in a module worker of each browser inside the pinned Playwright container (desktop builds, headless, not phones); cvc5-bench is cvc5 1.4.2, the Bench binary, in the Bench image with the network off.",
+    "Witnesses are recorded by property and never compared by value across engines [X RUN-z3-bv64-pyodide]: for every sat file, the model each configuration gave (cli-native, api-native, pyodide-node, pyodide-chromium, pyodide-firefox and pyodide-webkit; cvc5-bench gives verdicts only) is replayed in BigInt by the recording script (replayStarter in lib.mjs), and the check is that every one of them replays. In this run the configurations in values.engines returned the same model for every sat file, which is a fact about this run and no promise.",
+    "started_at and duration_s of a configuration that ran its own command (cli-native, api-native, pyodide-node and cvc5-bench) are when that command started and how long it took, start-up included. Each browser configuration (pyodide-chromium, pyodide-firefox and pyodide-webkit) comes from one docker run, in which one browser session ran every Z3 script of runs/inputs/S1 in turn; that session is shared by the 9 Z3 records of runs/inputs/S1, and the configuration's argv and exit_code are its docker run's. A browser configuration's started_at is when its session began, after the browser had launched and before its page opened, and its duration_s is this script's own time in the worker, measured around the call without the engine's start-up and rounded to whole milliseconds by the harness. Its environment holds two spans that cover every script: session_wall_ms, from started_at to when the last script had finished (the page's and the engine's load and every script, not the browser's close), and docker_run_wall_ms, the docker run from docker_run_started_at, when the recording script started it, to its exit (adding the container's start and the launch of Node and the browser before started_at, and the browser's close and the output's chown after the last script). budget.harness_timeout_s is the wall time after which the recording script would have stopped a configuration's command (for a browser configuration, the docker run). The ms figure on an @@ line is the script's own measurement of that file's evaluation, rounded to hundredths of a millisecond; in this record's browser logs pyodide-firefox and pyodide-webkit gave whole milliseconds, and pyodide-chromium gave multiples of 0.1 ms, on all 5 files, so a browser figure of a few milliseconds is a rough one.",
+    "cvc5 1.4.2 [git 282d5e0 on branch HEAD] ran 2 of the 5 files, each file under a 60 s limit (budget.per_file_timeout_s): the starter and its guarded form. The checks require its verdict to equal Z3's on each one it ran (values.cvc5, and engines in each entry).",
+    "In cli-native, api-native and pyodide-node, which ran on the host, argv's paths to the script and to the tour files are relative to a scratch folder that held copies of the configuration's inputs from runs/inputs/S1/RUN-z3-smtlib-tour/ at the same relative paths, and the command ran in that folder; pyodide-node.mjs is named by its path from the repository root, and the <sandbox> paths are placeholders (next note).",
+    "Placeholders in argv: <sandbox>/engines is a scratch directory with Pyodide's npm package unpacked in pyodide/ and the Z3 wheel, both fetched and checked against their published digests (the inputs list them); <sandbox>/out is the browser container's output directory; <sandbox>/smt2 is a scratch copy of the SMT-LIB files the cvc5 configuration reads (the inputs list them). Repository paths are relative to the repository root.",
+    "The Z3 command line is bin/z3 from the z3-solver wheel (hashed as cli-native's binary_sha256); the API configurations (api-native, pyodide-node, pyodide-chromium, pyodide-firefox and pyodide-webkit) call Z3_eval_smtlib2_string, the API entry to Z3's SMT-LIB command interpreter, in a fresh Context per file, and printed the same text as the command line on every file. The API configurations print the interpreter's output as it returns it, and each log is the output as printed, except that the recording script would replace a host path in it with a placeholder. On starter_guarded_get_model an interpreter error raised an exception under the API whose message carries the output so far (error is true on its @@ line in every API configuration), and the script printed that output; the command line printed the same text and exited 1 (values.files.<name>.command_line_exit_code).",
+    "cvc5 runs only the starter and its guarded form. The other three files test Z3's own interpreter and its reasons for unknown: `unknown_theory` and `unknown_canceled` are the two unknown rows of D-13's table as SMT-LIB text, and `starter_guarded_get_model` is the starter with the guard added and `(get-model)` kept, which is what a learner who edits the page's text gets; it is not on the page."
+  ]
+}

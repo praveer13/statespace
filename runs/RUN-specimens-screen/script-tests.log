@@ -1,0 +1,268 @@
+TAP version 13
+# Subtest: the committed cabinet is what content/specimens/ and runs/ build, and the build has no finding
+ok 1 - the committed cabinet is what content/specimens/ and runs/ build, and the build has no finding
+  ---
+  duration_ms: 121.379942
+  type: 'test'
+  ...
+# Subtest: SP-1.1 to SP-1.10 are in the cabinet, in order, one record each, with a run behind every one
+ok 2 - SP-1.1 to SP-1.10 are in the cabinet, in order, one record each, with a run behind every one
+  ---
+  duration_ms: 28.148533
+  type: 'test'
+  ...
+# Subtest: every line a label is drawn from is a line of the run record it names, verbatim
+ok 3 - every line a label is drawn from is a line of the run record it names, verbatim
+  ---
+  duration_ms: 34.903124
+  type: 'test'
+  ...
+# Subtest: the spine names each course specimen with its lesson, and a dated incident is marked in both places
+ok 4 - the spine names each course specimen with its lesson, and a dated incident is marked in both places
+  ---
+  duration_ms: 24.177854
+  type: 'test'
+  ...
+# Subtest: a query that no verdict line of the run begins with is a finding
+ok 5 - a query that no verdict line of the run begins with is a finding
+  ---
+  duration_ms: 24.524822
+  type: 'test'
+  ...
+# Subtest: a label is never typed: a stamp, a tool version or a status written into a record is not specimen@1
+ok 6 - a label is never typed: a stamp, a tool version or a status written into a record is not specimen@1
+  ---
+  duration_ms: 103.253513
+  type: 'test'
+  ...
+# Subtest: a title that is not the spine's words for the specimen is a finding
+ok 7 - a title that is not the spine's words for the specimen is a finding
+  ---
+  duration_ms: 22.811709
+  type: 'test'
+  ...
+# Subtest: a dated-incident mark that the spine and the record do not share is a finding, in either direction
+ok 8 - a dated-incident mark that the spine and the record do not share is a finding, in either direction
+  ---
+  duration_ms: 42.297295
+  type: 'test'
+  ...
+# Subtest: a run the spine names behind the specimen, which the record never cites, is a finding
+ok 9 - a run the spine names behind the specimen, which the record never cites, is a finding
+  ---
+  duration_ms: 26.503301
+  type: 'test'
+  ...
+# Subtest: a lesson other than the spine's, a mount rule on something that is not a lesson, and a KC that is not in the graph are findings
+ok 10 - a lesson other than the spine's, a mount rule on something that is not a lesson, and a KC that is not in the graph are findings
+  ---
+  duration_ms: 63.647462
+  type: 'test'
+  ...
+# Subtest: a file named for another record, a course id the spine does not have, and the same id twice are findings
+ok 11 - a file named for another record, a course id the spine does not have, and the same id twice are findings
+  ---
+  duration_ms: 45.153358
+  type: 'test'
+  ...
+# Subtest: a record that is not JSON is a finding, and the others are still built
+ok 12 - a record that is not JSON is a finding, and the others are still built
+  ---
+  duration_ms: 25.580783
+  type: 'test'
+  ...
+# Subtest: a specimen that is not a course specimen has no mount rule: its own lab check mounts it
+ok 13 - a specimen that is not a course specimen has no mount rule: its own lab check mounts it
+  ---
+  duration_ms: 53.318473
+  type: 'test'
+  ...
+# Subtest: a run that is not recorded, a witness that does not replay and a replay of another witness are findings
+ok 14 - a run that is not recorded, a witness that does not replay and a replay of another witness are findings
+  ---
+  duration_ms: 83.432766
+  type: 'test'
+  ...
+# Subtest: a minimal claim on a query that did not run under Optimize, or one that is not a sat, is a finding
+ok 15 - a minimal claim on a query that did not run under Optimize, or one that is not a sat, is a finding
+  ---
+  duration_ms: 75.684302
+  type: 'test'
+  ...
+# Subtest: a value reference in a record's words is a finding: the label reads values from the lines it shows
+ok 16 - a value reference in a record's words is a finding: the label reads values from the lines it shows
+  ---
+  duration_ms: 38.34856
+  type: 'test'
+  ...
+# Subtest: a lesson that mounts a specimen the record does not name is a note, never a finding
+ok 17 - a lesson that mounts a specimen the record does not name is a note, never a finding
+  ---
+  duration_ms: 39.26848
+  type: 'test'
+  ...
+# Subtest: an internal name in a record's words is a finding: the glossary's own list is the rule, in every line a label shows
+ok 18 - an internal name in a record's words is a finding: the glossary's own list is the rule, in every line a label shows
+  ---
+  duration_ms: 367.61022
+  type: 'test'
+  ...
+# Subtest: a witness length that the record states wrongly, or leaves out over a witness of several steps, is a finding
+ok 19 - a witness length that the record states wrongly, or leaves out over a witness of several steps, is a finding
+  ---
+  duration_ms: 136.929932
+  type: 'test'
+  ...
+# Subtest: a minimal claim names the objective that was minimized: another one would show a value that no Optimize query reached
+ok 20 - a minimal claim names the objective that was minimized: another one would show a value that no Optimize query reached
+  ---
+  duration_ms: 101.68424
+  type: 'test'
+  ...
+# Subtest: a record names where it is mounted and what mints from its fix: a mount rule that leaves out the lesson that finds it, none at all, a dated incident that is not a toy, and a claim the registry lacks are findings
+ok 21 - a record names where it is mounted and what mints from its fix: a mount rule that leaves out the lesson that finds it, none at all, a dated incident that is not a toy, and a claim the registry lacks are findings
+  ---
+  duration_ms: 129.810416
+  type: 'test'
+  ...
+# Subtest: a file in content/specimens/ that is not a JSON record is a finding: GATE-specimens would count it as mounted and the cabinet would never show it
+ok 22 - a file in content/specimens/ that is not a JSON record is a finding: GATE-specimens would count it as mounted and the cabinet would never show it
+  ---
+  duration_ms: 33.390407
+  type: 'test'
+  ...
+# Subtest: build-cabinet --check passes on the repository, --json prints exactly the committed file, and an unknown flag is refused
+ok 23 - build-cabinet --check passes on the repository, --json prints exactly the committed file, and an unknown flag is refused
+  ---
+  duration_ms: 566.748196
+  type: 'test'
+  ...
+# Subtest: a build that cannot run exits 2, with a reason, and writes nothing: no registry under the root, and a --root with no directory
+ok 24 - a build that cannot run exits 2, with a reason, and writes nothing: no registry under the root, and a --root with no directory
+  ---
+  duration_ms: 352.064059
+  type: 'test'
+  ...
+# Subtest: build-cabinet --check fails on a stale file; a build with a finding writes nothing; a clean build writes the file
+ok 25 - build-cabinet --check fails on a stale file; a build with a finding writes nothing; a clean build writes the file
+  ---
+  duration_ms: 599.797392
+  type: 'test'
+  ...
+# Subtest: the committed fixtures are what make-schema-fixtures.mjs writes, and the generator refuses what it does not know
+ok 26 - the committed fixtures are what make-schema-fixtures.mjs writes, and the generator refuses what it does not know
+  ---
+  duration_ms: 111.584659
+  type: 'test'
+  ...
+# Subtest: every valid fixture is specimen@1, and the valid ones cover a course specimen, a verdict, a premise query, a dated incident and a learner's lab specimen
+ok 27 - every valid fixture is specimen@1, and the valid ones cover a course specimen, a verdict, a premise query, a dated incident and a learner's lab specimen
+  ---
+  duration_ms: 6.123326
+  type: 'test'
+  ...
+# Subtest: every invalid fixture is listed in the index, and fails on the keyword and at the instance path the index gives
+ok 28 - every invalid fixture is listed in the index, and fails on the keyword and at the instance path the index gives
+  ---
+  duration_ms: 5.724339
+  type: 'test'
+  ...
+# Subtest: a label typed by hand is refused: a stamp, a tool version, a witness, a date or a status in a record, and a model or an engine in a query pointer
+ok 29 - a label typed by hand is refused: a stamp, a tool version, a witness, a date or a status in a record, and a model or an engine in a query pointer
+  ---
+  duration_ms: 0.303672
+  type: 'test'
+  ...
+# Subtest: the records of content/specimens/ are specimen@1
+ok 30 - the records of content/specimens/ are specimen@1
+  ---
+  duration_ms: 1.527189
+  type: 'test'
+  ...
+# Subtest: the record is run@1, recorded for this task, and passes
+ok 31 - the record is run@1, recorded for this task, and passes
+  ---
+  duration_ms: 2.565406
+  type: 'test'
+  ...
+# Subtest: the record holds what it says: the hashes of its script, of the three runs its witnesses are read from, and of its log
+ok 32 - the record holds what it says: the hashes of its script, of the three runs its witnesses are read from, and of its log
+  ---
+  duration_ms: 0.980924
+  type: 'test'
+  ...
+# Subtest: the witness each line replays is the one the run it is read from printed
+ok 33 - the witness each line replays is the one the run it is read from printed
+  ---
+  duration_ms: 1.604368
+  type: 'test'
+  ...
+# Subtest: run again, the script prints the lines the record holds
+ok 34 - run again, the script prints the lines the record holds
+  ---
+  duration_ms: 21.095293
+  type: 'test'
+  ...
+# Subtest: a witness that is not one is printed FAILED and the script exits 1
+ok 35 - a witness that is not one is printed FAILED and the script exits 1
+  ---
+  duration_ms: 40.931739
+  type: 'test'
+  ...
+# Subtest: the glossary is read from content/glossary.yaml, with every internal name and ID kind it lists
+ok 36 - the glossary is read from content/glossary.yaml, with every internal name and ID kind it lists
+  ---
+  duration_ms: 2.290957
+  type: 'test'
+  ...
+# Subtest: every form of every internal name is found in a sentence, with the name and what learners see instead
+ok 37 - every form of every internal name is found in a sentence, with the name and what learners see instead
+  ---
+  duration_ms: 37.342624
+  type: 'test'
+  ...
+# Subtest: matching is the glossary's: whole words, case ignored unless the entry says otherwise, a space also a hyphen or a line wrap
+ok 38 - matching is the glossary's: whole words, case ignored unless the entry says otherwise, a space also a hyphen or a line wrap
+  ---
+  duration_ms: 0.649104
+  type: 'test'
+  ...
+# Subtest: an ID of a kind the glossary lists is found, and a run, lesson, claim or specimen ID, which a label shows, is not
+ok 39 - an ID of a kind the glossary lists is found, and a run, lesson, claim or specimen ID, which a label shows, is not
+  ---
+  duration_ms: 0.448901
+  type: 'test'
+  ...
+# Subtest: the words learners are given pass: Start here, idea, full lesson, and a sentence of a record
+ok 40 - the words learners are given pass: Start here, idea, full lesson, and a sentence of a record
+  ---
+  duration_ms: 0.171452
+  type: 'test'
+  ...
+# Subtest: a glossary with no internal list is refused, and a missing file or one that does not parse is a problem and never a pass
+ok 41 - a glossary with no internal list is refused, and a missing file or one that does not parse is a problem and never a pass
+  ---
+  duration_ms: 8.610872
+  type: 'test'
+  ...
+# Subtest: the words of a record that a label shows are listed with where they stand, and only the strings among them
+ok 42 - the words of a record that a label shows are listed with where they stand, and only the strings among them
+  ---
+  duration_ms: 0.625089
+  type: 'test'
+  ...
+# Subtest: the ten records of the cabinet, and every record in content/specimens/, hold no internal name
+ok 43 - the ten records of the cabinet, and every record in content/specimens/, hold no internal name
+  ---
+  duration_ms: 1.892976
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3306.050804

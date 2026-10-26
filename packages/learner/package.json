@@ -3,13 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Derived learner state. Today this holds the schedule: a wrapper over the vendored kernelspace FSRS module (vendor/kernelspace/VENDOR.md, module fsrs).",
+  "description": "Derived learner state: the schedule, a wrapper over the vendored kernelspace FSRS module (vendor/kernelspace/VENDOR.md, module fsrs), and the Mirror (which call counts, and the bias, hit rate per band and VRK30 derived from the calls; src/mirror/README.md).",
   "exports": {
     ".": "./src/index.ts",
-    "./schedule": "./src/schedule/index.ts"
+    "./schedule": "./src/schedule/index.ts",
+    "./mirror": "./src/mirror/index.ts"
   },
   "scripts": {
     "typecheck": "tsc -p . && tsc -p test",
     "test": "node --test \"test/*.test.ts\""
+  },
+  "dependencies": {
+    "@statespace/ledger": "0.0.0"
   }
 }

@@ -1,0 +1,54 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.10",
+  "title": "Bloch 2006, the binary-search midpoint overflow",
+  "draft": true,
+  "kcs": [
+    "KC-1.encoding-is-the-claim"
+  ],
+  "found_in": {
+    "lesson": "S1.L5"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L5"
+    ]
+  },
+  "violates": "The midpoint stays between its bounds: `low ≤ mid ≤ high`.",
+  "because": "`low + high` exceeds the largest 32-bit `int`, so the sum wraps to a negative number before it is halved.",
+  "class": "a midpoint that leaves its bounds when the sum overflows",
+  "cured_by": {
+    "text": "Write `low + (high − low) / 2`, or shift the sum right as an unsigned number (`LShR(low + high, 1)`, Java's `>>>`)."
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-bloch06",
+      "query": "buggy_mid_outside",
+      "direction": "violation"
+    },
+    "also": [
+      {
+        "run": "RUN-z3-bloch06",
+        "query": "fix_low_plus_half",
+        "caption": "With `low + (high − low) / 2` the query has no witness."
+      },
+      {
+        "run": "RUN-z3-bloch06",
+        "query": "fix_logical_shift",
+        "caption": "With the logical shift the query has no witness either."
+      }
+    ],
+    "minimal": {
+      "kind": "not-applicable",
+      "why": "a dated incident kept as a toy model"
+    }
+  },
+  "incident": {
+    "date": "2006-06-02",
+    "source": {
+      "title": "Bloch, Extra, Extra: Read All About It, Nearly All Binary Searches and Mergesorts are Broken",
+      "url": "https://research.google/blog/extra-extra-read-all-about-it-nearly-all-binary-searches-and-mergesorts-are-broken/"
+    },
+    "toy_model": true
+  }
+}

@@ -1,0 +1,680 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:lesson@1",
+  "x-typeName": "LessonRecord",
+  "title": "statespace lesson, drawer, stage and lab records, version 1",
+  "description": "The records of the course site's content build (ARCHITECTURE.md section 3.3 and section 17.3), told apart by their id: a lesson page (S1.L1) or a drawer page (D-03), built from segments of blocks; a stage's own data (S1, content/stages/S1/stage.yaml); and a lab's own data (LAB-1, content/stages/S1/lab.yaml). W1 to W2 content uses six block types and no more (V2-18; spine section 12 item 48): prose, instrument, item, claim, specimen and card. Authors write a Markdown source for a page (packages/content/README.md) and YAML for a stage or a lab; the content build (scripts/build-content.mjs) parses it into a record of this schema, checks it against the ID registry and the runs, adds the derived fields (the rail, the cited runs, the revisions) and writes a page as the per-lesson JSON the site loads. This schema checks the shape; the build also checks IDs against the registry, run references against runs/, and the rules that need two fields at once (the key is one of the options, a cell number is used once). Every record declares schema: statespace/lesson@1, which is how GATE-schema finds a stage file, a lab file and a built page. Patterns use only the constructs that ECMAScript and Python read alike (schemas/README.md section 2).",
+  "$comment": "Dispatch: the root holds what every record has, and the id picks the definition that judges the whole record, so a fault is reported at its own field. S{n} is a stage, LAB-{n} is a lab, and anything else is a page, whose own id pattern rejects an ID that is none of the three. The root does not list the other fields, because one tag names three closed shapes; so it is not a tagged record in the sense of schemas/README.md section 2: it has no entry in RecordTypes, and validateRecord does not dispatch to it. Use validate('lesson', record), or the checker of packages/content, which judges a page, a stage and a lab by their own definitions. Publishing stage@1 and lab@1 as schemas of their own would make each a tagged record. Every definition below carries an x-typeName, because the root's own name would otherwise prefix them all: a new definition is named Lesson<Key>.",
+  "type": "object",
+  "required": ["schema", "id"],
+  "properties": {
+    "schema": { "description": "The schema tag of every record of this schema: a page, a stage and a lab.", "$ref": "#/$defs/schemaTag" },
+    "id": { "description": "What the record is, which says what shape it has: a lesson (S1.L1) or a drawer (D-03) is a page, S1 is a stage, LAB-1 is a lab. The definition the ID selects checks the ID's form.", "type": "string", "minLength": 1 }
+  },
+  "if": { "required": ["id"], "properties": { "id": { "$ref": "#/$defs/stageId" } } },
+  "then": { "$ref": "#/$defs/stage" },
+  "else": {
+    "if": { "required": ["id"], "properties": { "id": { "$ref": "urn:statespace:defs@1#/$defs/labId" } } },
+    "then": { "$ref": "#/$defs/lab" },
+    "else": { "$ref": "#/$defs/page" }
+  },
+  "$defs": {
+    "schemaTag": {
+      "x-typeName": "LessonSchemaTag",
+      "description": "The schema tag of this document, which every record declares.",
+      "const": "statespace/lesson@1"
+    },
+    "page": {
+      "description": "A lesson page (S1.L1) or a drawer page (D-03), the two pages built from segments of blocks (ARCHITECTURE.md section 3.3 and section 17.3). Authors write its Markdown source (packages/content/README.md) and the content build parses it into this record; the derived fields (the rail, the cited runs, the revisions) are the build's.",
+      "x-typeName": "Lesson",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "id", "title", "draft", "kcs", "segments"],
+      "properties": {
+        "schema": { "$ref": "#/$defs/schemaTag" },
+        "id": {
+          "description": "The lesson (S1.L1) or the drawer (D-03) this page is. The ID registry (generated from the spine) must hold it, and the file name is the ID.",
+          "$ref": "#/$defs/pageId"
+        },
+        "tier": {
+          "description": "The lesson's tier in the spine's table: boot (S1.L0 only), core, bridge or step (S10.L1 to S10.L7). Tier names stay internal: learners see plain formats. A drawer has no tier.",
+          "enum": ["boot", "core", "bridge", "step"]
+        },
+        "title": {
+          "description": "The title, equal to the spine's title for the ID. One line.",
+          "$ref": "#/$defs/line"
+        },
+        "draft": {
+          "description": "True while the page is unreviewed: it carries the label \"draft: first-learner pass pending\" (spine section 13), and a run reference that does not resolve yet may wait. False once learner-zero has studied the page and the owner has reviewed it, when every reference must resolve (GATE-runs).",
+          "type": "boolean"
+        },
+        "kcs": {
+          "description": "The knowledge components the page teaches: a lesson's, the ones its items are tagged with; a drawer's, the ones it teaches (the ones it only previews are in previews). Empty for a deferred drawer, which has no graded item.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/kcId" }
+        },
+        "previews": {
+          "description": "A drawer only: the knowledge components it previews, which a lesson on the default path first teaches later (curriculum/D-drawers.md section 1.5).",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/kcId" }
+        },
+        "objective": {
+          "description": "The observable objective, in the learner's words.",
+          "$ref": "#/$defs/md"
+        },
+        "drawers": {
+          "description": "The drawers the page links beside its segments. A link is a line in the margin and in the page's drawer list, never in the rail.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/drawerId" }
+        },
+        "deferred": {
+          "description": "A deferred drawer only (D-30 to D-40): the card saying what the topic is, why the roadmap defers it and what surfaces it. A deferred drawer has no segments and no graded item.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["topic", "why", "trigger"],
+          "properties": {
+            "topic": { "description": "What the topic is.", "$ref": "#/$defs/md" },
+            "why": { "description": "Why the roadmap defers it.", "$ref": "#/$defs/md" },
+            "trigger": { "description": "What surfaces the drawer in Today. A trigger unlocks nothing.", "$ref": "#/$defs/md" }
+          }
+        },
+        "segments": {
+          "description": "The segments, in order. The rail shows their titles and nothing else. A lesson has at least one; a deferred drawer has none.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/segment" }
+        },
+        "minutes": {
+          "description": "Derived: the sum of the segments' minutes.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "rail": {
+          "description": "Derived: the segment titles and nothing else, never an answer, a verdict or option text (V2-05).",
+          "type": "array",
+          "items": { "$ref": "#/$defs/railEntry" }
+        },
+        "establishes": {
+          "description": "Derived: the claims and specimens the page's claim and specimen blocks mint or show. The page shows them only after its exit items (DESIGN.md section 6).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["claims", "specimens"],
+          "properties": {
+            "claims": { "type": "array", "items": { "$ref": "urn:statespace:defs@1#/$defs/claimTemplateId" } },
+            "specimens": { "type": "array", "items": { "$ref": "#/$defs/specimenId" } }
+          }
+        },
+        "runs": {
+          "description": "Derived: every run the page cites, as the pruned record the run chip and the run sheet read, by run ID. A draft's reference to a run that is not recorded yet has no entry here and is listed in unresolved.",
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/runSnapshot" }
+        },
+        "facts": {
+          "description": "Derived: every registry fact the page cites with a fact reference, as the registry holds it, by fact ID. The site prints the value and, once its TTL has passed, the \"stale since\" badge.",
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/factSnapshot" }
+        },
+        "checkedBy": {
+          "description": "Derived: the title block's \"Checked by\", the engine and version of each cited run as the run records them, with its run ID.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/checkedBy" }
+        },
+        "unresolved": {
+          "description": "Derived, drafts only: the run IDs the page cites that runs/ does not hold yet. A page that is not a draft has none, or the build fails.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/runId" }
+        },
+        "rev": {
+          "description": "Derived: SHA-256 over the page as built, which the title block's \"Rev\" shows.",
+          "$ref": "urn:statespace:defs@1#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["id"], "properties": { "id": { "pattern": "^D-" } } },
+          "then": { "not": { "required": ["tier"] } },
+          "else": { "required": ["tier"], "not": { "anyOf": [{ "required": ["previews"] }, { "required": ["deferred"] }] } }
+        },
+        {
+          "if": { "required": ["deferred"] },
+          "then": { "properties": { "segments": { "maxItems": 0 } } },
+          "else": { "properties": { "segments": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "pageId": {
+      "x-typeName": "LessonPageId",
+      "description": "A lesson ID, S{n}.L{k}, or a drawer ID, D-{nn}.",
+      "type": "string",
+      "pattern": "^(?:S[1-9][0-9]*\\.L[0-9]+|D-[0-9]{2})(?![\\s\\S])"
+    },
+    "stageId": {
+      "x-typeName": "LessonStageId",
+      "description": "A stage, such as S1.",
+      "type": "string",
+      "pattern": "^S[1-9][0-9]*(?![\\s\\S])"
+    },
+    "drawerId": {
+      "x-typeName": "LessonDrawerId",
+      "description": "A drawer, such as D-03.",
+      "type": "string",
+      "pattern": "^D-[0-9]{2}(?![\\s\\S])"
+    },
+    "kcId": {
+      "x-typeName": "LessonKcId",
+      "description": "A knowledge component, such as KC-1.violation-as-sat.",
+      "type": "string",
+      "pattern": "^KC-[1-9][0-9]*\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "runId": {
+      "x-typeName": "LessonRunId",
+      "description": "A run, such as RUN-z3-starter.",
+      "type": "string",
+      "pattern": "^RUN-[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "factId": {
+      "x-typeName": "LessonFactId",
+      "description": "A fact of content/registry/facts.json: dotted lowercase segments, at least two, such as tool.pyodide.latest.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\.[a-z0-9]+(?:-[a-z0-9]+)*)+(?![\\s\\S])"
+    },
+    "genId": {
+      "x-typeName": "LessonGenId",
+      "description": "A generator family, such as GEN-negate-it.",
+      "type": "string",
+      "pattern": "^GEN-[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "insId": {
+      "x-typeName": "LessonInsId",
+      "description": "A tab instrument, such as INS-z3.",
+      "type": "string",
+      "pattern": "^INS-[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "specimenId": {
+      "x-typeName": "LessonSpecimenId",
+      "description": "A specimen, such as SP-1.1.",
+      "type": "string",
+      "pattern": "^SP-[1-9][0-9]*\\.[1-9][0-9]*(?![\\s\\S])"
+    },
+    "anchorId": {
+      "x-typeName": "LessonAnchorId",
+      "description": "An audit anchor, such as AUD-1.1.",
+      "type": "string",
+      "pattern": "^AUD-[1-9][0-9]*\\.[1-9][0-9]*(?![\\s\\S])"
+    },
+    "templateId": {
+      "x-typeName": "LessonTemplateId",
+      "description": "A template of a generator family, t1 to t4: the number in \"GEN-call-it template 4\".",
+      "type": "string",
+      "pattern": "^t[1-9][0-9]*(?![\\s\\S])"
+    },
+    "segmentId": {
+      "x-typeName": "LessonSegmentId",
+      "description": "A segment's anchor in the page, s1, s2, ...: assigned in order by the build.",
+      "type": "string",
+      "pattern": "^s[1-9][0-9]*(?![\\s\\S])"
+    },
+    "optionId": {
+      "x-typeName": "LessonOptionId",
+      "description": "An option of a choice: a capital letter, A to H, in order.",
+      "type": "string",
+      "pattern": "^[A-H](?![\\s\\S])"
+    },
+    "line": {
+      "x-typeName": "LessonLine",
+      "description": "One line of text: 1 to 120 characters and no line break.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\n\\r]+(?![\\s\\S])"
+    },
+    "md": {
+      "x-typeName": "LessonMd",
+      "description": "Learner copy as Markdown: a non-empty string. Reference forms stay in it ({{run:RUN-id}} and {{fact:id}}), and the build prints a value reference ({{run:RUN-id#values.name}}) as the value.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40000
+    },
+    "railEntry": {
+      "x-typeName": "LessonRailEntry",
+      "description": "One entry of the rail: the segment's anchor and its title, nothing else.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "$ref": "#/$defs/segmentId" },
+        "title": { "$ref": "#/$defs/line" }
+      }
+    },
+    "segment": {
+      "x-typeName": "LessonSegment",
+      "description": "A segment of 12 to 15 minutes in a core lesson, built around one instrument run and ending in a graded item (spine section 3.0). Segments are structure, not blocks.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "minutes", "blocks"],
+      "properties": {
+        "id": { "$ref": "#/$defs/segmentId" },
+        "title": {
+          "description": "The title the rail shows. It never gives an answer, a verdict or option text.",
+          "$ref": "#/$defs/line"
+        },
+        "minutes": {
+          "description": "The segment's planned minutes.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "kcs": {
+          "description": "The knowledge components the segment teaches. Every lesson segment carries KC tags (spine section 4; GATE-kc reads them): a cell's call is for its segment's components, and an item names its own.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/kcId" }
+        },
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/block" }
+        }
+      }
+    },
+    "block": {
+      "x-typeName": "LessonBlock",
+      "description": "One of the six content block types of V2-18. The type field says which.",
+      "oneOf": [
+        { "$ref": "#/$defs/proseBlock" },
+        { "$ref": "#/$defs/instrumentBlock" },
+        { "$ref": "#/$defs/itemBlock" },
+        { "$ref": "#/$defs/claimBlock" },
+        { "$ref": "#/$defs/specimenBlock" },
+        { "$ref": "#/$defs/cardBlock" }
+      ]
+    },
+    "proseBlock": {
+      "x-typeName": "LessonProseBlock",
+      "description": "Prose: Markdown with sidenotes (footnotes) and inline logic symbols. A static table or figure drawn from runs is prose too.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "md"],
+      "properties": {
+        "type": { "const": "prose" },
+        "md": { "$ref": "#/$defs/md" }
+      }
+    },
+    "instrumentBlock": {
+      "x-typeName": "LessonInstrumentBlock",
+      "description": "A tab instrument cell with the Call It commit on its first run and a recorded run to show while the engine is cold or downloading, labeled as recorded with its run ID (ARCHITECTURE.md section 3.5). The cell's number is its identity in an event's ref, cell:S1.L3#2, so it never changes once a learner may have called it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ins", "cell", "callOnFirstRun", "recorded"],
+      "properties": {
+        "type": { "const": "instrument" },
+        "ins": { "description": "The instrument.", "$ref": "#/$defs/insId" },
+        "cell": {
+          "description": "The cell's number in the page, from 1, each used once.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "callOnFirstRun": {
+          "description": "Whether the first run asks for a call. A lesson's authored cells do; a drawer shows recorded results as free runs and adds no call beyond its items.",
+          "type": "boolean"
+        },
+        "recorded": {
+          "description": "The run whose recorded result the cell shows while its engine is cold or downloading.",
+          "$ref": "#/$defs/runId"
+        },
+        "md": { "description": "What the cell says about itself, above its code.", "$ref": "#/$defs/md" },
+        "direction": {
+          "description": "The query direction, \"Query asserts: ... sat means ...\" (DESIGN.md section 6.2).",
+          "$ref": "#/$defs/md"
+        },
+        "code": { "$ref": "#/$defs/code" },
+        "tap": {
+          "description": "The interpretation tap after a solver run (spine section 8.4): the property the query tests, in words, which fills \"so ... holds\".",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["property"],
+          "properties": {
+            "property": { "$ref": "#/$defs/line" }
+          }
+        },
+        "call": {
+          "description": "The authored Call It: the question, the options with a why and a misconception key each, and the key.",
+          "$ref": "#/$defs/choice"
+        },
+        "after": {
+          "description": "Text shown after the first run, once the call is committed, so it can say what the result was.",
+          "$ref": "#/$defs/md"
+        },
+        "itemRev": {
+          "description": "Derived: the fingerprint of the cell's authored fields and the runs it cites. An event graded against an older revision shows \"re-check\" and never deducts.",
+          "$ref": "#/$defs/itemRev"
+        }
+      },
+      "if": { "required": ["call"] },
+      "then": { "properties": { "callOnFirstRun": { "const": true } } }
+    },
+    "itemBlock": {
+      "x-typeName": "LessonItemBlock",
+      "description": "A graded item, naming its generator family and template (spine section 3.0). Its role is where it sits: a prequestion before the segment, a segment item that ends a segment, or an exit item. A generated item has no other field: the instance is made from a seed and the key comes from a checker at grade time (I3). An item whose instance is fixed, such as a prequestion, also carries its choice.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "role", "family", "template", "kcs"],
+      "properties": {
+        "type": { "const": "item" },
+        "role": { "enum": ["prequestion", "segment", "exit"] },
+        "family": { "$ref": "#/$defs/genId" },
+        "template": { "$ref": "#/$defs/templateId" },
+        "kcs": {
+          "description": "The knowledge components the item is tagged with. The first is the primary one, which evidence credits; the others, at most two, steer interleaving (ASSESSMENT.md section 3.1).",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/kcId" }
+        },
+        "mode": {
+          "description": "The formalize progression's mode for GEN-negate-it and GEN-spec-it items: pick, then fix, then write (spine section 8.4).",
+          "enum": ["pick", "fix", "write"]
+        },
+        "band": {
+          "description": "The band of the generated item, 1 to 3 (spine section 8.3).",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "choice": {
+          "description": "A fixed instance: the question, the options with a why and a misconception key each, and the key.",
+          "$ref": "#/$defs/choice"
+        },
+        "itemRev": {
+          "description": "Derived: the fingerprint of the item's authored fields and the runs it cites.",
+          "$ref": "#/$defs/itemRev"
+        }
+      }
+    },
+    "claimBlock": {
+      "x-typeName": "LessonClaimBlock",
+      "description": "A claim the page mints, prefilled from its cells' results. The block names the template and carries no text: the card is drawn from the claim templates (spine section 5.2).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "template"],
+      "properties": {
+        "type": { "const": "claim" },
+        "template": { "$ref": "urn:statespace:defs@1#/$defs/claimTemplateId" }
+      }
+    },
+    "specimenBlock": {
+      "x-typeName": "LessonSpecimenBlock",
+      "description": "A specimen the page mounts in the cabinet (mount true) or only shows, as exposure (mount false). The block carries no text: the label is drawn from the specimen's run (spine section 5.1).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "mount"],
+      "properties": {
+        "type": { "const": "specimen" },
+        "id": { "$ref": "#/$defs/specimenId" },
+        "mount": { "type": "boolean" }
+      }
+    },
+    "cardBlock": {
+      "x-typeName": "LessonCardBlock",
+      "description": "A content card: Build this (the next lab stage), a production twin, a dated incident, a dated reading pointer, or the \"this will feel harder\" card (spine section 12 item 48; DESIGN.md section 6.15).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "variant", "md"],
+      "properties": {
+        "type": { "const": "card" },
+        "variant": { "enum": ["build-this", "twin", "dated-incident", "feels-harder", "reading"] },
+        "title": { "description": "The card's heading, when it has one.", "$ref": "#/$defs/line" },
+        "md": { "$ref": "#/$defs/md" },
+        "lab": {
+          "description": "A Build this card's next lab stage, such as LAB-1.2. The build fills in its minutes from the registry.",
+          "$ref": "urn:statespace:defs@1#/$defs/labStageId"
+        },
+        "minutes": {
+          "description": "Derived: the lab stage's nominal minutes.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "runs": {
+          "description": "Derived: the runs the card's text cites.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/runId" }
+        }
+      }
+    },
+    "code": {
+      "x-typeName": "LessonCode",
+      "description": "The code a cell shows, read-only or editable, in a monospaced face.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lang", "text"],
+      "properties": {
+        "lang": {
+          "description": "The language of the code: python, smt2, tla, lean, sql, rust or text.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9+-]*(?![\\s\\S])",
+          "maxLength": 20
+        },
+        "text": { "type": "string", "minLength": 1, "maxLength": 8000 },
+        "editable": {
+          "description": "True when the learner may edit the code before a free run; absent or false for read-only code.",
+          "type": "boolean"
+        }
+      }
+    },
+    "choice": {
+      "x-typeName": "LessonChoice",
+      "description": "A question with a fixed set of options and one key. Every option carries a why, and every option but the key carries a misconception key (GATE-items). The key's provenance is a run where the question asks what a tool returns.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "options", "key"],
+      "properties": {
+        "prompt": { "description": "The question, as the learner reads it.", "$ref": "#/$defs/md" },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 8,
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "key": { "description": "The correct option.", "$ref": "#/$defs/optionId" },
+        "keyRun": {
+          "description": "The run that establishes the key, for a question about what a tool returns.",
+          "$ref": "#/$defs/runId"
+        },
+        "surprise": {
+          "description": "The author's forecast of whether the key is a genuine surprise (the narrative-blind strategy predicts the wrong verdict). GATE-items computes the real figure; the forecast is what learner-zero's calls test.",
+          "enum": ["yes", "moderate", "no"]
+        }
+      }
+    },
+    "option": {
+      "x-typeName": "LessonOption",
+      "description": "One option: its text, why it is right or wrong, and the misconception it stands for when it is wrong.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "why"],
+      "properties": {
+        "id": { "$ref": "#/$defs/optionId" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 600 },
+        "why": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "mis": {
+          "description": "The misconception key (dp:G4) a learner who picks this option holds. The key option has none.",
+          "$ref": "urn:statespace:defs@1#/$defs/misconceptionKey"
+        }
+      }
+    },
+    "itemRev": {
+      "x-typeName": "LessonItemRev",
+      "description": "A fingerprint: 16 lowercase hexadecimal digits of a SHA-256 over an item's authored fields, the runs it cites (each as the record's content hash) and, when the build can name it, its generator template's content.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}(?![\\s\\S])"
+    },
+    "checkedBy": {
+      "x-typeName": "LessonCheckedBy",
+      "description": "An engine and version as a run recorded them, with the run.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run", "engine", "version"],
+      "properties": {
+        "run": { "$ref": "#/$defs/runId" },
+        "engine": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "runSnapshot": {
+      "x-typeName": "LessonRunSnapshot",
+      "description": "A run record pruned to what the run chip and the run sheet read (packages/runs): the fields keep run@1's snake_case names and values, so runChip and runSheet take it as it is.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": { "$ref": "#/$defs/runId" },
+        "title": { "type": "string" },
+        "engine": { "type": "string" },
+        "version": { "type": "string" },
+        "binary_sha256": { "anyOf": [{ "$ref": "urn:statespace:defs@1#/$defs/sha256" }, { "type": "null" }] },
+        "image": { "type": ["string", "null"] },
+        "argv": {
+          "anyOf": [
+            { "type": "array", "items": { "type": "string" } },
+            { "type": "array", "items": { "type": "array", "items": { "type": "string" } } },
+            { "type": "null" }
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string" },
+              "url": { "type": "string" },
+              "name": { "type": "string" },
+              "file": { "type": "string" },
+              "sha256": { "$ref": "urn:statespace:defs@1#/$defs/sha256" }
+            }
+          }
+        },
+        "budget": { "type": "object" },
+        "started_at": { "type": ["string", "null"] },
+        "recorded_at": { "type": "string" },
+        "exit_code": { "type": ["integer", "null"] },
+        "verdict_lines": { "type": "array", "items": { "type": "string" } },
+        "values": { "type": "object" },
+        "ttl_days": { "type": "integer", "minimum": 1 },
+        "origin": { "enum": ["recorded", "imported"] },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "factSnapshot": {
+      "x-typeName": "LessonFactSnapshot",
+      "description": "A fact of content/registry/facts.json, as the registry holds it, pruned to what a printed fact and its badge need.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind"],
+      "properties": {
+        "id": { "$ref": "#/$defs/factId" },
+        "kind": { "enum": ["tool", "twin", "incident", "paper", "leaderboard", "quotation"] },
+        "statement": { "type": "string" },
+        "value": { "type": ["string", "number"] },
+        "unit": { "type": "string" },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "url": { "type": "string" },
+            "title": { "type": "string" }
+          }
+        },
+        "checked_at": { "type": "string" },
+        "ttl_days": { "type": "integer", "minimum": 1 },
+        "date": { "type": "string" },
+        "run": { "$ref": "#/$defs/runId" },
+        "pin": { "type": "string" }
+      }
+    },
+    "stage": {
+      "x-typeName": "LessonStage",
+      "description": "A stage's own data (content/stages/S1/stage.yaml), the record whose ID is a stage: what the page needs beyond the spine's tables, which the build joins to the registry (the lessons, the lab, the anchors and the drawers the spine lists). A production-twin card and a dated reading card are cards. extra holds what a later task needs before a field names it. The file starts with schema: statespace/lesson@1, which is how GATE-schema finds it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "id", "draft"],
+      "properties": {
+        "schema": { "$ref": "#/$defs/schemaTag" },
+        "id": { "$ref": "#/$defs/stageId" },
+        "draft": { "type": "boolean" },
+        "summary": { "description": "A short paragraph shown at the head of the stage page.", "$ref": "#/$defs/md" },
+        "newTool": { "description": "The stage's new tool, in learner words.", "$ref": "#/$defs/line" },
+        "roadmapTime": { "description": "The roadmap's time for the stage, as the roadmap states it.", "$ref": "#/$defs/line" },
+        "seams": {
+          "description": "The seams the stage plants.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "urn:statespace:defs@1#/$defs/seamId" }
+        },
+        "anchors": {
+          "description": "The audit anchors the stage serves.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/anchorId" }
+        },
+        "drawers": {
+          "description": "The drawers the stage page lists.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/drawerId" }
+        },
+        "cards": {
+          "description": "The stage's production-twin, dated-incident and reading cards.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/cardBlock" }
+        },
+        "defence": { "description": "A short description of the stage's Defence for the stage page.", "$ref": "#/$defs/md" },
+        "extra": { "type": "object" }
+      }
+    },
+    "lab": {
+      "x-typeName": "LessonLab",
+      "description": "A lab's own data (content/stages/S1/lab.yaml), the record whose ID is a lab: what the lab page needs beyond the spine's tables, which the build joins to the registry (each stage's title and nominal minutes). extra holds what a later task needs before a field names it, such as the hint rungs and the Prove-it mutants. The file starts with schema: statespace/lesson@1, which is how GATE-schema finds it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "id", "draft"],
+      "properties": {
+        "schema": { "$ref": "#/$defs/schemaTag" },
+        "id": { "$ref": "urn:statespace:defs@1#/$defs/labId" },
+        "draft": { "type": "boolean" },
+        "summary": { "description": "A short paragraph shown at the head of the lab page.", "$ref": "#/$defs/md" },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id"],
+            "properties": {
+              "id": { "$ref": "urn:statespace:defs@1#/$defs/labStageId" },
+              "what": { "description": "What the stage asks, in the learner's words.", "$ref": "#/$defs/md" },
+              "weekend": { "description": "True for a stage planned at 45 nominal minutes.", "type": "boolean" },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["id", "label"],
+                  "properties": {
+                    "id": { "$ref": "urn:statespace:defs@1#/$defs/checkId" },
+                    "label": { "$ref": "#/$defs/md" },
+                    "passes": { "description": "The exact pass condition.", "$ref": "#/$defs/md" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "extra": { "type": "object" }
+      }
+    }
+  }
+}

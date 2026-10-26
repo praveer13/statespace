@@ -1,0 +1,16 @@
+{
+  // See packages/rng/tsconfig.json: sources compile with no DOM, no WebWorker and no Node types, so a family that
+  // names window, fetch or Date's clock through a platform global fails here; packages/purity-lint checks the same
+  // rule on the text, and GATE-generators' determinism lint (@statespace/rng/lint) bans clocks, entropy and
+  // engine-dependent arithmetic in src/. Tests compile separately (test/tsconfig.json) and live outside src/,
+  // because they use Node's test runner. rng's one ambient declaration is included because @statespace/rng brings
+  // the vendored rng.ts into the program.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": [],
+    "exactOptionalPropertyTypes": true,
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.generators.tsbuildinfo"
+  },
+  "include": ["src", "../rng/src/ambient.d.ts"]
+}

@@ -1,0 +1,241 @@
+{
+  "schema": "statespace/lesson@1",
+  "id": "S1.L1",
+  "tier": "core",
+  "title": "Negate, then search",
+  "draft": true,
+  "kcs": [
+    "KC-1.violation-as-sat",
+    "KC-1.quantifier-negation"
+  ],
+  "objective": "Turn an English property into a violation query by asserting its negation, and read the witness.",
+  "drawers": [
+    "D-01",
+    "D-03"
+  ],
+  "segments": [
+    {
+      "id": "s1",
+      "title": "Negating English",
+      "minutes": 14,
+      "kcs": [
+        "KC-1.quantifier-negation",
+        "KC-1.only-if-direction"
+      ],
+      "blocks": [
+        {
+          "type": "item",
+          "role": "prequestion",
+          "family": "GEN-negate-it",
+          "template": "t1",
+          "kcs": [
+            "KC-1.violation-as-sat",
+            "KC-1.quantifier-negation"
+          ],
+          "mode": "pick",
+          "band": 2,
+          "choice": {
+            "prompt": "This query asks for a transfer that leaves both balances negative. What will Z3 return?",
+            "options": [
+              {
+                "id": "A",
+                "text": "`sat`",
+                "why": "The recipient only gains, so no transfer leaves both balances negative.",
+                "mis": "dp:Z5"
+              },
+              {
+                "id": "B",
+                "text": "`unsat`",
+                "why": "No input meets both constraints, so Z3 has nothing to return but `unsat`."
+              },
+              {
+                "id": "C",
+                "text": "`unknown`",
+                "why": "Three linear integer constraints are decided outright.",
+                "mis": "dp:Z6"
+              }
+            ],
+            "key": "B",
+            "keyRun": "RUN-z3-starter",
+            "surprise": "yes"
+          },
+          "itemRev": "0123456789abcdef"
+        },
+        {
+          "type": "prose",
+          "md": "A worked example first: \"every allowed transfer leaves the sender non-negative\" negates to a search for one that does not.[^1]\n\n[^1]: The negation of \"for every\" is \"for some\"."
+        },
+        {
+          "type": "instrument",
+          "ins": "INS-z3",
+          "cell": 1,
+          "callOnFirstRun": true,
+          "recorded": "RUN-z3-starter",
+          "md": "The starter, unguarded.",
+          "direction": "Query asserts: a transfer that leaves the sender negative. `sat` means such a transfer exists.",
+          "code": {
+            "lang": "python",
+            "text": "from z3 import *\na, b, amount = Ints('a b amount')\ns = Solver()\ns.add(a >= 0, b >= 0, amount > 0, a - amount < 0)\nprint(s.check())",
+            "editable": false
+          },
+          "tap": {
+            "property": "the sender never ends below zero"
+          },
+          "call": {
+            "prompt": "This query asks for a transfer that leaves both balances negative. What will Z3 return?",
+            "options": [
+              {
+                "id": "A",
+                "text": "`sat`",
+                "why": "The recipient only gains, so no transfer leaves both balances negative.",
+                "mis": "dp:Z5"
+              },
+              {
+                "id": "B",
+                "text": "`unsat`",
+                "why": "No input meets both constraints, so Z3 has nothing to return but `unsat`."
+              },
+              {
+                "id": "C",
+                "text": "`unknown`",
+                "why": "Three linear integer constraints are decided outright.",
+                "mis": "dp:Z6"
+              }
+            ],
+            "key": "B",
+            "keyRun": "RUN-z3-starter",
+            "surprise": "yes"
+          },
+          "after": "The solver searched every input at once.",
+          "itemRev": "0123456789abcdef"
+        },
+        {
+          "type": "item",
+          "role": "segment",
+          "family": "GEN-find-the-witness",
+          "template": "t1",
+          "kcs": [
+            "KC-1.violation-as-sat"
+          ],
+          "itemRev": "0123456789abcdef"
+        },
+        {
+          "type": "specimen",
+          "id": "SP-1.1",
+          "mount": true
+        },
+        {
+          "type": "claim",
+          "template": "CL-1"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Exit",
+      "minutes": 5,
+      "blocks": [
+        {
+          "type": "item",
+          "role": "exit",
+          "family": "GEN-call-it",
+          "template": "t1",
+          "kcs": [
+            "KC-1.violation-as-sat"
+          ],
+          "itemRev": "0123456789abcdef"
+        },
+        {
+          "type": "card",
+          "variant": "build-this",
+          "title": "Build this",
+          "md": "Next, find a transfer that makes the source balance negative.",
+          "lab": "LAB-1.2",
+          "minutes": 20
+        },
+        {
+          "type": "card",
+          "variant": "twin",
+          "md": "A production system that met the same problem {{run:RUN-z3-starter}}.",
+          "runs": [
+            "RUN-z3-starter"
+          ]
+        }
+      ]
+    }
+  ],
+  "minutes": 19,
+  "rail": [
+    {
+      "id": "s1",
+      "title": "Negating English"
+    },
+    {
+      "id": "s2",
+      "title": "Exit"
+    }
+  ],
+  "establishes": {
+    "claims": [
+      "CL-1.1"
+    ],
+    "specimens": [
+      "SP-1.1"
+    ]
+  },
+  "runs": {
+    "RUN-z3-starter": {
+      "id": "RUN-z3-starter",
+      "title": "The roadmap's starter on Z3: an overdraft witness, then unsat once the guard is added",
+      "engine": "z3",
+      "version": "5.3.1",
+      "binary_sha256": null,
+      "image": null,
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/scripts/z3_claims.py",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "budget": {},
+      "started_at": null,
+      "recorded_at": "2026-10-24T14:32:22.348Z",
+      "exit_code": null,
+      "verdict_lines": [
+        "z3 version: 5.3.1",
+        "[1.3 guard added] unsat (0.00s) "
+      ],
+      "values": {
+        "guarded": "unsat"
+      },
+      "origin": "imported",
+      "notes": [
+        "Imported from the research logs."
+      ]
+    }
+  },
+  "facts": {
+    "tool.z3.pypi-latest": {
+      "id": "tool.z3.pypi-latest",
+      "kind": "tool",
+      "statement": "z3-solver 5.3.1.0 is the latest Z3 release on PyPI.",
+      "value": "5.3.1.0",
+      "source": {
+        "url": "https://pypi.org/pypi/z3-solver/json",
+        "title": "z3-solver on PyPI"
+      },
+      "checked_at": "2026-10-23",
+      "ttl_days": 60
+    }
+  },
+  "checkedBy": [
+    {
+      "run": "RUN-z3-starter",
+      "engine": "z3",
+      "version": "5.3.1"
+    }
+  ],
+  "unresolved": [],
+  "rev": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

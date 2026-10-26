@@ -1,0 +1,417 @@
+TAP version 13
+# Subtest: the claims file of this repository is valid, and backs what the spine names
+ok 1 - the claims file of this repository is valid, and backs what the spine names
+  ---
+  duration_ms: 2.432911
+  type: 'test'
+  ...
+# Subtest: the file has the one shape the nightly lane reads: an object of lists of strings
+ok 2 - the file has the one shape the nightly lane reads: an object of lists of strings
+  ---
+  duration_ms: 0.246026
+  type: 'test'
+  ...
+# Subtest: every gate in the file is a registered gate and every claim a registered ID
+ok 3 - every gate in the file is a registered gate and every claim a registered ID
+  ---
+  duration_ms: 1.269103
+  type: 'test'
+  ...
+# Subtest: the checks refuse a malformed file, an unregistered gate or claim, a repeated claim, and a missing spine mapping
+ok 4 - the checks refuse a malformed file, an unregistered gate or claim, a repeated claim, and a missing spine mapping
+  ---
+  duration_ms: 1.738851
+  type: 'test'
+  ...
+# Subtest: an ID that packages/ids/proposals.json holds counts as registered, so a new course claim can be backed before the spine registers it
+ok 5 - an ID that packages/ids/proposals.json holds counts as registered, so a new course claim can be backed before the spine registers it
+  ---
+  duration_ms: 0.320978
+  type: 'test'
+  ...
+# Subtest: a planted red night downgrades the claims it touches in status/nightly.json, keeps them downgraded since the first red night, and a green night clears them
+ok 6 - a planted red night downgrades the claims it touches in status/nightly.json, keeps them downgraded since the first red night, and a green night clears them
+  ---
+  duration_ms: 2677.518061
+  type: 'test'
+  ...
+# Subtest: a claims file with a mistyped gate ID turns the gates that back claims red, naming the file (the lane alone would accept it and downgrade nothing for the typo)
+ok 7 - a claims file with a mistyped gate ID turns the gates that back claims red, naming the file (the lane alone would accept it and downgrade nothing for the typo)
+  ---
+  duration_ms: 1319.444782
+  type: 'test'
+  ...
+# GATE-conformance: no such pair: nonsense (see --list)
+# GATE-conformance: no such pair: nonsense (see --list)
+# GATE-conformance: unknown argument --bogus
+# Subtest: the table covers every pair of ARCHITECTURE.md section 13.3 and the Clearinghouse row of spine 11.2
+ok 8 - the table covers every pair of ARCHITECTURE.md section 13.3 and the Clearinghouse row of spine 11.2
+  ---
+  duration_ms: 1.064526
+  type: 'test'
+  ...
+# Subtest: each pair script path is the deliverable of the task that builds it
+ok 9 - each pair script path is the deliverable of the task that builds it
+  ---
+  duration_ms: 1.027509
+  type: 'test'
+  ...
+# Subtest: exactly one pair is built in, and it is the first
+ok 10 - exactly one pair is built in, and it is the first
+  ---
+  duration_ms: 0.413103
+  type: 'test'
+  ...
+# Subtest: a pair script is judged by its exit status and its report together
+ok 11 - a pair script is judged by its exit status and its report together
+  ---
+  duration_ms: 0.343525
+  type: 'test'
+  ...
+# Subtest: --list shows every pair with its script, whether it exists and, when it does not, the task that builds it
+ok 12 - --list shows every pair with its script, whether it exists and, when it does not, the task that builds it
+  ---
+  duration_ms: 0.629196
+  type: 'test'
+  ...
+# Subtest: an unknown pair or option is exit 2, and --help prints the header
+ok 13 - an unknown pair or option is exit 2, and --help prints the header
+  ---
+  duration_ms: 0.524515
+  type: 'test'
+  ...
+# Subtest: --require-all fails while any pair is absent, and a present pair script is run in the tree it is given
+ok 14 - --require-all fails while any pair is absent, and a present pair script is run in the tree it is given
+  ---
+  duration_ms: 44.923055
+  type: 'test'
+  ...
+# Subtest: --json prints one object: the verdict, the claims, a row per pair, the findings
+ok 15 - --json prints one object: the verdict, the claims, a row per pair, the findings
+  ---
+  duration_ms: 0.75133
+  type: 'test'
+  ...
+# Subtest: every planted fault of the self-check trips the gate and every control passes
+ok 16 - every planted fault of the self-check trips the gate and every control passes
+  ---
+  duration_ms: 150.669697
+  type: 'test'
+  ...
+# Subtest: Pyodide Z3 = native Z3 on this repository: every query agrees, the recipient wrap included
+ok 17 - Pyodide Z3 = native Z3 on this repository: every query agrees, the recipient wrap included
+  ---
+  duration_ms: 5525.759068
+  type: 'test'
+  ...
+# Subtest: the pins are the ones W0-S02, W0-S03, the Bench lock and the recorded runs hold
+ok 18 - the pins are the ones W0-S02, W0-S03, the Bench lock and the recorded runs hold
+  ---
+  duration_ms: 1.631004
+  type: 'test'
+  ...
+# Subtest: runProcess returns what a program printed, and its exit status
+ok 19 - runProcess returns what a program printed, and its exit status
+  ---
+  duration_ms: 28.894396
+  type: 'test'
+  ...
+# Subtest: runProcess stops a program that never ends, and keeps what it printed first
+ok 20 - runProcess stops a program that never ends, and keeps what it printed first
+  ---
+  duration_ms: 1003.15418
+  type: 'test'
+  ...
+# Subtest: runProcess reports a program that does not exist, and never throws
+ok 21 - runProcess reports a program that does not exist, and never throws
+  ---
+  duration_ms: 2.339409
+  type: 'test'
+  ...
+# Subtest: runProcess runs a program in the directory it is given
+ok 22 - runProcess runs a program in the directory it is given
+  ---
+  duration_ms: 27.597918
+  type: 'test'
+  ...
+# Subtest: a scratch directory is empty, is its own for every call, and is gone after the call however it ends
+ok 23 - a scratch directory is empty, is its own for every call, and is gone after the call however it ends
+  ---
+  duration_ms: 2.1669
+  type: 'test'
+  ...
+# Subtest: a scratch directory that cannot be made is an engine that cannot be set up, with the way out named
+ok 24 - a scratch directory that cannot be made is an engine that cannot be set up, with the way out named
+  ---
+  duration_ms: 0.499751
+  type: 'test'
+  ...
+# Subtest: the probe program names the engine in one line
+ok 25 - the probe program names the engine in one line
+  ---
+  duration_ms: 0.291954
+  type: 'test'
+  ...
+# Subtest: a cache directory that cannot be written is an engine that cannot be set up, with the way out named
+ok 26 - a cache directory that cannot be written is an engine that cannot be set up, with the way out named
+  ---
+  duration_ms: 1.807461
+  type: 'test'
+  ...
+# Subtest: a pin that the download does not match is refused, and nothing is kept
+ok 27 - a pin that the download does not match is refused, and nothing is kept
+  ---
+  duration_ms: 22.263533
+  type: 'test'
+  ...
+# Subtest: the native engine runs a z3py program at the pin
+ok 28 - the native engine runs a z3py program at the pin
+  ---
+  duration_ms: 538.068026
+  type: 'test'
+  ...
+# Subtest: the Pyodide engine runs the same program, loaded as the tab loads it, and a program that hangs is stopped
+ok 29 - the Pyodide engine runs the same program, loaded as the tab loads it, and a program that hangs is stopped
+  ---
+  duration_ms: 10596.142539
+  type: 'test'
+  ...
+# Subtest: the native engine runs a program in a scratch directory of its own, which goes with it, unless it is given one
+ok 30 - the native engine runs a program in a scratch directory of its own, which goes with it, unless it is given one
+  ---
+  duration_ms: 366.131821
+  type: 'test'
+  ...
+# Subtest: a program under Pyodide writes into memory: nothing reaches the directory the caller stands in
+ok 31 - a program under Pyodide writes into memory: nothing reaches the directory the caller stands in
+  ---
+  duration_ms: 2892.407585
+  type: 'test'
+  ...
+# Subtest: the corpus holds the recipient wrap, one query per specimen S1 states a verdict for, and nothing twice
+ok 32 - the corpus holds the recipient wrap, one query per specimen S1 states a verdict for, and nothing twice
+  ---
+  duration_ms: 3.600011
+  type: 'test'
+  ...
+# Subtest: the program holds one def and one run_query per query, after the prelude
+ok 33 - the program holds one def and one run_query per query, after the prelude
+  ---
+  duration_ms: 0.272413
+  type: 'test'
+  ...
+# Subtest: RESULT lines are read by query id; an unreadable or doubled line is a problem, never a silent gap
+ok 34 - RESULT lines are read by query id; an unreadable or doubled line is a problem, never a silent gap
+  ---
+  duration_ms: 0.13304
+  type: 'test'
+  ...
+# Subtest: two engines that give the faithful answers agree on every query, and the witnesses are valid
+ok 35 - two engines that give the faithful answers agree on every query, and the witnesses are valid
+  ---
+  duration_ms: 1.018854
+  type: 'test'
+  ...
+# Subtest: every faithful stand-in witness satisfies its property, so a failing property is a real fault
+ok 36 - every faithful stand-in witness satisfies its property, so a failing property is a real fault
+  ---
+  duration_ms: 0.471054
+  type: 'test'
+  ...
+# Subtest: a verdict that differs between the engines is a finding
+ok 37 - a verdict that differs between the engines is a finding
+  ---
+  duration_ms: 0.32938
+  type: 'test'
+  ...
+# Subtest: witnesses are never compared by value: two different valid witnesses agree
+ok 38 - witnesses are never compared by value: two different valid witnesses agree
+  ---
+  duration_ms: 0.246039
+  type: 'test'
+  ...
+# Subtest: a witness that breaks the property is a finding, whichever engine produced it
+ok 39 - a witness that breaks the property is a finding, whichever engine produced it
+  ---
+  duration_ms: 0.451992
+  type: 'test'
+  ...
+# Subtest: the reason of an unknown must be the same, and must be the authored one
+ok 40 - the reason of an unknown must be the same, and must be the authored one
+  ---
+  duration_ms: 0.286748
+  type: 'test'
+  ...
+# Subtest: an authored answer that both engines miss is a finding of its own
+ok 41 - an authored answer that both engines miss is a finding of its own
+  ---
+  duration_ms: 0.30259
+  type: 'test'
+  ...
+# Subtest: a missing answer, a raised exception, a failed program, a late program and a moved pin are each a finding
+ok 42 - a missing answer, a raised exception, a failed program, a late program and a moved pin are each a finding
+  ---
+  duration_ms: 0.65139
+  type: 'test'
+  ...
+# Subtest: times are masked and a harness log prefix is removed; nothing else changes
+ok 43 - times are masked and a harness log prefix is removed; nothing else changes
+  ---
+  duration_ms: 2.059601
+  type: 'test'
+  ...
+# Subtest: a harness banner or header is an annotation; a verdict line is not
+ok 44 - a harness banner or header is an annotation; a verdict line is not
+  ---
+  duration_ms: 0.304443
+  type: 'test'
+  ...
+# Subtest: every recorded line must come back, in order; extra lines in the fresh run are fine
+ok 45 - every recorded line must come back, in order; extra lines in the fresh run are fine
+  ---
+  duration_ms: 0.819814
+  type: 'test'
+  ...
+# Subtest: a line whose tail depends on the machine is compared up to its verdict only
+ok 46 - a line whose tail depends on the machine is compared up to its verdict only
+  ---
+  duration_ms: 0.276167
+  type: 'test'
+  ...
+# Subtest: the Python inside the two imported Node harnesses is read out of the scripts themselves
+ok 47 - the Python inside the two imported Node harnesses is read out of the scripts themselves
+  ---
+  duration_ms: 0.550563
+  type: 'test'
+  ...
+# Subtest: the seven runs on disk behind SP-1.1 to SP-1.10 are each re-executed by a recipe or excused with a reason
+ok 48 - the seven runs on disk behind SP-1.1 to SP-1.10 are each re-executed by a recipe or excused with a reason
+  ---
+  duration_ms: 3.945615
+  type: 'test'
+  ...
+# Subtest: a run in a fixture tree reproduces, diverges, drifts, or is recorded only, as it should
+ok 49 - a run in a fixture tree reproduces, diverges, drifts, or is recorded only, as it should
+  ---
+  duration_ms: 3.591247
+  type: 'test'
+  ...
+# Subtest: one execution serves every run that uses the same script
+ok 50 - one execution serves every run that uses the same script
+  ---
+  duration_ms: 1.18299
+  type: 'test'
+  ...
+# Subtest: each script runs in a scratch directory made for that one run: empty at its start, gone at its end, never the tree being checked
+ok 51 - each script runs in a scratch directory made for that one run: empty at its start, gone at its end, never the tree being checked
+  ---
+  duration_ms: 2.22317
+  type: 'test'
+  ...
+# Subtest: the scratch directory of a run is removed when the engine throws
+ok 52 - the scratch directory of a run is removed when the engine throws
+  ---
+  duration_ms: 1.320547
+  type: 'test'
+  ...
+# Subtest: a re-execution on the real engines leaves the directory it was started in empty: RUN-z3-double-capture saves smt2/ beside itself
+ok 53 - a re-execution on the real engines leaves the directory it was started in empty: RUN-z3-double-capture saves smt2/ beside itself
+  ---
+  duration_ms: 3788.453418
+  type: 'test'
+  ...
+# Subtest: a re-execution from a read-only working directory still reproduces, as it must on a read-only checkout
+ok 54 - a re-execution from a read-only working directory still reproduces, as it must on a read-only checkout
+  ---
+  duration_ms: 3750.596673
+  type: 'test'
+  ...
+# Subtest: RUN-z3-optimize-min reproduces on the real native engine
+ok 55 - RUN-z3-optimize-min reproduces on the real native engine
+  ---
+  duration_ms: 10491.379606
+  type: 'test'
+  ...
+# Subtest: RUN-z3-bv64-pyodide reproduces on the real Pyodide engine, and a changed line does not
+ok 56 - RUN-z3-bv64-pyodide reproduces on the real Pyodide engine, and a changed line does not
+  ---
+  duration_ms: 3112.448588
+  type: 'test'
+  ...
+# GATE-specimens: unknown argument --nonsense
+# GATE-specimens: --only needs a value
+# Subtest: the spine names the runs behind SP-1.1 to SP-1.10, with the ones still to record apart
+ok 57 - the spine names the runs behind SP-1.1 to SP-1.10, with the ones still to record apart
+  ---
+  duration_ms: 3.036879
+  type: 'test'
+  ...
+# Subtest: the run registry is read with the spine status of each registered run
+ok 58 - the run registry is read with the spine status of each registered run
+  ---
+  duration_ms: 15.188608
+  type: 'test'
+  ...
+# Subtest: a cabinet record is found by its file name or its id, and every RUN id in it counts
+ok 59 - a cabinet record is found by its file name or its id, and every RUN id in it counts
+  ---
+  duration_ms: 3.069262
+  type: 'test'
+  ...
+# Subtest: --list shows every specimen with its runs, marks the ones to record, and re-executes nothing
+ok 60 - --list shows every specimen with its runs, marks the ones to record, and re-executes nothing
+  ---
+  duration_ms: 15.335411
+  type: 'test'
+  ...
+# Subtest: --only on a specimen the spine does not list is a finding, and a bad option is exit 2
+ok 61 - --only on a specimen the spine does not list is a finding, and a bad option is exit 2
+  ---
+  duration_ms: 2.106669
+  type: 'test'
+  ...
+# Subtest: --json prints one object with the verdict, the counts and a status for every specimen
+ok 62 - --json prints one object with the verdict, the counts and a status for every specimen
+  ---
+  duration_ms: 2.537694
+  type: 'test'
+  ...
+# Subtest: no path of this machine reaches the output
+ok 63 - no path of this machine reaches the output
+  ---
+  duration_ms: 1.528158
+  type: 'test'
+  ...
+# Subtest: every planted fault of the self-check trips the gate and every control passes
+ok 64 - every planted fault of the self-check trips the gate and every control passes
+  ---
+  duration_ms: 18.698562
+  type: 'test'
+  ...
+# Subtest: on this repository the executed runs behind SP-1.1 to SP-1.10 reproduce on the real engines
+ok 65 - on this repository the executed runs behind SP-1.1 to SP-1.10 reproduce on the real engines
+  ---
+  duration_ms: 78590.71855
+  type: 'test'
+  ...
+# Subtest: the gate started from an empty directory leaves it empty (SP-1.2: RUN-z3-double-capture saves smt2/ beside itself)
+ok 66 - the gate started from an empty directory leaves it empty (SP-1.2: RUN-z3-double-capture saves smt2/ beside itself)
+  ---
+  duration_ms: 3626.275119
+  type: 'test'
+  ...
+# Subtest: the gate started from a read-only directory still passes, as it must on a read-only checkout
+ok 67 - the gate started from a read-only directory still passes, as it must on a read-only checkout
+  ---
+  duration_ms: 3989.655537
+  type: 'test'
+  ...
+1..67
+# tests 67
+# suites 0
+# pass 67
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86315.044854

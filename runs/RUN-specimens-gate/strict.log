@@ -1,0 +1,13 @@
+GATE-specimens
+  catalog  69 specimens in the spine's table; 71 runs behind them, 2 on disk to re-execute (--only SP-1.8); the cabinet is not there yet (content/specimens/, W1-T16)
+  run      RUN-z3-budget-pyodide              reproduced    z3-inputs (29.2 s)
+  run      RUN-phone-pyodide                  recorded-only -
+  engines
+    pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)
+  claims   GATE-specimens backs SEAM-14 (content/assurance/gate-claims.json): a red night marks it unverified since the date it turned red
+  specimens
+    SP-1.8   reproduced    RUN-z3-budget-pyodide (2 of 2 lines), RUN-phone-pyodide (recorded-only)
+  why not reproduced
+    SP-1.8 RUN-phone-pyodide: a browser matrix at emulated CPU tiers (W0-S02): its harness runs in the Playwright image on three engines, not in this gate
+  FAIL     strict  SP-1.8 RUN-phone-pyodide: recorded-only: a browser matrix at emulated CPU tiers (W0-S02): its harness runs in the Playwright image on three engines, not in this gate
+GATE-specimens: FAIL (1 finding; specimens: 1 reproduced, 0 recorded only, 0 pending of 1; runs: 1 matched, 1 recorded only, 0 pending; 29.2 s)

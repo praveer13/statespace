@@ -1,0 +1,52 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.2",
+  "title": "Double capture",
+  "draft": true,
+  "kcs": [
+    "KC-1.two-state-property",
+    "KC-1.witness-class"
+  ],
+  "found_in": {
+    "lesson": "S1.L4"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L4"
+    ]
+  },
+  "violates": "A hold is captured at most once, so the merchant gains no more than the hold's amount: `merchant″ − merchant ≤ h`.",
+  "because": "The capture rule never looks at the hold's status, so one hold can be captured twice. The patch `held ≥ h` reads the pooled balance, so it stops this instance and not the class.",
+  "class": "a step that can be applied twice because nothing records that it happened",
+  "cured_by": {
+    "text": "Capture a hold only while its status is `HELD`, and set the status to `CAPTURED`. With that guard the at-most-once query has no witness, whatever else is held.",
+    "claim": "CL-1.3"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-double-capture",
+      "query": "at_most_once_buggy",
+      "direction": "violation",
+      "steps": 2
+    },
+    "also": [
+      {
+        "run": "RUN-z3-double-capture",
+        "query": "at_most_once_patched_pooled",
+        "caption": "The patch `held ≥ h`, with other holds in the pool, still has a witness."
+      },
+      {
+        "run": "RUN-z3-double-capture",
+        "query": "at_most_once_fixed",
+        "caption": "With the status guard the query has no witness."
+      }
+    ],
+    "minimal": {
+      "kind": "optimize",
+      "run": "RUN-z3-double-capture",
+      "query": "minimize_hold",
+      "objective": "h",
+      "confirm": "no_smaller_hold"
+    }
+  }
+}

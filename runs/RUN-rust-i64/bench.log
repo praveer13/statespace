@@ -1,0 +1,27 @@
+== toolchain
+rustc 1.96.0 (ac68faa20 2026-05-25)
+cargo 1.96.0 (30a34c682 2026-05-25)
+== build: cargo build  (the dev profile)
+   Compiling ovf v0.1.0 (/w)
+     Running `/opt/rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/rustc --crate-name ovf --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=824bfea2da4fc498 -C extra-filename=-31157d383d69d692 --out-dir /w/target/debug/deps -C incremental=/w/target/debug/incremental -L dependency=/w/target/debug/deps`
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+== run: target/debug/ovf, stdout
+b + x panicked (overflow check)
+checked_add = None
+== run: target/debug/ovf, stderr
+
+thread 'main' (89) panicked at src/main.rs:6:41:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+== run: target/debug/ovf, exit code
+0
+== build: cargo build --release (the release profile)
+   Compiling ovf v0.1.0 (/w)
+     Running `/opt/rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/rustc --crate-name ovf --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=baaf8083d3e2047d -C extra-filename=-f37e60f8cabcc242 --out-dir /w/target/release/deps -C strip=debuginfo -L dependency=/w/target/release/deps`
+    Finished `release` profile [optimized] target(s) in 0.05s
+== run: target/release/ovf, stdout
+b + x = -9223372036854775808 (wrapped; non-negativity broken; i128 total changed by -18446744073709551616)
+checked_add = None
+== run: target/release/ovf, stderr
+== run: target/release/ovf, exit code
+0

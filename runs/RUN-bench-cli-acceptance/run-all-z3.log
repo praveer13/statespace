@@ -1,0 +1,285 @@
+RUN-origin-subdomain-live · The instrument origin on the real custom subdomains (GitHub Pages, real DNS and certificates): Z3 cross-origin in three engines, parent storage, handshake, and the framed cache across browser restarts (W0-S01, live run)
+  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only
+RUN-origin-subdomain · The instrument origin on a stand-in custom subdomain: Z3 cross-origin in three engines, parent storage, handshake, and the framed cache across browser restarts (W0-S01)
+  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only
+RUN-phone-pyodide · Pyodide 314.0.7 with the Z3 5.3.1 wheel on phones: first-load size, load time, memory, rlimit timing and cache persistence; an emulation on three desktop engines, and real-device sessions when they are on file (W0-S02)
+  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27; the Z3 lane re-executes on this machine only
+RUN-z3-11179 · Z3 issue #11179: 5.3.0 answers unsat on two satisfiable inputs where 5.3.1 answers unknown
+  config    cli-5.3.1   (the record's primary configuration)
+  not re-executed: no argv is recorded and the record names 2 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv
+RUN-z3-bloch06 · A toy model of Bloch's 2006 binary-search midpoint: (low + high) / 2 leaves low..high in signed 32-bit arithmetic, and the two cures do not
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I bloch06.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-bloch06/bloch06.py (sha256 f585216322a9f6b2..., as recorded, staged as bloch06.py)
+  exit      0 after 0.2 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [buggy_mid_outside] sat [high = 1879048192, low = 268435456]
+  same        replay ok: low=268435456 high=1879048192 (signed 32-bit; low + high wraps to -2147483648, the integers give 2147483648): 0 <= low <= high ok, low + high overflows ok, mid = -1073741824 is outside low..high ok
+  same      [buggy_mid_below_zero] sat [high = 2147483647, low = 65]
+  same        replay ok: low=65 high=2147483647 (signed 32-bit; low + high wraps to -2147483584, the integers give 2147483712): 0 <= low <= high ok, low + high overflows ok, mid = -1073741792 is outside low..high ok, mid < 0 ok
+  same      [fix_low_plus_half] unsat
+  same      [fix_logical_shift] unsat
+  same      [premises_satisfiable] sat [high = 0, low = 0]
+  same        replay ok: low=0 high=0: 0 <= low <= high ok
+reproduced: 9 of 9 verdict lines
+RUN-z3-boot-variant · Boot's variant, a guard that reads the recipient's balance, lets a transfer overdraw the sender; the corrected guard gives unsat
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I boot_variant.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-boot-variant/boot_variant.py (sha256 ca9a420978503250..., as recorded, staged as boot_variant.py)
+  exit      0 after 0.1 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [variant_violation] sat [amount = 1, b = 1, a = 0]
+  same        replay ok: a=0 b=1 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= b ok, a - amount = -1 < 0 ok
+  same      [corrected_guard] unsat
+  same      [above_both_balances] unsat
+  same      [violation_class] unsat
+  same      [equal_balances] unsat
+reproduced: 7 of 7 verdict lines
+RUN-z3-btc2010 · A toy model of CVE-2010-5139: outputs summed in 64-bit arithmetic pass the check while creating value, and range checks make it unsat
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I btc2010.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-btc2010/btc2010.py (sha256 d09f40d8e8fa92dc..., as recorded, staged as btc2010.py)
+  exit      0 after 0.2 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [buggy_creates_value] sat [I = 0, O1 = 9223336852482686975, O2 = 9223372036854775803]
+  same        replay ok: I=0 O1=9223336852482686975 O2=9223372036854775803 (signed 64-bit): I >= 0 ok, O1 >= 0 ok, O2 >= 0 ok, wrapped sum -35184372088838 <= I ok, true sum 18446708889337462778 > I ok
+  same      [buggy_output_exceeds_input] sat [I = 9117537454201503743, O1 = 9142307234972172284, O2 = 7012104636995731461]
+  same        replay ok: I=9117537454201503743 O1=9142307234972172284 O2=7012104636995731461 (signed 64-bit): I >= 0 ok, O1 >= 0 ok, O2 >= 0 ok, wrapped sum -2292332201741647871 <= I ok, true sum 16154411871967903745 > I ok, an output exceeds I ok
+  same      [fix_each_output] unsat
+  same      [fix_2010] unsat
+  same      [fix_2010_accepts_some] sat [O2 = 177158811025412, O1 = 139844135157756, I = 4503599627370494]
+  same        replay ok: I=4503599627370494 O1=139844135157756 O2=177158811025412: the 2010 check accepts it ok
+reproduced: 9 of 9 verdict lines
+RUN-z3-budget-pyodide · Under Pyodide in a Node harness, Z3's timeout never returned, while an rlimit of 5e6 gave unknown (canceled)
+  config    rlimit   (the record's primary configuration)
+  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv
+RUN-z3-bv64-negamt · Over signed BitVec 64 the guard without amount > 0 lets the sender wrap negative; over Int a negative amount drains the recipient and never the sender
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I bv64_negamt.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-bv64-negamt/bv64_negamt.py (sha256 818f4a04b257a9d5..., as recorded, staged as bv64_negamt.py)
+  exit      0 after 0.2 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [bv64_sender_noguard] sat [B = 0, A = 9079256848778919935, X = 9223372036854775809]
+  same        replay ok: A=9079256848778919935 B=0 X=-9223372036854775807 (signed 64-bit): A >= 0 ok, B >= 0 ok, X <= A ok, A - X wraps to -144115188075855874 < 0 (the integers give 18302628885633695742) ok
+  same      [bv64_sender_positive] unsat
+  same      [int_sender_noguard] unsat
+  same      [int_recipient_drain] sat [amount = -1, b = 0, a = 0]
+  same        replay ok: a=0 b=0 amount=-1: a >= 0 ok, b >= 0 ok, amount <= a ok, b + amount = -1 < 0 ok
+  same      [int_zero_noop] unsat
+reproduced: 8 of 8 verdict lines
+RUN-z3-bv64-pyodide · Under Pyodide in a Node harness, a recipient-wrap witness for B >= 0, M > 0, B + M < 0
+  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv
+RUN-z3-bv64 · Under signed 64-bit bit-vectors the guard protects the sender and the recipient wraps
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.2 s
+  same      z3 version: 5.3.1
+  same      [1.5 BitVec64 signed: guarded SOURCE overdraft] unsat (0.01s) 
+  same      [1.5 BitVec64 signed: guarded DESTINATION wrap] sat (0.00s) [A = 9223372036854775806,
+            (same verdict; models and timings are not compared)
+  skipped    B = 9223372036850581504,
+  skipped    X = 4194304]
+  same      [1.5 BitVec64 conservation mod 2^64] proved
+  same      [1.5 BitVec64 unsigned guard, signed check] sat (0.01s) [A = 13835060254305419776, X = 4611686018427387904]
+reproduced: 5 of 5 verdict lines
+RUN-z3-conservation-noguard · Conservation over Int is proved with no guard at all
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.2 s
+  same      z3 version: 5.3.1
+  same      [conservation without any guard, Int] proved
+reproduced: 2 of 2 verdict lines
+RUN-z3-demorgan · The mis-negation a' < 0 and b' < 0 is unsat on the unguarded transfer; the correct negation a' < 0 or b' < 0 is sat with a witness
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I demorgan.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-demorgan/demorgan.py (sha256 cbe6680d2d5b2824..., as recorded, staged as demorgan.py)
+  exit      0 after 0.2 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [mis_negation] unsat
+  same      [correct_negation] sat [amount = 1, b = 0, a = 0]
+  same        replay ok: a=0 b=0 amount=1 gives a2=-1 b2=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, a2 < 0 or b2 < 0 ok
+  same      [negation_equivalence] unsat
+reproduced: 5 of 5 verdict lines
+RUN-z3-double-capture · A capture applied twice to one hold conserves money and breaks at-most-once; the held >= h patch fixes the instance and not the class; the status guard is unsat
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I double_capture.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-double-capture/double_capture.py (sha256 5bfd69a38f64de53..., as recorded, staged as double_capture.py)
+  exit      0 after 0.2 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [conservation_buggy_twice] unsat
+  same      [at_most_once_buggy] sat [avail = 0, held_pp = 0, merchant = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]
+  same        replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok
+  same      [at_most_once_patched_one_hold] unsat
+  same      [at_most_once_patched_pooled] sat [merchant = 0, held_pp = 0, merchant_p = 1, avail = 0, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]
+  same        replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok
+  same      [at_most_once_fixed] unsat
+  same      [fixed_one_capture] sat [merchant = 0, avail = 0, held_p = 0, merchant_p = 1, avail_p = 0, h = 1, status_p = CAPTURED, status = HELD, held = 1]
+  same        replay ok: held=1 h=1 merchant=0: status HELD ok, merchant_p = merchant + h = 1 ok, held_p = held - h = 0 ok
+  same      [minimize_hold] sat minimum h = 1 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]
+  same        replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok
+  same      [minimize_pool_patched] sat minimum held = 2 [merchant = 0, held_pp = 0, avail = 0, merchant_p = 1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 1, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 2]
+  same        replay ok: held=2 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, merchant gains 2 > h=1 ok
+  same      [no_smaller_hold] unsat
+  same      [no_smaller_pool_patched] unsat
+  same      [held_nonneg_one_hold] sat [avail = 0, merchant = 0, merchant_p = 1, held_pp = -1, avail_p = 0, merchant_pp = 2, h = 1, held_p = 0, status = HELD, status_pp = CAPTURED, avail_pp = 0, status_p = CAPTURED, held = 1]
+  same        replay ok: held=1 h=1 merchant=0: state before: balances >= 0, h > 0, held >= h, status HELD ok, first capture allowed ok, second capture allowed ok, held ends at -1 < 0 ok
+  same      [held_nonneg_pooled] unsat
+reproduced: 19 of 19 verdict lines
+RUN-z3-fixedpoint · Under Pyodide in a Node harness, Z3 Fixedpoint with stratified negation: canread(1,3) sat, revoked canread(1,4) unsat
+  not re-executed: no argv is recorded and the record names 0 Python scripts, so the Z3 lane cannot tell how it ran; re-record it with argv
+RUN-z3-optimize-min · Under an Optimize objective the minimal overdraft amount is 1
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.3 s
+  same      z3 version: 5.3.1
+  same      [S1.2 minimal amount via Optimize] sat [amount = 1, b = 0, a = 0]
+reproduced: 2 of 2 verdict lines
+RUN-z3-refund-a21 · The refund theorem (customer >= 0) is unsat with a modify-style update and sat with a value update; the merchant can go negative
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.1 s
+  same      z3 version: 5.3.1
+  same      [A2.1 stated theorem (customer >= 0), modify-update] unsat (0.00s) 
+  same      [A2.1 stated theorem (customer >= 0), value-update] sat (0.00s) [c = 3, Bal = Store(K(Int, 2), 3, 0), m = 3, r = 1]
+  same      [A2.1 the gap: merchant >= 0 after refund] sat (0.00s) [c = 3,
+  skipped    Bal = Store(Store(K(Int, 2), 4, 40650), 3, 0),
+  skipped    m = 4,
+  skipped    r = 40651]
+reproduced: 4 of 4 verdict lines
+RUN-z3-refund-mint · The clamp refund rule mints money, and a witness-sized patch leaves a larger witness; rejecting a refund above the merchant's balance is unsat and not vacuous
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I refund_mint.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-refund-mint/refund_mint.py (sha256 c5f43252f84bd3ed..., as recorded, staged as refund_mint.py)
+  exit      0 after 0.1 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [clamp_mint] sat [c = 0, m = 0, r = 1]
+  same        replay ok: c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+  same      [clamp_merchant_nonneg] unsat
+  same      [minimize_minted] sat minimum minted = 1 [c = 0, m = 0, r = 1]
+  same        replay ok: c=0 m=0 r=1 gives c2=1 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+  same      [patch_empty_merchant_mint] sat [c = 0, r = 2, m = 1]
+  same        replay ok: c=0 m=1 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 1 > 0 ok
+  same      [patch_exact_witness_mint] sat [r = 2, c = 0, m = 0]
+  same        replay ok: c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok
+  same      [minimize_minted_patch_exact] sat minimum minted = 2 [c = 0, m = 0, r = 2]
+  same        replay ok: c=0 m=0 r=2 gives c2=2 m2=0: c >= 0, m >= 0, r > 0 ok, refund accepted ok, minted 2 > 0 ok
+  same      [no_smaller_mint] unsat
+  same      [no_smaller_mint_patch_exact] unsat
+  same      [fixed_mint] unsat
+  same      [fixed_premises] sat [c = 0, m = 1, r = 1]
+  same        replay ok: c=0 m=1 r=1: c >= 0, m >= 0, r > 0 ok, r <= m, so the refund is accepted ok
+  same      [fixed_rejected_unchanged] unsat
+reproduced: 18 of 18 verdict lines
+RUN-z3-selftransfer · The buggy-update self-transfer changes the balance: sat [n = 1, t = 0, f = 0]
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.1 s
+  same      z3 version: 5.3.1
+  same      [S2.1 self-transfer changes balance (buggy update)] sat (0.00s) [n = 1, t = 0, f = 0]
+reproduced: 2 of 2 verdict lines
+RUN-z3-smtlib-tour · D-13's SMT-LIB examples through the Z3 command line, its API interpreter and Pyodide: sat with a model, unsat, unknown with its reason, and a budget set with (set-option :rlimit)
+  config    cli-native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 sh tour_cli.sh   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/tour_cli.sh (sha256 67b905add72bc09a..., as recorded, staged as tour_cli.sh)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter.smt2 (sha256 ac6500be32aa8d08..., as recorded, staged as smtlib/starter.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded.smt2 (sha256 22dbf775f4ac7a6c..., as recorded, staged as smtlib/starter_guarded.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/starter_guarded_get_model.smt2 (sha256 c501b54d15e797cd..., as recorded, staged as smtlib/starter_guarded_get_model.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_canceled.smt2 (sha256 99d86a765d9aed3c..., as recorded, staged as smtlib/unknown_canceled.smt2)
+  input     runs/inputs/S1/RUN-z3-smtlib-tour/smtlib/unknown_theory.smt2 (sha256 277f4236f8e0d683..., as recorded, staged as smtlib/unknown_theory.smt2)
+  exit      0 after 0.6 s; recorded 0
+  same      Z3 version 5.3.1 - 64 bit
+  same      == starter.smt2
+  same      sat
+  same      (
+  skipped     (define-fun b () Int
+  skipped       0)
+  skipped     (define-fun amount () Int
+  skipped       1)
+  skipped     (define-fun a () Int
+  skipped       0)
+  same      )
+  same      == starter_guarded.smt2
+  same      unsat
+  same      == starter_guarded_get_model.smt2
+  same      unsat
+  same      (error "line 8 column 10: model is not available")
+  same      == unknown_theory.smt2
+  same      unknown
+  same      (:reason-unknown "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))")
+  same      == unknown_canceled.smt2
+  same      unknown
+  same      (:reason-unknown "canceled")
+reproduced: 16 of 16 verdict lines
+RUN-z3-starter-pyodide · The starter on Z3 5.3.1 in Pyodide 314.0.7 in three browser engines, without cross-origin isolation
+  not re-executed: the run executed in the image mcr.microsoft.com/playwright:v1.63.0-noble; the Z3 lane re-executes on this machine only
+RUN-z3-starter · The roadmap's starter on Z3 5.3.1: an overdraft witness, then unsat once the guard is added
+  how       argv is not recorded (the log holds the output; the script's usage line reads `uv run --with z3-solver==<v> python -I z3_claims.py`); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_claims.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_claims.py (sha256 a558596e31782a8d..., as recorded, staged as z3_claims.py)
+  exit      0 after 10.2 s
+  same      z3 version: 5.3.1
+  same      [1.2 starter: overdraft search] sat (0.00s) [b = 0, amount = 1, a = 0]
+  same      [1.3 guard added] unsat (0.00s) 
+reproduced: 3 of 3 verdict lines
+RUN-z3-unknown-pow · x**y == 8, y > 1 gives unknown, incomplete (theory arithmetic), natively on 5.3.1 and 4.15.4 and under Pyodide
+  how       argv is not recorded (the log holds the output; the script's docstring gives no usage line, and the log's sections name the wheel versions it ran); this is the Z3 lane's pinned form for a Z3Py script, uv run --with z3-solver==<version> python -I <script> (labs/TOOLS.md section 2.1)
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I z3_unknown.py   (in a scratch directory holding the inputs)
+  input     research/evidence/a2r3/scripts/z3_unknown.py (sha256 13d3a22cce54c3d4..., as recorded, staged as z3_unknown.py)
+  input     research/evidence/A5r3/scripts/z3unk.mjs (sha256 014bd54673e79a20..., as recorded, not staged: the command does not name it)
+  note      the record also lists research/evidence/A5r3/scripts/z3unk.mjs, which this re-execution does not run
+  exit      0 after 26.8 s
+  skipped   === z3-solver 5.3.1.0
+            (no line of the new output names a version this way; the command pins the version)
+  same      [Int x**y == 8, y>1] unknown (0.00s) smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic)) 
+  same      [Quantified: forall k. f(k) > f(k+1), f(0)=0] unknown (4.44s) smt tactic failed to show goal to be sat/unsat (incomplete quantifiers) 
+            (same verdict; models and timings are not compared)
+  same      [Quantified: forall k. k*k != y] sat (0.00s)  [y = 2]
+reproduced: 3 of 3 verdict lines
+RUN-z3-vacuous-unsat · Contradictory premises make every violation query unsat, and the premise query is the tell: CL-1.1's premise witness and the MAX_TRANSFER = 0 config with its unsat core
+  config    native   (the record's primary configuration)
+  how       the recorded argv
+  argv      uv run --no-project --quiet --with z3-solver==5.3.1 python -I vacuous_unsat.py   (in a scratch directory holding the inputs)
+  input     runs/inputs/S1/RUN-z3-vacuous-unsat/vacuous_unsat.py (sha256 36cd33f597531747..., as recorded, staged as vacuous_unsat.py)
+  exit      0 after 0.1 s; recorded 0
+  same      z3 5.3.1 rlimit=5000000
+  same      [cl11_violation] unsat
+  same      [cl11_premises] sat [amount = 1, b = 0, a = 1]
+  same        replay ok: a=1 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= a ok
+  same      [max0_range_violation] unsat
+  same      [max0_range_absurd] unsat
+  same      [max0_range_premises] unsat
+  same      [max0_range_core] unsat unsat_core=['amount_le_max_transfer', 'amount_positive']
+  same        core check: the core alone is unsat; dropping any one member leaves it sat
+  same      [max0_guarded_violation] unsat
+  same      [max0_guarded_absurd] unsat
+  same      [max0_guarded_premises] unsat
+  same      [max0_guarded_core] unsat unsat_core=['amount_le_max_transfer', 'amount_positive']
+  same        core check: the core alone is unsat; dropping any one member leaves it sat
+  same      [max100_range_violation] sat [amount = 1, a = 0, b = 0]
+  same        replay ok: a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount < 0 ok
+  same      [max100_range_absurd] sat [b = 0, a = 0, amount = 1]
+  same        replay ok: a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount != a + 1000000 ok
+  same      [max100_range_premises] sat [b = 0, amount = 97, a = 0]
+  same        replay ok: a=0 b=0 amount=97 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok
+  same      [max100_guarded_violation] unsat
+  same      [max100_guarded_absurd] sat [amount = 1, b = 0, a = 1]
+  same        replay ok: a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok, a - amount != a + 1000000 ok
+  same      [max100_guarded_premises] sat [amount = 1, a = 1, b = 0]
+  same        replay ok: a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok
+reproduced: 25 of 25 verdict lines
+RUN-z3-verdict-lines · Z3 5.3.1's whole output for 40 SMT-LIB queries through the command line and the Python API under an rlimit: the verdict-line fixtures of the Z3 lane
+  not re-executed: argv holds several commands; the Z3 lane re-executes one
+16 reproduced, 0 differ, 9 not re-executed by this CLI

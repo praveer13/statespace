@@ -1,0 +1,129 @@
+# ---- helper block: identical text in every Python script of runs/inputs/S1, except the SMT-LIB tour ----------
+# (scripts/spikes/W1-T12/record.mjs check compares the blocks). A plain query goes through run(): a fresh
+# Solver with an rlimit; the verdict and the model or the reason, as Z3 prints them; a replay of each
+# witness in plain Python integers (witnesses are checked by property, never compared by value across
+# engines); and the query's SMT-LIB text under smt2/ (let names renamed by canon; the hash of the raw text is
+# kept too). An Optimize query goes through optimize(): an Optimize with the same rlimit, the verdict, the
+# model and the minimum, the same replay, and no SMT-LIB text. One "@@" line per query carries the same facts
+# as JSON, for the recording script; a bit-vector witness is given as Z3 prints it (unsigned) and as the
+# signed integer it stands for.
+import hashlib, json, os, re, time
+from z3 import *
+
+RLIMIT = 5000000    # the budget of every solver call (spine section 9.1: an rlimit on every call)
+FAILED = []         # queries whose witness did not replay
+
+def iv(m, x):       # a model value as a Python integer (a bit-vector reads as unsigned)
+    return m.eval(x, model_completion=True).as_long()
+
+def sv(m, x):       # a bit-vector model value as a signed (two's complement) Python integer
+    return m.eval(x, model_completion=True).as_signed_long()
+
+def wrap(n, bits):  # a Python integer reduced to a signed `bits`-bit integer, as hardware adds
+    n &= (1 << bits) - 1
+    return n - (1 << bits) if n >> (bits - 1) else n
+
+def canon(text):    # Z3 names the let-bound terms of an export after AST ids (?x60, $x34), and the ids are not the
+    seen = {}       # same in every process (see raw_exports_identical in the run records); the names are reused
+    def name(mo):   # in order of appearance, so that one query is one text
+        tok = mo.group(0)
+        if tok not in seen:
+            seen[tok] = f'{tok[0]}x{sum(1 for k in seen if k[0] == tok[0]) + 1}'
+        return seen[tok]
+    return re.sub(r'[?$]x\d+', name, text)
+
+def show(m):        # Z3's model print, on one line
+    return '[' + ', '.join(f'{d.name()} = {m[d]}' for d in m.decls()) + ']'
+
+def model_facts(m, rec):  # the model as strings (big values exceed what JSON keeps exact); bit-vectors also signed
+    rec['model'] = {d.name(): str(m[d]) for d in m.decls()}
+    signed = {d.name(): str(m[d].as_signed_long()) for d in m.decls() if is_bv_value(m[d])}
+    if signed:
+        rec['model_signed'] = signed
+
+def judge(prefix, checks):  # (all hold, one line that names each check and whether it held)
+    return all(ok for _, ok in checks), prefix + ': ' + ', '.join(f'{label} {"ok" if ok else "FAILS"}' for label, ok in checks)
+
+def emit(qid, rec, replay_result):
+    if replay_result is not None:
+        ok, text = replay_result
+        rec['replays'], rec['replay'] = bool(ok), text
+        print(f'  replay {"ok" if ok else "FAILED"}: {text}')
+        if not ok:
+            FAILED.append(qid)
+    print('@@', json.dumps(rec, sort_keys=True))
+
+def run(qid, formulas, replay=None):
+    s = Solver()
+    s.set('rlimit', RLIMIT)
+    s.add(*formulas)
+    t = time.perf_counter()
+    r = s.check()
+    rec = {'q': qid, 'verdict': str(r), 'rlimit': RLIMIT, 'ms': round((time.perf_counter() - t) * 1000, 2)}
+    out = None
+    if r == sat:
+        m = s.model()
+        model_facts(m, rec)
+        print(f'[{qid}] sat {show(m)}')
+        out = replay(m) if replay else None
+    elif r == unknown:
+        rec['reason_unknown'] = s.reason_unknown()
+        print(f'[{qid}] unknown {rec["reason_unknown"]}')
+    else:
+        print(f'[{qid}] unsat')
+    raw = s.to_smt2()
+    text = canon(raw)
+    rec['smt2_raw_sha256'] = hashlib.sha256(raw.encode()).hexdigest()
+    rec['smt2_sha256'] = hashlib.sha256(text.encode()).hexdigest()
+    os.makedirs('smt2', exist_ok=True)
+    with open(f'smt2/{qid}.smt2', 'w') as f:
+        f.write(text)
+    emit(qid, rec, out)
+    return r
+
+def optimize(qid, formulas, objective, name, replay=None):  # the smallest value of `objective` among the models
+    o = Optimize()
+    o.set('rlimit', RLIMIT)
+    o.add(*formulas)
+    handle = o.minimize(objective)
+    t = time.perf_counter()
+    r = o.check()
+    rec = {'q': qid, 'verdict': str(r), 'rlimit': RLIMIT, 'ms': round((time.perf_counter() - t) * 1000, 2),
+           'objective': name, 'smt2_sha256': None}
+    out = None
+    if r == sat:
+        m = o.model()
+        model_facts(m, rec)
+        rec['minimum'] = str(o.lower(handle))
+        print(f'[{qid}] sat minimum {name} = {rec["minimum"]} {show(m)}')
+        out = replay(m) if replay else None
+    else:
+        print(f'[{qid}] {r}')
+    emit(qid, rec, out)
+    return r
+
+print('z3', get_version_string(), f'rlimit={RLIMIT}')
+# ---- end of the helper block ---------------------------------------------------------------------------
+
+# RUN-z3-demorgan. S1.L1 segment 1: negating "both balances stay non-negative" on the unguarded
+# transfer, the wrong way (a' < 0 and b' < 0) and the right way (a' < 0 or b' < 0).
+# a, b are the balances before; a2, b2 are the post-state a' = a - amount and b' = b + amount.
+a, b, amount = Ints('a b amount')
+a2, b2 = a - amount, b + amount
+premises = [a >= 0, b >= 0, amount > 0]
+prop = And(a2 >= 0, b2 >= 0)            # the property: both balances stay at zero or above
+wrong = And(a2 < 0, b2 < 0)             # the De Morgan slip: both at once
+right = Or(a2 < 0, b2 < 0)              # the correct negation: either one
+
+def replay_right(m):
+    A, B, X = iv(m, a), iv(m, b), iv(m, amount)
+    A2, B2 = A - X, B + X
+    return judge(f'a={A} b={B} amount={X} gives a2={A2} b2={B2}',
+                 [('a >= 0', A >= 0), ('b >= 0', B >= 0), ('amount > 0', X > 0), ('a2 < 0 or b2 < 0', A2 < 0 or B2 < 0)])
+
+# The mis-negation asks for both balances to go negative at once; the recipient only gains.
+run('mis_negation', premises + [wrong])
+# The correct negation finds the violation the mis-negation could not.
+run('correct_negation', premises + [right], replay_right)
+# The identity behind it: not (a2 >= 0 and b2 >= 0) is (a2 < 0 or b2 < 0), for every pair of values.
+run('negation_equivalence', [Not(Not(prop) == right)])

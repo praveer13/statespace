@@ -1,0 +1,41 @@
+z3 5.3.1 rlimit=5000000
+[cl11_violation] unsat
+@@ {"ms": 2.0, "q": "cl11_violation", "rlimit": 5000000, "smt2_raw_sha256": "18aabeab85d91bdc8153c23fd5e63271d194c6ca50b7c0093f629e70fc13ad96", "smt2_sha256": "8c91d4d2ebd2fe95f3caed20c239a1e151015d55d91e828f660711fcea1124d1", "verdict": "unsat"}
+[cl11_premises] sat [b = 0, amount = 1, a = 1]
+  replay ok: a=1 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= a ok
+@@ {"model": {"a": "1", "amount": "1", "b": "0"}, "ms": 2.0, "q": "cl11_premises", "replay": "a=1 b=0 amount=1: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= a ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "7f2e8d0cc5db26e1d15b1c87396d4d1eb8e39084e71caead25a2aeb9ce9501dd", "smt2_sha256": "7f2e8d0cc5db26e1d15b1c87396d4d1eb8e39084e71caead25a2aeb9ce9501dd", "verdict": "sat"}
+[max0_range_violation] unsat
+@@ {"ms": 0.0, "q": "max0_range_violation", "rlimit": 5000000, "smt2_raw_sha256": "b1f457f196d4b28e9f32c4b0e48d03c9caedf0f9e4b21b6dbe7f0ad1117d01c2", "smt2_sha256": "268930fa9e0e1f298c45b11dd1df96b6549bc4a5ad4fce228de47b9a476c81d6", "verdict": "unsat"}
+[max0_range_absurd] unsat
+@@ {"ms": 1.0, "q": "max0_range_absurd", "rlimit": 5000000, "smt2_raw_sha256": "c4cf29653bf9b29d899e2128d90d60f189db72af5573dfeaab15c1f5deb4ee4f", "smt2_sha256": "c4cf29653bf9b29d899e2128d90d60f189db72af5573dfeaab15c1f5deb4ee4f", "verdict": "unsat"}
+[max0_range_premises] unsat
+@@ {"ms": 1.0, "q": "max0_range_premises", "rlimit": 5000000, "smt2_raw_sha256": "6b928bb6475511715e9726173bd0f32513c015ea1d8b06afefb0b22ca911ec6d", "smt2_sha256": "6b928bb6475511715e9726173bd0f32513c015ea1d8b06afefb0b22ca911ec6d", "verdict": "unsat"}
+[max0_range_core] unsat unsat_core=['amount_le_max_transfer', 'amount_positive']
+  core check: the core alone is unsat; dropping any one member leaves it sat
+@@ {"core_alone_unsat": true, "core_constraints": ["amount <= MAX_TRANSFER", "amount > 0"], "core_minimal": true, "q": "max0_range_core", "rlimit": 5000000, "smt2_sha256": null, "unsat_core": ["amount_le_max_transfer", "amount_positive"], "verdict": "unsat"}
+[max0_guarded_violation] unsat
+@@ {"ms": 0.0, "q": "max0_guarded_violation", "rlimit": 5000000, "smt2_raw_sha256": "0e7bdab08eff276a7a8ce0a5ecf7b4d38f19c8a7722128cc2c08b56130ebc1d1", "smt2_sha256": "af7ef2bb3ad12e101af84758dbe601bf664498c451c8b3993501c4a7acb63fcd", "verdict": "unsat"}
+[max0_guarded_absurd] unsat
+@@ {"ms": 0.0, "q": "max0_guarded_absurd", "rlimit": 5000000, "smt2_raw_sha256": "1a5c06473ecea44d0dc8eeda4e090dd0f48b8652f5c8e54980d9a48c6853a526", "smt2_sha256": "1a5c06473ecea44d0dc8eeda4e090dd0f48b8652f5c8e54980d9a48c6853a526", "verdict": "unsat"}
+[max0_guarded_premises] unsat
+@@ {"ms": 0.0, "q": "max0_guarded_premises", "rlimit": 5000000, "smt2_raw_sha256": "8b974550b383e8ec5dc11d3bd363da108def9fcd0bd6f4ca710a5b02e717fbc4", "smt2_sha256": "8b974550b383e8ec5dc11d3bd363da108def9fcd0bd6f4ca710a5b02e717fbc4", "verdict": "unsat"}
+[max0_guarded_core] unsat unsat_core=['amount_le_max_transfer', 'amount_positive']
+  core check: the core alone is unsat; dropping any one member leaves it sat
+@@ {"core_alone_unsat": true, "core_constraints": ["amount <= MAX_TRANSFER", "amount > 0"], "core_minimal": true, "q": "max0_guarded_core", "rlimit": 5000000, "smt2_sha256": null, "unsat_core": ["amount_le_max_transfer", "amount_positive"], "verdict": "unsat"}
+[max100_range_violation] sat [amount = 1, b = 0, a = 0]
+  replay ok: a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount < 0 ok
+@@ {"model": {"a": "0", "amount": "1", "b": "0"}, "ms": 2.0, "q": "max100_range_violation", "replay": "a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount < 0 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "cf1797332313a6bae992affe14f5fdcd0b95d7f07b230378ec0b2590ad108f23", "smt2_sha256": "0b684f7392663b5d59e76e18d3e9d35d39c30d6a351a0b0fc56e9b55102e7f15", "verdict": "sat"}
+[max100_range_absurd] sat [a = 0, b = 0, amount = 1]
+  replay ok: a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount != a + 1000000 ok
+@@ {"model": {"a": "0", "amount": "1", "b": "0"}, "ms": 3.0, "q": "max100_range_absurd", "replay": "a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, a - amount != a + 1000000 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "0f4ca97a2d5f7ff90c8ee93e51c9020eb5d8ad142fde31eaa72425324d8d1073", "smt2_sha256": "0f4ca97a2d5f7ff90c8ee93e51c9020eb5d8ad142fde31eaa72425324d8d1073", "verdict": "sat"}
+[max100_range_premises] sat [b = 0, a = 0, amount = 1]
+  replay ok: a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok
+@@ {"model": {"a": "0", "amount": "1", "b": "0"}, "ms": 3.0, "q": "max100_range_premises", "replay": "a=0 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "f7c7b7e33710d0922a5aa74aa09eafd658eb0c00f1738c15a6c19260baf0136a", "smt2_sha256": "f7c7b7e33710d0922a5aa74aa09eafd658eb0c00f1738c15a6c19260baf0136a", "verdict": "sat"}
+[max100_guarded_violation] unsat
+@@ {"ms": 2.0, "q": "max100_guarded_violation", "rlimit": 5000000, "smt2_raw_sha256": "2b9f3a8b2a28b9cdeb8796feaae41478631b958b4e34c19d99a8ffbeddd9ff0c", "smt2_sha256": "2ef939fa114a32b66e4501596004589f7eabb7706debadea86bf6b98cefc5087", "verdict": "unsat"}
+[max100_guarded_absurd] sat [amount = 1, b = 0, a = 1]
+  replay ok: a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok, a - amount != a + 1000000 ok
+@@ {"model": {"a": "1", "amount": "1", "b": "0"}, "ms": 2.0, "q": "max100_guarded_absurd", "replay": "a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok, a - amount != a + 1000000 ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "f16ce280a658baba9e2975e32d10ea2710dd9a1c9db0f75f5d7ea9affcc0e6a4", "smt2_sha256": "f16ce280a658baba9e2975e32d10ea2710dd9a1c9db0f75f5d7ea9affcc0e6a4", "verdict": "sat"}
+[max100_guarded_premises] sat [b = 0, amount = 1, a = 1]
+  replay ok: a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok
+@@ {"model": {"a": "1", "amount": "1", "b": "0"}, "ms": 3.0, "q": "max100_guarded_premises", "replay": "a=1 b=0 amount=1 MAX_TRANSFER=100: a >= 0 ok, b >= 0 ok, amount > 0 ok, amount <= MAX_TRANSFER ok, amount <= a ok", "replays": true, "rlimit": 5000000, "smt2_raw_sha256": "4432e9825fc5973c9864c448cbd663f05bd51d3c48ad4837585f9a2dc0ce56ba", "smt2_sha256": "4432e9825fc5973c9864c448cbd663f05bd51d3c48ad4837585f9a2dc0ce56ba", "verdict": "sat"}

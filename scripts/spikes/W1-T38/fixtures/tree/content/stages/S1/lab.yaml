@@ -1,0 +1,18 @@
+# A fixture for the lessons gate. A real stage or lab file starts with the line "schema: statespace/lesson@1"; this one leaves
+# it out, so that GATE-schema, which reads every file that declares it, does not read a fixture.
+id: LAB-1
+draft: true
+summary: Project 00, the counterexample lab.
+stages:
+  - id: LAB-1.1
+    what: Run the starter and read what it prints [X RUN-z3-starter].
+    checks:
+      - id: LAB-1.c1
+        label: The verdict pair reproduces.
+        passes: sat on the violation query, then unsat once the guard is added
+  - id: LAB-1.2
+    weekend: false
+extra:
+  hints:
+    - rung: R0
+      note: A teach-back, compared with three authored ideas.

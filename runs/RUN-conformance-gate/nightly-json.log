@@ -1,0 +1,175 @@
+{
+  "gate": "GATE-conformance",
+  "result": "pass",
+  "seconds": 5,
+  "claims": [
+    "SEAM-13"
+  ],
+  "pairs": [
+    {
+      "id": "z3-same-query",
+      "label": "Pyodide Z3 = native Z3, on the same queries (the recipient wrap included)",
+      "state": "held",
+      "compared": 11,
+      "equal": 11,
+      "rows": [
+        {
+          "id": "starter-overdraft",
+          "specimen": "SP-1.1",
+          "native": "sat",
+          "pyodide": "sat",
+          "reason": null,
+          "witness": "valid on both; the values are equal here (never required)",
+          "ok": true
+        },
+        {
+          "id": "starter-guarded",
+          "specimen": "SP-1.1",
+          "native": "unsat",
+          "pyodide": "unsat",
+          "reason": null,
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "optimize-min",
+          "specimen": "SP-1.1",
+          "native": "sat",
+          "pyodide": "sat",
+          "reason": null,
+          "witness": "valid on both; the values are equal here (never required)",
+          "ok": true
+        },
+        {
+          "id": "int-conservation-noguard",
+          "specimen": "SP-2.2",
+          "native": "unsat",
+          "pyodide": "unsat",
+          "reason": null,
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "bv64-sender-guarded",
+          "specimen": "SP-1.4",
+          "native": "unsat",
+          "pyodide": "unsat",
+          "reason": null,
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "bv64-recipient-wrap",
+          "specimen": "SP-1.4",
+          "native": "sat",
+          "pyodide": "sat",
+          "reason": null,
+          "witness": "valid on both; the values are equal here (never required)",
+          "ok": true
+        },
+        {
+          "id": "bv64-conservation",
+          "specimen": "SP-1.4",
+          "native": "unsat",
+          "pyodide": "unsat",
+          "reason": null,
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "bv64-unsigned-guard-signed-check",
+          "specimen": "SP-1.5",
+          "native": "sat",
+          "pyodide": "sat",
+          "reason": null,
+          "witness": "valid on both; the values are equal here (never required)",
+          "ok": true
+        },
+        {
+          "id": "vacuous-premises",
+          "specimen": "SP-1.6",
+          "native": "unsat",
+          "pyodide": "unsat",
+          "reason": null,
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "unknown-pow",
+          "specimen": "SP-1.7",
+          "native": "unknown",
+          "pyodide": "unknown",
+          "reason": "smt tactic failed to show goal to be sat/unsat (incomplete (theory arithmetic))",
+          "witness": null,
+          "ok": true
+        },
+        {
+          "id": "rlimit-cubes",
+          "specimen": "SP-1.8",
+          "native": "unknown",
+          "pyodide": "unknown",
+          "reason": "canceled",
+          "witness": null,
+          "ok": true
+        }
+      ],
+      "engines": [
+        "native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment)",
+        "pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached)"
+      ],
+      "witnessesEqual": 4,
+      "seconds": 3.218,
+      "detail": "11 of 11 queries equal"
+    },
+    {
+      "id": "z3-pyodide-native",
+      "label": "Pyodide Z3 = native Z3, on every authored cell and generator template",
+      "state": "absent",
+      "builtBy": "W1-T37",
+      "detail": "scripts/conformance/z3-pyodide-native.mjs does not exist yet (built by W1-T37)"
+    },
+    {
+      "id": "pocket-z3",
+      "label": "Pocket checkers = Z3",
+      "state": "absent",
+      "builtBy": "W1-T19",
+      "detail": "scripts/conformance/pocket-z3.mjs does not exist yet (built by W1-T19)"
+    },
+    {
+      "id": "spectacle-tlc",
+      "label": "Spectacle = TLC",
+      "state": "absent",
+      "builtBy": "W3-T08",
+      "detail": "scripts/conformance/spectacle-tlc.mjs does not exist yet (built by W3-T08)"
+    },
+    {
+      "id": "lasso-tlc",
+      "label": "Lasso validator = TLC",
+      "state": "absent",
+      "builtBy": "W3-T09",
+      "detail": "scripts/conformance/lasso-tlc.mjs does not exist yet (built by W3-T09)"
+    },
+    {
+      "id": "pglite-pg",
+      "label": "PGlite = PostgreSQL 18.6",
+      "state": "absent",
+      "builtBy": "W4-T04",
+      "detail": "scripts/conformance/pglite-pg.mjs does not exist yet (built by W4-T04)"
+    },
+    {
+      "id": "datalog-souffle",
+      "label": "Tab Datalog = Soufflé",
+      "state": "absent",
+      "builtBy": "W4-T07",
+      "detail": "scripts/conformance/datalog-souffle.mjs does not exist yet (built by W4-T07)"
+    },
+    {
+      "id": "provider-tlc",
+      "label": "The Clearinghouse provider simulator's traces validate against S8's reference spec, with TLC",
+      "state": "absent",
+      "builtBy": "W5-T35",
+      "detail": "scripts/conformance/provider-tlc.mjs does not exist yet (built by W5-T35)"
+    }
+  ],
+  "findings": []
+}

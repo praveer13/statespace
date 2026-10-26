@@ -1,0 +1,782 @@
+{
+  "id": "RUN-call-it-mirror",
+  "title": "The Call It sheet and the Mirror as they stand: their tests, GATE-items on the sheet's fixtures and the weakened copies on the host, and the sheet and the screen in Chromium, Firefox and WebKit at 320, 360 and 1280 px in both themes, where the first call is final on the real IndexedDB adapter",
+  "task": "W1-T07",
+  "origin": "recorded",
+  "engine": "playwright",
+  "version": "1.63.0",
+  "version_string": "Playwright 1.63.0 in mcr.microsoft.com/playwright:v1.63.0-noble; chromium 153.0.8010.12, firefox 155.0, webkit 26.6; axe-core 4.14.0",
+  "binary": null,
+  "binary_sha256": null,
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "recorded_at": "2026-10-26T09:38:09.614Z",
+  "started_at": "2026-10-26T09:28:18.653Z",
+  "duration_s": 590.921,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=4g",
+    "--network",
+    "none",
+    "--name",
+    "w1t07-record-browsers",
+    "-v",
+    "<repo>:/repo:ro",
+    "-v",
+    "<sandbox>/dist:/dist:ro",
+    "-v",
+    "<sandbox>/out:/out",
+    "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "node",
+    "/repo/scripts/spikes/W1-T07/harness/check.mjs",
+    "/dist",
+    "/out",
+    "/statespace/"
+  ],
+  "inputs": [
+    {
+      "sha256": "810830ee385307472831bd5c1fbf81da240084051728eca99f86e935fe67832b",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 21,
+      "path": "apps/site/src/components/call-it",
+      "role": "the sheet: its model, commit, components, styles, fixtures and tests"
+    },
+    {
+      "sha256": "c37c82e5f2c7f99bd14bb57ee979d75a7b81efdf091d1349fe30e961c0a11377",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 10,
+      "path": "apps/site/src/screens/mirror",
+      "role": "the screen: its route, components, copy, styles and tests"
+    },
+    {
+      "sha256": "a8975eac6f50d5aa68ad712d86feb5e9da0930ca47e3138b3bb58a159bc17dd0",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 9,
+      "path": "packages/learner/src/mirror",
+      "role": "the derivations: which call counts, the Mirror and VRK30"
+    },
+    {
+      "sha256": "e852df7c2863c27a35c2e75f5673d7cd69ec3cbe3d42c7b73c9533fc5914fe46",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 7,
+      "path": "packages/learner/test",
+      "role": "the package's tests"
+    },
+    {
+      "sha256": "01f1dd0632f8cdbb624ac486c67f85e16479a02a6cec350442816c3e1904159f",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 11,
+      "path": "scripts/spikes/W1-T07",
+      "role": "the gate runner, the vocabulary guard, the browser harness, the weakened copies and this recording script"
+    },
+    {
+      "path": "scripts/verify-items.mjs",
+      "sha256": "024a9e7905cec38a3713571b5f27dc7eb6e156ad73f0af3bc271af7e0412a688",
+      "bytes": 168801,
+      "role": "GATE-items, W1-T39's gate, which the fixtures are run through"
+    },
+    {
+      "path": "scripts/verify-calls.mjs",
+      "sha256": "8418241be5bed19995be5401b1908d847ffda57dc47885848dc2763780ca9ae4",
+      "bytes": 15022,
+      "role": "GATE-calls, W1-T37's gate, which the fixtures are run through"
+    },
+    {
+      "path": "content/glossary.yaml",
+      "sha256": "dcbbc6277cc413b08398c569659b49c725dbc9114d536cf1519949a665d2e655",
+      "bytes": 9658,
+      "role": "the glossary whose names the render tests hold every word to (W1-T38's file)"
+    },
+    {
+      "path": "schemas/event.schema.json",
+      "sha256": "ef4614dd7f4562ec2f41edfc2d8c50888fa2bd38df2bdd5afe89f551700c1bba",
+      "bytes": 11010,
+      "role": "event@1, which every call the sheet writes must satisfy (W1-T03's file)"
+    },
+    {
+      "path": "<sandbox>/dist",
+      "sha256": "68c826439f41cd8282afbd83bc8b7b5e4ddc8a984b116cbbec314b91bfb338b8",
+      "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+      "files": 21,
+      "role": "the built harness the browsers loaded"
+    }
+  ],
+  "budget": {
+    "container_memory": "4g",
+    "network": "none: the image, node_modules and the built harness are local",
+    "widths_px": [
+      320,
+      360,
+      1280
+    ],
+    "themes": [
+      "light",
+      "night"
+    ],
+    "viewport_height_px": 900,
+    "minimum_target_px": 44
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "252 axe and layout runs, 12 first-call-final runs, 6 keyboard walks, 3 dock checks, 3 route checks; 0 failures"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-call-it-mirror/learner-tests.log",
+      "sha256": "d6b11ab2f9c9bccd09c44e63586bed640f0d688113f405bf62fdab085d846f39",
+      "bytes": 22254,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/typecheck-learner.log",
+      "sha256": "19201deb9c646974af1f85be9e61748a4c82ace98e69c9af23e61c2e64f0ebc2",
+      "bytes": 66,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/typecheck-site.log",
+      "sha256": "aed49a07155758722e2ea9e4c0baf723ecf1e6385dfb63573c343856f5acf9c6",
+      "bytes": 77,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/sheet-tests.log",
+      "sha256": "3e654f69d4d2c64bc941e4a229c4b6d563a24d92fbe4691b4ddb77c900d584f8",
+      "bytes": 12607,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/screen-tests.log",
+      "sha256": "614d71669f5d732cd2ac327a7e39ff6514f77b67aa10124168eabf12476da1a7",
+      "bytes": 3724,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/items-gate.log",
+      "sha256": "b2de45066d31f8759ebc37fd692a5304191fa3dea624e84d9966495585b41ade",
+      "bytes": 542,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/calls-gate.log",
+      "sha256": "3197def688bb560c435fc73f9c4d449d61dd9397d1e11319883ec6ae750c27c9",
+      "bytes": 931,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/mutants-host.log",
+      "sha256": "012611a6c8e659816a4945eb6879c12cdd4ff16f1d016ac75adb0486d5720c41",
+      "bytes": 3593,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/harness-build.log",
+      "sha256": "ccb6bf354a0674eeb1e49df9a880a000b75240079fdb849282bb899d81eeb58c",
+      "bytes": 332,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/browsers.log",
+      "sha256": "ed32d3012799479dd95d310160d4bb43b56ab7029803fc52e52e08e729f5bd74",
+      "bytes": 111,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/browsers-report.json",
+      "sha256": "3de5596a79e65c48375f79be87a8d5d3224cf07260305b3feb1e26ed3c06f25c",
+      "bytes": 88140,
+      "kind": "report"
+    },
+    {
+      "path": "runs/RUN-call-it-mirror/mutants-browser.log",
+      "sha256": "a0ecfc792aeb4ccec96192b3ac8f3c29be752bf8062d3e650ce778363f780c1f",
+      "bytes": 1499,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "browsers": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0",
+      "webkit": "26.6"
+    },
+    "widths_px": [
+      320,
+      360,
+      1280
+    ],
+    "themes": [
+      "light",
+      "night"
+    ],
+    "layout_and_axe_runs": 252,
+    "axe_violations_of_any_impact": 0,
+    "axe_serious_or_critical": 0,
+    "sideways_scroll_px_max": 0,
+    "controls_under_44_px": 0,
+    "faces_checked": [
+      "Archivo",
+      "Source Serif 4",
+      "JuliaMono"
+    ],
+    "faces_loaded_on_the_open_verdict_page_of_every_run": [
+      "Archivo",
+      "JuliaMono",
+      "Source Serif 4"
+    ],
+    "first_call_final_engines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "races_of_two_tabs_committing_at_once": 9,
+    "race_call_events_written": [
+      {
+        "engine": "chromium",
+        "item": "gverdict",
+        "events": 2
+      },
+      {
+        "engine": "chromium",
+        "item": "interval",
+        "events": 1
+      },
+      {
+        "engine": "chromium",
+        "item": "anomaly",
+        "events": 2
+      },
+      {
+        "engine": "firefox",
+        "item": "gverdict",
+        "events": 1
+      },
+      {
+        "engine": "firefox",
+        "item": "interval",
+        "events": 1
+      },
+      {
+        "engine": "firefox",
+        "item": "anomaly",
+        "events": 1
+      },
+      {
+        "engine": "webkit",
+        "item": "gverdict",
+        "events": 2
+      },
+      {
+        "engine": "webkit",
+        "item": "interval",
+        "events": 2
+      },
+      {
+        "engine": "webkit",
+        "item": "anomaly",
+        "events": 2
+      }
+    ],
+    "keyboard_walks": 6,
+    "dock_checks": [
+      {
+        "engine": "chromium",
+        "scroll_padding_px": 69,
+        "bar_height_px": 69
+      },
+      {
+        "engine": "firefox",
+        "scroll_padding_px": 69,
+        "bar_height_px": 69
+      },
+      {
+        "engine": "webkit",
+        "scroll_padding_px": 69,
+        "bar_height_px": 69
+      }
+    ],
+    "route_checks_where_a_second_tab_was_heard": 3,
+    "failures": 0,
+    "learner_tests": {
+      "tests": 69,
+      "pass": 69,
+      "fail": 0
+    },
+    "sheet_tests": {
+      "tests": 43,
+      "pass": 43,
+      "fail": 0
+    },
+    "screen_tests": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0
+    },
+    "gate_items": {
+      "verdict": "green",
+      "pages": 3,
+      "authored_calls": 7
+    },
+    "gate_calls": {
+      "verdict": "green",
+      "cells": 7,
+      "pages": 3,
+      "calls": 7,
+      "findings": 0,
+      "unsat_answers_confirmed_by_cvc5": "5 of 5"
+    },
+    "weakened_copies_on_the_host": {
+      "killed": 56,
+      "of": 56
+    },
+    "weakened_copies_in_the_browser": {
+      "killed": 8,
+      "of": 8
+    },
+    "tools": {
+      "playwright": "1.63.0",
+      "axe-core": "4.14.0",
+      "vite": "7.3.7"
+    }
+  },
+  "checks": [
+    {
+      "id": "learner-tests-pass",
+      "pass": true
+    },
+    {
+      "id": "typechecks-pass",
+      "pass": true
+    },
+    {
+      "id": "sheet-tests-pass",
+      "pass": true
+    },
+    {
+      "id": "screen-tests-pass",
+      "pass": true
+    },
+    {
+      "id": "gate-items-green-on-the-fixtures",
+      "pass": true
+    },
+    {
+      "id": "gate-calls-green-on-the-fixtures",
+      "pass": true
+    },
+    {
+      "id": "host-weakened-copies-all-killed",
+      "pass": true
+    },
+    {
+      "id": "harness-builds",
+      "pass": true
+    },
+    {
+      "id": "browsers-report-no-failure",
+      "pass": true
+    },
+    {
+      "id": "three-engines",
+      "pass": true
+    },
+    {
+      "id": "three-widths-two-themes",
+      "pass": true
+    },
+    {
+      "id": "axe-no-violation-of-any-impact",
+      "pass": true
+    },
+    {
+      "id": "no-sideways-scroll-and-no-small-control",
+      "pass": true
+    },
+    {
+      "id": "three-faces-loaded",
+      "pass": true
+    },
+    {
+      "id": "first-call-final-in-three-engines",
+      "pass": true
+    },
+    {
+      "id": "keyboard-walks-dock-checks-and-route-checks-ran",
+      "pass": true
+    },
+    {
+      "id": "browser-weakened-copies-all-killed",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v22.22.2",
+    "container": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "docker": "Docker version 29.1.3, build v29.1.3"
+  },
+  "primary_config": "browsers",
+  "configs": [
+    {
+      "id": "learner-tests",
+      "origin": "recorded",
+      "purpose": "the derivations' tests: which call counts, the first-call properties over seeded random logs, the Mirror's bands, bias and diagnosis, and VRK30",
+      "started_at": "2026-10-26T09:28:18.653Z",
+      "duration_s": 0.419,
+      "argv": [
+        "node",
+        "--test",
+        "packages/learner/test/mirror-*.test.ts"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "# tests 69",
+        "# pass 69",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/learner-tests.log",
+          "sha256": "d6b11ab2f9c9bccd09c44e63586bed640f0d688113f405bf62fdab085d846f39",
+          "bytes": 22254,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "typecheck-learner",
+      "origin": "recorded",
+      "purpose": "the learner package's type check, sources and tests",
+      "started_at": "2026-10-26T09:28:19.073Z",
+      "duration_s": 1.493,
+      "argv": [
+        "npm",
+        "run",
+        "typecheck",
+        "-w",
+        "@statespace/learner"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "> @statespace/learner@0.0.0 typecheck",
+        "> tsc -p . && tsc -p test"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/typecheck-learner.log",
+          "sha256": "19201deb9c646974af1f85be9e61748a4c82ace98e69c9af23e61c2e64f0ebc2",
+          "bytes": 66,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "typecheck-site",
+      "origin": "recorded",
+      "purpose": "the site's type check, the sheet and the screen included",
+      "started_at": "2026-10-26T09:28:20.566Z",
+      "duration_s": 4.213,
+      "argv": [
+        "npm",
+        "run",
+        "typecheck",
+        "-w",
+        "@statespace/site"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "> @statespace/site@0.0.0 typecheck",
+        "> tsc -p . && tsc -p tsconfig.node.json"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/typecheck-site.log",
+          "sha256": "aed49a07155758722e2ea9e4c0baf723ecf1e6385dfb63573c343856f5acf9c6",
+          "bytes": 77,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "sheet-tests",
+      "origin": "recorded",
+      "purpose": "the sheet's tests: the model with its properties, commitCall on the real ledger adapter, the markup, and GATE-items on the fixtures with planted faults",
+      "started_at": "2026-10-26T09:28:24.780Z",
+      "duration_s": 0.86,
+      "argv": [
+        "node",
+        "--test",
+        "apps/site/src/components/call-it/test/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "# tests 43",
+        "# pass 43",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/sheet-tests.log",
+          "sha256": "3e654f69d4d2c64bc941e4a229c4b6d563a24d92fbe4691b4ddb77c900d584f8",
+          "bytes": 12607,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "screen-tests",
+      "origin": "recorded",
+      "purpose": "the screen's render tests: the diagnosis table, bias and its threshold, sets, assisted calls apart, VRK30, the document, every word against the glossary, and the stylesheets",
+      "started_at": "2026-10-26T09:28:25.640Z",
+      "duration_s": 0.588,
+      "argv": [
+        "node",
+        "--test",
+        "apps/site/src/screens/mirror/test/*.test.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "# tests 13",
+        "# pass 13",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/screen-tests.log",
+          "sha256": "614d71669f5d732cd2ac327a7e39ff6514f77b67aa10124168eabf12476da1a7",
+          "bytes": 3724,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "items-gate",
+      "origin": "recorded",
+      "purpose": "GATE-items on the three fixture lesson pages of the sheet, through the gate's command line, with its planted-fixture self-check",
+      "started_at": "2026-10-26T09:28:26.229Z",
+      "duration_s": 46.742,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T07/items-gate.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-items: 0 families (0 fixture), 0 sampled items and 0 replicate; 3 page(s), 7 authored item(s), 7 call(s); stages S1; 0 finding(s)",
+        "  ok    stage:S1/authored  7 item(s), 7 call(s), 5 genuine surprise(s)",
+        "planted fixtures: 197 of 197 held (each of the 92 checks tripped by its planted fixture, the clean controls green)",
+        "GATE-items: green (0 families (0 fixture), 0 sampled items and 0 replicate; 3 page(s), 7 authored item(s), 7 call(s); stages S1; 0 finding(s))"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/items-gate.log",
+          "sha256": "b2de45066d31f8759ebc37fd692a5304191fa3dea624e84d9966495585b41ade",
+          "bytes": 542,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "calls-gate",
+      "origin": "recorded",
+      "purpose": "GATE-calls on the same fixture pages: every authored call runs on native Z3 and on Pyodide's Z3, the two agree, every unsat is cross-checked with cvc5, and each key is what the call's first check gives",
+      "started_at": "2026-10-26T09:29:12.971Z",
+      "duration_s": 48.009,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T07/calls-gate.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "GATE-calls (fast lane): 7 authored cells in 3 pages under <a tree outside the repository>, 7 calls: 0 findings",
+        "  cvc5 confirmed 5 of 5 unsat answers and 4 witnesses, and 1 optimum from both sides",
+        "  engines: native z3 5.3.1 (CPython 3.13.12, linux; wheel 3e2e00bc, cached virtual environment); pyodide 314.0.7 with z3 5.3.1 (CPython 3.14.2, emscripten; wheel 62143abf; pyodide-314.0.7.tgz, cached); cvc5 1.4.2 [git 282d5e0 on branch HEAD] (SHA-256 6aecddf46655..., pinned by RUN-scaffold; cvc5-Linux-x86_64-static.zip, cached); every check under the cell's rlimit, else 5000000; a watchdog of 30 s per cell",
+        "GATE-calls: green"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/calls-gate.log",
+          "sha256": "3197def688bb560c435fc73f9c4d449d61dd9397d1e11319883ec6ae750c27c9",
+          "bytes": 931,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "mutants-host",
+      "origin": "recorded",
+      "purpose": "the weakened copies of the derivations, the sheet and the screen, on the host: each must fail the tests of its group",
+      "started_at": "2026-10-26T09:30:00.981Z",
+      "duration_s": 95.07,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T07/mutants.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "learner: the unchanged copy ran 69 tests, 0 failed",
+        "sheet: the unchanged copy ran 30 tests, 0 failed",
+        "screen: the unchanged copy ran 13 tests, 0 failed",
+        "mutants: 56 of 56 weakened copies failed their tests"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/mutants-host.log",
+          "sha256": "012611a6c8e659816a4945eb6879c12cdd4ff16f1d016ac75adb0486d5720c41",
+          "bytes": 3593,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "harness-build",
+      "origin": "recorded",
+      "purpose": "the harness built with Vite: the real sheet and screen, and the Mirror's route over the real IndexedDB adapter, with the site's fonts and a project base path",
+      "started_at": "2026-10-26T09:31:36.051Z",
+      "duration_s": 4.7,
+      "argv": [
+        "npx",
+        "vite",
+        "build",
+        "-c",
+        "scripts/spikes/W1-T07/harness/vite.config.mjs"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "(!) Some chunks are larger than 500 kB after minification. Consider:",
+        "- Using dynamic import() to code-split the application",
+        "- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks",
+        "- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit."
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/harness-build.log",
+          "sha256": "ccb6bf354a0674eeb1e49df9a880a000b75240079fdb849282bb899d81eeb58c",
+          "bytes": 332,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "browsers",
+      "origin": "recorded",
+      "purpose": "the harness in Chromium, Firefox and WebKit, inside the pinned image with no network: the first call is final, layout, axe, target sizes, the keyboard, the docked bar and the Mirror route over a real IndexedDB",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T09:31:40.751Z",
+      "duration_s": 215.525,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=4g",
+        "--network",
+        "none",
+        "--name",
+        "w1t07-record-browsers",
+        "-v",
+        "<repo>:/repo:ro",
+        "-v",
+        "<sandbox>/dist:/dist:ro",
+        "-v",
+        "<sandbox>/out:/out",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "/repo/scripts/spikes/W1-T07/harness/check.mjs",
+        "/dist",
+        "/out",
+        "/statespace/"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "252 axe and layout runs, 12 first-call-final runs, 6 keyboard walks, 3 dock checks, 3 route checks; 0 failures"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/browsers.log",
+          "sha256": "ed32d3012799479dd95d310160d4bb43b56ab7029803fc52e52e08e729f5bd74",
+          "bytes": 111,
+          "kind": "log"
+        },
+        {
+          "path": "runs/RUN-call-it-mirror/browsers-report.json",
+          "sha256": "3de5596a79e65c48375f79be87a8d5d3224cf07260305b3feb1e26ed3c06f25c",
+          "bytes": 88140,
+          "kind": "report"
+        }
+      ],
+      "inputs": [
+        {
+          "path": "<sandbox>/dist",
+          "sha256": "68c826439f41cd8282afbd83bc8b7b5e4ddc8a984b116cbbec314b91bfb338b8",
+          "sha256_method": "SHA-256 of the sorted \"sha256  path\" lines of every file under the path",
+          "files": 21,
+          "role": "the built harness the browsers loaded"
+        }
+      ]
+    },
+    {
+      "id": "mutants-browser",
+      "origin": "recorded",
+      "purpose": "the weakened copies of the sheet that the harness must fail on: the harness is built from each weakened copy and run in Chromium inside the pinned image",
+      "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+      "started_at": "2026-10-26T09:35:16.300Z",
+      "duration_s": 173.302,
+      "argv": [
+        "node",
+        "scripts/spikes/W1-T07/mutants.mjs",
+        "--group",
+        "browser",
+        "--verbose"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "KILLED   B01  the fieldset stays open after the call is recorded  [3 checks failed: FAIL chromium final: every control is disabled once the call is recorded: got false, expected true]",
+        "KILLED   B02  a question that has been called is written again  [1 checks failed: FAIL chromium final: the stale tab wrote nothing: got 2, expected 1]",
+        "KILLED   B03  an open sheet does not hear a call made in another tab  [2 checks failed: FAIL chromium final: an open tab did not hear the other tab's call]",
+        "KILLED   B04  a recorded sheet shows the learner's taps, not the call on record  [12 checks failed: FAIL chromium final: a reload shows the same call: got [], expected [\"c=think\",\"v=B\"]]",
+        "KILLED   B05  the docked bar reserves no scroll padding  [2 checks failed: FAIL chromium dock: the page reserves no scroll padding for the docked bar (0)]",
+        "KILLED   B06  the host's run starts before the call is in the log  [1 checks failed: FAIL chromium final: the host's run starts once, with the call already in the log: got \"0,1\", expected \"1\"]",
+        "KILLED   B07  a cell given another question shows the last question's call  [2 checks failed: FAIL chromium final switch (cell): another question starts open, whatever the last one was called: got \"record]",
+        "KILLED   B08  a sheet given another question keeps the last question's taps and call  [2 checks failed: FAIL chromium final switch (sheet on its own): another question starts open, whatever the last one was called:]",
+        "mutants: 8 of 8 weakened copies failed their tests"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-call-it-mirror/mutants-browser.log",
+          "sha256": "a0ecfc792aeb4ccec96192b3ac8f3c29be752bf8062d3e650ce778363f780c1f",
+          "bytes": 1499,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "unrecorded": [
+    {
+      "field": "binary",
+      "reason": "no single file ran: the browsers ran inside the pinned image, which is named by digest under image"
+    },
+    {
+      "field": "binary_sha256",
+      "reason": "as binary: the image is named by digest, and the browsers it holds are not hashed one by one"
+    }
+  ],
+  "notes": [
+    "The sheet and the screen ran in a harness of their own (scripts/spikes/W1-T07/harness), not in the site's shell: the real sheet bound to the real IndexedDB adapter inside a mock lesson cell, the real screen over a learner's log held in the page, and the Mirror's real route over the real adapter with the clock fixed and a second tab writing calls. W1-T02's shell, W1-T06's instrument cell and the lesson pages that mount the sheet were not part of it.",
+    "Two tabs that commit at the same moment may each write a call (the race entries list how many events each wrote): the first in fold order is the call that counts, and both screens show it. That is how the sheet keeps the first call final on an append-only log, and the check is that both screens agree on that call.",
+    "axe finds a share of the accessibility problems a page can have; the checks here (target sizes, the keyboard, the docked bar, no sideways scroll at 320 and 360 px) are the ones a script can make. A screen-reader pass is W1-T46.",
+    "The browsers ran with no network in the pinned Playwright image; Node ran the harness server and the checks. The unit tests, the gate and the weakened copies of the derivations, the sheet and the screen ran on the host. The weakened copies of the browser group ran Chromium only, in the same image.",
+    "A control of 43.5 px or more in both directions counts as 44 px, for subpixel layout; the check reports every control below that.",
+    "This ran on the development host, not on a CI runner, and no lane runs it: the integrator decides where the browser step belongs.",
+    "Spine section 9.5 registers no run for this task; the ID is proposed once a scanned document cites it."
+  ]
+}

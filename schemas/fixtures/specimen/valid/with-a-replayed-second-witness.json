@@ -1,0 +1,49 @@
+{
+  "schema": "statespace/specimen@1",
+  "id": "SP-1.4",
+  "title": "The guard protects the sender, not the recipient",
+  "draft": true,
+  "kcs": [
+    "KC-1.encoding-is-the-claim"
+  ],
+  "found_in": {
+    "lesson": "S1.L5"
+  },
+  "mount": {
+    "lessons": [
+      "S1.L5"
+    ]
+  },
+  "violates": "The recipient's balance stays at zero or above, in signed 64-bit arithmetic.",
+  "because": "The guard bounds the debit and not the credit, so the recipient balance plus the amount can wrap.",
+  "class": "an overflow on the credit that the guard on the debit does not see",
+  "cured_by": {
+    "text": "Check the credit as well as the debit, use checked arithmetic, or an unbounded type.",
+    "claim": "CL-1.5"
+  },
+  "evidence": {
+    "main": {
+      "run": "RUN-z3-bv64",
+      "query": "1.5 BitVec64 signed: guarded DESTINATION wrap",
+      "direction": "violation",
+      "replay": {
+        "run": "RUN-specimens-replay",
+        "query": "sp_1_4_recipient_wrap"
+      }
+    },
+    "also": [
+      {
+        "run": "RUN-z3-bv64-pyodide",
+        "query": "recipient-wrap",
+        "caption": "Pyodide, for a related query, found another wrap: a witness is not canonical, so the label checks the property",
+        "replay": {
+          "run": "RUN-specimens-replay",
+          "query": "sp_1_4_pyodide_related_query"
+        }
+      }
+    ],
+    "minimal": {
+      "kind": "none"
+    }
+  }
+}
