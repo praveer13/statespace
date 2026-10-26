@@ -1,70 +1,16 @@
 <!doctype html>
-<html lang="en" data-instrument-origin="https://statespace-instruments.play.naigap.com" data-inst-port="8098" data-build="96137b0f594f">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://statespace-instruments.play.naigap.com; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<title>Pyodide and Z3 on this device</title>
-<link rel="stylesheet" href="phone.css">
-<script src="phone.js" defer></script>
-</head>
-<body>
-<main>
-<h1>Pyodide and Z3 on this device</h1>
-<p>This page measures how the course's in-browser solver behaves on your device: how big the first download is, how long it takes to be ready, how long a solver budget (<code>rlimit</code>) takes, how much memory the engine claims, and whether the browser still has the download the next time you come back. Nothing leaves your device until you copy the report yourself.</p>
-<p id="storage-note" class="note"></p>
-
-<h2>Before you start</h2>
-<ul>
-<li id="size-note">The first run downloads the engine. Its size appears here once the page has connected. Use Wi-Fi unless you mean to test a mobile connection.</li>
-<li>Use a normal tab, not a private one: a private tab forgets everything when it closes, so every return visit would look like a first visit.</li>
-<li>Close other tabs and apps. Turn off battery saver.</li>
-<li>Keep the screen on and this tab in front until the status line says the session is done. The log at the bottom shows each step.</li>
-</ul>
-
-<h2>About this device</h2>
-<div class="field"><label for="f-device">Device, operating system and browser</label>
-<input id="f-device" type="text" autocomplete="off" placeholder="for example: Pixel 8, Android 15, Chrome 130"></div>
-<div class="field"><label for="f-hosting">Where this page is served from</label>
-<select id="f-hosting">
-<option value="">choose one</option>
-<option value="real-origins">the real origins on GitHub Pages (HTTPS)</option>
-<option value="lan">a laptop on my network</option>
-<option value="tunnel">an HTTPS tunnel to a laptop</option>
-<option value="other">other</option>
-</select></div>
-<div class="field"><label for="f-net">Connection</label>
-<select id="f-net">
-<option value="">choose one</option>
-<option value="wifi">Wi-Fi</option>
-<option value="cellular">mobile data</option>
-<option value="offline">offline (airplane mode)</option>
-</select></div>
-<div class="field"><label for="f-notes">Notes (optional): battery saver, low-power mode, other apps open</label>
-<input id="f-notes" type="text" autocomplete="off"></div>
-
-<h2>Run</h2>
-<p>Tap <strong>Run the measurement</strong>. The first time it downloads and measures; every later tap measures what the browser kept. For the full protocol (a restart, a day later, a week later) see the decision record, W0-S02, section 7.</p>
-<div class="field check"><input id="f-timeout" type="checkbox"> <label for="f-timeout">Also run the timeout case (adds at least 25 seconds; the worker is stopped from outside)</label></div>
-<p><button id="run" type="button" class="primary">Run the measurement</button></p>
-<p id="status" role="status" aria-live="polite">Ready.</p>
-
-<h2>Sessions so far</h2>
-<ol id="sessions" class="sessions"></ol>
-
-<h2>The report</h2>
-<p>Tap <strong>Copy the report</strong> after each session and paste it into a file or a message. It holds numbers about this device and this run, and no personal data.</p>
-<p><button id="copy" type="button">Copy the report</button> <button id="save" type="button">Save the report as a file</button></p>
-<details id="report-details"><summary>Show the report text</summary><textarea id="report" readonly rows="10" aria-label="The report"></textarea></details>
-
-<h2>Other actions</h2>
-<p><button id="persist" type="button">Ask the browser to keep this storage</button> Optional. If the browser agrees, later sessions no longer test an eviction risk, so use it only after the sessions you want to measure.</p>
-<p><button id="evict" type="button">Clear the engine cache, to measure a first visit again</button></p>
-<p><button id="clear-list" type="button">Clear the list of sessions above</button></p>
-
-<h2>Log</h2>
-<pre id="log" aria-label="Log"></pre>
-</main>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'none'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>statespace</title>
+    <meta name="description" content="statespace, a course in formal methods for working engineers." />
+    <script type="module" crossorigin src="/assets/index-YDitm8L2.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D8k-UWox.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
