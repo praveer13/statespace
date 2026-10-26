@@ -11,6 +11,7 @@
    is drawn in stamp.css and nowhere else (GATE-stamps). */
 
 .specimens {
+  --vol: var(--vol-10);
   box-sizing: border-box;
   width: 100%;
   max-width: var(--content-max);
@@ -18,26 +19,51 @@
   color: var(--ink);
 }
 
+/* Each stage's section takes its volume's ink, read from the heading it is labelled by (no inline style: the render
+   tests hold the markup free of style attributes). */
+.sp-drawer[aria-labelledby='sp-stage-S1'] { --vol: var(--vol-1); }
+.sp-drawer[aria-labelledby='sp-stage-S2'] { --vol: var(--vol-2); }
+.sp-drawer[aria-labelledby='sp-stage-S3'] { --vol: var(--vol-3); }
+.sp-drawer[aria-labelledby='sp-stage-S4'] { --vol: var(--vol-4); }
+.sp-drawer[aria-labelledby='sp-stage-S5'] { --vol: var(--vol-5); }
+.sp-drawer[aria-labelledby='sp-stage-S6'] { --vol: var(--vol-6); }
+.sp-drawer[aria-labelledby='sp-stage-S7'] { --vol: var(--vol-7); }
+.sp-drawer[aria-labelledby='sp-stage-S8'] { --vol: var(--vol-8); }
+.sp-drawer[aria-labelledby='sp-stage-S9'] { --vol: var(--vol-9); }
+.sp-drawer[aria-labelledby='sp-stage-S10'] { --vol: var(--vol-10); }
+
+/* The page head of an Operate screen: the title in Jost, a Source Serif lede, then a 3-px ink rule. */
+.sp-head {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 3px solid var(--ink);
+}
+
 .sp-head h1 {
-  margin: 0 0 var(--space-2);
+  margin: 0;
   font-family: var(--font-structure);
-  font-size: var(--fs-page-title);
-  font-stretch: 110%;
-  font-weight: 700;
-  line-height: var(--lh-page-title);
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .sp-lede {
-  max-width: var(--measure);
-  margin: 0 0 var(--space-3);
+  max-width: 38em;
+  margin: 0;
+  color: var(--ink);
   font-family: var(--font-reading);
-  font-size: var(--fs-prose);
-  line-height: var(--lh-prose);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
 }
 
 /* A banner is pencil text under a solid rule (DESIGN.md section 6.15). */
 .sp-draft {
-  margin: 0 0 var(--space-4);
+  justify-self: start;
+  margin: 0;
   padding-top: var(--space-2);
   border-top: var(--border-component) solid var(--rule);
   color: var(--pencil);
@@ -81,8 +107,13 @@
 
 @media (min-width: 900px) {
   .sp-layout {
-    grid-template-columns: 15rem minmax(0, 1fr);
-    gap: var(--space-6);
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .sp-rail {
+    position: sticky;
+    top: var(--space-5);
   }
 }
 
@@ -130,14 +161,18 @@
   min-height: var(--target);
   padding: 0 var(--space-3);
   border: var(--border-component) solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--sheet);
+  border-radius: 0;
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-structure);
   font-size: var(--fs-interface);
-  font-weight: 600;
+  font-weight: 500;
   line-height: var(--lh-interface);
   cursor: pointer;
+}
+
+.sp-chip-face:hover {
+  border-color: var(--ink);
 }
 
 .sp-count {
@@ -149,6 +184,7 @@
   border-color: var(--ink);
   background: var(--ink);
   color: var(--ground);
+  font-weight: 600;
 }
 
 .sp-chip input:focus-visible + .sp-chip-face {
@@ -183,22 +219,34 @@
   min-height: var(--target);
   padding: 0 var(--space-2);
   border: var(--border-component) solid var(--rule);
-  border-radius: var(--radius);
+  border-radius: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-structure);
   font-size: var(--fs-interface);
 }
 
+.sp-select select:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
 @media (min-width: 900px) {
   .sp-chips {
     flex-direction: column;
     align-items: stretch;
+    gap: 0;
+  }
+
+  /* in the rail the chips are a ruled list, one row each */
+  .sp-chip + .sp-chip .sp-chip-face {
+    border-top-width: 0;
   }
 
   .sp-chip,
   .sp-chip-face {
     display: flex;
+    width: 100%;
   }
 
   .sp-chip-face {
@@ -214,19 +262,16 @@
 /* ------------------------------------------------------------------ the re-find schedule */
 
 .sp-schedule {
-  margin: 0 0 var(--space-5);
-  padding: var(--space-3) var(--space-4);
-  border: var(--border-structure) solid var(--structure);
-  border-radius: var(--radius);
-  background: var(--sheet);
+  margin: 0 0 var(--space-7);
 }
 
 .sp-schedule h2 {
   margin: 0 0 var(--space-2);
+  color: var(--rubric);
   font-family: var(--font-structure);
-  font-size: var(--fs-subsection);
-  font-weight: 650;
-  line-height: var(--lh-subsection);
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 600;
+  line-height: 1.15;
 }
 
 .sp-schedule p {
@@ -235,12 +280,14 @@
   font-family: var(--font-structure);
   font-size: var(--fs-table);
   line-height: var(--lh-table);
+  color: var(--pencil);
 }
 
 .sp-schedule-list {
   display: grid;
-  gap: var(--space-1);
-  margin: 0;
+  gap: 0;
+  margin: var(--space-3) 0 0;
+  border-bottom: var(--border-component) solid var(--rule);
   padding: 0;
   list-style: none;
   font-family: var(--font-structure);
@@ -251,9 +298,14 @@
 .sp-schedule-list li {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 var(--space-3);
+  justify-content: space-between;
+  gap: 0 var(--space-4);
   align-items: center;
-  border-top: var(--border-component) solid var(--rule-soft);
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.sp-schedule-list li:first-child {
+  border-top: var(--border-structure) solid var(--structure);
 }
 
 /* the rest of the schedule, behind a disclosure */
@@ -273,44 +325,81 @@
 }
 
 .sp-schedule-date {
+  padding-block: var(--space-1);
   color: var(--pencil);
   font-variant-numeric: tabular-nums lining-nums;
+}
+
+@media (max-width: 599px) {
+  .sp-schedule-date {
+    flex-basis: 100%;
+    margin-top: calc(-1 * var(--space-2));
+    padding-block: 0 var(--space-2);
+  }
 }
 
 /* ------------------------------------------------------------------ a section for every stage */
 
 .sp-drawer {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
 }
 
+.sp-drawer:first-child {
+  margin-top: 0;
+}
+
+/* A stage's heading: its volume's ink as a square beside the stage ID, the name in Jost 600, over a 3-px ink rule. */
 .sp-stage-head {
   margin: 0;
-  padding-bottom: var(--space-2);
-  border-bottom: var(--border-structure) solid var(--structure);
+  padding-bottom: var(--space-3);
+  border-bottom: 3px solid var(--ink);
   font-family: var(--font-structure);
-  font-size: var(--fs-section);
-  font-stretch: 105%;
-  font-weight: 650;
-  line-height: var(--lh-section);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 .sp-stage-id {
-  font-family: var(--font-code);
-  font-size: 0.9em;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-right: 0.15em;
+  font-weight: 300;
 }
 
-/* A stage with none yet keeps its heading and says so, smaller and in pencil; it is never hidden. */
+.sp-stage-id::before {
+  content: '';
+  flex: none;
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--vol);
+  outline: var(--border-component) solid color-mix(in oklab, var(--ink) 35%, transparent);
+}
+
+/* A stage with none yet keeps its heading and says so, as a quiet ruled line of the index; it is never hidden. */
 .sp-drawer[data-empty='true'] {
-  margin-top: var(--space-4);
+  margin-top: 0;
+}
+
+.sp-drawer:not([data-empty='true']) + .sp-drawer[data-empty='true'] {
+  margin-top: var(--space-7);
 }
 
 .sp-drawer[data-empty='true'] .sp-stage-head {
-  border-bottom: var(--border-component) solid var(--rule-hair);
+  padding-block: var(--space-3);
+  border-bottom: var(--border-component) solid var(--rule);
   color: var(--pencil);
   font-size: var(--fs-subsection);
   font-weight: 600;
   line-height: var(--lh-subsection);
+  letter-spacing: 0;
+}
+
+.sp-drawer[data-empty='true'] .sp-stage-id {
+  min-width: 3.2em;
+  font-weight: 600;
 }
 
 .sp-none {
@@ -320,8 +409,10 @@
 .sp-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-4);
-  margin: var(--space-4) 0 0;
+  grid-auto-flow: row dense;
+  align-items: start;
+  gap: var(--space-5);
+  margin: var(--space-5) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -347,25 +438,66 @@
   }
 }
 
+/* The cabinet is not a grid of equal cards: a plate holds what its specimen holds, and a specimen with a long witness
+   or a dated incident is mounted on a double-width plate where two plates fit across. */
+@media (min-width: 1240px) {
+  .sp-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sp-list > li:has(> .sp-item[data-open='true'] .sp-witness-many),
+  .sp-list > li:has(> .sp-item[data-open='true'] .sp-fields a[rel='noopener noreferrer']) {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ------------------------------------------------------------------ one specimen: a sheet with a heading */
 
+/* One specimen: a museum label. An ink-framed plate on paper with a 3-px ink rule along its top; the ID in the code face
+   beside a small square of its volume's ink, the title in Jost under it. */
 .sp-item {
   container-type: inline-size;
   box-sizing: border-box;
   min-width: 0;
-  height: 100%;
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-5);
   border: var(--border-structure) solid var(--structure);
-  border-radius: var(--radius);
-  background: var(--sheet);
+  border-top: 3px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+}
+
+.sp-item:target {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
 }
 
 .sp-item-head {
   margin: 0;
   font-family: var(--font-structure);
-  font-size: var(--fs-subsection);
-  font-weight: 650;
-  line-height: var(--lh-subsection);
+  font-size: clamp(19px, 1.6vw, 22px);
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.sp-item-head .sp-id {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+  color: var(--pencil);
+  font-size: var(--fs-code);
+  font-weight: 400;
+  line-height: var(--lh-code);
+}
+
+.sp-item-head .sp-id::before {
+  content: '';
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--vol);
+  outline: var(--border-component) solid color-mix(in oklab, var(--ink) 35%, transparent);
 }
 
 .sp-id {
@@ -373,6 +505,12 @@
   font-size: 0.9em;
   font-weight: 600;
   white-space: nowrap;
+}
+
+@container (min-width: 34rem) {
+  .sp-item-head {
+    font-size: clamp(21px, 1.9vw, 26px);
+  }
 }
 
 .sp-title {
@@ -591,7 +729,7 @@
 /* Violates, Because, Minimal?, Class, Cured by, Found in, Status: label above value on a phone, side by side when the
    label itself is wide enough (it answers to its own width, so a label in a narrow grid column stacks too). */
 .sp-fields {
-  margin: var(--space-4) 0 0;
+  margin: var(--space-5) 0 0;
   border-top: var(--border-structure) solid var(--structure);
   font-family: var(--font-structure);
   font-size: var(--fs-table);
@@ -652,21 +790,19 @@
   }
 }
 
-/* The compact provenance block that closes a label: a grid of cells divided by 1-px component rules inside a 1.5-px frame,
-   12-px caps labels over code-face values (DESIGN.md section 6.1). The rules are the grid's own gap, so no cell draws a border. */
+/* The compact provenance block that closes a label: a ruled colophon of four cells, 12-px caps labels over code-face
+   values (DESIGN.md section 6.1). */
 .sp-provenance {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--border-component);
+  gap: var(--space-2) var(--space-4);
   margin: var(--space-4) 0 0;
-  border: var(--border-structure) solid var(--structure);
-  background: var(--rule);
+  padding-top: var(--space-3);
+  border-top: var(--border-structure) solid var(--structure);
 }
 
 .sp-provenance > div {
   min-width: 0;
-  padding: var(--space-2) var(--space-3);
-  background: var(--sheet);
 }
 
 .sp-provenance dt {

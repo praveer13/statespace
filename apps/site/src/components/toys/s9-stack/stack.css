@@ -1,0 +1,242 @@
+/* The stack stepper (S9.L1). Ink on paper: the running subexpression is a heavy ink box on the band, a finished one
+   carries its value, and the part of the stack that is stk is set apart by a bracket and a lighter fill, so weight and
+   words carry the state as well as tone. */
+
+.s9k-pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .s9k-pick {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.s9k-pick .toy-choice code {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.s9k-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .s9k-stage {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.s9k-tree {
+  max-width: 24rem;
+}
+
+.s9k-branch {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.s9k-node .s9k-box {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.s9k-node text {
+  font-family: var(--font-code);
+  font-size: 13px;
+  fill: var(--ink);
+}
+
+.s9k-node .s9k-name {
+  font-family: var(--font-structure);
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--pencil);
+}
+
+.s9k-node .s9k-val {
+  font-family: var(--font-structure);
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.s9k-node[data-on='true'] .s9k-box {
+  fill: var(--band);
+}
+
+.s9k-node[data-inner='true'] .s9k-box {
+  stroke-width: 3;
+}
+
+.s9k-node[data-inner='true'] text:not(.s9k-name):not(.s9k-val) {
+  font-weight: 700;
+}
+
+.s9k-machine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.s9k-code {
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+  border-top: var(--border-structure) solid var(--ink);
+  border-bottom: var(--border-structure) solid var(--ink);
+}
+
+.s9k-code li {
+  display: grid;
+  grid-template-columns: 1.25em max-content;
+  gap: var(--space-2);
+  padding: 1px var(--space-1);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+}
+
+.s9k-code code {
+  font-family: var(--font-code);
+  white-space: pre;
+}
+
+.s9k-code li[data-past='true'] code {
+  color: var(--pencil);
+}
+
+.s9k-code li[data-here='true'] {
+  background: var(--band);
+}
+
+.s9k-code li[data-here='true'] code {
+  font-weight: 700;
+}
+
+.s9k-stack {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+}
+
+.s9k-stack-name {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.s9k-stack-svg {
+  display: block;
+  width: 100px;
+  height: auto;
+  overflow: visible;
+}
+
+.s9k-cell .s9k-slot {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.s9k-cell text {
+  font-family: var(--font-code);
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.s9k-cell[data-stk='true'] .s9k-slot {
+  fill: var(--band);
+}
+
+.s9k-cell[data-stk='true'] text {
+  font-weight: 400;
+}
+
+.s9k-stk-brace line {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.s9k-stk-brace text {
+  font-family: var(--font-code);
+  font-size: 11px;
+  fill: var(--pencil);
+}
+
+.s9k-table-frame {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.s9k-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.s9k-table caption {
+  padding-bottom: var(--space-2);
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--pencil);
+}
+
+.s9k-table th,
+.s9k-table td {
+  padding: var(--space-2);
+  border-bottom: var(--border-component) solid var(--rule-hair);
+  text-align: left;
+  vertical-align: top;
+}
+
+.s9k-table thead th {
+  border-bottom: var(--border-structure) solid var(--ink);
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+.s9k-table tbody th {
+  font-family: var(--font-code);
+  font-weight: 400;
+}
+
+.s9k-table code {
+  font-family: var(--font-code);
+}
+
+.s9k-note {
+  display: block;
+  font-family: var(--font-reading);
+  font-size: 14px;
+  color: var(--pencil);
+}
+
+.s9k-moral {
+  margin: 0;
+  max-width: 34em;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+}
+
+.s9k-moral code {
+  font-family: var(--font-code);
+  font-size: 0.9em;
+}

@@ -1,0 +1,121 @@
+/* The poller game (S8.L3). The outbox is a ruled table in id order; the high-water mark is a 3-px ink rule across it,
+   labelled with its value; rows run highest id first, so above the line means above the mark. A row's state is words plus a mark (ring: inserted; dot: committed; square: delivered); a
+   stranded row also carries the violation line, so colour is never the only signal. */
+
+.pl-design {
+  max-width: 30rem;
+}
+
+.pl-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: var(--space-2);
+}
+
+.pl-table-wrap {
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.pl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.pl-table caption {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-weight: 600;
+}
+
+.pl-table th,
+.pl-table td {
+  padding: var(--space-2) var(--space-3) var(--space-2) 0;
+  border-bottom: var(--border-component) solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.pl-table thead th {
+  border-bottom: 3px solid var(--ink);
+  font-weight: 600;
+}
+
+.pl-table tbody th {
+  width: 3rem;
+}
+
+.pl-table tbody td:nth-child(2) {
+  white-space: nowrap;
+}
+
+.pl-table .pl-mark th {
+  padding: var(--space-1) 0;
+  border-top: 3px solid var(--ink);
+  border-bottom: 0;
+  font-family: var(--font-code);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.pl-mark-glyph {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: var(--space-2);
+  box-sizing: border-box;
+  border: var(--border-structure) solid var(--ink);
+  border-radius: 50%;
+  vertical-align: -1px;
+}
+
+.pl-mark-glyph[data-kind='committed'] {
+  background: var(--ink);
+}
+
+.pl-mark-glyph[data-kind='delivered'] {
+  border-radius: 0;
+  background: var(--ink);
+}
+
+.pl-mark-glyph[data-kind='stranded'] {
+  border-radius: 0;
+}
+
+.toy .pl-table tr.line-violation td,
+.toy .pl-table tr.line-violation th {
+  border-bottom: var(--border-violation) solid var(--line-violation);
+  font-weight: 600;
+}
+
+.pl-empty {
+  color: var(--pencil);
+}
+
+.pl-trace {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.pl-trace-line {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  white-space: pre-wrap;
+}
+
+.pl-trace-name {
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+.pl-lost {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-weight: 600;
+}

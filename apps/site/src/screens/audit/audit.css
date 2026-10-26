@@ -1,0 +1,320 @@
+/* SCR-audit, before the Desk opens: an honest page about what it will do, in the series black. Every value comes from
+   styles/tokens.css; colours beyond the tokens are color-mix() of them. Nothing here reaches a stamp. */
+
+.audit {
+  --vol: var(--vol-10);
+  gap: var(--space-8);
+}
+
+/* ------------------------------------------------------------------ the page head */
+
+.audit .ws-head {
+  gap: var(--space-3);
+  padding-bottom: var(--space-5);
+  border-bottom: 3px solid var(--ink);
+}
+
+.screen.audit .ws-head h1 {
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.audit .ws-head .lede {
+  font-family: var(--font-reading);
+  font-size: clamp(18px, 1.5vw, 21px);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.audit-purpose {
+  margin: 0;
+  max-width: 36em;
+  font-family: var(--font-reading);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.45;
+}
+
+.screen.audit h2 {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: clamp(24px, 2.2vw, 30px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--rubric);
+}
+
+.screen.audit h3 {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.audit-section {
+  min-width: 0;
+}
+
+.audit-section p {
+  margin: 0;
+}
+
+.audit code {
+  font-family: var(--font-code);
+  font-size: 0.88em;
+  padding: 0.05em 0.3em;
+  background: var(--band);
+  border-radius: var(--radius);
+}
+
+.audit a {
+  color: var(--ink);
+  text-underline-offset: 3px;
+}
+
+.audit a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ------------------------------------------------------------------ the anatomy of a case: three sheets on the desk */
+
+.audit-anatomy {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  max-width: 46rem;
+  counter-reset: part;
+}
+
+.audit-part {
+  counter-increment: part;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  background: var(--paper);
+  border: var(--border-structure) solid var(--ink);
+  border-top-width: 3px;
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 10%, transparent), 0 6px 16px -10px color-mix(in oklab, var(--ink) 30%, transparent);
+}
+
+.audit-part-text {
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: 1.5;
+  max-width: 36em;
+}
+
+/* The change waits, face down, until the first call. */
+.audit-part[data-hidden] {
+  background: var(--band);
+  border-color: var(--rule);
+  border-top-color: var(--ink);
+  box-shadow: none;
+}
+
+.audit-part[data-hidden] .audit-part-text {
+  color: var(--pencil);
+}
+
+@media (min-width: 760px) {
+  .audit-anatomy {
+    gap: 0;
+  }
+
+  /* Stacked like sheets on a desk: each one shifted right and laid a little over the one above. */
+  .audit-part:nth-child(2) {
+    margin-left: var(--space-7);
+    margin-top: calc(-1 * var(--space-2));
+  }
+
+  .audit-part:nth-child(3) {
+    margin-left: calc(2 * var(--space-7));
+    margin-top: calc(-1 * var(--space-2));
+  }
+}
+
+.audit-section .audit-note {
+  max-width: 40em;
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+}
+
+/* ------------------------------------------------------------------ the five moves */
+
+.audit-moves {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 3px solid var(--ink);
+  max-width: 50rem;
+}
+
+.audit-move {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--rule-hair);
+}
+
+.audit-move-n {
+  font-family: var(--font-structure);
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 0.9;
+  font-variant-numeric: lining-nums;
+}
+
+.audit-move-text {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.audit-move-text p {
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: 1.5;
+  color: var(--pencil);
+}
+
+/* ------------------------------------------------------------------ the kinds of gap: three ruled columns */
+
+.audit-section .audit-intro {
+  max-width: var(--measure);
+  margin-bottom: var(--space-5);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+}
+
+.audit-kinds {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+
+.audit-kind {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 3px solid var(--ink);
+  min-width: 0;
+}
+
+.screen.audit .audit-kind-head {
+  font-size: 22px;
+}
+
+.audit-kind-how {
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: var(--fs-prose);
+  line-height: 1.45;
+  color: var(--pencil);
+}
+
+.audit-kind-list {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.audit-kind-list li {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule-hair);
+  font-family: var(--font-structure);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.audit-kind-list li::first-letter {
+  text-transform: uppercase;
+}
+
+@media (min-width: 900px) {
+  .audit-kinds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+/* ------------------------------------------------------------------ the rules: a ruled colophon */
+
+.audit-rules {
+  margin: 0;
+  max-width: 54rem;
+  border-top: 3px solid var(--ink);
+}
+
+.audit-rules > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.audit-rules dt {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+  padding-top: 3px;
+}
+
+.audit-rules dd {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: 1.5;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .audit-rules > div {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+/* ------------------------------------------------------------------ until it opens */
+
+.audit-until p {
+  max-width: var(--measure);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+}
+
+@media (max-width: 599px) {
+  .audit-move {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .audit-move-n {
+    font-size: 32px;
+  }
+}

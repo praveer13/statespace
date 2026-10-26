@@ -82,7 +82,8 @@
 
 .ci-options {
   display: grid;
-  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr);
+  border-top: var(--border-component) solid var(--rule);
 }
 
 .ci-option,
@@ -97,30 +98,60 @@
   cursor: pointer;
 }
 
+/* An answer is a full-width ruled row, as in a book's exercises. */
 .ci-option {
-  padding: var(--space-2) var(--space-3);
-  border: var(--border-component) solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--paper);
+  padding: 11px var(--space-2);
+  border-bottom: var(--border-component) solid var(--rule);
 }
 
-/* The checked answer is told by a heavier rule as well as by its radio. */
-.ci-option:has(input:checked),
+.ci-option:hover {
+  background: var(--band);
+}
+
+.ci[data-state='recorded'] .ci-option:hover,
+.ci[data-state='committing'] .ci-option:hover {
+  background: transparent;
+}
+
+/* The checked answer is told by its filled mark and by weight, never by colour alone. */
+.ci-option:has(input:checked) .ci-opt-text,
 .ci-tf-option:has(input:checked),
-.ci-tap:has(input:checked) {
-  border-color: var(--structure);
-  box-shadow: none;
+.ci-option:has(input:checked) .ci-opt-id {
+  font-weight: 600;
+}
+
+.ci-tf-option:has(input:checked) {
   outline: var(--border-component) solid var(--structure);
   outline-offset: -2px;
 }
 
-.ci input[type='radio'],
 .ci input[type='checkbox'] {
   flex: none;
   width: 20px;
   height: 20px;
   margin: 2px 0 0;
   accent-color: var(--ink);
+}
+
+/* The mark: a round radio drawn in ink. Picked, it fills (the one authored motion: the fill lands in 160 ms). */
+.ci input[type='radio'] {
+  flex: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  border: var(--border-structure) solid var(--ink);
+  box-sizing: border-box;
+  padding: 3.5px;
+  border-radius: 50%;
+  background-color: var(--paper);
+  background-clip: content-box;
+  transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: inherit;
+}
+
+.ci input[type='radio']:checked {
+  background-color: var(--ink);
 }
 
 .ci-opt-id {
@@ -204,31 +235,75 @@
 
 /* ------------------------------------------------------------------ the taps */
 
+/* The confidence taps: one segmented control in a 1.5-px ink frame. The chosen segment is printed in reverse (ink, with
+   the ground for its words) and its word is heavier, so the choice never rests on colour alone. */
 .ci-taps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
   margin: 0 0 var(--space-2);
+  border: var(--border-structure) solid var(--ink);
 }
 
 .ci-tap {
+  position: relative;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  justify-content: center;
+  gap: 2px;
   padding: var(--space-2) var(--space-1);
-  border: var(--border-component) solid var(--rule);
-  border-radius: var(--radius);
   background: var(--paper);
   text-align: center;
 }
 
-.ci-tap input {
+.ci-tap + .ci-tap {
+  border-left: var(--border-component) solid var(--ink);
+}
+
+/* The radio stays a real, focusable control; the segment itself shows its state. */
+.ci .ci-tap input[type='radio'] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ci-tap:has(input:focus-visible) {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.ci-tap:has(input:checked) {
+  background: var(--ink);
+  color: var(--ground);
+}
+
+.ci-tap:has(input:checked) .ci-tap-word {
+  font-weight: 700;
+}
+
+.ci-tap:has(input:checked) .ci-tap-band {
+  color: var(--ground);
+}
+
+.ci-tap:hover:not(:has(input:checked)) {
+  background: var(--band);
+}
+
+.ci[data-state='recorded'] .ci-tap:hover:not(:has(input:checked)) {
+  background: var(--paper);
 }
 
 .ci-tap-word {
   font-size: var(--fs-interface);
-  font-weight: 600;
+  font-weight: 500;
   line-height: var(--lh-interface);
 }
 
@@ -396,16 +471,37 @@
     padding: var(--space-5);
   }
 
-  .ci-options {
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .ci input[type='radio'] {
+    transition: none;
   }
 }
 
+:root[data-motion="reduce"] .ci input[type='radio'] {
+  transition: none;
+}
+
 @media (forced-colors: active) {
+  .ci input[type='radio'] {
+    appearance: auto;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .ci .ci-tap input[type='radio'] {
+    position: static;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+  }
+
   .ci-option:has(input:checked),
   .ci-tf-option:has(input:checked),
   .ci-tap:has(input:checked) {
-    outline-width: 2px;
+    outline: 2px solid CanvasText;
+    outline-offset: -2px;
   }
 
   .ci-action:disabled {

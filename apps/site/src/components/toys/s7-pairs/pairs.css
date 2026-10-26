@@ -1,0 +1,233 @@
+/* The pair game (S7.L5): two runs side by side, each with its world, frank's request, his response and the monitor's
+   verdict on that run alone, then check B on the two together. Shape carries the meaning as well as colour: a dot is a
+   document frank may read, a ring one he may not, a square what run 2 changed, and the violation square a leak. */
+
+.tp-code {
+  margin: 0;
+  padding: var(--space-3);
+  overflow-x: auto;
+  background: var(--sheet);
+  border: var(--border-component) solid var(--rule-hair);
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: var(--lh-code);
+  color: var(--ink);
+}
+
+.tp-controls .toy-field {
+  flex: 1 1 15rem;
+  max-width: 100%;
+}
+
+.tp-select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--target);
+  max-width: 100%;
+  padding: 0 var(--space-2);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-structure) solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: 14px;
+}
+
+.tp-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .tp-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tp-run {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+  padding-top: var(--space-2);
+  border-top: 3px solid var(--ink);
+}
+
+.tp-run-head {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.tp-run-n {
+  color: var(--vol-type, var(--ink));
+}
+
+.tp-world {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tp-doc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-2);
+  min-height: 28px;
+  padding: 2px 0;
+  border-bottom: var(--border-component) solid var(--rule-soft);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.tp-doc[data-absent='true'] .tp-doc-id,
+.tp-doc[data-absent='true'] .tp-doc-owner {
+  color: var(--pencil);
+}
+
+.tp-doc-id {
+  font-family: var(--font-code);
+  font-size: 13px;
+}
+
+.tp-doc-owner {
+  color: var(--pencil);
+}
+
+.tp-doc-note {
+  font-weight: 600;
+}
+
+.tp-mark,
+.tp-verdict-mark {
+  flex: none;
+  overflow: visible;
+}
+
+.tp-mark-read {
+  fill: var(--ink);
+}
+
+.tp-mark-hidden {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.tp-mark-changed {
+  fill: var(--vol-type, var(--ink));
+}
+
+.toy .tp-mark-violation.line-violation {
+  fill: var(--line-violation);
+  stroke: var(--paper);
+  stroke-width: 1px;
+}
+
+.tp-call,
+.tp-response,
+.tp-check {
+  margin: 0;
+}
+
+.tp-call code {
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.tp-response {
+  min-height: 36px;
+}
+
+.tp-response-text {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-structure) solid var(--ink);
+  background: var(--paper);
+  font-family: var(--font-code);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.tp-pending {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+.tp-check {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+}
+
+.tp-verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: var(--border-component) solid var(--rule);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: 1.3;
+}
+
+.tp-verdict strong {
+  font-weight: 600;
+}
+
+.tp-log {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.tp-table caption {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-weight: 600;
+}
+
+.tp-table th,
+.tp-table td {
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  border-bottom: var(--border-component) solid var(--rule-soft);
+  text-align: left;
+  vertical-align: top;
+}
+
+.tp-table th {
+  border-bottom: var(--border-structure) solid var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tp-table code {
+  font-family: var(--font-code);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.tp-code:focus-visible,
+.tp-log:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}

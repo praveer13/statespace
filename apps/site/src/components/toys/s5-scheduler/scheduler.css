@@ -1,0 +1,172 @@
+/* The scheduler game (S5.L3): the enabled-action bar, the trace table and the spec's state graph by depth. Ink line
+   work on paper. A state that breaks NoOverspend is a square on the violation line, a finished state a ring, any other
+   state a filled dot, so shape carries the meaning as well as colour. */
+
+.sc-settings {
+  display: grid;
+  gap: var(--space-3) var(--space-5);
+}
+
+@media (min-width: 600px) {
+  .sc-settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sc-bar {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.sc-step code {
+  font-family: var(--font-code);
+  font-size: 15px;
+}
+
+.sc-none {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  color: var(--pencil);
+}
+
+/* Tables scroll in their own frame, never the page. */
+.sc-frame {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sc-frame:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sc-trace {
+  border-collapse: collapse;
+  min-width: 100%;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+}
+
+.sc-cap {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.sc-trace th,
+.sc-trace td {
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: var(--border-component) solid var(--rule);
+}
+
+.sc-trace thead th {
+  font-weight: 600;
+  border-bottom: var(--border-structure) solid var(--ink);
+}
+
+.sc-trace tbody th {
+  font-weight: 600;
+}
+
+.sc-trace code {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+}
+
+.sc-trace tr[data-bad='true'] th,
+.sc-trace tr[data-bad='true'] td {
+  font-weight: 700;
+}
+
+.sc-flag {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+}
+
+.sc-graph {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.sc-svg {
+  max-width: 34rem;
+}
+
+.sc-edges line {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.sc-casing {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 7px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.sc-path {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.sc-path-ink {
+  stroke: var(--ink);
+  stroke-width: 3px;
+}
+
+.sc-node {
+  fill: var(--ink);
+}
+
+.sc-done {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.toy .sc-over.line-violation {
+  fill: var(--line-violation);
+  stroke: var(--paper);
+  stroke-width: 1px;
+}
+
+.sc-here {
+  fill: none;
+  stroke: var(--here);
+  stroke-width: 2;
+}
+
+.sc-depth {
+  font-family: var(--font-code);
+  font-size: 15px;
+  fill: var(--pencil);
+}
+
+.sc-layers {
+  margin: 0;
+  max-width: 36em;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}

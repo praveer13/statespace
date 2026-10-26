@@ -1,0 +1,172 @@
+/* The pin game (S2.L10): a ruled table of statements against the transfer, and a before-and-after figure of the
+   lesson's own transfer as rows of unit squares. A statement that holds is a ring and the words "holds"; one that
+   fails is a square on the violation line and the words "fails", so shape and text carry it as well as colour. */
+
+.tp-pickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 760px) {
+  .tp-pickers {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+.tp-impl {
+  font-weight: 600;
+}
+
+.tp-pickers .toy-choice code {
+  font-family: var(--font-code);
+  font-size: 15px;
+}
+
+.tp-table-wrap {
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.tp-table-cap {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.tp-table thead th {
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  border-bottom: var(--border-structure) solid var(--ink);
+  text-align: left;
+  font-weight: 600;
+}
+
+.tp-table tbody th,
+.tp-table td {
+  padding: var(--space-2);
+  border-bottom: var(--border-component) solid var(--rule-hair);
+  text-align: left;
+  vertical-align: top;
+}
+
+.tp-table tbody th {
+  font-weight: 400;
+}
+
+.tp-table tbody th code {
+  display: block;
+  font-family: var(--font-code);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tp-table tr[data-pinned='false'] td,
+.tp-table tr[data-pinned='false'] th {
+  color: var(--pencil);
+}
+
+.tp-says {
+  display: block;
+  color: var(--pencil);
+}
+
+.tp-pin {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tp-table td {
+  width: 45%;
+}
+
+.tp-table .tp-r th,
+.tp-table .tp-r td {
+  border-top: 3px solid var(--ink);
+  border-bottom: 0;
+}
+
+.tp-table .tp-r th {
+  font-weight: 600;
+}
+
+.tp-mark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.tp-key {
+  flex: none;
+  overflow: visible;
+}
+
+.tp-holds {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.toy .tp-fails.line-violation,
+.toy .tp-debt.line-violation {
+  fill: var(--line-violation);
+  stroke: none;
+}
+
+.tp-example {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.tp-example-head {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+}
+
+.tp-svg {
+  max-width: 26rem;
+}
+
+.tp-zero {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.tp-unit {
+  fill: var(--ink);
+}
+
+.tp-row-label {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.tp-row-value {
+  font-family: var(--font-code);
+  font-size: 13px;
+  fill: var(--ink);
+}
+
+.tp-table .tp-r .tp-says {
+  font-weight: 400;
+}

@@ -222,3 +222,58 @@ One call key changed; every other edit is prose or a citation.
 - **Curriculum drift:** `curriculum/S08-*.md` still holds the old S8.L5 key and the strong-fairness remedy; `curriculum/S03-semantics.md` line 308 and the S6 claim CL-6.2 also predate these runs.
 - **Gates the reconcilers met:** GATE-calls reads the first verdict line of a multi-line cell (S4.L4#3, S7.L3#2) and compares recorded older releases with today's Z3 (S4.L9#1); cvc5 needs `--arrays-exp` for S5.L9 cell 1.
 - **Lesson animations, interactive tools and games** (the owner's request): not part of the reconcile or the registry; it needs its own task in `apps/site` and the lesson pages.
+
+## Phase 1 — lesson pages, screens and teaching aids (2026-10-26)
+
+The lesson pages and the working screens now live in the Little Library world that the start page and the stage pages already had, and twenty interactive teaching aids ("toys") sit inside the lessons where they teach. `DESIGN.md` (Components) and `.impeccable/design.json` describe the new components.
+
+### What shipped
+
+- **A lesson is a chapter inside its volume.** A full-width running head in the volume's ink carries the volume numeral and name (a link back to the stage), the address and a small cover figure. The opener sets the lesson number large and light ("L3", "Boot" for L0) beside the title, then the objective, one quiet line (format, minutes, questions answered), the draft banner and a ruled colophon whose "Checked by" groups runs under their engine and version. Drawers use the series black and read "Drawer beside S5 Time".
+- **Reading layout.** From 1100 px: a sticky contents rail numbering segments §1, §2 … with the current one marked by weight and a 3-px rule, a reading column of at most 680 px, and a margin for sidenotes and the "Build this" and "Reading" plates. Below 1100 px the rail is the old disclosure.
+- **Exercises and figures.** Questions are numbered exercises ("Exercise 1.2 · Before this segment") with ruled, full-width choices and a round mark that fills when picked; the confidence taps are one segmented control. Recorded runs are numbered figures ("Figure 2.1 · Z3 · recorded run" plus the run ID). Claims and specimens are museum labels. The chapter ends with "What this lesson establishes", the drawers beside it, and a pager whose next lesson is set large behind the round series flag.
+- **Working screens.** Today, Claims, Specimens, Mirror, the Bench, the lab pages, the Audit Desk and Not found share one page head (Jost title, Source Serif lede, 3-px ink rule, no eyebrow) and use ruled rows instead of boxed cards. Today makes "where you stopped" the hero, with a mini-cover of the next lesson's volume, and gives the week in ranges. Claims is a ruled ledger; Specimens is a cabinet of labels in uneven sizes. A lab page reads as a lab manual: a time plan, numbered steps with minutes, and the checks as a ruled checklist in plain text. The Audit Desk placeholder now says what the Desk will do, from `docs/AUDIT-DESK.md`, with no fake cases. Not found reads the typed address back and lists how addresses read.
+- **Night mode.** A new token, `--vol-lift` (0% by day, 64% at night), lifts volume-ink numerals so dark inks such as vol-5 stay readable at night; the stage catalogue numerals and the doubt-log toy use it too.
+- **Integration fixes in this pass.** Call It's picked mark now fills by background, not an inset shadow, so the Mirror test's "no shadow" rule passes again (126 of 126 unit tests). The toy strip is set in the same type as a recorded-run figure strip. The page heads on Claims, Specimens, the Audit Desk and Not found now match the others in spacing, lede face and lede colour. Today's first-session line quotes "safe" as the agent's word (GATE-codes).
+
+### The toy catalogue
+
+Each toy computes a real thing about a small model the lesson discusses, says what it covers, and says that no solver, checker or database runs on the page. Each sits right after the segment that introduces its idea and loads only when the lesson opens.
+
+| Toy | Lesson, after | What you do and what it shows |
+|---|---|---|
+| Get past the guard (game) | S1.L0 §1 | Pick balances and an amount; the page runs the PR's guard and shows the witnesses (165 of a 1,000-pick grid). The fixed guard has none on the grid, and the grid says nothing beyond it. |
+| Past the largest value | S1.L5 §3 | At 8 and 64 bits an addition that passes the guard wraps; over Int, with X > 0, nothing does. |
+| Which state does ih talk about? | S2.L7 §3 | Step induction with a fixed header and with `generalizing s`, and see which state the hypothesis is about. |
+| Fool the pinned statements (game) | S2.L10 §4 | Find a transfer that passes the four pinned statements but breaks the requirement; `transfer_moves` stops them all on the grid. |
+| Step it, one rule at a time | S3.L4 §2 | Small-step four calls; each ends done, in an error, or stuck with no rule. |
+| Switch a decision, watch the calls move | S3.L7 §2 | Change a policy decision and watch five calls change outcome. |
+| Push Inv back through Transfer | S4.L3 §1 | Push the invariant backward under three guard readings. |
+| Reach the counterexample (game) | S4.L6 §2 | Drive the twin from Init to a CTI and then below zero; the good model reaches none within 6 steps. |
+| You are the scheduler (game) | S5.L3 §2 | Interleave two workers' Read and Write to overpay; the atomic repair has no such order. |
+| Whose promise ends the cycle (game) | S5.L7 §2 | Write a Fair line and read each lasso against it. |
+| You are the scheduler (game) | S6.L6 §4 | Order two transactions under three isolation levels and four compilations. |
+| Find a serial order | S6.L8 §4 | Replay five histories in both serial orders. |
+| Tell frank's two worlds apart (game) | S7.L5 §2 | Find pairs of worlds frank's view tells apart under Open v0 and global slugs. |
+| Related under ~Acme, or not | S7.L6 §2 | Change a second world's fields; the page says whether the worlds are related and whether the observer can tell. |
+| Place the crash yourself (game) | S8.L3 §2 | Allow one crash in a window and try to make the provider charge twice. |
+| Strand a row below the mark | S8.L3 §4 | Strand a late-committed row under a mark-based poller. |
+| Whose stack is it? | S9.L1 §2 | Run `comp e` on a stack machine from any starting stack. |
+| Close the square, or break it | S9.L7 §2 | Step source and edited IR and sweep the grid for starts where they differ. |
+| Counterexample to induction, or a bug? | S10.L6 §3 | Pick a pre-state and step; tell an unreached CTI from a reached one. |
+| Keep the doubt log (game) | S10.L7 §3 | Call what the log reads after each event before the page applies the rules. |
+
+### Checked
+
+`npx tsc -p apps/site` is clean. `npm run build -w apps/site` succeeds. `node scripts/verify-stamps.mjs` reports only the known S8.L7 content finding. 126 of 126 unit tests pass (`node --test` over `apps/site/src/**/test/*.test.mjs`). Sixteen routes (/, /stages/S2, five lessons, a drawer, Today, Claims, Specimens, Mirror, the Bench, LAB-5, the Audit Desk, a missing page) were opened at 1440 and 390 in light and dark with a seeded ledger: no horizontal scroll, nothing overflowing past the viewport, no console errors. All 20 toy placements render after the segment they name, at 360 and 1440 in light and dark, each with controls and a live status line and no page scroll sideways.
+
+### Follow-ups
+
+- A "Build this" plate that closes a segment floats below that segment's last paragraph rather than beside it; moving the card earlier in the content, or a placement step, would tighten it.
+- At night the vol-5 and vol-10 surfaces (small covers, squares, the S5 and S10 figure strips) sit close to the dark ground; squares carry an ink outline and every stage is named in text, but a night tint for the volume inks is a token decision still to make.
+- The Mirror's section heads stay in ink because its render test allows only ink tokens; allowing `--rubric` there is the test owner's call. The top nav still marks TODAY on /mirror (App.tsx).
+- `/bench`, `/labs/` and `/audit` are not full bleed, so a lab page has no running-head band; extending `data-bleed` to `/labs/` would allow one.
+- Toys: some SVG labels shrink to about 9 px at 360 px (s5-fairness ring, s6-scheduler timeline); the map cells of s9-hoist and s10-cti take only mouse clicks (the number inputs give the keyboard path); s2-generalize's chain could carry a real list mirror.
+- The lesson-page loading, failed and missing states (`components/page/states.tsx`) were not restyled in this phase.
+- GATE-codes still reports five bracketed IDs in S5.L6–S5.L9 content front matter and prose, and the LAB-2 title "The verified ledger" uses a bare "verified" on the Bench; both are content, not the site.
+- The e2e suite (`npm run e2e -w apps/site`, with its axe checks) was not run in this phase.

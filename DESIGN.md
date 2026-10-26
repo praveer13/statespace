@@ -199,6 +199,29 @@ components:
     rounded: "{rounded.sheet}"
     height: "44px"
     padding: "0 16px"
+  running-head:
+    backgroundColor: "{colors.vol-1}"
+    textColor: "{colors.on-vol}"
+    height: "64px"
+  chapter-opener:
+    textColor: "{colors.ink}"
+    typography: "{typography.headline}"
+  exercise:
+    textColor: "{colors.ink}"
+    typography: "{typography.interface}"
+  figure-strip:
+    backgroundColor: "{colors.vol-1}"
+    textColor: "{colors.on-vol}"
+    padding: "8px 12px"
+  specimen-label:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    width: "32rem"
+  toy-frame:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
 ---
 
 # Design System: statespace
@@ -214,7 +237,7 @@ statespace is printed as a numbered series of slim mid-century popular-mathemati
 The start page is the series cover in volume 1's ink. It carries a masthead, the course's promise and a live state-space figure of Boot's transfer, which you explore by hand. It ends in the round series flag that opens volume 1. Below it stands a shelf of spines. A spine's thickness follows the volume's planned minutes, and only the volume in hand floods with its ink. The stages index is a ruled series catalogue. A stage page is a volume cover followed by a ruled colophon. Pages are dense and typographic, with square corners and flat ink. The halftone and the off-register plate supply the depth.
 
 **Key Characteristics:**
-- Ten flat volume inks, each with white type, used on covers, spines, mini-covers and catalogue numerals only.
+- Ten flat volume inks, each with white type, used on covers, spines, mini-covers, catalogue numerals and, inside a lesson, the running head, the light lesson and segment numerals, exercise numbers and figure strips. Never on body text, rows, controls or status.
 - Cool newsprint interior with black ink. The rubric heads interior sections.
 - 3-px ink rules divide the page. 1.5-px ink frames hold controls and spines. 1-px rules separate rows.
 - Jost sets structure, Source Serif 4 sets reading text and JuliaMono sets code and states.
@@ -331,6 +354,53 @@ In the masthead from 900 px: the label "Go to" in label capitals and pencil, the
 
 ### Navigation
 The top bar is newsprint with a 3-px ink rule beneath it. It holds the wordmark and the series mark (S′ in Source Serif 4 italic at 600, a weight the browser synthesizes from the shipped 400 italic, white on volume 1's ink in a 32-px square), with "statespace" in Jost 600 at 23 px. From 900 px the five destinations are label capitals (14 px, 500, 0.1em). The current one carries a 3-px ink rule beneath it and its label at 700. Hover underlines at 1.5 px. On phones a sheet bottom bar of five 56-px targets has icons, 12-px labels and a 3-px ink rule along the top of the current target. The current target's icon stroke goes from 1.5 to 2.25.
+
+### Running head
+A lesson or drawer opens as a chapter inside its volume. The page's main area runs full bleed (App.tsx sets `data-bleed` on `/`, `/stages`, `/lessons/` and `/drawers/`) and a 64-px band in the volume's ink runs across it: the light volume numeral and the stage name in label capitals (a link back to the stage), the lesson address in JuliaMono, and a small copy of the volume's cover figure at the right. A drawer is an appendix with no volume ink: its band takes `--vol-10`, the series black, and reads "Drawer beside S5 Time", with no figure.
+
+### Chapter opener
+The lesson number large and light in the volume's ink ("L3", "Boot" for L0, or the drawer's address) beside the title in Jost 600. Then the objective as a Source Serif lede, one quiet colophon line (format · minutes · questions answered), the draft banner between 1-px rules, and the provenance as a ruled colophon (address, revision, drawn, checked by). "Checked by" groups runs under their engine and version, with the run IDs as JuliaMono chips that wrap. At night the numerals read through `--vol-lift` (0% by day, 64% at night): `color-mix(in oklab, var(--vol), white var(--vol-lift))`, so dark inks such as vol-5 stay legible on the night ground.
+
+### Chapter layout and rail
+Below 1100 px the chapter is one column and the segment contents are a disclosure ("Segments (n)"). From 1100 px a sticky 14rem rail numbers the segments §1, §2 … in the volume's ink; a scroll-spy marks the current one by weight plus a 3-px ink rule, never by colour alone. The reading column is at most 680 px, and the remaining width is the margin for sidenotes and plates. Segments open under a 3-px ink rule with "§n" in the volume's ink beside the title (Jost 600), and the minutes in small label capitals beneath.
+
+### Exercise
+Items, prequestions and Call It are textbook exercises: "Exercise 1.2 · Before this segment" in Jost, with the number in the volume's ink, under a 3-px ink rule and with no box or shadow. Choices are full-width rows at least 44 px tall divided by 1-px rules, with a round ink mark; the picked mark fills (160 ms, ease-out, none under reduced motion) and the picked row goes bold. The confidence taps (guess / think so / sure) are one segmented control, the chosen segment reversed in ink. After answering, the key and every "why" read like the answer key at the back of a book. Inside a figure the Call It opens with a 3-px rule instead of a box.
+
+### Figure and instrument cell
+A recorded run is a numbered figure. A strip in the volume's ink holds "Figure 2.1 · The Theater · recorded run" (Jost 15 px: "Figure n" at 700, the instrument at 600, the lane at 400) and the run ID in JuliaMono on the right. The code sits on paper in a 1.5-px ink frame and scrolls in its own frame; then come the Call It and the result, whose stamps render exactly as the stamp component draws them. "Run not yet recorded" is a quiet state, never an error.
+
+### Specimen label and margin plates
+A claim or a specimen is a museum label: a 32rem plate on paper with a 1.5-px ink frame and a 3-px top rule, title first in Jost 600, then the ID in JuliaMono. Before its questions are answered it is an empty outline that says it appears once they are. "Build this" and "Reading" cards are margin plates with a band in the rubric at the top; from 1100 px they float into the margin column. On the Specimens screen the same labels stand in a cabinet grid of uneven sizes, each beside a small square of its stage's ink with the stage ID in text.
+
+### Toy frame
+An interactive teaching aid ("toy") in a lesson is a figure plate: a strip in the volume's ink that reads "Figure · Game · Get past the guard" in the same type as an instrument cell's strip, the toy on paper inside a 1.5-px ink frame, and a caption in pencil Source Serif that says what the page computes and what it does not claim ("no solver runs here"). Controls are real labelled inputs and buttons at 44 px; status changes are words in an `aria-live="polite"` line on a 3-px ink left rule; the SVG has `role="img"` with a text alternative or a table beside it. Marks differ by shape (dots, rings, squares) as well as colour, and the violation hue appears only through `.line-violation`, dashes only through `.line-bounded` and `.line-assumed`. The one motion is `.toy-land` (a mark landing, ease-out), off under reduced motion. Toys live in `apps/site/src/components/toys/<slug>/` (placement.ts, model.ts, Toy.tsx, optional css); `index.ts` finds every `placement.ts` and the lesson page draws each toy, lazily, after the segment it names.
+
+| Slug | Lesson, after | Toy | What it teaches |
+|---|---|---|---|
+| s1-witness | S1.L0 §1 | Get past the guard (game) | Pick balances and an amount; the page runs the PR's guard and shows which picks are witnesses (165 of a 1,000-pick grid). The fixed guard finds none on the grid, which says nothing beyond it. |
+| s1-wrap | S1.L5 §3 | Past the largest value | At 8 and 64 bits an addition that passes the guard can wrap; the search counts recipient witnesses and shows none for the sender when X > 0, and none over Int. |
+| s2-generalize | S2.L7 §3 | Which state does ih talk about? | Step induction with a fixed header and with `generalizing s`; the goal and context show why the fixed header's ih is about the wrong state. |
+| s2-pinned | S2.L10 §4 | Fool the pinned statements (game) | Pick a transfer that passes the four pinned statements but breaks the requirement; adding `transfer_moves` stops every fooling transfer on the 81-state grid. |
+| s3-stepper | S3.L4 §2 | Step it, one rule at a time | Small-step a call through the expression rules and see it end done, in an error, or stuck with no rule. |
+| s3-policy | S3.L7 §2 | Switch a decision, watch the calls move | Change the semantics' policy decisions (self-transfer, zero amounts, overflow) and watch five calls change outcome and step. |
+| s4-wp-push | S4.L3 §1 | Push Inv back through Transfer | Push Inv backward line by line under three guard readings; at every point the formula holds exactly when the run from there ends in Inv. |
+| s4-cti-reach | S4.L6 §2 | Reach the counterexample (game) | Drive the twin from Init to a state where holds exceed the balance and then overdraw it; the good model reaches none within 6 steps. |
+| s5-scheduler | S5.L3 §2 | You are the scheduler (game) | Interleave Read and Write of two workers to overpay; the atomic repair has no such order; three workers show 84 of 90 schedules overpay. |
+| s5-fairness | S5.L7 §2 | Whose promise ends the cycle (game) | Write a Fair line from WF/SF on each action and read each lasso against it; the goal needs fairness on your own actions only. |
+| s6-scheduler | S6.L6 §4 | You are the scheduler (game) | Order two transactions' statements under three isolation levels and four compilations; see lost updates, serialization failures and deadlock. |
+| s6-serial | S6.L8 §4 | Find a serial order | Replay five histories in both serial orders and find which, if any, explain what each transaction saw. |
+| s7-pairs | S7.L5 §2 | Tell frank's two worlds apart (game) | Find pairs of worlds that frank's view tells apart under Open v0 and global slugs; v1 and per-tenant slugs leave none. |
+| s7-relation | S7.L6 §2 | Related under ~Acme, or not | Change fields of a second world; the page says whether the worlds are related and whether the observer can tell them apart. |
+| s8-crash-windows | S8.L3 §2 | Place the crash yourself (game) | Allow one crash in a chosen window and try to make the provider charge twice; a stable key with a provider that honors keys leaves none. |
+| s8-poller | S8.L3 §4 | Strand a row below the mark | Commit late under a mark-based poller and strand a row; a status-based poller delivers every committed row. |
+| s9-stack | S9.L1 §2 | Whose stack is it? | Run `comp e` on a stack machine and see `exec s (comp e) stk = aval e s :: stk` hold for this run, whatever stack it started on. |
+| s9-hoist | S9.L7 §2 | Close the square, or break it | Step the source and an edited IR; sweep the grid for starts where they end differently (25 for the agent's edit, all in amt ≤ balance < 2·amt). |
+| s10-cti | S10.L6 §3 | Counterexample to induction, or a bug? | Pick a pre-state and a step; unreached CTIs mean strengthen the invariant, a reached one means fix the command. |
+| s10-doubts | S10.L7 §3 | Keep the doubt log (game) | Call what the log reads (m retired of n identified) after each event before the page applies the rules. |
+
+### Working-screen head
+Today, Claims, Specimens, Mirror, the Bench, a lab, the Audit Desk and Not found share one head: the title in Jost 600 at clamp(36px, 4vw, 56px), a Source Serif lede in ink at clamp(18px, 1.5vw, 21px), and a 3-px ink rule beneath. There is no eyebrow. Section heads take the rubric (the Mirror stays in ink, by its test). Screens that belong to no volume take `--vol-10` as their accent; an item that belongs to a stage shows a small square of its volume's ink beside its ID, with the stage ID in text too.
 
 ### State graph (signature)
 Boot's transfer, drawn in white on the start cover. The lattice of states is a faint grid (white mixed 34% into the ink), and the no-overdraft triangle (every state with no balance below zero) is a 2-px white edge. Unreached states are ink-filled rings, and reached states are white dots that land with a 220-ms scale-in. The frontier is the bounded line (dotted ring, white on the cover). Overdrafts are violation-ink squares cased in white, and the witness path is the violation line at 3.5 px over a 7-px white casing. The controls form a colophon under a 3-px white rule: a guard choice (two radios) and an "explore to depth" range with a JuliaMono readout. A live status in Source Serif says what the exploration reached: "so far" while the frontier is open, and, once the exploration is exhausted with no overdraft, that this is every state the small model can reach and it says nothing beyond it.

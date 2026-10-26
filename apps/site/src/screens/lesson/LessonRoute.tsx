@@ -8,7 +8,7 @@ import type { Tier } from '@statespace/content'
 import { courseLessons, loadManifest, loadPage, loadStages, useLoaded } from '../../app/content.ts'
 import { useEvents, useStore } from '../../app/ledger.ts'
 import { useTitle } from '../../app/title.ts'
-import { Pager, PageView } from '../../components/page/PageView.tsx'
+import { chapterInk, chapterNumber, Pager, PageView, RunningHead } from '../../components/page/PageView.tsx'
 import { Failed, Loading, Missing } from '../../components/page/states.tsx'
 import '../../components/page/page.css'
 
@@ -24,10 +24,11 @@ export function LessonRoute() {
   const entry = data.status === 'ready' ? data.value.lessons[at] : undefined
   useTitle(data.status === 'ready' ? (data.value.page?.title ?? entry?.title ?? id) : id)
 
-  if (data.status === 'loading') return <Loading what="the lesson" />
-  if (data.status === 'error') return <Failed message={data.message} />
+  // The shell gives a lesson the full width for its running head, so these states take the page's column themselves.
+  if (data.status === 'loading') return <div className="chapter-state"><Loading what="the lesson" /></div>
+  if (data.status === 'error') return <div className="chapter-state"><Failed message={data.message} /></div>
   const { manifest, lessons, stages, page } = data.value
-  if (entry === undefined && page === null) return <Missing what="lesson" id={id} />
+  if (entry === undefined && page === null) return <div className="chapter-state"><Missing what="lesson" id={id} /></div>
 
   const link = (k: number) => {
     const l = lessons[k]
@@ -40,31 +41,32 @@ export function LessonRoute() {
 
   if (page === null) {
     return (
-      <article className="screen page">
-        <header className="screen-head page-head">
-          <p className="kicker">
-            {stage !== undefined ? (
-              <>
-                <Link to={`/stages/${stage.id}`}>
-                  {stage.id} · {stage.title}
-                </Link>{' '}
-                ▸{' '}
-              </>
-            ) : null}
-            {id}
-          </p>
-          <h1>{entry?.title ?? id}</h1>
-          {entry !== undefined ? <p className="meta">{tierFormat(entry.tier as Tier)}</p> : null}
+      <article className="chapter" data-kind="lesson" style={chapterInk('lesson', stage?.id)}>
+        <header className="chapter-head">
+          <RunningHead kind="lesson" stage={stage} id={id} />
+          <div className="chapter-open">
+            <div className="chapter-title">
+              <span className="chapter-n" aria-hidden="true">
+                {chapterNumber('lesson', id)}
+              </span>
+              <h1>{entry?.title ?? id}</h1>
+            </div>
+            {entry !== undefined ? <p className="chapter-line">{tierFormat(entry.tier as Tier)}</p> : null}
+          </div>
         </header>
-        <div className="sheet prose">
-          <p>This lesson is not written yet. The course is drafted a stage at a time, and every page opens whenever you choose: the stage page lists the lab and the drawers that are open now.</p>
-          {stage !== undefined ? (
-            <p>
-              <Link to={`/stages/${stage.id}`}>Open {stage.id} · {stage.title}</Link>
-            </p>
-          ) : null}
+        <div className="page-body">
+          <div className="page-main">
+            <div className="chapter-unwritten md">
+              <p>This lesson is not written yet. The course is drafted a stage at a time, and every page opens whenever you choose: the stage page lists the lab and the drawers that are open now.</p>
+              {stage !== undefined ? (
+                <p>
+                  <Link to={`/stages/${stage.id}`}>Open {stage.id} · {stage.title}</Link>
+                </p>
+              ) : null}
+            </div>
+            <Pager prev={prev} next={next} />
+          </div>
         </div>
-        <Pager prev={prev} next={next} />
       </article>
     )
   }

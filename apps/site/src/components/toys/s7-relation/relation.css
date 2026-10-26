@@ -1,0 +1,178 @@
+/* The relation figure (S7.L6): the right-hand world's fields in three ruled groups, the clause each group belongs to,
+   then frank's or dana's response from each world. A field that breaks the relation says so in words and weight; the
+   pair's mark is a dot when related and equal, a ring when not related, and the violation square when told apart. */
+
+.tr-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+@media (min-width: 720px) {
+  .tr-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tr-group {
+  display: grid;
+  align-content: start;
+  margin: 0;
+  padding: var(--space-2) 0 0;
+  min-width: 0;
+  border: 0;
+  border-top: 3px solid var(--ink);
+}
+
+/* Floated, the legend sits under the group's rule instead of breaking it. */
+.tr-group legend {
+  float: left;
+  width: 100%;
+  padding: 0 0 var(--space-1);
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vol-type, var(--ink));
+}
+
+.tr-field {
+  clear: both;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  column-gap: var(--space-2);
+  align-items: center;
+  min-height: var(--target);
+  padding: var(--space-1) 0;
+  border-bottom: var(--border-component) solid var(--rule-soft);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  cursor: pointer;
+}
+
+.tr-field input {
+  grid-row: span 2;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.tr-field-name {
+  color: var(--ink);
+}
+
+.tr-field-state {
+  grid-column: 2;
+  color: var(--pencil);
+  font-size: 13px;
+}
+
+.tr-field[data-on='true'] .tr-field-name {
+  font-weight: 600;
+}
+
+.tr-field[data-bad='true'] .tr-field-state {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.tr-settings {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.tr-settings .toy-controls {
+  align-items: start;
+}
+
+.tr-select {
+  box-sizing: border-box;
+  min-height: var(--target);
+  padding: 0 var(--space-2);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-structure) solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: 14px;
+}
+
+.tr-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: var(--border-component) solid var(--rule);
+  border-bottom: var(--border-component) solid var(--rule);
+}
+
+.tr-side {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.tr-side:last-of-type {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.tr-mark {
+  grid-column: 2;
+  grid-row: 1;
+  overflow: visible;
+}
+
+.tr-side-head {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  font-weight: 600;
+}
+
+.tr-call {
+  margin: 0;
+}
+
+.tr-call code {
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.tr-response {
+  justify-self: start;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-structure) solid var(--ink);
+  background: var(--paper);
+  font-family: var(--font-code);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.tr-mark-equal {
+  fill: var(--ink);
+}
+
+.tr-mark-unrelated {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.toy .tr-mark-leak.line-violation {
+  fill: var(--line-violation);
+  stroke: var(--paper);
+  stroke-width: 1px;
+}
+
+.tr-found {
+  display: block;
+  margin-top: var(--space-2);
+}

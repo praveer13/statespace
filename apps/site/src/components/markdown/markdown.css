@@ -65,6 +65,26 @@
   overflow-wrap: anywhere;
 }
 
+/* Inline code sits on a faint band, so a symbol reads as code inside a serif line. */
+.md :is(p, li, td, th, blockquote) > code:not(.md-run) {
+  padding: 0.05em 0.25em;
+  background: var(--band);
+  border-radius: var(--radius);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Links in reading text are ink, always underlined (their hue alone would not tell them apart). */
+.md a {
+  color: var(--ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.md a:hover {
+  text-decoration-thickness: 2px;
+}
+
 .md-code,
 .md-table {
   margin: 0 0 var(--space-4);
@@ -189,8 +209,8 @@
     display: block;
     float: right;
     clear: right;
-    width: 260px;
-    margin: 0 -292px var(--space-3) 0;
+    width: var(--note-w, 260px);
+    margin: 0 calc(-1 * (var(--note-w, 260px) + var(--note-gap, 32px))) var(--space-3) 0;
     padding: 0;
     border: 0;
     background: none;

@@ -1,0 +1,290 @@
+/* The fairness game (S5.L7): the hold's unresolved ring with the chosen lasso drawn over it, the Fair line, and the
+   three lassos read conjunct by conjunct. A fair lasso that never resolves is drawn on the violation line and marked
+   with a square; one a conjunct rules out is ink and marked with a ring, so shape carries the meaning as well as colour. */
+
+.fa-controls {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fa-select {
+  box-sizing: border-box;
+  min-height: var(--target);
+  max-width: 100%;
+  padding: 0 var(--space-2);
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-structure) solid var(--ink);
+  border-radius: var(--radius);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.fa-select:focus-visible,
+.fa-seg input:focus-visible + .fa-cell,
+.fa-lasso-row input:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.fa-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: var(--space-3) var(--space-4);
+}
+
+.fa-action {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fa-action legend {
+  padding: 0 0 var(--space-1);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.fa-action legend code,
+.fa-line code,
+.fa-note code,
+.fa-lassos code {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+}
+
+.fa-owner {
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+/* A segmented control: three joined cells, the chosen one filled ink. */
+.fa-seg {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(3.5rem, 1fr);
+  border: var(--border-structure) solid var(--ink);
+  border-radius: var(--radius);
+}
+
+.fa-seg label {
+  position: relative;
+  display: grid;
+  cursor: pointer;
+}
+
+.fa-seg label + label {
+  border-left: var(--border-structure) solid var(--ink);
+}
+
+.fa-seg input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.fa-seg .fa-cell {
+  display: grid;
+  place-items: center;
+  min-height: var(--target);
+  padding: 0 var(--space-2);
+  font-family: var(--font-code);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.fa-seg input:checked + .fa-cell {
+  background: var(--ink);
+  color: var(--ground);
+  font-weight: 700;
+}
+
+.fa-line {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  overflow-x: auto;
+  background: var(--sheet);
+  border-top: var(--border-structure) solid var(--ink);
+  font-size: 15px;
+}
+
+.fa-graph {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.fa-svg {
+  max-width: 34rem;
+}
+
+.fa-lassos ~ .toy-legend code {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+}
+
+.fa-box {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.fa-st {
+  font-family: var(--font-code);
+  font-size: 15px;
+  fill: var(--ink);
+}
+
+.fa-act {
+  font-family: var(--font-structure);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.fa-stub .fa-act {
+  font-weight: 400;
+  fill: var(--pencil);
+}
+
+.fa-edge {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.25;
+}
+
+.fa-stub .fa-edge {
+  stroke: var(--rule);
+}
+
+.fa-head {
+  fill: var(--ink);
+}
+
+.fa-lasso {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.toy .fa-lasso.line-violation {
+  stroke-width: 4px;
+}
+
+.fa-lasso-ink {
+  stroke: var(--ink);
+  stroke-width: 4px;
+}
+
+.toy .fa-starve.line-violation {
+  fill: var(--line-violation);
+  stroke: var(--paper);
+  stroke-width: 1px;
+}
+
+.fa-ruled {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.fa-note {
+  margin: 0;
+  max-width: 36em;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}
+
+.fa-lassos {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fa-lassos legend {
+  padding: 0 0 var(--space-2);
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.fa-lasso-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) 0;
+  border-top: var(--border-component) solid var(--rule);
+  cursor: pointer;
+}
+
+.fa-lasso-row:last-child {
+  border-bottom: var(--border-component) solid var(--rule);
+}
+
+.fa-lasso-row[data-picked='true'] {
+  border-top: 3px solid var(--ink);
+}
+
+.fa-lasso-row input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--ink);
+}
+
+.fa-lasso-body {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.fa-lasso-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.fa-lasso-verdict {
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  font-style: italic;
+}
+
+.fa-reading {
+  font-family: var(--font-code);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.fa-reading[data-fails='true'] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.fa-enabled {
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+}

@@ -1,0 +1,163 @@
+/* The induction stepper (S2.L7): a chain of ledger states, each a small ink-framed plate. The goal's start is a
+   heavier frame and a worded tag; the state ih is used at carries an inked tag. Shape and words carry the meaning,
+   never colour alone. */
+
+.tg-list-field {
+  flex: 1 1 12rem;
+}
+
+.toy-number.tg-list {
+  width: 100%;
+  min-width: 10rem;
+}
+
+.tg-hint {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  color: var(--pencil);
+}
+
+.tg-mode code {
+  font-family: var(--font-code);
+  font-size: 15px;
+}
+
+.tg-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-3) var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tg-item {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.tg-arrow {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-width: 3.5rem;
+  padding: 0 var(--space-1);
+  font-family: var(--font-structure);
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.tg-arrow::after {
+  content: '\2192';
+  font-size: 18px;
+  line-height: 1;
+}
+
+.tg-amt {
+  font-family: var(--font-code);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.tg-arrow[data-moved='false'] .tg-what {
+  font-style: italic;
+}
+
+.tg-state {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  min-width: 6.5rem;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-component) solid var(--rule);
+  background: var(--paper);
+  font-family: var(--font-structure);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.tg-state[data-goal='true'],
+.tg-state[data-moved-goal='true'] {
+  border: 3px solid var(--ink);
+  padding: calc(var(--space-2) - 2px) calc(var(--space-3) - 2px);
+}
+
+.tg-state[data-ih='true'] {
+  border-color: var(--ink);
+  border-width: var(--border-structure);
+}
+
+.tg-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.tg-bal {
+  font-family: var(--font-code);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.tg-total {
+  color: var(--pencil);
+}
+
+.tg-tag {
+  justify-self: start;
+  margin-top: var(--space-1);
+  padding: 1px var(--space-2);
+  border: var(--border-component) solid var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tg-tag-ih {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.tg-goal {
+  margin: 0;
+  padding: var(--space-3);
+  overflow-x: auto;
+  border: var(--border-structure) solid var(--ink);
+  background: var(--sheet);
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  white-space: pre;
+}
+
+.tg-goal code {
+  font-family: inherit;
+}
+
+.tg-steps {
+  align-items: center;
+}
+
+.tg-count {
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  color: var(--pencil);
+}
+
+@media (max-width: 599px) {
+  .tg-arrow {
+    min-width: 2.75rem;
+  }
+
+  .tg-state {
+    min-width: 5.5rem;
+    padding: var(--space-2);
+  }
+
+  .tg-state[data-goal='true'],
+  .tg-state[data-moved-goal='true'] {
+    padding: calc(var(--space-2) - 2px);
+  }
+}

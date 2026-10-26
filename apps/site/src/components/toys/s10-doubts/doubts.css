@@ -1,0 +1,159 @@
+/* The doubt-log game (S10.L7): CL-1.1's log as a ruled table, its reading m|n set large in ink, and the events as a
+   list of choices. Status is a word with a mark beside it: a filled square is retired, an open square an accepted
+   residual, a ring active, so the shape carries it as well as the word. */
+
+.dl-reading {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 3px solid var(--ink);
+}
+
+.dl-count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  font-family: var(--font-structure);
+}
+
+.dl-count-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.dl-mn {
+  font-size: clamp(36px, 8vw, 48px);
+  font-weight: 300;
+  line-height: 1;
+  color: color-mix(in oklab, var(--toy-vol), white var(--vol-lift));
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.dl-others {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+}
+
+.dl-table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.dl-table {
+  width: 100%;
+  min-width: 17rem;
+  border-collapse: collapse;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.dl-caption {
+  padding-bottom: var(--space-2);
+  text-align: left;
+  font-weight: 600;
+}
+
+.dl-table th {
+  padding: var(--space-1) var(--space-2) var(--space-1) 0;
+  border-bottom: var(--border-structure) solid var(--ink);
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.dl-table td {
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: var(--border-component) solid var(--rule);
+  vertical-align: top;
+}
+
+.dl-table tr[data-fresh='true'] td {
+  font-weight: 600;
+}
+
+.dl-id {
+  font-family: var(--font-code);
+  font-variant-numeric: tabular-nums;
+}
+
+.dl-note {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-reading);
+  font-weight: 400;
+  color: var(--pencil);
+}
+
+.dl-kind {
+  font-family: var(--font-structure);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dl-tag {
+  font-style: italic;
+}
+
+.dl-status {
+  white-space: nowrap;
+}
+
+.dl-status-in {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.dl-retired {
+  fill: var(--ink);
+}
+
+.dl-accepted {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.dl-active {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.dl-form {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.dl-calls {
+  grid-auto-flow: row;
+}
+
+@media (min-width: 600px) {
+  .dl-calls {
+    grid-template-columns: repeat(3, max-content);
+    column-gap: var(--space-5);
+  }
+
+  .dl-calls legend {
+    grid-column: 1 / -1;
+  }
+}
+
+.dl-call {
+  font-family: var(--font-code);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}

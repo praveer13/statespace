@@ -101,7 +101,7 @@ function RecordedRun({ page, id }: { readonly page: Lesson; readonly id: string 
 function EveryWhy({ choice }: { readonly choice: LessonChoice }) {
   return (
     <div className="whys">
-      <p className="kicker">Every option, and why</p>
+      <p className="whys-head">Every option, and why</p>
       <ul className="whys-list">
         {choice.options.map((o) => (
           <li key={o.id} data-key={o.id === choice.key ? 'true' : undefined}>
@@ -117,7 +117,7 @@ function EveryWhy({ choice }: { readonly choice: LessonChoice }) {
   )
 }
 
-export function InstrumentBlock({ block, ctx, kc }: { readonly block: LessonInstrumentBlock; readonly ctx: BlockContext; readonly kc: string | undefined }) {
+export function InstrumentBlock({ block, ctx, kc, figure }: { readonly block: LessonInstrumentBlock; readonly ctx: BlockContext; readonly kc: string | undefined; readonly figure?: string }) {
   const { page } = ctx
   const asks = ctx.kind === 'lesson' && block.callOnFirstRun && block.call !== undefined
   const keyRun = runOf(page, block.call?.keyRun ?? block.recorded)
@@ -126,15 +126,16 @@ export function InstrumentBlock({ block, ctx, kc }: { readonly block: LessonInst
   const [committed, setCommitted] = useState(false)
   const revealed = !asks || committed || ctx.answered.has(callRef(page.id, block.cell))
   const word = runWord(page)
-  const head = runOf(page, block.recorded)
   return (
-    <figure className="cell no-margin" aria-label={`${instrumentName(block.ins)}, cell ${block.cell}`}>
+    <figure className="cell no-margin" aria-label={`${figure !== undefined ? `Figure ${figure}, ` : ''}${instrumentName(block.ins)}, cell ${block.cell}`}>
       <div className="cell-head">
-        <span className="cell-ins">{instrumentName(block.ins)}</span>
-        <span className="cell-lane">
-          recorded {word}
-          {head !== undefined && engineLine(head) !== '' ? ` · ${engineLine(head)}` : ''}
+        <span className="cell-ins">
+          {figure !== undefined ? <span className="cell-fig">Figure {figure}</span> : null}
+          {figure !== undefined ? ' · ' : ''}
+          {instrumentName(block.ins)}
+          <span className="cell-lane"> · recorded {word}</span>
         </span>
+        <code className="cell-run">{block.recorded}</code>
       </div>
       <div className="cell-body">
         {block.md !== undefined ? <Markdown md={block.md} /> : null}
@@ -190,7 +191,23 @@ function pickedOf(e: LedgerEvent | undefined): string | undefined {
   return typeof resp?.picked === 'string' ? resp.picked : undefined
 }
 
-function ChoiceItem({ block, choice, n, ctx }: { readonly block: LessonItemBlock; readonly choice: LessonChoice; readonly n: number; readonly ctx: BlockContext }) {
+/** "Exercise 1.2 · Before this segment": the question's number in its segment, set like a textbook's exercise. */
+function ExerciseHead({ exercise, role }: { readonly exercise: string | undefined; readonly role: LessonItemBlock['role'] }) {
+  return (
+    <p className="exercise-head">
+      {exercise !== undefined ? (
+        <>
+          <span className="exercise-word">Exercise</span> <span className="exercise-n">{exercise}</span>
+          <span className="exercise-role"> · {ROLE_LABEL[role]}</span>
+        </>
+      ) : (
+        <span className="exercise-word">{ROLE_LABEL[role]}</span>
+      )}
+    </p>
+  )
+}
+
+function ChoiceItem({ block, choice, n, ctx, exercise }: { readonly block: LessonItemBlock; readonly choice: LessonChoice; readonly n: number; readonly ctx: BlockContext; readonly exercise: string | undefined }) {
   const { page } = ctx
   const prior = ctx.answered.get(`item:${page.id}/i${n}`)
   const [picked, setPicked] = useState<string | undefined>(undefined)
@@ -233,7 +250,7 @@ function ChoiceItem({ block, choice, n, ctx }: { readonly block: LessonItemBlock
   const promptId = `${name}-prompt`
   return (
     <div className="question no-margin" data-role={block.role}>
-      <p className="kicker">{ROLE_LABEL[block.role]}</p>
+      <ExerciseHead exercise={exercise} role={block.role} />
       <div id={promptId} className="question-prompt">
         <Markdown md={choice.prompt} />
       </div>
@@ -241,7 +258,7 @@ function ChoiceItem({ block, choice, n, ctx }: { readonly block: LessonItemBlock
         {choice.options.map((o) => (
           <label key={o.id} className="question-option" data-picked={(done ? answer : picked) === o.id ? 'true' : undefined}>
             <input type="radio" name={name} value={o.id} checked={(done ? answer : picked) === o.id} onChange={() => setPicked(o.id)} />
-            <span className="opt-id">{o.id}.</span>
+            <span className="opt-id">{o.id}</span>
             <span className="question-option-text">
               <InlineMd text={o.text} />
             </span>
@@ -271,11 +288,11 @@ function ChoiceItem({ block, choice, n, ctx }: { readonly block: LessonItemBlock
   )
 }
 
-export function ItemBlock({ block, n, ctx }: { readonly block: LessonItemBlock; readonly n: number; readonly ctx: BlockContext }) {
-  if (block.choice !== undefined) return <ChoiceItem block={block} choice={block.choice} n={n} ctx={ctx} />
+export function ItemBlock({ block, n, ctx, exercise }: { readonly block: LessonItemBlock; readonly n: number; readonly ctx: BlockContext; readonly exercise?: string }) {
+  if (block.choice !== undefined) return <ChoiceItem block={block} choice={block.choice} n={n} ctx={ctx} exercise={exercise} />
   return (
     <div className="question question-generated no-margin" data-role={block.role}>
-      <p className="kicker">{ROLE_LABEL[block.role]}</p>
+      <ExerciseHead exercise={exercise} role={block.role} />
       <p className="question-later">A fresh question is generated here for each learner. The generator arrives in a later build.</p>
     </div>
   )
@@ -285,9 +302,11 @@ export function ItemBlock({ block, n, ctx }: { readonly block: LessonItemBlock; 
 
 export function ClaimBlock({ template }: { readonly template: string }) {
   return (
-    <aside className="ref-card no-margin" aria-label={`Claim ${template}`}>
-      <p className="kicker">Claim · {template}</p>
+    <aside className="ref-card no-margin" data-kind="claim" aria-label={`Claim ${template}`}>
       <p className="ref-card-title">{claimName(template) !== undefined ? <InlineMd text={claimName(template) as string} /> : template}</p>
+      <p className="ref-card-id">
+        <code>{template}</code> · claim
+      </p>
       <p className="ref-card-text">
         This lesson mints the claim once you have answered its questions; it then sits under <Link to="/claims">Claims</Link>.
       </p>
@@ -299,7 +318,7 @@ export function ClaimBlock({ template }: { readonly template: string }) {
 export function Waiting({ what }: { readonly what: 'claim' | 'specimen' }) {
   return (
     <aside className="ref-card ref-card-waiting no-margin" aria-label={what === 'claim' ? 'A claim' : 'A specimen'}>
-      <p className="kicker">{what === 'claim' ? 'Claim' : 'Specimen'}</p>
+      <p className="ref-card-id">{what === 'claim' ? 'Claim' : 'Specimen'}</p>
       <p className="ref-card-text">{what === 'claim' ? 'A claim' : 'A specimen'} is shown here once you have answered the questions above.</p>
     </aside>
   )
@@ -307,9 +326,11 @@ export function Waiting({ what }: { readonly what: 'claim' | 'specimen' }) {
 
 export function SpecimenBlock({ id, mount }: { readonly id: string; readonly mount: boolean }) {
   return (
-    <aside className="ref-card no-margin" aria-label={`Specimen ${id}`}>
-      <p className="kicker">Specimen · {id}</p>
+    <aside className="ref-card no-margin" data-kind="specimen" aria-label={`Specimen ${id}`}>
       <p className="ref-card-title">{specimenName(id) !== undefined ? <InlineMd text={specimenName(id) as string} /> : id}</p>
+      <p className="ref-card-id">
+        <code>{id}</code> · specimen
+      </p>
       <p className="ref-card-text">
         {mount ? 'Mounted in your specimen cabinet, labeled from the run that found it. ' : 'Kept in the specimen cabinet, labeled from the run that found it. '}
         <Link to="/specimens">Open the cabinet</Link>
@@ -329,15 +350,34 @@ const CARD_LABEL: Readonly<Record<LessonCardBlock['variant'], string>> = {
 /** The lab a lab stage belongs to: LAB-1.3 is in LAB-1. */
 export const labOf = (stage: string): string => stage.replace(/\.[0-9]+$/, '')
 
+/** Build-this and reading cards stand in the margin as plates from 1100 px; the rest stay in the column. */
+const MARGIN_PLATES: ReadonlySet<LessonCardBlock['variant']> = new Set(['build-this', 'reading'])
+
 export function CardBlock({ block }: { readonly block: LessonCardBlock }) {
+  const label = CARD_LABEL[block.variant]
+  const plate = MARGIN_PLATES.has(block.variant)
+  const title = block.title !== undefined && block.title !== label ? block.title : undefined
   return (
-    <aside className="content-card no-margin" data-variant={block.variant} aria-label={block.title ?? CARD_LABEL[block.variant]}>
-      <p className="kicker">{CARD_LABEL[block.variant]}</p>
-      {block.title !== undefined ? (
+    <aside className={`content-card no-margin${plate ? ' content-plate' : ''}`} data-variant={block.variant} aria-label={block.title ?? label}>
+      {plate ? <p className="content-card-band">{label}</p> : null}
+      {plate ? (
+        title !== undefined ? (
+          <p className="content-card-title">
+            <InlineMd text={title} />
+          </p>
+        ) : null
+      ) : (
         <p className="content-card-title">
-          <InlineMd text={block.title} />
+          {title !== undefined ? (
+            <>
+              <span className="content-card-kind">{label}: </span>
+              <InlineMd text={title} />
+            </>
+          ) : (
+            label
+          )}
         </p>
-      ) : null}
+      )}
       <Markdown md={block.md} />
       {block.variant === 'build-this' && block.lab !== undefined ? (
         <p className="content-card-link">

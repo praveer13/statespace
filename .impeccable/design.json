@@ -837,6 +837,54 @@
       "description": "The interior's primary action: ink with newsprint type, incumbent 2-px radius.",
       "html": "<button class=\"ds-btn-primary\">Run it live in this tab</button>",
       "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;background:var(--ink,#161715);color:var(--ground,#ECEDE8);border:1px solid var(--ink,#161715);border-radius:2px;font-family:Jost,Arial,sans-serif;font-size:16px;font-weight:600;line-height:1.25;cursor:pointer}.ds-btn-primary:focus-visible{outline:2px solid var(--ink,#161715);outline-offset:2px}"
+    },
+    {
+      "name": "Running Head",
+      "kind": "nav",
+      "refersTo": "running-head",
+      "description": "A lesson's 64-px band in its volume ink: light numeral and stage name (a link back to the stage), the address in JuliaMono, a small cover figure. Drawers use --vol-10 and read 'Drawer beside S5 Time'.",
+      "html": "<div class=\"ds-rh\" style=\"--vol:#172033\"><a href=\"#\" class=\"ds-rh-vol\"><span class=\"ds-rh-n\">5</span><span class=\"ds-rh-name\">Time</span></a><code class=\"ds-rh-addr\">S5.L3</code></div>",
+      "css": ".ds-rh{display:flex;align-items:center;gap:16px;min-height:64px;padding:0 24px;background:var(--vol);color:#FFFFFF}.ds-rh-vol{display:inline-flex;align-items:baseline;gap:8px;color:#FFFFFF;text-decoration:none}.ds-rh-n{font-family:Jost,Arial,sans-serif;font-weight:300;font-size:34px;line-height:1}.ds-rh-name{font-family:Jost,Arial,sans-serif;font-weight:600;font-size:16px;letter-spacing:0.1em;text-transform:uppercase}.ds-rh-addr{margin-left:auto;font-family:JuliaMono,'Courier New',monospace;font-size:14px}.ds-rh a:focus-visible{outline:2px solid #FFFFFF;outline-offset:2px}"
+    },
+    {
+      "name": "Chapter Opener",
+      "kind": "custom",
+      "refersTo": "chapter-opener",
+      "description": "The lesson number large and light in the volume ink beside the title in Jost 600, then a Source Serif lede and one quiet colophon line.",
+      "html": "<header class=\"ds-co\" style=\"--vol:#172033\"><h1 class=\"ds-co-h\"><span class=\"ds-co-n\">L3</span><span>The double spend: you are the scheduler</span></h1><p class=\"ds-co-lede\">Choose enabled actions to produce a behavior that pays out more than the account holds.</p><p class=\"ds-co-line\">Full lesson · about 49 min · 0 of 11 questions answered</p></header>",
+      "css": ".ds-co{max-width:680px}.ds-co-h{display:flex;align-items:flex-start;gap:16px;margin:0;font-family:Jost,Arial,sans-serif;font-weight:600;font-size:clamp(36px,4vw,56px);line-height:1.08;letter-spacing:-0.02em;color:var(--ink,#161715)}.ds-co-n{font-weight:300;font-size:1.4em;line-height:0.9;color:var(--vol)}.ds-co-lede{font-family:'Source Serif 4',Georgia,serif;font-size:21px;line-height:1.5;margin:16px 0 8px}.ds-co-line{font-family:Jost,Arial,sans-serif;font-size:15px;color:var(--pencil,#4A4C47);margin:0}"
+    },
+    {
+      "name": "Exercise",
+      "kind": "custom",
+      "refersTo": "exercise",
+      "description": "A question set as a textbook exercise: number in the volume ink under a 3-px ink rule, choices as full-width ruled rows with a round ink mark that fills when picked.",
+      "html": "<fieldset class=\"ds-ex\" style=\"--vol:#172033\"><legend class=\"ds-ex-h\"><b>Exercise <span class=\"ds-ex-n\">1.1</span></b> · Before this segment</legend><label class=\"ds-ex-row\"><input type=\"radio\" name=\"ds-ex\"> <span>No: the guard runs before each write.</span></label><label class=\"ds-ex-row\"><input type=\"radio\" name=\"ds-ex\" checked> <span>Yes.</span></label></fieldset>",
+      "css": ".ds-ex{max-width:680px;margin:0;padding:12px 0 0;border:0;border-top:3px solid var(--ink,#161715)}.ds-ex-h{font-family:Jost,Arial,sans-serif;font-size:17px;padding:0;margin-bottom:12px}.ds-ex-n{color:var(--vol)}.ds-ex-row{display:flex;gap:12px;align-items:flex-start;min-height:44px;padding:10px 0;border-top:1px solid var(--rule,#7B7D76);font-family:'Source Serif 4',Georgia,serif;font-size:18px}.ds-ex-row input{appearance:none;flex:none;width:20px;height:20px;margin:3px 0 0;padding:3.5px;box-sizing:border-box;border:1.5px solid var(--ink,#161715);border-radius:50%;background-color:var(--paper,#FAFAF7);background-clip:content-box;transition:background-color 160ms cubic-bezier(0.16,1,0.3,1)}.ds-ex-row input:checked{background-color:var(--ink,#161715)}.ds-ex-row:has(input:checked){font-weight:600}@media (prefers-reduced-motion:reduce){.ds-ex-row input{transition:none}}"
+    },
+    {
+      "name": "Figure Strip",
+      "kind": "custom",
+      "refersTo": "figure-strip",
+      "description": "The header of a recorded-run figure and of a toy: 'Figure n · instrument · recorded run' in Jost on the volume ink, run ID in JuliaMono at the right; the body sits on paper in a 1.5-px ink frame.",
+      "html": "<figure class=\"ds-fig\" style=\"--vol:#172033\"><div class=\"ds-fig-head\"><span><b>Figure 2.1</b> · The Theater · recorded run</span><code>RUN-tlc-doublespend</code></div><pre class=\"ds-fig-code\">Next == \\E w \\in Workers : Read(w) \\/ Write(w)</pre></figure>",
+      "css": ".ds-fig{margin:0;max-width:680px}.ds-fig-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;padding:8px 12px;background:var(--vol);color:#FFFFFF;font-family:Jost,Arial,sans-serif;font-size:15px;line-height:1.3}.ds-fig-head b{font-weight:700}.ds-fig-head code{font-family:JuliaMono,'Courier New',monospace;font-size:13px}.ds-fig-code{margin:16px 0 0;padding:12px;background:var(--paper,#FAFAF7);border:1.5px solid var(--ink,#161715);overflow-x:auto;font-family:JuliaMono,'Courier New',monospace;font-size:15px}"
+    },
+    {
+      "name": "Specimen Label",
+      "kind": "card",
+      "refersTo": "specimen-label",
+      "description": "A claim or specimen as a museum label: paper plate, 1.5-px ink frame, 3-px top rule, title first, then the ID in JuliaMono beside a square of its volume ink.",
+      "html": "<aside class=\"ds-label\" style=\"--vol:#0F6468\"><p class=\"ds-label-t\">The overdraft</p><p class=\"ds-label-id\"><span class=\"ds-label-sq\"></span><code>SP-1.1</code> · S1 · specimen</p></aside>",
+      "css": ".ds-label{display:grid;gap:4px;max-width:32rem;padding:12px 16px 16px;background:var(--paper,#FAFAF7);border:1.5px solid var(--ink,#161715);border-top-width:3px}.ds-label p{margin:0}.ds-label-t{font-family:Jost,Arial,sans-serif;font-weight:600;font-size:21px}.ds-label-id{display:flex;align-items:center;gap:6px;font-family:Jost,Arial,sans-serif;font-size:15px;color:var(--pencil,#4A4C47)}.ds-label-id code{font-family:JuliaMono,'Courier New',monospace;font-size:13px;color:var(--ink,#161715)}.ds-label-sq{width:10px;height:10px;background:var(--vol);outline:1px solid var(--ink,#161715)}"
+    },
+    {
+      "name": "Toy Frame",
+      "kind": "custom",
+      "refersTo": "toy-frame",
+      "description": "An interactive lesson figure: volume-ink strip 'Figure · Game · title', toy on paper in a 1.5-px ink frame, an aria-live status line on a 3-px ink rule, and a caption saying what the page computes and that no solver runs here.",
+      "html": "<figure class=\"ds-toy\" style=\"--vol:#0F6468\"><div class=\"ds-toy-head\"><b>Figure · Game ·</b> Get past the guard</div><div class=\"ds-toy-body\"><p>Goal: choose balances and an amount that get past the guard and leave the sender below zero.</p><button class=\"ds-toy-btn\">Show me</button><p class=\"ds-toy-status\" aria-live=\"polite\">Pick two balances and an amount, then try the transfer.</p></div><figcaption class=\"ds-toy-cap\">The page runs the guard on each pick itself; no solver runs here, and the grid says nothing about numbers beyond it.</figcaption></figure>",
+      "css": ".ds-toy{margin:0;max-width:680px;background:var(--paper,#FAFAF7);border:1.5px solid var(--ink,#161715)}.ds-toy-head{padding:8px 12px;background:var(--vol);color:#FFFFFF;font-family:Jost,Arial,sans-serif;font-weight:600;font-size:15px}.ds-toy-head b{font-weight:700}.ds-toy-body{display:grid;gap:16px;padding:24px 16px;font-family:'Source Serif 4',Georgia,serif;font-size:18px}.ds-toy-body p{margin:0}.ds-toy-btn{justify-self:start;min-height:44px;padding:0 16px;background:var(--paper,#FAFAF7);border:1.5px solid var(--ink,#161715);font-family:Jost,Arial,sans-serif;font-weight:600;font-size:16px}.ds-toy-btn:focus-visible{outline:2px solid var(--ink,#161715);outline-offset:2px}.ds-toy-status{padding:8px 12px;border-left:3px solid var(--ink,#161715);font-size:16px}.ds-toy-cap{padding:12px 16px;border-top:1px solid var(--rule,#7B7D76);font-family:'Source Serif 4',Georgia,serif;font-size:15px;color:var(--pencil,#4A4C47)}"
     }
   ],
   "narrative": {

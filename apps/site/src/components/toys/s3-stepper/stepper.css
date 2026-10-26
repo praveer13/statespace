@@ -1,0 +1,211 @@
+/* The small-step stepper (S3.L4). The guard is an ink tree on paper: operators are square boxes, values round-ended,
+   the redex that steps next is inked solid, and a node with no rule is framed on the violation line and labelled
+   "no rule", so shape and words carry the meaning as well as colour. */
+
+.ss-pickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.ss-pickers .toy-choice {
+  align-content: start;
+}
+
+@media (min-width: 720px) {
+  .ss-pickers {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.ss-stage {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+/* The phase track: bind, checked, guard, run, then done or err. The current phase is inked; a visited one keeps a
+   3-px ink rule beneath it. */
+.ss-phases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-code);
+  font-size: 14px;
+}
+
+.ss-phase {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  border: var(--border-component) solid var(--rule);
+  color: var(--pencil);
+}
+
+.ss-phase[data-past='true'] {
+  border-color: var(--ink);
+  border-bottom-width: 3px;
+  color: var(--ink);
+}
+
+.ss-phase[data-now='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--ground);
+  font-weight: 600;
+}
+
+.ss-phase.line-violation[data-now='true'] {
+  border-color: var(--line-violation);
+  border-width: 3px;
+  border-style: solid;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.ss-phase-note {
+  font-family: var(--font-structure);
+  font-weight: 600;
+}
+
+.ss-now {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.ss-now-name {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.ss-now-cfg {
+  font-family: var(--font-code);
+  font-size: 17px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* The tree */
+.ss-tree {
+  justify-self: start;
+}
+
+.ss-edge {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.ss-box {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.ss-node .ss-label,
+.ss-node .ss-node-note {
+  font-family: var(--font-code);
+  font-size: 14px;
+  fill: var(--ink);
+}
+
+.ss-redex .ss-box {
+  fill: var(--ink);
+}
+
+.ss-redex .ss-label {
+  fill: var(--paper);
+  font-weight: 600;
+}
+
+.toy .ss-stuck-frame.line-violation {
+  fill: var(--paper);
+  stroke: var(--line-violation);
+  stroke-width: 3px;
+}
+
+.ss-node .ss-node-note {
+  font-family: var(--font-structure);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  fill: var(--ink);
+}
+
+/* The trace, a text mirror of every configuration so far */
+.ss-trace {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ss-cfg -1;
+  border-top: var(--border-component) solid var(--rule);
+}
+
+.ss-trace li {
+  counter-increment: ss-cfg;
+  display: grid;
+  grid-template-columns: 2em minmax(0, 9.5em) minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: baseline;
+  padding: var(--space-1) 0;
+  border-bottom: var(--border-component) solid var(--rule);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+}
+
+.ss-trace li::before {
+  content: counter(ss-cfg);
+  font-family: var(--font-structure);
+  font-variant-numeric: tabular-nums;
+  color: var(--pencil);
+}
+
+.ss-trace li[data-now='true'] {
+  font-weight: 600;
+}
+
+.ss-trace li[data-now='true']::before {
+  color: var(--ink);
+}
+
+.ss-rule {
+  font-family: var(--font-structure);
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.ss-trace code {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .ss-trace li {
+    grid-template-columns: 2em minmax(0, 1fr);
+  }
+
+  .ss-trace code {
+    grid-column: 2;
+  }
+}
+
+.ss-key-redex {
+  fill: var(--ink);
+}
+
+.ss-key-value {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}

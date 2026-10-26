@@ -1,0 +1,329 @@
+/* Not found (NotFound.tsx): an Operate-mode page in the Little Library. A page head with a 3-px ink rule, a shelf with
+   one volume missing, a Go-to field that reads an address back, and a ruled list of the four address forms. Every value
+   comes from styles/tokens.css. */
+
+.nf {
+  gap: var(--space-7);
+  padding-bottom: var(--space-6);
+}
+
+/* ------------------------------------------------------------------ the head */
+
+.nf-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: end;
+  padding-bottom: var(--space-5);
+  border-bottom: 3px solid var(--ink);
+}
+
+.nf-head-text {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.nf.screen h1 {
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.nf-lede {
+  margin: 0;
+  max-width: var(--measure);
+  font-family: var(--font-reading);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.nf a {
+  color: var(--ink);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+.nf a:hover {
+  text-decoration-thickness: 3px;
+}
+
+.nf-asked,
+.nf-meant {
+  margin: 0;
+  max-width: var(--measure);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.nf-meant {
+  color: var(--ink);
+}
+
+.nf code {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+  padding: 1px 4px;
+  background: var(--band);
+  color: var(--ink);
+}
+
+/* The shelf: ten spines in their volume inks on a 3-px board, the fifth slot empty and framed in a hairline. */
+.nf-shelf {
+  display: block;
+  width: min(100%, 216px);
+  height: auto;
+}
+
+.nf-shelf .nf-band {
+  fill: var(--on-vol);
+  opacity: 0.55;
+}
+
+.nf-shelf .nf-gap {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1.5;
+}
+
+.nf-shelf .nf-board {
+  fill: var(--ink);
+}
+
+/* In the night the darkest inks sink into the ground; a hairline keeps each spine's edge. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .nf-shelf .nf-spine {
+    stroke: var(--rule);
+    stroke-width: 1;
+  }
+}
+
+:root[data-theme='night'] .nf-shelf .nf-spine {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+/* ------------------------------------------------------------------ the sections */
+
+.nf.screen h2 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-size: var(--fs-section);
+  color: var(--rubric);
+}
+
+.nf-note {
+  margin: 0 0 var(--space-4);
+  max-width: var(--measure);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+  color: var(--pencil);
+}
+
+/* The Go-to field, the masthead's own form at reading size. */
+.nf-form {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 30rem;
+}
+
+.nf-label {
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.nf-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.nf-field {
+  min-width: 0;
+  min-height: var(--target);
+  padding: 0 var(--space-3);
+  box-sizing: border-box;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-right: 0;
+  border-radius: 0;
+  font-family: var(--font-code);
+  font-size: 17px;
+  caret-color: var(--ink);
+}
+
+.nf-field::placeholder {
+  color: var(--pencil);
+}
+
+.nf-field[aria-invalid] {
+  border-width: 2.5px;
+  border-right: 0;
+}
+
+.nf-go {
+  min-height: var(--target);
+  min-width: 4.5rem;
+  padding: 0 var(--space-4);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--ground);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nf-go:hover {
+  background: color-mix(in srgb, var(--ink) 82%, var(--ground));
+}
+
+.nf-go:focus-visible {
+  outline: var(--focus-width) solid var(--ground);
+  outline-offset: -5px;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.nf-reads {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: var(--lh-table);
+  color: var(--pencil);
+}
+
+.nf-reads[data-read] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nf-help {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
+  color: var(--ground);
+  font-family: var(--font-structure);
+  font-size: var(--fs-table);
+  line-height: 1.3;
+}
+
+.nf-help:empty {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ the address forms, a ruled list */
+
+.nf-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1.5px solid var(--ink);
+}
+
+.nf-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'addr'
+    'kind'
+    'what';
+  gap: var(--space-1);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.nf-addr {
+  grid-area: addr;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  min-height: var(--target);
+}
+
+.nf .nf-addr code {
+  padding: 0;
+  background: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.nf-swatch {
+  flex: none;
+  width: 9px;
+  height: 22px;
+  position: relative;
+}
+
+.nf-swatch::after {
+  content: '';
+  position: absolute;
+  inset: 4px 0 auto;
+  height: 2px;
+  background: color-mix(in srgb, var(--on-vol) 55%, transparent);
+}
+
+/* The swatch is a small spine like the shelf's; in the night it keeps an edge, as the shelf does. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .nf-swatch {
+    outline: 1px solid var(--rule);
+  }
+}
+
+:root[data-theme='night'] .nf-swatch {
+  outline: 1px solid var(--rule);
+}
+
+.nf-kind {
+  grid-area: kind;
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-size: var(--fs-interface);
+  color: var(--ink);
+}
+
+.nf-stage {
+  font-weight: 400;
+  color: var(--pencil);
+}
+
+.nf-what {
+  grid-area: what;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}
+
+@media (min-width: 700px) {
+  .nf-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .nf-shelf {
+    width: 216px;
+  }
+
+  .nf-item {
+    grid-template-columns: 9rem 11rem minmax(0, 1fr);
+    grid-template-areas: 'addr kind what';
+    align-items: center;
+    column-gap: var(--space-5);
+    padding-block: var(--space-2);
+  }
+}

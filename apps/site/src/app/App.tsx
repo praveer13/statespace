@@ -175,7 +175,7 @@ export function App() {
         </nav>
         <GoTo />
       </header>
-      <main id="main" className="shell-main" tabIndex={-1} data-bleed={pathname === '/' || pathname === '/stages' || pathname.startsWith('/stages/') ? 'true' : undefined}>
+      <main id="main" className="shell-main" tabIndex={-1} data-bleed={pathname === '/' || pathname === '/stages' || pathname.startsWith('/stages/') || pathname.startsWith('/lessons/') || pathname.startsWith('/drawers/') ? 'true' : undefined}>
         <Outlet />
       </main>
       <footer className="shell-foot">
