@@ -1,0 +1,1 @@
+function l(h){let e=h|0;return()=>{e=e+2654435769|0;let t=e^e>>>16;return t=Math.imul(t,569420461),t=t^t>>>15,t=Math.imul(t,1935289751),t=t^t>>>15,t>>>0}}function r(h){let e=2166136261;for(let t=0;t<h.length;t++)e^=h.charCodeAt(t),e=Math.imul(e,16777619);return e>>>0}export{r as h,l as s};
