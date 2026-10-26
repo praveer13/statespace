@@ -1,0 +1,1520 @@
+{
+ "id": "RUN-lab2-gate",
+ "title": "LAB-2 in the bench image: the zip's template fails each of LAB-2.c1 to LAB-2.c7, the private reference solution passes each and its receipts verify, eleven weakening and Prove-it mutants of the solution each fail their check, and a stage with the sandbox wanted and unable to start judges nothing",
+ "task": "W2-T36",
+ "origin": "recorded",
+ "records": "GATE-labs on LAB-2 in full mode (ARCHITECTURE.md section 13.5), and the keys of the weakening and Prove-it mutants of curriculum/S02-proof.md section 3.4, computed by Lean and lake comparator on mutated copies of the reference solution",
+ "engine": "statespace",
+ "version": "0.1.0",
+ "version_string": "statespace 0.1.0; Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release); Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)",
+ "binary": "the statespace command line the LAB-2 zip ships (.statespace/cli/statespace/, from bench/statespace/), run with uv in the bench image; Lean and Lake from the image's elan toolchain, which lean-toolchain names",
+ "binary_sha256": "7ee9efa1ccc53c2238880568d1d4d3210db8ad6bc4fc64f655487fec87efacbd",
+ "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+ "recorded_at": "2026-10-26T21:08:22.036Z",
+ "started_at": "2026-10-26T21:04:42.140Z",
+ "duration_s": 219.896,
+ "argv": [
+  "docker",
+  "run",
+  "--rm",
+  "--memory=6g",
+  "-v",
+  "<sandbox>:/w",
+  "-w",
+  "/w/template",
+  "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "uv",
+  "run",
+  "--quiet",
+  "statespace",
+  "check",
+  "lab2",
+  "--assisted",
+  "none",
+  "--agent",
+  "no"
+ ],
+ "inputs": [
+  {
+   "name": "LAB-2.zip",
+   "sha256": "69c5f472ec6ce7518b74be4c169a0cccd2bd21c41c903493982a15b6ed3bd653",
+   "bytes": 268637,
+   "role": "the lab zip, built by scripts/labs/build-zips.mjs from the inputs below"
+  },
+  {
+   "path": "labs/LAB-2/",
+   "sha256": "ac59e4665df35673dace044c454ad82fd4299c5fbe4787a9d829a9080dec29c2",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 24,
+   "role": "the lab folder: the starter files"
+  },
+  {
+   "path": "labs/template/",
+   "sha256": "d32e9f1149ffb9dd297b0eebddeca9beb5b5bf5cf116d2e064aa3ee687b9b4c2",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 16,
+   "role": "the repository frame"
+  },
+  {
+   "path": "bench/statespace/",
+   "sha256": "7ee9efa1ccc53c2238880568d1d4d3210db8ad6bc4fc64f655487fec87efacbd",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 77,
+   "role": "the statespace command line the zip ships"
+  },
+  {
+   "path": "bench/statespace/labs/lab2.py",
+   "sha256": "22aa5733b060d351f8406abf19ddc884eb9c808bc85f943ae9cf684f4f7c62b1",
+   "bytes": 39846,
+   "role": "LAB-2's checks"
+  },
+  {
+   "path": "scripts/labs/build-zips.mjs",
+   "sha256": "12bb14a006424dc8c459f5fbc1482b93470ecc53ab658e44fa2887c8485ebc4b",
+   "bytes": 14674,
+   "role": "harness"
+  },
+  {
+   "path": "scripts/spikes/W2-T36/record-lab2.py",
+   "sha256": "308cd801060691f3ded11789c58d78053e926d44d4d991e8ab11f5c24d93c7b3",
+   "bytes": 19127,
+   "role": "harness"
+  },
+  {
+   "name": "the private reference solution of LAB-2 (not in this repository)",
+   "sha256": "67030a75f380ba7849229960418c741b87204d26369e4846a8928df92ccc4c50",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 9,
+   "role": "solution"
+  }
+ ],
+ "budget": {
+  "memory": "6g"
+ },
+ "exit_code": 1,
+ "verdict_lines": [
+  "  FAIL  LAB-2.c1  The receipt shows acceptance and the axiom list",
+  "                  make your three calls first, in labs/LAB-2/calls/LAB-2.1.txt: any axioms? which? what does this check return? Then run it again",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-2.1/20261026T210443Z.json (reported from your machine; 0 runs)",
+  "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+  "                  transfer_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+  "                  suspects: the proof",
+  "  receipt  receipts/LAB-2.2/20261026T210443Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+  "  FAIL  LAB-2.c3  Comparator accepts a manual proof",
+  "                  transfer_rejected still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+  "                  suspects: the proof",
+  "  receipt  receipts/LAB-2.3/20261026T210445Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+  "  FAIL  LAB-2.c4  Comparator accepts a manual proof",
+  "                  transfer_nonneg still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+  "                  suspects: the proof",
+  "  receipt  receipts/LAB-2.4/20261026T210447Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+  "  FAIL  LAB-2.c5  Comparator accepts the sequence theorem",
+  "                  run_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+  "                  suspects: the proof",
+  "  receipt  receipts/LAB-2.5/20261026T210448Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+  "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+  "                  xfer_frame, xfer_pair, xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+  "                  suspects: the proof",
+  "  receipt  receipts/LAB-2.6/20261026T210450Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+  "  FAIL  LAB-2.c7  The whole lab is accepted and every card passes validation",
+  "                  5 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.1.yaml: write the fields still marked TODO(you) (the proposition in your words, the \"if weakened\" witness, the requirement row)",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-2.7/20261026T210452Z.json (reported from your machine; 0 runs)",
+  "  receipt  receipts/LAB-2.8/20261026T210453Z.json (reported from your machine; 0 runs)"
+ ],
+ "outputs": [
+  {
+   "path": "runs/RUN-lab2-gate/versions.log",
+   "sha256": "d1c112961f34f45444173a423f9bbe72c98cd3d632f7f10d0554ce192e966c3c",
+   "bytes": 159,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/template.log",
+   "sha256": "8679cb7a9547bf76693c796276f434d7559bddbbe0f3e01838cfd41a15c438eb",
+   "bytes": 4999,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.1.log",
+   "sha256": "4062f600631f72c73b544e0b7b48dd3892826acb1e81df60bde0aec4ce733f54",
+   "bytes": 975,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.2.log",
+   "sha256": "1e1ab1d1527fbff33e2f80ce14f8e5490166ebb33f499f02d36e3e72e34d7703",
+   "bytes": 557,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.3.log",
+   "sha256": "4737df4a6b4fd48045bf97933295815535105ef1e0f16cfd202e735eb4a992e9",
+   "bytes": 547,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.4.log",
+   "sha256": "af8e87607517e90df7e2bc0292f6d5c6b32b6fd9fd1a4f1a9bcbfd263b7e91d6",
+   "bytes": 548,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.5.log",
+   "sha256": "df65ad58bafbb33d54eea0e4c4a92bf81ec85280e82df70756e7a405fd95b408",
+   "bytes": 520,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.6.log",
+   "sha256": "6269fa6c871af7b1f6c7f8f5629b6585e0e1600fa4f710b9f0262dbd804b1938",
+   "bytes": 723,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-lab2.7.log",
+   "sha256": "00c0104007377887cb2afa9231fc711f09fdf4be2b8b1a2a0050303ff28573e1",
+   "bytes": 746,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/solution-receipts.log",
+   "sha256": "ca8254ef4587dc2a05d2d8e99e033bdc8fa89186908f58a078b5d177b0081a0d",
+   "bytes": 4970,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-hyp-same-name-check.log",
+   "sha256": "7b5e09b070a98a3c797c33c5ec853c7ed733fed48d61af3a8478e6c414d8fc88",
+   "bytes": 633,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-noguard-check.log",
+   "sha256": "4a5aa8fe6332650c362b9f3ef98389d6d50905b28c81b25dacb6ae7c23fa9f82",
+   "bytes": 640,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-noguard-nonneg-check.log",
+   "sha256": "b67c487e107b236ec08c97c8a44445a149b6aeb4133f6f1d385ba92a96eb7be7",
+   "bytes": 702,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-automation-check.log",
+   "sha256": "390597424a045e5d477e95ee18bbf611d33fd8cbc016191c899c967f54f6c832",
+   "bytes": 718,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-ih-ungeneralised-check.log",
+   "sha256": "aca3374da9117812960bc7a54163e49769cce6c909d9a435c99b65006ff46488",
+   "bytes": 490,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-native-decide-check.log",
+   "sha256": "29a1e4e2f763995ebf9dcbc2a2c15cd2b73f637f99949ac69e335e078395ed65",
+   "bytes": 830,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-sorry-xfer-self-check.log",
+   "sha256": "12990cee646e8bea301e45fdc6ddf63543177e0a72a8179b7ba1d8e78916418e",
+   "bytes": 606,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-weakened-challenge-check.log",
+   "sha256": "f80f5cd13abdb1d29ddb320d727ec956c2939a25f1a17d86740f3a413b397986",
+   "bytes": 556,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-config-drops-theorems-check.log",
+   "sha256": "37018ee9a9ed7566603f83b2e2fcdb1d0da5b2e7856b2b2ffb040a7e8c4b5fce",
+   "bytes": 696,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-specimen-other-account-check.log",
+   "sha256": "202a7d2525990a3e530eb62cc28ba32b4099a6d88973cf942e0fc8140d4b2709",
+   "bytes": 782,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-card-typed-P-check.log",
+   "sha256": "4203cf1ef03fdefabcce4cd5463a79d42f8ccc0ab8724720248198e0ff886deb",
+   "bytes": 450,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab2-gate/mutant-sandbox-wanted-check.log",
+   "sha256": "f79dab786f1bb9c33b0ca786a0012992f1e3f0d2f44fa9e809ac1d9d598a9f81",
+   "bytes": 874,
+   "kind": "log"
+  }
+ ],
+ "values": {
+  "template": {
+   "LAB-2.c1": {
+    "pass": false,
+    "message": "make your three calls first, in labs/LAB-2/calls/LAB-2.1.txt: any axioms? which? what does this check return? Then run it again",
+    "suspect": "your spec"
+   },
+   "LAB-2.c2": {
+    "pass": false,
+    "message": "transfer_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "suspect": "the proof"
+   },
+   "LAB-2.c3": {
+    "pass": false,
+    "message": "transfer_rejected still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "suspect": "the proof"
+   },
+   "LAB-2.c4": {
+    "pass": false,
+    "message": "transfer_nonneg still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "suspect": "the proof"
+   },
+   "LAB-2.c5": {
+    "pass": false,
+    "message": "run_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "suspect": "the proof"
+   },
+   "LAB-2.c6": {
+    "pass": false,
+    "message": "xfer_frame, xfer_pair, xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "suspect": "the proof"
+   },
+   "LAB-2.c7": {
+    "pass": false,
+    "message": "5 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.1.yaml: write the fields still marked TODO(you) (the proposition in your words, the \"if weakened\" witness, the requirement row)",
+    "suspect": "your spec"
+   }
+  },
+  "solution": {
+   "LAB-2.c1": {
+    "pass": true,
+    "message": "comparator printed \"Your solution is okay!\" and \"Lean default kernel accepts the solution\"; transfer_conserves depends on [propext, Quot.sound]; the challenge hash is the published one"
+   },
+   "LAB-2.c2": {
+    "pass": true,
+    "message": "comparator accepts transfer_conserves against the pinned statement (Lean default kernel); manual-mode scan: no automation"
+   },
+   "LAB-2.c3": {
+    "pass": true,
+    "message": "comparator accepts transfer_rejected against the pinned statement (Lean default kernel); manual-mode scan: no automation"
+   },
+   "LAB-2.c4": {
+    "pass": true,
+    "message": "comparator accepts transfer_nonneg against the pinned statement (Lean default kernel); manual-mode scan: no automation"
+   },
+   "LAB-2.c5": {
+    "pass": true,
+    "message": "comparator accepts run_conserves against the pinned statement (Lean default kernel)"
+   },
+   "LAB-2.c6": {
+    "pass": true,
+    "message": "comparator accepts xfer_frame, xfer_pair, xfer_self against the pinned statement (Lean default kernel); both specimens build and close by decide, with no sorryAx, _native or custom axiom"
+   },
+   "LAB-2.c7": {
+    "pass": true,
+    "message": "lake comparator --paranoid and lake check --paranoid accept; 6 checkers accept (Lean default, Lean paranoid, con-leche, con-ron, lean4lean, nanoda); the five cards pass claim@1 validation"
+   }
+  },
+  "mutants": {
+   "hyp-same-name": {
+    "check": {
+     "LAB-2.c3": {
+      "pass": false,
+      "message": "comparator: your theorem does not state the challenge's statement; prove the pinned statement as written",
+      "suspect": "your spec"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c3  Comparator accepts a manual proof",
+     "                  comparator: your theorem does not state the challenge's statement; prove the pinned statement as written",
+     "                  suspects: your spec",
+     "  receipt  receipts/LAB-2.3/20261026T210804Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "noguard": {
+    "check": {
+     "LAB-2.c2": {
+      "pass": false,
+      "message": "comparator: a definition in your solution is not the challenge's; restore the definitions and prove the statement about them",
+      "suspect": "your spec"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+     "                  comparator: a definition in your solution is not the challenge's; restore the definitions and prove the statement about them",
+     "                  suspects: your spec",
+     "  receipt  receipts/LAB-2.2/20261026T210806Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "noguard-nonneg": {
+    "check": {
+     "LAB-2.c4": {
+      "pass": false,
+      "message": "Solution.lean does not build",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c4  Comparator accepts a manual proof",
+     "                  Solution.lean does not build",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.4/20261026T210808Z.json (reported from your machine; 1 run; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0))"
+    ]
+   },
+   "automation": {
+    "check": {
+     "LAB-2.c2": {
+      "pass": false,
+      "message": "comparator accepts, and the manual-mode scan found automation in the taught proof: transfer_conserves uses omega",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+     "                  comparator accepts, and the manual-mode scan found automation in the taught proof: transfer_conserves uses omega",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.2/20261026T210809Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "ih-ungeneralised": {
+    "check": {
+     "LAB-2.c5": {
+      "pass": false,
+      "message": "Solution.lean does not build",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c5  Comparator accepts the sequence theorem",
+     "                  Solution.lean does not build",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.5/20261026T210811Z.json (reported from your machine; 1 run; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0))"
+    ]
+   },
+   "native-decide": {
+    "check": {
+     "LAB-2.c6": {
+      "pass": false,
+      "message": "the three theorems are accepted; the specimens are not: broken/Broken.lean: selftransfer_mints must close by decide (and not native_decide)",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+     "                  the three theorems are accepted; the specimens are not: broken/Broken.lean: selftransfer_mints must close by decide (and not native_decide)",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.6/20261026T210811Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "sorry-xfer-self": {
+    "check": {
+     "LAB-2.c6": {
+      "pass": false,
+      "message": "xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+     "                  xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.6/20261026T210814Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "weakened-challenge": {
+    "check": {
+     "LAB-2.c2": {
+      "pass": false,
+      "message": "challenge/Challenge.lean is not the published challenge: its statement hash is ebf3da41be86a356..., the course published c46098c4ddd44e80...",
+      "suspect": "your spec"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+     "                  challenge/Challenge.lean is not the published challenge: its statement hash is ebf3da41be86a356..., the course published c46098c4ddd44e80...",
+     "                  suspects: your spec",
+     "  receipt  receipts/LAB-2.2/20261026T210817Z.json (reported from your machine; 0 runs)"
+    ]
+   },
+   "config-drops-theorems": {
+    "check": {
+     "LAB-2.c6": {
+      "pass": false,
+      "message": "labs/LAB-2/stages/LAB-2.6/comparator.json is not the published configuration (statement hash d864acbe9baa8950...)",
+      "suspect": "your spec"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+     "                  labs/LAB-2/stages/LAB-2.6/comparator.json is not the published configuration (statement hash d864acbe9baa8950...)",
+     "                  suspects: your spec",
+     "  receipt  receipts/LAB-2.6/20261026T210817Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "specimen-other-account": {
+    "check": {
+     "LAB-2.c6": {
+      "pass": false,
+      "message": "the three theorems are accepted; the specimens are not: broken/Broken.lean or fixed/Fixed.lean does not build: error: broken/Broken.lean:4:72: Tactic `decide` proved that the proposition; error: build failed",
+      "suspect": "the proof"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+     "                  the three theorems are accepted; the specimens are not: broken/Broken.lean or fixed/Fixed.lean does not build: error: broken/Broken.lean:4:72: Tactic `decide` proved that the proposition; error: build failed",
+     "                  suspects: the proof",
+     "  receipt  receipts/LAB-2.6/20261026T210818Z.json (reported from your machine; 4 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+    ]
+   },
+   "card-typed-P": {
+    "check": {
+     "LAB-2.c7": {
+      "pass": false,
+      "message": "1 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.2.yaml: the requirement row reads [P]; requirement fit is never [P], since no checker reads a requirement",
+      "suspect": "your spec"
+     }
+    },
+    "exit_code": 1,
+    "lines": [
+     "  FAIL  LAB-2.c7  The whole lab is accepted and every card passes validation",
+     "                  1 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.2.yaml: the requirement row reads [P]; requirement fit is never [P], since no checker reads a requirement",
+     "                  suspects: your spec",
+     "  receipt  receipts/LAB-2.7/20261026T210821Z.json (reported from your machine; 0 runs)"
+    ]
+   },
+   "sandbox-wanted": {
+    "check": {},
+    "exit_code": 3,
+    "lines": [
+     "  not run: LAB-2.c2 could not run, so nothing was judged: Lean's sandbox could not start, so nothing was judged: bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>. (the container's seccomp profile blocks clone with namespace flags, as Docker's default profile does, or the host forbids unprivileged user namespaces; to change it: the devcontainer's opt-in sandbox profile; on a host, enable unprivileged user namespaces). Running without it is your decision, made once and recorded: run `STATESPACE_SANDBOX=off uv run statespace check ...` and every receipt says sandbox: off (labs/README.md section 4.4). Your agent never makes that choice",
+     "  no receipt was written"
+    ]
+   }
+  },
+  "versions": {
+   "lean": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+   "lake": "Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)"
+  }
+ },
+ "checks": [
+  {
+   "id": "template-fails-every-check",
+   "pass": true
+  },
+  {
+   "id": "solution-passes-every-check",
+   "pass": true
+  },
+  {
+   "id": "solution-receipts-verify",
+   "pass": true
+  },
+  {
+   "id": "every-mutant-fails-its-check",
+   "pass": true
+  },
+  {
+   "id": "sandbox-wanted-judges-nothing",
+   "pass": true
+  }
+ ],
+ "environment": {
+  "os": "Linux 6.12.63",
+  "cpu_count": 20,
+  "cpu_architecture": "x86_64",
+  "container_memory": "6g"
+ },
+ "primary_config": "template",
+ "configs": [
+  {
+   "id": "versions",
+   "purpose": "the tools the image runs the lab with, from the lab's Lean project",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/template/labs/LAB-2",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "-c",
+    "lean --version; lake --version"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.062,
+   "verdict_lines": [
+    "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/versions.log",
+     "sha256": "d1c112961f34f45444173a423f9bbe72c98cd3d632f7f10d0554ce192e966c3c",
+     "bytes": 159,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "template",
+   "purpose": "the zip as a learner unpacks it: every built check must fail, naming what it suspects",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/template",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 10.568,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c1  The receipt shows acceptance and the axiom list",
+    "                  make your three calls first, in labs/LAB-2/calls/LAB-2.1.txt: any axioms? which? what does this check return? Then run it again",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.1/20261026T210443Z.json (reported from your machine; 0 runs)",
+    "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+    "                  transfer_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.2/20261026T210443Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+    "  FAIL  LAB-2.c3  Comparator accepts a manual proof",
+    "                  transfer_rejected still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.3/20261026T210445Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+    "  FAIL  LAB-2.c4  Comparator accepts a manual proof",
+    "                  transfer_nonneg still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.4/20261026T210447Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+    "  FAIL  LAB-2.c5  Comparator accepts the sequence theorem",
+    "                  run_conserves still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.5/20261026T210448Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+    "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  xfer_frame, xfer_pair, xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.6/20261026T210450Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))",
+    "  FAIL  LAB-2.c7  The whole lab is accepted and every card passes validation",
+    "                  5 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.1.yaml: write the fields still marked TODO(you) (the proposition in your words, the \"if weakened\" witness, the requirement row)",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.7/20261026T210452Z.json (reported from your machine; 0 runs)",
+    "  receipt  receipts/LAB-2.8/20261026T210453Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/template.log",
+     "sha256": "8679cb7a9547bf76693c796276f434d7559bddbbe0f3e01838cfd41a15c438eb",
+     "bytes": 4999,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.1",
+   "purpose": "the private reference solution: LAB-2.c1 must pass and LAB-2.1 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.1",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 2.608,
+   "verdict_lines": [
+    "  pass  LAB-2.c1  The receipt shows acceptance and the axiom list",
+    "                  comparator printed \"Your solution is okay!\" and \"Lean default kernel accepts the solution\"; transfer_conserves depends on [propext, Quot.sound]; the challenge hash is the published one",
+    "  receipt  receipts/LAB-2.1/20261026T210453Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.1.log",
+     "sha256": "4062f600631f72c73b544e0b7b48dd3892826acb1e81df60bde0aec4ce733f54",
+     "bytes": 975,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.2",
+   "purpose": "the private reference solution: LAB-2.c2 must pass and LAB-2.2 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 2.068,
+   "verdict_lines": [
+    "  pass  LAB-2.c2  Comparator accepts a manual proof",
+    "                  comparator accepts transfer_conserves against the pinned statement (Lean default kernel); manual-mode scan: no automation",
+    "  receipt  receipts/LAB-2.2/20261026T210455Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.2.log",
+     "sha256": "1e1ab1d1527fbff33e2f80ce14f8e5490166ebb33f499f02d36e3e72e34d7703",
+     "bytes": 557,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.3",
+   "purpose": "the private reference solution: LAB-2.c3 must pass and LAB-2.3 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 1.95,
+   "verdict_lines": [
+    "  pass  LAB-2.c3  Comparator accepts a manual proof",
+    "                  comparator accepts transfer_rejected against the pinned statement (Lean default kernel); manual-mode scan: no automation",
+    "  receipt  receipts/LAB-2.3/20261026T210457Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.3.log",
+     "sha256": "4737df4a6b4fd48045bf97933295815535105ef1e0f16cfd202e735eb4a992e9",
+     "bytes": 547,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.4",
+   "purpose": "the private reference solution: LAB-2.c4 must pass and LAB-2.4 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.4",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 1.854,
+   "verdict_lines": [
+    "  pass  LAB-2.c4  Comparator accepts a manual proof",
+    "                  comparator accepts transfer_nonneg against the pinned statement (Lean default kernel); manual-mode scan: no automation",
+    "  receipt  receipts/LAB-2.4/20261026T210459Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.4.log",
+     "sha256": "af8e87607517e90df7e2bc0292f6d5c6b32b6fd9fd1a4f1a9bcbfd263b7e91d6",
+     "bytes": 548,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.5",
+   "purpose": "the private reference solution: LAB-2.c5 must pass and LAB-2.5 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.5",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 1.793,
+   "verdict_lines": [
+    "  pass  LAB-2.c5  Comparator accepts the sequence theorem",
+    "                  comparator accepts run_conserves against the pinned statement (Lean default kernel)",
+    "  receipt  receipts/LAB-2.5/20261026T210501Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.5.log",
+     "sha256": "df65ad58bafbb33d54eea0e4c4a92bf81ec85280e82df70756e7a405fd95b408",
+     "bytes": 520,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.6",
+   "purpose": "the private reference solution: LAB-2.c6 must pass and LAB-2.6 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 2.624,
+   "verdict_lines": [
+    "  pass  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  comparator accepts xfer_frame, xfer_pair, xfer_self against the pinned statement (Lean default kernel); both specimens build and close by decide, with no sorryAx, _native or custom axiom",
+    "  receipt  receipts/LAB-2.6/20261026T210503Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.6.log",
+     "sha256": "6269fa6c871af7b1f6c7f8f5629b6585e0e1600fa4f710b9f0262dbd804b1938",
+     "bytes": 723,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab2.7",
+   "purpose": "the private reference solution: LAB-2.c7 must pass and LAB-2.7 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.7",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 178.026,
+   "verdict_lines": [
+    "  pass  LAB-2.c7  The whole lab is accepted and every card passes validation",
+    "                  lake comparator --paranoid and lake check --paranoid accept; 6 checkers accept (Lean default, Lean paranoid, con-leche, con-ron, lean4lean, nanoda); the five cards pass claim@1 validation",
+    "  receipt  receipts/LAB-2.7/20261026T210505Z.json (reported from your machine; 4 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-lab2.7.log",
+     "sha256": "00c0104007377887cb2afa9231fc711f09fdf4be2b8b1a2a0050303ff28573e1",
+     "bytes": 746,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-receipts",
+   "purpose": "statespace receipt verify on every receipt the solution's stages wrote",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "-c",
+    "for f in receipts/LAB-2.*/*.json; do uv run --quiet statespace receipt verify \"$f\" || exit 1; done"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.612,
+   "verdict_lines": [
+    "receipts/LAB-2.1/20261026T210453Z.json",
+    "  receipt   LAB-2.1 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:04:55Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.2/20261026T210455Z.json",
+    "  receipt   LAB-2.2 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:04:57Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.3/20261026T210457Z.json",
+    "  receipt   LAB-2.3 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:04:59Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.4/20261026T210459Z.json",
+    "  receipt   LAB-2.4 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:05:01Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.5/20261026T210501Z.json",
+    "  receipt   LAB-2.5 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:05:03Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.6/20261026T210503Z.json",
+    "  receipt   LAB-2.6 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:05:05Z",
+    "  schema    valid against receipt@1",
+    "  runs      6, 0 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-2.7/20261026T210505Z.json",
+    "  receipt   LAB-2.7 of LAB-2, reported from your machine, written by statespace 0.1.0 at 2026-10-26T21:08:03Z",
+    "  schema    valid against receipt@1",
+    "  runs      4, 0 re-derived from their verdict lines",
+    "  statements 6 recomputed and equal",
+    "  integrity matches",
+    "  note  /runs: lake runs were not re-derived: this version of statespace does not read lake's verdict lines yet, so their verdicts are shown as reported",
+    "  note  /runs: lean runs were not re-derived: this version of statespace does not read lean's verdict lines yet, so their verdicts are shown as reported",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/solution-receipts.log",
+     "sha256": "ca8254ef4587dc2a05d2d8e99e033bdc8fa89186908f58a078b5d177b0081a0d",
+     "bytes": 4970,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-hyp-same-name-check",
+   "purpose": "mutant hyp-same-name: the stage check it targets, lab2.3, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-hyp-same-name",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 1.963,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c3  Comparator accepts a manual proof",
+    "                  comparator: your theorem does not state the challenge's statement; prove the pinned statement as written",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.3/20261026T210804Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-hyp-same-name-check.log",
+     "sha256": "7b5e09b070a98a3c797c33c5ec853c7ed733fed48d61af3a8478e6c414d8fc88",
+     "bytes": 633,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-noguard-check",
+   "purpose": "mutant noguard: the stage check it targets, lab2.2, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-noguard",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 1.927,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+    "                  comparator: a definition in your solution is not the challenge's; restore the definitions and prove the statement about them",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.2/20261026T210806Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-noguard-check.log",
+     "sha256": "4a5aa8fe6332650c362b9f3ef98389d6d50905b28c81b25dacb6ae7c23fa9f82",
+     "bytes": 640,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-noguard-nonneg-check",
+   "purpose": "mutant noguard-nonneg: the stage check it targets, lab2.4, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-noguard-nonneg",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.4",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.522,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c4  Comparator accepts a manual proof",
+    "                  Solution.lean does not build",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.4/20261026T210808Z.json (reported from your machine; 1 run; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-noguard-nonneg-check.log",
+     "sha256": "b67c487e107b236ec08c97c8a44445a149b6aeb4133f6f1d385ba92a96eb7be7",
+     "bytes": 702,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-automation-check",
+   "purpose": "mutant automation: the stage check it targets, lab2.2, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-automation",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 2.289,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+    "                  comparator accepts, and the manual-mode scan found automation in the taught proof: transfer_conserves uses omega",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.2/20261026T210809Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-automation-check.log",
+     "sha256": "390597424a045e5d477e95ee18bbf611d33fd8cbc016191c899c967f54f6c832",
+     "bytes": 718,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-ih-ungeneralised-check",
+   "purpose": "mutant ih-ungeneralised: the stage check it targets, lab2.5, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-ih-ungeneralised",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.5",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.524,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c5  Comparator accepts the sequence theorem",
+    "                  Solution.lean does not build",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.5/20261026T210811Z.json (reported from your machine; 1 run; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-ih-ungeneralised-check.log",
+     "sha256": "aca3374da9117812960bc7a54163e49769cce6c909d9a435c99b65006ff46488",
+     "bytes": 490,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-native-decide-check",
+   "purpose": "mutant native-decide: the stage check it targets, lab2.6, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-native-decide",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 2.875,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  the three theorems are accepted; the specimens are not: broken/Broken.lean: selftransfer_mints must close by decide (and not native_decide)",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.6/20261026T210811Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-native-decide-check.log",
+     "sha256": "29a1e4e2f763995ebf9dcbc2a2c15cd2b73f637f99949ac69e335e078395ed65",
+     "bytes": 830,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-sorry-xfer-self-check",
+   "purpose": "mutant sorry-xfer-self: the stage check it targets, lab2.6, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-sorry-xfer-self",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 2.652,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  xfer_self still closes with sorry: #print axioms lists sorryAx, which comparator rejects",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.6/20261026T210814Z.json (reported from your machine; 6 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-sorry-xfer-self-check.log",
+     "sha256": "12990cee646e8bea301e45fdc6ddf63543177e0a72a8179b7ba1d8e78916418e",
+     "bytes": 606,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-weakened-challenge-check",
+   "purpose": "mutant weakened-challenge: the stage check it targets, lab2.2, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-weakened-challenge",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.293,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c2  Comparator accepts a manual proof",
+    "                  challenge/Challenge.lean is not the published challenge: its statement hash is ebf3da41be86a356..., the course published c46098c4ddd44e80...",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.2/20261026T210817Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-weakened-challenge-check.log",
+     "sha256": "f80f5cd13abdb1d29ddb320d727ec956c2939a25f1a17d86740f3a413b397986",
+     "bytes": 556,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-config-drops-theorems-check",
+   "purpose": "mutant config-drops-theorems: the stage check it targets, lab2.6, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-config-drops-theorems",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 1.025,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  labs/LAB-2/stages/LAB-2.6/comparator.json is not the published configuration (statement hash d864acbe9baa8950...)",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.6/20261026T210817Z.json (reported from your machine; 3 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-config-drops-theorems-check.log",
+     "sha256": "37018ee9a9ed7566603f83b2e2fcdb1d0da5b2e7856b2b2ffb040a7e8c4b5fce",
+     "bytes": 696,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-specimen-other-account-check",
+   "purpose": "mutant specimen-other-account: the stage check it targets, lab2.6, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-specimen-other-account",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 2.652,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c6  The three theorems are accepted and both specimens build",
+    "                  the three theorems are accepted; the specimens are not: broken/Broken.lean or fixed/Fixed.lean does not build: error: broken/Broken.lean:4:72: Tactic `decide` proved that the proposition; error: build failed",
+    "                  suspects: the proof",
+    "  receipt  receipts/LAB-2.6/20261026T210818Z.json (reported from your machine; 4 runs; lake Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0), lean Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release))"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-specimen-other-account-check.log",
+     "sha256": "202a7d2525990a3e530eb62cc28ba32b4099a6d88973cf942e0fc8140d4b2709",
+     "bytes": 782,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-card-typed-P-check",
+   "purpose": "mutant card-typed-P: the stage check it targets, lab2.7, on the mutated solution; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-card-typed-P",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.7",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.322,
+   "verdict_lines": [
+    "  FAIL  LAB-2.c7  The whole lab is accepted and every card passes validation",
+    "                  1 of 5 claim cards do not pass claim@1 validation yet: claims/CL-2.2.yaml: the requirement row reads [P]; requirement fit is never [P], since no checker reads a requirement",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-2.7/20261026T210821Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-card-typed-P-check.log",
+     "sha256": "4203cf1ef03fdefabcce4cd5463a79d42f8ccc0ab8724720248198e0ff886deb",
+     "bytes": 450,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-sandbox-wanted-check",
+   "purpose": "mutant sandbox-wanted: the sandbox wanted, with no recorded choice; its verdict lines are the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-sandbox-wanted",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "env",
+    "-u",
+    "STATESPACE_SANDBOX",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab2.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 3,
+   "duration_s": 0.232,
+   "verdict_lines": [
+    "  not run: LAB-2.c2 could not run, so nothing was judged: Lean's sandbox could not start, so nothing was judged: bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>. (the container's seccomp profile blocks clone with namespace flags, as Docker's default profile does, or the host forbids unprivileged user namespaces; to change it: the devcontainer's opt-in sandbox profile; on a host, enable unprivileged user namespaces). Running without it is your decision, made once and recorded: run `STATESPACE_SANDBOX=off uv run statespace check ...` and every receipt says sandbox: off (labs/README.md section 4.4). Your agent never makes that choice",
+    "  no receipt was written"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab2-gate/mutant-sandbox-wanted-check.log",
+     "sha256": "f79dab786f1bb9c33b0ca786a0012992f1e3f0d2f44fa9e809ac1d9d598a9f81",
+     "bytes": 874,
+     "kind": "log"
+    }
+   ]
+  }
+ ],
+ "notes": [
+  "Recorded by W2-T36 with scripts/spikes/W2-T36/record-lab2.py; the reference solution is private and named here only by its manifest hash.",
+  "Every Lean configuration ran with STATESPACE_SANDBOX=off, the learner's recorded choice, so lake comparator and lake check ran with --inadvisably-no-sandbox and every receipt records sandbox: off; mutant sandbox-wanted runs without it.",
+  "LAB-2.8 is a stretch stage with no check, so no configuration runs it.",
+  "Receipt file names carry the time they were written, so a re-run prints other names."
+ ]
+}

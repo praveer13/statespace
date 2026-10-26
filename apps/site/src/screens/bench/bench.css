@@ -262,3 +262,81 @@
     font-size: 32px;
   }
 }
+
+/* ------------------------------------------------------------------ receipts: import, and the tab's copy */
+
+.bench-receipts {
+  min-width: 0;
+  max-width: 52rem;
+}
+
+.bench-receipts-lede {
+  max-width: var(--measure);
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+}
+
+.bench-held {
+  margin-top: var(--space-6);
+}
+
+.bench-held-head {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.bench-held-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 3px solid var(--ink);
+}
+
+.bench-held-list > li {
+  border-bottom: 1px solid var(--rule);
+}
+
+.bench-held-row > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  min-height: var(--target);
+  padding-block: var(--space-2);
+  cursor: pointer;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.bench-held-row > summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.bench-held-when,
+.bench-held-sum {
+  color: var(--pencil);
+}
+
+.bench-held-row[open] {
+  padding-bottom: var(--space-4);
+}
+
+@media (min-width: 1200px) {
+  .bench-setup,
+  .bench-receipts {
+    grid-column: 1;
+  }
+
+  .bench-labs {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}

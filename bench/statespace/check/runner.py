@@ -132,12 +132,18 @@ def run_stage(
     write: bool = True,
 ) -> StageOutcome:
     """Run every check of `stage` and, when each reached a result, write the stage's receipt."""
-    from statespace.receipt import assemble, now_instant, seal, verify, write_receipt
+    from statespace.receipt import assemble, seal, verify, write_receipt
     from statespace.schema.statement_hash import statement_hash_file
 
     outcome = StageOutcome(lab, stage)
+    if not stage.checks:
+        # A stage with no check (a stretch stage) judges nothing; an empty receipt would pass vacuously.
+        outcome.problem = f"{stage.id} has no check to run, so nothing was judged and no receipt was written"
+        return outcome
     directory = root / "receipts" / stage.id
-    stem = _stem(directory, datetime.now(timezone.utc))
+    # One instant names the receipt file and fills its createdAt, so the two never differ.
+    started = datetime.now(timezone.utc).replace(microsecond=0)
+    stem = _stem(directory, started)
     workdir = directory / stem
     ctx = CheckContext(root=root, lab=lab, stage=stage, workdir=workdir, seed=secrets.randbits(32) if seed is None else seed, wall_clock_s=wall_clock_s)
 
@@ -192,7 +198,7 @@ def run_stage(
             tcb=ctx.tcb_entries(),
             sections=sections,
             ext=ctx.ext or None,
-            created_at=now_instant(),
+            created_at=started.isoformat().replace("+00:00", "Z"),
         )
     )
     verification = verify(receipt, root=root)
@@ -211,8 +217,9 @@ def render(outcome: StageOutcome, root: Path) -> str:
     out = [f"{outcome.stage.id} · {outcome.stage.title}"]
     width = max((len(spec.id) for spec, _, _ in outcome.results), default=0)
     for spec, result, lines in outcome.results:
-        out.append(f"  {'pass' if result.passed else 'FAIL'}  {spec.id.ljust(width)}  {result.message}")
-        pad = " " * (8 + width)
+        out.append(f"  {'pass' if result.passed else 'FAIL'}  {spec.id.ljust(width)}  {spec.title}")
+        pad = " " * (10 + width)
+        out.append(f"{pad}{result.message}")
         if not result.passed and result.suspect:
             out.append(f"{pad}suspects: {SUSPECTS[result.suspect]}")
         out.extend(f"{pad}{line}" for line in (*result.details, *lines))
@@ -241,13 +248,46 @@ def outcome_json(outcome: StageOutcome, root: Path) -> dict[str, Any]:
     }
 
 
+def _nearest_repo(start: Path) -> Path | None:
+    """The nearest directory, from `start` upward, that holds a labs/LAB-<n>/ directory."""
+    from .labs import repo_labs
+
+    here = start.resolve()
+    return next((c for c in (here, *here.parents) if repo_labs(c)), None)
+
+
+def listing(root: Path | None) -> str:
+    """`statespace check` with no target: the labs this repository holds, found by their directories
+    labs/LAB-<n>/, each with its stages and checks when this CLI holds the lab's module."""
+    from .labs import LabUnavailable, available, find_lab, repo_labs
+
+    held = available()
+    unpacked = repo_labs(root) if root is not None else []
+    out = [f"labs here: {', '.join(unpacked) or 'none'}" + (f" (in {root})" if root is not None else " (no labs/LAB-<n>/ here or above)")]
+    for lab_id in sorted({*unpacked, *held}, key=lambda lab: int(lab.split("-", 1)[1])):
+        if lab_id not in unpacked:
+            continue
+        try:
+            lab = find_lab(lab_id)
+        except LabUnavailable as error:
+            out.append(f"  {lab_id}  no checks: {error}")
+            continue
+        out.append(f"  {lab.id}  {lab.title}")
+        for stage in lab.stages:
+            short = "lab" + stage.id.split("-", 1)[1]
+            out.append(f"    {short.ljust(8)} {stage.id}  {stage.title}")
+            out.extend(f"               {check.id}  {check.title}" for check in stage.checks)
+    out.append("run one stage with `statespace check lab1.1`, or a whole lab with `statespace check lab1`")
+    return "\n".join(out) + "\n"
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="statespace check",
         description="Run a lab stage's checks with the real tools and write its receipt under receipts/. "
         "Exit status: 0 every check passed, 1 a check failed, 2 a usage error, 3 a stage could not run.",
     )
-    parser.add_argument("target", help="lab1 for every stage of LAB-1, or lab1.3 for the stage LAB-1.3")
+    parser.add_argument("target", nargs="?", help="lab1 for every stage of LAB-1, or lab1.3 for the stage LAB-1.3; leave it out to list the labs here")
     parser.add_argument("--root", type=Path, default=None, help="the lab repository; default: the nearest directory upward that holds labs/LAB-<n>")
     parser.add_argument("--assisted", choices=ASSISTED, default=None, help="the help you had on this stage, self-reported (default: STATESPACE_ASSISTED, else code)")
     parser.add_argument("--agent", choices=("yes", "no"), default=None, help="whether a coding agent worked in the repository, self-reported (default: STATESPACE_AGENT, else yes)")
@@ -256,6 +296,9 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     from . import labs
 
+    if args.target is None:
+        sys.stdout.write(listing(args.root.resolve() if args.root is not None else _nearest_repo(Path.cwd())))
+        return EXIT_PASS
     try:
         target = labs.parse_target(args.target)
         provenance, notes = resolve_provenance(args.assisted, args.agent)

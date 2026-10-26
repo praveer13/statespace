@@ -1,0 +1,22 @@
+statespace demo: the reference pipeline on TransferWithFee (reference modules, earn nothing)
+  parse: ok, command TransferWithFee(from, to, amount, fee)
+  typecheck: ok; from: account, to: account, amount: amount, fee: amount; R-cover: 2 statements, so each debit is an obligation for the checker (S4), not a typing rule
+  check premises: z3 sat
+  check nonneg: z3 sat: REFUTED
+  check conserve: z3 unsat: PROVED
+  witness nonneg: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1; objective 3, and no witness below it
+  replay in the reference interpreter: success; Inv broken: nonneg(from)
+  claim part "never overdraws": REFUTED by check nonneg
+  claim part "conserves": PROVED by check conserve
+  claim part "200 tests green": evidence offered, not a checker; class G11
+  corrected: requires balance(from) >= amount + fee
+  check nonneg (corrected): z3 unsat, premises sat: PROVED
+  check conserve (corrected): z3 unsat, premises sat: PROVED
+  replay of the witness on the corrected command: error:guardFailed
+  postgres proposal on the witness: success (interpreter success); R(S, D) holds; Inv broken: nonneg(from)
+  postgres corrected on the witness: error:guardFailed (interpreter error:guardFailed); R(S, D) holds
+  postgres corpus: 13 of 13 fixtures in their expected outcome class; R(S, D) holds after 13 of 13
+  postgres corpus edge-overflow: postgres sqlstate:22003, interpreter success, expected sqlstate:22003
+  postgres retries of 22003: 0; transaction_isolation read back: serializable
+wrote report/skeleton.json and report/skeleton.md
+the section list, verdict lines and statement hashes equal the recorded skeleton (RUN-core-demo)

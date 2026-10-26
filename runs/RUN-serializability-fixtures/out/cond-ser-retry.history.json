@@ -1,0 +1,244 @@
+{
+  "schema": "statespace/history@1",
+  "spec": {
+    "path": "labs/LAB-6/fixtures/specs/cond-ser-retry.spec",
+    "sha256": "25599ac7f090c901d89ebcf2faa61412442ca3abefd3df5792b815d12e910a91",
+    "sessions": [
+      "a",
+      "b",
+      "obs"
+    ],
+    "permutations": 1,
+    "enumerated": false
+  },
+  "server": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "isorun": {
+    "name": "statespace isorun",
+    "version": "0.1.0"
+  },
+  "permutations": [
+    {
+      "index": 1,
+      "permutation": [
+        "d0",
+        "ab",
+        "bb",
+        "au",
+        "bu",
+        "ac",
+        "bc",
+        "bb2",
+        "bu2",
+        "bc2",
+        "chk"
+      ],
+      "levels": {
+        "a": "serializable",
+        "b": "serializable"
+      },
+      "events": [
+        {
+          "step": "d0",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        },
+        {
+          "step": "ab",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bb",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "au",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "20"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "bu",
+          "session": "b",
+          "status": "waiting"
+        },
+        {
+          "step": "ac",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bu",
+          "session": "b",
+          "status": "completed",
+          "results": [],
+          "error": {
+            "sqlstate": "40001",
+            "message": "could not serialize access due to concurrent update"
+          }
+        },
+        {
+          "step": "bc",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "ROLLBACK",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bb2",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bu2",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 0",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [],
+              "rowcount": 0
+            }
+          ]
+        },
+        {
+          "step": "bc2",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "chk",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "20"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        }
+      ],
+      "waits": [
+        "bu"
+      ],
+      "errors": [
+        {
+          "step": "bu",
+          "session": "b",
+          "sqlstate": "40001",
+          "message": "could not serialize access due to concurrent update"
+        }
+      ],
+      "outcome": {
+        "a": [
+          "commit"
+        ],
+        "b": [
+          "abort:40001",
+          "commit"
+        ],
+        "obs": [
+          "commit",
+          "commit"
+        ]
+      },
+      "signature": "a=commit b=abort:40001+commit  [40001]"
+    }
+  ]
+}

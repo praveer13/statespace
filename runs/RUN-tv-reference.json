@@ -1,0 +1,286 @@
+{
+  "id": "RUN-tv-reference",
+  "title": "The reference translation validator: the compiled transfer 30 1 2 accepted within its bound, the register-reuse edit rejected with a store, and the swapped-write, read-both-first, re-evaluated-amount, rollback, step-count and maybeFail cells",
+  "task": "W5-T04",
+  "origin": "recorded",
+  "records": "LAB-9.1 (LAB-9.c1) and the cells of S9.L2, S9.L3, S9.L4, S9.L5 and S9.L6 that cite it (curriculum S9 section 13)",
+  "engine": "statespace-tv",
+  "version": "1",
+  "version_string": "statespace-tv 1 (LAB-9 reference translation validator)",
+  "binary": "inputs/tv.py under CPython in the statespace-bench image (/opt/python/cpython-3.13.12-linux-x86_64-gnu/bin/python3.13, Python 3.13.12)",
+  "binary_sha256": "11e7b9408821b8b7fe5316c95de9e22e2b1deb7018ec1fd7f4c9a1053d1573df",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:07:20.034Z",
+  "started_at": "2026-10-26T21:07:19.336Z",
+  "duration_s": 0.547,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-lab9-tv-reference",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "run.sh"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tv-reference/inputs/tv.py",
+      "sha256": "c30d8e0b471f4076a3eb713ec21c6fb3b5ce48246f64106be996835b07b8828a",
+      "bytes": 15408,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/move-whole-balance.reevaluated.tv",
+      "sha256": "df66736b0f4bce6a528ed809412d5e4260d991ae7275bd53520c5225e8aae550",
+      "bytes": 333,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/move-whole-balance.tv",
+      "sha256": "4cfcfef460de5cebeed62fd33fe8b5ce5f8f65bb9b68b2856e417825d771fd3f",
+      "bytes": 231,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/rollback-1.ir",
+      "sha256": "a1226bff1e50b6bd606afbc64b8ee9c7250394e9c28e4c85721f0a9e5612f637",
+      "bytes": 90,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/rollback-2.ir",
+      "sha256": "1cf9af304412dcd7a07bf6e8063a97d2ec19a6cc88dc872e1a387abb389ef369",
+      "bytes": 144,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/rollback-3.ir",
+      "sha256": "72b3164e402a9db7a25017eded418e4e55177fbbb20ee0feef1c29e47a1986bc",
+      "bytes": 120,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/self-transfer.read-both-first.tv",
+      "sha256": "8a50f54028b8878be0ac9019288a67152bbc123e28e623618e41d3e86d494336",
+      "bytes": 334,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/self-transfer.swapped.tv",
+      "sha256": "7b53e2ae3061a041b16bc4630aeaec98b9aa2927ca1ef436ac1083ad8583da3f",
+      "bytes": 364,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/transfer-30-1-2.reuse.tv",
+      "sha256": "cce728d9436658e719f21af9c40d3a04ebeb8314eae75d112052d28ed55d3f07",
+      "bytes": 405,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/transfer-30-1-2.tv",
+      "sha256": "386c1a680a3a7dce15b8d29f958911a7697cb84e69af8de619dfdbe618ce0ad4",
+      "bytes": 462,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/transfer-5-1-2.maybefail.tv",
+      "sha256": "13ca13c5c75f6d664b45df63b9ef2dd8e9d50bba9150d0ad4a7b39f9aae91228",
+      "bytes": 418,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/transfer-5-1-2.redundant-read.tv",
+      "sha256": "0985a8bdd823faac23a81afb314b2d13d86b351b29942c5f05eeae39e1fcb024",
+      "bytes": 408,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/cases/transfer-5-1-2.tv",
+      "sha256": "304f85bfbe6938c2ffbee85920826c4e36e2984955aa5b6aec928e085799a5d3",
+      "bytes": 363,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tv-reference/inputs/run.sh",
+      "sha256": "2c670c444aaa2deab6ea5ef65035c66b5e6e3cb4dc0106e3fa8b3b56bc94d5e8",
+      "bytes": 871,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "== validate transfer-30-1-2",
+    "bound: accounts a1, a2; balances 0..60; 3721 stores enumerated",
+    "verdict: accepted within the bound",
+    "== validate transfer-30-1-2.reuse",
+    "bound: accounts a1, a2; balances 0..60; 3721 stores enumerated",
+    "verdict: rejected",
+    "counterexample: store (a1, a2) = (30, 0)",
+    "  source: committed (a1, a2) = (0, 30)",
+    "  output: committed (a1, a2) = (30, 0) (12 steps)   <- no source behavior",
+    "== validate self-transfer.swapped",
+    "bound: accounts a1; balances 0..10; 11 stores enumerated",
+    "verdict: accepted within the bound",
+    "== validate self-transfer.read-both-first",
+    "bound: accounts a1; balances 0..10; 11 stores enumerated",
+    "verdict: rejected",
+    "counterexample: store (a1) = (5)",
+    "  source: committed (a1) = (5)",
+    "  output: committed (a1) = (10) (13 steps)   <- no source behavior",
+    "== validate move-whole-balance",
+    "bound: accounts a1, a2; balances 0..10; 121 stores enumerated",
+    "verdict: accepted within the bound",
+    "== validate move-whole-balance.reevaluated",
+    "bound: accounts a1, a2; balances 0..10; 121 stores enumerated",
+    "verdict: rejected",
+    "counterexample: store (a1, a2) = (1, 0)",
+    "  source: committed (a1, a2) = (0, 1)",
+    "  output: committed (a1, a2) = (0, 0) (8 steps)   <- no source behavior",
+    "== validate transfer-5-1-2",
+    "bound: accounts a1, a2; balances 0..10; 121 stores enumerated",
+    "verdict: accepted within the bound",
+    "== validate transfer-5-1-2.redundant-read",
+    "bound: accounts a1, a2; balances 0..10; 121 stores enumerated",
+    "verdict: accepted within the bound",
+    "== validate transfer-5-1-2.maybefail",
+    "bound: accounts a1, a2; balances 0..10; 121 stores enumerated",
+    "verdict: rejected",
+    "counterexample: store (a1, a2) = (5, 0)",
+    "  source: committed (a1, a2) = (0, 5)",
+    "  output: aborted serializationFailure (14 steps)   <- no source behavior",
+    "  output: committed (a1, a2) = (0, 5) (14 steps)",
+    "  forward: every source outcome is reached by the output; backward: the output reaches an outcome the source lacks",
+    "== run rollback-1",
+    "outcome: aborted denied; balances (5, 0) (3 steps)",
+    "== run rollback-2",
+    "outcome: aborted insufficient; balances (5, 0) (3 steps)",
+    "== run rollback-3",
+    "outcome: committed (a0, a1) = (5, 0) (4 steps)",
+    "== run transfer-5-1-2",
+    "outcome: committed (a1, a2) = (5, 5) (13 steps)",
+    "== run transfer-5-1-2.redundant-read",
+    "outcome: committed (a1, a2) = (5, 5) (14 steps)",
+    "== run transfer-5-1-2.maybefail",
+    "outcome: aborted serializationFailure; balances (10, 0) (14 steps)",
+    "outcome: committed (a1, a2) = (5, 5) (14 steps)",
+    "== run move-whole-balance.reevaluated",
+    "outcome: committed (a1, a2) = (0, 0) (8 steps)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tv-reference/tv.log",
+      "sha256": "1cb26aad7c7093b95993b89d5e9cdf223fe1bdd25c0ae35e336f40402afd0885",
+      "bytes": 4097,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "validate transfer-30-1-2": {
+      "bound": "accounts a1, a2; balances 0..60; 3721 stores enumerated",
+      "verdict": "accepted within the bound"
+    },
+    "validate transfer-30-1-2.reuse": {
+      "bound": "accounts a1, a2; balances 0..60; 3721 stores enumerated",
+      "verdict": "rejected",
+      "counterexample": "store (a1, a2) = (30, 0)"
+    },
+    "validate self-transfer.swapped": {
+      "bound": "accounts a1; balances 0..10; 11 stores enumerated",
+      "verdict": "accepted within the bound"
+    },
+    "validate self-transfer.read-both-first": {
+      "bound": "accounts a1; balances 0..10; 11 stores enumerated",
+      "verdict": "rejected",
+      "counterexample": "store (a1) = (5)"
+    },
+    "validate move-whole-balance": {
+      "bound": "accounts a1, a2; balances 0..10; 121 stores enumerated",
+      "verdict": "accepted within the bound"
+    },
+    "validate move-whole-balance.reevaluated": {
+      "bound": "accounts a1, a2; balances 0..10; 121 stores enumerated",
+      "verdict": "rejected",
+      "counterexample": "store (a1, a2) = (1, 0)"
+    },
+    "validate transfer-5-1-2": {
+      "bound": "accounts a1, a2; balances 0..10; 121 stores enumerated",
+      "verdict": "accepted within the bound"
+    },
+    "validate transfer-5-1-2.redundant-read": {
+      "bound": "accounts a1, a2; balances 0..10; 121 stores enumerated",
+      "verdict": "accepted within the bound"
+    },
+    "validate transfer-5-1-2.maybefail": {
+      "bound": "accounts a1, a2; balances 0..10; 121 stores enumerated",
+      "verdict": "rejected",
+      "counterexample": "store (a1, a2) = (5, 0)"
+    },
+    "run rollback-1": {
+      "outcomes": [
+        "aborted denied; balances (5, 0) (3 steps)"
+      ]
+    },
+    "run rollback-2": {
+      "outcomes": [
+        "aborted insufficient; balances (5, 0) (3 steps)"
+      ]
+    },
+    "run rollback-3": {
+      "outcomes": [
+        "committed (a0, a1) = (5, 0) (4 steps)"
+      ]
+    },
+    "run transfer-5-1-2": {
+      "outcomes": [
+        "committed (a1, a2) = (5, 5) (13 steps)"
+      ]
+    },
+    "run transfer-5-1-2.redundant-read": {
+      "outcomes": [
+        "committed (a1, a2) = (5, 5) (14 steps)"
+      ]
+    },
+    "run transfer-5-1-2.maybefail": {
+      "outcomes": [
+        "aborted serializationFailure; balances (10, 0) (14 steps)",
+        "committed (a1, a2) = (5, 5) (14 steps)"
+      ]
+    },
+    "run move-whole-balance.reevaluated": {
+      "outcomes": [
+        "committed (a1, a2) = (0, 0) (8 steps)"
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "none"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the run's inputs/ folder, which holds the files as they ran.",
+    "inputs/tv.py is labs/LAB-9/reference/tv.py and inputs/cases/ is labs/LAB-9/reference/cases/, copied when the run was recorded; binary_sha256 is the image's python3, which runs the script.",
+    "verdict_lines are the lines of tv.log that carry a verdict, a bound, a counterexample or an outcome, with each command's == header, copied in log order. An exit status of 1 after validate is a rejection.",
+    "The validator's acceptances are bounded: every store of the printed accounts with balances in the printed range, and nothing beyond it."
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "format": "statespace LAB-6 catalog rows, revision 1",
+  "source": "content/pg-catalog/catalog.json of the course repository, recorded as RUN-pg-catalog",
+  "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "note": "For each catalog row LAB-6.5 compares with: the outcome signatures isolationtester recorded for its spec, by isolation level, rebuilt with statespace.isorun.signature from the row's per-permutation outcomes and errors.",
+  "rows": {
+    "H01-lost-update-rmw.spec": {
+      "row": "H01",
+      "title": "Lost update through application read-modify-write",
+      "spec_sha256": "f4f2cec6661bed35810a64122be5f3caf1e5cdf0dda163e0b834c3bc55135161",
+      "out": "H01-lost-update-rmw.out",
+      "out_sha256": "108f00d1dca3d068091e5da4d3871c6e23e9fa6ad0a1b6480535054d49ed8892",
+      "signatures": {
+        "read committed": [
+          "s1=commit s2=commit"
+        ],
+        "repeatable read": [
+          "s1=abort:40001 s2=commit  [40001]",
+          "s1=commit s2=abort:40001  [40001]",
+          "s1=commit s2=commit"
+        ],
+        "serializable": [
+          "s1=abort:40001 s2=commit  [40001]",
+          "s1=commit s2=abort:40001  [40001]",
+          "s1=commit s2=commit"
+        ]
+      }
+    },
+    "H02-conditional-update.spec": {
+      "row": "H02",
+      "title": "Conditional single-statement UPDATE",
+      "spec_sha256": "99d3ebe0269c644d41e19524e663e563fc068f2274e02f219df569c2af7e38bb",
+      "out": "H02-conditional-update.out",
+      "out_sha256": "412f6a5cde73361339de611c2a146272aaf16616fc867c85e6e2a615c3687af1",
+      "signatures": {
+        "read committed": [
+          "s1=commit s2=commit"
+        ],
+        "repeatable read": [
+          "s1=abort:40001 s2=commit  [40001]",
+          "s1=commit s2=abort:40001  [40001]",
+          "s1=commit s2=commit"
+        ],
+        "serializable": [
+          "s1=abort:40001 s2=commit  [40001]",
+          "s1=commit s2=abort:40001  [40001]",
+          "s1=commit s2=commit"
+        ]
+      }
+    },
+    "H05-write-skew-team-sum.spec": {
+      "row": "H05",
+      "title": "Write skew on existing rows",
+      "spec_sha256": "620027d6b0e5733fb7ecd86250641072c0172245c5d35b908ac1540f69adff0f",
+      "out": "H05-write-skew-team-sum.out",
+      "out_sha256": "5c1b25d588bcb7deec11d315a5a575393bbe760599286af80fa9cde597579e0a",
+      "signatures": {
+        "read committed": [
+          "s1=commit s2=commit"
+        ],
+        "repeatable read": [
+          "s1=commit s2=commit"
+        ],
+        "serializable": [
+          "s1=abort:40001 s2=commit  [40001]",
+          "s1=commit s2=abort:40001  [40001]",
+          "s1=commit s2=commit"
+        ]
+      }
+    },
+    "H22a-opposite-order-moves.spec": {
+      "row": "H22",
+      "title": "Opposite-order moves, and the ascending-order fix",
+      "spec_sha256": "61462db5e0916d223af6ab5e198993928c94cbc24182fc5dbf7e3ccc267f8bf5",
+      "out": "H22a-opposite-order-moves.out",
+      "out_sha256": "afb2b585428b2009a7c7cc3661aefedbc90ada0896eb0567a5c8dd685dff9c19",
+      "signatures": {
+        "read committed": [
+          "s1=abort:40P01 s2=commit  [40P01]",
+          "s1=commit s2=abort:40P01  [40P01]",
+          "s1=commit s2=commit"
+        ],
+        "repeatable read": [
+          "s1=abort:40001 s2=commit  [25P02, 40001]",
+          "s1=abort:40P01 s2=commit  [40P01]",
+          "s1=commit s2=abort:40001  [25P02, 40001]",
+          "s1=commit s2=abort:40P01  [40P01]",
+          "s1=commit s2=commit"
+        ],
+        "serializable": [
+          "s1=abort:40001 s2=commit  [25P02, 40001]",
+          "s1=abort:40P01 s2=commit  [40P01]",
+          "s1=commit s2=abort:40001  [25P02, 40001]",
+          "s1=commit s2=abort:40P01  [40P01]",
+          "s1=commit s2=commit"
+        ]
+      }
+    }
+  }
+}

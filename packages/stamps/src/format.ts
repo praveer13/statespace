@@ -72,7 +72,7 @@ export function spokenName(s: Pick<Stamp, 'code' | 'qualifier'>): string {
 
 export interface ParsedStamp {
   /** The word, when the text carries one. */
-  readonly word?: StampWord
+  readonly word?: StampWord | undefined
   readonly code: StampCode
   readonly qualifier: readonly string[]
   /** Problems with the text as a stamp: a word that does not match its code, a missing qualifier. */

@@ -1,0 +1,195 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "The twin whose Hold forgets existing holds (S4.L6): bal >= 0 is reachable-violated.",
+  "kind": "system",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "bal",
+      "held"
+    ],
+    "init": {
+      "and": [
+        {
+          "ge": [
+            {
+              "var": "bal"
+            },
+            {
+              "num": 0
+            }
+          ]
+        },
+        {
+          "eq": [
+            {
+              "var": "held"
+            },
+            {
+              "num": 0
+            }
+          ]
+        }
+      ]
+    },
+    "commands": [
+      {
+        "name": "Hold",
+        "params": [
+          "n"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "n"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "n"
+                },
+                {
+                  "var": "bal"
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "assign": "held",
+          "expr": {
+            "add": [
+              {
+                "var": "held"
+              },
+              {
+                "var": "n"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Capture",
+        "params": [
+          "n"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "n"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "n"
+                },
+                {
+                  "var": "held"
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "seq": [
+            {
+              "assign": "held",
+              "expr": {
+                "sub": [
+                  {
+                    "var": "held"
+                  },
+                  {
+                    "var": "n"
+                  }
+                ]
+              }
+            },
+            {
+              "assign": "bal",
+              "expr": {
+                "sub": [
+                  {
+                    "var": "bal"
+                  },
+                  {
+                    "var": "n"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Release",
+        "params": [
+          "n"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "n"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "n"
+                },
+                {
+                  "var": "held"
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "assign": "held",
+          "expr": {
+            "sub": [
+              {
+                "var": "held"
+              },
+              {
+                "var": "n"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "inv": {
+    "ge": [
+      {
+        "var": "bal"
+      },
+      {
+        "num": 0
+      }
+    ]
+  },
+  "n": 4
+}

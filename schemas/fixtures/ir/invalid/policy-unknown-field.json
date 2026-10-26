@@ -7,53 +7,324 @@
     "overflow": {
       "mode": "unbounded"
     },
-    "rounding": "up"
+    "rounding": "down"
   },
   "programs": [
     {
+      "id": "refProgram",
       "commands": [
         {
-          "name": "Transfer"
+          "name": "Transfer",
+          "params": [
+            {
+              "name": "from",
+              "ty": "account"
+            },
+            {
+              "name": "to",
+              "ty": "account"
+            },
+            {
+              "name": "amount",
+              "ty": "amount"
+            }
+          ],
+          "guard": {
+            "tag": "ge",
+            "a": {
+              "tag": "balance",
+              "e": {
+                "tag": "var",
+                "name": "from"
+              }
+            },
+            "b": {
+              "tag": "var",
+              "name": "amount"
+            }
+          },
+          "body": {
+            "tag": "op",
+            "op": {
+              "tag": "move",
+              "amount": {
+                "tag": "var",
+                "name": "amount"
+              },
+              "from": {
+                "tag": "var",
+                "name": "from"
+              },
+              "to": {
+                "tag": "var",
+                "name": "to"
+              }
+            }
+          }
         }
       ]
     }
   ],
   "calls": [
     {
-      "command": "Transfer",
+      "name": "Transfer",
       "args": [
-        1,
-        2,
-        30
+        {
+          "tag": "acct",
+          "acct": {
+            "tag": "user",
+            "name": "a"
+          }
+        },
+        {
+          "tag": "acct",
+          "acct": {
+            "tag": "user",
+            "name": "b"
+          }
+        },
+        {
+          "tag": "int",
+          "value": "30"
+        }
       ]
     }
   ],
   "states": [
     {
-      "balances": [],
-      "nextHold": 0
+      "bals": [
+        {
+          "acct": {
+            "tag": "mint"
+          },
+          "bal": "-100"
+        },
+        {
+          "acct": {
+            "tag": "user",
+            "name": "a"
+          },
+          "bal": "100"
+        },
+        {
+          "acct": {
+            "tag": "user",
+            "name": "b"
+          },
+          "bal": "0"
+        }
+      ],
+      "holds": [],
+      "nextHold": 0,
+      "frozen": []
     }
   ],
   "outcomes": [
     {
       "ok": {
-        "state": {}
+        "effects": [
+          {
+            "acct": {
+              "name": "b",
+              "tag": "user"
+            },
+            "tag": "notify"
+          }
+        ],
+        "output": [],
+        "state": {
+          "bals": [
+            {
+              "acct": {
+                "tag": "mint"
+              },
+              "bal": "-100"
+            },
+            {
+              "acct": {
+                "name": "a",
+                "tag": "user"
+              },
+              "bal": "70"
+            },
+            {
+              "acct": {
+                "name": "b",
+                "tag": "user"
+              },
+              "bal": "30"
+            }
+          ],
+          "frozen": [],
+          "holds": [],
+          "nextHold": 0
+        }
       }
     }
   ],
   "goldens": [
     {
-      "pool": "S3.core",
-      "theorem": "golden_transfer_ok",
-      "statementSha256": "5edc79ccdd088a446b9fd46a7971237df6912667387f8f767c0c964bc6bea091",
+      "pool": "eval",
+      "id": "e001",
+      "theorem": "golden_e001",
+      "statementSha256": "f240dd3f3aea6e6be739a952d36868d2fac2ee66f41825fdab2eed927739c5fe",
+      "program": "refProgram",
+      "policy": {
+        "zero": "reject",
+        "self": "allow",
+        "guard": "error",
+        "overflow": {
+          "mode": "unbounded"
+        }
+      },
       "pre": {
-        "balances": []
+        "bals": [
+          {
+            "acct": {
+              "tag": "mint"
+            },
+            "bal": "-100"
+          },
+          {
+            "acct": {
+              "tag": "user",
+              "name": "a"
+            },
+            "bal": "100"
+          },
+          {
+            "acct": {
+              "tag": "user",
+              "name": "b"
+            },
+            "bal": "0"
+          }
+        ],
+        "holds": [],
+        "nextHold": 0,
+        "frozen": []
       },
       "call": {
-        "command": "Transfer"
+        "name": "Transfer",
+        "args": [
+          {
+            "tag": "acct",
+            "acct": {
+              "tag": "user",
+              "name": "a"
+            }
+          },
+          {
+            "tag": "acct",
+            "acct": {
+              "tag": "user",
+              "name": "b"
+            }
+          },
+          {
+            "tag": "int",
+            "value": "30"
+          }
+        ]
       },
       "outcome": {
-        "ok": {}
+        "ok": {
+          "effects": [
+            {
+              "acct": {
+                "name": "b",
+                "tag": "user"
+              },
+              "tag": "notify"
+            }
+          ],
+          "output": [],
+          "state": {
+            "bals": [
+              {
+                "acct": {
+                  "tag": "mint"
+                },
+                "bal": "-100"
+              },
+              {
+                "acct": {
+                  "name": "a",
+                  "tag": "user"
+                },
+                "bal": "70"
+              },
+              {
+                "acct": {
+                  "name": "b",
+                  "tag": "user"
+                },
+                "bal": "30"
+              }
+            ],
+            "frozen": [],
+            "holds": [],
+            "nextHold": 0
+          }
+        }
+      }
+    },
+    {
+      "pool": "typing",
+      "id": "t001",
+      "theorem": "golden_t001",
+      "statementSha256": "435032aa716d7c8060b7c37e35f391b7ad83c398bf840b5411d667d8ec7974b6",
+      "command": {
+        "name": "Transfer",
+        "params": [
+          {
+            "name": "from",
+            "ty": "account"
+          },
+          {
+            "name": "to",
+            "ty": "account"
+          },
+          {
+            "name": "amount",
+            "ty": "amount"
+          }
+        ],
+        "guard": {
+          "tag": "ge",
+          "a": {
+            "tag": "balance",
+            "e": {
+              "tag": "var",
+              "name": "from"
+            }
+          },
+          "b": {
+            "tag": "var",
+            "name": "amount"
+          }
+        },
+        "body": {
+          "tag": "op",
+          "op": {
+            "tag": "move",
+            "amount": {
+              "tag": "var",
+              "name": "amount"
+            },
+            "from": {
+              "tag": "var",
+              "name": "from"
+            },
+            "to": {
+              "tag": "var",
+              "name": "to"
+            }
+          }
+        }
+      },
+      "verdict": {
+        "ok": true
       }
     }
   ]

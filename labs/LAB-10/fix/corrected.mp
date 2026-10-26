@@ -1,0 +1,3 @@
+-- LAB-10.6: the corrected command, in the toy syntax, with the proposal's name and parameters. For a sound
+-- proposal, the accepted proposal itself.
+-- TODO(you): write the corrected command.

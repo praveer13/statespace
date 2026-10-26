@@ -1,0 +1,9 @@
+command   Withdraw (../labs/LAB-4/fixtures/withdraw-off-by-one.json)
+fragment  in: assignments, moves and ifs under one reject guard, over Int
+query     sha256 72c98eccfc6e46846430477b0778d8519c0828ca57686b39c82ed7816afb21a2
+solver    Z3 5.3.1 · rlimit 5000000 · entry cli
+verdict   sat
+witness   a=0 b=0 c=0 p_amount=1 a_p=-1 b_p=0 c_p=0 · Withdraw(amount=1) from a=0 b=0 c=0 reaches a=-1 b=0 c=0, where Inv fails
+cross     cvc5 1.4.2 sat · rlimit 5000000 · agrees
+stamp     REFUTED [R] · 1 step
+defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)

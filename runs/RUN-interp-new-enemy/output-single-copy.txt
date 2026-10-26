@@ -1,0 +1,6 @@
+trace commands.txt on W0, single copy
+  1. Revoke(gia: contract -> dana); canread no; delivered []
+  2. Edit(gia: contract.body = "the body after the revocation"); canread yes; delivered []
+  3. Open(dana, contract) -> refused; canread no; delivered []
+S-new (after revocation, no new read succeeds): holds
+S-past (revocation removes what was already read): holds

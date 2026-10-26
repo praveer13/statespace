@@ -1,0 +1,204 @@
+{
+  "id": "RUN-interp-new-enemy",
+  "title": "INS-interp on S7.L8 cell 2: gia revokes dana, edits contract's body, and dana opens contract; on one copy the open is refused, and with the ACL check on a replica 2 steps behind the primary dana receives the new body, refuting S-new",
+  "task": "W4-T27",
+  "origin": "recorded",
+  "version": "1",
+  "binary": "the course's TypeScript (apps/instruments/src/engines/pairs/s7.ts, apps/instruments/src/engines/pairs/pairs.ts, apps/instruments/src/engines/pairs/notation.ts), run by /usr/bin/node (Node v24.20.0) in the Playwright image, with type stripping",
+  "binary_sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+  "image": "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "node": "v24.20.0",
+    "container": "mcr.microsoft.com/playwright:v1.63.0-noble, --network none, --memory=6g, the repository mounted read-only"
+  },
+  "records": "S7.L8 cell 2 and SP-7.6 (ER-9)",
+  "engine": "ins-interp",
+  "version_string": "INS-interp 1, S7 extension",
+  "recorded_at": "2026-10-26T21:01:33.126Z",
+  "started_at": "2026-10-26T21:01:32.775Z",
+  "duration_s": 0.186,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/repo:/repo:ro",
+    "-w",
+    "/repo",
+    "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+    "node",
+    "scripts/spikes/W4-T27/run-cells.ts",
+    "interp",
+    "runs/RUN-interp-new-enemy/commands.txt",
+    "--lag",
+    "2"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-interp-new-enemy/commands.txt",
+      "sha256": "60c61ae853d3f7633de6a99384537599c759b6ce2ea69639b7c2944ca8a2c263",
+      "bytes": 187,
+      "role": "commands",
+      "source": "curriculum/S07-secrecy.md section 3, S7.L8"
+    },
+    {
+      "path": "apps/instruments/src/engines/pairs/s7.ts",
+      "sha256": "d447711f959b0fb22f6a546bd87594dd03bb9fbd9dc91abb3ab0e812d52ce942",
+      "bytes": 11443,
+      "role": "engine"
+    },
+    {
+      "path": "apps/instruments/src/engines/pairs/pairs.ts",
+      "sha256": "4e12bbb2b5fce8f59e2350a82395d685b435bea5cb81ad072688adc299797583",
+      "bytes": 10663,
+      "role": "engine"
+    },
+    {
+      "path": "apps/instruments/src/engines/pairs/notation.ts",
+      "sha256": "d2f64d3e5cceea6c09c184328f06dcc682fe47bc0b59b252624a1da67f0bbd40",
+      "bytes": 5556,
+      "role": "engine"
+    },
+    {
+      "path": "scripts/spikes/W4-T27/run-cells.ts",
+      "sha256": "d691105f0627597fcd5c64da01521f461008a154e787244ead520400bebfbcb0",
+      "bytes": 2657,
+      "role": "runner"
+    }
+  ],
+  "exit_code": 0,
+  "verdict_lines": [
+    "trace commands.txt on W0, replicated model, ACL replica 2 steps behind the primary",
+    "  1. Revoke(gia: contract -> dana); canread no; delivered []",
+    "  2. Edit(gia: contract.body = \"the body after the revocation\"); canread yes; delivered []",
+    "  3. Open(dana, contract) -> contract@2 \"the body after the revocation\"; canread no; delivered [contract@2]",
+    "S-new (after revocation, no new read succeeds): refuted at step 3",
+    "S-past (revocation removes what was already read): holds"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-interp-new-enemy/output-replicated.txt",
+      "sha256": "303d654adc872898ad739e893b7bae5c580e2305e69d13748997a71a94ee45a4",
+      "bytes": 466,
+      "kind": "stdout"
+    },
+    {
+      "path": "runs/RUN-interp-new-enemy/output-single-copy.txt",
+      "sha256": "8243ec65b8bfcf74cfe0d3da4610b8a88be50812deb867920562d71a43b1bdb1",
+      "bytes": 364,
+      "kind": "stdout"
+    }
+  ],
+  "values": {
+    "replicated": {
+      "s_new": "refuted at step 3",
+      "s_past": "holds"
+    },
+    "single-copy": {
+      "s_new": "holds",
+      "s_past": "holds"
+    }
+  },
+  "configs": [
+    {
+      "id": "replicated",
+      "purpose": "the replicated model: Open checks the ACL on a replica 2 steps behind the primary and reads the content from the primary (Zanzibar's Example B)",
+      "origin": "recorded",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/repo:/repo:ro",
+        "-w",
+        "/repo",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "scripts/spikes/W4-T27/run-cells.ts",
+        "interp",
+        "runs/RUN-interp-new-enemy/commands.txt",
+        "--lag",
+        "2"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "trace commands.txt on W0, replicated model, ACL replica 2 steps behind the primary",
+        "  1. Revoke(gia: contract -> dana); canread no; delivered []",
+        "  2. Edit(gia: contract.body = \"the body after the revocation\"); canread yes; delivered []",
+        "  3. Open(dana, contract) -> contract@2 \"the body after the revocation\"; canread no; delivered [contract@2]",
+        "S-new (after revocation, no new read succeeds): refuted at step 3",
+        "S-past (revocation removes what was already read): holds"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-interp-new-enemy/output-replicated.txt",
+          "sha256": "303d654adc872898ad739e893b7bae5c580e2305e69d13748997a71a94ee45a4",
+          "bytes": 466,
+          "kind": "stdout"
+        }
+      ],
+      "started_at": "2026-10-26T21:01:32.775Z",
+      "duration_s": 0.186
+    },
+    {
+      "id": "single-copy",
+      "purpose": "the same commands on one copy of the state, for contrast",
+      "origin": "recorded",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/repo:/repo:ro",
+        "-w",
+        "/repo",
+        "mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27",
+        "node",
+        "scripts/spikes/W4-T27/run-cells.ts",
+        "interp",
+        "runs/RUN-interp-new-enemy/commands.txt"
+      ],
+      "exit_code": 0,
+      "verdict_lines": [
+        "trace commands.txt on W0, single copy",
+        "  1. Revoke(gia: contract -> dana); canread no; delivered []",
+        "  2. Edit(gia: contract.body = \"the body after the revocation\"); canread yes; delivered []",
+        "  3. Open(dana, contract) -> refused; canread no; delivered []",
+        "S-new (after revocation, no new read succeeds): holds",
+        "S-past (revocation removes what was already read): holds"
+      ],
+      "outputs": [
+        {
+          "path": "runs/RUN-interp-new-enemy/output-single-copy.txt",
+          "sha256": "8243ec65b8bfcf74cfe0d3da4610b8a88be50812deb867920562d71a43b1bdb1",
+          "bytes": 364,
+          "kind": "stdout"
+        }
+      ],
+      "started_at": "2026-10-26T21:01:32.961Z",
+      "duration_s": 0.165
+    }
+  ],
+  "primary_config": "replicated",
+  "notes": [
+    "The replica lag is a model parameter [D]: the new enemy needs the ACL check to read a copy older than the revocation.",
+    "The S7 interpreter has no Lean reference (tracker W4-T27)."
+  ]
+}

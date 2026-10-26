@@ -1,0 +1,90 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "The guarded Transfer over three accounts: a known-true obligation. LAB-4.1 runs the reference checker on it.",
+  "kind": "obligation",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "commands": [
+      {
+        "name": "Transfer",
+        "params": [
+          "amount"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "var": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "move": {
+            "from": "a",
+            "to": "b",
+            "amount": {
+              "var": "amount"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "command": "Transfer",
+  "inv": {
+    "and": [
+      {
+        "ge": [
+          {
+            "var": "a"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "b"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "c"
+          },
+          {
+            "num": 0
+          }
+        ]
+      }
+    ]
+  },
+  "reference": "PROVED"
+}

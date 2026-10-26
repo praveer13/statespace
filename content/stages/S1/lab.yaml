@@ -68,7 +68,8 @@ stages:
           family: a non-zero floor, a prior partial refund, a fee. The fixed rule's premise
           query has a model, so some refund with `r > 0` is accepted, because rejecting every
           refund is not a fix. A non-minimal witness of the clamp class, drawn at grade time,
-          is rejected or conserves under your fixed rule.
+          is rejected or conserves under your fixed rule, and a rejected refund leaves both
+          balances as they were.
   - id: LAB-1.5
     what: >-
       Write conservation and the double capture as two-state properties, with primed
@@ -101,3 +102,128 @@ stages:
           witness refuting the claim's own proposition on replay, and requirement-fit never
           marked [P]. Prose quality is not graded, and nothing here is graded by a language
           model.
+extra:
+  explanationGate: >-
+    Before the first hint on any check, you write at least 12 words: the failing check, the
+    property it protects and your hypothesis. Nothing grades what you write. A check passed
+    after the second hint counts as assisted until an unseen variant passes without help: other
+    parameter sets and seeds, drawn when it is graded.
+  hints:
+    - check: LAB-1.c1
+      R0:
+        - The check reads the solver's own answers to the starter's two questions, not what the script printed.
+        - The first question asks for a counterexample, and the second asks for one once the guard is in.
+        - The pinned solver version is part of what the check reads.
+      R1: 'A model is a witness. "No model" says that none exists in this encoding.'
+      R2: The version line. Is `uv run` using the pinned solver?
+      R3: "`uv run python -I labs/LAB-1/starter.py`, then add the guard as one `s.add(...)` line {{run:RUN-z3-starter}}"
+      R4: Run the pinned solver, read both answer lines, and put the guard where the starter marks it.
+    - check: LAB-1.c2
+      R0:
+        - The query asks for an allowed input that breaks the property.
+        - The check replays the model in plain integers instead of trusting it.
+        - A query narrower than the premises and the negated property can miss violations.
+      R1: Assert the premises and the negation of the property.
+      R2: The sender's balance after the transfer, and the direction of the comparison.
+      R3: "`return premises() + [Not(prop())]`"
+      R4: The property holds for every allowed input. Its negation asks for one allowed input that breaks it, and a model of that is the counterexample.
+    - check: LAB-1.c3
+      R0:
+        - No model for the guarded query means something only if the premises and the guard together have one.
+        - The guard must admit exactly the transfers the sender can pay, a full-balance transfer included.
+        - The statement in `claims/cl-1-1.smt2` is compared with the premises, the guard and the negated property.
+      R1: A query with no model needs a query beside it that has one.
+      R2: Which constraint empties the premises, or makes the guard too strict.
+      R3: |-
+        `p = Solver(); p.add(*premises(), guard())`
+        `print(p.check())`
+      R4: Ask the violation query and expect no model, ask the premises with the guard and expect one, and check that the guard admits exactly the transfers with sufficient funds.
+    - check: LAB-1.c4
+      R0:
+        - A fix must stop witnesses you have not seen, not only the one you found.
+        - Rejecting every refund would stop the mint and is not a fix.
+        - A rejected refund must leave both balances as they were.
+      R1: Fix the class, not the instance.
+      R2: The branch where the debit differs from the credit.
+      R3: "`If(ok, c + r, c), If(ok, m - r, m), ok`"
+      R4: Reject a refund the merchant cannot cover, and make the debit equal the credit on every accepted path.
+    - check: LAB-1.c5
+      R0:
+        - A step is a relation between a state and the next one, written with primed variables.
+        - Two captures chain the state before to the state after the second.
+        - A guard on the pooled balance can let a second capture of the same hold through.
+      R1: A step relates S to S′; two steps chain S′ to S″.
+      R2: The guard of the second capture.
+      R3: |-
+        `cap1 = capture(S0, S1)` · `cap2 = capture(S1, S2)`
+        `s.add(cap1, cap2, S2.merchant - S0.merchant > h)`
+      R4: A capture must consult the hold's status, not the pooled balance. Then the second capture is rejected whatever else is held.
+    - check: LAB-1.c6
+      R0:
+        - Each README field maps to one fact in a receipt.
+        - An answer line is copied from what `statespace check` printed, never typed.
+        - A card's "if weakened" witness must refute its own proposition when replayed.
+      R1: Each README field maps to one receipt fact.
+      R2: The receipt's answer lines and statement hashes.
+      R3: "`uv run statespace receipt verify receipts/LAB-1.3/<file>.json`"
+      R4: Copy the answers from the receipt, replay the example model, and state the encoding and its untested assumptions under Limitations.
+  proveItKeys: >-
+    Z3 computes each key when you submit, on your own mutated files, and a model is graded by
+    replay. Each key below is what Z3 answered on the course's reference solution, mutated the
+    same way.
+  proveIt:
+    - id: drop-amount-positive
+      template: t1
+      appliedTo: LAB-1.3
+      mutant: "`premises()` in `transfer.py` drops `amount > 0`; the encoding stays `Int`."
+      prediction: What does the guarded violation query answer, and does LAB-1.c3 still pass?
+      key: >-
+        The guarded violation query still has no model, and LAB-1.c3 still passes: over `Int`
+        the guard alone keeps the sender at zero or above. The premise query's model may now
+        move nothing.
+    - id: weaken-guard
+      template: t2
+      appliedTo: LAB-1.3
+      mutant: The guard becomes `amount <= a + 1`.
+      prediction: What does the guarded violation query answer?
+      key: It has a model, an overdraft, and LAB-1.c3 fails.
+    - id: strict-guard
+      template: t2
+      appliedTo: LAB-1.3
+      mutant: The guard becomes `amount < a`.
+      prediction: What does the guarded violation query answer, and does LAB-1.c3's sufficient-funds equivalence still pass?
+      key: >-
+        The guarded violation query still has no model, yet LAB-1.c3 fails: the stricter guard
+        rejects a transfer of the whole balance, which the check shows as its distinguishing
+        state.
+    - id: bitvec64
+      template: t3
+      appliedTo: LAB-1.3
+      mutant: Every `Int` in `transfer.py` and `holds.py` becomes a signed BitVec 64.
+      prediction: What do LAB-1.3's and LAB-1.5's queries answer, run from the mutated files?
+      key: >-
+        Run from the files: the unguarded violation has a model, the guarded one has none, the
+        negated conservation has none, the buggy double capture has a model, the fixed one has
+        none, and one fixed capture has a model. `statespace check` refuses the files, because
+        LAB-1 is checked over `Int`.
+    - id: refund-credit-unguarded
+      template: t2
+      appliedTo: LAB-1.4
+      mutant: One conjunct of the fixed refund is dropped, drawn by seed. Here the credit no longer depends on acceptance.
+      prediction: What does the mint query on the fixed rule answer?
+      key: It has a model, and LAB-1.c4 fails on the default parameters.
+    - id: refund-debit-unguarded
+      template: t2
+      appliedTo: LAB-1.4
+      mutant: One conjunct of the fixed refund is dropped, drawn by seed. Here the debit no longer depends on acceptance.
+      prediction: What does the mint query on the fixed rule answer, and does LAB-1.c4 pass?
+      key: >-
+        The mint query still has no model, because the dropped conjunct destroys money rather
+        than creating it. LAB-1.c4 fails anyway: a rejected refund now changes the merchant's
+        balance.
+    - id: drop-status-check
+      template: t2
+      appliedTo: LAB-1.5
+      mutant: The fixed capture drops its status check.
+      prediction: What does the at-most-once query on two fixed captures answer?
+      key: It has a model, and LAB-1.c5 fails on the base model.

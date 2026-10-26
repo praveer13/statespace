@@ -20,6 +20,8 @@ from .model import Lab, Stage
 if TYPE_CHECKING:
     from statespace.lanes.z3 import Z3Session
 
+    from .z3py import Capture
+
 __all__ = ["CheckContext"]
 
 STATEMENT_KINDS = ("lean-challenge", "tla", "smt2", "yaml", "sql")
@@ -85,6 +87,16 @@ class CheckContext:
 
             self._z3 = Z3Session(root=self.root, workdir=self.workdir, sink=self.runs.append, wall_clock_s=self.wall_clock_s or WALL_CLOCK_S)
         return self._z3
+
+    def z3py(self, relative: str, *, prefix: str | None = None) -> Capture:
+        """Run the learner's Z3Py script and capture each question it asks as SMT-LIB (check/z3py.py), for
+        the check to put through `z3()`. Its output is written beside the receipt. Raises InputRefused when
+        the script is not in the repository."""
+        from .z3py import capture
+
+        self.text(relative)  # refuses a missing or unreadable script, naming the learner's spec
+        name = prefix or Path(relative).stem
+        return capture(root=self.root, workdir=self.workdir, script=Path(relative).as_posix(), prefix=name, wall_clock_s=self.wall_clock_s or 120.0)
 
     def sessions(self) -> list[Any]:
         return [s for s in (self._z3,) if s is not None]

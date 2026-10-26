@@ -1,0 +1,237 @@
+{
+ "commands": [
+  {
+   "name": "Transfer",
+   "params": [
+    {
+     "name": "from",
+     "ty": "account"
+    },
+    {
+     "name": "to",
+     "ty": "account"
+    },
+    {
+     "name": "amount",
+     "ty": "amount"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "balance",
+     "e": {
+      "tag": "var",
+      "name": "from"
+     }
+    },
+    "b": {
+     "tag": "var",
+     "name": "amount"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "move",
+     "amount": {
+      "tag": "var",
+      "name": "amount"
+     },
+     "from": {
+      "tag": "var",
+      "name": "from"
+     },
+     "to": {
+      "tag": "var",
+      "name": "to"
+     }
+    }
+   }
+  },
+  {
+   "name": "Deposit",
+   "params": [
+    {
+     "name": "to",
+     "ty": "account"
+    },
+    {
+     "name": "amount",
+     "ty": "amount"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "lit",
+     "value": "0"
+    },
+    "b": {
+     "tag": "lit",
+     "value": "0"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "deposit",
+     "amount": {
+      "tag": "var",
+      "name": "amount"
+     },
+     "to": {
+      "tag": "var",
+      "name": "to"
+     }
+    }
+   }
+  },
+  {
+   "name": "Hold",
+   "params": [
+    {
+     "name": "from",
+     "ty": "account"
+    },
+    {
+     "name": "amount",
+     "ty": "amount"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "balance",
+     "e": {
+      "tag": "var",
+      "name": "from"
+     }
+    },
+    "b": {
+     "tag": "var",
+     "name": "amount"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "hold",
+     "amount": {
+      "tag": "var",
+      "name": "amount"
+     },
+     "on": {
+      "tag": "var",
+      "name": "from"
+     }
+    }
+   }
+  },
+  {
+   "name": "Capture",
+   "params": [
+    {
+     "name": "h",
+     "ty": "hold"
+    },
+    {
+     "name": "to",
+     "ty": "account"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "lit",
+     "value": "0"
+    },
+    "b": {
+     "tag": "lit",
+     "value": "0"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "capture",
+     "hold": {
+      "tag": "var",
+      "name": "h"
+     },
+     "to": {
+      "tag": "var",
+      "name": "to"
+     }
+    }
+   }
+  },
+  {
+   "name": "Release",
+   "params": [
+    {
+     "name": "h",
+     "ty": "hold"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "lit",
+     "value": "0"
+    },
+    "b": {
+     "tag": "lit",
+     "value": "0"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "release",
+     "hold": {
+      "tag": "var",
+      "name": "h"
+     }
+    }
+   }
+  },
+  {
+   "name": "Freeze",
+   "params": [
+    {
+     "name": "a",
+     "ty": "account"
+    }
+   ],
+   "guard": {
+    "tag": "not",
+    "a": {
+     "tag": "frozen",
+     "e": {
+      "tag": "var",
+      "name": "a"
+     }
+    }
+   },
+   "body": {
+    "tag": "set",
+    "field": "frozen",
+    "target": {
+     "tag": "var",
+     "name": "a"
+    },
+    "value": {
+     "tag": "not",
+     "a": {
+      "tag": "frozen",
+      "e": {
+       "tag": "var",
+       "name": "a"
+      }
+     }
+    }
+   }
+  }
+ ]
+}

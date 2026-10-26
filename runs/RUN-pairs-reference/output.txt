@@ -1,0 +1,55 @@
+pair s7l5-seg1-v0: related
+  execution 1: {"code":"forbidden"}
+  execution 2: {"code":"not_found"}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: told apart (a leak witness under ~acme with release {title, body})
+pair s7l5-seg1-v1: related
+  execution 1: {"code":"not_found"}
+  execution 2: {"code":"not_found"}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: not told apart
+pair s7l5-seg3-slug: related
+  execution 1: {"code":"unique_violation"}
+  execution 2: {"code":"ok","created":"layoffs-memo"}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: told apart (a leak witness under ~acme with release {title, body})
+pair s7l6-seg1-contract-body: not related (the released body of contract differs, and the record releases it to acme)
+  execution 1: {"code":"ok","page":{"title":"contract title","body":"contract body","owner_team":"legal"}}
+  execution 2: {"code":"ok","page":{"title":"contract title","body":"a different body","owner_team":"legal"}}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: no witness (the worlds are not related)
+pair s7l6-seg1-layoffs-body: related
+  execution 1: {"code":"not_found"}
+  execution 2: {"code":"not_found"}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: not told apart
+pair s7l6-seg1-roadmap-title: not related (acme's own documents differ)
+  execution 1: {"code":"ok","page":{"title":"roadmap title","body":"roadmap body","owner_team":"growth"}}
+  execution 2: {"code":"ok","page":{"title":"a different title","body":"roadmap body","owner_team":"growth"}}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: no witness (the worlds are not related)
+pair s7l7-cell1-leaky: related
+  execution 1: {"code":"ok","page":{"title":"contract title","body":"contract body","owner_team":"legal","internal_notes":"contract notes"}}
+  execution 2: {"code":"ok","page":{"title":"contract title","body":"contract body","owner_team":"legal","internal_notes":"different notes"}}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: told apart (a leak witness under ~acme with release {title, body})
+pair s7l7-cell2-blanket: related
+  execution 1: {"code":"ok","page":{"title":"contract title","body":"contract body","owner_team":"legal"}}
+  execution 2: {"code":"ok","page":{"title":"contract title","body":"the edited body","owner_team":"legal"}}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: told apart (a leak witness under the blanket relation)
+pair s7l7-cell2-record: not related (the released body of contract differs, and the record releases it to acme)
+  execution 1: {"code":"ok","page":{"title":"contract title","body":"contract body","owner_team":"legal"}}
+  execution 2: {"code":"ok","page":{"title":"contract title","body":"the edited body","owner_team":"legal"}}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: no witness (the worlds are not related)
+pair s7l7-cell3-count-after: related
+  execution 1: {"code":"ok","hits":[],"total":0}
+  execution 2: {"code":"ok","hits":[],"total":0}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: not told apart
+pair s7l7-cell3-count: related
+  execution 1: {"code":"ok","hits":[],"total":1}
+  execution 2: {"code":"ok","hits":[],"total":0}
+  per-response monitor: execution 1 passes, execution 2 passes
+  verdict: told apart (a leak witness under ~acme with release {title, body})

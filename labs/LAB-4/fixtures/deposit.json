@@ -1,0 +1,80 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "Deposit into b: a known-true obligation, with frames for a and c.",
+  "kind": "obligation",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "commands": [
+      {
+        "name": "Deposit",
+        "params": [
+          "amount"
+        ],
+        "requires": {
+          "gt": [
+            {
+              "var": "amount"
+            },
+            {
+              "num": 0
+            }
+          ]
+        },
+        "body": {
+          "assign": "b",
+          "expr": {
+            "add": [
+              {
+                "var": "b"
+              },
+              {
+                "var": "amount"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "command": "Deposit",
+  "inv": {
+    "and": [
+      {
+        "ge": [
+          {
+            "var": "a"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "b"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "c"
+          },
+          {
+            "num": 0
+          }
+        ]
+      }
+    ]
+  },
+  "reference": "PROVED"
+}

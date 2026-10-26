@@ -36,7 +36,7 @@ A section headed "This lab" at the end of this file, added when the lab zip is p
 | `proposals/**` | you | write claim cards the person can read and adopt |
 | other files without a `TODO(you)` marker | the person, with your help | write, when asked, against the pinned statements |
 
-`.statespace/protected.txt` lists the protected paths as packed. A file that contains a `TODO(you)` marker is the person's whether or not that list names it.
+`.statespace/protected.txt` lists the template's protected paths, and `.statespace/protected.d/LAB-<n>.txt` adds each unpacked lab's (its `TODO(you)` files, `challenge/` and `comparator.json`). `pyproject.toml` and `.statespace/cli/` are the template's too: change them by unpacking a newer zip. A file that contains a `TODO(you)` marker is the person's whether or not a list names it.
 
 A *pinned statement* is a theorem statement, definition, invariant, temporal property or SMT-LIB query whose hash a receipt records: the files under `challenge/` and `claims/*.smt2`, `*.tla` and `*.yaml`.
 

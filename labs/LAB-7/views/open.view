@@ -1,0 +1,20 @@
+# views/open.view: the S7 `Open(viewer, id)` view, v1 (S7.L5's fix: one answer for "missing" and "denied").
+# The course supplies it in the view format the checker's encoder reads (checker/src/lib.rs):
+#
+#   view <name>
+#   missing <code>     what a request for a document that does not exist returns
+#   denied <code>      what a request for a document the viewer may not read returns
+#   field <name>       a field the page returns: title, body or internal_notes, one line each
+#   total <how>        the count the response carries: none, visible (matches the viewer may read) or
+#                      all (every match, counted before the filter)
+#
+# LAB-7.5 asks you to make the roadmap's deliberate bug on purpose (TODO(you)): the shared page also returns
+# internal_notes. Remove the # in front of the last line, then run `statespace check lab7.5`.
+# LAB-7.7 keeps the leaky view in broken/ and the cure in fixed/.
+view open
+missing not_found
+denied not_found
+field title
+field body
+total none
+# field internal_notes

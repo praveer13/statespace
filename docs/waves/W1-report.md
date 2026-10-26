@@ -490,3 +490,143 @@ under the code gives the reason (`liveCell` and `recordedOnly` in `apps/site/src
 - **Conformance gates.** None is built yet: Spectacle = TLC (W3-T08), PGlite = PostgreSQL (W4-T04), Datalog = Soufflé
   with heights (W4-T07), GATE-replay (W2-T03).
 - **Not run in this phase:** the instruments Playwright suite in Firefox and WebKit, axe on the new panels, and a deploy.
+
+## Phase 5 — labs, checkers, harnesses (2026-10-26)
+
+All ten labs now ship as zips that a learner can download, unpack and check. Each stage's check runs with
+`uv run statespace check lab<n>.<k>`, prints one result per check with what it suspects, and writes a receipt that
+`statespace receipt verify` accepts. The site's Bench page imports the receipt, and the lab page shows each
+check's latest result.
+
+### What was built
+
+- **The lab frame.** `labs/template/` is the learner repository: the agent kit, the guard hook, `pyproject.toml`
+  holding the command line from `.statespace/cli` (psycopg is now pinned there, so the PostgreSQL labs need no
+  `--with`), and the devcontainer. `scripts/labs/build-zips.mjs` writes `apps/site/public/labs/LAB-<n>.zip`, and
+  the site build now runs it (`npm run labs`). There is one check module per lab, `bench/statespace/labs/lab<n>.py`.
+- **The labs.** LAB-1 to LAB-10 each have a template, check modules, hint rungs and Prove-it mutants (in lab.yaml or
+  in the lab folder). Not built yet: the stretch checks of LAB-4.9, LAB-5.7 and LAB-10.10 (each says so and writes no receipt), and
+  LAB-2.8 and LAB-8.9 (stretch stages with no check).
+- **Public harnesses and reference tools:**
+  - `statespace isorun` and the PostgreSQL lane;
+  - the abstract-serializability checker (`bench/statespace/history.py`);
+  - `statespace trace validate` and `statespace sim`;
+  - the cvc5 lane;
+  - the reference translation validator (`labs/LAB-9/reference/tv.py`);
+  - the reference semantics and golden pool (`labs/LAB-3/reference/`, `labs/reference/mini-plinth/`);
+  - INS-interp (`packages/interp`) and INS-pairs;
+  - `statespace demo` and `statespace proposal draw`.
+- **Runs recorded:** RUN-lab1-gate, RUN-lab2-gate, RUN-lab4-reference, RUN-interp-goldens, the LAB-3 Lean runs,
+  RUN-serializability-fixtures, RUN-pairs-reference, RUN-interp-revocation, RUN-interp-new-enemy,
+  RUN-sim-determinism, RUN-tlc-trace-validation, RUN-tv-reference, RUN-sql-shape-validator, RUN-sql-validation,
+  RUN-lean-leaky-compile and RUN-core-demo. The index has 203 records.
+
+### GATE-labs
+
+`scripts/verify-labs.mjs` is GATE-labs. For each lab it:
+
+1. unpacks the zip into an empty folder;
+2. runs `uv run statespace check` in the pinned Bench image, beside a PostgreSQL 18.6 container on its own network
+   (`--lane host` runs on this machine instead);
+3. expects every built check to fail on the template;
+4. lays the private solution over the template, expects every check to pass, and verifies every receipt.
+
+Lean stages run with `STATESPACE_SANDBOX=off`, because bubblewrap cannot start in a default container. The receipt
+records the sandbox as off.
+
+- **Template-only mode:** PASS. All 85 built checks fail on the template, each naming a suspect. The 5 stages listed
+  above are skipped.
+- **Full mode:** PASS. Every built check passes on the private solution, and every receipt verifies: 255 results in all (85 template failures, 85 solution passes and 85 receipts verified). This session's GATE-labs run is not recorded as a run yet.
+
+**Where the private solutions live.** They are not in this repository. In this session they are in the scratchpad,
+under `private-solutions/<LAB-id>/`, laid out as the learner's repository. LAB-7's carries a `.gate/hooks.json`
+that writes its claim cards from the receipts before LAB-7.7 runs. Full mode in CI needs them in a private companion
+repository, read through a read-only deploy key (ARCHITECTURE.md section 13.5). **The owner has to create that
+repository.** Until then CI can run template-only mode only, and GATE-release cannot pass.
+
+### Integration fixes in this phase
+
+- **Runner.** A stage with no check writes no receipt and says so; before, it wrote an empty receipt that passed
+  vacuously. A receipt's file name and its createdAt now come from one instant.
+- **Template.** `pyproject.toml` pins `psycopg[binary]==3.3.6` [X RUN-scaffold#values.psycopg]. The LAB-6, LAB-7, LAB-9 and LAB-10 READMEs and
+  error messages are updated to match. The message in lab9.py is left alone, because two run records hash that file.
+- **Content.** Raw HTML in an S7 hint stopped the content build; it is fixed.
+- **GATE-facts.** Phase 5 added 15 copy findings, where lab READMEs and starter cards typed tool numbers. Each is
+  now a value tag or reworded. The 27 findings that remain were already there before this phase.
+- **GATE-links.** Proposals added for RUN-lab1-gate, RUN-lab2-gate, RUN-lab4-reference, LAB-3.c12, LAB-3.c13 and
+  LAB-4.c9.
+- **GATE-schema.** Learner starter cards (`labs/LAB-*/` files holding `TODO(you)`) are no longer read as records.
+- **Tests and types.**
+  - The bench command-table test now includes `isorun`, `trace`, `sim`, `demo` and `proposal`; 130 of 130 bench
+    tests pass.
+  - `tsc` failed in `packages/generators` under `exactOptionalPropertyTypes` (this was already so before Phase 5). The
+    optional fields in `packages/stamps` are widened, and every workspace now typechecks.
+- **Site.**
+  - The lab page now gives its text the lab record's runs. Before this, every `{{run:}}` in lab data showed "run not
+    yet recorded", even for recorded runs.
+  - Lab titles lose a trailing period.
+  - The paste box clears after a receipt is kept.
+  - A one-check receipt reads "its check passed".
+
+### Gates at the end of the phase
+
+| Gate | Result |
+|---|---|
+| `npm test` | red only on GATE-kc (7 dose findings in lessons, already there before this phase), GATE-facts (the 27 findings above) and the known S8.L7 GATE-stamps finding |
+| tsc (every app and package) | green |
+| GATE-runs | PASS; `build-index --check` reports the index current |
+| GATE-numbers | PASS |
+| GATE-links | green, with 31 pending proposals |
+| verify-privacy | ok |
+| GATE-stamps | only S8.L7:104 remains |
+| GATE-schema | PASS, and its self-check holds 48 of 48 |
+| guard matrix | 26 of 26 rows |
+
+The release lane flags these records for re-recording, because their inputs changed in this phase:
+
+- RUN-schema-gate, RUN-schema-self-check and RUN-w0-integration (`scripts/verify-schema.mjs`);
+- RUN-links-gate (`packages/ids/proposals.json`).
+
+### Pending runs
+
+- **Lesson cells:** none. The content build reports 0 `run-pending` warnings, down from 118, and no built page has
+  an unresolved run.
+- **Spine runs still to record**, which documents and the curriculum cite as `{{run:}}` (31 references):
+
+| Run | Why it is still pending |
+|---|---|
+| RUN-isorun-upstream (W4-T17) | `statespace isorun` exists now, but has not been run on PostgreSQL's upstream isolationtester specs |
+| RUN-tlc-n3-only | SP-5.6's two-worker clean run was never recorded on its own |
+| RUN-lean-template | the Std and `autoImplicit false` template claim needs its own record |
+| RUN-lean-vcgen-soundness | CL-4.3, the LAB-4.9 Lean stretch, is not built |
+| RUN-docket-baselines | the Audit docket's baselines, which GATE-audit's nightly re-execution needs, are not built |
+| RUN-lz-boot-w1, RUN-lz-today-w1, RUN-lz-signoff-w2 | learner-zero sessions; a person has to run them |
+| RUN-boot-firstsuccess | needs at least five naive testers |
+| RUN-trace-validate-spike | superseded by W0-S13, so it is never to be recorded |
+
+### Screenshots
+
+`/bench`, `/labs/LAB-1` and `/labs/LAB-6` were taken at 1440 and 390 px, after importing real receipts from the
+GATE-labs run: LAB-1.2, the starter and solution receipts of LAB-1.3, LAB-6.1 and LAB-6.4. Results:
+
+- no horizontal scroll and no console errors at either width;
+- the lab pages show each check's latest imported result, with its receipt path;
+- the download link shows the zip's name and size, read from the server.
+
+The screenshots are in the session scratchpad's `phase5-shots/` and are not committed.
+
+### Follow-ups
+
+- **The private companion repository** and its deploy key (owner). Then a CI job for `scripts/verify-labs.mjs`,
+  plus a run record of GATE-labs.
+- **The Bench image runs as uid 1000.** The bench lane writes into the unpacked folder as that user, so a CI host
+  with a different uid needs `--user` or a writable folder.
+- **Lanes.** Lean and TLC run through stopgap sessions inside the lab modules (lab2, lab3 and lab9 for Lean; lab5
+  and `trace.py` for TLC). W2-T32 and W3-T05 should move them into `statespace/lanes/`, and `context.py` should let a
+  lane register a session. Until then, `receipt verify` shows those runs as reported.
+- **Tab halves are not built:** Lane A grading of the learners' Rust as wasm, PGlite reruns, and INS-sim. Several
+  lab.yaml stages still say "re-checked here"; their receipts are "reported from your machine".
+- **`statespace defend`** (W2-T31) is not built. The Prove-it mutants live as data per lab.
+- **Imported receipts from LAB-6, LAB-7 and LAB-10** list no tools at the top level: the PostgreSQL facts sit in
+  `ext`, and the tab has no deriver for souffle, cargo or postgres runs.
+- **The spine registers no run or check for:** the gate runs, LAB-3.12, LAB-3.13 and LAB-4.c9.

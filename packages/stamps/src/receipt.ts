@@ -694,7 +694,7 @@ function leanRaw(receipt: Receipt, lean: Checker): RawOutput | string {
     const line = firstOf(report.errorLines)
     return run.verdict === 'error' || run.verdict === 'rejected' || run.verdict === 'failed' || nonZero !== undefined || line !== undefined ? [{ nonZero, line }] : []
   })
-  const key = (u: { readonly nonZero?: number; readonly line?: string }): string => `${u.line === undefined ? 1 : 0}\u0000${u.line ?? ''}\u0000${String(u.nonZero ?? 0).padStart(12, '0')}`
+  const key = (u: { readonly nonZero?: number | undefined; readonly line?: string | undefined }): string => `${u.line === undefined ? 1 : 0}\u0000${u.line ?? ''}\u0000${String(u.nonZero ?? 0).padStart(12, '0')}`
   const noVerdict = [...unread].sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0))[0]
   if (noVerdict !== undefined) {
     return { kind: 'lean-no-verdict', lean, ...(noVerdict.nonZero !== undefined ? { exitCode: noVerdict.nonZero } : {}), ...(noVerdict.line !== undefined ? { line: noVerdict.line } : {}) }

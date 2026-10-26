@@ -210,3 +210,169 @@ a.claims-tab:focus-visible {
   font-size: var(--fs-prose);
   line-height: var(--lh-prose);
 }
+
+/* ------------------------------------------------------------------ claim cards from lab receipts */
+
+.screen.claims .claims-lab h2,
+.screen.claims .claims-sub {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-structure);
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.1;
+  color: var(--rubric);
+}
+
+.screen.claims .claims-sub + .claims-list,
+.screen.claims .claims-sub ~ .claims-list {
+  margin-top: 0;
+  border-top: 3px solid var(--ink);
+}
+
+.claims-lab {
+  min-width: 0;
+}
+
+.ccards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-6);
+}
+
+.ccard {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  padding-top: var(--space-3);
+  border-top: 3px solid var(--ink);
+}
+
+.ccard[data-vol='1'] { --vol: var(--vol-1); }
+.ccard[data-vol='2'] { --vol: var(--vol-2); }
+.ccard[data-vol='3'] { --vol: var(--vol-3); }
+.ccard[data-vol='4'] { --vol: var(--vol-4); }
+.ccard[data-vol='5'] { --vol: var(--vol-5); }
+.ccard[data-vol='6'] { --vol: var(--vol-6); }
+.ccard[data-vol='7'] { --vol: var(--vol-7); }
+.ccard[data-vol='8'] { --vol: var(--vol-8); }
+.ccard[data-vol='9'] { --vol: var(--vol-9); }
+.ccard[data-vol='10'] { --vol: var(--vol-10); }
+
+.ccard-id {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+}
+
+.ccard-local {
+  color: var(--pencil);
+}
+
+.screen.claims .ccard-name {
+  margin: 0;
+  font-family: var(--font-structure);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.ccard-name code {
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.ccard-note {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  color: var(--pencil);
+}
+
+.ccard-rows {
+  margin: 0;
+}
+
+.ccard-rows > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px var(--space-3);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.ccard-rows dt {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+  padding-top: 3px;
+}
+
+.ccard-rows dd {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.ccard-rows code {
+  font-size: 13px;
+}
+
+.ccard-sub {
+  display: block;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  color: var(--pencil);
+}
+
+.ccard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ccard-status {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.ccard-rests > summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--target);
+  cursor: pointer;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.ccard-rests > summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+@media (min-width: 760px) {
+  .ccard-rows > div {
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+}

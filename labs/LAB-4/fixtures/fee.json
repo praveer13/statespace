@@ -1,0 +1,107 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "Transfer from a to b that charges a fee of 1 to a third account c, which the guard does not cover. A known-false obligation (c = 0).",
+  "kind": "obligation",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "commands": [
+      {
+        "name": "FeeTransfer",
+        "params": [
+          "amount"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "var": "a"
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "seq": [
+            {
+              "move": {
+                "from": "a",
+                "to": "b",
+                "amount": {
+                  "var": "amount"
+                }
+              }
+            },
+            {
+              "assign": "c",
+              "expr": {
+                "sub": [
+                  {
+                    "var": "c"
+                  },
+                  {
+                    "num": 1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "command": "FeeTransfer",
+  "inv": {
+    "and": [
+      {
+        "ge": [
+          {
+            "var": "a"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "b"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "c"
+          },
+          {
+            "num": 0
+          }
+        ]
+      }
+    ]
+  },
+  "reference": "REFUTED"
+}

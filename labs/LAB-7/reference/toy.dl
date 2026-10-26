@@ -1,0 +1,18 @@
+// LAB-7.1: the toy policy of RUN-z3-fixedpoint, the reference program. It relates users straight to
+// documents; W0 adds teams. Run it on the facts beside it with
+//
+//   souffle -F labs/LAB-7/reference -D - labs/LAB-7/reference/toy.dl
+//
+// Comments use //, because Soufflé 2.5 rejects % (S7.L1).
+
+.decl member(u: number, d: number)
+.decl shared(u: number, d: number)
+.decl revoked(u: number, d: number)
+.decl canread(u: number, d: number)
+.input member
+.input shared
+.input revoked
+.output canread
+
+canread(u, d) :- member(u, d).
+canread(u, d) :- shared(u, d), !revoked(u, d).

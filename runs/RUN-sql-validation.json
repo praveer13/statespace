@@ -1,0 +1,227 @@
+{
+  "id": "RUN-sql-validation",
+  "title": "The reference SQL validator on the LAB-9.11 suite: four honest plans accepted and seven wrong ones rejected within its bound, each rejection replayed on PostgreSQL 18.6 and in the interpreter as a divergence; the shape check beside it",
+  "task": "W5-T22",
+  "origin": "recorded",
+  "records": "LAB-9.c11's reference (content/stages/S9/lab.yaml) and CL-9.3",
+  "engine": "postgres",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "/usr/lib/postgresql/18/bin/postgres in postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6, which replays each rejection; the validators are the Python files in inputs[], under the Bench image's python3",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:07:24.129Z",
+  "started_at": "2026-10-26T21:07:23.779Z",
+  "duration_s": 0.35,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-lab9-sql-validation",
+    "--memory=6g",
+    "--network",
+    "ssrec-lab9-net",
+    "-e",
+    "STATESPACE_PG_DSN=postgresql://postgres@ssrec-lab9-pg:5432/postgres",
+    "-e",
+    "PYTHONPATH=/r/bench",
+    "-v",
+    "<repo>:/r:ro",
+    "-w",
+    "/r",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-B",
+    "labs/reference/sql-validator/record.py",
+    "suite"
+  ],
+  "inputs": [
+    {
+      "path": "bench/statespace/labs/lab9.py",
+      "sha256": "60ed553c67c4d16ba7cc22e5aa4afdc0bb5edfc2d85e4c84583d79bed92380db",
+      "bytes": 66240,
+      "role": "script"
+    },
+    {
+      "path": "labs/reference/sql-validator/validators.py",
+      "sha256": "afea1a66f3390e7601e2454aac418b610ea00ef6a878ec1b648600d2b436d6e5",
+      "bytes": 5405,
+      "role": "script"
+    },
+    {
+      "path": "labs/reference/sql-validator/record.py",
+      "sha256": "95a95fabb6f27236d5f16050050c351693ca0f877fb0cbdd43e5c1210b8bc5a2",
+      "bytes": 2695,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-lab9-net",
+    "postgres_image": "postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances",
+    "[reference] (honest) semantic validator: accepted, 1125 of 1125 instances",
+    "[reference] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[credit-first] (honest) semantic validator: accepted, 1125 of 1125 instances",
+    "[credit-first] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[dst-checked] (honest) semantic validator: accepted, 1125 of 1125 instances",
+    "[dst-checked] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[debit-from-register] (honest) semantic validator: accepted, 1125 of 1125 instances",
+    "[debit-from-register] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[wrong-account] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | diverges",
+    "[wrong-account] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[flipped-debit] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:2 | interpreter committed 1:1, 2:0 | diverges",
+    "[flipped-debit] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[no-funds-guard] (wrong) semantic validator: rejected at instance 3 of 1125: accounts=1:0,2:0 from=1 to=1 amount=1",
+    "  replay accounts=1:0,2:0 from=1 to=1 amount=1: PostgreSQL sqlstate 23514 | interpreter error Insufficient | diverges",
+    "[no-funds-guard] shape check: rejected (a guard is missing)",
+    "[no-positive-guard] (wrong) semantic validator: rejected at instance 1 of 1125: accounts=1:0,2:0 from=1 to=1 amount=-1",
+    "  replay accounts=1:0,2:0 from=1 to=1 amount=-1: PostgreSQL committed 1:0, 2:0 | interpreter error NonPositive | diverges",
+    "[no-positive-guard] shape check: rejected (a guard is missing)",
+    "[no-credit-rowcount] (wrong) semantic validator: rejected at instance 73 of 1125: accounts=1:0,2:1 from=2 to=3 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=3 amount=1: PostgreSQL committed 1:0, 2:0 | interpreter error NoSuchAccount | diverges",
+    "[no-credit-rowcount] shape check: rejected (an UPDATE does not expect one row)",
+    "[upsert-credit] (wrong) semantic validator: rejected at instance 73 of 1125: accounts=1:0,2:1 from=2 to=3 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=3 amount=1: PostgreSQL committed 1:0, 2:0, 3:1 | interpreter error NoSuchAccount | diverges",
+    "[upsert-credit] shape check: rejected (a write is not an UPDATE)",
+    "[read-both-first] (wrong) semantic validator: rejected at instance 68 of 1125: accounts=1:0,2:1 from=2 to=2 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=2 amount=1: PostgreSQL committed 1:0, 2:2 | interpreter committed 1:0, 2:1 | diverges",
+    "[read-both-first] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-sql-validation/suite.log",
+      "sha256": "9e7cf6b55c25933847082d1bb0bbb2d9c5f2bf51ae8a55a42cdd2c72fde4f566",
+      "bytes": 3352,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "plans": {
+      "reference": {
+        "kind": "honest",
+        "semantic": "accepted",
+        "shape": "accepted"
+      },
+      "credit-first": {
+        "kind": "honest",
+        "semantic": "accepted",
+        "shape": "accepted"
+      },
+      "dst-checked": {
+        "kind": "honest",
+        "semantic": "accepted",
+        "shape": "accepted"
+      },
+      "debit-from-register": {
+        "kind": "honest",
+        "semantic": "accepted",
+        "shape": "accepted"
+      },
+      "wrong-account": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=1 amount=1",
+          "postgres": "committed 1:0, 2:1",
+          "interpreter": "committed 1:1, 2:0",
+          "result": "diverges"
+        },
+        "shape": "accepted"
+      },
+      "flipped-debit": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=1 amount=1",
+          "postgres": "committed 1:1, 2:2",
+          "interpreter": "committed 1:1, 2:0",
+          "result": "diverges"
+        },
+        "shape": "accepted"
+      },
+      "no-funds-guard": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:0 from=1 to=1 amount=1",
+          "postgres": "sqlstate 23514",
+          "interpreter": "error Insufficient",
+          "result": "diverges"
+        },
+        "shape": "rejected"
+      },
+      "no-positive-guard": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:0 from=1 to=1 amount=-1",
+          "postgres": "committed 1:0, 2:0",
+          "interpreter": "error NonPositive",
+          "result": "diverges"
+        },
+        "shape": "rejected"
+      },
+      "no-credit-rowcount": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=3 amount=1",
+          "postgres": "committed 1:0, 2:0",
+          "interpreter": "error NoSuchAccount",
+          "result": "diverges"
+        },
+        "shape": "rejected"
+      },
+      "upsert-credit": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=3 amount=1",
+          "postgres": "committed 1:0, 2:0, 3:1",
+          "interpreter": "error NoSuchAccount",
+          "result": "diverges"
+        },
+        "shape": "rejected"
+      },
+      "read-both-first": {
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=2 amount=1",
+          "postgres": "committed 1:0, 2:2",
+          "interpreter": "committed 1:0, 2:1",
+          "result": "diverges"
+        },
+        "shape": "accepted"
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "ssrec-lab9-net"
+    }
+  },
+  "notes": [
+    "<repo> in argv is the course repository at the commit the inputs' hashes name, mounted read-only.",
+    "PostgreSQL ran as the container ssrec-lab9-pg (postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6, postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)) on the network ssrec-lab9-net, with trust authentication; both were removed after the run.",
+    "The bound is ids 1..3 (rows 1 and 2 present or absent, row 3 never), balances 0..3 and amounts -1..3: 1125 instances, enumerated with full tables first. An acceptance is about that bound only.",
+    "Each rejection's instance is replayed twice: the plan on PostgreSQL in one transaction (statespace.labs.lab9.replay_plan), the source transfer in the course's interpreter (statespace.labs.lab9.source_transfer). A rejection counts only when the two outcome classes differ.",
+    "verdict_lines are every non-empty line of the log, copied in order."
+  ]
+}

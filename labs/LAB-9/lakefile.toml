@@ -1,0 +1,34 @@
+# LAB-9's Lean project (labs/README.md section 9.1). The course owns this file: the targets below are what
+# `statespace check lab9.<k>` builds and what `lake comparator` judges, so changing them changes what is checked.
+#
+#   challenge/Course/     the course's definitions: the stack machine, the source fragment, the IR's syntax,
+#                         register-index lemmas, runT and the simulation relation (read-only)
+#   challenge/Challenge/  the pinned statements, each closed by `sorry` (read-only)
+#   challenge/*.json      one comparator configuration per stage (read-only)
+#   S9/                   your definitions: Defs.lean (the IR's semantics and the compiler) and
+#                         Statement.lean (the observations and the matching relation)
+#   Solution/             your proofs, one module per stage
+name = "lab9"
+version = "0.1.0"
+defaultTargets = ["Course", "Challenge", "S9", "Solution"]
+
+[leanOptions]
+autoImplicit = false
+
+[[lean_lib]]
+name = "Course"
+srcDir = "challenge"
+globs = ["Course.+"]
+
+[[lean_lib]]
+name = "Challenge"
+srcDir = "challenge"
+globs = ["Challenge.+"]
+
+[[lean_lib]]
+name = "S9"
+globs = ["S9.+"]
+
+[[lean_lib]]
+name = "Solution"
+globs = ["Solution.+"]

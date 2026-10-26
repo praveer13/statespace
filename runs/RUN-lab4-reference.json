@@ -1,0 +1,509 @@
+{
+  "id": "RUN-lab4-reference",
+  "title": "The reference miniplinth check on LAB-4's four obligation fixtures: Transfer and Deposit proved with a replaying premise witness, the off-by-one Withdraw and the third-account fee refuted with a replaying witness, and cvc5 agreeing with Z3 on every query",
+  "task": "W3-T22",
+  "origin": "recorded",
+  "records": "LAB-4.1's reference output (labs/README.md section 10), and the cvc5 half of CL-4.2's stamp on the reference's own obligations",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "Z3 version 5.3.1 - 64 bit",
+  "binary": "the z3 binary of the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+  "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T20:58:44.970Z",
+  "started_at": "2026-10-26T20:58:43.781Z",
+  "duration_s": 1.189,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w/bench",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-B",
+      "-m",
+      "statespace.labs.lab4",
+      "../labs/LAB-4/fixtures/transfer.json",
+      "--cvc5"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w/bench",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-B",
+      "-m",
+      "statespace.labs.lab4",
+      "../labs/LAB-4/fixtures/deposit.json",
+      "--cvc5"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w/bench",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-B",
+      "-m",
+      "statespace.labs.lab4",
+      "../labs/LAB-4/fixtures/withdraw-off-by-one.json",
+      "--cvc5"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<sandbox>/work:/w:ro",
+      "-w",
+      "/w/bench",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python",
+      "-B",
+      "-m",
+      "statespace.labs.lab4",
+      "../labs/LAB-4/fixtures/fee.json",
+      "--cvc5"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "bench/statespace/labs/lab4.py",
+      "sha256": "fb33d358d5fc5248ba0a680f75a4935c6219d89babfe7fd3e5f1abc114eef89e",
+      "bytes": 76181,
+      "role": "reference checker"
+    },
+    {
+      "path": "bench/statespace/lanes/cvc5.py",
+      "sha256": "37f202974a12b633306182e4b71f8d73c90239fd3a46cc9702fa9eba1bc334db",
+      "bytes": 10222,
+      "role": "lane"
+    },
+    {
+      "path": "bench/statespace/lanes/z3.py",
+      "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+      "bytes": 76032,
+      "role": "lane"
+    },
+    {
+      "path": "bench/statespace/check/proc.py",
+      "sha256": "dd2b3b7aaadd5e1d611962a282e4c8a9ea04478a75f6754ad9b43183df79f2e0",
+      "bytes": 2848,
+      "role": "lane"
+    },
+    {
+      "path": "bench/statespace/check/lanes.py",
+      "sha256": "62353f63c70331325ecc5a8c4c56030be14301a11ab7e398ae1ae96896ad1561",
+      "bytes": 8122,
+      "role": "lane"
+    },
+    {
+      "path": "labs/LAB-4/fixtures/transfer.json",
+      "sha256": "aaf1dde09e3930e566320199a191b5480f682a67e839ea8f4aa64e9561f105fa",
+      "bytes": 1563,
+      "role": "fixture"
+    },
+    {
+      "path": "labs/LAB-4/fixtures/deposit.json",
+      "sha256": "75b9ea5cce8a0fc017cb692df26e5dbc14d0187cf49da47aa6f882a63b30f4a9",
+      "bytes": 1292,
+      "role": "fixture"
+    },
+    {
+      "path": "labs/LAB-4/fixtures/withdraw-off-by-one.json",
+      "sha256": "1e5b53714d767ea739fcb1af51c812c08f520c18f20b7b64f5bb92d8f8de8921",
+      "bytes": 1793,
+      "role": "fixture"
+    },
+    {
+      "path": "labs/LAB-4/fixtures/fee.json",
+      "sha256": "47ac86e11144c95acea0da6695f554997954244cf140e94dee6e53ad317915d1",
+      "bytes": 1963,
+      "role": "fixture"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "rlimit": 5000000,
+    "timeout_s": 120
+  },
+  "exit_code": null,
+  "verdict_lines": [
+    "== transfer: python -B -m statespace.labs.lab4 ../labs/LAB-4/fixtures/transfer.json --cvc5",
+    "command   Transfer (../labs/LAB-4/fixtures/transfer.json)",
+    "fragment  in: assignments, moves and ifs under one reject guard, over Int",
+    "query     sha256 cbcdb8af4ee960ec925183d87b98b40c5dd42b792b5ae1adbdf5cacf6364e54a",
+    "solver    Z3 5.3.1 · rlimit 5000000 · entry cli",
+    "verdict   unsat",
+    "premise   sat · a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=0 · replays as a successful step",
+    "cross     cvc5 1.4.2 unsat · rlimit 5000000 · agrees",
+    "stamp     PROVED [P] · Z3 5.3.1 unsat · uncertified · rlimit 5000000",
+    "defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)",
+    "-- exit 0",
+    "== deposit: python -B -m statespace.labs.lab4 ../labs/LAB-4/fixtures/deposit.json --cvc5",
+    "command   Deposit (../labs/LAB-4/fixtures/deposit.json)",
+    "fragment  in: assignments, moves and ifs under one reject guard, over Int",
+    "query     sha256 71d4b6feac3db3312a93e11cd59c2bf11f7ba72610ae247f326f2f112730eddd",
+    "solver    Z3 5.3.1 · rlimit 5000000 · entry cli",
+    "verdict   unsat",
+    "premise   sat · a=0 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=0 · replays as a successful step",
+    "cross     cvc5 1.4.2 unsat · rlimit 5000000 · agrees",
+    "stamp     PROVED [P] · Z3 5.3.1 unsat · uncertified · rlimit 5000000",
+    "defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)",
+    "-- exit 0",
+    "== withdraw-off-by-one: python -B -m statespace.labs.lab4 ../labs/LAB-4/fixtures/withdraw-off-by-one.json --cvc5",
+    "command   Withdraw (../labs/LAB-4/fixtures/withdraw-off-by-one.json)",
+    "fragment  in: assignments, moves and ifs under one reject guard, over Int",
+    "query     sha256 72c98eccfc6e46846430477b0778d8519c0828ca57686b39c82ed7816afb21a2",
+    "solver    Z3 5.3.1 · rlimit 5000000 · entry cli",
+    "verdict   sat",
+    "witness   a=0 b=0 c=0 p_amount=1 a_p=-1 b_p=0 c_p=0 · Withdraw(amount=1) from a=0 b=0 c=0 reaches a=-1 b=0 c=0, where Inv fails",
+    "cross     cvc5 1.4.2 sat · rlimit 5000000 · agrees",
+    "stamp     REFUTED [R] · 1 step",
+    "defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)",
+    "-- exit 0",
+    "== fee: python -B -m statespace.labs.lab4 ../labs/LAB-4/fixtures/fee.json --cvc5",
+    "command   FeeTransfer (../labs/LAB-4/fixtures/fee.json)",
+    "fragment  in: assignments, moves and ifs under one reject guard, over Int",
+    "query     sha256 ed511f10469c888b77e30891303e8a3d36d43943d981b98b54e87556b1a7d5e2",
+    "solver    Z3 5.3.1 · rlimit 5000000 · entry cli",
+    "verdict   sat",
+    "witness   a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1 · FeeTransfer(amount=1) from a=1 b=0 c=0 reaches a=0 b=1 c=-1, where Inv fails",
+    "cross     cvc5 1.4.2 sat · rlimit 5000000 · agrees",
+    "stamp     REFUTED [R] · 1 step",
+    "defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)",
+    "-- exit 0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lab4-reference/transfer.log",
+      "sha256": "0864f74ddbf9da314a379b79ae8a15f68b9341f8152f97bf24fb81d1b95dbf20",
+      "bytes": 593,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lab4-reference/deposit.log",
+      "sha256": "fcb720f8704f34003a4c25139711fda648674335353d636f026ca93b620ac530",
+      "bytes": 591,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lab4-reference/withdraw-off-by-one.log",
+      "sha256": "0638dc55764b538acd5b9ecf19ef89c5e10101c8a38470fd152fd5e4ba95ec07",
+      "bytes": 599,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lab4-reference/fee.log",
+      "sha256": "303a1799ed3f1fc938a04be860d1e71fa1093e2506816684280bb1b7d68fe207",
+      "bytes": 589,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "configs": {
+      "transfer": {
+        "exit_code": 0,
+        "z3_verdict": "unsat",
+        "cvc5_verdict": "unsat",
+        "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified · rlimit 5000000",
+        "query_sha256": "cbcdb8af4ee960ec925183d87b98b40c5dd42b792b5ae1adbdf5cacf6364e54a"
+      },
+      "deposit": {
+        "exit_code": 0,
+        "z3_verdict": "unsat",
+        "cvc5_verdict": "unsat",
+        "stamp": "PROVED [P] · Z3 5.3.1 unsat · uncertified · rlimit 5000000",
+        "query_sha256": "71d4b6feac3db3312a93e11cd59c2bf11f7ba72610ae247f326f2f112730eddd"
+      },
+      "withdraw-off-by-one": {
+        "exit_code": 0,
+        "z3_verdict": "sat",
+        "cvc5_verdict": "sat",
+        "stamp": "REFUTED [R] · 1 step",
+        "query_sha256": "72c98eccfc6e46846430477b0778d8519c0828ca57686b39c82ed7816afb21a2"
+      },
+      "fee": {
+        "exit_code": 0,
+        "z3_verdict": "sat",
+        "cvc5_verdict": "sat",
+        "stamp": "REFUTED [R] · 1 step",
+        "query_sha256": "ed511f10469c888b77e30891303e8a3d36d43943d981b98b54e87556b1a7d5e2"
+      }
+    },
+    "agree": true,
+    "proved": [
+      "transfer",
+      "deposit"
+    ],
+    "refuted": [
+      "withdraw-off-by-one",
+      "fee"
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "python": "CPython 3.13.12",
+    "container": "statespace-bench, uid 1000 (learner), --network none, --memory=6g"
+  },
+  "configs": [
+    {
+      "id": "transfer",
+      "purpose": "the reference miniplinth check on labs/LAB-4/fixtures/transfer.json, cross-checked with cvc5",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "Z3 version 5.3.1 - 64 bit",
+      "binary": "the z3 binary of the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w/bench",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-B",
+        "-m",
+        "statespace.labs.lab4",
+        "../labs/LAB-4/fixtures/transfer.json",
+        "--cvc5"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-4/fixtures/transfer.json",
+          "sha256": "aaf1dde09e3930e566320199a191b5480f682a67e839ea8f4aa64e9561f105fa",
+          "bytes": 1563,
+          "role": "fixture"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "rlimit": 5000000,
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-26T20:58:43.781Z",
+      "duration_s": 0.304,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-lab4-reference/transfer.log",
+          "sha256": "0864f74ddbf9da314a379b79ae8a15f68b9341f8152f97bf24fb81d1b95dbf20",
+          "bytes": 593,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "deposit",
+      "purpose": "the reference miniplinth check on labs/LAB-4/fixtures/deposit.json, cross-checked with cvc5",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "Z3 version 5.3.1 - 64 bit",
+      "binary": "the z3 binary of the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w/bench",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-B",
+        "-m",
+        "statespace.labs.lab4",
+        "../labs/LAB-4/fixtures/deposit.json",
+        "--cvc5"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-4/fixtures/deposit.json",
+          "sha256": "75b9ea5cce8a0fc017cb692df26e5dbc14d0187cf49da47aa6f882a63b30f4a9",
+          "bytes": 1292,
+          "role": "fixture"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "rlimit": 5000000,
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-26T20:58:44.085Z",
+      "duration_s": 0.307,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-lab4-reference/deposit.log",
+          "sha256": "fcb720f8704f34003a4c25139711fda648674335353d636f026ca93b620ac530",
+          "bytes": 591,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "withdraw-off-by-one",
+      "purpose": "the reference miniplinth check on labs/LAB-4/fixtures/withdraw-off-by-one.json, cross-checked with cvc5",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "Z3 version 5.3.1 - 64 bit",
+      "binary": "the z3 binary of the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w/bench",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-B",
+        "-m",
+        "statespace.labs.lab4",
+        "../labs/LAB-4/fixtures/withdraw-off-by-one.json",
+        "--cvc5"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-4/fixtures/withdraw-off-by-one.json",
+          "sha256": "1e5b53714d767ea739fcb1af51c812c08f520c18f20b7b64f5bb92d8f8de8921",
+          "bytes": 1793,
+          "role": "fixture"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "rlimit": 5000000,
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-26T20:58:44.392Z",
+      "duration_s": 0.287,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-lab4-reference/withdraw-off-by-one.log",
+          "sha256": "0638dc55764b538acd5b9ecf19ef89c5e10101c8a38470fd152fd5e4ba95ec07",
+          "bytes": 599,
+          "kind": "log"
+        }
+      ]
+    },
+    {
+      "id": "fee",
+      "purpose": "the reference miniplinth check on labs/LAB-4/fixtures/fee.json, cross-checked with cvc5",
+      "origin": "recorded",
+      "engine": "z3",
+      "version": "5.3.1",
+      "version_string": "Z3 version 5.3.1 - 64 bit",
+      "binary": "the z3 binary of the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/bin/z3)",
+      "binary_sha256": "29f796d291ae2dfca032b69c6f76c5b70be19078ccb52ab3cb6ec9a8600004a4",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w:ro",
+        "-w",
+        "/w/bench",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python",
+        "-B",
+        "-m",
+        "statespace.labs.lab4",
+        "../labs/LAB-4/fixtures/fee.json",
+        "--cvc5"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-4/fixtures/fee.json",
+          "sha256": "47ac86e11144c95acea0da6695f554997954244cf140e94dee6e53ad317915d1",
+          "bytes": 1963,
+          "role": "fixture"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "rlimit": 5000000,
+        "timeout_s": 120
+      },
+      "started_at": "2026-10-26T20:58:44.679Z",
+      "duration_s": 0.291,
+      "exit_code": 0,
+      "outputs": [
+        {
+          "path": "runs/RUN-lab4-reference/fee.log",
+          "sha256": "303a1799ed3f1fc938a04be860d1e71fa1093e2506816684280bb1b7d68fe207",
+          "bytes": 589,
+          "kind": "log"
+        }
+      ]
+    }
+  ],
+  "primary_config": "transfer",
+  "notes": [
+    "cvc5 is the Bench binary /usr/local/bin/cvc5, whose --version line is 'cvc5 1.4.2 [git 282d5e0 on branch HEAD]' and whose SHA-256 is 6aecddf466552b83bb5883756c7955e0c9d5ddcc6d7f45b48c2f6e06a741b102; the reference runs it as `cvc5 --rlimit=5000000 <query>` (bench/statespace/lanes/cvc5.py).",
+    "Each configuration ran once, in a fresh container, with a scratch copy of bench/statespace (without its tests and fixtures) and the fixture mounted read-only at /w; <sandbox>/work stands for that copy. The reference writes its queries to a temporary folder inside the container and removes it.",
+    "Every verdict line is copied from the logs; values.configs.<config> is parsed from those lines by their labels, never typed.",
+    "Z3's model values are not canonical: each witness is checked by replaying it in the reference interpreter, never by matching its values.",
+    "This run is the course's reference checker, not a learner's: a learner's crate is graded by statespace check lab4.<k>, and its receipts record its own runs."
+  ],
+  "unrecorded": [
+    {
+      "field": "exit_code",
+      "reason": "the run is several commands, each with its own exit code: configs[].exit_code, values.configs.<config>.exit_code, and the -- exit line after each configuration in verdict_lines"
+    }
+  ]
+}

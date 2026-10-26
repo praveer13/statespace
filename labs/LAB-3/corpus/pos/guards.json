@@ -1,0 +1,208 @@
+{
+ "commands": [
+  {
+   "name": "SafePay",
+   "params": [
+    {
+     "name": "payer",
+     "ty": "account"
+    },
+    {
+     "name": "payee",
+     "ty": "account"
+    },
+    {
+     "name": "n",
+     "ty": "amount"
+    }
+   ],
+   "guard": {
+    "tag": "and",
+    "a": {
+     "tag": "and",
+     "a": {
+      "tag": "ge",
+      "a": {
+       "tag": "balance",
+       "e": {
+        "tag": "var",
+        "name": "payer"
+       }
+      },
+      "b": {
+       "tag": "var",
+       "name": "n"
+      }
+     },
+     "b": {
+      "tag": "not",
+      "a": {
+       "tag": "frozen",
+       "e": {
+        "tag": "var",
+        "name": "payer"
+       }
+      }
+     }
+    },
+    "b": {
+     "tag": "ge",
+     "a": {
+      "tag": "add",
+      "a": {
+       "tag": "balance",
+       "e": {
+        "tag": "var",
+        "name": "payee"
+       }
+      },
+      "b": {
+       "tag": "var",
+       "name": "n"
+      }
+     },
+     "b": {
+      "tag": "lit",
+      "value": "0"
+     }
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "move",
+     "amount": {
+      "tag": "var",
+      "name": "n"
+     },
+     "from": {
+      "tag": "var",
+      "name": "payer"
+     },
+     "to": {
+      "tag": "var",
+      "name": "payee"
+     }
+    }
+   }
+  },
+  {
+   "name": "Fee",
+   "params": [
+    {
+     "name": "src",
+     "ty": "account"
+    },
+    {
+     "name": "dst",
+     "ty": "account"
+    }
+   ],
+   "guard": {
+    "tag": "and",
+    "a": {
+     "tag": "ge",
+     "a": {
+      "tag": "balance",
+      "e": {
+       "tag": "var",
+       "name": "src"
+      }
+     },
+     "b": {
+      "tag": "lit",
+      "value": "5"
+     }
+    },
+    "b": {
+     "tag": "eq",
+     "a": {
+      "tag": "lit",
+      "value": "1"
+     },
+     "b": {
+      "tag": "lit",
+      "value": "1"
+     }
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "move",
+     "amount": {
+      "tag": "lit",
+      "value": "5"
+     },
+     "from": {
+      "tag": "var",
+      "name": "src"
+     },
+     "to": {
+      "tag": "var",
+      "name": "dst"
+     }
+    }
+   }
+  },
+  {
+   "name": "Credit",
+   "params": [
+    {
+     "name": "acct",
+     "ty": "account"
+    },
+    {
+     "name": "k",
+     "ty": "int"
+    }
+   ],
+   "guard": {
+    "tag": "and",
+    "a": {
+     "tag": "ge",
+     "a": {
+      "tag": "var",
+      "name": "k"
+     },
+     "b": {
+      "tag": "lit",
+      "value": "1"
+     }
+    },
+    "b": {
+     "tag": "ge",
+     "a": {
+      "tag": "sub",
+      "a": {
+       "tag": "var",
+       "name": "k"
+      },
+      "b": {
+       "tag": "lit",
+       "value": "1"
+      }
+     },
+     "b": {
+      "tag": "lit",
+      "value": "0"
+     }
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "deposit",
+     "amount": {
+      "tag": "lit",
+      "value": "3"
+     },
+     "to": {
+      "tag": "var",
+      "name": "acct"
+     }
+    }
+   }
+  }
+ ]
+}

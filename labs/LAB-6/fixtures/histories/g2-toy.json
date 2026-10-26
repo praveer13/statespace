@@ -1,0 +1,76 @@
+{
+  "label": "g2-toy",
+  "note": "A toy history in the shape of the G2-item anomaly Jepsen reported for PostgreSQL 12.3 under SERIALIZABLE: two transactions each read both accounts at their initial balances, each debits one of them, and both commit. Written by hand; there is no database run.",
+  "commit_order": [
+    "t1",
+    "t2"
+  ],
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        70
+      ],
+      [
+        2,
+        70
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "t1",
+      "session": "t1",
+      "command": {
+        "op": "team-debit",
+        "team": [
+          1,
+          2
+        ],
+        "account": 1,
+        "amount": 30
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        100,
+        100,
+        70
+      ]
+    },
+    {
+      "id": "t2",
+      "session": "t2",
+      "command": {
+        "op": "team-debit",
+        "team": [
+          1,
+          2
+        ],
+        "account": 2,
+        "amount": 30
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        100,
+        100,
+        70
+      ]
+    }
+  ]
+}

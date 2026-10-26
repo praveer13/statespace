@@ -1,0 +1,28 @@
+# CL-3.3, successful steps preserve the state invariant: the claim card LAB-3.5 mints and LAB-3.11 validates
+# (claim@1). It arrives with the statement and the method prefilled from the stage; you write the fields marked
+# TODO(you), and never a stamp: the stamp is derived from the receipt.
+#   method.receipt   your passing LAB-3.5 receipt, or the folder receipts/LAB-3.5 for the newest one in it
+#   if_weakened      the counterexample you kept in broken/ at LAB-3.6 (SP-3.2's shape), in words
+schema: statespace/claim@1
+id: cl-3-3
+template: CL-3.3
+proposition: "TODO(you): what step_preserves_inv says about every well-typed program, call and state, in your words"
+statement:
+  path: labs/LAB-3/challenge/Lab3Challenge/Statements.lean
+  theorem: step_preserves_inv
+assumptions:
+  - text: the Lean kernel accepts only well-typed terms
+    seam: SEAM-15
+  - text: "TODO(you): what a correct step does not need (offered: a correct step needs no observer)"
+    seam: SEAM-3
+  - text: "TODO(you): what your overflow decision assumes about balances"
+model: "TODO(you): which evaluator, which policy, which commands"
+method:
+  receipt: receipts/LAB-3.5
+  tool: lean
+correspondence:
+  text: "TODO(you): how your exec is tied to the reference, how many goldens, and what is not covered"
+if_weakened:
+  text: "TODO(you): the counterexample once force move is admitted"
+requirement:
+  text: "TODO(you): the requirement this claim serves"

@@ -1,0 +1,64 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "A capture-prone postcondition: Q binds b, and the assignment a := a + b mentions the account b. Substituting under the binder without renaming it captures b.",
+  "kind": "wp",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "commands": []
+  },
+  "params": [
+    "amount"
+  ],
+  "cmd": {
+    "assign": "a",
+    "expr": {
+      "add": [
+        {
+          "var": "a"
+        },
+        {
+          "var": "b"
+        }
+      ]
+    }
+  },
+  "post": {
+    "forall": "b",
+    "body": {
+      "implies": [
+        {
+          "ge": [
+            {
+              "var": "b"
+            },
+            {
+              "num": 0
+            }
+          ]
+        },
+        {
+          "ge": [
+            {
+              "add": [
+                {
+                  "var": "a"
+                },
+                {
+                  "var": "b"
+                }
+              ]
+            },
+            {
+              "num": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

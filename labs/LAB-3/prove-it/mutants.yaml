@@ -1,0 +1,51 @@
+# Prove-it for LAB-3 (labs/README.md section 13; curriculum/S03-semantics.md section 4.4). After the stage named
+# in `after`, `statespace defend lab3` copies your repository, applies one mutation to the copy, asks for your
+# prediction with your agent closed, and only then runs the check named in `graded_by`. No model grades
+# anything, and the key is what the check prints on your own artifact, so this file carries none.
+#
+# Each mutation is a text replacement, written for code in the reference's shape. When `find` does not occur in
+# your file, the defend command shows `what` and asks you to make the change by hand in the copy. Every mutant
+# builds or elaborates; where one is expected not to, its prompt says so.
+schema: statespace/prove-it@0
+lab: LAB-3
+mutants:
+  - id: P1
+    after: LAB-3.3
+    what: compute both posting balances from the old state
+    file: labs/LAB-3/Lab3/Eval.lean
+    find: "s1.setBal y (s1.bal y + n)"
+    replace: "s1.setBal y (s.bal y + n)"
+    graded_by: LAB-3.c3
+    predict: Which evaluator goldens fail, if any, under your policy?
+  - id: P2
+    after: LAB-3.3
+    what: credit before debit in post
+    file: labs/LAB-3/Lab3/Eval.lean
+    find: "let s1 := s.setBal x (s.bal x - n)\n  s1.setBal y (s1.bal y + n)"
+    replace: "let s1 := s.setBal y (s.bal y + n)\n  s1.setBal x (s1.bal x - n)"
+    graded_by: LAB-3.c3
+    predict: Which evaluator goldens fail, if any?
+  - id: P3
+    after: LAB-3.5
+    what: evaluate the guard after the statement, on the state it leaves
+    file: labs/LAB-3/Lab3/Eval.lean
+    find: "match evalExpr env s cmd.guard with\n          | some (.bool true) => runStmt pol env s cmd.body"
+    replace: "match (match runStmt pol env s cmd.body with\n                 | .ok (s', _, _) => evalExpr env s' cmd.guard\n                 | .error _ => evalExpr env s cmd.guard) with\n          | some (.bool true) => runStmt pol env s cmd.body"
+    graded_by: LAB-3.c5
+    predict: Is step_preserves_inv still true of the mutant? Does your proof still build? Which goldens fail?
+  - id: P4
+    after: LAB-3.5
+    what: drop the account-existence check
+    file: labs/LAB-3/Lab3/Eval.lean
+    find: "match firstMissing s env with"
+    replace: "match (none : Option Acct) with"
+    graded_by: LAB-3.c5
+    predict: Is step_preserves_inv still true? Does your proof still build? Which goldens fail?
+  - id: P5
+    after: LAB-3.10
+    what: wrapping i64 arithmetic in your Rust interpreter's postings
+    file: labs/LAB-3/rust/src/interp.rs
+    find: "let s1 = set_bal(s, x, bal(s, x) - n);\n    let v = bal(&s1, y) + n;"
+    replace: "let s1 = set_bal(s, x, (bal(s, x) as i64).wrapping_sub(n as i64) as i128);\n    let v = (bal(&s1, y) as i64).wrapping_add(n as i64) as i128;"
+    graded_by: LAB-3.c10
+    predict: Does LAB-3.c10 still pass? If not, which goldens fail?

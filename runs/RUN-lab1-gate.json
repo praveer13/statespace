@@ -1,0 +1,1557 @@
+{
+ "id": "RUN-lab1-gate",
+ "title": "LAB-1 in the bench image: the zip's template fails each of LAB-1.c1 to LAB-1.c6, the private reference solution passes each and its six receipts verify, and seven Prove-it mutants of the solution run and give their keys",
+ "task": "W1-T30",
+ "origin": "recorded",
+ "records": "GATE-labs on LAB-1 in full mode (ARCHITECTURE.md section 13.5), and the Prove-it keys of curriculum/S01-counterexample.md section 3.4, computed by Z3 on mutated copies of the reference solution",
+ "engine": "statespace",
+ "version": "0.1.0",
+ "version_string": "statespace 0.1.0; z3 5.3.1; python 3.13.12",
+ "binary": "the statespace command line the LAB-1 zip ships (.statespace/cli/statespace/, from bench/statespace/), run with uv in the bench image; z3-solver as the zip's pyproject.toml pins it",
+ "binary_sha256": "cc10baef09b0c8ff6bc8f249a4ef763730f5180ebe69668a09ff999b2fac5af5",
+ "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+ "recorded_at": "2026-10-26T20:50:43.351Z",
+ "started_at": "2026-10-26T20:50:35.859Z",
+ "duration_s": 7.492,
+ "argv": [
+  "docker",
+  "run",
+  "--rm",
+  "--memory=6g",
+  "-v",
+  "<sandbox>:/w",
+  "-w",
+  "/w/template",
+  "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "uv",
+  "run",
+  "--quiet",
+  "statespace",
+  "check",
+  "lab1",
+  "--assisted",
+  "none",
+  "--agent",
+  "no"
+ ],
+ "inputs": [
+  {
+   "name": "LAB-1.zip",
+   "sha256": "88dee2e38dbef6830bc145848024327cdc641a63b95425ff77962d65ac327cf7",
+   "bytes": 260545,
+   "role": "the lab zip, built by scripts/labs/build-zips.mjs from the inputs below"
+  },
+  {
+   "path": "labs/LAB-1/",
+   "sha256": "78296090bd23097f5dd8fd1b52c0c44d38b4d6c6853def1479cf6cdc34a38a74",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 14,
+   "role": "the lab folder: the starter files"
+  },
+  {
+   "path": "labs/template/",
+   "sha256": "d32e9f1149ffb9dd297b0eebddeca9beb5b5bf5cf116d2e064aa3ee687b9b4c2",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 16,
+   "role": "the repository frame"
+  },
+  {
+   "path": "bench/statespace/",
+   "sha256": "cc10baef09b0c8ff6bc8f249a4ef763730f5180ebe69668a09ff999b2fac5af5",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 73,
+   "role": "the statespace command line the zip ships"
+  },
+  {
+   "path": "bench/statespace/labs/lab1.py",
+   "sha256": "b4deb08a8634b9819e3dc41e5d1179ffc1a1057a50e236af2f378479ebc25969",
+   "bytes": 46809,
+   "role": "LAB-1's checks"
+  },
+  {
+   "path": "scripts/labs/build-zips.mjs",
+   "sha256": "12bb14a006424dc8c459f5fbc1482b93470ecc53ab658e44fa2887c8485ebc4b",
+   "bytes": 14674,
+   "role": "harness"
+  },
+  {
+   "path": "scripts/spikes/W1-T30/record-lab1.py",
+   "sha256": "dddf4c6f1d304c2911f31bc8cefd87a425bc67edcdc9f0e15c8a208fe97e7eb5",
+   "bytes": 17263,
+   "role": "harness"
+  },
+  {
+   "name": "the private reference solution of LAB-1 (not in this repository)",
+   "sha256": "e1e7a15c4ea77263b1ef188872eb6247104e520fb31b96445e27f6fd7c8e9d90",
+   "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point, which is LC_ALL=C sort's byte order for UTF-8), each line ended by a newline: cd <directory> && find . -type f ! -path '*/__pycache__/*' | sed 's|^\\./||' | LC_ALL=C sort | xargs -d '\\n' sha256sum | sha256sum",
+   "files": 12,
+   "role": "solution"
+  }
+ ],
+ "budget": {
+  "rlimit": 5000000,
+  "memory": "6g"
+ },
+ "exit_code": 1,
+ "verdict_lines": [
+  "  FAIL  LAB-1.c1  The answer pair reproduces.",
+  "                  the last question still has a model: the sufficient-funds guard is not in it",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.1/20261026T205037Z.json (reported from your machine; 3 runs; z3 5.3.1)",
+  "  FAIL  LAB-1.c2  Your violation query finds a real overdraft.",
+  "                  transfer.violation_query() returns no constraints, so any model would do and none is a counterexample",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.2/20261026T205037Z.json (reported from your machine; 0 runs)",
+  "  FAIL  LAB-1.c3  The guard works, and its answer is not empty.",
+  "                  your guarded violation query is sat, not unsat: the guard does not stop the overdraft",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.3/20261026T205037Z.json (reported from your machine; 4 runs; z3 5.3.1)",
+  "  FAIL  LAB-1.c4  The fix kills the whole class.",
+  "                  mint.mint_query() returns no constraints, so any model would do and none is a mint",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.4/20261026T205037Z.json (reported from your machine; 0 runs)",
+  "  FAIL  LAB-1.c5  Both properties give the expected answers on fresh seeds.",
+  "                  your transfer step does not conserve the total (sat)",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.5/20261026T205037Z.json (reported from your machine; 2 runs; z3 5.3.1)",
+  "  FAIL  LAB-1.c6  The README matches the receipt, and the cards hold.",
+  "                  README.md has no text under Property, Assumptions, Solver answer, Example model, Limitations",
+  "                  suspects: your spec",
+  "  receipt  receipts/LAB-1.6/20261026T205037Z.json (reported from your machine; 0 runs)"
+ ],
+ "outputs": [
+  {
+   "path": "runs/RUN-lab1-gate/versions.log",
+   "sha256": "a63c24de96a8f7ac6e233942ef45725206e2ad736975993c0ff752d6929b376f",
+   "bytes": 24,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/template.log",
+   "sha256": "6c6750905ab651976b9bcbf62f183470b30f97746090afa6123792fc332e08a5",
+   "bytes": 2619,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.1.log",
+   "sha256": "28635eb3c064c5c174ee04bd950ec0b88d161ec799a7ee16da7a7827d0236372",
+   "bytes": 386,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.2.log",
+   "sha256": "42e6789dc1aec7c596eea816eb375f54d6972e0fada6146909962ecf684be042",
+   "bytes": 584,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.3.log",
+   "sha256": "a64d8ed721fd288dea0949a8b30ce0230f51ac971a9c3c854beddce109c679e3",
+   "bytes": 446,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.4.log",
+   "sha256": "e84410fd3a8879c75ad2b279f9da0be4b85562f6e0d406ddb68fc42c2045e007",
+   "bytes": 600,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.5.log",
+   "sha256": "afa1ab85e4f286a26ba43bd7cad1f41f6cd68f2027e0faee6d7a9bfcada85763",
+   "bytes": 720,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-lab1.6.log",
+   "sha256": "c33bae3df8773ec27affb36525cba26490cf96f875010c1912984da884edc10a",
+   "bytes": 352,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/solution-receipts.log",
+   "sha256": "1ad6a25f90d4a78a4257398bf1ceaeac975095f23823e8f70fe1b171c69c1f85",
+   "bytes": 2356,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-drop-amount-positive-check.log",
+   "sha256": "59775103ef70bae9290570fb2eb4c4e580332bf4ec76427ef1eea1922788d600",
+   "bytes": 446,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-drop-amount-positive-transfer.log",
+   "sha256": "db88bea9d202a2ed1d25e1381e0f5ce026b91115374eb98e872616b197230f39",
+   "bytes": 168,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-weaken-guard-check.log",
+   "sha256": "4362a957dccf549f5f44c1545259029be1eebdb52a190ae3264e64ed96ff43f1",
+   "bytes": 367,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-weaken-guard-transfer.log",
+   "sha256": "8137e1e6a8f250406a36bbfa4da589430fc9d8aa0a15cff02eeeeea8ffc4c062",
+   "bytes": 192,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-strict-guard-check.log",
+   "sha256": "4795d612ea268c986de3dcb746bdcbe385922183acc5c03fc99f1bd6a9500d09",
+   "bytes": 456,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-strict-guard-transfer.log",
+   "sha256": "738bf0a7d5cb7fc20efd5c69afdbbf9fa8f03fa959e6416c473a2f7525787e7b",
+   "bytes": 168,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-bitvec64-check.log",
+   "sha256": "76e0b7ff063efd17d26ef03406e6a08187ae2506b4e234c1e162bae46a40e789",
+   "bytes": 430,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-bitvec64-transfer.log",
+   "sha256": "694082fe2157e3c72c9264417ad6a87825543823df163d17054ec64f8a54ae8e",
+   "bytes": 186,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-bitvec64-holds.log",
+   "sha256": "df5c07ef1cdd2492c0521d01e99774b45394eb5020010d48840d31a427d7ff3c",
+   "bytes": 384,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-refund-credit-unguarded-check.log",
+   "sha256": "a1bd4adc282c35133711a9f92c58006508698ec55c7fb6403d605851c0975ab6",
+   "bytes": 523,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-refund-credit-unguarded-mint.log",
+   "sha256": "78aff7d9f356cb833fe9263bd36ea1ce79246a7c370afcf04e057c916ec5b2a7",
+   "bytes": 65,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-refund-debit-unguarded-check.log",
+   "sha256": "8992c024f8590459b4e3cec55a2cdf4d7300e6b46b542061a637df4bcc136e99",
+   "bytes": 545,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-refund-debit-unguarded-mint.log",
+   "sha256": "4fca11cd6fb20013c18877b91ba4602e4ab384b3ca2fc292113ef173d0e6ef15",
+   "bytes": 46,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-drop-status-check-check.log",
+   "sha256": "7b510dd197bcc9ee939db55c2170cccb1c083ddc26703f060872a1a457d1ee6a",
+   "bytes": 459,
+   "kind": "log"
+  },
+  {
+   "path": "runs/RUN-lab1-gate/mutant-drop-status-check-holds.log",
+   "sha256": "51a984a105eb2794588e6c2b54272829d90ed57821ef42cd9ef15780444805df",
+   "bytes": 471,
+   "kind": "log"
+  }
+ ],
+ "values": {
+  "template": {
+   "LAB-1.c1": {
+    "pass": false,
+    "message": "the last question still has a model: the sufficient-funds guard is not in it",
+    "suspect": "your spec"
+   },
+   "LAB-1.c2": {
+    "pass": false,
+    "message": "transfer.violation_query() returns no constraints, so any model would do and none is a counterexample",
+    "suspect": "your spec"
+   },
+   "LAB-1.c3": {
+    "pass": false,
+    "message": "your guarded violation query is sat, not unsat: the guard does not stop the overdraft",
+    "suspect": "your spec"
+   },
+   "LAB-1.c4": {
+    "pass": false,
+    "message": "mint.mint_query() returns no constraints, so any model would do and none is a mint",
+    "suspect": "your spec"
+   },
+   "LAB-1.c5": {
+    "pass": false,
+    "message": "your transfer step does not conserve the total (sat)",
+    "suspect": "your spec"
+   },
+   "LAB-1.c6": {
+    "pass": false,
+    "message": "README.md has no text under Property, Assumptions, Solver answer, Example model, Limitations",
+    "suspect": "your spec"
+   }
+  },
+  "solution": {
+   "LAB-1.c1": {
+    "pass": true,
+    "message": "Z3 5.3.1 answered the overdraft search sat, then the guarded search unsat (rlimit 5000000)"
+   },
+   "LAB-1.c2": {
+    "pass": true,
+    "message": "Z3 5.3.1 found an overdraft, a = 0, b = 0, amount = 1, and it replays: the sender ends at -1"
+   },
+   "LAB-1.c3": {
+    "pass": true,
+    "message": "Z3 5.3.1: the guarded violation query and claims/cl-1-1.smt2 are unsat, the premises with the guard are sat, and the guard is sufficient funds"
+   },
+   "LAB-1.c4": {
+    "pass": true,
+    "message": "Z3 5.3.1: the clamp mints (c = 0, m = 0, r = 1 replays); your fixed rule does not, for the defaults and for (fee = 29) and (reserved = 43); it accepts some refund, leaves a rejected one unchanged and stops a larger witness"
+   },
+   "LAB-1.c5": {
+    "pass": true,
+    "message": "Z3 5.3.1: the step conserves the total and has a model; on the base model and on (h = 248, pool +2813, HELD) and (h = 832, pool +4671, HELD) and (h = 40, pool +4398, HELD), the buggy double capture breaks at-most-once and replays, the fixed one does not; both statements are unsat and not vacuous"
+   },
+   "LAB-1.c6": {
+    "pass": true,
+    "message": "README.md holds the five fields, its 2 answer lines match your receipts, the example model replays, and both cards pass claim@1 validation"
+   }
+  },
+  "mutants": {
+   "drop-amount-positive": {
+    "check": {
+     "LAB-1.c3": {
+      "pass": true,
+      "message": "Z3 5.3.1: the guarded violation query and claims/cl-1-1.smt2 are unsat, the premises with the guard are sat, and the guard is sufficient funds"
+     }
+    },
+    "transfer": {
+     "exit_code": 0,
+     "lines": [
+      "violation sat [b = 0, amount = 1, a = 0]",
+      "guarded violation unsat ",
+      "premises and guard sat [b = 0, amount = 0, a = 0]",
+      "conservation, negated: unsat",
+      "the step relation: sat"
+     ]
+    }
+   },
+   "weaken-guard": {
+    "check": {
+     "LAB-1.c3": {
+      "pass": false,
+      "message": "your guarded violation query is sat, not unsat: the guard does not stop the overdraft",
+      "suspect": "your spec"
+     }
+    },
+    "transfer": {
+     "exit_code": 0,
+     "lines": [
+      "violation sat [b = 0, amount = 1, a = 0]",
+      "guarded violation sat [amount = 1, b = 0, a = 0]",
+      "premises and guard sat [amount = 1, a = 0, b = 0]",
+      "conservation, negated: unsat",
+      "the step relation: sat"
+     ]
+    }
+   },
+   "strict-guard": {
+    "check": {
+     "LAB-1.c3": {
+      "pass": false,
+      "message": "your guard is not sufficient funds: it rejects the transfer a = 1, b = 0, amount = 1",
+      "suspect": "your spec"
+     }
+    },
+    "transfer": {
+     "exit_code": 0,
+     "lines": [
+      "violation sat [b = 0, amount = 1, a = 0]",
+      "guarded violation unsat ",
+      "premises and guard sat [amount = 1, a = 2, b = 0]",
+      "conservation, negated: unsat",
+      "the step relation: sat"
+     ]
+    }
+   },
+   "bitvec64": {
+    "check": {
+     "LAB-1.c3": {
+      "pass": false,
+      "message": "transfer.py could not be asked: labs/LAB-1/transfer.py declares a as BitVec(64), not Int: LAB-1 is checked over Int, and the reference terms cannot be compared with yours",
+      "suspect": "your implementation"
+     }
+    },
+    "transfer": {
+     "exit_code": 0,
+     "lines": [
+      "violation sat [b = 0, a = 1, amount = 3]",
+      "guarded violation unsat ",
+      "premises and guard sat [b = 0, a = 9223369837831520256, amount = 1]",
+      "conservation, negated: unsat",
+      "the step relation: sat"
+     ]
+    },
+    "holds": {
+     "exit_code": 0,
+     "lines": [
+      "buggy captured twice: sat [avail = 0,",
+      " held = 4611686018427387904,",
+      " merchant_p = 4611686018427387904,",
+      " merchant = 4611686018427387903,",
+      " avail_p = 0,",
+      " avail_pp = 0,",
+      " held_p = 4611686018427387903,",
+      " merchant_pp = 4611686018427387905,",
+      " status = HELD,",
+      " status_pp = CAPTURED,",
+      " h = 1,",
+      " status_p = CAPTURED,",
+      " held_pp = 4611686018427387902]",
+      "fixed captured twice: unsat ",
+      "one fixed capture: sat"
+     ]
+    }
+   },
+   "refund-credit-unguarded": {
+    "check": {
+     "LAB-1.c4": {
+      "pass": false,
+      "message": "your fixed rule still mints, with the default parameters",
+      "suspect": "your implementation"
+     }
+    },
+    "mint": {
+     "exit_code": 0,
+     "lines": [
+      "broken sat [c = 0, m = 0, r = 1]",
+      "fixed sat [m = 0, c = 0, r = 1]"
+     ]
+    }
+   },
+   "refund-debit-unguarded": {
+    "check": {
+     "LAB-1.c4": {
+      "pass": false,
+      "message": "your fixed rule changes a balance when it rejects a refund",
+      "suspect": "your implementation"
+     }
+    },
+    "mint": {
+     "exit_code": 0,
+     "lines": [
+      "broken sat [c = 0, m = 0, r = 1]",
+      "fixed unsat "
+     ]
+    }
+   },
+   "drop-status-check": {
+    "check": {
+     "LAB-1.c5": {
+      "pass": false,
+      "message": "on the base model, your fixed capture still pays the hold twice (sat)",
+      "suspect": "your implementation"
+     }
+    },
+    "holds": {
+     "exit_code": 0,
+     "lines": [
+      "buggy captured twice: sat [avail = 0,",
+      " held_pp = 0,",
+      " merchant = 0,",
+      " merchant_p = 1,",
+      " avail_p = 0,",
+      " merchant_pp = 2,",
+      " h = 1,",
+      " held_p = 1,",
+      " status = HELD,",
+      " status_pp = CAPTURED,",
+      " avail_pp = 0,",
+      " status_p = CAPTURED,",
+      " held = 2]",
+      "fixed captured twice: sat [merchant = 0,",
+      " held_pp = 0,",
+      " avail = 0,",
+      " merchant_p = 1,",
+      " avail_p = 0,",
+      " merchant_pp = 2,",
+      " h = 1,",
+      " held_p = 1,",
+      " status = HELD,",
+      " status_pp = CAPTURED,",
+      " avail_pp = 0,",
+      " status_p = CAPTURED,",
+      " held = 2]",
+      "one fixed capture: sat"
+     ]
+    }
+   }
+  },
+  "versions": {
+   "python": "3.13.12",
+   "z3": "5.3.1"
+  }
+ },
+ "checks": [
+  {
+   "id": "template-fails-every-check",
+   "pass": true
+  },
+  {
+   "id": "solution-passes-every-check",
+   "pass": true
+  },
+  {
+   "id": "solution-receipts-verify",
+   "pass": true
+  },
+  {
+   "id": "every-mutant-runs",
+   "pass": true
+  }
+ ],
+ "environment": {
+  "os": "Linux 6.12.63",
+  "cpu_count": 20,
+  "cpu_architecture": "x86_64",
+  "container_memory": "6g"
+ },
+ "primary_config": "template",
+ "configs": [
+  {
+   "id": "versions",
+   "purpose": "the tools the image runs the lab with",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/template",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "-c",
+    "import sys, z3; print('python', sys.version.split()[0]); print('z3', z3.get_version_string())"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.935,
+   "verdict_lines": [
+    "python 3.13.12",
+    "z3 5.3.1"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/versions.log",
+     "sha256": "a63c24de96a8f7ac6e233942ef45725206e2ad736975993c0ff752d6929b376f",
+     "bytes": 24,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "template",
+   "purpose": "the zip as a learner unpacks it: every built check must fail, naming what it suspects",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/template",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.686,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c1  The answer pair reproduces.",
+    "                  the last question still has a model: the sufficient-funds guard is not in it",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.1/20261026T205037Z.json (reported from your machine; 3 runs; z3 5.3.1)",
+    "  FAIL  LAB-1.c2  Your violation query finds a real overdraft.",
+    "                  transfer.violation_query() returns no constraints, so any model would do and none is a counterexample",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.2/20261026T205037Z.json (reported from your machine; 0 runs)",
+    "  FAIL  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  your guarded violation query is sat, not unsat: the guard does not stop the overdraft",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.3/20261026T205037Z.json (reported from your machine; 4 runs; z3 5.3.1)",
+    "  FAIL  LAB-1.c4  The fix kills the whole class.",
+    "                  mint.mint_query() returns no constraints, so any model would do and none is a mint",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.4/20261026T205037Z.json (reported from your machine; 0 runs)",
+    "  FAIL  LAB-1.c5  Both properties give the expected answers on fresh seeds.",
+    "                  your transfer step does not conserve the total (sat)",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.5/20261026T205037Z.json (reported from your machine; 2 runs; z3 5.3.1)",
+    "  FAIL  LAB-1.c6  The README matches the receipt, and the cards hold.",
+    "                  README.md has no text under Property, Assumptions, Solver answer, Example model, Limitations",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.6/20261026T205037Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/template.log",
+     "sha256": "6c6750905ab651976b9bcbf62f183470b30f97746090afa6123792fc332e08a5",
+     "bytes": 2619,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.1",
+   "purpose": "the private reference solution: LAB-1.c1 must pass and LAB-1.1 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.1",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.416,
+   "verdict_lines": [
+    "  pass  LAB-1.c1  The answer pair reproduces.",
+    "                  Z3 5.3.1 answered the overdraft search sat, then the guarded search unsat (rlimit 5000000)",
+    "  receipt  receipts/LAB-1.1/20261026T205037Z.json (reported from your machine; 3 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.1.log",
+     "sha256": "28635eb3c064c5c174ee04bd950ec0b88d161ec799a7ee16da7a7827d0236372",
+     "bytes": 386,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.2",
+   "purpose": "the private reference solution: LAB-1.c2 must pass and LAB-1.2 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.2",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.209,
+   "verdict_lines": [
+    "  pass  LAB-1.c2  Your violation query finds a real overdraft.",
+    "                  Z3 5.3.1 found an overdraft, a = 0, b = 0, amount = 1, and it replays: the sender ends at -1",
+    "  receipt  receipts/LAB-1.2/20261026T205038Z.json (reported from your machine; 2 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.2.log",
+     "sha256": "42e6789dc1aec7c596eea816eb375f54d6972e0fada6146909962ecf684be042",
+     "bytes": 584,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.3",
+   "purpose": "the private reference solution: LAB-1.c3 must pass and LAB-1.3 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.237,
+   "verdict_lines": [
+    "  pass  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  Z3 5.3.1: the guarded violation query and claims/cl-1-1.smt2 are unsat, the premises with the guard are sat, and the guard is sufficient funds",
+    "  receipt  receipts/LAB-1.3/20261026T205038Z.json (reported from your machine; 7 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.3.log",
+     "sha256": "a64d8ed721fd288dea0949a8b30ce0230f51ac971a9c3c854beddce109c679e3",
+     "bytes": 446,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.4",
+   "purpose": "the private reference solution: LAB-1.c4 must pass and LAB-1.4 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.4",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.271,
+   "verdict_lines": [
+    "  pass  LAB-1.c4  The fix kills the whole class.",
+    "                  Z3 5.3.1: the clamp mints (c = 0, m = 0, r = 1 replays); your fixed rule does not, for the defaults and for (fee = 29) and (reserved = 43); it accepts some refund, leaves a rejected one unchanged and stops a larger witness",
+    "  receipt  receipts/LAB-1.4/20261026T205038Z.json (reported from your machine; 11 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.4.log",
+     "sha256": "e84410fd3a8879c75ad2b279f9da0be4b85562f6e0d406ddb68fc42c2045e007",
+     "bytes": 600,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.5",
+   "purpose": "the private reference solution: LAB-1.c5 must pass and LAB-1.5 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.5",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.322,
+   "verdict_lines": [
+    "  pass  LAB-1.c5  Both properties give the expected answers on fresh seeds.",
+    "                  Z3 5.3.1: the step conserves the total and has a model; on the base model and on (h = 248, pool +2813, HELD) and (h = 832, pool +4671, HELD) and (h = 40, pool +4398, HELD), the buggy double capture breaks at-most-once and replays, the fixed one does not; both statements are unsat and not vacuous",
+    "  receipt  receipts/LAB-1.5/20261026T205038Z.json (reported from your machine; 18 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.5.log",
+     "sha256": "afa1ab85e4f286a26ba43bd7cad1f41f6cd68f2027e0faee6d7a9bfcada85763",
+     "bytes": 720,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-lab1.6",
+   "purpose": "the private reference solution: LAB-1.c6 must pass and LAB-1.6 write a receipt",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.6",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.116,
+   "verdict_lines": [
+    "  pass  LAB-1.c6  The README matches the receipt, and the cards hold.",
+    "                  README.md holds the five fields, its 2 answer lines match your receipts, the example model replays, and both cards pass claim@1 validation",
+    "  receipt  receipts/LAB-1.6/20261026T205039Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-lab1.6.log",
+     "sha256": "c33bae3df8773ec27affb36525cba26490cf96f875010c1912984da884edc10a",
+     "bytes": 352,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "solution-receipts",
+   "purpose": "statespace receipt verify on every receipt the solution's stages wrote",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/solution",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "sh",
+    "-c",
+    "for f in receipts/LAB-1.*/*.json; do uv run --quiet statespace receipt verify \"$f\" || exit 1; done"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.523,
+   "verdict_lines": [
+    "receipts/LAB-1.1/20261026T205037Z.json",
+    "  receipt   LAB-1.1 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:38Z",
+    "  schema    valid against receipt@1",
+    "  runs      3, 3 re-derived from their verdict lines",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-1.2/20261026T205038Z.json",
+    "  receipt   LAB-1.2 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:38Z",
+    "  schema    valid against receipt@1",
+    "  runs      2, 2 re-derived from their verdict lines",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-1.3/20261026T205038Z.json",
+    "  receipt   LAB-1.3 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:38Z",
+    "  schema    valid against receipt@1",
+    "  runs      7, 7 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-1.4/20261026T205038Z.json",
+    "  receipt   LAB-1.4 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:38Z",
+    "  schema    valid against receipt@1",
+    "  runs      11, 11 re-derived from their verdict lines",
+    "  statements 1 recomputed and equal",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-1.5/20261026T205038Z.json",
+    "  receipt   LAB-1.5 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:39Z",
+    "  schema    valid against receipt@1",
+    "  runs      18, 18 re-derived from their verdict lines",
+    "  statements 2 recomputed and equal",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)",
+    "receipts/LAB-1.6/20261026T205039Z.json",
+    "  receipt   LAB-1.6 of LAB-1, reported from your machine, written by statespace 0.1.0 at 2026-10-26T20:50:39Z",
+    "  schema    valid against receipt@1",
+    "  runs      0, 0 re-derived from their verdict lines",
+    "  statements 2 recomputed and equal",
+    "  integrity matches",
+    "verified: well formed and consistent (a receipt is not signed: it records what was reported, not that it ran)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/solution-receipts.log",
+     "sha256": "1ad6a25f90d4a78a4257398bf1ceaeac975095f23823e8f70fe1b171c69c1f85",
+     "bytes": 2356,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-drop-amount-positive-check",
+   "purpose": "Prove-it mutant drop-amount-positive: the stage check it targets, lab1.3, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-drop-amount-positive",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.413,
+   "verdict_lines": [
+    "  pass  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  Z3 5.3.1: the guarded violation query and claims/cl-1-1.smt2 are unsat, the premises with the guard are sat, and the guard is sufficient funds",
+    "  receipt  receipts/LAB-1.3/20261026T205039Z.json (reported from your machine; 7 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-drop-amount-positive-check.log",
+     "sha256": "59775103ef70bae9290570fb2eb4c4e580332bf4ec76427ef1eea1922788d600",
+     "bytes": 446,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-drop-amount-positive-transfer",
+   "purpose": "Prove-it mutant drop-amount-positive: Z3's answers on the mutated labs/LAB-1/transfer.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-drop-amount-positive",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/transfer.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.083,
+   "verdict_lines": [
+    "violation sat [b = 0, amount = 1, a = 0]",
+    "guarded violation unsat ",
+    "premises and guard sat [b = 0, amount = 0, a = 0]",
+    "conservation, negated: unsat",
+    "the step relation: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-drop-amount-positive-transfer.log",
+     "sha256": "db88bea9d202a2ed1d25e1381e0f5ce026b91115374eb98e872616b197230f39",
+     "bytes": 168,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-weaken-guard-check",
+   "purpose": "Prove-it mutant weaken-guard: the stage check it targets, lab1.3, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-weaken-guard",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.394,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  your guarded violation query is sat, not unsat: the guard does not stop the overdraft",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.3/20261026T205040Z.json (reported from your machine; 4 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-weaken-guard-check.log",
+     "sha256": "4362a957dccf549f5f44c1545259029be1eebdb52a190ae3264e64ed96ff43f1",
+     "bytes": 367,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-weaken-guard-transfer",
+   "purpose": "Prove-it mutant weaken-guard: Z3's answers on the mutated labs/LAB-1/transfer.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-weaken-guard",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/transfer.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.084,
+   "verdict_lines": [
+    "violation sat [b = 0, amount = 1, a = 0]",
+    "guarded violation sat [amount = 1, b = 0, a = 0]",
+    "premises and guard sat [amount = 1, a = 0, b = 0]",
+    "conservation, negated: unsat",
+    "the step relation: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-weaken-guard-transfer.log",
+     "sha256": "8137e1e6a8f250406a36bbfa4da589430fc9d8aa0a15cff02eeeeea8ffc4c062",
+     "bytes": 192,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-strict-guard-check",
+   "purpose": "Prove-it mutant strict-guard: the stage check it targets, lab1.3, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-strict-guard",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.393,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  your guard is not sufficient funds: it rejects the transfer a = 1, b = 0, amount = 1",
+    "                  suspects: your spec",
+    "  receipt  receipts/LAB-1.3/20261026T205040Z.json (reported from your machine; 4 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-strict-guard-check.log",
+     "sha256": "4795d612ea268c986de3dcb746bdcbe385922183acc5c03fc99f1bd6a9500d09",
+     "bytes": 456,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-strict-guard-transfer",
+   "purpose": "Prove-it mutant strict-guard: Z3's answers on the mutated labs/LAB-1/transfer.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-strict-guard",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/transfer.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.08,
+   "verdict_lines": [
+    "violation sat [b = 0, amount = 1, a = 0]",
+    "guarded violation unsat ",
+    "premises and guard sat [amount = 1, a = 2, b = 0]",
+    "conservation, negated: unsat",
+    "the step relation: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-strict-guard-transfer.log",
+     "sha256": "738bf0a7d5cb7fc20efd5c69afdbbf9fa8f03fa959e6416c473a2f7525787e7b",
+     "bytes": 168,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-bitvec64-check",
+   "purpose": "Prove-it mutant bitvec64: the stage check it targets, lab1.3, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-bitvec64",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.3",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.333,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c3  The guard works, and its answer is not empty.",
+    "                  transfer.py could not be asked: labs/LAB-1/transfer.py declares a as BitVec(64), not Int: LAB-1 is checked over Int, and the reference terms cannot be compared with yours",
+    "                  suspects: your implementation",
+    "  receipt  receipts/LAB-1.3/20261026T205041Z.json (reported from your machine; 0 runs)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-bitvec64-check.log",
+     "sha256": "76e0b7ff063efd17d26ef03406e6a08187ae2506b4e234c1e162bae46a40e789",
+     "bytes": 430,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-bitvec64-transfer",
+   "purpose": "Prove-it mutant bitvec64: Z3's answers on the mutated labs/LAB-1/transfer.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-bitvec64",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/transfer.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.094,
+   "verdict_lines": [
+    "violation sat [b = 0, a = 1, amount = 3]",
+    "guarded violation unsat ",
+    "premises and guard sat [b = 0, a = 9223369837831520256, amount = 1]",
+    "conservation, negated: unsat",
+    "the step relation: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-bitvec64-transfer.log",
+     "sha256": "694082fe2157e3c72c9264417ad6a87825543823df163d17054ec64f8a54ae8e",
+     "bytes": 186,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-bitvec64-holds",
+   "purpose": "Prove-it mutant bitvec64: Z3's answers on the mutated labs/LAB-1/holds.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-bitvec64",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/holds.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.061,
+   "verdict_lines": [
+    "buggy captured twice: sat [avail = 0,",
+    " held = 4611686018427387904,",
+    " merchant_p = 4611686018427387904,",
+    " merchant = 4611686018427387903,",
+    " avail_p = 0,",
+    " avail_pp = 0,",
+    " held_p = 4611686018427387903,",
+    " merchant_pp = 4611686018427387905,",
+    " status = HELD,",
+    " status_pp = CAPTURED,",
+    " h = 1,",
+    " status_p = CAPTURED,",
+    " held_pp = 4611686018427387902]",
+    "fixed captured twice: unsat ",
+    "one fixed capture: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-bitvec64-holds.log",
+     "sha256": "df5c07ef1cdd2492c0521d01e99774b45394eb5020010d48840d31a427d7ff3c",
+     "bytes": 384,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-refund-credit-unguarded-check",
+   "purpose": "Prove-it mutant refund-credit-unguarded: the stage check it targets, lab1.4, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-refund-credit-unguarded",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.4",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.391,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c4  The fix kills the whole class.",
+    "                  your fixed rule still mints, with the default parameters",
+    "                  suspects: your implementation",
+    "  receipt  receipts/LAB-1.4/20261026T205041Z.json (reported from your machine; 2 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-refund-credit-unguarded-check.log",
+     "sha256": "a1bd4adc282c35133711a9f92c58006508698ec55c7fb6403d605851c0975ab6",
+     "bytes": 523,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-refund-credit-unguarded-mint",
+   "purpose": "Prove-it mutant refund-credit-unguarded: Z3's answers on the mutated labs/LAB-1/mint.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-refund-credit-unguarded",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/mint.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.09,
+   "verdict_lines": [
+    "broken sat [c = 0, m = 0, r = 1]",
+    "fixed sat [m = 0, c = 0, r = 1]"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-refund-credit-unguarded-mint.log",
+     "sha256": "78aff7d9f356cb833fe9263bd36ea1ce79246a7c370afcf04e057c916ec5b2a7",
+     "bytes": 65,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-refund-debit-unguarded-check",
+   "purpose": "Prove-it mutant refund-debit-unguarded: the stage check it targets, lab1.4, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-refund-debit-unguarded",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.4",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.436,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c4  The fix kills the whole class.",
+    "                  your fixed rule changes a balance when it rejects a refund",
+    "                  suspects: your implementation",
+    "  receipt  receipts/LAB-1.4/20261026T205042Z.json (reported from your machine; 8 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-refund-debit-unguarded-check.log",
+     "sha256": "8992c024f8590459b4e3cec55a2cdf4d7300e6b46b542061a637df4bcc136e99",
+     "bytes": 545,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-refund-debit-unguarded-mint",
+   "purpose": "Prove-it mutant refund-debit-unguarded: Z3's answers on the mutated labs/LAB-1/mint.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-refund-debit-unguarded",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/mint.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.079,
+   "verdict_lines": [
+    "broken sat [c = 0, m = 0, r = 1]",
+    "fixed unsat "
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-refund-debit-unguarded-mint.log",
+     "sha256": "4fca11cd6fb20013c18877b91ba4602e4ab384b3ca2fc292113ef173d0e6ef15",
+     "bytes": 46,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-drop-status-check-check",
+   "purpose": "Prove-it mutant drop-status-check: the stage check it targets, lab1.5, on the mutated solution",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-drop-status-check",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "statespace",
+    "check",
+    "lab1.5",
+    "--assisted",
+    "none",
+    "--agent",
+    "no"
+   ],
+   "exit_code": 1,
+   "duration_s": 0.415,
+   "verdict_lines": [
+    "  FAIL  LAB-1.c5  Both properties give the expected answers on fresh seeds.",
+    "                  on the base model, your fixed capture still pays the hold twice (sat)",
+    "                  suspects: your implementation",
+    "  receipt  receipts/LAB-1.5/20261026T205042Z.json (reported from your machine; 4 runs; z3 5.3.1)"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-drop-status-check-check.log",
+     "sha256": "7b510dd197bcc9ee939db55c2170cccb1c083ddc26703f060872a1a457d1ee6a",
+     "bytes": 459,
+     "kind": "log"
+    }
+   ]
+  },
+  {
+   "id": "mutant-drop-status-check-holds",
+   "purpose": "Prove-it mutant drop-status-check: Z3's answers on the mutated labs/LAB-1/holds.py, the key",
+   "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=6g",
+    "-v",
+    "<sandbox>:/w",
+    "-w",
+    "/w/m-drop-status-check",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "uv",
+    "run",
+    "--quiet",
+    "python",
+    "-I",
+    "labs/LAB-1/holds.py"
+   ],
+   "exit_code": 0,
+   "duration_s": 0.081,
+   "verdict_lines": [
+    "buggy captured twice: sat [avail = 0,",
+    " held_pp = 0,",
+    " merchant = 0,",
+    " merchant_p = 1,",
+    " avail_p = 0,",
+    " merchant_pp = 2,",
+    " h = 1,",
+    " held_p = 1,",
+    " status = HELD,",
+    " status_pp = CAPTURED,",
+    " avail_pp = 0,",
+    " status_p = CAPTURED,",
+    " held = 2]",
+    "fixed captured twice: sat [merchant = 0,",
+    " held_pp = 0,",
+    " avail = 0,",
+    " merchant_p = 1,",
+    " avail_p = 0,",
+    " merchant_pp = 2,",
+    " h = 1,",
+    " held_p = 1,",
+    " status = HELD,",
+    " status_pp = CAPTURED,",
+    " avail_pp = 0,",
+    " status_p = CAPTURED,",
+    " held = 2]",
+    "one fixed capture: sat"
+   ],
+   "outputs": [
+    {
+     "path": "runs/RUN-lab1-gate/mutant-drop-status-check-holds.log",
+     "sha256": "51a984a105eb2794588e6c2b54272829d90ed57821ef42cd9ef15780444805df",
+     "bytes": 471,
+     "kind": "log"
+    }
+   ]
+  }
+ ],
+ "notes": [
+  "Recorded by W1-T30 with scripts/spikes/W1-T30/record-lab1.py; the reference solution is private and named here only by its manifest hash.",
+  "Model values in the logs are not canonical: a witness is graded by replay, never by its values.",
+  "Receipt file names carry the time they were written, so a re-run prints other names."
+ ]
+}

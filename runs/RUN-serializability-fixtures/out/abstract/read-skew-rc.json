@@ -1,0 +1,84 @@
+{
+  "label": "read-skew-rc",
+  "commit_order": [
+    "mv",
+    "rd"
+  ],
+  "permutation": [
+    "d0",
+    "rdb",
+    "rd1",
+    "mvb",
+    "mvt",
+    "mvc",
+    "rd2",
+    "rdc",
+    "chk"
+  ],
+  "signature": "mv=commit rd=commit",
+  "levels": {
+    "rd": "read committed",
+    "mv": "read committed"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        50
+      ],
+      [
+        2,
+        150
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "rd",
+      "session": "rd",
+      "command": {
+        "op": "read",
+        "accounts": [
+          1,
+          2
+        ]
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        150
+      ]
+    },
+    {
+      "id": "mv",
+      "session": "mv",
+      "command": {
+        "op": "transfer",
+        "from": 1,
+        "to": 2,
+        "amount": 50
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        50,
+        100,
+        150
+      ]
+    }
+  ]
+}

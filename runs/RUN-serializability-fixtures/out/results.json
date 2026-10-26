@@ -1,0 +1,353 @@
+[
+  {
+    "fixture": "cond-rc",
+    "verdicts": {
+      "z": {
+        "verdict": "accept",
+        "order": [
+          "s1",
+          "s2"
+        ],
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "s1",
+          "s2"
+        ],
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2"
+      }
+    }
+  },
+  {
+    "fixture": "cond-ser-retry",
+    "verdicts": {
+      "z": {
+        "verdict": "accept",
+        "order": [
+          "a",
+          "b#2"
+        ],
+        "commit_order": [
+          "a",
+          "b#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "a",
+          "b#2"
+        ],
+        "commit_order": [
+          "a",
+          "b#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2"
+      }
+    }
+  },
+  {
+    "fixture": "g2-toy",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "t1",
+          "t2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history",
+        "line": "reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "t1",
+          "t2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history",
+        "line": "reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      }
+    }
+  },
+  {
+    "fixture": "holds-rr",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+        "line": "reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+        "line": "reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      }
+    }
+  },
+  {
+    "fixture": "holds-ser-retry",
+    "verdicts": {
+      "z": {
+        "verdict": "accept",
+        "order": [
+          "a",
+          "b#2"
+        ],
+        "commit_order": [
+          "a",
+          "b#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "a",
+          "b#2"
+        ],
+        "commit_order": [
+          "a",
+          "b#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2"
+      }
+    }
+  },
+  {
+    "fixture": "mixed-levels",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+        "line": "reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+        "line": "reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried)"
+      }
+    }
+  },
+  {
+    "fixture": "opposite-retry",
+    "verdicts": {
+      "z": {
+        "verdict": "accept",
+        "order": [
+          "b",
+          "a#2"
+        ],
+        "commit_order": [
+          "b",
+          "a#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "b",
+          "a#2"
+        ],
+        "commit_order": [
+          "b",
+          "a#2"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2"
+      }
+    }
+  },
+  {
+    "fixture": "overflow-22003",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is (empty), then s1 gave ok [9223372036854775807, 9223372036854775808] in the replay, but refused:Overflow [] in the history",
+        "line": "reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried)"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "s1"
+        ],
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "the serial order is the commit order",
+        "line": "accept (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried): order s1"
+      }
+    }
+  },
+  {
+    "fixture": "r-mutant-null",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+        "line": "reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+        "line": "reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried)"
+      }
+    }
+  },
+  {
+    "fixture": "r-mutant-wrong-account",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+        "line": "reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1"
+        ],
+        "reason": "1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+        "line": "reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried)"
+      }
+    }
+  },
+  {
+    "fixture": "read-skew-rc",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "mv",
+          "rd"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history",
+        "line": "reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "mv",
+          "rd"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history",
+        "line": "reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried)"
+      }
+    }
+  },
+  {
+    "fixture": "report-before-transfer-ser",
+    "verdicts": {
+      "z": {
+        "verdict": "accept",
+        "order": [
+          "t1",
+          "t2"
+        ],
+        "commit_order": [
+          "t2",
+          "t1"
+        ],
+        "reason": "the serial order differs from the commit order (t2 t1)",
+        "line": "accept (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2"
+      },
+      "except-overflow": {
+        "verdict": "accept",
+        "order": [
+          "t1",
+          "t2"
+        ],
+        "commit_order": [
+          "t2",
+          "t1"
+        ],
+        "reason": "the serial order differs from the commit order (t2 t1)",
+        "line": "accept (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2"
+      }
+    }
+  },
+  {
+    "fixture": "rmw-rc",
+    "verdicts": {
+      "z": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history",
+        "line": "reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried)"
+      },
+      "except-overflow": {
+        "verdict": "reject",
+        "order": null,
+        "commit_order": [
+          "s1",
+          "s2"
+        ],
+        "reason": "no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history",
+        "line": "reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried)"
+      }
+    }
+  }
+]

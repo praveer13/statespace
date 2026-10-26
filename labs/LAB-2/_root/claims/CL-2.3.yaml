@@ -1,0 +1,29 @@
+# Claim card CL-2.3, faded: the course prefilled what comes from the receipt and the pack; you write the three
+# fields marked TODO(you). LAB-2.7's check validates it against claim@1. Method, tool and version come from
+# your LAB-2.3 and LAB-2.7 receipts; the stamp is never typed here, it is derived from them.
+schema: statespace/claim@1
+id: CL-2.3
+template: CL-2.3
+# TODO(you): what transfer_rejected says, in your own words, every hypothesis named.
+proposition: TODO(you)
+statement:
+  path: labs/LAB-2/challenge/Challenge.lean
+  theorem: transfer_rejected
+assumptions:
+  - text: balances are unbounded integers
+    seam: SEAM-1
+  - text: the Lean kernel accepts only well-typed terms
+    seam: SEAM-15
+model: the pinned challenge, core Lean with autoImplicit false
+method:
+  text: lake comparator against the pinned statement, the manual-mode scan where the stage asks for it, and --paranoid at LAB-2.7
+  tool: lean
+  version: 4.35.0  # the pinned Lean, as your receipt names it [X RUN-lean-toolchain#version]
+correspondence:
+  text: "[N] no implementation yet: the Lean definitions are the model, and nothing is compiled from them until S6"
+if_weakened:
+  # TODO(you): drop the other conjunct of the guard and name the state and amount that a disallowed transfer then changes.
+  text: TODO(you)
+requirement:
+  # TODO(you): the requirement, and what the model cannot say (it has no outcome value to tell the caller). Its fit is restated by you; no checker reads it, so it is never [P].
+  text: TODO(you)

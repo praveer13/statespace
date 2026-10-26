@@ -1,0 +1,90 @@
+{
+  "label": "cond-ser-retry",
+  "commit_order": [
+    "a",
+    "b#1",
+    "b#2"
+  ],
+  "permutation": [
+    "d0",
+    "ab",
+    "bb",
+    "au",
+    "bu",
+    "ac",
+    "bc",
+    "bb2",
+    "bu2",
+    "bc2",
+    "chk"
+  ],
+  "signature": "a=commit b=abort:40001+commit  [40001]",
+  "levels": {
+    "a": "serializable",
+    "b": "serializable"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        20
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "a",
+      "session": "a",
+      "command": {
+        "op": "debit",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        20
+      ]
+    },
+    {
+      "id": "b#1",
+      "session": "b",
+      "command": {
+        "op": "debit",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "abort:40001",
+      "outputs": []
+    },
+    {
+      "id": "b#2",
+      "session": "b",
+      "command": {
+        "op": "debit",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "refused:Insufficient",
+      "outputs": []
+    }
+  ]
+}

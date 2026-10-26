@@ -1,0 +1,53 @@
+{
+ "commands": [
+  {
+   "name": "Pay",
+   "params": [
+    {
+     "name": "from",
+     "ty": "account"
+    },
+    {
+     "name": "to",
+     "ty": "account"
+    },
+    {
+     "name": "amount",
+     "ty": "amount"
+    }
+   ],
+   "guard": {
+    "tag": "ge",
+    "a": {
+     "tag": "balance",
+     "e": {
+      "tag": "var",
+      "name": "to"
+     }
+    },
+    "b": {
+     "tag": "var",
+     "name": "amount"
+    }
+   },
+   "body": {
+    "tag": "op",
+    "op": {
+     "tag": "move",
+     "amount": {
+      "tag": "var",
+      "name": "amount"
+     },
+     "from": {
+      "tag": "var",
+      "name": "from"
+     },
+     "to": {
+      "tag": "var",
+      "name": "to"
+     }
+    }
+   }
+  }
+ ]
+}

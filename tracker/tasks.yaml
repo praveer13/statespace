@@ -1447,11 +1447,15 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W0-S11, W1-T29, W1-T30, W1-T31, W1-T43]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-1 and `statespace check` for Z3 work end to end: GATE-labs
+      (scripts/verify-labs.mjs, Bench lane) fails all six checks on the zip and passes them on the
+      private solution, each receipt verifying [X RUN-lab1-gate]; the private solution sits outside the
+      repository (this session's scratchpad), not yet in the private companion repository.
     owner_review: false
     review_h: 0
   - id: W1-T14
@@ -1486,7 +1490,13 @@ tasks:
     model: opus
     model_reason: "Parses untrusted input or enforces origin isolation (I6): security-critical."
     depends_on: [W0-S11, W1-T35, W1-T41]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The site imports a receipt (apps/site/src/screens/bench/receipt-model.ts):
+      schema, id agreement, then deriveReceipt; one receipt-import event; the claims page mints cards
+      from imported receipts. Open: parsing on the instrument origin (INS-receipt, I6), labbundle@1
+      import, ext.integrity check.
     owner_review: true
     review_h: 1
   - id: W1-T15
@@ -1973,7 +1983,13 @@ tasks:
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
     depends_on: [W0-T05, W0-T02, W0-S11]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: check, receipt verify, hash, run and export exist; Phase 5 added lab
+      discovery by directory, the no-argument listing, the z3py capture, one instant for a receipt's
+      file name and createdAt, and a zero-check stage that writes no receipt. Lanes exist for Z3, cvc5
+      and PostgreSQL; Lean and TLC run through stopgap sessions inside the lab modules.
     owner_review: true
     review_h: 0.5
   - id: W1-T30
@@ -2003,11 +2019,16 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W1-T29, W1-T12, W1-T15, W1-T43]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: All six stages built (bench/statespace/labs/lab1.py, labs/LAB-1/); the
+      template fails every check, the private solution passes and its receipts verify [X RUN-lab1-gate];
+      hint rungs and Prove-it mutants are data in lab.yaml; the private solution sits outside the
+      repository (this session's scratchpad), not yet in the private companion repository. Open: c4 does
+      not tie cl-1-4.smt2 to fixed/refund.py; the challenge/ folder of reference queries is not built.
     owner_review: true
     review_h: 1.25
   - id: W1-T31
@@ -2434,7 +2455,15 @@ tasks:
     model: opus
     model_reason: "Lab-validity gate with a private-solutions channel; decides whether checks mean anything."
     depends_on: [W0-T04, W1-T29]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: scripts/verify-labs.mjs is GATE-labs: it unpacks each lab zip and runs `uv
+      run statespace check` in the pinned Bench image beside a PostgreSQL 18.6 container (or on the host
+      with --lane host). Template-only mode passes on all ten labs and full mode passes with the private
+      solutions (2026-10-26, Phase 5). Open: the private companion repository and its deploy key
+      (ARCHITECTURE section 13.5), which the owner creates; a CI job; GATE-guardrails wiring of
+      scripts/labs/test-guard.mjs; no run record yet.
     owner_review: true
     review_h: 0.25
   - id: W1-T44
@@ -2595,7 +2624,13 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T01, W2-T36, W2-T37]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: LAB-2's challenge pack, template and comparator configs ship in labs/LAB-2/
+      with the pinned challenge hash; GATE-labs passes in full mode [X RUN-lab2-gate]; the private
+      solution sits outside the repository (this session's scratchpad), not yet in the private companion
+      repository.
     owner_review: false
     review_h: 0
   - id: W2-T03
@@ -2767,7 +2802,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W2-T01, W2-T34, W2-T35]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The reference semantics (labs/LAB-3/reference/MiniPlinthRef) and the
+      1,380-golden pool, kernel-checked axiom-free, ship with LAB-3 [X RUN-interp-goldens].
     owner_review: false
     review_h: 0
   - id: W2-T08
@@ -2797,7 +2836,12 @@ tasks:
     model: opus
     model_reason: "Hosts and grades the learner's wasm (untrusted input, I6) and is the key-computing oracle; decision 24 makes graders and untrusted-input parsers opus."
     depends_on: [W2-T07]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: schemas/ir.schema.json narrowed to IR@1's published encodings;
+      packages/interp (INS-interp) agrees with every golden [X RUN-interp-goldens]. Open: registering
+      the interp engine in the instrument and site registries; the Lane A host.
     owner_review: true
     review_h: 1
   - id: W2-T09
@@ -3362,11 +3406,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T07, W2-T33]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-3.1 to LAB-3.3 built in bench/statespace/labs/lab3.py; GATE-labs passes
+      in full mode; the private solution sits outside the repository (this session's scratchpad), not
+      yet in the private companion repository.
     owner_review: true
     review_h: 0.6
   - id: W2-T26
@@ -3396,11 +3443,13 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T25]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-3.4 to LAB-3.7 built; GATE-labs passes in full mode; c6's statement check
+      is weak because comparator's replay cannot reduce decide over String [X RUN-lean-unsafe-cmd].
     owner_review: true
     review_h: 0.8
   - id: W2-T27
@@ -3428,12 +3477,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T26, W2-T08]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L1 and S10.L2
+      its later phases are below. S10.L1 and S10.L2
       are live, S10.L1 with pending runs.
+      Phase 5, 2026-10-26: LAB-3.8 to LAB-3.11 built and graded on the Bench (cargo); GATE-labs passes
+      in full mode. Open: tab grading as wasm (Lane A).
     owner_review: true
     review_h: 0.8
   - id: W2-T28
@@ -3457,11 +3508,13 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T26]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-3.12 and LAB-3.13 built [X RUN-lean-progress, RUN-lean-preservation];
+      their check IDs wait in packages/ids/proposals.json for the spine.
     owner_review: true
     review_h: 0.3
   - id: W2-T29
@@ -3651,7 +3704,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T01]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The Lean reference semantics ship in labs/LAB-3/reference/; the S7 extension
+      (W4-T41) is not built.
     owner_review: true
     review_h: 1.25
   - id: W2-T35
@@ -3679,7 +3736,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T34]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: Kernel-checked goldens and the IR export ship with LAB-3
+      (labs/reference/mini-plinth/build_goldens.py); the semantics lint is not built.
     owner_review: true
     review_h: 0.75
   - id: W2-T36
@@ -3708,11 +3769,14 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T33]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-2.1 to LAB-2.4 built in bench/statespace/labs/lab2.py; template fails,
+      private solution passes, receipts verify [X RUN-lab2-gate]; the private solution sits outside the
+      repository (this session's scratchpad), not yet in the private companion repository.
     owner_review: true
     review_h: 1
   - id: W2-T37
@@ -3741,11 +3805,14 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T36]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-2.5 to LAB-2.7 built; LAB-2.8 is a stretch stage with no check, so
+      `statespace check` writes no receipt for it [X RUN-lab2-gate]. Open: the manual-mode scan reads
+      source, not the elaborated proof.
     owner_review: true
     review_h: 1
   - id: W2-T38
@@ -4150,7 +4217,9 @@ tasks:
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-4 c1 to c8 built with the cvc5 lane (bench/statespace/lanes/cvc5.py) [X
+      RUN-lab4-reference]; GATE-labs passes in full mode; LAB-4.9 is declared but not built.
     owner_review: false
     review_h: 0
   - id: W3-T05
@@ -4713,11 +4782,15 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W2-T08, W1-T29]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-4.1 to LAB-4.4 built; template fails, private solution passes, receipts
+      verify; the private solution sits outside the repository (this session's scratchpad), not yet in
+      the private companion repository. The reference checker lives in bench/statespace/labs/lab4.py,
+      not labs/reference/miniplinth-check/.
     owner_review: true
     review_h: 1
   - id: W3-T22
@@ -4750,7 +4823,9 @@ tasks:
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L3 is live.
+      its later phases are below. S10.L3 is live.
+      Phase 5, 2026-10-26: LAB-4.5 to LAB-4.8 built and pass GATE-labs; LAB-4.9 (Lean stretch) raises
+      ToolUnavailable, so no receipt.
     owner_review: true
     review_h: 1.5
   - id: W3-T23
@@ -5075,11 +5150,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W3-T05, W3-T26]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-5.1 to LAB-5.4 built in bench/statespace/labs/lab5.py with a stopgap TLC
+      session; GATE-labs passes in full mode; the private solution sits outside the repository (this
+      session's scratchpad), not yet in the private companion repository.
     owner_review: true
     review_h: 1
   - id: W3-T33
@@ -5112,7 +5190,9 @@ tasks:
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-5.5 and LAB-5.6 built and pass GATE-labs; LAB-5.7 (stretch) is declared
+      but not built.
     owner_review: true
     review_h: 1
   - id: W3-T34
@@ -5477,7 +5557,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W0-S09, W4-T16, W4-T17]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: `statespace isorun` ships (bench/statespace/isorun.py) with the PostgreSQL
+      lane; it reproduced the recorded catalog's signatures [X RUN-serializability-fixtures].
     owner_review: false
     review_h: 0
   - id: W4-T02
@@ -5524,7 +5608,10 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W4-T01, W4-T18, W4-T19]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The Bench checker is built (W4-T18); the tab's history viewer is not.
     owner_review: false
     review_h: 0
   - id: W4-T04
@@ -5959,7 +6046,11 @@ tasks:
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
     depends_on: [W0-S09, W0-T05]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The isorun driver advances a step only when it finishes or the server reports
+      it waiting (bench/statespace/isorun.py) [X RUN-serializability-fixtures].
     owner_review: true
     review_h: 0.75
   - id: W4-T17
@@ -6012,7 +6103,12 @@ tasks:
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
     depends_on: [W4-T16, W2-T08]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The abstract-serializability checker runs on the Bench
+      (bench/statespace/history.py) and classifies all 13 fixtures as the curriculum says [X
+      RUN-serializability-fixtures].
     owner_review: true
     review_h: 0.5
   - id: W4-T19
@@ -6232,11 +6328,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T24, W4-T16, W4-T34]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-6.1 to LAB-6.5 built in bench/statespace/labs/lab6.py; GATE-labs passes
+      in full mode; the private solution sits outside the repository (this session's scratchpad), not
+      yet in the private companion repository.
     owner_review: true
     review_h: 1
   - id: W4-T26
@@ -6267,11 +6366,13 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T25, W4-T18]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L4 is live.
+      its later phases are below. S10.L4 is live.
+      Phase 5, 2026-10-26: LAB-6.6 to LAB-6.9 built; GATE-labs passes in full mode. Open: the tab,
+      PGlite and Lane A halves.
     owner_review: true
     review_h: 1
   - id: W4-T27
@@ -6466,11 +6567,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T07, W4-T35, W4-T16]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-7.1 to LAB-7.4 built in bench/statespace/labs/lab7.py; GATE-labs passes
+      in full mode; the private solution sits outside the repository (this session's scratchpad), not
+      yet in the private companion repository.
     owner_review: true
     review_h: 1.25
   - id: W4-T33
@@ -6500,11 +6604,13 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W4-T32, W4-T27]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-7.5 to LAB-7.7 built and pass GATE-labs; INS-pairs ships [X
+      RUN-pairs-reference]; LAB-7.8 (stretch, no check) is not declared.
     owner_review: true
     review_h: 1.25
   - id: W4-T34
@@ -6888,7 +6994,11 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W3-T05, W5-T14, W5-T15, W0-S13]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: `statespace trace validate` and `statespace sim` ship on the Bench [X
+      RUN-tlc-trace-validation, RUN-sim-determinism]; INS-sim in the tab is not built.
     owner_review: false
     review_h: 0
   - id: W5-T02
@@ -7002,7 +7112,11 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W2-T01]
-    status: todo
+    status: review
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: The stack-machine warm-up, the S9 challenge packs and the reference
+      translation validator (labs/LAB-9/reference/tv.py) ship [X RUN-tv-reference].
     owner_review: true
     review_h: 1.5
   - id: W5-T05
@@ -7109,11 +7223,15 @@ tasks:
     model: opus
     model_reason: "Integration of children whose gate failures need the children's judgment."
     depends_on: [W5-T06, W5-T29, W5-T30, W5-T31]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-10 and `statespace demo` ship (bench/statespace/demo/,
+      bench/statespace/labs/lab10.py) [X RUN-core-demo]; GATE-labs passes in full mode; the private
+      solution sits outside the repository (this session's scratchpad), not yet in the private companion
+      repository.
     owner_review: true
     review_h: 0.25
   - id: W5-T08
@@ -7313,7 +7431,12 @@ tasks:
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
     depends_on: [W3-T05, W0-S13]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: `statespace trace validate` ships (bench/statespace/trace.py) [X
+      RUN-tlc-trace-validation]; trace@1 is enforced by its lint but not yet published as
+      schemas/trace.schema.json.
     owner_review: true
     review_h: 0.75
   - id: W5-T15
@@ -7340,7 +7463,11 @@ tasks:
     model: opus
     model_reason: "Reference checker or verdict parser; decision 24 assigns these to opus."
     depends_on: [W2-T08, W5-T14]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 5, 2026-10-26: `statespace sim` and the reference simulator ship (bench/statespace/sim.py)
+      [X RUN-sim-determinism]; INS-sim is not built.
     owner_review: true
     review_h: 0.75
   - id: W5-T16
@@ -7470,11 +7597,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T01, W5-T21]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-8.1 to LAB-8.4 built in bench/statespace/labs/lab8.py; GATE-labs passes
+      in full mode; the private solution sits outside the repository (this session's scratchpad), not
+      yet in the private companion repository.
     owner_review: true
     review_h: 1.25
   - id: W5-T20
@@ -7502,11 +7632,13 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T19]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L5 is live.
+      its later phases are below. S10.L5 is live.
+      Phase 5, 2026-10-26: LAB-8.5 to LAB-8.8 built and pass GATE-labs; LAB-8.9 (stretch) has no check,
+      so no receipt.
     owner_review: true
     review_h: 1.25
   - id: W5-T21
@@ -7714,11 +7846,14 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T04, W5-T22]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-9.1 to LAB-9.3 built in bench/statespace/labs/lab9.py; GATE-labs passes
+      in full mode; the private solution sits outside the repository (this session's scratchpad), not
+      yet in the private companion repository.
     owner_review: true
     review_h: 0.75
   - id: W5-T27
@@ -7747,11 +7882,13 @@ tasks:
     model: opus
     model_reason: "Pinned Lean statements and reference proofs: high-judgment proof engineering."
     depends_on: [W5-T26]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-9.4 to LAB-9.10 built; GATE-labs passes in full mode (sandbox off in the
+      container).
     owner_review: true
     review_h: 1.5
   - id: W5-T28
@@ -7779,11 +7916,13 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T27]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-9.11 and LAB-9.12 built [X RUN-sql-validation]; GATE-labs passes in full
+      mode.
     owner_review: true
     review_h: 0.75
   - id: W5-T29
@@ -7810,11 +7949,12 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T06, W5-T15]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built.
+      its later phases are below.
+      Phase 5, 2026-10-26: LAB-10.1 to LAB-10.3 built; GATE-labs passes in full mode.
     owner_review: true
     review_h: 0.75
   - id: W5-T30
@@ -7843,11 +7983,13 @@ tasks:
     model: opus
     model_reason: "Lab checks, reference solutions and mutants decide what learner work establishes."
     depends_on: [W5-T29, W3-T40]
-    status: in-progress
+    status: review
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L6 is live.
+      its later phases are below. S10.L6 is live.
+      Phase 5, 2026-10-26: LAB-10.4 to LAB-10.7 built with `statespace proposal draw` and `statespace
+      demo record`; GATE-labs passes in full mode.
     owner_review: true
     review_h: 1
   - id: W5-T31
@@ -7879,7 +8021,9 @@ tasks:
     started: 2026-10-26
     notes: >-
       Happy path, 2026-10-26: The lab page (its lab.yaml: steps, minutes and checks) is on the site;
-      the template, the reference solution, the rungs and GATE-labs are not built. S10.L7 is live.
+      its later phases are below. S10.L7 is live.
+      Phase 5, 2026-10-26: LAB-10.8 and LAB-10.9 built and pass GATE-labs; LAB-10.10 (stretch) has no
+      local check; report@1 is checked only in part.
     owner_review: true
     review_h: 0.75
   - id: W5-T32

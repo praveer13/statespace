@@ -1,0 +1,6 @@
+trace commands.txt on W0, replicated model, ACL replica 2 steps behind the primary
+  1. Revoke(gia: contract -> dana); canread no; delivered []
+  2. Edit(gia: contract.body = "the body after the revocation"); canread yes; delivered []
+  3. Open(dana, contract) -> contract@2 "the body after the revocation"; canread no; delivered [contract@2]
+S-new (after revocation, no new read succeeds): refuted at step 3
+S-past (revocation removes what was already read): holds

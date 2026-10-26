@@ -1,0 +1,18 @@
+# LAB-10.2 and LAB-10.3: the wiring of your Core. LAB-10's checks start this command once, from the root
+# of your lab repository, and talk to it in NDJSON: one JSON request per line on its standard input, one
+# JSON reply per line on its standard output. The requests and replies are listed in labs/LAB-10/README.md
+# section 3, and in .statespace/cli/statespace/demo/adapter.py.
+#
+# Your Core is the one you built: the Rust parser, typechecker and interpreter of LAB-3, the checker of
+# LAB-4, the compiler and runtime of LAB-6 and the simulator of LAB-8, behind one small adapter binary you
+# write here. The checks refuse a command that runs the course's reference pipeline (statespace demo).
+# Your coding agent may help you wire it; declare that on the receipt (--assisted, --agent).
+
+[core]
+# The command, as a list, such as ["cargo", "run", "--quiet", "--release", "-p", "core-adapter"].
+command = []
+
+[components]
+# Where each component's source lives, as your Core's hello reply reports it. LAB-10.2 needs parse,
+# typecheck, check and interp; LAB-10.3 adds compile, run and sim.
+# parse = "crates/front/src/parse.rs"

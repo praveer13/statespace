@@ -1,0 +1,62 @@
+[cond-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[cond-rc] permutation 1: s1=commit s2=commit
+[cond-rc] summary: 1 permutations, 0 did not run to the end
+[cond-ser-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[cond-ser-retry] permutation 1: a=commit b=abort:40001+commit  [40001]
+[cond-ser-retry] summary: 1 permutations, 0 did not run to the end
+[holds-rr] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[holds-rr] permutation 1: s1=commit s2=commit
+[holds-rr] summary: 1 permutations, 0 did not run to the end
+[holds-ser-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[holds-ser-retry] permutation 1: a=commit b=abort:40001+commit  [40001]
+[holds-ser-retry] summary: 1 permutations, 0 did not run to the end
+[mixed-levels] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[mixed-levels] permutation 1: s1=commit s2=commit
+[mixed-levels] summary: 1 permutations, 0 did not run to the end
+[opposite-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[opposite-retry] permutation 1: a=abort:40P01+commit b=commit  [40P01]
+[opposite-retry] summary: 1 permutations, 0 did not run to the end
+[overflow-22003] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[overflow-22003] permutation 1: s1=abort:22003  [22003]
+[overflow-22003] summary: 1 permutations, 0 did not run to the end
+[r-mutant-null] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[r-mutant-null] permutation 1: s1=commit
+[r-mutant-null] summary: 1 permutations, 0 did not run to the end
+[r-mutant-wrong-account] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[r-mutant-wrong-account] permutation 1: s1=commit
+[r-mutant-wrong-account] summary: 1 permutations, 0 did not run to the end
+[read-skew-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[read-skew-rc] permutation 1: mv=commit rd=commit
+[read-skew-rc] summary: 1 permutations, 0 did not run to the end
+[report-before-transfer-ser] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[report-before-transfer-ser] permutation 1: t1=commit t2=commit
+[report-before-transfer-ser] summary: 1 permutations, 0 did not run to the end
+[rmw-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[rmw-rc] permutation 1: s1=commit s2=commit
+[rmw-rc] summary: 1 permutations, 0 did not run to the end
+[cond-rc] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2; the serial order is the commit order
+[cond-rc] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2; the serial order is the commit order
+[cond-ser-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order
+[cond-ser-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order
+[g2-toy] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history
+[g2-toy] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history
+[holds-rr] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history
+[holds-rr] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history
+[holds-ser-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order
+[holds-ser-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order
+[mixed-levels] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history
+[mixed-levels] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history
+[opposite-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2; the serial order is the commit order
+[opposite-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2; the serial order is the commit order
+[overflow-22003] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is (empty), then s1 gave ok [9223372036854775807, 9223372036854775808] in the replay, but refused:Overflow [] in the history
+[overflow-22003] except-overflow: accept (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried): order s1; the serial order is the commit order
+[r-mutant-null] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final
+[r-mutant-null] except-overflow: reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final
+[r-mutant-wrong-account] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final
+[r-mutant-wrong-account] except-overflow: reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final
+[read-skew-rc] z: reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history
+[read-skew-rc] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history
+[report-before-transfer-ser] z: accept (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2; the serial order differs from the commit order (t2 t1)
+[report-before-transfer-ser] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2; the serial order differs from the commit order (t2 t1)
+[rmw-rc] z: reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history
+[rmw-rc] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history

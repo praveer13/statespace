@@ -27,6 +27,11 @@ COMMANDS: dict[str, tuple[str, str]] = {
     "hash": ("statespace.hash", "print the comparator-style statement hash of a file"),
     "run": ("statespace.check.runs", "re-execute a registry run and diff its verdict lines (in the course repository)"),
     "export": ("statespace.check.export", "bundle claims, statement texts, specimens and receipts into a lab bundle for the tab"),
+    "isorun": ("statespace.isorun", "run an isolationtester-format spec on PostgreSQL, advancing a step only on a lock wait it observes; write a history@1 file"),
+    "demo": ("statespace.demo.cli", "run the reference pipeline on the provided agent proposal (LAB-10.1); demo record: record the demonstration (LAB-10.7)"),
+    "proposal": ("statespace.demo.proposal_cli", "proposal draw: draw an unseen agent proposal for LAB-10.4"),
+    "trace": ("statespace.trace", "trace validate <spec> <traces>: check NDJSON traces as behaviors of your TLA+ spec with TLC"),
+    "sim": ("statespace.sim", "run an outbox simulator under a seeded fault schedule: sim <seed> [--reference]"),
 }
 
 

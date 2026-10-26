@@ -1,0 +1,25 @@
+# claims/cl-7-2.yaml: claim card CL-7.2, prefilled from the template; fill the TODO(you) fields from your
+# LAB-7.3 receipt. statespace check lab7.7 validates it against claim@1 and the receipt.
+schema: statespace/claim@1
+id: cl-7-2
+template: CL-7.2
+proposition: >-
+  In every world satisfying WF1 to WF3, a cross-tenant canread(u, d) implies an unrevoked share to u or a
+  share to one of u's teams.
+statement:
+  path: claims/no-cross-tenant.smt2
+assumptions:
+  - text: "WF1 to WF3, as [A]"
+  - text: "[A] the encoding (completion, grounding) is faithful: encoding unverified"
+model: "first-order definitions over uninterpreted sorts, nesting grounded as data"
+method:
+  # TODO(you): add `receipt: receipts/LAB-7.3/<file>.json`, the receipt this card rests on
+  tool: z3
+  # TODO(you): add `version:`, copied verbatim from that receipt
+correspondence:
+  text: "The policy only, not the database or the views."
+if_weakened:
+  # TODO(you): drop WF1, and name the request Z3 returns
+  text: "write the counterexample here"
+requirement:
+  text: "Sharing across tenants is permitted; a read across tenants needs an explicit share."

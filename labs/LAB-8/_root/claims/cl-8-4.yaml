@@ -1,0 +1,21 @@
+# CL-8.4, a claim card (claim@1). LAB-8.8 checks it.
+schema: statespace/claim@1
+id: eventually-acked
+template: CL-8.4
+proposition: "EventuallyAcked: a committed command leads to its intent acknowledged"
+statement:
+  path: claims/OutboxProps.tla
+  property: EventuallyAcked
+assumptions:
+  - text: "weak fairness on the worker's actions"
+  - text: "TODO(you): what the worker's recovery must mean"
+  - text: "TODO(you): what the provider must eventually do"
+model: "spec/Outbox.tla under LiveSpec, MaxCrashes finite"
+method:
+  text: "TLC on challenge/live-all-acked.cfg (your LAB-8.3 receipt)"
+correspondence:
+  text: "assumed: a finite trace cannot test an eventuality"
+if_weakened:
+  text: "TODO(you): the lasso when Recover is not fair"
+requirement:
+  text: "every accepted payment completes"

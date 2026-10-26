@@ -1,0 +1,257 @@
+{
+  "schema": "statespace/history@1",
+  "spec": {
+    "path": "labs/LAB-6/fixtures/specs/mixed-levels.spec",
+    "sha256": "1d78004079bffe4a2f0674a5e474024aa76db55cae960f2811ec0d3338685877",
+    "sessions": [
+      "s1",
+      "s2",
+      "obs"
+    ],
+    "permutations": 1,
+    "enumerated": false
+  },
+  "server": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "isorun": {
+    "name": "statespace isorun",
+    "version": "0.1.0"
+  },
+  "permutations": [
+    {
+      "index": 1,
+      "permutation": [
+        "d0",
+        "s1b",
+        "s1r",
+        "s2b",
+        "s2r",
+        "s1w",
+        "s2w",
+        "s1c",
+        "s2c",
+        "chk"
+      ],
+      "levels": {
+        "s1": "serializable",
+        "s2": "read committed"
+      },
+      "events": [
+        {
+          "step": "d0",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        },
+        {
+          "step": "s1b",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s1r",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 1",
+              "rowcount": 1
+            },
+            {
+              "command": "SELECT 1",
+              "columns": [
+                "avail"
+              ],
+              "rows": [
+                [
+                  "100"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s2b",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s2r",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 1",
+              "rowcount": 1
+            },
+            {
+              "command": "SELECT 1",
+              "columns": [
+                "avail"
+              ],
+              "rows": [
+                [
+                  "100"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s1w",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "INSERT 0 1",
+              "columns": [
+                "acct",
+                "amt"
+              ],
+              "rows": [
+                [
+                  "1",
+                  "80"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s2w",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "INSERT 0 1",
+              "columns": [
+                "acct",
+                "amt"
+              ],
+              "rows": [
+                [
+                  "1",
+                  "80"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s1c",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s2c",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "chk",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 4",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ],
+                [
+                  "hold",
+                  "1",
+                  "80"
+                ],
+                [
+                  "hold",
+                  "1",
+                  "80"
+                ]
+              ],
+              "rowcount": 4
+            }
+          ]
+        }
+      ],
+      "waits": [],
+      "errors": [],
+      "outcome": {
+        "s1": [
+          "commit"
+        ],
+        "s2": [
+          "commit"
+        ],
+        "obs": [
+          "commit",
+          "commit"
+        ]
+      },
+      "signature": "s1=commit s2=commit"
+    }
+  ]
+}

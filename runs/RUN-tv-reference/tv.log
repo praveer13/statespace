@@ -1,0 +1,104 @@
+== validate transfer-30-1-2
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 30 a1 a2
+bound: accounts a1, a2; balances 0..60; 3721 stores enumerated
+verdict: accepted within the bound
+exit=0
+== validate transfer-30-1-2.reuse
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 30 a1 a2
+bound: accounts a1, a2; balances 0..60; 3721 stores enumerated
+verdict: rejected
+counterexample: store (a1, a2) = (30, 0)
+  source: committed (a1, a2) = (0, 30)
+  output: committed (a1, a2) = (30, 0) (12 steps)   <- no source behavior
+exit=1
+== validate self-transfer.swapped
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 5 a1 a1
+bound: accounts a1; balances 0..10; 11 stores enumerated
+verdict: accepted within the bound
+exit=0
+== validate self-transfer.read-both-first
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 5 a1 a1
+bound: accounts a1; balances 0..10; 11 stores enumerated
+verdict: rejected
+counterexample: store (a1) = (5)
+  source: committed (a1) = (5)
+  output: committed (a1) = (10) (13 steps)   <- no source behavior
+exit=1
+== validate move-whole-balance
+statespace-tv 1 (LAB-9 reference translation validator)
+validate move bal a1 a1 a2
+bound: accounts a1, a2; balances 0..10; 121 stores enumerated
+verdict: accepted within the bound
+exit=0
+== validate move-whole-balance.reevaluated
+statespace-tv 1 (LAB-9 reference translation validator)
+validate move bal a1 a1 a2
+bound: accounts a1, a2; balances 0..10; 121 stores enumerated
+verdict: rejected
+counterexample: store (a1, a2) = (1, 0)
+  source: committed (a1, a2) = (0, 1)
+  output: committed (a1, a2) = (0, 0) (8 steps)   <- no source behavior
+exit=1
+== validate transfer-5-1-2
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 5 a1 a2
+bound: accounts a1, a2; balances 0..10; 121 stores enumerated
+verdict: accepted within the bound
+exit=0
+== validate transfer-5-1-2.redundant-read
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 5 a1 a2
+bound: accounts a1, a2; balances 0..10; 121 stores enumerated
+verdict: accepted within the bound
+exit=0
+== validate transfer-5-1-2.maybefail
+statespace-tv 1 (LAB-9 reference translation validator)
+validate transfer 5 a1 a2
+bound: accounts a1, a2; balances 0..10; 121 stores enumerated
+verdict: rejected
+counterexample: store (a1, a2) = (5, 0)
+  source: committed (a1, a2) = (0, 5)
+  output: aborted serializationFailure (14 steps)   <- no source behavior
+  output: committed (a1, a2) = (0, 5) (14 steps)
+  forward: every source outcome is reached by the output; backward: the output reaches an outcome the source lacks
+exit=1
+== run rollback-1
+statespace-tv 1 (LAB-9 reference translation validator)
+run rollback-1.ir from store (a0, a1) = (5, 0)
+outcome: aborted denied; balances (5, 0) (3 steps)
+exit=0
+== run rollback-2
+statespace-tv 1 (LAB-9 reference translation validator)
+run rollback-2.ir from store (a0, a1) = (5, 0)
+outcome: aborted insufficient; balances (5, 0) (3 steps)
+exit=0
+== run rollback-3
+statespace-tv 1 (LAB-9 reference translation validator)
+run rollback-3.ir from store (a0, a1) = (5, 0)
+outcome: committed (a0, a1) = (5, 0) (4 steps)
+exit=0
+== run transfer-5-1-2
+statespace-tv 1 (LAB-9 reference translation validator)
+run transfer-5-1-2.tv from store (a1, a2) = (10, 0)
+outcome: committed (a1, a2) = (5, 5) (13 steps)
+exit=0
+== run transfer-5-1-2.redundant-read
+statespace-tv 1 (LAB-9 reference translation validator)
+run transfer-5-1-2.redundant-read.tv from store (a1, a2) = (10, 0)
+outcome: committed (a1, a2) = (5, 5) (14 steps)
+exit=0
+== run transfer-5-1-2.maybefail
+statespace-tv 1 (LAB-9 reference translation validator)
+run transfer-5-1-2.maybefail.tv from store (a1, a2) = (10, 0)
+outcome: aborted serializationFailure; balances (10, 0) (14 steps)
+outcome: committed (a1, a2) = (5, 5) (14 steps)
+exit=0
+== run move-whole-balance.reevaluated
+statespace-tv 1 (LAB-9 reference translation validator)
+run move-whole-balance.reevaluated.tv from store (a1, a2) = (5, 0)
+outcome: committed (a1, a2) = (0, 0) (8 steps)
+exit=0

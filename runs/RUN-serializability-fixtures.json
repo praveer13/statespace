@@ -1,0 +1,438 @@
+{
+  "id": "RUN-serializability-fixtures",
+  "title": "The LAB-6.7 fixture manifest with reference classifications and orders: twelve fixture specs run with statespace isorun on PostgreSQL 18.6 and the toy G2-item history, each classified by the abstract-serializability checker (bound 8) under the reference R, with the unbounded integers and with the Except Overflow remedy",
+  "task": "W4-T26",
+  "origin": "recorded",
+  "records": "curriculum/S06-correspondence.md section 3 (LAB-6.7's fixture manifest) and section 2 (S6.L8 segment 3, the report-before-transfer fixture); labs/LAB-6/fixtures/manifest.yaml",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-26T21:08:18.740Z",
+  "started_at": "2026-10-26T21:07:46.502Z",
+  "duration_s": 1.303,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "lab6-net-w4"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "lab6-pg-w4",
+      "--network",
+      "lab6-net-w4",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-serial-fixtures",
+      "--memory=6g",
+      "--network",
+      "lab6-net-w4",
+      "-e",
+      "PGHOST=lab6-pg-w4",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<repo>:/repo:ro",
+      "-v",
+      "<repo>/runs/RUN-serializability-fixtures/out:/out",
+      "-w",
+      "/repo",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "runs/RUN-serializability-fixtures/inputs/record.py",
+      "/out"
+    ],
+    [
+      "python3",
+      "runs/RUN-serializability-fixtures/inputs/publish.py",
+      "runs/RUN-serializability-fixtures/out"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-serializability-fixtures/inputs/record.py",
+      "sha256": "de7602c04836fe3d61814a7cafef69d0b3d09ead976669ec1a0a4145b93aaec1",
+      "bytes": 4924,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/inputs/publish.py",
+      "sha256": "dc33b61bbda0ae52c40b02e5653b155d4e8cdd39ccf46874c25cdfa1f14ed816",
+      "bytes": 3696,
+      "role": "script"
+    },
+    {
+      "path": "bench/statespace/isorun.py",
+      "sha256": "bcafb9397b764dbf1df8ff158673ffee6ff28b479cf46bff3fa5e6061728d8b7",
+      "bytes": 29051,
+      "role": "script"
+    },
+    {
+      "path": "bench/statespace/history.py",
+      "sha256": "51528e9aabbe052bd02556936b462beab47b982463d9bc7412cb56f56896fb8e",
+      "bytes": 19106,
+      "role": "script"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/cond-rc.spec",
+      "sha256": "fc19718b56ba38570d2228862dee218033775d53e4586e24d6fa5585712f9a41",
+      "bytes": 1760,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/cond-ser-retry.spec",
+      "sha256": "25599ac7f090c901d89ebcf2faa61412442ca3abefd3df5792b815d12e910a91",
+      "bytes": 2044,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/holds-rr.spec",
+      "sha256": "2860cf8c41724976a8a34b4bb9686d8ddd6f524b81207f90d809e88e8657db50",
+      "bytes": 2129,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/holds-ser-retry.spec",
+      "sha256": "2a252240338263faf2791b46f76025e3e31284f90f398b4f5899bc3fa9359101",
+      "bytes": 2605,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/mixed-levels.spec",
+      "sha256": "1d78004079bffe4a2f0674a5e474024aa76db55cae960f2811ec0d3338685877",
+      "bytes": 2164,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/opposite-retry.spec",
+      "sha256": "03d722e036edc6214c9c6ac35a0e33ae10047404aa3cba69b6a31eb11795891c",
+      "bytes": 2840,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/overflow-22003.spec",
+      "sha256": "490feee90f04dc23c99fcc15af8f473ac283529787e99c910aa23919364f949f",
+      "bytes": 1529,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/r-mutant-null.spec",
+      "sha256": "0378cf5d8e6b993f5178d0b8094279439c6fa57ea5bd0b6c35136702e967ef28",
+      "bytes": 1405,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/r-mutant-wrong-account.spec",
+      "sha256": "f8df7dec82e5c84888cc1fb99129560c906dda1cc7431522f363af96d6f86b80",
+      "bytes": 1700,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/read-skew-rc.spec",
+      "sha256": "36b1748be7c69ad35e5937c3116c512d74c4ddcea5825876a9ae81e4d82ee1f3",
+      "bytes": 1867,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/report-before-transfer-ser.spec",
+      "sha256": "8937aeb3d981ad55af4f3049ccf052bee53bd84fd20951754dddbca7d1cd224b",
+      "bytes": 1971,
+      "role": "data"
+    },
+    {
+      "path": "labs/LAB-6/fixtures/specs/rmw-rc.spec",
+      "sha256": "8251bab1a90c59decfd06b8d3a0177b9e13b8adb27630bbce7439aa02d937432",
+      "bytes": 2089,
+      "role": "data"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "search_bound_transactions": 8
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[cond-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[cond-rc] permutation 1: s1=commit s2=commit",
+    "[cond-rc] summary: 1 permutations, 0 did not run to the end",
+    "[cond-ser-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[cond-ser-retry] permutation 1: a=commit b=abort:40001+commit  [40001]",
+    "[cond-ser-retry] summary: 1 permutations, 0 did not run to the end",
+    "[holds-rr] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[holds-rr] permutation 1: s1=commit s2=commit",
+    "[holds-rr] summary: 1 permutations, 0 did not run to the end",
+    "[holds-ser-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[holds-ser-retry] permutation 1: a=commit b=abort:40001+commit  [40001]",
+    "[holds-ser-retry] summary: 1 permutations, 0 did not run to the end",
+    "[mixed-levels] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[mixed-levels] permutation 1: s1=commit s2=commit",
+    "[mixed-levels] summary: 1 permutations, 0 did not run to the end",
+    "[opposite-retry] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[opposite-retry] permutation 1: a=abort:40P01+commit b=commit  [40P01]",
+    "[opposite-retry] summary: 1 permutations, 0 did not run to the end",
+    "[overflow-22003] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[overflow-22003] permutation 1: s1=abort:22003  [22003]",
+    "[overflow-22003] summary: 1 permutations, 0 did not run to the end",
+    "[r-mutant-null] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[r-mutant-null] permutation 1: s1=commit",
+    "[r-mutant-null] summary: 1 permutations, 0 did not run to the end",
+    "[r-mutant-wrong-account] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[r-mutant-wrong-account] permutation 1: s1=commit",
+    "[r-mutant-wrong-account] summary: 1 permutations, 0 did not run to the end",
+    "[read-skew-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[read-skew-rc] permutation 1: mv=commit rd=commit",
+    "[read-skew-rc] summary: 1 permutations, 0 did not run to the end",
+    "[report-before-transfer-ser] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[report-before-transfer-ser] permutation 1: t1=commit t2=commit",
+    "[report-before-transfer-ser] summary: 1 permutations, 0 did not run to the end",
+    "[rmw-rc] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[rmw-rc] permutation 1: s1=commit s2=commit",
+    "[rmw-rc] summary: 1 permutations, 0 did not run to the end",
+    "[cond-rc] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2; the serial order is the commit order",
+    "[cond-rc] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order s1 s2; the serial order is the commit order",
+    "[cond-ser-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order",
+    "[cond-ser-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order",
+    "[g2-toy] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history",
+    "[g2-toy] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is t2, then t1 gave ok [100, 70, 100, 70] in the replay, but ok [100, 100, 100, 70] in the history",
+    "[holds-rr] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+    "[holds-rr] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+    "[holds-ser-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order",
+    "[holds-ser-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order a b#2; the serial order is the commit order",
+    "[mixed-levels] z: reject (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+    "[mixed-levels] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s2, then s1 gave refused:Insufficient [20] in the replay, but ok [100, 1, 80] in the history",
+    "[opposite-retry] z: accept (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2; the serial order is the commit order",
+    "[opposite-retry] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried): order b a#2; the serial order is the commit order",
+    "[overflow-22003] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is (empty), then s1 gave ok [9223372036854775807, 9223372036854775808] in the replay, but refused:Overflow [] in the history",
+    "[overflow-22003] except-overflow: accept (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried): order s1; the serial order is the commit order",
+    "[r-mutant-null] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+    "[r-mutant-null] except-overflow: reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+    "[r-mutant-wrong-account] z: reject (semantics z; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+    "[r-mutant-wrong-account] except-overflow: reject (semantics except-overflow; 1 transaction takes a step; bound 8; 1 prefix tried); 1 serial order(s) reproduce every output, and none ends in a state that R relates to D_final",
+    "[read-skew-rc] z: reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history",
+    "[read-skew-rc] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is mv, then rd gave ok [50, 150] in the replay, but ok [100, 150] in the history",
+    "[report-before-transfer-ser] z: accept (semantics z; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2; the serial order differs from the commit order (t2 t1)",
+    "[report-before-transfer-ser] except-overflow: accept (semantics except-overflow; 2 transactions take a step; bound 8; 4 prefixes tried): order t1 t2; the serial order differs from the commit order (t2 t1)",
+    "[rmw-rc] z: reject (semantics z; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history",
+    "[rmw-rc] except-overflow: reject (semantics except-overflow; 2 transactions take a step; bound 8; 3 prefixes tried); no serial order reproduces every committed outcome and output; the longest replayed prefix is s1, then s2 gave refused:Insufficient [20] in the replay, but ok [100, 20, 20] in the history"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/cond-rc.json",
+      "sha256": "b41197ba7d7c8f7ebd3da23407e3dd1ac92d20b7b03ac0fb19b8b3a760076f54",
+      "bytes": 1011,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/cond-ser-retry.json",
+      "sha256": "253e488830b87c9ad0c088c1c72d0a1ebf26383dd42023572a37608d69d48ac4",
+      "bytes": 1267,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/g2-toy.json",
+      "sha256": "85570fdf43438837b9a7cfe176f1a97bb56fb456b954bd1516a78dca9684398d",
+      "bytes": 1242,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/holds-rr.json",
+      "sha256": "aeec8cb1a5032a3b458f11d9c37201ea3779671928f766ffe39fb7c184fce6a6",
+      "bytes": 1152,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/holds-ser-retry.json",
+      "sha256": "48d7585aff0300118ee0a5ecc32b73279a4aeef4bf08310d04bb486864d334f6",
+      "bytes": 1411,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/mixed-levels.json",
+      "sha256": "7eff4fb2be81f7c06e896612cbd2ac3ca1d7dbe3f1e816324ffe6d5dfa1b98ff",
+      "bytes": 1152,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/opposite-retry.json",
+      "sha256": "5a12ff38fe8f278a3d0183455aded68a41e1e6d0f8c5cc5844b491bcc2d58a9f",
+      "bytes": 1450,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/overflow-22003.json",
+      "sha256": "8d533eb40dd2ed031302b6063a4d849940cfc6b33cb2e4f2c0942c55e4d5b783",
+      "bytes": 673,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/r-mutant-null.json",
+      "sha256": "ed9cd8397880d4cedc0ec4015e0b9677fa7828807e11bfeb58f58030a9f5fbd0",
+      "bytes": 635,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/r-mutant-wrong-account.json",
+      "sha256": "876ee7d25147c15430489c44060b9c37bad91c710965d235b28f9238cbbd3c83",
+      "bytes": 859,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/read-skew-rc.json",
+      "sha256": "2a5b2a7f190c68908ff2f960756d638991668772b48cbc8098fc430e2df72265",
+      "bytes": 1097,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/report-before-transfer-ser.json",
+      "sha256": "74add2653edaee694c7be2a90a02297be7231b7c8d39dd84d88cb083456da147",
+      "bytes": 1107,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/abstract/rmw-rc.json",
+      "sha256": "a8efdea079767bc330fdb31c3c075180afbfdf78e92ce18291b555a865245910",
+      "bytes": 1078,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/classify.log",
+      "sha256": "0cb76f0870ff20bdb931b695c4b0653d97ca5fb811976eb59d1ada15ef05f817",
+      "bytes": 9001,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/cond-rc.history.json",
+      "sha256": "81c0aa77749154b34112b0b1b2768feed15845aa94976a15cc0f211e39033d40",
+      "bytes": 4153,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/cond-ser-retry.history.json",
+      "sha256": "ea07c6d5e2b492432b32fe64c8c020f6937eff74c6a65e3f0098e06a9737c0da",
+      "bytes": 5128,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/holds-rr.history.json",
+      "sha256": "4cd10b35d57a4f357ce3924f18a4c8e9d324336137f35a2bc83bde6f77788982",
+      "bytes": 5345,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/holds-ser-retry.history.json",
+      "sha256": "9c50d95a0217068aa2439ce44f205bac05f1807e9b612a8311b2b5d0ea990cdb",
+      "bytes": 6876,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/mixed-levels.history.json",
+      "sha256": "3d0d193d8da0ae875223beae3f9ee20994a6804dbaa67af19b9089c4d7c23c52",
+      "bytes": 5345,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/opposite-retry.history.json",
+      "sha256": "b148adc0f0c7b00e09a44e1e9bb6575876d109f1c741619960b32240f9772a1c",
+      "bytes": 6677,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/overflow-22003.history.json",
+      "sha256": "161f94edb6030d5e25ec018cb911b71b087a71cd9ef491b436075dd3992c4d35",
+      "bytes": 2848,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/r-mutant-null.history.json",
+      "sha256": "b32d11b064d4f8ca7e5789e0f6006dcb2c144a2e3203c5299fc1798eaa2d9bff",
+      "bytes": 2744,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/r-mutant-wrong-account.history.json",
+      "sha256": "01a2c7315b2f0b527faca5afd34c8992cac5a3b96cbbc90169bb5b6f60079f5a",
+      "bytes": 3620,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/read-skew-rc.history.json",
+      "sha256": "46d887d5bab1261b195117b6bbe3fa2143f7834ec1423c33276866cc644adf1f",
+      "bytes": 4801,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/report-before-transfer-ser.history.json",
+      "sha256": "c2a808f3b8ef0fd07f3acc415fc7264e464ef08857821de8a394828bd31bc41a",
+      "bytes": 4907,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/results.json",
+      "sha256": "383980fefd5bcb5571a0ef730af8b18814ce8f6aeac354aa6bb3c8ab30fd8d92",
+      "bytes": 11194,
+      "kind": "data"
+    },
+    {
+      "path": "runs/RUN-serializability-fixtures/out/rmw-rc.history.json",
+      "sha256": "afc2b4bda20b5ba4742e05534f983226d76294c576ce492477f670ab036d93e6",
+      "bytes": 5260,
+      "kind": "data"
+    }
+  ],
+  "values": {
+    "cond-rc": "accept",
+    "cond-ser-retry": "accept",
+    "g2-toy": "reject",
+    "holds-rr": "reject",
+    "holds-ser-retry": "accept",
+    "mixed-levels": "reject",
+    "opposite-retry": "accept",
+    "overflow-22003": "reject",
+    "r-mutant-null": "reject",
+    "r-mutant-wrong-account": "reject",
+    "read-skew-rc": "reject",
+    "report-before-transfer-ser": "accept",
+    "rmw-rc": "reject",
+    "overflow-22003_except_overflow": "accept",
+    "report-before-transfer-ser_order": "t1 t2",
+    "report-before-transfer-ser_commit_order": "t2 t1",
+    "fixtures": 13,
+    "bound": 8
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "notes": [
+    "record.py runs each spec in labs/LAB-6/fixtures/specs/ with statespace isorun (one permutation each), reads the abstract history by the spec's @ annotations (statespace.history.extract), and classifies it with statespace.history.classify under the reference R the script defines (alpha: balances and summed holds; wf: no NULL, balances >= 0, holds > 0; R = wf and S = alpha(D)). publish.py copies the abstract histories to labs/LAB-6/fixtures/histories/ and writes labs/LAB-6/fixtures/manifest.yaml from results.json.",
+    "The toy G2-item history (g2-toy) has no database run: record.py writes it in the shape of RUN-history-g2item's h1 (two transactions each read both accounts at their initial balances, each debits one of them, both commit).",
+    "opposite-retry sets deadlock_timeout per session (100ms for a, 10s for b) so that a, the first waiter, is the deadlock victim and its retry steps follow; that needs a superuser.",
+    "Before recording, statespace isorun was compared with the catalog (content/pg-catalog, RUN-pg-catalog) on nine specs (H01, H02, H04, H05, H06b, H10, H22a, H23, H24): all 251 permutations gave the recorded outcome signature, lock waits and errors. That comparison is not part of this record's outputs."
+  ]
+}

@@ -549,6 +549,9 @@ await guarded('records', async () => {
       } else continue;
     } else {
       const text = fs.readFileSync(file, 'utf8');
+      // A lab's starter card (labs/LAB-<n>/**, holding a TODO(you) marker) is the learner's to fill: it becomes a
+      // record when they write it, and the lab's own check validates it against claim@1 then.
+      if (/^labs\/LAB-\d+\//.test(r) && text.includes('TODO(you)')) continue;
       const tag = /^schema:\s*["']?statespace\/([a-z][a-z0-9-]*)@([0-9]+)["']?\s*(?:#.*)?$/m.exec(text);
       if (!tag) continue;
       [, name, major] = tag;

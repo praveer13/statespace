@@ -1,0 +1,30 @@
+# CL-9.1: the stack machine is correct. Minted by LAB-9.2; `statespace check lab9.12` validates this card
+# (claim@1). You fill the fields marked TODO(you):
+#   method.receipt   your passing receipt of LAB-9.2, receipts/LAB-9.2/<file>.json, or the folder
+#                    receipts/LAB-9.2 for the newest one in it
+#   method.version   the Lean version of that receipt's runs, copied from it
+#   requirement      what this claim serves, in your words; never write a stamp here
+# if_weakened.specimen names specimens/lab9-ungeneralized.json, which names the proof without
+# `generalizing stk`; the check replays it and expects Lean to reject it.
+schema: statespace/claim@1
+id: cl-9-1
+template: CL-9.1
+proposition: >-
+  For every expression, store and stack, running the compiled code of the expression on the stack leaves
+  the expression's value on top of it: exec s (comp e) stk = aval e s :: stk.
+statement:
+  path: labs/LAB-9/challenge/Challenge/S9A.lean
+  theorem: S9A.exec_comp
+assumptions:
+  - text: the Lean kernel and the comparator are sound
+model: the HOL-IMP stack machine ported to Lean, with a total exec1
+method:
+  receipt: "TODO(you): receipts/LAB-9.2/<file>.json"
+  tool: lean
+  version: "TODO(you)"
+correspondence:
+  text: none claimed for any real machine
+if_weakened:
+  specimen: specimens/lab9-ungeneralized.json
+requirement:
+  text: "TODO(you)"

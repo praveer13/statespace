@@ -1,0 +1,31 @@
+# CL-9.2: the compiler preserves what a client observes, for the fragment. Minted by LAB-9.6 as "PROVED
+# modulo the remaining pinned lemmas" and updated through LAB-9.10. `statespace check lab9.12` validates
+# this card (claim@1). You fill the fields marked TODO(you):
+#   method.receipt   your passing receipt of LAB-9.10, or the folder receipts/LAB-9.10
+#   method.version   the Lean version of that receipt's runs
+#   requirement      what this claim serves, in your words
+# if_weakened.specimen names specimens/lab9-abort-blind.json: a balance and an amount at which the source
+# aborts and the conditional-write compile commits with the same balances (SP-9.3).
+schema: statespace/claim@1
+id: cl-9-2
+template: CL-9.2
+proposition: >-
+  Whenever compile c = some p, running p from any registers and any store gives the observation the
+  source gives from that store: obs s (runT p regs s) = obs s (runS c s), with compile_complete.
+statement:
+  path: labs/LAB-9/challenge/Challenge/S9B.lean
+  theorem: S9.preservation
+assumptions:
+  - text: obs and R as frozen in S9/Statement.lean
+  - text: the IR semantics models one PostgreSQL transaction
+model: the fragment and the IR of curriculum S9 section 2
+method:
+  receipt: "TODO(you): receipts/LAB-9.10/<file>.json"
+  tool: lean
+  version: "TODO(you)"
+correspondence:
+  text: to the IR only; the IR to PostgreSQL is CL-9.3 and the runtime claims
+if_weakened:
+  specimen: specimens/lab9-abort-blind.json
+requirement:
+  text: "TODO(you)"

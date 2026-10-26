@@ -14,7 +14,7 @@ If you read only two sections before your first weekend, read §4.1 (LAB-1 needs
 
 A lab is a staged build on your own machine. You write real code, proofs and specifications, run the real tools on them, and keep what comes out: receipts, claim cards and specimens. There are ten labs, LAB-1 to LAB-10, one for each stage S1 to S10. They live in one repository, `statespace-lab`, which you start from the template and keep. The roadmap asks for one evolving lab repository, and that repository is your record. The browser's only record is your practice events, beside a disposable, read-only copy of your lab repository, so back the repository up with git.
 
-Each lab arrives as a zip that carries the lab's folder, its read-only pieces and the agent kit. Unpack it into the repository root. The first zip starts the repository, and later ones add their folder.
+Each lab arrives as a zip, `LAB-{n}.zip` on the lab's page, that carries the lab's folder, its read-only pieces, the agent kit and the `statespace` command line with that lab's checks. Unpack it into the repository root. The first zip starts the repository, and later ones add their folder and refresh the kit and the command line.
 
 Every lab has the same shape. Stage text, minutes and check ids are on each lab's page in the course; this file explains the system around them.
 
@@ -125,9 +125,10 @@ The Lean 4.35.0 Linux toolchain is a 594.5 MB download and unpacks to 3.0 GB [X 
 ```
 statespace-lab/
   AGENTS.md  CLAUDE.md           the rules your coding agent reads (CLAUDE.md imports AGENTS.md)
+  pyproject.toml                 the uv project: `uv run statespace ...` and the pinned packages
   .claude/                       settings and the guard hook, for Claude Code
   .devcontainer/                 the Bench image, from S2 (LAB-1 needs none)
-  .statespace/                   generated: pins and the list of protected paths
+  .statespace/                   generated: the command line (cli/), the protected paths (protected.txt, protected.d/) and each lab's manifest (labs/)
   labs/LAB-{n}/
     challenge/                   read-only: definitions and pinned statements (Lean labs)
     ...                          your modules, crates and specs, with TODO(you) markers
@@ -162,7 +163,7 @@ statespace-lab/
 2. **Predict.** Commit your call on the stage's reference verdict before you run it. The call is recorded in the tab, not in your repository.
 3. **Build.** Write your part where the template says `TODO(you)`. Iterate with the tool's own commands (`lake build`, `cargo test`, TLC, Z3); they write nothing to `receipts/`.
 4. **Check.** `statespace check lab2.2` runs the stage's checks and writes a receipt under `receipts/LAB-2.2/`. `statespace check lab2` runs the whole lab. The argument is the lab's short name: `lab2` is LAB-2, and `lab2.2` is stage LAB-2.2.
-5. **Read the result.** Each check prints pass or fail with its message. Read the verdict lines, not only the exit code (§8). A failing check names what it suspects: your spec, your implementation, the tool or the proof.
+5. **Read the result.** Each check prints `pass` or `FAIL`, its id and its label, then its message on the next line. A failing check adds a line `suspects: your spec` (or your implementation, the tool, the proof), then any distinguishing state. The last line names the receipt, or says that none was written because a check could not run. Read the verdict lines, not only the exit code (§8). `statespace check` with no argument lists the labs in your repository, found by their folders `labs/LAB-{n}/`, with their stages and check ids.
 6. **Import the receipt** in the tab: choose the file, or open a link when the receipt is small. The tab validates it, parses every verdict line again, recomputes statement hashes and shows the badge *reported from your machine*.
 7. **Keep what you found.** A counterexample goes in `specimens/`, with the code that produced it left in `broken/` beside its fix in `fixed/` (§9).
 8. **Update the claim card** the stage names. The method, tool and version come from the receipt; the proposition and the "if weakened" witness are yours.

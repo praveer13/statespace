@@ -1,0 +1,105 @@
+{
+  "label": "holds-ser-retry",
+  "commit_order": [
+    "a",
+    "b#1",
+    "b#2"
+  ],
+  "permutation": [
+    "d0",
+    "ab",
+    "ar",
+    "bb",
+    "br",
+    "aw",
+    "bw",
+    "ac",
+    "bc",
+    "bb2",
+    "br2",
+    "bw2",
+    "bc2",
+    "chk"
+  ],
+  "signature": "a=commit b=abort:40001+commit  [40001]",
+  "levels": {
+    "a": "serializable",
+    "b": "serializable"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": [
+      [
+        1,
+        80
+      ]
+    ]
+  },
+  "transactions": [
+    {
+      "id": "a",
+      "session": "a",
+      "command": {
+        "op": "hold",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        1,
+        80
+      ]
+    },
+    {
+      "id": "b#1",
+      "session": "b",
+      "command": {
+        "op": "hold",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "abort:40001",
+      "outputs": [
+        100,
+        1,
+        80
+      ]
+    },
+    {
+      "id": "b#2",
+      "session": "b",
+      "command": {
+        "op": "hold",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "refused:Insufficient",
+      "outputs": [
+        20
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# CL-8.3, a claim card (claim@1). LAB-8.8 checks it.
+schema: statespace/claim@1
+id: traces-conform
+template: CL-8.3
+proposition: "each of n seeds' traces is a behavior of the spec, at the grain the log records"
+statement:
+  path: labs/LAB-8/spec/OutboxTrace.tla
+assumptions:
+  - text: "every worker step is logged at the spec's grain"
+  - text: "TODO(you): what the simulated environment is assumed to cover"
+model: "spec/Outbox.tla plus the trace mapping spec/OutboxTrace.tla"
+method:
+  text: "statespace trace validate (TLC) over the seeds your LAB-8.6 receipt lists"
+correspondence:
+  text: "it is the evidence for these n traces; code paths no seed reached are not covered"
+if_weakened:
+  text: "TODO(you): the witness when the key is left out of the Dispatch lines"
+requirement:
+  text: "TODO(you): the requirement this claim serves, and why its fit is not proved"

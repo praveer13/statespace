@@ -1,0 +1,31 @@
+server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances
+[reference] (honest) semantic validator: accepted, 1125 of 1125 instances
+[reference] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[credit-first] (honest) semantic validator: accepted, 1125 of 1125 instances
+[credit-first] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[dst-checked] (honest) semantic validator: accepted, 1125 of 1125 instances
+[dst-checked] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[debit-from-register] (honest) semantic validator: accepted, 1125 of 1125 instances
+[debit-from-register] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[wrong-account] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1
+  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | diverges
+[wrong-account] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[flipped-debit] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1
+  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:2 | interpreter committed 1:1, 2:0 | diverges
+[flipped-debit] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[no-funds-guard] (wrong) semantic validator: rejected at instance 3 of 1125: accounts=1:0,2:0 from=1 to=1 amount=1
+  replay accounts=1:0,2:0 from=1 to=1 amount=1: PostgreSQL sqlstate 23514 | interpreter error Insufficient | diverges
+[no-funds-guard] shape check: rejected (a guard is missing)
+[no-positive-guard] (wrong) semantic validator: rejected at instance 1 of 1125: accounts=1:0,2:0 from=1 to=1 amount=-1
+  replay accounts=1:0,2:0 from=1 to=1 amount=-1: PostgreSQL committed 1:0, 2:0 | interpreter error NonPositive | diverges
+[no-positive-guard] shape check: rejected (a guard is missing)
+[no-credit-rowcount] (wrong) semantic validator: rejected at instance 73 of 1125: accounts=1:0,2:1 from=2 to=3 amount=1
+  replay accounts=1:0,2:1 from=2 to=3 amount=1: PostgreSQL committed 1:0, 2:0 | interpreter error NoSuchAccount | diverges
+[no-credit-rowcount] shape check: rejected (an UPDATE does not expect one row)
+[upsert-credit] (wrong) semantic validator: rejected at instance 73 of 1125: accounts=1:0,2:1 from=2 to=3 amount=1
+  replay accounts=1:0,2:1 from=2 to=3 amount=1: PostgreSQL committed 1:0, 2:0, 3:1 | interpreter error NoSuchAccount | diverges
+[upsert-credit] shape check: rejected (a write is not an UPDATE)
+[read-both-first] (wrong) semantic validator: rejected at instance 68 of 1125: accounts=1:0,2:1 from=2 to=2 amount=1
+  replay accounts=1:0,2:1 from=2 to=2 amount=1: PostgreSQL committed 1:0, 2:2 | interpreter committed 1:0, 2:1 | diverges
+[read-both-first] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)

@@ -1,0 +1,134 @@
+{
+  "schema": "statespace/history@1",
+  "spec": {
+    "path": "labs/LAB-6/fixtures/specs/overflow-22003.spec",
+    "sha256": "490feee90f04dc23c99fcc15af8f473ac283529787e99c910aa23919364f949f",
+    "sessions": [
+      "s1",
+      "obs"
+    ],
+    "permutations": 1,
+    "enumerated": false
+  },
+  "server": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "isorun": {
+    "name": "statespace isorun",
+    "version": "0.1.0"
+  },
+  "permutations": [
+    {
+      "index": 1,
+      "permutation": [
+        "d0",
+        "s1b",
+        "s1k",
+        "s1c",
+        "chk"
+      ],
+      "levels": {
+        "s1": "read committed"
+      },
+      "events": [
+        {
+          "step": "d0",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 1",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "9223372036854775807"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s1b",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s1k",
+          "session": "s1",
+          "status": "done",
+          "results": [],
+          "error": {
+            "sqlstate": "22003",
+            "message": "bigint out of range"
+          }
+        },
+        {
+          "step": "s1c",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "ROLLBACK",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "chk",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 1",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "9223372036854775807"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        }
+      ],
+      "waits": [],
+      "errors": [
+        {
+          "step": "s1k",
+          "session": "s1",
+          "sqlstate": "22003",
+          "message": "bigint out of range"
+        }
+      ],
+      "outcome": {
+        "s1": [
+          "abort:22003"
+        ],
+        "obs": [
+          "commit",
+          "commit"
+        ]
+      },
+      "signature": "s1=abort:22003  [22003]"
+    }
+  ]
+}

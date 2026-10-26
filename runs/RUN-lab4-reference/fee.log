@@ -1,0 +1,9 @@
+command   FeeTransfer (../labs/LAB-4/fixtures/fee.json)
+fragment  in: assignments, moves and ifs under one reject guard, over Int
+query     sha256 ed511f10469c888b77e30891303e8a3d36d43943d981b98b54e87556b1a7d5e2
+solver    Z3 5.3.1 · rlimit 5000000 · entry cli
+verdict   sat
+witness   a=1 b=0 c=0 p_amount=1 a_p=0 b_p=1 c_p=-1 · FeeTransfer(amount=1) from a=1 b=0 c=0 reaches a=0 b=1 c=-1, where Inv fails
+cross     cvc5 1.4.2 sat · rlimit 5000000 · agrees
+stamp     REFUTED [R] · 1 step
+defeaters encoding unverified (open); solver soundness (SEAM-7); one command at a time (SEAM-2)

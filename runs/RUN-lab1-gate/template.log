@@ -1,0 +1,38 @@
+LAB-1.1 · Run the starter: sat, then unsat once the guard arrives
+  FAIL  LAB-1.c1  The answer pair reproduces.
+                  the last question still has a model: the sufficient-funds guard is not in it
+                  suspects: your spec
+                  answers in order: sat, sat
+                  the TODO(you) line in starter.py is where the guard goes
+                  intro.py, logged and not graded: Z3 answered sat
+  receipt  receipts/LAB-1.1/20261026T205037Z.json (reported from your machine; 3 runs; z3 5.3.1)
+LAB-1.2 · Find a transfer that makes the source balance negative
+  FAIL  LAB-1.c2  Your violation query finds a real overdraft.
+                  transfer.violation_query() returns no constraints, so any model would do and none is a counterexample
+                  suspects: your spec
+                  return the premises and the negated property
+  receipt  receipts/LAB-1.2/20261026T205037Z.json (reported from your machine; 0 runs)
+LAB-1.3 · Add the sufficient-funds guard
+  FAIL  LAB-1.c3  The guard works, and its answer is not empty.
+                  your guarded violation query is sat, not unsat: the guard does not stop the overdraft
+                  suspects: your spec
+                  sat
+  receipt  receipts/LAB-1.3/20261026T205037Z.json (reported from your machine; 4 runs; z3 5.3.1)
+LAB-1.4 · Introduce the buggy refund rule and fix the class
+  FAIL  LAB-1.c4  The fix kills the whole class.
+                  mint.mint_query() returns no constraints, so any model would do and none is a mint
+                  suspects: your spec
+                  return the premises and the mint: the new total above c + m
+  receipt  receipts/LAB-1.4/20261026T205037Z.json (reported from your machine; 0 runs)
+LAB-1.5 · Conservation and double capture as two-state properties
+  FAIL  LAB-1.c5  Both properties give the expected answers on fresh seeds.
+                  your transfer step does not conserve the total (sat)
+                  suspects: your spec
+                  a step that changes it: a = 0, b = 0, a_p = 1, b_p = 0
+  receipt  receipts/LAB-1.5/20261026T205037Z.json (reported from your machine; 2 runs; z3 5.3.1)
+LAB-1.6 · README and two claim cards
+  FAIL  LAB-1.c6  The README matches the receipt, and the cards hold.
+                  README.md has no text under Property, Assumptions, Solver answer, Example model, Limitations
+                  suspects: your spec
+                  each of the five headings needs text of your own; the comments under them do not count
+  receipt  receipts/LAB-1.6/20261026T205037Z.json (reported from your machine; 0 runs)

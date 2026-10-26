@@ -1,0 +1,90 @@
+# LAB-9's Prove-it mutations (labs/README.md section 13; curriculum S9 section 4.5). The course owns this file.
+#
+# `statespace defend lab9` applies each mutation to a copy of your repository, never to it, after you have
+# written your prediction with your agent closed, and then runs the grader named here. The predictions you make
+# are compared with the outcome; nothing here is a hint, and the outcome is graded by the tool, never by a model.
+#
+# A mutation is an edit of your own artifact. `edits` are regular expressions written against the template's
+# compile scheme and statement shapes; when one finds nothing in your text, defend says so and asks you to make
+# the edit by hand in the copy. `grader` is what runs in the copy, from labs/LAB-9/.
+schema: statespace/proveit@0
+lab: LAB-9
+mutants:
+  - id: LAB-9.m1
+    after: LAB-9.2
+    mutation: Drop `generalizing stk`.
+    file: labs/LAB-9/Solution/S9A.lean
+    edits:
+      - find: 'induction e generalizing stk with'
+        replace: 'induction e with'
+    grader: lake build Solution.S9A
+    outcome: the build fails; read which case
+
+  - id: LAB-9.m2
+    after: LAB-9.3
+    mutation: Read both balances before writing.
+    file: labs/LAB-9/S9/Defs.lean
+    edits:
+      - find: '\[\.read 1 src, \.arith \.sub 1 1 0, \.write src 1, \.read 1 dst, \.arith \.add 1 1 0, \.write dst 1\]'
+        replace: '[.read 1 src, .read 2 dst, .arith .sub 1 1 0, .arith .add 2 2 0, .write src 1, .write dst 2]'
+    grader: statespace check lab9.3
+    outcome: which goldens fail by decide
+
+  - id: LAB-9.m3
+    after: LAB-9.3
+    mutation: Evaluate the amount again after the debit.
+    file: labs/LAB-9/S9/Defs.lean
+    edits:
+      - find: '\.write src 1, \.read 1 dst,'
+        replace: '.write src 1] ++ compE amt 0 ++ [.read 1 dst,'
+    grader: statespace check lab9.3
+    outcome: which goldens fail by decide
+
+  - id: LAB-9.m4
+    after: LAB-9.4
+    mutation: Return the pre-state on abort.
+    file: labs/LAB-9/S9/Statement.lean
+    replace_file: |
+      import S9.Defs
+
+      namespace S9
+
+      def Obs : Type := Store
+
+      def obs (s₀ : Store) : Outcome → Obs
+        | .committed s => s
+        | .aborted _ => s₀
+
+      def R (s : Store) (_regs : Regs) (st : Store) : Prop := st = s
+
+      end S9
+    grader: lake build Solution.Adequacy, then the probe `example : ¬ ∀ (s₀ : Store) (e : Err), obs s₀ (.aborted e) ≠ obs s₀ (.committed s₀)`
+    outcome: which adequacy theorems still build, and whether the probe's negation is provable
+
+  - id: LAB-9.m5
+    after: LAB-9.7
+    mutation: Delete the frame clause from `compE_correct`.
+    file: labs/LAB-9/challenge/Challenge/S9B.lean
+    edits:
+      - find: ' ∧\n      ∀ q, q < r → regs'' q = regs q'
+        replace: ''
+    also: your Solution/Expr.lean states compE_correct the same way, proved from your full lemma
+    grader: lake build Solution.Move Solution.Require
+    outcome: which of move_sim and require_sim still builds
+
+  - id: LAB-9.m6
+    after: LAB-9.10
+    mutation: Hoist the debit above the guard's read.
+    file: labs/LAB-9/S9/Defs.lean
+    replace_with: labs/LAB-9/broken/hoist/Hoist.lean
+    grader: lake build Solution.Assembled, then reference/tv.py on the hoisted output of transfer 1 a0 a1
+    outcome: whether compile_correct still builds, and the validator's counterexample class
+
+  - id: LAB-9.m7
+    after: LAB-9.11
+    mutation: Replace the semantic check with a shape check.
+    file: labs/LAB-9/validator/src/validator.rs
+    replace_body_of: validate
+    with: accept a plan whose writes are two UPDATEs, each WHERE id = $k and each expecting one row, and both guards present
+    grader: statespace check lab9.11
+    outcome: which wrong plans are accepted

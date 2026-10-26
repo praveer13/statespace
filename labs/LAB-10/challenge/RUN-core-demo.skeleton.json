@@ -1,0 +1,124 @@
+{
+  "schema": "statespace/lab10-skeleton@1",
+  "proposal": {
+    "source": "command TransferWithFee(from, to, amount, fee)\n  requires balance(from) >= amount\n  do move amount from from to to; move fee from from to sink\n",
+    "claim": "never overdraws; conserves; 200 tests green",
+    "sha256": "2beac7d4baa32f7e7da9cdb269863dd6eda3b30ab72129dd9d3364679b8152e4"
+  },
+  "sections": [
+    "Title block",
+    "What this report establishes and what it does not",
+    "The Core and its trusted base",
+    "Operational semantics and the four decision records",
+    "Theorem statements with hashes",
+    "PROVED",
+    "MODEL-CHECKED",
+    "TESTED",
+    "ENFORCED",
+    "CONFIGURED",
+    "ASSUMED",
+    "NOT COVERED",
+    "UNKNOWN",
+    "Specimens",
+    "The demonstration (CL-10.1)",
+    "Erosion log",
+    "Doubt log",
+    "Checker matrix",
+    "Budgets and advisories",
+    "Agent incident ledger",
+    "Known limitations",
+    "Reproduction"
+  ],
+  "verdictLines": [
+    "parse: ok, command TransferWithFee(from, to, amount, fee)",
+    "typecheck: ok; from: account, to: account, amount: amount, fee: amount; R-cover: 2 statements, so each debit is an obligation for the checker (S4), not a typing rule",
+    "check premises: z3 sat",
+    "check nonneg: z3 sat: REFUTED",
+    "check conserve: z3 unsat: PROVED",
+    "witness nonneg: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1; objective 3, and no witness below it",
+    "replay in the reference interpreter: success; Inv broken: nonneg(from)",
+    "claim part \"never overdraws\": REFUTED by check nonneg",
+    "claim part \"conserves\": PROVED by check conserve",
+    "claim part \"200 tests green\": evidence offered, not a checker; class G11",
+    "corrected: requires balance(from) >= amount + fee",
+    "check nonneg (corrected): z3 unsat, premises sat: PROVED",
+    "check conserve (corrected): z3 unsat, premises sat: PROVED",
+    "replay of the witness on the corrected command: error:guardFailed",
+    "postgres proposal on the witness: success (interpreter success); R(S, D) holds; Inv broken: nonneg(from)",
+    "postgres corrected on the witness: error:guardFailed (interpreter error:guardFailed); R(S, D) holds",
+    "postgres corpus: 13 of 13 fixtures in their expected outcome class; R(S, D) holds after 13 of 13",
+    "postgres corpus edge-overflow: postgres sqlstate:22003, interpreter success, expected sqlstate:22003",
+    "postgres retries of 22003: 0; transaction_isolation read back: serializable"
+  ],
+  "statements": [
+    {
+      "name": "proposal",
+      "sha256": "2beac7d4baa32f7e7da9cdb269863dd6eda3b30ab72129dd9d3364679b8152e4"
+    },
+    {
+      "name": "proposal.nonneg",
+      "sha256": "f7d035840042d4f2c96b561e3d213e0f220a58643db773cfb9c5cb615531cb6d"
+    },
+    {
+      "name": "proposal.conserve",
+      "sha256": "9820f3065cd7df23eab814383bb57c12d0e73f287fc8db1c520fb9114a1e1546"
+    },
+    {
+      "name": "corrected.nonneg",
+      "sha256": "263ffc7827ecfabd2443ee686c46ff637ea32ed134fe2850016e6d70716c8a66"
+    },
+    {
+      "name": "corrected.conserve",
+      "sha256": "44d3283e68b5da8657dc2fde8fbec8c129ee18c37917fa47656e101770babca2"
+    }
+  ],
+  "specimen": {
+    "id": "SP-10.1",
+    "violates": [
+      "nonneg(from)"
+    ],
+    "witness": {
+      "balances": {
+        "from": 1,
+        "to": 0,
+        "sink": 0
+      },
+      "args": {
+        "amount": 1,
+        "fee": 1
+      },
+      "ids": {
+        "from": 2,
+        "to": 3,
+        "sink": 1
+      },
+      "same": []
+    },
+    "state": {
+      "balances": {
+        "from": 1,
+        "mint": -1,
+        "sink": 0,
+        "to": 0
+      }
+    },
+    "args": {
+      "from": "from",
+      "to": "to",
+      "amount": 1,
+      "fee": 1
+    },
+    "because": "the guard covers the amount and leaves the fee leg out",
+    "minimal": "yes: objective 3 under the objective of obligations.objective_terms",
+    "curedBy": "a guard that covers every debit of the sender"
+  },
+  "cl101": {
+    "status": "composite: [R] for the proposal, [P] for the corrected command (Z3 only; cvc5 not run), [T] on the fixture corpus",
+    "ifWeakened": "drop the fee from the corrected guard: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1 overdraws (nonneg(from))"
+  },
+  "environment": {
+    "postgres": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "z3": "5.3.1",
+    "z3Runs": 19
+  }
+}

@@ -1,0 +1,11 @@
+# S9.L3 and S9.L6: move (bal a1) a1 a2 compiled so that the amount is evaluated again after the debit
+source move bal a1 a1 a2
+output
+  read     r0 a1
+  read     r1 a1
+  sub      r1 r1 r0
+  write    a1 r1
+  read     r0 a1            # the amount, read again: the debited balance
+  read     r1 a2
+  add      r1 r1 r0
+  write    a2 r1

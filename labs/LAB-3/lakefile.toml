@@ -1,0 +1,42 @@
+name = "lab3"
+version = "0.1.0"
+defaultTargets = ["MiniPlinth", "MiniPlinthRef", "Lab3"]
+
+[leanOptions]
+autoImplicit = false
+# Compile matches without the sparse-case encoding, which makes a match with a wildcard depend on propext:
+# with it off, goldens over a structural evaluator use no axioms.
+backward.match.sparseCases = false
+
+[[lean_lib]]
+name = "MiniPlinth"
+
+[[lean_lib]]
+name = "MiniPlinthRef"
+srcDir = "reference"
+
+[[lean_lib]]
+name = "Lab3"
+
+# The challenge pack: the pinned statements and the signature file. Read-only; the checks build it.
+[[lean_lib]]
+name = "Lab3Challenge"
+srcDir = "challenge"
+
+# LAB-3.6: your semantics with `force move`, kept beside the fixed one.
+[[lean_lib]]
+name = "Lab3Broken"
+srcDir = "broken"
+
+# The goldens the checks write (Lab3Gen/), and `lake exe export-ir` (LAB-3.7).
+[[lean_lib]]
+name = "Lab3Gen"
+
+[[lean_exe]]
+name = "export-ir"
+root = "ExportIR"
+
+# LAB-3.12 and LAB-3.13 (stretch): progress and preservation for the template's small-step relation.
+[[lean_lib]]
+name = "Lab3Stretch"
+srcDir = "stretch"

@@ -1,0 +1,82 @@
+{
+  "label": "rmw-rc",
+  "commit_order": [
+    "s1",
+    "s2"
+  ],
+  "permutation": [
+    "d0",
+    "s1b",
+    "s1r",
+    "s2b",
+    "s2r",
+    "s1w",
+    "s2w",
+    "s1c",
+    "s2c",
+    "chk"
+  ],
+  "signature": "s1=commit s2=commit",
+  "levels": {
+    "s1": "read committed",
+    "s2": "read committed"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        20
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "s1",
+      "session": "s1",
+      "command": {
+        "op": "rmw-debit",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        100,
+        20
+      ]
+    },
+    {
+      "id": "s2",
+      "session": "s2",
+      "command": {
+        "op": "rmw-debit",
+        "account": 1,
+        "amount": 80
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        20,
+        20
+      ]
+    }
+  ]
+}

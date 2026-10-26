@@ -1,0 +1,103 @@
+{
+  "id": "RUN-lean-leaky-compile",
+  "title": "SP-9.6: the document view compiled as a full scan and as an index scan returns equal bodies in two worlds that differ only in a private document of Birch's; the full scan's step count differs between them and the index scan's does not",
+  "task": "W5-T22",
+  "origin": "recorded",
+  "records": "S9.L9 cell 1 (SP-9.6; ER-10): the five theorems closed by decide, the two #eval lines and the axioms of the step theorems",
+  "engine": "lean",
+  "version": "4.35.0",
+  "version_string": "Lean (version 4.35.0, x86_64-unknown-linux-gnu, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+  "binary": "bin/lean of the Lean 4.35.0 toolchain in the statespace-bench image (/opt/elan/toolchains/leanprover--lean4---v4.35.0/bin/lean, which elan resolves lean to)",
+  "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:07:24.805Z",
+  "started_at": "2026-10-26T21:07:24.403Z",
+  "duration_s": 0.401,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-lab9-lean-leaky-compile",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w:ro",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "lean",
+    "LeakyCompile.lean"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-lean-leaky-compile/inputs/LeakyCompile.lean",
+      "sha256": "f87f524c4a3c308e7207c8ec5ef91df8d0610e090101069764315e8e78dbc135",
+      "bytes": 2109,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "(([\"roadmap\", \"budget\"], 3), [\"roadmap\", \"budget\"], 4)",
+    "(([\"roadmap\", \"budget\"], 2), [\"roadmap\", \"budget\"], 2)",
+    "'full_scan_steps_differ' does not depend on any axioms",
+    "'index_scan_steps_equal' does not depend on any axioms"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-lean-leaky-compile/leaky.log",
+      "sha256": "86738f35fd22651a4074d5aa7c6fcebaecaf7fe9ccd3ebf9a7adb51105d0891a",
+      "bytes": 220,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "full_scan": {
+      "W0": {
+        "body": "\"roadmap\", \"budget\"",
+        "steps": 3
+      },
+      "W1": {
+        "body": "\"roadmap\", \"budget\"",
+        "steps": 4
+      }
+    },
+    "index_scan": {
+      "W0": {
+        "body": "\"roadmap\", \"budget\"",
+        "steps": 2
+      },
+      "W1": {
+        "body": "\"roadmap\", \"budget\"",
+        "steps": 2
+      }
+    },
+    "axioms": [
+      "'full_scan_steps_differ' does not depend on any axioms",
+      "'index_scan_steps_equal' does not depend on any axioms"
+    ]
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "none"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a scratch copy of the run's inputs/ folder.",
+    "Exit code 0 with no error line: the five theorems (bodies equal across worlds for each plan, the plans agree on the body, the full scan's steps differ, the index scan's are equal) elaborated, each closed by decide.",
+    "A step is one row read. Each #eval line prints (plan in W0, plan in W1) as ((body, steps), body, steps)."
+  ]
+}

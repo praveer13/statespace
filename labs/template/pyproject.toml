@@ -1,0 +1,30 @@
+# statespace-lab: your lab repository (labs/README.md section 5). `uv run statespace <command>` runs the
+# course's command line in this project's environment; `uv run python -I <script>` runs your Z3Py scripts
+# with the pinned solver (labs/TOOLS.md section 2.1).
+#
+# The command line ships in .statespace/cli/ with every lab zip, the course's copy of bench/statespace with
+# the check modules of the labs you have unpacked. It is the template's: change it by unpacking a newer zip,
+# not by editing it. The pins are the course's (bench/pyproject.toml): change one through the template.
+
+[project]
+name = "statespace-lab"
+version = "0.1.0"
+description = "A statespace learner's lab repository: your code, proofs, specs, claims and receipts."
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema==4.26.0",
+  "psycopg[binary]==3.3.6",
+  "pyyaml==6.0.3",
+  "z3-solver==5.3.1.0",
+]
+
+[project.scripts]
+statespace = "statespace.__main__:main"
+
+[build-system]
+requires = ["uv_build==0.10.2"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ".statespace/cli"
+module-name = "statespace"

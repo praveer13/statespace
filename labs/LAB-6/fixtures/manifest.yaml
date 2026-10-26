@@ -1,0 +1,83 @@
+# LAB-6.7's fixture manifest (curriculum/S06-correspondence.md section 3). A pinned statement: its hash is on the
+# LAB-6.7 receipt. Each fixture is an abstract history (histories/<id>.json) read from a statespace isorun
+# history of specs/<id>.spec on PostgreSQL 18.6, except the toy G2-item history, which is written by hand.
+# expect is the reference classification under each semantics (z: the pinned unbounded integers;
+# except-overflow: remedy 2), copied from RUN-serializability-fixtures; order is the reference's serial order
+# for an accept. rMutant marks the two fixtures that test R itself.
+schema: statespace/lab6-fixtures@1
+run: RUN-serializability-fixtures
+bound: 8
+fixtures:
+  - id: cond-rc
+    title: "conditional UPDATE at READ COMMITTED"
+    history: histories/cond-rc.json
+    spec: specs/cond-rc.spec
+    expect: {z: accept}
+    order: ["s1", "s2"]
+  - id: cond-ser-retry
+    title: "conditional UPDATE at SERIALIZABLE with a retry"
+    history: histories/cond-ser-retry.json
+    spec: specs/cond-ser-retry.spec
+    expect: {z: accept}
+    order: ["a", "b#2"]
+  - id: g2-toy
+    title: "the toy G2-item history"
+    history: histories/g2-toy.json
+    spec: null
+    expect: {z: reject}
+  - id: holds-rr
+    title: "holds at REPEATABLE READ"
+    history: histories/holds-rr.json
+    spec: specs/holds-rr.spec
+    expect: {z: reject}
+  - id: holds-ser-retry
+    title: "holds at SERIALIZABLE with a retry"
+    history: histories/holds-ser-retry.json
+    spec: specs/holds-ser-retry.spec
+    expect: {z: accept}
+    order: ["a", "b#2"]
+  - id: mixed-levels
+    title: "mixed isolation levels"
+    history: histories/mixed-levels.json
+    spec: specs/mixed-levels.spec
+    expect: {z: reject}
+  - id: opposite-retry
+    title: "opposite-order moves with a deadlock and a retry"
+    history: histories/opposite-retry.json
+    spec: specs/opposite-retry.spec
+    expect: {z: accept}
+    order: ["b", "a#2"]
+  - id: overflow-22003
+    title: "an overflow history, accepted only under the Except Overflow remedy"
+    history: histories/overflow-22003.json
+    spec: specs/overflow-22003.spec
+    expect: {z: reject, except-overflow: accept}
+    order: ["s1"]
+  - id: r-mutant-null
+    title: "R-mutant, a NULL balance outside wf"
+    history: histories/r-mutant-null.json
+    spec: specs/r-mutant-null.spec
+    expect: {z: reject}
+    rMutant: true
+  - id: r-mutant-wrong-account
+    title: "R-mutant, equal totals with money on the wrong account"
+    history: histories/r-mutant-wrong-account.json
+    spec: specs/r-mutant-wrong-account.spec
+    expect: {z: reject}
+    rMutant: true
+  - id: read-skew-rc
+    title: "read skew at READ COMMITTED"
+    history: histories/read-skew-rc.json
+    spec: specs/read-skew-rc.spec
+    expect: {z: reject}
+  - id: report-before-transfer-ser
+    title: "report before transfer at SERIALIZABLE, where the serial order differs from the commit order"
+    history: histories/report-before-transfer-ser.json
+    spec: specs/report-before-transfer-ser.spec
+    expect: {z: accept}
+    order: ["t1", "t2"]
+  - id: rmw-rc
+    title: "read-modify-write at READ COMMITTED"
+    history: histories/rmw-rc.json
+    spec: specs/rmw-rc.spec
+    expect: {z: reject}

@@ -1,0 +1,70 @@
+{
+  "label": "r-mutant-wrong-account",
+  "commit_order": [
+    "s1"
+  ],
+  "permutation": [
+    "d0",
+    "s1b",
+    "s1t",
+    "s1c",
+    "chk"
+  ],
+  "signature": "s1=commit",
+  "levels": {
+    "s1": "read committed"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ],
+      [
+        3,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        70
+      ],
+      [
+        2,
+        100
+      ],
+      [
+        3,
+        130
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "s1",
+      "session": "s1",
+      "command": {
+        "op": "transfer",
+        "from": 1,
+        "to": 2,
+        "amount": 30
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        70,
+        100,
+        130
+      ]
+    }
+  ]
+}

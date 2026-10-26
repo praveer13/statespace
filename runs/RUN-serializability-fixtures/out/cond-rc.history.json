@@ -1,0 +1,201 @@
+{
+  "schema": "statespace/history@1",
+  "spec": {
+    "path": "labs/LAB-6/fixtures/specs/cond-rc.spec",
+    "sha256": "fc19718b56ba38570d2228862dee218033775d53e4586e24d6fa5585712f9a41",
+    "sessions": [
+      "s1",
+      "s2",
+      "obs"
+    ],
+    "permutations": 1,
+    "enumerated": false
+  },
+  "server": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "isorun": {
+    "name": "statespace isorun",
+    "version": "0.1.0"
+  },
+  "permutations": [
+    {
+      "index": 1,
+      "permutation": [
+        "d0",
+        "s1b",
+        "s2b",
+        "s1w",
+        "s2w",
+        "s1c",
+        "s2c",
+        "chk"
+      ],
+      "levels": {
+        "s1": "read committed",
+        "s2": "read committed"
+      },
+      "events": [
+        {
+          "step": "d0",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        },
+        {
+          "step": "s1b",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s2b",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s1w",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "20"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "s2w",
+          "session": "s2",
+          "status": "waiting"
+        },
+        {
+          "step": "s1c",
+          "session": "s1",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "s2w",
+          "session": "s2",
+          "status": "completed",
+          "results": [
+            {
+              "command": "UPDATE 0",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [],
+              "rowcount": 0
+            }
+          ]
+        },
+        {
+          "step": "s2c",
+          "session": "s2",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "chk",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "20"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        }
+      ],
+      "waits": [
+        "s2w"
+      ],
+      "errors": [],
+      "outcome": {
+        "s1": [
+          "commit"
+        ],
+        "s2": [
+          "commit"
+        ],
+        "obs": [
+          "commit",
+          "commit"
+        ]
+      },
+      "signature": "s1=commit s2=commit"
+    }
+  ]
+}

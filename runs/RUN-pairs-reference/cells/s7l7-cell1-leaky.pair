@@ -1,0 +1,7 @@
+# S7.L7 cell 1: the deliberate bug: the shared page also returns internal_notes, which the record does not release
+world: W0
+execution 1: nothing changed
+execution 2: contract.internal_notes = "different notes"
+request: Open leaky (dana, contract)
+relation: tenant acme, release title body
+observer: response

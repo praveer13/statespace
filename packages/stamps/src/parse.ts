@@ -63,14 +63,14 @@ export function parseTlcConstants(cfg: string): Constants {
 
 export interface TlcReport {
   readonly result: 'no-error' | 'deadlock' | 'violated' | 'unfinished'
-  readonly distinctStates?: number
-  readonly statesGenerated?: number
-  readonly leftOnQueue?: number
-  readonly depth?: number
+  readonly distinctStates?: number | undefined
+  readonly statesGenerated?: number | undefined
+  readonly leftOnQueue?: number | undefined
+  readonly depth?: number | undefined
   /** The violated property, as TLC names it. */
-  readonly property?: string
+  readonly property?: string | undefined
   /** The number of states in the counterexample trace, counted from TLC's `State k:` lines. */
-  readonly traceStates?: number
+  readonly traceStates?: number | undefined
   /** "Model checking completed" and nothing left on the queue. */
   readonly complete: boolean
   /** TLC's `Error:` lines outside its verdict vocabulary (a parse failure, an exception): TLC reached no verdict. */
@@ -128,7 +128,7 @@ export function rawFromTlc(report: TlcReport, ctx: TlcContext): RawOutput {
     case 'no-error':
       if (!report.complete) {
         if (ctx.bound === undefined) throw new ParseError('TLC finished with states left on the queue but no bound was stated')
-        return { kind: 'model-check-bounded', engine: ctx.engine, bound: ctx.bound, constants: ctx.constants, distinctStates: distinct }
+        return { kind: 'model-check-bounded', engine: ctx.engine, bound: ctx.bound, constants: ctx.constants, ...(distinct !== undefined ? { distinctStates: distinct } : {}) }
       }
       if (distinct === undefined) throw new ParseError('TLC reported no error but printed no distinct-state count')
       return { kind: 'tlc-complete', engine: ctx.engine, constants: ctx.constants, distinctStates: distinct }
@@ -294,10 +294,10 @@ export function rawFromSolver(line: SolverLine, ctx: SolverContext): RawOutput {
 export const STANDARD_AXIOMS: ReadonlySet<string> = new Set(['propext', 'Quot.sound', 'Classical.choice'])
 
 export interface LeanReport {
-  readonly sandboxLine?: string
-  readonly mismatch?: { readonly kind: 'statement' | 'constant'; readonly line: string }
+  readonly sandboxLine?: string | undefined
+  readonly mismatch?: { readonly kind: 'statement' | 'constant'; readonly line: string } | undefined
   /** The first line of the closed list of rejections: a kernel rejects the solution, leanchecker found a problem, an axiom is not permitted. */
-  readonly rejectedLine?: string
+  readonly rejectedLine?: string | undefined
   /** Error lines that are neither a mismatch nor a rejection: with one, there is no verdict (spine section 9.6). */
   readonly errorLines: readonly string[]
   /** Exit codes a harness printed beside the lines (`== good comparator rc=0 :: …`), in order. */

@@ -1,6 +1,6 @@
 # The Bench CLI core: check, receipt verify, hash, run, export
 
-**Status:** built by W1-T29. **Date:** 2026-10-25 (machine clock).
+**Status:** built by W1-T29; the lab frame (discovery, the listing, the Z3Py capture, the lab package) added 2026-10-26. **Date:** 2026-10-25 (machine clock).
 
 This directory is the core of the `statespace` command line (spine section 9.6; ARCHITECTURE.md sections 10 and 11): the runner behind `statespace check`, the lane protocol that engines plug into, `statespace run` and `statespace export`. Beside it, `statespace/cli.py` holds the command table, `statespace/receipt.py` writes and verifies receipts, `statespace/hash.py` prints statement hashes, and `statespace/lanes/z3.py` is the first lane. LAB-1's checks are W1-T30's (`statespace/labs/lab1.py`); the Lean (W2-T32, W2-T33), TLC (W3-T05), cvc5 (W3-T22), PostgreSQL (W4-T16) and trace (W5-T14) lanes are added beside the Z3 lane.
 
@@ -8,9 +8,11 @@ This directory is the core of the `statespace` command line (spine section 9.6; 
 
 | Path | What |
 |---|---|
-| `../cli.py` | the command table: `doctor`, `check`, `receipt`, `hash`, `run`, `export`; each command's module loads only when it is named |
+| `../cli.py` | the command table: `doctor`, `check`, `receipt`, `hash`, `run`, `export`, and the course harnesses `isorun` (LAB-6), `trace` and `sim` (LAB-8), `demo` and `proposal` (LAB-10); each command's module loads only when it is named |
 | `__init__.py`, `model.py`, `context.py` | what a lab module imports: `Lab`, `Stage`, `CheckSpec`, `CheckResult`, `CheckContext` |
-| `labs.py` | the short names (`lab1`, `lab1.3`) and the lookup of `statespace/labs/lab<n>.py` |
+| `labs.py` | the short names (`lab1`, `lab1.3`), the lookup of `statespace/labs/lab<n>.py`, and discovery by directory: `available()` (the lab modules in `statespace/labs/`) and `repo_labs(root)` (the folders `labs/LAB-<n>/` of a lab repository) |
+| `z3py.py` | `ctx.z3py(script)`: runs a learner's Z3Py script once and captures each question it asks as SMT-LIB, for the Z3 lane to answer |
+| `../labs/` | the lab modules, `lab<n>.py`, one per lab; `__init__.py` lists them by directory. Each lab's module is its task's (LAB-1's is W1-T30's) |
 | `runner.py` | `statespace check`: runs a stage's checks and writes its receipt |
 | `lanes.py` | the lane protocol and its discovery; `ToolUnavailable`, `InputRefused` |
 | `proc.py` | one engine process: merged output, a wall-clock backstop that kills the process group, timing |
@@ -29,11 +31,17 @@ LAB-90 and CL-90.x are test identifiers of `tests/support.py`, not course IDs.
 
 | Command | Does | Exit status |
 |---|---|---|
+| `statespace check` | with no target: lists the labs of the repository, found by their folders `labs/LAB-<n>/`, with each stage's short name, id and title and each check's id and label | 0 |
 | `statespace check <lab>[.<stage>]` | runs every check of the stage, or of every stage of the lab, and writes one receipt per stage to `receipts/LAB-<n>.<k>/<UTC time>.json`, with each run's input and output in the folder of the same name; `--assisted none\|explain\|code` and `--agent yes\|no` declare provenance (OD-8); `--json` for harnesses | 0 every check passed, 1 a check failed, 2 usage, 3 a stage could not run (no receipt) |
 | `statespace receipt verify <file>...` | section 6; `--root` names the lab repository when the file is not under `receipts/LAB-<n>.<k>/`; `--json` | 0 verified, 1 rejected, 2 usage or unreadable |
 | `statespace hash <file>...` | the comparator-style statement hash, `sha256(trimRight(text) + "\n")`, one `<hash>  <file>` line per file (`-` reads standard input); `--json` | 0 hashed, 1 a file could not be (missing, not UTF-8) |
 | `statespace run <RUN-id>...` | section 7; `--all [--engine E]`, `--config ID`, `--engine-version V`, `--save DIR`, `--json` | 0 reproduced, 1 differs, 2 usage, 3 not re-executable |
 | `statespace export` | the lab bundle: `claims/*.yaml` as text, every statement (`claims/*.smt2`, `*.tla`, `*.sql`, `labs/LAB-*/challenge/*.lean`, and each statement a receipt pins) as text with its statement hash, `specimens/**` as text, every receipt, and the commit; `--out FILE` or `-` | 0 written, 2 usage, 3 invalid against labbundle@1 |
+| `statespace isorun <spec>` | runs an isolationtester-format spec on PostgreSQL, advancing a step only when it finishes or the server reports it waiting on a lock, and writes history@1 (`../isorun.py`, LAB-6) | see `--help` |
+| `statespace trace validate <spec> <traces>` | checks NDJSON traces as behaviors of a TLA+ spec with TLC, after the trace@1 lint (`../trace.py`, LAB-8) | see `--help` |
+| `statespace sim <seed> [--reference]` | runs the outbox simulator under a seeded fault schedule; `--reference` runs the course's machine (`../sim.py`, LAB-8) | see `--help` |
+| `statespace demo`, `statespace demo record` | the reference pipeline on the provided agent proposal (LAB-10.1), and the demonstration record (LAB-10.7) (`../demo/`) | see `--help` |
+| `statespace proposal draw` | draws an unseen agent proposal for LAB-10.4 (`../demo/proposal_cli.py`) | see `--help` |
 
 The lab bundle `statespace export` writes, which W1-T14's labbundle@1 is to describe (ARCHITECTURE.md section 8.3):
 
@@ -82,6 +90,21 @@ The context gives a check:
 - `ctx.claim(template, id=...)`, `ctx.tcb(component, status)`, `ctx.ext[...]`, `ctx.note(text)`.
 
 `CheckResult(passed, message, suspect, details)`: `suspect` names what a failing check suspects, one of `spec`, `implementation`, `tool` and `proof`, printed as "suspects: your spec" (labs/README.md section 6).
+
+- `ctx.z3py(path)` runs a Z3Py script (`python -I -m statespace.check.z3py`, under the Python that runs statespace, with the script's folder first on its path) and returns a `Capture`: each `Solver.check()` call as a `Query` (its SMT-LIB from `Solver.to_smt2()`, with `(check-sat-assuming ...)` for assumptions, a step name `<script>-q<k>`, and the answer Z3Py gave inside the script, which is data and never graded), the version the script's z3 reports, the printed lines, and the last line of a traceback when it raised. Put each query through `ctx.z3()`: the receipt then records every question the script asked, with its hash, its `rlimit` and Z3's own verdict lines.
+
+What `statespace check` prints for a stage, one block per check:
+
+```
+LAB-1.1 · <stage title>
+  FAIL  LAB-1.c1  <check label>
+                  <message>
+                  suspects: your spec
+                  <details, then the notes the check printed>
+  receipt  receipts/LAB-1.1/<UTC time>.json (reported from your machine; <n> runs; <engine version>)
+```
+
+A check id is `LAB-<n>.c<k>`, by convention `<k>` the stage it closes (`model.py` refuses another form); a stage is `LAB-<n>.<k>`; a claim template `CL-<n>.<m>`. A check that is not built yet raises `ToolUnavailable`, so its stage writes no receipt and says why.
 
 ## 4. Lanes, and the Z3 lane
 

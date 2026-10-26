@@ -1,0 +1,231 @@
+{
+  "id": "RUN-core-demo",
+  "title": "statespace demo: the reference pipeline on TransferWithFee refutes non-negativity with the minimal witness balance(from) = 1, amount = 1, fee = 1, proves the corrected guard, and agrees with PostgreSQL 18.6 on the fixture corpus; statespace check lab10.1 reproduces the skeleton",
+  "task": "W5-T07",
+  "origin": "recorded",
+  "records": "LAB-10.c1's report skeleton (section list, verdict lines, statement hashes), SP-10.1's witness, CL-10.1's status and its \"if weakened\" witness, and the LAB-10.1 receipt that S10.L7's INS-receipt cell shows",
+  "engine": "statespace",
+  "version": "0.1.0",
+  "version_string": "statespace 0.1.0; z3 5.3.1; PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "the statespace command line the LAB-10 zip ships (.statespace/cli/statespace/), run with uv in the bench image, psycopg added with --with",
+  "binary_sha256": "71f89be64464173bd1c2af428d192a05adf573b1708fbcd30a456e11946fd5b4",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:03:47.159Z",
+  "started_at": "2026-10-26T21:03:43.619Z",
+  "duration_s": 3.178,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "<network>",
+      "-v",
+      "<sandbox>:/w",
+      "-w",
+      "/w",
+      "-e",
+      "STATESPACE_PG_DSN=postgresql://postgres@<postgres>:5432/postgres",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "uv",
+      "run",
+      "--quiet",
+      "--with",
+      "psycopg[binary]==3.3.6",
+      "statespace",
+      "demo"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "<network>",
+      "-v",
+      "<sandbox>:/w",
+      "-w",
+      "/w",
+      "-e",
+      "STATESPACE_PG_DSN=postgresql://postgres@<postgres>:5432/postgres",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "uv",
+      "run",
+      "--quiet",
+      "--with",
+      "psycopg[binary]==3.3.6",
+      "statespace",
+      "check",
+      "lab10.1",
+      "--assisted",
+      "none",
+      "--agent",
+      "no"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--memory=6g",
+      "--network",
+      "<network>",
+      "-v",
+      "<sandbox>:/w",
+      "-w",
+      "/w",
+      "-e",
+      "STATESPACE_PG_DSN=postgresql://postgres@<postgres>:5432/postgres",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "uv",
+      "run",
+      "--quiet",
+      "statespace",
+      "receipt",
+      "verify",
+      "receipts/LAB-10.1/20261026T210345Z.json"
+    ]
+  ],
+  "inputs": [
+    {
+      "name": "LAB-10.zip",
+      "sha256": "71f89be64464173bd1c2af428d192a05adf573b1708fbcd30a456e11946fd5b4",
+      "bytes": 266696,
+      "role": "the lab zip, built by scripts/labs/build-zips.mjs"
+    },
+    {
+      "path": "labs/LAB-10/",
+      "sha256": "61e75e206d0f5a443e6cf54554a3c67cf0af80d1a1fc68dfb62ec5aac8effb8b",
+      "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point), each line ended by a newline",
+      "files": 11,
+      "role": "the lab folder"
+    },
+    {
+      "path": "bench/statespace/demo/",
+      "sha256": "c643ae1c030fe05c8b1f6cce7a35c02da0f4d91bf74d89ddd7944ccf7cd9a7ab",
+      "sha256_method": "the SHA-256 of sha256sum's lines, '<sha256>  <path under the directory>', one per file under the directory except those under __pycache__, sorted by the path (by code point), each line ended by a newline",
+      "files": 14,
+      "role": "the reference pipeline (statespace demo)"
+    },
+    {
+      "path": "bench/statespace/labs/lab10.py",
+      "sha256": "61ed90823f565a8845eafa66073a05f02be27de206a000ecf64bd6e0c5fe0a80",
+      "bytes": 53346,
+      "role": "LAB-10's checks"
+    },
+    {
+      "path": "bench/statespace/lanes/z3.py",
+      "sha256": "7ca1bc2b9b9eee3d39134ac62b65de964e701189b48e86faaa8d679100061b02",
+      "bytes": 76032,
+      "role": "the Z3 lane"
+    },
+    {
+      "name": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "sha256": "74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "role": "the PostgreSQL image, by the digest labs/template/.devcontainer/docker-compose.yml pins"
+    },
+    {
+      "path": "scripts/spikes/W5-T07/record-core-demo.py",
+      "sha256": "cf42ef8ed8439989bf8c2295682dbccf6997729a9a78fd93747d16d5764e5cd7",
+      "bytes": 13021,
+      "role": "harness"
+    }
+  ],
+  "budget": {
+    "rlimit": 5000000,
+    "memory": "6g"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "parse: ok, command TransferWithFee(from, to, amount, fee)",
+    "typecheck: ok; from: account, to: account, amount: amount, fee: amount; R-cover: 2 statements, so each debit is an obligation for the checker (S4), not a typing rule",
+    "check premises: z3 sat",
+    "check nonneg: z3 sat: REFUTED",
+    "check conserve: z3 unsat: PROVED",
+    "witness nonneg: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1; objective 3, and no witness below it",
+    "replay in the reference interpreter: success; Inv broken: nonneg(from)",
+    "claim part \"never overdraws\": REFUTED by check nonneg",
+    "claim part \"conserves\": PROVED by check conserve",
+    "claim part \"200 tests green\": evidence offered, not a checker; class G11",
+    "corrected: requires balance(from) >= amount + fee",
+    "check nonneg (corrected): z3 unsat, premises sat: PROVED",
+    "check conserve (corrected): z3 unsat, premises sat: PROVED",
+    "replay of the witness on the corrected command: error:guardFailed",
+    "postgres proposal on the witness: success (interpreter success); R(S, D) holds; Inv broken: nonneg(from)",
+    "postgres corrected on the witness: error:guardFailed (interpreter error:guardFailed); R(S, D) holds",
+    "postgres corpus: 13 of 13 fixtures in their expected outcome class; R(S, D) holds after 13 of 13",
+    "postgres corpus edge-overflow: postgres sqlstate:22003, interpreter success, expected sqlstate:22003",
+    "postgres retries of 22003: 0; transaction_isolation read back: serializable",
+    "LAB-10.1 · Run the reference pipeline on the provided agent proposal",
+    "  pass  LAB-10.c1  The skeleton reproduces the recorded one",
+    "                   the skeleton reproduces RUN-core-demo: 22 sections, 19 verdict lines and 5 statement hashes equal",
+    "                     check nonneg: z3 sat: REFUTED",
+    "                     witness nonneg: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1; objective 3, and no witness below it",
+    "                     postgres proposal on the witness: success (interpreter success); R(S, D) holds; Inv broken: nonneg(from)",
+    "  receipt  receipts/LAB-10.1/20261026T210345Z.json (reported from your machine; 34 runs; postgres 18.6 (Debian 18.6-1.pgdg13+2), z3 5.3.1)"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-core-demo/skeleton.json",
+      "sha256": "416546e239284abfab455eb5d1555dea310a530652b1c9beaee0d44ad8ea7ed2",
+      "bytes": 4470,
+      "kind": "report skeleton (LAB-10.c1's recording)"
+    },
+    {
+      "path": "runs/RUN-core-demo/skeleton.md",
+      "sha256": "0860a21c11e3cbd48349f25866fa257581f93f7257d5cd4cee4acfb99784f7c8",
+      "bytes": 3573,
+      "kind": "report skeleton, Markdown"
+    },
+    {
+      "path": "runs/RUN-core-demo/demo.log",
+      "sha256": "a2b67ccba349543acd5e3789cb25a1e64f5b0e16d3fe720356d6987defbd6e53",
+      "bytes": 1675,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-core-demo/check-lab10.1.log",
+      "sha256": "a4471a6ac627d1419c4b78a89864566d5431d2f6da9761342ec2ff445e64c610",
+      "bytes": 713,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-core-demo/receipt-verify.log",
+      "sha256": "e429a94973abde3e0ae44c9ef5c3b25e5c33c75b8f5a596e79ab7e958fb80566",
+      "bytes": 534,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-core-demo/receipt-LAB-10.1.json",
+      "sha256": "1877bffebd8c55971d122ac8b930d4c0f396715c20791e8427b3f5feb1364e59",
+      "bytes": 20517,
+      "kind": "receipt (the S10.L7 INS-receipt cell)"
+    }
+  ],
+  "values": {
+    "proposal_sha256": "2beac7d4baa32f7e7da9cdb269863dd6eda3b30ab72129dd9d3364679b8152e4",
+    "sections": 22,
+    "verdict_lines": 19,
+    "statements": 5,
+    "sp_10_1_violates": "nonneg(from)",
+    "sp_10_1_witness": "balance(from) = 1, balance(to) = 0, amount = 1, fee = 1",
+    "sp_10_1_objective": 3,
+    "cl_10_1_status": "composite: [R] for the proposal, [P] for the corrected command (Z3 only; cvc5 not run), [T] on the fixture corpus",
+    "cl_10_1_if_weakened": "drop the fee from the corrected guard: balance(from) = 1, balance(to) = 0, balance(sink) = 0, amount = 1, fee = 1 overdraws (nonneg(from))",
+    "corrected_guard": "corrected: requires balance(from) >= amount + fee",
+    "z3_runs_demo": 19,
+    "check_exit_code": 0,
+    "receipt_verify_exit_code": 0,
+    "postgres_version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "cpu_architecture": "x86_64"
+  },
+  "notes": [
+    "The PostgreSQL runs in the receipt are shown as reported by `statespace receipt verify`: statespace has no PostgreSQL lane yet (W4-T16).",
+    "Model values are not canonical; the witness is named because it is the unique minimal one under the objective of statespace/demo/obligations.py (the bisection ends with an unsat query below 3).",
+    "The demo's exit code is 0 when the skeleton equals labs/LAB-10/challenge/RUN-core-demo.skeleton.json, which this run wrote or confirmed."
+  ]
+}

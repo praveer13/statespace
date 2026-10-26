@@ -1,0 +1,1213 @@
+{
+  "id": "RUN-tlc-trace-validation",
+  "title": "Trace validation (S8.L6, LAB-8.1, LAB-8.6): the reference simulator's seed-1 trace is accepted with its stuttering line; the ack-before-store mutant is rejected at its first Ack; 8 seeds under faults are accepted against the full outbox spec",
+  "task": "W5-T14",
+  "origin": "recorded",
+  "records": "seed 1; the stuttering line; the mutant's first line; n seeds",
+  "engine": "tlc",
+  "version": "2026.10.20.183001",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools.jar 1.8.0, the pinned pre-release jar at /opt/tla2tools/tla2tools-1.8.0.jar in the bench image, run by statespace trace validate (bench/statespace/trace.py)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:05:23.927Z",
+  "started_at": "2026-10-26T21:05:14.140Z",
+  "duration_s": 0.534,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-run-tlc-trace-validation-seed-1-text",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-v",
+    "<repo>:/repo:ro",
+    "-w",
+    "/w",
+    "-e",
+    "PYTHONPATH=/repo/bench",
+    "-e",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-m",
+    "statespace",
+    "trace",
+    "validate",
+    "labs/LAB-8/reference/OutboxRef.tla",
+    "labs/LAB-8/traces/seed-1.ndjson"
+  ],
+  "inputs": [
+    {
+      "path": "labs/LAB-8/reference/OutboxRef.tla",
+      "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+      "bytes": 2653,
+      "role": "spec: LAB-8.1's reference spec"
+    },
+    {
+      "path": "labs/LAB-8/reference/OutboxRefTrace.tla",
+      "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+      "bytes": 1646,
+      "role": "trace module of the reference spec"
+    },
+    {
+      "path": "labs/LAB-8/challenge/OutboxIface.tla",
+      "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+      "bytes": 5522,
+      "role": "the pinned interface"
+    },
+    {
+      "path": "labs/LAB-8/challenge/TraceValidation.tla",
+      "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+      "bytes": 4326,
+      "role": "the pinned trace-validation module"
+    },
+    {
+      "path": "labs/LAB-8/challenge/TraceConstants.cfg",
+      "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+      "bytes": 484,
+      "role": "the pinned trace constants"
+    },
+    {
+      "path": "bench/statespace/trace.py",
+      "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+      "bytes": 29222,
+      "role": "statespace trace validate"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/seed-1.ndjson",
+      "sha256": "5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a",
+      "role": "trace"
+    }
+  ],
+  "budget": {
+    "workers": 1,
+    "container_memory": "6g",
+    "network": "none",
+    "timeout_s": 300
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "trace labs/LAB-8/traces/seed-1.ndjson: accepted (7 of 7 lines)",
+    "1 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-trace-validation/mutant-seed-1.log",
+      "sha256": "94c9936b2f6e4dc939503ddd163ed33ac2bce26b3549048e33c050293b1ddd64",
+      "bytes": 212,
+      "kind": "log",
+      "compare": "informational: TLC's banner carries a random seed and timestamps"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/n-seeds.log",
+      "sha256": "358efe12bbc910fc54dc2b11f2c7aa28b9b980fb0c21ff8d4b54ff2a34d5fc67",
+      "bytes": 606,
+      "kind": "log",
+      "compare": "informational: TLC's banner carries a random seed and timestamps"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/seed-1.log",
+      "sha256": "b3aeb8c862f04140e7b0bde5f497732e90d67c63571c00d2db859dc6c0ae26d5",
+      "bytes": 159,
+      "kind": "log",
+      "compare": "informational: TLC's banner carries a random seed and timestamps"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-1.ndjson",
+      "sha256": "c2b27b8ddbee583a2b1fdccefefa324954bfadbe956fc82371b9048b30dc2414",
+      "bytes": 775,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-2.ndjson",
+      "sha256": "88834cce5d8e533b8595a757deaa3034c7f6ab09d71f61b99735ccd5a4e3766d",
+      "bytes": 597,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-3.ndjson",
+      "sha256": "48e3f6855740cc546be33ff4a5bd1f3f6dec59c3eea9326c21c72c236d2a8e0f",
+      "bytes": 741,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-4.ndjson",
+      "sha256": "4677861a43e199dddd3c41ddba730e9f1c5ff3e909f37d3f7a18da199742b17b",
+      "bytes": 717,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-5.ndjson",
+      "sha256": "5af74a66a5c92f257716916fcaf5bdc48c728aa44228988e3f727185ed46d8f1",
+      "bytes": 432,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-6.ndjson",
+      "sha256": "48f77cdff28e43ce6095b44a9641552bae2965c5250023f11c083f3a28d99d2d",
+      "bytes": 806,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-7.ndjson",
+      "sha256": "9ff588ef9fdfa009c7c0df7aafe9bbf4f0411eb79fb329d7b9b414d1a6cb750c",
+      "bytes": 590,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-8.ndjson",
+      "sha256": "45cd4fbaa15052f889563a0b851c973e030d6d6af2d418b59c4a2a73fc23d54c",
+      "bytes": 508,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/mutant-seed-1.ndjson",
+      "sha256": "e59d664214bc890bd709f9744d1080db2efe3664fad0a80355109c33fd509fc2",
+      "bytes": 224,
+      "kind": "trace",
+      "compare": "bytes"
+    },
+    {
+      "path": "runs/RUN-tlc-trace-validation/traces/seed-1.ndjson",
+      "sha256": "5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a",
+      "bytes": 224,
+      "kind": "trace",
+      "compare": "bytes"
+    }
+  ],
+  "values": {
+    "seed_1": {
+      "verdict": "accepted",
+      "lines": 7,
+      "matched": 7,
+      "stuttering_line": 3,
+      "trace_sha256": "5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a",
+      "distinct_states": 10,
+      "tool_line": "trace labs/LAB-8/traces/seed-1.ndjson: accepted (7 of 7 lines)"
+    },
+    "mutant_seed_1": {
+      "verdict": "rejected",
+      "lines": 7,
+      "first_non_conforming_line": 5,
+      "tool_line": "trace labs/LAB-8/traces/mutant-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)"
+    },
+    "n_seeds": {
+      "n": 8,
+      "traces": 8,
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "seed_list_sha256": "fa39f85dc698e8c03824b0af3de7bc534da1cdf3905d1e8a585352854f5a7767",
+      "tool_lines": [
+        "trace full/traces/faults-seed-1.ndjson: accepted (23 of 23 lines)",
+        "trace full/traces/faults-seed-2.ndjson: accepted (19 of 19 lines)",
+        "trace full/traces/faults-seed-3.ndjson: accepted (22 of 22 lines)",
+        "trace full/traces/faults-seed-4.ndjson: accepted (22 of 22 lines)",
+        "trace full/traces/faults-seed-5.ndjson: accepted (13 of 13 lines)",
+        "trace full/traces/faults-seed-6.ndjson: accepted (24 of 24 lines)",
+        "trace full/traces/faults-seed-7.ndjson: accepted (18 of 18 lines)",
+        "trace full/traces/faults-seed-8.ndjson: accepted (17 of 17 lines)"
+      ],
+      "distinct_states": [
+        304,
+        40,
+        312,
+        111,
+        26,
+        314,
+        72,
+        22
+      ]
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python": "Python 3.13.12",
+      "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "seed-1",
+  "configs": [
+    {
+      "id": "gen-seed-1",
+      "purpose": "write the trace seed-1.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:13.758Z",
+      "duration_s": 0.193,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-seed-1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "1",
+        "--reference",
+        "--out",
+        "labs/LAB-8/traces/seed-1.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 1: ok (steps 3, faults 0: crash 0, tick 0, dup 0; 7 lines, sha256 5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/seed-1.ndjson"
+      ]
+    },
+    {
+      "id": "gen-mutant-seed-1",
+      "purpose": "write the trace mutant-seed-1.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:13.951Z",
+      "duration_s": 0.189,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-mutant-seed-1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "1",
+        "--reference",
+        "--mutant",
+        "ack-before-store",
+        "--out",
+        "labs/LAB-8/traces/mutant-seed-1.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "seed 1: FAIL AckedIsDurable at step 3 (line 5): c1 was acknowledged before its result was stored"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/mutant-seed-1.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-1",
+      "purpose": "write the trace faults-seed-1.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:16.267Z",
+      "duration_s": 0.183,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-1",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "1",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-1.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 1: ok (steps 14, faults 2: crash 2, tick 0, dup 0; 23 lines, sha256 c2b27b8ddbee583a2b1fdccefefa324954bfadbe956fc82371b9048b30dc2414)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-1.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-2",
+      "purpose": "write the trace faults-seed-2.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:16.450Z",
+      "duration_s": 0.199,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-2",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "2",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-2.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 2: ok (steps 12, faults 3: crash 2, tick 0, dup 1; 19 lines, sha256 88834cce5d8e533b8595a757deaa3034c7f6ab09d71f61b99735ccd5a4e3766d)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-2.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-3",
+      "purpose": "write the trace faults-seed-3.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:16.649Z",
+      "duration_s": 0.183,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-3",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "3",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-3.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 3: ok (steps 14, faults 2: crash 2, tick 0, dup 0; 22 lines, sha256 48e3f6855740cc546be33ff4a5bd1f3f6dec59c3eea9326c21c72c236d2a8e0f)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-3.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-4",
+      "purpose": "write the trace faults-seed-4.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:16.832Z",
+      "duration_s": 0.181,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-4",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "4",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-4.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 4: ok (steps 13, faults 3: crash 2, tick 0, dup 1; 22 lines, sha256 4677861a43e199dddd3c41ddba730e9f1c5ff3e909f37d3f7a18da199742b17b)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-4.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-5",
+      "purpose": "write the trace faults-seed-5.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:17.014Z",
+      "duration_s": 0.207,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-5",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "5",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-5.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 5: ok (steps 6, faults 0: crash 0, tick 0, dup 0; 13 lines, sha256 5af74a66a5c92f257716916fcaf5bdc48c728aa44228988e3f727185ed46d8f1)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-5.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-6",
+      "purpose": "write the trace faults-seed-6.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:17.221Z",
+      "duration_s": 0.196,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-6",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "6",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-6.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 6: ok (steps 16, faults 3: crash 2, tick 1, dup 0; 24 lines, sha256 48f77cdff28e43ce6095b44a9641552bae2965c5250023f11c083f3a28d99d2d)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-6.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-7",
+      "purpose": "write the trace faults-seed-7.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:17.418Z",
+      "duration_s": 0.181,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-7",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "7",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-7.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 7: ok (steps 10, faults 2: crash 1, tick 1, dup 0; 18 lines, sha256 9ff588ef9fdfa009c7c0df7aafe9bbf4f0411eb79fb329d7b9b414d1a6cb750c)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-7.ndjson"
+      ]
+    },
+    {
+      "id": "gen-faults-seed-8",
+      "purpose": "write the trace faults-seed-8.ndjson with the reference simulator",
+      "origin": "recorded",
+      "engine": "statespace-sim",
+      "started_at": "2026-10-26T21:05:17.600Z",
+      "duration_s": 0.193,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-gen-faults-seed-8",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "sim",
+        "8",
+        "--reference",
+        "--rate",
+        "150",
+        "--commands",
+        "2",
+        "--out",
+        "full/traces/faults-seed-8.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "the reference simulator"
+        }
+      ],
+      "budget": {
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "seed 8: ok (steps 8, faults 2: crash 2, tick 0, dup 0; 17 lines, sha256 45cd4fbaa15052f889563a0b851c973e030d6d6af2d418b59c4a2a73fc23d54c)"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/traces/faults-seed-8.ndjson"
+      ]
+    },
+    {
+      "id": "seed-1",
+      "purpose": "seed 1's reference trace against the reference spec; line 3, TimerArmed, is a stuttering step",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T21:05:14.140Z",
+      "duration_s": 0.534,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-seed-1-text",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "trace",
+        "validate",
+        "labs/LAB-8/reference/OutboxRef.tla",
+        "labs/LAB-8/traces/seed-1.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-8/reference/OutboxRef.tla",
+          "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+          "bytes": 2653,
+          "role": "spec: LAB-8.1's reference spec"
+        },
+        {
+          "path": "labs/LAB-8/reference/OutboxRefTrace.tla",
+          "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+          "bytes": 1646,
+          "role": "trace module of the reference spec"
+        },
+        {
+          "path": "labs/LAB-8/challenge/OutboxIface.tla",
+          "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+          "bytes": 5522,
+          "role": "the pinned interface"
+        },
+        {
+          "path": "labs/LAB-8/challenge/TraceValidation.tla",
+          "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+          "bytes": 4326,
+          "role": "the pinned trace-validation module"
+        },
+        {
+          "path": "labs/LAB-8/challenge/TraceConstants.cfg",
+          "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+          "bytes": 484,
+          "role": "the pinned trace constants"
+        },
+        {
+          "path": "bench/statespace/trace.py",
+          "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+          "bytes": 29222,
+          "role": "statespace trace validate"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/seed-1.ndjson",
+          "sha256": "5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a",
+          "role": "trace"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 300
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "trace labs/LAB-8/traces/seed-1.ndjson: accepted (7 of 7 lines)",
+        "1 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/seed-1.log"
+      ]
+    },
+    {
+      "id": "mutant-seed-1",
+      "purpose": "the ack-before-store mutant's fault-free trace of seed 1",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T21:05:15.167Z",
+      "duration_s": 0.574,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-mutant-seed-1-text",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "trace",
+        "validate",
+        "labs/LAB-8/reference/OutboxRef.tla",
+        "labs/LAB-8/traces/mutant-seed-1.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "labs/LAB-8/reference/OutboxRef.tla",
+          "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+          "bytes": 2653,
+          "role": "spec: LAB-8.1's reference spec"
+        },
+        {
+          "path": "labs/LAB-8/reference/OutboxRefTrace.tla",
+          "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+          "bytes": 1646,
+          "role": "trace module of the reference spec"
+        },
+        {
+          "path": "labs/LAB-8/challenge/OutboxIface.tla",
+          "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+          "bytes": 5522,
+          "role": "the pinned interface"
+        },
+        {
+          "path": "labs/LAB-8/challenge/TraceValidation.tla",
+          "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+          "bytes": 4326,
+          "role": "the pinned trace-validation module"
+        },
+        {
+          "path": "labs/LAB-8/challenge/TraceConstants.cfg",
+          "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+          "bytes": 484,
+          "role": "the pinned trace constants"
+        },
+        {
+          "path": "bench/statespace/trace.py",
+          "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+          "bytes": 29222,
+          "role": "statespace trace validate"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/mutant-seed-1.ndjson",
+          "sha256": "e59d664214bc890bd709f9744d1080db2efe3664fad0a80355109c33fd509fc2",
+          "role": "trace"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 300
+      },
+      "exit_code": 1,
+      "verdict_lines": [
+        "trace labs/LAB-8/traces/mutant-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)",
+        "0 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/mutant-seed-1.log"
+      ]
+    },
+    {
+      "id": "n-seeds",
+      "purpose": "8 seeds of the reference simulator under faults (two commands, 150 faults per thousand choices) against the full outbox spec",
+      "origin": "recorded",
+      "engine": "tlc",
+      "version": "2026.10.20.183001",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T21:05:17.794Z",
+      "duration_s": 3.067,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-run-tlc-trace-validation-n-seeds-text",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-v",
+        "<repo>:/repo:ro",
+        "-w",
+        "/w",
+        "-e",
+        "PYTHONPATH=/repo/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-m",
+        "statespace",
+        "trace",
+        "validate",
+        "full/Outbox.tla",
+        "full/traces/faults-seed-1.ndjson",
+        "full/traces/faults-seed-2.ndjson",
+        "full/traces/faults-seed-3.ndjson",
+        "full/traces/faults-seed-4.ndjson",
+        "full/traces/faults-seed-5.ndjson",
+        "full/traces/faults-seed-6.ndjson",
+        "full/traces/faults-seed-7.ndjson",
+        "full/traces/faults-seed-8.ndjson"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-trace-drift/inputs/Outbox.tla",
+          "sha256": "7584d5473695922d09f6ccdb8594ff1ea26f917efe67ba137d3e6df8e0347cdb",
+          "bytes": 4304,
+          "role": "spec: the full outbox, with Timeout, Crash and Recover"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-drift/inputs/OutboxIface.tla",
+          "sha256": "4e506fb5cb7de69fb5ac775fc17e3abdb8ed5afa6fbf5556a879dd2d47c3e110",
+          "bytes": 3474,
+          "role": "its interface module"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-drift/inputs/TraceValidation.tla",
+          "sha256": "1c0963d38c74cacba4f6558575b8ec8192f190703e6af976ec8eec3494fb5d5e",
+          "bytes": 4406,
+          "role": "the trace-validation module (W0-S13's; LAB-8's pinned copy differs only in its header comment)"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/inputs/OutboxTrace.tla",
+          "sha256": "53a2155ef1c8e80ba4e0978f7908beb84c429baedce7105385af2c9d572c16fe",
+          "role": "trace module: RUN-tlc-trace-drift's, plus the Timeout disjunct"
+        },
+        {
+          "path": "labs/LAB-8/challenge/TraceConstants.cfg",
+          "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+          "bytes": 484,
+          "role": "the pinned trace constants"
+        },
+        {
+          "path": "bench/statespace/trace.py",
+          "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+          "bytes": 29222,
+          "role": "statespace trace validate"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-1.ndjson",
+          "sha256": "c2b27b8ddbee583a2b1fdccefefa324954bfadbe956fc82371b9048b30dc2414",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-2.ndjson",
+          "sha256": "88834cce5d8e533b8595a757deaa3034c7f6ab09d71f61b99735ccd5a4e3766d",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-3.ndjson",
+          "sha256": "48e3f6855740cc546be33ff4a5bd1f3f6dec59c3eea9326c21c72c236d2a8e0f",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-4.ndjson",
+          "sha256": "4677861a43e199dddd3c41ddba730e9f1c5ff3e909f37d3f7a18da199742b17b",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-5.ndjson",
+          "sha256": "5af74a66a5c92f257716916fcaf5bdc48c728aa44228988e3f727185ed46d8f1",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-6.ndjson",
+          "sha256": "48f77cdff28e43ce6095b44a9641552bae2965c5250023f11c083f3a28d99d2d",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-7.ndjson",
+          "sha256": "9ff588ef9fdfa009c7c0df7aafe9bbf4f0411eb79fb329d7b9b414d1a6cb750c",
+          "role": "trace"
+        },
+        {
+          "path": "runs/RUN-tlc-trace-validation/traces/faults-seed-8.ndjson",
+          "sha256": "45cd4fbaa15052f889563a0b851c973e030d6d6af2d418b59c4a2a73fc23d54c",
+          "role": "trace"
+        }
+      ],
+      "budget": {
+        "workers": 1,
+        "container_memory": "6g",
+        "network": "none",
+        "timeout_s": 300
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "trace full/traces/faults-seed-1.ndjson: accepted (23 of 23 lines)",
+        "trace full/traces/faults-seed-2.ndjson: accepted (19 of 19 lines)",
+        "trace full/traces/faults-seed-3.ndjson: accepted (22 of 22 lines)",
+        "trace full/traces/faults-seed-4.ndjson: accepted (22 of 22 lines)",
+        "trace full/traces/faults-seed-5.ndjson: accepted (13 of 13 lines)",
+        "trace full/traces/faults-seed-6.ndjson: accepted (24 of 24 lines)",
+        "trace full/traces/faults-seed-7.ndjson: accepted (18 of 18 lines)",
+        "trace full/traces/faults-seed-8.ndjson: accepted (17 of 17 lines)",
+        "8 of 8 traces accepted against full/Outbox.tla; n counts accepted traces only"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-trace-validation/n-seeds.log"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "tlc-trace-validation-1",
+      "name": "seed 1's reference trace is accepted, every line consumed",
+      "pass": true
+    },
+    {
+      "id": "tlc-trace-validation-2",
+      "name": "line 3 of seed 1's trace is TimerArmed, matched as a stuttering step",
+      "pass": true
+    },
+    {
+      "id": "tlc-trace-validation-3",
+      "name": "the mutant is rejected at its first Ack line",
+      "pass": true
+    },
+    {
+      "id": "tlc-trace-validation-4",
+      "name": "all 8 traces under faults are accepted",
+      "pass": true
+    },
+    {
+      "id": "tlc-trace-validation-5",
+      "name": "the jar in the image has the pinned SHA-256",
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "notes": [
+    "<sandbox>/work in argv is a fresh scratch folder mounted at /w holding the inputs as the command reads them (labs/LAB-8/ for seed 1 and the mutant, full/ for the n seeds); <repo> is this course repository, mounted read-only, whose bench/ folder is on PYTHONPATH.",
+    "Each configuration's verdict lines are the lines statespace trace validate printed, one per trace and a summary; TLC's whole output for each trace stays in the tool's scratch folder, and the tool reads the verdict from the trace-validation record TraceValidation.tla prints, never from TLC's exit code [X RUN-tlc-tracemodule].",
+    "The n-seeds configuration validates against RUN-tlc-trace-drift's Outbox.tla and OutboxIface.tla, already in the registry, with that run's trace module plus one disjunct for the Timeout lines LAB-8's harness writes. LAB-8.6 itself validates the learner's own machine against the learner's own spec.",
+    "The trace generators are configurations with engine statespace-sim (bench/statespace/sim.py, the reference simulator), so each trace's bytes trace back to a command."
+  ]
+}

@@ -1,0 +1,386 @@
+/* Receipt import and the receipt as text (SCR-bench, and the receipts SCR-lab and SCR-claims show). The import is an
+   exercise plate: a strip in the series black, the controls on paper in a 1.5-px ink frame, a caption in pencil. A
+   receipt is a colophon: label capitals over ruled rows. Every value comes from styles/tokens.css, and every rule
+   names one of these classes, so none reaches a stamp's or a strip's elements (GATE-stamps). */
+
+/* ------------------------------------------------------------------ the import plate */
+
+.rimp {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.rimp-plate {
+  min-width: 0;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+
+.rimp-plate[data-over] {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.rimp-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: var(--vol-10);
+  color: var(--on-vol);
+  font-family: var(--font-structure);
+  font-size: 15px;
+}
+
+.rimp-strip-word {
+  font-weight: 700;
+}
+
+.rimp-strip-path {
+  font-family: var(--font-code);
+  font-size: 13px;
+}
+
+.rimp-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+}
+
+.rimp-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.rimp-file-input {
+  max-width: 100%;
+  min-height: var(--target);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.rimp-file-input:focus-visible,
+.rimp-text:focus-visible,
+.rimp-go:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.rimp-text {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-2);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  resize: vertical;
+}
+
+.rimp-go {
+  margin-top: var(--space-2);
+  min-height: var(--target);
+  padding: 0 var(--space-4);
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rimp-go:disabled {
+  background: transparent;
+  color: var(--pencil);
+  border-color: var(--rule);
+  cursor: default;
+}
+
+.rimp-caption {
+  margin: 0;
+  padding: 0 var(--space-3) var(--space-3);
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}
+
+.rimp-status:empty {
+  display: none;
+}
+
+.rimp-status {
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--ink);
+  font-family: var(--font-reading);
+  font-size: var(--fs-prose);
+  line-height: var(--lh-prose);
+}
+
+.rimp-status p,
+.rimp-status ul {
+  margin: 0;
+}
+
+.rimp-rejected ul {
+  margin-top: var(--space-2);
+  padding-left: 1.2em;
+  font-family: var(--font-code);
+  font-size: var(--fs-code);
+  line-height: var(--lh-code);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 760px) {
+  .rimp-body {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--space-5);
+  }
+}
+
+/* ------------------------------------------------------------------ a receipt, as text */
+
+.rcpt {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.rcpt-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--font-structure);
+  font-size: 17px;
+}
+
+.rcpt-strip-word {
+  font-weight: 700;
+}
+
+.rcpt-strip-id {
+  font-family: var(--font-code);
+  font-size: 15px;
+}
+
+.rcpt-strip-when {
+  margin-left: auto;
+  color: var(--pencil);
+  font-size: var(--fs-interface);
+}
+
+.rcpt-colophon {
+  margin: 0;
+}
+
+.rcpt-colophon > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px var(--space-3);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.rcpt-colophon dt {
+  font-family: var(--font-structure);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil);
+  padding-top: 3px;
+}
+
+.rcpt-colophon dd {
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.rcpt-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+
+.rcpt-colophon code,
+.rcpt-hash {
+  font-size: 13px;
+}
+
+.rcpt-hash {
+  color: var(--pencil);
+}
+
+.rcpt-quote {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-code);
+  font-size: 13px;
+  color: var(--pencil);
+}
+
+@media (min-width: 600px) {
+  .rcpt-colophon > div {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+}
+
+.rcpt-part {
+  min-width: 0;
+}
+
+.rcpt-head {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-structure);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--pencil);
+}
+
+.rcpt-checks,
+.rcpt-items,
+.rcpt-claims {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.rcpt-check,
+.rcpt-item,
+.rcpt-claims > li {
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--rule-hair);
+  min-width: 0;
+}
+
+.rcpt-check {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.rcpt-check-text {
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  line-height: 1.4;
+}
+
+.rcpt-check-by {
+  display: block;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+  color: var(--pencil);
+}
+
+/* A result is a word and a shape: a filled square for passed, an open square for failed. Never colour alone. */
+.rcpt-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+  font-weight: 600;
+}
+
+.rcpt-mark-box {
+  flex: none;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--ink);
+}
+
+.rcpt-mark[data-pass='true'] .rcpt-mark-box {
+  background: var(--ink);
+}
+
+
+.rcpt-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+}
+
+.rcpt-section {
+  font-size: 13px;
+  color: var(--pencil);
+}
+
+.rcpt-note {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  color: var(--pencil);
+}
+
+.rcpt-problems {
+  margin-top: var(--space-2);
+  font-family: var(--font-reading);
+  font-size: var(--fs-sidenote);
+  line-height: var(--lh-sidenote);
+}
+
+.rcpt-problems > summary {
+  min-height: var(--target);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.rcpt-problems > summary:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.rcpt-problems ul {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--pencil);
+  overflow-wrap: anywhere;
+}
+
+.rcpt-claims > li {
+  font-family: var(--font-structure);
+  font-size: var(--fs-interface);
+}
+
+.rcpt-local {
+  font-size: 13px;
+  color: var(--pencil);
+}
+
+@media (min-width: 760px) {
+  .rcpt-item {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+}

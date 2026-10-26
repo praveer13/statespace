@@ -80,4 +80,13 @@ export const ENGINES: Readonly<Record<string, EngineDef>> = {
     spawn: () => new Worker(new URL('./tla/worker.ts', import.meta.url), { type: 'classic', name: 'spectacle' }),
     checkInput: textInput,
   },
+  // INS-pairs: the paired-state evaluator over the S7 interpreter, course TypeScript in the pure pool with no payload;
+  // the watchdog is its only budget, and every search prints its bound.
+  pairs: {
+    engine: 'pairs',
+    version: '1',
+    runtime: 'course TypeScript in the pure pool: the S7 interpreter and the paired-state evaluator',
+    spawn: () => new Worker(new URL('./pairs/worker.ts', import.meta.url), { type: 'module', name: 'pairs' }),
+    checkInput: textInput,
+  },
 }

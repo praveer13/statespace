@@ -1,0 +1,38 @@
+// LAB-7.2: your read policy, rules 1 to 3 of S7.L2 over the S7 world. TODO(you)
+//
+// `statespace check lab7.2` draws fresh worlds when you run it, writes each world's facts as the
+// .facts files these .input relations name, and evaluates this program in Soufflé and in the tab's
+// engine (Z3 Fixedpoint behind the course adapter). Your `canread` must equal the reference matrix on
+// every world, and one allowed cell per world must have a valid derivation.
+//
+// Keep the declarations: the generator writes exactly these input relations. Comments use //, because
+// Soufflé 2.5 rejects %. Whatever no rule derives is denied.
+
+.decl tenant_of_user(u: symbol, a: symbol)
+.decl tenant_of_team(t: symbol, a: symbol)
+.decl member(u: symbol, t: symbol, r: symbol)   // r is viewer, editor or admin
+.decl owns(t: symbol, d: symbol)
+.decl subteam(s: symbol, t: symbol)             // s is nested in t
+.decl share_user(d: symbol, u: symbol)
+.decl share_team(d: symbol, t: symbol)
+.decl revoked(d: symbol, u: symbol)
+.input tenant_of_user
+.input tenant_of_team
+.input member
+.input owns
+.input subteam
+.input share_user
+.input share_team
+.input revoked
+
+.decl inteam(u: symbol, t: symbol)
+.decl canread(u: symbol, d: symbol)
+.output canread
+
+// A user is in the teams they are a member of, and in every team those are nested in.
+// TODO(you): write inteam's two rules.
+
+// Rule 1: a member of the owning team.
+// Rule 2: shared with the user, and not revoked.
+// Rule 3: shared with one of the user's teams.
+// TODO(you): write canread's three rules.

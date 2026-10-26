@@ -1,0 +1,16 @@
+# LAB-9.1: the compiler's output for transfer 30 a1 a2
+source transfer 30 a1 a2
+output
+  ldi      r0 30
+  ldi      r1 1
+  assertGe r0 r1 nonPositive
+  read     r0 a1
+  ldi      r1 30
+  assertGe r0 r1 insufficient
+  ldi      r0 30            # the amount, saved before any write
+  read     r1 a1
+  sub      r1 r1 r0
+  write    a1 r1            # the debit
+  read     r1 a2
+  add      r1 r1 r0
+  write    a2 r1            # the credit, read from the debited store

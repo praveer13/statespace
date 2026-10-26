@@ -1,0 +1,28 @@
+# CL-9.3: each generated SQL plan in the suite agrees with its source command on outcome classes. Minted by
+# LAB-9.11. `statespace check lab9.12` validates this card (claim@1). You fill the fields marked TODO(you):
+#   method.receipt   your passing receipt of LAB-9.11, or the folder receipts/LAB-9.11
+#   method.version   the version of your validator's run in that receipt (lab9-validator)
+#   requirement      what this claim serves, in your words
+# if_weakened.specimen names specimens/lab9-shape-only.json: an instance on which the wrong-account plan,
+# which a shape check accepts, and the source differ (SP-9.2).
+schema: statespace/claim@1
+id: cl-9-3
+template: CL-9.3
+proposition: >-
+  Each generated plan of the suite agrees with its source command on outcome classes, on every instance
+  within the validator's bound.
+assumptions:
+  - text: your R(S, D) from LAB-6.7
+  - text: PostgreSQL as the replay's semantics of SQL
+  - text: one session; concurrency is not covered
+model: the lifted plan and the source command
+method:
+  receipt: "TODO(you): receipts/LAB-9.11/<file>.json"
+  tool: lab9-validator
+  version: "TODO(you)"
+correspondence:
+  text: per command, within the bound; only rejections are replayed
+if_weakened:
+  specimen: specimens/lab9-shape-only.json
+requirement:
+  text: "TODO(you)"

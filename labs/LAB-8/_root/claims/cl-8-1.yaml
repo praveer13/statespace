@@ -1,0 +1,21 @@
+# CL-8.1, a claim card (claim@1; labs/README.md section 9.2). LAB-8.8 checks it. Prefilled from the lab;
+# the fields marked TODO(you) are yours to write. Method, tool and version come from your LAB-8.2 receipt.
+schema: statespace/claim@1
+id: no-lost-intent
+template: CL-8.1
+proposition: "NoLostIntent: every committed intent stays pending, inflight or acked, in every reachable state"
+statement:
+  path: claims/OutboxProps.tla
+  property: NoLostIntent
+assumptions:
+  - text: "the command and its intent commit in one transaction (PostgreSQL as documented)"
+  - text: "TODO(you): what a crash loses, and what it keeps"
+model: "spec/Outbox.tla under challenge/mc-full.cfg: crashes on in every window"
+method:
+  text: "TLC, a complete exploration at the configuration's constants (your LAB-8.2 receipt)"
+correspondence:
+  text: "TODO(you): what ties the model to your machine (LAB-8.6)"
+if_weakened:
+  text: "TODO(you): the witness when the intent is written after the commit"
+requirement:
+  text: "an accepted effect is never forgotten"

@@ -1,0 +1,24 @@
+# claims/cl-7-1.yaml: claim card CL-7.1, prefilled from the template; fill the TODO(you) fields from your
+# LAB-7.2 receipt. statespace check lab7.7 validates it against claim@1 and the receipt.
+schema: statespace/claim@1
+id: cl-7-1
+template: CL-7.1
+proposition: >-
+  On every checked world, the access matrix served equals the requests policy/read.dl derives, in both
+  engines, and each allowed cell checked has a valid derivation.
+assumptions:
+  - text: "[A] Soufflé and the tab's engine implement stratified Datalog as documented"
+  - text: "[A] the table is recomputed before it is served"
+  - text: "[A] the generator exercises every rule"
+model: "policy/read.dl over the S7 world's relations"
+method:
+  # TODO(you): add `receipt: receipts/LAB-7.2/<file>.json`, the receipt this card rests on
+  tool: souffle
+  # TODO(you): add `version:`, copied verbatim from that receipt
+correspondence:
+  text: "Those worlds only: enforcement is CL-7.4, every world is CL-7.2."
+if_weakened:
+  # TODO(you): the counterexample when an assumption is weakened, such as a materialized table that keeps a cell after a revocation
+  text: "write the counterexample here"
+requirement:
+  text: "Rules 1 to 3 state the roadmap's sentence: a user may see a document when they are a team member or it is explicitly shared [A]."

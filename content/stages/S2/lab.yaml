@@ -10,7 +10,8 @@ stages:
   - id: LAB-2.1
     what: >-
       Make three calls first: does the reference proof use any axioms, which ones, and what does the check return?
-      Then run `statespace check lab2.1` on the reference module and read the receipt's verdict lines. The reference
+      Write them in `labs/LAB-2/calls/LAB-2.1.txt`, where the check prints them beside the receipt. Then run
+      `statespace check lab2.1` on the reference module and read the receipt's verdict lines. The reference
       module is the only proof the pack ships and it earns nothing: copied into the next stage, it fails that stage's
       manual-mode scan.
     checks:
@@ -90,3 +91,60 @@ stages:
     what: >-
       Optional: write the transfer as zero-sum postings, minus n and plus n. It points ahead to S3, and nothing
       depends on it.
+extra:
+  explanationGate: >-
+    Before the first hint on any check, you write at least 12 words on the failing check, the goal or line it shows,
+    and your hypothesis. It is compared with three authored ideas, self-assessed, and never credited. A check passed
+    after the second hint counts as assisted until an unseen variant passes without help.
+  hints:
+    - check: LAB-2.c1
+      R1: A receipt holds several verdicts, and acceptance needs all of them.
+      R2: Read the receipt's `lean.checkers`, `lean.theorems` and `environment.sandbox`.
+      R3: "`statespace doctor`, then `statespace check lab2.1`, and read the indented lines under the check."
+      R4: The comparator line says the statement matches and the kernel accepts; the axiom list says what the proof rests on; the sandbox line says how the build ran.
+    - check: LAB-2.c2
+      R1: Both branches conserve, and the allowed branch is arithmetic you can rewrite yourself.
+      R2: The allowed goal after the split. Where does `- n` meet `+ n`?
+      R3: The lemmas `Int.add_comm`, `Int.add_assoc` and `Int.sub_add_cancel` suffice.
+      R4: (a − n) + (b + n) = ((a − n) + n) + b = a + b, and the rejected branch is the state you started from.
+    - check: LAB-2.c3
+      R1: A false guard sends the `if` to its `else`.
+      R2: Decide the `if` with `h`, by `simp [h]`, or `split` and dismiss the impossible branch.
+      R3: "`unfold transfer`, then `split`, then a `sorry` for the impossible branch and `rfl` for the other."
+      R4: The negated guard makes the `if` return `s`, so the two sides are the same term.
+    - check: LAB-2.c4
+      R1: Each allowed balance needs a different fact, and a rejected transfer changes nothing.
+      R2: Name the guard (`next hg =>`), and look for `Int.sub_nonneg_of_le` and `Int.add_nonneg`.
+      R3: "`· next hg => exact ⟨?_, ?_⟩` and `· exact ⟨ha, hb⟩`"
+      R4: n ≤ a gives a − n ≥ 0; b ≥ 0 and n ≥ 0 give b + n ≥ 0.
+    - check: LAB-2.c5
+      R1: "`run` changes the state, so the induction hypothesis must cover every state."
+      R2: Which state do the `cons` goal and `ih` mention?
+      R3: "`induction ns generalizing s with`, then `sorry` in both cases."
+      R4: On the empty list the run returns `s`. Otherwise use the hypothesis at `transfer s n`, then one-step conservation.
+    - check: LAB-2.c6
+      R1: "`upd` is pointwise: ask whether the queried account is the one updated."
+      R2: Unfold `xfer` and `upd`, split the guard, and simplify with your inequalities.
+      R3: "`unfold xfer upd`, `split`, then `sorry` in both branches."
+      R4: The frame is untouched; the debit and the credit cancel; the credit reads the debited balance. Each specimen is one closed instance, so `decide` checks it.
+    - check: LAB-2.c7
+      R1: The witness must refute this card's own proposition.
+      R2: The field that `statespace check lab2.7` names in its message.
+      R3: The pattern on a CL-1.x card.
+      R4: Weaken "the accounts are distinct" (SP-2.1), not the guard (SP-2.2), for CL-2.1; each card's witness breaks its own theorem.
+  proveIt:
+    - operator: Remove `generalizing s` from your proof of run_conserves.
+      appliedTo: LAB-2.5
+      prediction: Does the build pass, and if not, in which case of the induction does it fail?
+    - operator: Drop `n ≤ s.a` from the guard of `transfer` in your Solution.lean.
+      appliedTo: LAB-2.2
+      prediction: Which of your four two-account proofs still build, and what does comparator say about the definition?
+    - operator: Change balances and amounts from Int to Nat.
+      appliedTo: LAB-2.4
+      prediction: Do your manual non-negativity proofs still build, and what happens to the hypotheses `ha` and `hb`?
+    - operator: Close selftransfer_mints by `native_decide` instead of `decide`.
+      appliedTo: LAB-2.6
+      prediction: Does the build pass, what does `#print axioms` list, and does the check accept it?
+    - operator: "Add `(h : n = 0)` to transfer_rejected under the same name."
+      appliedTo: LAB-2.3
+      prediction: Does the build pass, and what does comparator print?

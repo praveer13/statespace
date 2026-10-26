@@ -1,0 +1,101 @@
+{
+  "schema": "statespace/lab4-fixture@1",
+  "note": "Withdraw whose guard is off by one: amount <= a + 1. A known-false obligation (a = 0, amount = 1).",
+  "kind": "obligation",
+  "program": {
+    "schema": "statespace/lab4-program@1",
+    "accounts": [
+      "a",
+      "b",
+      "c"
+    ],
+    "commands": [
+      {
+        "name": "Withdraw",
+        "params": [
+          "amount"
+        ],
+        "requires": {
+          "and": [
+            {
+              "gt": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "num": 0
+                }
+              ]
+            },
+            {
+              "le": [
+                {
+                  "var": "amount"
+                },
+                {
+                  "add": [
+                    {
+                      "var": "a"
+                    },
+                    {
+                      "num": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "body": {
+          "assign": "a",
+          "expr": {
+            "sub": [
+              {
+                "var": "a"
+              },
+              {
+                "var": "amount"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "command": "Withdraw",
+  "inv": {
+    "and": [
+      {
+        "ge": [
+          {
+            "var": "a"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "b"
+          },
+          {
+            "num": 0
+          }
+        ]
+      },
+      {
+        "ge": [
+          {
+            "var": "c"
+          },
+          {
+            "num": 0
+          }
+        ]
+      }
+    ]
+  },
+  "reference": "REFUTED"
+}

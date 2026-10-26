@@ -1,0 +1,30 @@
+== S3.L2 cell 1 (recorded RUN-interp-goldens)
+OUT Pay: rejected by unguardedDebit
+== S3.L2 cell 2 (recorded RUN-interp-goldens)
+OUT start  mint -100 · a 100 · sink 0
+OUT 1  hold 30 on a  →  ok · mint -100 · a 70 · sink 0 · escrow 0 30 · hold 0: 30 of a, held · output [0]
+OUT    total 0 · no account but the mint below zero
+OUT 2  capture h to sink  →  ok · mint -100 · a 70 · sink 30 · escrow 0 0 · hold 0: 30 of a, captured
+OUT    total 0 · no account but the mint below zero
+OUT 3  release h  →  holdNotOpen 0
+== S3.L3 cell 1 (recorded RUN-interp-goldens)
+OUT start  mint -10 · a 10
+OUT Transfer(a, a, 5)  →  ok · mint -10 · a 10 · notify a  [decided at step 8: the effects]
+== S3.L3 cell 2 (recorded RUN-interp-goldens)
+OUT start  mint -100 · a 100 · b 0
+OUT Transfer(a, b, 0)  →  badArgument "amount"  [decided at step 2: the arguments decode]
+== S3.L7 cell 1 (recorded RUN-interp-goldens)
+OUT start  mint -100 · a 100 · b 0
+OUT Transfer(a, b, 0)  →  badArgument "amount"  [decided at step 2: the arguments decode]  under zero = reject · self = allow · guard = error · overflow = unbounded
+OUT Transfer(a, a, 15)  →  ok · mint -100 · a 100 · b 0 · notify a  [decided at step 8: the effects]  under zero = reject · self = allow · guard = error · overflow = unbounded
+OUT Transfer(a, b, 130)  →  guardFailed "Transfer"  [decided at step 5: the guard]  under zero = reject · self = allow · guard = error · overflow = unbounded
+OUT start  mint -9223372036854775807 · a 9223372036854775807 · b 0
+OUT Deposit(a, 1)  →  ok · mint -9223372036854775808 · a 9223372036854775808 · b 0 · notify a  [decided at step 8: the effects]  under zero = reject · self = allow · guard = error · overflow = unbounded
+== S3.L7 cell 3 (recorded RUN-interp-goldens)
+OUT start  mint -100 · a 100 · b 0
+OUT Transfer(a, b, 130)  →  guardFailed "Transfer"  [decided at step 5: the guard]  under zero = reject · self = allow · guard = error · overflow = unbounded
+OUT Transfer(a, b, 130)  →  ok · mint -100 · a 100 · b 0  [decided at step 5: the guard]  under zero = reject · self = allow · guard = silent · overflow = unbounded
+== S3.L9 cell 1 (recorded RUN-lean-unsafe-cmd)
+OUT ForcePay: type-checks
+OUT start  mint 0 · a 0 · b 0
+OUT ForcePay(a, b, 1)  →  ok · mint 0 · a -1 · b 1 · notify b  [decided at step 8: the effects]

@@ -1,0 +1,20 @@
+// The Bench devcontainer of statespace-lab, from S2 on (labs/README.md section 4.2; drawer D-15). LAB-1 needs none:
+// it runs with `uv run`, or in the tab, so the LAB-1 zip leaves this folder out.
+//
+// It opens your lab repository in the Bench image, named by digest, with a PostgreSQL 18.6 service container beside
+// it (docker-compose.yml). The digest is the pin: a tag can move, a digest cannot. `statespace doctor` runs when the
+// container is created and says whether each tool matches its pin.
+//
+// Lean's sandbox does not start in a default container, and `statespace doctor` reports that as `failed`. The
+// course repository's .devcontainer/docker-compose.sandbox.yml is the opt-in profile that starts it; read what it
+// relaxes (labs/README.md section 4.4) before you copy it here and name it after docker-compose.yml below.
+{
+  "name": "statespace Bench",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "bench",
+  "workspaceFolder": "/workspaces/statespace-lab",
+  "remoteUser": "learner",
+  "shutdownAction": "stopCompose",
+  // Never fail the creation of a container on a red doctor: it prints what differs.
+  "postCreateCommand": "statespace doctor || true"
+}

@@ -1,0 +1,18 @@
+# Your Mini-Plinth front end and interpreter (LAB-3.8 to LAB-3.11). No dependencies: the template supplies
+# JSON and the IR types, so the crate builds offline, natively for `statespace check` and later to a wasm
+# module with no imports for the tab (drawer D-14).
+[package]
+name = "mini-plinth"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["rlib"]
+
+[[bin]]
+name = "mp3"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 2

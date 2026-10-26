@@ -115,7 +115,7 @@ def collect(root: Path) -> tuple[dict[str, Any], list[str]]:
                 add_statement(path, "lean-challenge")
     specimens_dir = root / "specimens"
     if specimens_dir.is_dir():
-        for path in sorted(p for p in specimens_dir.rglob("*") if p.is_file()):
+        for path in sorted(p for p in specimens_dir.rglob("*") if p.is_file() and not p.name.startswith(".")):
             text = text_of(path)
             if text is not None:
                 specimens.append({"path": _relative(root, path), "text": text})

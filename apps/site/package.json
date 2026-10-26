@@ -7,7 +7,8 @@
   "scripts": {
     "content": "node ../../scripts/build-content.mjs && node ../../scripts/site/build-names.mjs",
     "dev": "node ../../scripts/site/build-names.mjs && (node ../../scripts/build-content.mjs || echo 'site: the content build failed; serving the last content it wrote') && vite",
-    "build": "npm run content && npm run typecheck && vite build && node ../../scripts/site/postbuild.mjs",
+    "labs": "node ../../scripts/labs/build-zips.mjs",
+    "build": "npm run content && npm run labs && npm run typecheck && vite build && node ../../scripts/site/postbuild.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -p . && tsc -p tsconfig.node.json",
     "e2e": "playwright test -c e2e/playwright.config.ts"

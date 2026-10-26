@@ -1,0 +1,12 @@
+-- LAB-7.4: your read policies, rules 1 to 3 compiled to row-level security on app.documents. TODO(you)
+--
+-- rls/schema.sql runs first: the tables, app.user_teams(u) (a user's team closure, '{}' for a teamless
+-- user), and the UPDATE and INSERT policies. This file runs next, as the superuser, and stays in force for
+-- every world the check draws.
+--
+-- Read the user with current_setting('app.user', true). Then `statespace check lab7.4`:
+--   1. SET ROLE <user> mode: every user's visible ids must equal their row of the access matrix;
+--   2. the owner probe: the application query run as the table owner, app_owner, with app.user set. The
+--      check first switches FORCE off and expects the probe to see rows the matrix denies (the bypass,
+--      caught), then runs it under your configuration, where it must see exactly the matrix row;
+--   3. relrowsecurity and relforcerowsecurity, read back from pg_class.

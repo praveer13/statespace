@@ -1,0 +1,321 @@
+{
+  "schema": "statespace/history@1",
+  "spec": {
+    "path": "labs/LAB-6/fixtures/specs/opposite-retry.spec",
+    "sha256": "03d722e036edc6214c9c6ac35a0e33ae10047404aa3cba69b6a31eb11795891c",
+    "sessions": [
+      "a",
+      "b",
+      "obs"
+    ],
+    "permutations": 1,
+    "enumerated": false
+  },
+  "server": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "isorun": {
+    "name": "statespace isorun",
+    "version": "0.1.0"
+  },
+  "permutations": [
+    {
+      "index": 1,
+      "permutation": [
+        "d0",
+        "ab",
+        "ad",
+        "bb",
+        "bd",
+        "ak",
+        "bk",
+        "ac",
+        "bc",
+        "ab2",
+        "ad2",
+        "ak2",
+        "ac2",
+        "chk"
+      ],
+      "levels": {
+        "a": "read committed",
+        "b": "read committed"
+      },
+      "events": [
+        {
+          "step": "d0",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        },
+        {
+          "step": "ab",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "ad",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "90"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "bb",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bd",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "90"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "ak",
+          "session": "a",
+          "status": "waiting"
+        },
+        {
+          "step": "bk",
+          "session": "b",
+          "status": "waiting"
+        },
+        {
+          "step": "ak",
+          "session": "a",
+          "status": "completed",
+          "results": [],
+          "error": {
+            "sqlstate": "40P01",
+            "message": "deadlock detected"
+          }
+        },
+        {
+          "step": "bk",
+          "session": "b",
+          "status": "completed",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "100",
+                  "110"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "ac",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "ROLLBACK",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "bc",
+          "session": "b",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "ab2",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "BEGIN",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "ad2",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "110",
+                  "100"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "ak2",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "UPDATE 1",
+              "columns": [
+                "old_bal",
+                "new_bal"
+              ],
+              "rows": [
+                [
+                  "90",
+                  "100"
+                ]
+              ],
+              "rowcount": 1
+            }
+          ]
+        },
+        {
+          "step": "ac2",
+          "session": "a",
+          "status": "done",
+          "results": [
+            {
+              "command": "COMMIT",
+              "rowcount": null
+            }
+          ]
+        },
+        {
+          "step": "chk",
+          "session": "obs",
+          "status": "done",
+          "results": [
+            {
+              "command": "SELECT 2",
+              "columns": [
+                "t",
+                "k",
+                "v"
+              ],
+              "rows": [
+                [
+                  "acct",
+                  "1",
+                  "100"
+                ],
+                [
+                  "acct",
+                  "2",
+                  "100"
+                ]
+              ],
+              "rowcount": 2
+            }
+          ]
+        }
+      ],
+      "waits": [
+        "ak",
+        "bk"
+      ],
+      "errors": [
+        {
+          "step": "ak",
+          "session": "a",
+          "sqlstate": "40P01",
+          "message": "deadlock detected"
+        }
+      ],
+      "outcome": {
+        "a": [
+          "abort:40P01",
+          "commit"
+        ],
+        "b": [
+          "commit"
+        ],
+        "obs": [
+          "commit",
+          "commit"
+        ]
+      },
+      "signature": "a=abort:40P01+commit b=commit  [40P01]"
+    }
+  ]
+}

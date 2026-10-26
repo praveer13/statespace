@@ -1,0 +1,23 @@
+# CL-8.2, a claim card (claim@1). LAB-8.8 checks it: it must state the provider's idempotency as an
+# assumption, and the provider's horizon (provider, API version, retention and the date you read it).
+schema: statespace/claim@1
+id: no-double-charge
+template: CL-8.2
+proposition: "NoDoubleCharge: the provider performs each command's effect at most once"
+statement:
+  path: claims/OutboxProps.tla
+  property: NoDoubleCharge
+assumptions:
+  - text: "one key per intent, minted when the intent commits"
+  - text: "TODO(you): the provider's side of the pair"
+  - text: "TODO(you): the horizon: every copy of every attempt is delivered or dropped before the key can be pruned; name the provider, the API version, the retention and the date you read it"
+    seam: SEAM-12
+model: "spec/Outbox.tla with Dedup = TRUE, a stable key and Forgets = never"
+method:
+  text: "TLC, a complete exploration at the configuration's constants (your LAB-8.2 receipt)"
+correspondence:
+  text: "traces of your machine validated against the spec over n seeds, key and attempt logged (LAB-8.6)"
+if_weakened:
+  text: "TODO(you): the witness when the provider prunes a key once its intent is acknowledged"
+requirement:
+  text: "charge at most once"

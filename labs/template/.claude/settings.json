@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Edit(**/labs/*/challenge/**)",
+      "Write(**/labs/*/challenge/**)",
+      "Edit(**/comparator.json)",
+      "Write(**/comparator.json)",
+      "Edit(**/claims/**)",
+      "Write(**/claims/**)",
+      "Edit(**/receipts/**)",
+      "Write(**/receipts/**)",
+      "Edit(**/.claude/**)",
+      "Write(**/.claude/**)",
+      "Edit(**/.statespace/**)",
+      "Write(**/.statespace/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/statespace-guard.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

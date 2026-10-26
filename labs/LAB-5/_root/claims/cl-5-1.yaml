@@ -1,0 +1,24 @@
+# CL-5.1, prefilled: the card fades from prefilled (this one) to written by you (CL-5.3).
+# TODO(you): read each prefilled field and change what you do not agree with; then fill in method.receipt (the
+# path of your passing LAB-5.2 receipt) and method.version (the TLC version line, copied from that receipt's
+# tools). The stamp is never typed here: the tab derives it from the receipt, with its constants and bound.
+schema: statespace/claim@1
+id: cl-5-1
+template: CL-5.1
+proposition: "[](spent <= Init) for the atomic DoubleSpend: no worker pays out more than the account holds"
+statement:
+  path: labs/LAB-5/atomic/DoubleSpendAtomic.tla
+  property: NoOverspend
+assumptions:
+  - text: "one action of the spec is one atomic step in the code"
+model: "labs/LAB-5/atomic/DoubleSpendAtomic.tla, by hash, at the constants in claims/s5-bound.md"
+method:
+  tool: tlc
+  receipt: ""
+  version: ""
+correspondence:
+  text: "assumed: the code tests and writes the balance in one step (in S6, a conditional UPDATE)"
+if_weakened:
+  text: "split the atomic action back into a read and a write: SP-5.1, NoOverspend violated"
+requirement:
+  text: "no account pays out more than it holds"

@@ -1,0 +1,84 @@
+{
+  "label": "report-before-transfer-ser",
+  "commit_order": [
+    "t2",
+    "t1"
+  ],
+  "permutation": [
+    "d0",
+    "t1b",
+    "t1r",
+    "t2b",
+    "t2t",
+    "t2c",
+    "t1w",
+    "t1c",
+    "chk"
+  ],
+  "signature": "t1=commit t2=commit",
+  "levels": {
+    "t1": "serializable",
+    "t2": "serializable"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        50
+      ],
+      [
+        2,
+        150
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "t1",
+      "session": "t1",
+      "command": {
+        "op": "read",
+        "accounts": [
+          1,
+          2
+        ]
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        100
+      ]
+    },
+    {
+      "id": "t2",
+      "session": "t2",
+      "command": {
+        "op": "transfer",
+        "from": 1,
+        "to": 2,
+        "amount": 50
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        50,
+        100,
+        150
+      ]
+    }
+  ]
+}

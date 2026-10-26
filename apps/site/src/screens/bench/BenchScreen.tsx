@@ -1,10 +1,12 @@
-// SCR-bench, the happy path's version: the ten labs, and how to install and run the statespace command line on your own
-// machine (labs/README.md sections 4 and 5; bench/). Receipt import, the environment panel and lane badges arrive with
-// the receipt viewer. The page sits in the series black (--vol-10); each lab on the shelf carries its own volume's ink.
+// SCR-bench, the happy path's version: the ten labs, how to install and run the statespace command line on your own
+// machine (labs/README.md sections 4 and 5; bench/), and receipt import (section 8): paste or drop a receipt, see each
+// check with who ran it and the claim cards it mints, and the receipts this tab holds a read-only copy of. The page sits
+// in the series black (--vol-10); each lab on the shelf carries its own volume's ink.
 
 import type { CSSProperties, ReactNode } from 'react'
 import { Link } from 'react-router'
 import { loadLabs, useLoaded } from '../../app/content.ts'
+import { useStore } from '../../app/ledger.ts'
 import { useTitle } from '../../app/title.ts'
 import { InlineMd } from '../../components/markdown/Markdown.tsx'
 import { Loading } from '../../components/page/states.tsx'
@@ -12,6 +14,10 @@ import { CoverArt } from '../../components/volume/CoverArt.tsx'
 import { volumeOf } from '../../components/volume/volumes.ts'
 import '../../components/volume/volume.css'
 import './bench.css'
+import { whenOf } from './receipt-model.ts'
+import { ReceiptImport } from './ReceiptImport.tsx'
+import { ReceiptView } from './ReceiptView.tsx'
+import { useReceipts } from './useReceipts.ts'
 
 const MANUAL = 'https://github.com/praveer13/statespace/blob/main/labs/README.md'
 
@@ -45,6 +51,11 @@ function Step({ n, children }: { readonly n: number; readonly children: ReactNod
 export function BenchScreen() {
   useTitle('Bench')
   const labs = useLoaded(loadLabs, [])
+  const store = useStore()
+  const { mirror, receipts } = useReceipts(store)
+  const labels = new Map<string, string>()
+  if (labs.status === 'ready') for (const lab of labs.value) for (const s of lab.stages) for (const c of s.checks) labels.set(c.id, c.label)
+  const checkLabel = (id: string): string | undefined => labels.get(id)
   return (
     <article className="screen bench">
       <header className="screen-head ws-head">
@@ -99,6 +110,36 @@ export function BenchScreen() {
           </ol>
         </section>
 
+        <section aria-labelledby="bench-receipts" className="bench-receipts">
+          <h2 id="bench-receipts">Receipts</h2>
+          <p className="bench-receipts-lede">
+            <code>statespace check</code> writes a receipt for each stage it runs. Import it here: the tab shows each check with who ran it, and
+            mints or updates the claim cards it names on the <Link to="/claims">claims</Link> page.
+          </p>
+          <ReceiptImport store={store} checkLabel={checkLabel} />
+          {mirror.status === 'ready' && receipts.length > 0 ? (
+            <div className="bench-held">
+              <h3 className="bench-held-head">In this tab's copy</h3>
+              <ol className="bench-held-list">
+                {receipts.map((imp) => (
+                  <li key={imp.path}>
+                    <details className="bench-held-row">
+                      <summary>
+                        <code>{imp.receipt.stage}</code>
+                        <span className="bench-held-when">{whenOf(imp.receipt.createdAt)}</span>
+                        <span className="bench-held-sum">
+                          {imp.receipt.checks.length === 1 ? (imp.receipt.checks[0]?.pass ? 'its check passed' : 'its check failed') : `${imp.receipt.checks.filter((c) => c.pass).length} of ${imp.receipt.checks.length} checks passed`}
+                        </span>
+                      </summary>
+                      <ReceiptView imported={imp} checkLabel={checkLabel} />
+                    </details>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
+        </section>
+
         <section aria-labelledby="bench-labs" className="bench-labs">
           <h2 id="bench-labs">The labs</h2>
           {labs.status === 'loading' ? <Loading what="the labs" /> : null}
@@ -118,7 +159,7 @@ export function BenchScreen() {
                       <span className="row-body">
                         <span className="row-id">{lab.id}</span>
                         <span className="row-title">
-                          <InlineMd text={lab.title.charAt(0).toUpperCase() + lab.title.slice(1)} />
+                          <InlineMd text={(lab.title.charAt(0).toUpperCase() + lab.title.slice(1)).replace(/\.$/, '')} />
                         </span>
                         <span className="row-meta">
                           {lab.stage} · {lab.stages.length} stages · about {minutes} min

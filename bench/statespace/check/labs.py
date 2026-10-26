@@ -1,8 +1,9 @@
 """Finding a lab: the short names of `statespace check`, and the lab modules that define the checks.
 
 `lab1` is LAB-1 and `lab2.2` is stage LAB-2.2 (spine section 9.6); `LAB-1.3` works too. A lab's checks
-live in `statespace/labs/lab<n>.py`, which defines `LAB`. `register` adds a lab without a module, for
-tests and for course tooling that builds a lab in memory.
+live in `statespace/labs/lab<n>.py`, which defines `LAB`; `available()` lists those modules by directory,
+and `repo_labs(root)` lists the labs a lab repository holds, by its directories `labs/LAB-<n>/`. `register`
+adds a lab without a module, for tests and for course tooling that builds a lab in memory.
 """
 
 from __future__ import annotations
@@ -10,13 +11,15 @@ from __future__ import annotations
 import importlib
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 from .model import Lab, Stage
 
-__all__ = ["LabUnavailable", "Target", "find_lab", "parse_target", "register", "unregister"]
+__all__ = ["LabUnavailable", "Target", "available", "find_lab", "parse_target", "register", "repo_labs", "unregister"]
 
 _registered: dict[str, Lab] = {}
 _TARGET = re.compile(r"(?i)lab-?0*([0-9]+)(?:\.0*([0-9]+))?")
+_DIR = re.compile(r"LAB-([1-9][0-9]*)")
 
 
 class LabUnavailable(LookupError):
@@ -46,6 +49,20 @@ def unregister(lab_id: str) -> None:
     _registered.pop(lab_id, None)
 
 
+def available() -> list[str]:
+    """Every lab this CLI can check: the modules in statespace/labs/, found by directory, and registered labs."""
+    from statespace import labs as package
+
+    return sorted({*package.available(), *_registered}, key=lambda lab: int(lab.split("-", 1)[1]))
+
+
+def repo_labs(root: Path) -> list[str]:
+    """The labs unpacked in a lab repository: its directories labs/LAB-<n>/, in lab order."""
+    base = root / "labs"
+    found = [int(m.group(1)) for p in (base.iterdir() if base.is_dir() else ()) if p.is_dir() and (m := _DIR.fullmatch(p.name))]
+    return [f"LAB-{n}" for n in sorted(found)]
+
+
 def find_lab(lab_id: str) -> Lab:
     """The lab's definition: a registered one, else `statespace.labs.lab<n>`'s LAB."""
     if lab_id in _registered:
@@ -56,7 +73,8 @@ def find_lab(lab_id: str) -> Lab:
         module = importlib.import_module(name)
     except ModuleNotFoundError as error:
         if error.name is not None and (name == error.name or name.startswith(error.name + ".")):
-            raise LabUnavailable(f"this version of statespace holds no checks for {lab_id}") from error
+            held = ", ".join(available()) or "none"
+            raise LabUnavailable(f"this version of statespace holds no checks for {lab_id} (it holds: {held}); unpack the lab's zip, which carries them") from error
         raise
     lab = getattr(module, "LAB", None)
     if not isinstance(lab, Lab) or lab.id != lab_id:

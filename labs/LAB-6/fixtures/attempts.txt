@@ -1,0 +1,23 @@
+# LAB-6.6's attempt fixtures. One command per line:
+#
+#   case <id> rereads|blind <attempt> <attempt> ...
+#
+# The attempts the command met, in order: Committed, a typed refusal (Insufficient, NoSuchAccount(from), ...),
+# or sqlstate:<code>, an error the server raised. `rereads` marks a command your policy declares re-reads its
+# key before it writes; `blind` one that does not, such as a blind INSERT. `statespace check lab6.6` asks your
+# policy what to do after each attempt, up to the first one after which it should stop or give up.
+case serialization-then-ok blind sqlstate:40001 Committed  # [X RUN-pg-catalog].
+case deadlock-then-ok blind sqlstate:40P01 Committed  # [X RUN-pg-catalog].
+case opposite-order blind sqlstate:40P01 sqlstate:40P01 Committed  # [X RUN-pg-catalog].
+case serialization-then-refused blind sqlstate:40001 Insufficient  # [X RUN-pg-catalog].
+case overflow blind sqlstate:22003  # [X RUN-pg-catalog].
+case check-violation blind sqlstate:23514  # [X RUN-pg-catalog].
+case refused blind Insufficient
+case no-such-account blind NoSuchAccount(to)
+case unique-blind blind sqlstate:23505  # [X RUN-pg-catalog].
+case unique-rereads rereads sqlstate:23505 Committed  # [X RUN-pg-catalog].
+case exclusion-blind blind sqlstate:23P01  # [X RUN-pg-catalog].
+case exclusion-rereads rereads sqlstate:23P01 sqlstate:40001 Committed  # [X RUN-pg-catalog].
+case committed blind Committed
+case storm blind sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001 sqlstate:40001  # [X RUN-pg-catalog].
+case deadlock-storm rereads sqlstate:40P01 sqlstate:40001 sqlstate:40P01 sqlstate:40001 sqlstate:40P01 sqlstate:40001 sqlstate:40P01 sqlstate:40001 sqlstate:40P01 sqlstate:40001 sqlstate:40P01  # [X RUN-pg-catalog].

@@ -1,0 +1,15 @@
+# LAB-9.1: the same output after an agent edited it "to reuse a register"
+source transfer 30 a1 a2
+output
+  ldi      r0 30
+  ldi      r1 1
+  assertGe r0 r1 nonPositive
+  read     r0 a1
+  ldi      r1 30
+  assertGe r0 r1 insufficient
+  ldi      r0 30
+  read     r1 a1
+  sub      r1 r1 r0
+  write    a1 r1
+  add      r1 r1 r0         # r1 is reused: it still holds the debited balance of a1
+  write    a1 r1

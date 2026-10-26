@@ -1,0 +1,16 @@
+# S9.L4 segment 3, compiled A: the reference compiler's output for transfer 5 a1 a2
+source transfer 5 a1 a2
+output
+  ldi      r0 5
+  ldi      r1 1
+  assertGe r0 r1 nonPositive
+  read     r0 a1
+  ldi      r1 5
+  assertGe r0 r1 insufficient
+  ldi      r0 5
+  read     r1 a1
+  sub      r1 r1 r0
+  write    a1 r1
+  read     r1 a2
+  add      r1 r1 r0
+  write    a2 r1

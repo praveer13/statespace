@@ -1,0 +1,10 @@
+# S9.L3: move (bal a1) a1 a2 with the amount saved before the first write
+source move bal a1 a1 a2
+output
+  read     r0 a1
+  read     r1 a1
+  sub      r1 r1 r0
+  write    a1 r1
+  read     r1 a2
+  add      r1 r1 r0
+  write    a2 r1

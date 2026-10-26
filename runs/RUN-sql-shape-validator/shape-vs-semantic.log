@@ -1,0 +1,5 @@
+server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances
+[wrong-account] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[wrong-account] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1
+  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | diverges

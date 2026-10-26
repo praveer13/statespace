@@ -16,7 +16,7 @@ from .support import cli
 class Dispatcher(unittest.TestCase):
     def test_the_entry_point_is_the_table(self) -> None:
         self.assertIs(entry.main, table.main)
-        self.assertEqual(set(table.COMMANDS), {"doctor", "check", "receipt", "hash", "run", "export"})
+        self.assertEqual(set(table.COMMANDS), {"doctor", "check", "receipt", "hash", "run", "export", "isorun", "trace", "sim", "demo", "proposal"})
         for name, (module, _what) in table.COMMANDS.items():
             with self.subTest(name):
                 self.assertTrue(callable(getattr(importlib.import_module(module), "main", None)))

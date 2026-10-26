@@ -1,0 +1,33 @@
+# CL-1.1: the claim card for claims/cl-1-1.smt2, minted by LAB-1.3. `statespace check lab1.6` validates it
+# (claim@1). It arrives prefilled; you fill the fields marked TODO(you):
+#   method.receipt   your passing receipt of LAB-1.3, receipts/LAB-1.3/<file>.json, or the folder
+#                    receipts/LAB-1.3 for the newest one in it
+#   method.version   the version of the solver runs in that receipt, copied from it
+#   requirement      the requirement this claim serves, in your words; never write a stamp here
+# if_weakened.specimen names the witness that LAB-1.2 wrote to specimens/: the overdraft once the guard is
+# dropped. The check replays it against this card's proposition.
+schema: statespace/claim@1
+id: cl-1-1
+template: CL-1.1
+proposition: >-
+  For all integers a, b and amount with a >= 0, b >= 0, amount > 0 and amount <= a, the sender's
+  balance after the transfer, a - amount, is not below zero.
+statement:
+  path: claims/cl-1-1.smt2
+assumptions:
+  - text: balances are unbounded integers
+    seam: SEAM-1
+  - text: the solver is sound
+    seam: SEAM-7
+  - text: callers reject a transfer whose amount is not positive
+model: one transfer step over Z3's Int, with the sender and the recipient distinct
+method:
+  receipt: "TODO(you): receipts/LAB-1.3/<file>.json"
+  tool: z3
+  version: "TODO(you)"
+correspondence:
+  text: no code is named; the code is assumed to compute a - amount without overflow
+if_weakened:
+  specimen: specimens/lab1-overdraft.json
+requirement:
+  text: "TODO(you)"

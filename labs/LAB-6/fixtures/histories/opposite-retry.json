@@ -1,0 +1,106 @@
+{
+  "label": "opposite-retry",
+  "commit_order": [
+    "a#1",
+    "b",
+    "a#2"
+  ],
+  "permutation": [
+    "d0",
+    "ab",
+    "ad",
+    "bb",
+    "bd",
+    "ak",
+    "bk",
+    "ac",
+    "bc",
+    "ab2",
+    "ad2",
+    "ak2",
+    "ac2",
+    "chk"
+  ],
+  "signature": "a=abort:40P01+commit b=commit  [40P01]",
+  "levels": {
+    "a": "read committed",
+    "b": "read committed"
+  },
+  "d0": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "dfinal": {
+    "acct": [
+      [
+        1,
+        100
+      ],
+      [
+        2,
+        100
+      ]
+    ],
+    "holds": []
+  },
+  "transactions": [
+    {
+      "id": "a#1",
+      "session": "a",
+      "command": {
+        "op": "transfer",
+        "from": 1,
+        "to": 2,
+        "amount": 10
+      },
+      "outcome": "abort:40P01",
+      "outputs": [
+        100,
+        90
+      ]
+    },
+    {
+      "id": "a#2",
+      "session": "a",
+      "command": {
+        "op": "transfer",
+        "from": 1,
+        "to": 2,
+        "amount": 10
+      },
+      "outcome": "ok",
+      "outputs": [
+        110,
+        100,
+        90,
+        100
+      ]
+    },
+    {
+      "id": "b",
+      "session": "b",
+      "command": {
+        "op": "transfer",
+        "from": 2,
+        "to": 1,
+        "amount": 10
+      },
+      "outcome": "ok",
+      "outputs": [
+        100,
+        90,
+        100,
+        110
+      ]
+    }
+  ]
+}

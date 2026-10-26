@@ -165,6 +165,13 @@ export const ENGINES = {
       },
     ],
   },
+  pairs: {
+    // INS-pairs: course TypeScript in the pure pool (apps/instruments/src/engines/pairs/), bundled with the worker, so
+    // there is nothing to download.
+    version: '1',
+    label: 'INS-pairs 1: the S7 interpreter and the paired-state evaluator',
+    sources: [],
+  },
   derivation: {
     // INS-derivation (the Derivation Board): one Z3 validity query per step. Its payload is Z3's: the same pinned
     // files at the same paths, so the engine cache holds one copy. The board's checker (derivation.py) is the

@@ -1,0 +1,115 @@
+{
+  "id": "RUN-sql-shape-validator",
+  "title": "A shape check accepts the wrong-account plan, whose credit names the source account; the reference semantic validator rejects it with an instance that replays on PostgreSQL 18.6 and in the interpreter as different outcome classes",
+  "task": "W5-T22",
+  "origin": "recorded",
+  "records": "S9.L8 cell 2 (SP-9.2) and CL-9.3's if-weakened witness",
+  "engine": "postgres",
+  "version": "18.6",
+  "version_string": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "binary": "/usr/lib/postgresql/18/bin/postgres in postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6, which replays each rejection; the validators are the Python files in inputs[], under the Bench image's python3",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T21:07:23.766Z",
+  "started_at": "2026-10-26T21:07:23.434Z",
+  "duration_s": 0.332,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-lab9-sql-shape-validator",
+    "--memory=6g",
+    "--network",
+    "ssrec-lab9-net",
+    "-e",
+    "STATESPACE_PG_DSN=postgresql://postgres@ssrec-lab9-pg:5432/postgres",
+    "-e",
+    "PYTHONPATH=/r/bench",
+    "-v",
+    "<repo>:/r:ro",
+    "-w",
+    "/r",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python",
+    "-B",
+    "labs/reference/sql-validator/record.py",
+    "shape-vs-semantic"
+  ],
+  "inputs": [
+    {
+      "path": "bench/statespace/labs/lab9.py",
+      "sha256": "60ed553c67c4d16ba7cc22e5aa4afdc0bb5edfc2d85e4c84583d79bed92380db",
+      "bytes": 66240,
+      "role": "script"
+    },
+    {
+      "path": "labs/reference/sql-validator/validators.py",
+      "sha256": "afea1a66f3390e7601e2454aac418b610ea00ef6a878ec1b648600d2b436d6e5",
+      "bytes": 5405,
+      "role": "script"
+    },
+    {
+      "path": "labs/reference/sql-validator/record.py",
+      "sha256": "95a95fabb6f27236d5f16050050c351693ca0f877fb0cbdd43e5c1210b8bc5a2",
+      "bytes": 2695,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-lab9-net",
+    "postgres_image": "postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances",
+    "[wrong-account] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[wrong-account] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1",
+    "  replay accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | diverges"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-sql-shape-validator/shape-vs-semantic.log",
+      "sha256": "eda7f9f6b6fbe37717c786064cf9a7f46847bfde0c7a0e429fb95324359b320a",
+      "bytes": 581,
+      "kind": "log"
+    }
+  ],
+  "values": {
+    "server": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "plans": {
+      "wrong-account": {
+        "shape": "accepted",
+        "kind": "wrong",
+        "semantic": "rejected",
+        "replay": {
+          "instance": "accounts=1:0,2:1 from=2 to=1 amount=1",
+          "postgres": "committed 1:0, 2:1",
+          "interpreter": "committed 1:1, 2:0",
+          "result": "diverges"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "runtime": "docker",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "network": "ssrec-lab9-net"
+    }
+  },
+  "notes": [
+    "<repo> in argv is the course repository at the commit the inputs' hashes name, mounted read-only.",
+    "PostgreSQL ran as the container ssrec-lab9-pg (postgres@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6, postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)) on the network ssrec-lab9-net, with trust authentication; both were removed after the run.",
+    "The bound is ids 1..3 (rows 1 and 2 present or absent, row 3 never), balances 0..3 and amounts -1..3: 1125 instances, enumerated with full tables first. An acceptance is about that bound only.",
+    "Each rejection's instance is replayed twice: the plan on PostgreSQL in one transaction (statespace.labs.lab9.replay_plan), the source transfer in the course's interpreter (statespace.labs.lab9.source_transfer). A rejection counts only when the two outcome classes differ.",
+    "verdict_lines are every non-empty line of the log, copied in order."
+  ]
+}

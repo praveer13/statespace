@@ -199,13 +199,13 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [=] W1-T40 · GATE-audit and GATE-audit-blind (added) · M · opus · W1-T21
 - [ ] W1-T41 · GATE-bundle and GATE-a11y harness (added) · M · sonnet · W0-S12, W0-S02
 - [~] W1-T42 · GATE-specimens and GATE-conformance harnesses (added) · M · sonnet · W0-S11, W0-T04
-- [ ] W1-T43 · GATE-labs harness (added) · M · opus · W0-T04, W1-T29
+- [~] W1-T43 · GATE-labs harness (added) · M · opus · W0-T04, W1-T29
 
 ### Evidence and claims
 
 - [~] W1-T01 · Stamps, strip and tokens · M · opus · W0-S12
 - [~] W1-T03 · Event log and provenance · M · opus · W0-T02
-- [ ] W1-T14 · Receipt import and claim minting · M · opus · W0-S11, W1-T35, W1-T41
+- [~] W1-T14 · Receipt import and claim minting · M · opus · W0-S11, W1-T35, W1-T41
 - [~] W1-T15 · Claim cards and GATE-claims · M · opus · W1-T14, W1-T12
 - [=] W1-T16 · Specimen cabinet · M · sonnet · W1-T03, W1-T12, W1-T42
 
@@ -215,7 +215,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Bench lanes
 
-- [ ] W1-T29 · Bench CLI core: check, receipt verify, hash, run (part of W1-T13) · M · opus · W0-T05, W0-T02, W0-S11
+- [~] W1-T29 · Bench CLI core: check, receipt verify, hash, run (part of W1-T13) · M · opus · W0-T05, W0-T02, W0-S11
 
 ### Instruments
 
@@ -250,10 +250,10 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W1-T09 · Boot · M · opus · W1-T05, W1-T06, W1-T07, W1-T08, W1-T12, W1-T38, W1-T41, W1-T45
 - [~] W1-T10 · S1 lessons S1.L1–S1.L5 (milestone) · S · opus · W1-T05, W1-T06, W1-T12, W1-T27, W1-T28
 - [~] W1-T11 · Drawers D-01–D-06 and D-13 · M · opus · W1-T04, W1-T12, W1-T36, W1-T38, W1-T01, W1-T21, W1-T39
-- [~] W1-T13 · LAB-1 and `statespace check` for Z3 (milestone) · S · opus · W0-S11, W1-T29, W1-T30, W1-T31, W1-T43
+- [=] W1-T13 · LAB-1 and `statespace check` for Z3 (milestone) · S · opus · W0-S11, W1-T29, W1-T30, W1-T31, W1-T43
 - [~] W1-T27 · S1 lessons S1.L1–S1.L2 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T37, W1-T38
 - [~] W1-T28 · S1 lessons S1.L3–S1.L5 (part of W1-T10) · M · opus · W1-T22, W1-T23, W1-T24, W1-T26, W1-T06, W1-T12, W1-T15, W1-T19, W1-T37, W1-T38
-- [~] W1-T30 · LAB-1 stages LAB-1.1–LAB-1.6 (part of W1-T13) · M · opus · W1-T29, W1-T12, W1-T15, W1-T43
+- [=] W1-T30 · LAB-1 stages LAB-1.1–LAB-1.6 (part of W1-T13) · M · opus · W1-T29, W1-T12, W1-T15, W1-T43
 - [=] W1-T44 · Deferred drawer cards D-30–D-40 (added) · S · sonnet · W1-T11
 - [ ] W1-T45 · S1 placement walk (added) · S · opus · W1-T22, W1-T23, W1-T24, W1-T11, W1-T38
 
@@ -293,14 +293,14 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Semantics
 
-- [ ] W2-T07 · Mini-Plinth reference semantics and goldens (milestone) · S · opus · W2-T01, W2-T34, W2-T35
-- [ ] W2-T34 · Reference semantics in Lean (part of W2-T07) · M · opus · W2-T01
-- [ ] W2-T35 · Kernel-checked goldens, semantics lint and IR export (part of W2-T07) · M · opus · W2-T34
+- [~] W2-T07 · Mini-Plinth reference semantics and goldens (milestone) · S · opus · W2-T01, W2-T34, W2-T35
+- [~] W2-T34 · Reference semantics in Lean (part of W2-T07) · M · opus · W2-T01
+- [~] W2-T35 · Kernel-checked goldens, semantics lint and IR export (part of W2-T07) · M · opus · W2-T34
 
 ### Instruments
 
 - [~] W2-T03 · Goal Replay generator and UI · M · sonnet · W0-S10
-- [ ] W2-T08 · IR schema, TypeScript interpreter, Lane A host · M · opus · W2-T07
+- [~] W2-T08 · IR schema, TypeScript interpreter, Lane A host · M · opus · W2-T07
 
 ### Generators
 
@@ -329,14 +329,14 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Stage S2: lessons, LAB-2, Defence, drawers
 
-- [ ] W2-T02 · LAB-2 challenge pack and template (milestone) · S · opus · W2-T01, W2-T36, W2-T37
+- [=] W2-T02 · LAB-2 challenge pack and template (milestone) · S · opus · W2-T01, W2-T36, W2-T37
 - [~] W2-T04 · S2 lessons S2.L0–S2.L10 (milestone) · S · opus · W2-T03, W2-T10, W2-T05, W2-T19, W2-T20, W2-T21
 - [~] W2-T05 · Self-explanation unit (OD-10) · S · opus · —
 - [~] W2-T19 · S2 lessons S2.L1–S2.L4 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T18
 - [~] W2-T20 · S2 lessons S2.L5–S2.L7 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01
 - [~] W2-T21 · S2 lessons S2.L8–S2.L10 (part of W2-T04) · M · opus · W2-T03, W2-T30, W2-T38, W2-T01, W2-T08
-- [~] W2-T36 · LAB-2 stages LAB-2.1–LAB-2.4 with the challenge pack (part of W2-T02) · M · opus · W2-T33
-- [~] W2-T37 · LAB-2 stages LAB-2.5–LAB-2.8 (part of W2-T02) · M · opus · W2-T36
+- [=] W2-T36 · LAB-2 stages LAB-2.1–LAB-2.4 with the challenge pack (part of W2-T02) · M · opus · W2-T33
+- [=] W2-T37 · LAB-2 stages LAB-2.5–LAB-2.8 (part of W2-T02) · M · opus · W2-T36
 - [ ] W2-T40 · Defence content for S1 and S2 (added) · M · opus · W2-T12, W2-T31, W1-T13, W2-T02, W2-T13, W1-T17
 - [~] W2-T43 · Drawers D-07, D-08 and D-15 (added) · S · opus · W2-T38, W1-T11
 
@@ -346,10 +346,10 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W2-T22 · S3 lessons S3.L1–S3.L3 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
 - [~] W2-T23 · S3 lessons S3.L4–S3.L6 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T30
 - [~] W2-T24 · S3 lessons S3.L7–S3.L9 (part of W2-T09) · M · opus · W2-T08, W2-T39, W2-T42
-- [~] W2-T25 · LAB-3 stages LAB-3.1–LAB-3.3 (part of W2-T09) · M · opus · W2-T07, W2-T33
-- [~] W2-T26 · LAB-3 stages LAB-3.4–LAB-3.7 (part of W2-T09) · M · opus · W2-T25
-- [~] W2-T27 · LAB-3 capstone stages LAB-3.8–LAB-3.11 (part of W2-T09) · M · opus · W2-T26, W2-T08
-- [~] W2-T28 · LAB-3 stretch stages LAB-3.12–LAB-3.13 (part of W2-T09) · S · opus · W2-T26
+- [=] W2-T25 · LAB-3 stages LAB-3.1–LAB-3.3 (part of W2-T09) · M · opus · W2-T07, W2-T33
+- [=] W2-T26 · LAB-3 stages LAB-3.4–LAB-3.7 (part of W2-T09) · M · opus · W2-T25
+- [=] W2-T27 · LAB-3 capstone stages LAB-3.8–LAB-3.11 (part of W2-T09) · M · opus · W2-T26, W2-T08
+- [=] W2-T28 · LAB-3 stretch stages LAB-3.12–LAB-3.13 (part of W2-T09) · S · opus · W2-T26
 - [ ] W2-T41 · Defence content for S3 (added) · S · opus · W2-T12, W2-T31, W2-T25, W2-T26, W2-T27, W2-T13
 - [~] W2-T44 · Drawers D-14, D-22 and D-23 (added) · S · opus · W2-T08
 
@@ -435,7 +435,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W3-T18 · S4 lessons S4.L1–S4.L3 (part of W3-T03) · M · opus · W3-T01, W3-T16, W3-T25
 - [~] W3-T19 · S4 lessons S4.L4–S4.L6 (part of W3-T03) · M · opus · W3-T16, W3-T17, W3-T25, W3-T21
 - [~] W3-T20 · S4 lessons S4.L7–S4.L9 (part of W3-T03) · M · opus · W3-T25, W3-T21, W3-T22, W0-S07
-- [~] W3-T21 · LAB-4 stages LAB-4.1–LAB-4.4 with the template and ABI (part of W3-T04) · M · opus · W2-T08, W1-T29
+- [=] W3-T21 · LAB-4 stages LAB-4.1–LAB-4.4 with the template and ABI (part of W3-T04) · M · opus · W2-T08, W1-T29
 - [~] W3-T22 · LAB-4 stages LAB-4.5–LAB-4.9 (part of W3-T04) · M · opus · W3-T21
 
 ### Stage S5: lessons, LAB-5, Defence, drawers
@@ -444,7 +444,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W3-T29 · S5 lessons S5.L1–S5.L3 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T26, W3-T27
 - [=] W3-T30 · S5 lessons S5.L4–S5.L6 (part of W3-T11) · M · opus · W3-T23, W3-T08, W3-T09, W3-T26, W3-T27, W3-T28
 - [=] W3-T31 · S5 lessons S5.L7–S5.L9 (part of W3-T11) · M · opus · W3-T09, W3-T25, W3-T26, W3-T28, W3-T17
-- [~] W3-T32 · LAB-5 stages LAB-5.1–LAB-5.4 (part of W3-T11) · M · opus · W3-T05, W3-T26
+- [=] W3-T32 · LAB-5 stages LAB-5.1–LAB-5.4 (part of W3-T11) · M · opus · W3-T05, W3-T26
 - [~] W3-T33 · LAB-5 stages LAB-5.5–LAB-5.7 (part of W3-T11) · M · opus · W3-T32, W3-T09, W3-T25
 - [ ] W3-T42 · Defence content for S4 and S5 (added) · M · opus · W2-T12, W2-T31, W3-T22, W3-T33, W3-T36, W3-T37
 - [~] W3-T43 · Drawers D-09, D-10 and D-18 (added) · S · opus · W3-T25, W3-T26
@@ -487,8 +487,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Bench lanes
 
-- [ ] W4-T01 · `statespace isorun` (milestone) · S · opus · W0-S09, W4-T16, W4-T17
-- [ ] W4-T16 · isorun driver (part of W4-T01) · M · opus · W0-S09, W0-T05
+- [=] W4-T01 · `statespace isorun` (milestone) · S · opus · W0-S09, W4-T16, W4-T17
+- [=] W4-T16 · isorun driver (part of W4-T01) · M · opus · W0-S09, W0-T05
 - [ ] W4-T17 · isorun on the upstream isolationtester specs (part of W4-T01) · M · sonnet · W4-T16
 
 ### Semantics
@@ -497,12 +497,12 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Instruments
 
-- [ ] W4-T03 · History viewer and serializability checker (milestone) · S · opus · W4-T01, W4-T18, W4-T19
+- [~] W4-T03 · History viewer and serializability checker (milestone) · S · opus · W4-T01, W4-T18, W4-T19
 - [~] W4-T04 · PGlite instrument · M · sonnet · W0-S08
 - [~] W4-T07 · Datalog pair · M · sonnet · W0-S03
 - [~] W4-T08 · Paired-state evaluator and GEN-leaks-to-observer (milestone) · S · opus · W2-T08, W4-T27, W4-T28
 - [ ] W4-T15 · Spec duels by URL · M · opus · W0-S01
-- [ ] W4-T18 · Abstract-serializability checker (part of W4-T03) · M · opus · W4-T16, W2-T08
+- [=] W4-T18 · Abstract-serializability checker (part of W4-T03) · M · opus · W4-T16, W2-T08
 - [ ] W4-T19 · INS-history viewer and replayer (part of W4-T03) · M · sonnet · W4-T18
 - [ ] W4-T27 · INS-pairs paired-state evaluator (part of W4-T08) · M · opus · W2-T08
 
@@ -535,8 +535,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W4-T22 · S6 lessons S6.L4–S6.L6 (part of W4-T05) · M · opus · W4-T04, W4-T19, W4-T20, W4-T34, W4-T38
 - [~] W4-T23 · S6 lessons S6.L7–S6.L9 (part of W4-T05) · M · opus · W4-T18, W4-T19, W4-T20, W4-T34, W4-T38
 - [ ] W4-T24 · Reference compiler and reference R(S, D) (part of W4-T06) · M · opus · W2-T08, W4-T04, W4-T18
-- [~] W4-T25 · LAB-6 stages LAB-6.1–LAB-6.5 (part of W4-T06) · M · opus · W4-T24, W4-T16, W4-T34
-- [~] W4-T26 · LAB-6 stages LAB-6.6–LAB-6.9 (part of W4-T06) · M · opus · W4-T25, W4-T18
+- [=] W4-T25 · LAB-6 stages LAB-6.1–LAB-6.5 (part of W4-T06) · M · opus · W4-T24, W4-T16, W4-T34
+- [=] W4-T26 · LAB-6 stages LAB-6.6–LAB-6.9 (part of W4-T06) · M · opus · W4-T25, W4-T18
 - [~] W4-T38 · Sibling bridge cards; D-11 and D-21 (part of W4-T13) · S · opus · W1-T11
 
 ### Stage S7: lessons, LAB-7, Defence, drawers
@@ -545,8 +545,8 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [~] W4-T29 · S7 lessons S7.L1–S7.L4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T04
 - [~] W4-T30 · S7 lessons S7.L5–S7.L6 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35
 - [~] W4-T31 · S7 lessons S7.L7–S7.L8 (part of W4-T09) · M · opus · W4-T27, W4-T28, W4-T35, W4-T38
-- [~] W4-T32 · LAB-7 stages LAB-7.1–LAB-7.4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T16
-- [~] W4-T33 · LAB-7 stages LAB-7.5–LAB-7.8 (part of W4-T09) · M · opus · W4-T32, W4-T27
+- [=] W4-T32 · LAB-7 stages LAB-7.1–LAB-7.4 (part of W4-T09) · M · opus · W4-T07, W4-T35, W4-T16
+- [=] W4-T33 · LAB-7 stages LAB-7.5–LAB-7.8 (part of W4-T09) · M · opus · W4-T32, W4-T27
 - [ ] W4-T42 · Defence content for S6 and S7 (added) · M · opus · W2-T12, W2-T31, W4-T26, W4-T33, W4-T36, W4-T37
 - [~] W4-T43 · Drawers D-16, D-17 and D-20 (added) · S · opus · W4-T35
 
@@ -584,12 +584,12 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 
 ### Bench lanes
 
-- [ ] W5-T01 · Sim instrument and `statespace trace validate` (milestone) · S · opus · W3-T05, W5-T14, W5-T15, W0-S13
-- [ ] W5-T14 · statespace trace validate and trace@1 (part of W5-T01) · M · opus · W3-T05, W0-S13
+- [~] W5-T01 · Sim instrument and `statespace trace validate` (milestone) · S · opus · W3-T05, W5-T14, W5-T15, W0-S13
+- [~] W5-T14 · statespace trace validate and trace@1 (part of W5-T01) · M · opus · W3-T05, W0-S13
 
 ### Instruments
 
-- [ ] W5-T15 · INS-sim and statespace sim (part of W5-T01) · M · opus · W2-T08, W5-T14
+- [~] W5-T15 · INS-sim and statespace sim (part of W5-T01) · M · opus · W2-T08, W5-T14
 
 ### Audit Desk
 
@@ -617,27 +617,27 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [=] W5-T16 · S8 lessons S8.L1–S8.L3 (part of W5-T02) · M · opus · W5-T21, W5-T39
 - [~] W5-T17 · S8 lessons S8.L4–S8.L5 (part of W5-T02) · M · opus · W5-T21
 - [~] W5-T18 · S8 lessons S8.L6–S8.L7 (part of W5-T02) · M · opus · W5-T21, W5-T01
-- [~] W5-T19 · LAB-8 stages LAB-8.1–LAB-8.4 (part of W5-T02) · M · opus · W5-T01, W5-T21
-- [~] W5-T20 · LAB-8 stages LAB-8.5–LAB-8.9 (part of W5-T02) · M · opus · W5-T19
+- [=] W5-T19 · LAB-8 stages LAB-8.1–LAB-8.4 (part of W5-T02) · M · opus · W5-T01, W5-T21
+- [=] W5-T20 · LAB-8 stages LAB-8.5–LAB-8.9 (part of W5-T02) · M · opus · W5-T19
 - [ ] W5-T37 · Defence content for S8 (added) · S · opus · W2-T12, W2-T31, W5-T20, W5-T32
 - [~] W5-T39 · Drawers D-12 and D-19 (added) · S · opus · W5-T21
 
 ### Stage S9: lessons, LAB-9, challenge packs
 
-- [ ] W5-T04 · Stack-machine warm-up, S9 challenge packs, reference translation validator · M · opus · W2-T01
+- [=] W5-T04 · Stack-machine warm-up, S9 challenge packs, reference translation validator · M · opus · W2-T01
 - [~] W5-T05 · S9 lessons and LAB-9 (milestone) · S · opus · W5-T04, W5-T03, W5-T23, W5-T24, W5-T25, W5-T26, W5-T27, W5-T28
 - [~] W5-T23 · S9 lessons S9.L1–S9.L4 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
 - [~] W5-T24 · S9 lessons S9.L5–S9.L6 (part of W5-T05) · M · opus · W5-T04, W5-T22
 - [~] W5-T25 · S9 lessons S9.L7–S9.L9 (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [~] W5-T26 · LAB-9 stages LAB-9.1–LAB-9.3 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
-- [~] W5-T27 · LAB-9 preservation stages LAB-9.4–LAB-9.10 (part of W5-T05) · L · opus · W5-T26
-- [~] W5-T28 · LAB-9 stages LAB-9.11–LAB-9.12 (part of W5-T05) · M · opus · W5-T27
+- [=] W5-T26 · LAB-9 stages LAB-9.1–LAB-9.3 (half A) (part of W5-T05) · M · opus · W5-T04, W5-T22
+- [=] W5-T27 · LAB-9 preservation stages LAB-9.4–LAB-9.10 (part of W5-T05) · L · opus · W5-T26
+- [=] W5-T28 · LAB-9 stages LAB-9.11–LAB-9.12 (part of W5-T05) · M · opus · W5-T27
 
 ### Stage S10: LAB-10, Defence, triggers
 
-- [~] W5-T07 · LAB-10 and the demonstration recorder (milestone) · S · opus · W5-T06, W5-T29, W5-T30, W5-T31
-- [~] W5-T29 · LAB-10 stages LAB-10.1–LAB-10.3 (part of W5-T07) · M · opus · W5-T06, W5-T15
-- [~] W5-T30 · LAB-10 stages LAB-10.4–LAB-10.7 and the demonstration (part of W5-T07) · M · opus · W5-T29, W3-T40
+- [=] W5-T07 · LAB-10 and the demonstration recorder (milestone) · S · opus · W5-T06, W5-T29, W5-T30, W5-T31
+- [=] W5-T29 · LAB-10 stages LAB-10.1–LAB-10.3 (part of W5-T07) · M · opus · W5-T06, W5-T15
+- [=] W5-T30 · LAB-10 stages LAB-10.4–LAB-10.7 and the demonstration (part of W5-T07) · M · opus · W5-T29, W3-T40
 - [~] W5-T31 · LAB-10 stages LAB-10.8–LAB-10.10 (part of W5-T07) · M · opus · W5-T30, W5-T06
 - [ ] W5-T38 · Defence content for S10, over the report (added) · S · opus · W2-T12, W5-T31, W5-T34
 - [ ] W5-T40 · Deferred-drawer triggers D-31 and D-33–D-40 (added) · S · sonnet · W5-T06, W3-T34

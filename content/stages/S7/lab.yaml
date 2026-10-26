@@ -18,7 +18,7 @@ stages:
         label: Both engines derive the same relation.
         passes: >-
           Soufflé on the Bench and the tab's engine evaluate `reference/toy.dl` on
-          `reference/toy.facts`, and the two `canread` relations are equal as sets: the
+          its facts in `reference/`, and the two `canread` relations are equal as sets: the
           SHA-256 of the sorted tuples matches. The receipt names Soufflé's version
           {{run:RUN-souffle-version}} and the tab engine, Z3's Datalog behind an adapter
           {{run:RUN-fixedpoint-equal}}. Your prediction follows from the two answers in
@@ -123,3 +123,112 @@ stages:
       beside a satisfiable `run`, stamped [M] · scope k, or show query containment for
       `read_team`'s visible set, then break it with a NULL. It has no check and sits
       outside the lab's time.
+extra:
+  grading: >-
+    Every stage runs on your machine with `statespace check` (badge: reported from your machine): Soufflé, Z3, cvc5,
+    cargo and the PostgreSQL service of the devcontainer. LAB-7.4 connects through `STATESPACE_PG_DSN` and runs as
+    `uv run statespace check lab7.4`, with the psycopg {{run:RUN-scaffold#values.psycopg}} the repository's `pyproject.toml` pins. The tab re-runs LAB-7.1 to LAB-7.3 in its
+    Datalog and Z3 engines, and LAB-7.5 and LAB-7.6 with your Rust as wasm (badge: re-checked here).
+  template: >-
+    The template supplies the toy program and its facts, the Datalog adapter of the tab engine, the declarations of
+    `policy/read.dl`, the pinned `claims/no-cross-tenant.smt2` (the vocabulary, WF1 to WF3 and the policy, nesting
+    grounded as data) and `claims/revocation.yaml`, the RLS schema with `app.user_teams()` and the UPDATE and INSERT
+    policies, the view `views/open.view` with its deliberate-bug line commented out, the checker's view reader and
+    `encode_view_body`, the monitors' trace reader, and the claim card templates. The world generator, the reference
+    matrix, the mutants of LAB-7.3, the RLS harness, the paired-state reference and the S7 interpreter live in the
+    check module. You write the prediction, the policy, the property, the RLS policies, the product construction and
+    the observer, the two monitors, the release record, broken/ beside fixed/, and the cards.
+  contract:
+    policy: "`policy/read.dl` keeps the template's `.input` relations and outputs `canread`."
+    property: "`policy/read.smt2` holds `define-fun` forms only and defines `(violation u d)`; the check asks the question."
+    rls: "`rls/policies.sql` runs once, as the superuser, after `rls/schema.sql`; policies read `current_setting('app.user', true)`."
+    checker: "`noninterference.rs` exports `product` and `premise`, each a whole script ending in `(check-sat)`, over the symbols `<state>_L` and `<state>_R`."
+    monitors: "`s_new::check` and `s_past::check` take a trace and return Accept or the first rejecting step."
+  hints:
+    gate: >-
+      Every ladder opens with an explanation gate: write a teach-back of the failing check (what it tested, the
+      property it protects, your hypothesis), in at least 12 words, then reveal three authored ideas and tick the ones
+      you covered. It is self-assessed and never credited. R1 opens after the teach-back. Work past R2 is credited as
+      assisted until an unseen variant passes.
+    ladders:
+      - check: LAB-7.c1
+        r1: A relation is a set of tuples, so two engines agree when the sets are equal, whatever order they print in.
+        r2: Look at the two relation-hash lines the check prints, and at the facts files the program reads.
+        r3: |-
+          souffle -F labs/LAB-7/reference -D - labs/LAB-7/reference/toy.dl
+        r4: One program, one fact set, one fixpoint. The engines agreeing covers this input only, not every program.
+      - check: LAB-7.c2
+        r1: Each way in is one rule, a team's members reach the teams it is nested in, and whatever no rule derives is denied.
+        r2: Look at the first distinguishing world the check prints and the rule the reference used for that cell.
+        r3: |-
+          canread(u, d) :- inteam(u, t), share_team(d, t).
+        r4: Rules 1 to 3 over a recursive inteam, with the negation on revoked only, so the program stays stratified.
+      - check: LAB-7.c3
+        r1: A violation is a request the policy allows across tenants with no explicit share. An unsat means something only beside both witnesses, and an unknown fails closed.
+        r2: Look at the mutant whose verdict differs from the reference's, and at the request Z3 names on it.
+        r3: |-
+          (define-fun violation ((u User) (d Doc)) Bool
+            (and (canread u d) (not (= (tu u) (td d))) (not (explicit u d))))
+        r4: The pinned file states the policy by completion with nesting grounded as data; your property names an explicit share as rule 2 or rule 3, never through canread itself.
+      - check: LAB-7.c4
+        r1: USING filters rows, permissive policies combine with OR, and the table owner bypasses row security unless the table is forced.
+        r2: Look at the first disagreeing user and document, and at the role the probe connected as.
+        r3: |-
+          ALTER TABLE app.documents FORCE ROW LEVEL SECURITY;
+        r4: One policy per rule, each reading app.user, and FORCE so the owner's connection is bound too; the owner probe exists because SET ROLE alone never shows the bypass.
+      - check: LAB-7.c5
+        r1: Two copies of the state, related by what the viewer's tenant may know, run through the view once each, with the observations compared.
+        r2: Look at the decoded pair. Is the symbol that differs one the release list keeps equal?
+        r3: |-
+          out.push_str(&format!("(assert (= {} {}))\n", rename("own", Side::L), rename("own", Side::R)));
+        r4: The product program declares both copies, asserts Rel, encodes the view on each, and asserts that the observed parts differ; the premise swaps the last assertion for a secret that differs.
+      - check: LAB-7.c6
+        r1: Both statements are safety properties over traces, and what was delivered stays delivered.
+        r2: Look at the trace your S-past monitor accepted, or the seeded faulty trace your S-new monitor accepted.
+        r3: |-
+          if e.kind == "Revoke" && e.delivered.iter().any(|p| p.starts_with(&format!("{}@", e.doc))) {
+        r4: S-new checks each successful read against the state; S-past looks at the revoked user's log right after each Revoke, which a real trace refutes because knowledge is monotone.
+      - check: LAB-7.c7
+        r1: A release names what, to whom, who decides, where and when, and it releases state, not output fields.
+        r2: Compare your record's `documents.<field>` projections with the release list the LAB-7.5 receipt pinned.
+        r3: |-
+          - what: "documents.title and documents.body of a document d"
+        r4: Sabelfeld and Sands' principles applied. Releasing state keeps non-occlusion, an empty record gives plain noninterference, and a channel you keep is an [N] line, not a silence.
+  proveIt:
+    note: >-
+      Predict first, with your agent closed. `statespace defend lab7` mutates a copy of your artifacts and grades each
+      prediction with the matching checker. Every mutant below builds or loads.
+    mutations:
+      - mutation: drop `!revoked(d, u)` from rule 2 in `policy/read.dl`
+        template: 2, weaken a guard
+        predict: >-
+          LAB-7.c2 fails on the first world with a revocation: your policy allows the revoked cell and the reference
+          denies it. LAB-7.c3 still passes, because its policy is the pinned one and your property does not change.
+        gradedBy: Soufflé and the tab's Datalog engine; Z3
+      - mutation: "`<@` in place of `&&` in `read_team_shared`"
+        template: 3, change the encoding
+        predict: >-
+          LAB-7.c4 fails in SET ROLE mode: a document shared with no team has the empty array, which is contained in
+          every array, so every user sees it, teamless users included (dp:A1).
+        gradedBy: PostgreSQL
+      - mutation: drop `FORCE ROW LEVEL SECURITY`
+        template: 2, weaken a guard
+        predict: >-
+          SET ROLE mode still agrees with the matrix; the owner probe under your configuration sees rows the matrix
+          denies, so LAB-7.c4 fails there and nowhere else.
+        gradedBy: PostgreSQL
+      - mutation: add `total` to `Search`'s observer, with the count taken before the filter
+        template: 4, widen the observer
+        predict: The count variant turns sat, on a pair that differs only in a hidden match.
+        gradedBy: Z3 and the paired-state reference
+      - mutation: remove `body` from the release list
+        template: 1, drop a hypothesis (a conjunct of Rel)
+        predict: >-
+          The fixed view turns sat on share-then-edit: a shared document whose body differs between the two copies.
+        gradedBy: Z3 and the paired-state reference
+      - mutation: the ACL check reads the lagging replica
+        template: 4, split an action
+        predict: >-
+          S-new no longer holds on generated traces: a read after a revocation succeeds through the stale ACL, the new
+          enemy of S7.L8.
+        gradedBy: the S7 interpreter

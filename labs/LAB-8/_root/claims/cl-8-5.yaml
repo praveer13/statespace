@@ -1,0 +1,19 @@
+# CL-8.5, a claim card (claim@1). LAB-8.8 checks it.
+schema: statespace/claim@1
+id: eventually-dispatched
+template: CL-8.5
+proposition: "EventuallyDispatched: a committed command leads to a request"
+statement:
+  path: claims/OutboxProps.tla
+  property: EventuallyDispatched
+assumptions:
+  - text: "TODO(you): the assumptions it shares with CL-8.4, and the one it does not need"
+model: "spec/Outbox.tla under LiveSpec, MaxCrashes finite"
+method:
+  text: "TLC on challenge/live-all-dispatched.cfg (your LAB-8.3 receipt)"
+correspondence:
+  text: "assumed: a finite trace cannot test an eventuality"
+if_weakened:
+  text: "TODO(you): the witness when the poller reads a high-water mark (SP-8.2)"
+requirement:
+  text: "every committed command reaches the provider"
