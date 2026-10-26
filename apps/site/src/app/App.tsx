@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react'
-import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { useState, type FormEvent, type ReactNode } from 'react'
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
 
 // The shell (DESIGN.md section 7.2): "Skip to content" first; a top bar with the wordmark, and from 900 px the five
 // destinations as text links; below 900 px the destinations move to a bottom bar of 56-px targets with an icon and a
 // 12-px label, the Bench captioned "laptop"; the page; and the footer with the license and the source. The current
-// destination carries the ▸ pointer and a heavier weight, never color alone. Only one of the two bars is shown at a
+// destination carries a heavy rule beneath it and a heavier weight, never color alone. Only one of the two bars is shown at a
 // width, so assistive technology meets one navigation landmark.
 
 interface Destination {
@@ -84,6 +84,58 @@ const DESTINATIONS: readonly Destination[] = [
   },
 ]
 
+/** A printed address (S5, S5.L3, D-12, LAB-5) to its page, or null when the text is not an address. */
+export function addressPath(text: string): string | null {
+  const t = text.trim().toUpperCase().replace(/\s+/g, '')
+  if (/^S\d{1,2}$/.test(t)) return `/stages/${t}`
+  if (/^S\d{1,2}\.L\d{1,2}$/.test(t)) return `/lessons/${t}`
+  if (/^D-\d{1,3}$/.test(t)) return `/drawers/${t}`
+  if (/^LAB-\d{1,2}$/.test(t)) return `/labs/${t}`
+  return null
+}
+
+/** Go to an address: every stage, lesson, drawer and lab carries one, printed beside it; type it and press Enter. */
+function GoTo() {
+  const navigate = useNavigate()
+  const [text, setText] = useState('')
+  const [wrong, setWrong] = useState(false)
+  const go = (e: FormEvent) => {
+    e.preventDefault()
+    const to = addressPath(text)
+    if (to === null) {
+      setWrong(true)
+      return
+    }
+    setWrong(false)
+    setText('')
+    navigate(to)
+  }
+  return (
+    <form className="goto" role="search" aria-label="Go to an address" onSubmit={go}>
+      <label className="goto-label" htmlFor="goto-field">
+        Go to
+      </label>
+      <input
+        id="goto-field"
+        className="goto-field"
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value)
+          setWrong(false)
+        }}
+        placeholder="S5.L3"
+        autoComplete="off"
+        spellCheck={false}
+        aria-invalid={wrong || undefined}
+        aria-describedby={wrong ? 'goto-help' : undefined}
+      />
+      <span id="goto-help" className="goto-help" role="status">
+        {wrong ? 'Addresses look like S5, S5.L3, D-12 or LAB-5.' : ''}
+      </span>
+    </form>
+  )
+}
+
 const owner = (path: string): Destination | undefined => DESTINATIONS.find((d) => d.owns.some((p) => path === p || path.startsWith(`${p}/`)))
 
 function Destinations({ where, className }: { readonly where: string; readonly className: string }) {
@@ -121,8 +173,9 @@ export function App() {
         <nav aria-label="Main" className="nav-top">
           <Destinations where={pathname} className="nav-list" />
         </nav>
+        <GoTo />
       </header>
-      <main id="main" className="shell-main" tabIndex={-1}>
+      <main id="main" className="shell-main" tabIndex={-1} data-bleed={pathname === '/' || pathname === '/stages' || pathname.startsWith('/stages/') ? 'true' : undefined}>
         <Outlet />
       </main>
       <footer className="shell-foot">

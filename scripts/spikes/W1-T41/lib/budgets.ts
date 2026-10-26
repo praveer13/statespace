@@ -68,7 +68,7 @@ export const BUDGETS: readonly Budget[] = [
   { id: 'budget.host', label: 'instrument host page without engines', kb: 50, counts: ['js', 'css', 'other'] },
 ]
 
-export const FONT_FAMILIES = ['Archivo', 'Source Serif 4', 'JuliaMono'] as const
+export const FONT_FAMILIES = ['Jost', 'Source Serif 4', 'JuliaMono'] as const
 
 export interface ViteChunk {
   file: string

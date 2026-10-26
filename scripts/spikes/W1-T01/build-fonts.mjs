@@ -42,8 +42,8 @@ const gf = (p) => `https://raw.githubusercontent.com/google/fonts/${GOOGLE_FONTS
 
 /** The pinned sources: a download URL and the SHA-256 the bytes must have. */
 const SOURCES = {
-  archivo: { url: gf('ofl/archivo/Archivo[wdth,wght].ttf'), file: 'Archivo[wdth,wght].ttf', sha256: '0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053' },
-  archivoLicense: { url: gf('ofl/archivo/OFL.txt'), file: 'Archivo-OFL.txt', sha256: '108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b' },
+  jost: { url: gf('ofl/jost/Jost[wght].ttf'), file: 'Jost[wght].ttf', sha256: '6343b70971000b04c5d401c96ae08ce371086135e999d5e1e1413039c0213076' },
+  jostLicense: { url: gf('ofl/jost/OFL.txt'), file: 'Jost-OFL.txt', sha256: '1af3438a4d5f0ed2bdbc5751a5a67ebf6d537334161184b7fbb68503ef0ea0c5' },
   serif: { url: gf('ofl/sourceserif4/SourceSerif4[opsz,wght].ttf'), file: 'SourceSerif4[opsz,wght].ttf', sha256: '97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b' },
   serifItalic: { url: gf('ofl/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf'), file: 'SourceSerif4-Italic[opsz,wght].ttf', sha256: '15fbc7e4679489a501998c3669272637a6646388ef7e4bd77eebb5bf967a1f42' },
   serifLicense: { url: gf('ofl/sourceserif4/OFL.txt'), file: 'SourceSerif4-OFL.txt', sha256: '5f94c3fd3a23131a417ab5a0c8452de57e70c3cfb9f604d88241f7065ebf9fd9' },
@@ -163,7 +163,7 @@ const fallbackFiles = Object.fromEntries(
 )
 /** Each face: its CSS family, weight, style and stretch, and its two files. */
 const FACES = [
-  { family: 'Archivo', weight: '400 800', style: 'normal', stretch: '100% 125%', fallback: 'sans', source: files.archivo, axes: { wght: [400, 800], wdth: [100, 125] }, stem: 'archivo-var', core: TEXT_CORE, ext: TEXT_EXT },
+  { family: 'Jost', weight: '100 900', style: 'normal', fallback: 'sans', source: files.jost, axes: {}, stem: 'jost-var', core: TEXT_CORE, ext: TEXT_EXT },
   { family: 'Source Serif 4', weight: '400', style: 'normal', fallback: 'serif', source: files.serif, axes: { wght: 400, opsz: 'default' }, stem: 'source-serif-4-400', core: TEXT_CORE, ext: TEXT_EXT },
   { family: 'Source Serif 4', weight: '600', style: 'normal', fallback: 'serif', source: files.serif, axes: { wght: 600, opsz: 'default' }, stem: 'source-serif-4-600', core: TEXT_CORE, ext: TEXT_EXT },
   { family: 'Source Serif 4', weight: '400', style: 'italic', fallback: 'serif', source: files.serifItalic, axes: { wght: 400, opsz: 'default' }, stem: 'source-serif-4-400-italic', core: TEXT_CORE, ext: TEXT_EXT },
@@ -185,7 +185,7 @@ const run = spawnSync('uv', uvArgs, { encoding: 'utf8', cwd: work, maxBuffer: 64
 if (run.status !== 0) throw new Error(`subset-fonts.py exited ${run.status}\n${run.stderr}`)
 const report = JSON.parse(run.stdout)
 
-copyFileSync(files.archivoLicense, path.join(out, 'OFL-Archivo.txt'))
+copyFileSync(files.jostLicense, path.join(out, 'OFL-Jost.txt'))
 copyFileSync(files.serifLicense, path.join(out, 'OFL-SourceSerif4.txt'))
 copyFileSync(path.join(jm, 'LICENSE'), path.join(out, 'OFL-JuliaMono.txt'))
 
@@ -288,7 +288,7 @@ const manifest = {
   sample: SAMPLE,
   sources: Object.fromEntries(Object.entries(SOURCES).map(([k, s]) => [k, { url: s.url, sha256: s.sha256, ...(s.members ? { members: s.members } : {}) }])),
   licenses: {
-    'OFL-Archivo.txt': sha256(readFileSync(path.join(out, 'OFL-Archivo.txt'))),
+    'OFL-Jost.txt': sha256(readFileSync(path.join(out, 'OFL-Jost.txt'))),
     'OFL-SourceSerif4.txt': sha256(readFileSync(path.join(out, 'OFL-SourceSerif4.txt'))),
     'OFL-JuliaMono.txt': sha256(readFileSync(path.join(out, 'OFL-JuliaMono.txt'))),
   },
@@ -321,7 +321,7 @@ if (!BLOCK.test(tokens)) throw new Error('tokens.css lost its generated @font-fa
 
 if (check) {
   let bad = 0
-  for (const f of [...manifest.files.map((x) => x.file), 'OFL-Archivo.txt', 'OFL-SourceSerif4.txt', 'OFL-JuliaMono.txt', 'fonts.json']) {
+  for (const f of [...manifest.files.map((x) => x.file), 'OFL-Jost.txt', 'OFL-SourceSerif4.txt', 'OFL-JuliaMono.txt', 'fonts.json']) {
     const a = existsSync(path.join(OUT, f)) ? sha256(readFileSync(path.join(OUT, f))) : 'absent'
     const b = sha256(readFileSync(path.join(out, f)))
     if (a !== b) {

@@ -1,6 +1,9 @@
-// SCR-stage: one stage at a glance (DESIGN.md SCR-stage): its lessons in order with their format, minutes and whether
-// they are written, its lab and the lab's stages, and its drawers. Formats are plain words; tier names stay in data.
+// SCR-stage: one stage at a glance (DESIGN.md SCR-stage), as a volume of the series: its cover in the volume's ink with
+// the stage's figure, its colophon (what it holds and the runs it cites), then its lessons in order with their format,
+// minutes and whether they are written, its lab and the lab's stages, and its drawers. Formats are plain words; tier
+// names stay in data.
 
+import type { CSSProperties } from 'react'
 import { Link, useParams } from 'react-router'
 import { DRAFT_BANNER, tierFormat } from '@statespace/content'
 import type { Tier } from '@statespace/content'
@@ -8,8 +11,12 @@ import { loadStages, useLoaded } from '../../app/content.ts'
 import { useTitle } from '../../app/title.ts'
 import { InlineMd, Markdown } from '../../components/markdown/Markdown.tsx'
 import { Failed, Loading, Missing } from '../../components/page/states.tsx'
+import { CoverArt } from '../../components/volume/CoverArt.tsx'
+import { splitTitle, volumeOf } from '../../components/volume/volumes.ts'
 import { question, sizeLine, summarize } from './summary.ts'
 import '../../components/page/page.css'
+import '../../components/volume/volume.css'
+import './stages.css'
 
 export function StageScreen() {
   const { stage: id = '' } = useParams()
@@ -25,25 +32,89 @@ export function StageScreen() {
   const authored = stage.authored
   const first = stage.lessons[0]
 
+  const v = volumeOf(stage.id)
+  const { name, tools } = splitTitle(stage.title)
+  const sum = summarize(stage)
+  const runs = Object.keys(stage.runs).sort()
+
   return (
-    <article className="screen">
-      <header className="screen-head">
-        <p className="kicker">
-          <Link to="/stages">Stages</Link> ▸ {stage.id}
-        </p>
-        <h1>{stage.title}</h1>
-        <p className="lede">{question(stage)}</p>
-        <p className="meta">{sizeLine(summarize(stage))}</p>
-        {authored?.draft === true ? <p className="banner">{DRAFT_BANNER}</p> : null}
-        {authored?.summary !== undefined ? <Markdown md={authored.summary} /> : null}
-        {first !== undefined ? (
-          <p className="actions">
-            <Link to={`/lessons/${first.id}`} className="button button-primary">
-              Start with {first.id}
-            </Link>
-          </p>
-        ) : null}
+    <article className="volume" style={{ '--vol': v?.ink ?? 'var(--vol-10)' } as CSSProperties}>
+      <header className="volume-cover">
+        <div className="volume-cover-inner">
+          <div className="volume-cover-text">
+            <nav className="volume-crumbs" aria-label="Breadcrumb">
+              <Link to="/stages">Stages</Link>
+              <span aria-hidden="true"> / </span>
+              <span aria-current="page">{stage.id}</span>
+            </nav>
+            <h1 className="volume-title">
+              <span className="volume-title-n" aria-hidden="true">
+                {v?.n ?? ''}
+              </span>
+              <span>{name}</span>
+            </h1>
+            {tools !== '' ? <p className="volume-cover-tools">{tools}</p> : null}
+            <p className="volume-cover-q">{question(stage)}</p>
+            {first !== undefined ? (
+              <div className="volume-cover-actions">
+                <Link to={`/lessons/${first.id}`} className="flag" aria-describedby="volume-first">
+                  <span className="flag-verb">Start</span>
+                  <span className="flag-vol">{first.id}</span>
+                </Link>
+                <p id="volume-first" className="volume-first">
+                  First lesson: <em>{first.title}</em>
+                </p>
+              </div>
+            ) : null}
+          </div>
+          {v !== undefined ? (
+            <div className="volume-cover-art">
+              <CoverArt kind={v.motif} id={`cover-${stage.id}`} />
+            </div>
+          ) : null}
+        </div>
       </header>
+
+      <div className="volume-body-wrap wrap">
+        <section className="colophon" aria-labelledby="stage-colophon">
+          <h2 id="stage-colophon">Colophon</h2>
+          <dl className="colophon-table">
+            <div>
+              <dt>Address</dt>
+              <dd>
+                <code>{stage.id}</code>
+              </dd>
+            </div>
+            <div>
+              <dt>Holds</dt>
+              <dd>{sizeLine(sum)}</dd>
+            </div>
+            {stage.lab !== null ? (
+              <div>
+                <dt>Lab</dt>
+                <dd>
+                  <Link to={`/labs/${stage.lab.id}`}>{stage.lab.id}</Link>, on your laptop
+                </dd>
+              </div>
+            ) : null}
+            <div>
+              <dt>Drawers</dt>
+              <dd>{stage.drawers.length === 0 ? 'none' : `${stage.drawers.length}, open whenever you like`}</dd>
+            </div>
+            {runs.length > 0 ? (
+              <div>
+                <dt>Runs cited</dt>
+                <dd className="colophon-runs">
+                  {runs.map((r) => (
+                    <code key={r}>{r}</code>
+                  ))}
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+          {authored?.draft === true ? <p className="banner">{DRAFT_BANNER}</p> : null}
+          {authored?.summary !== undefined ? <Markdown md={authored.summary} /> : null}
+        </section>
 
       <section aria-labelledby="stage-lessons">
         <h2 id="stage-lessons">Lessons</h2>
@@ -117,7 +188,7 @@ export function StageScreen() {
         </section>
       ) : null}
 
-      <nav className="pager" aria-label="Previous and next stages">
+      <nav className="pager volume-pager" aria-label="Previous and next stages">
         {prev !== undefined ? (
           <Link to={`/stages/${prev.id}`} className="pager-link" rel="prev">
             <span className="kicker">Previous · {prev.id}</span>
@@ -133,6 +204,7 @@ export function StageScreen() {
           </Link>
         ) : null}
       </nav>
+      </div>
     </article>
   )
 }

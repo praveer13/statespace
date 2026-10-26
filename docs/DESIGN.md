@@ -8,7 +8,7 @@
 
 **Tags.** `[X RUN-id]` an executed run on disk; `{{run:RUN-id}}` a run that must be recorded before the sentence ships; `[D]` design rationale, or a value computed for this file; evidence grades **A–D** follow the pedagogy digest (A meta-analysis or several RCTs; B one good similar experiment; C small, correlational or preprint; D rationale). Citation keys in brackets (`[cbm]`, `[kulik90]`) resolve in BRIEF §9.
 
-**Computed values.** Every contrast ratio, luminance ratio and color-difference figure in §2 was computed for this file on 2026-10-23 from the token values printed here: WCAG 2.2 relative luminance for contrast; CIELAB ΔE76 (D65) for color difference; the Machado, Oliveira and Fernandes (2009) severity-1.0 matrices, applied in linear RGB, for color-vision simulation. They are design facts about these hex values, tagged `[D]`, and GATE-a11y and GATE-stamps recompute them on every build. They agree with the design review's own measurements wherever the two overlap (A7 appendix).
+**Computed values.** Every contrast ratio, luminance ratio and color-difference figure in §2 was computed for this file on 2026-10-23 from the token values printed here: WCAG 2.2 relative luminance for contrast; CIELAB ΔE76 (D65) for color difference; the Machado, Oliveira and Fernandes (2009) severity-1.0 matrices, applied in linear RGB, for color-vision simulation. They are design facts about these hex values, tagged `[D]`, and GATE-a11y and GATE-stamps recompute them on every build. They agree with the design review's own measurements wherever the two overlap (A7 appendix). The neutrals, links, rubric, plate and volume inks changed with the Little Library (§1), and every figure that depends on them was recomputed on 2026-10-26 in the same way [D].
 
 **Wireframes are schematic.** A wireframe shows field shapes and order. Its values are slots (‹n›, ‹verdict›, ‹sha›) unless a value carries a run reference. Nothing in a wireframe may be copied into learner copy without its run reference (GATE-numbers).
 
@@ -18,11 +18,11 @@
 
 | Decision | v2 choice | Section |
 |---|---|---|
-| Identity | a drafting table: vellum sheets, graphite line work, title blocks filled from runs, assurance stamps | §1 |
+| Identity | the Little Library: the course as a numbered series of mid-century popular-mathematics paperbacks, one flat-ink volume per stage, with newsprint interiors, title blocks filled from runs, and assurance stamps; the visual world is recorded in `/DESIGN.md` | §1 |
 | Not this | no stone plinth and no elevation drawing; nothing of kernelspace's dark navy-and-mint terminal; no game chrome | §1.3 |
-| Themes | light (vellum) and a validated graphite night; neither has navy, mint, glow or shadow | §2 |
+| Themes | light (cool newsprint) and a graphite night; neither has glow or shadow; §2.7 lists where the volume inks and night teal come near kernelspace | §2 |
 | Color | semantic only: stamp hues live in stamps and strips (plus the two vermilion line styles); progress is drawn in ink | §2.1 |
-| Type | Archivo for structure, Source Serif 4 for reading, JuliaMono for code, logic and inline math; self-hosted subsets; ASCII TLA+ by default | §3 |
+| Type | Jost for structure, Source Serif 4 for reading, JuliaMono for code, logic and inline math; self-hosted subsets; ASCII TLA+ by default | §3 |
 | Lines | solid is structure, dashed is assumed, dotted is bounded, heavy vermilion is a witnessed violation, a vermilion zig-zag is an erosion crack; nothing else is dashed or dotted | §4 |
 | Stamps | `WORD [code] · qualifier`; nine words, nine codes, nine frames that separate in grayscale; the qualifier is required and as large as the word | §5 |
 | Claims | a three-segment strip (proposition-of-model · correspondence · requirement-fit); requirement-fit is never [P]; EROSION is an event drawn as a crack, never a stamp | §5.6–§5.7 |
@@ -34,47 +34,52 @@
 
 ---
 
-## 1. Identity: the drafting table
+## 1. Identity: the Little Library
 
-### 1.1 Why a drafting table
+The visual world is recorded in full in [`/DESIGN.md`](../DESIGN.md), which is the authority for palette, volume inks, type roles, rules, covers, spines and their components. This section says why the world fits and what the interface keeps from v2. This file stays the authority for screen specs, stamps, the line language, accessibility and voice.
 
-Formal methods is careful, written, slow work: definitions, derivations, counterexamples kept under glass, guarantees signed for a stated scope. An engineering drawing already has the two devices this course needs. Its **title block** says what was drawn, when, at what revision, at what scale and who checked it. Its **stamp** is a signed scope of responsibility. statespace uses both for its subject: every result says what was checked, by which checker at which version, within which bound, and on whose machine. The design review found this light-mode identity "strong and right for the subject" (A7, verdict in brief).
+### 1.1 Why the Little Library
+
+statespace is printed as a numbered series of slim mid-century popular-mathematics paperbacks. Each stage, S1 to S10, is a volume with its own flat offset ink, white type and a cover figure drawn from that stage's own object, such as a lattice of states, a derivation tree or a commuting square. A series of short, numbered books suits a course that is read in order but never locked: a learner can see the whole run on the shelf, take down any volume and know which one is in hand. Covers carry the colour. A volume's interior is cool newsprint and black ink, so the stamps and line language keep their meaning. The two devices formal results need survive from v2 unchanged. The **title block** says what was checked, by which checker at which version, within which bound and on whose machine. The **stamp** is a signed scope of what a check established.
 
 ### 1.2 Signature elements
 
 | Element | What it is | Where |
 |---|---|---|
-| Vellum and sheets | a pale vellum ground; content sits on sheets framed by 1.5-px graphite rules; corner radius at most 2 px | every screen |
-| Graphite line work | structure is drawn with lines, not boxed with shadows; five line styles, one meaning each | §4 |
+| Volume covers | one flat offset ink per stage (`--vol-1`…`--vol-10`), white type, a cover figure from the stage's own object over a halftone disc, with a second plate in a tint of the ink printed a hair off register | start page, SCR-stage, `/DESIGN.md` |
+| The shelf | the ten stages as spines whose thickness follows planned minutes; only the volume in hand floods with its ink; every spine is a link and nothing locks | start page |
+| The ordered path | the ten stages in order as a list, the document of SCR-stages (§6.14); the list prints as ruled series-catalogue lines (mini-cover, number, name, tools, question, holdings), and the path drawing is not shipped yet, a cut §6.14 allows | §6.14, SCR-stages |
+| The colophon | a ruled definition list on every stage: what the volume holds and the runs it cites | SCR-stage |
+| Printed addresses | every stage, lesson, drawer and lab is printed with its address (S5, S5.L3, D-12, LAB-5), and the masthead's Go-to field opens one | the shell |
+| Newsprint and ink | interiors are black ink on cool newsprint, divided by 3-px ink rules, with rubric headings; square corners, radius at most 2 px | every screen |
 | Title blocks filled from runs | a six-field provenance block (Project, Sheet, Drawn, Rev, Scale, Checked by), filled from runs and receipts and never typed by hand | §6.1 |
 | Stamps | a word plus a bracketed code plus a required qualifier, in a frame whose shape alone tells the nine stamps apart | §5 |
 | Specimen labels | museum labels for counterexamples, generated from the run that found them | §6.5 |
 | Dimension lines | ranges (plan hours, Wilson intervals, bounds) drawn as dimension lines with end ticks, so an interval looks like an interval | §6.12, SCR-week |
-| The ordered path | the ten stages as nodes on one drawn route, mirrored by a list | §6.14, SCR-stages |
 | The crack | the only drawn event: a vermilion zig-zag along a strip segment or a rests-on edge | §5.7 |
 | Revision marks | a numbered triangle (△1) beside a line that an erratum changed, linking to SCR-changes | §6.15 |
 
 ### 1.3 What it is not
 
-- **No stone plinth.** There is no elevation drawing, no stages stacked as masonry, no plinth top that "your application stands on", and no widths that encode nothing. The brief retired the metaphor because the word collides with other uses and the elevation drew a tower that read as a lock (A7-14; review digest R17). "Plinth" survives only in the roadmap's toy-language names, Mini-Plinth and `miniplinth check` (OD-2). Home is Today for return visits and an ordered path of stages with a list mirror (spine §0).
-- **Not kernelspace.** kernelspace is dark-only: navy surfaces, a mint accent, a terminal aesthetic. statespace inherits kernelspace's learning engine and nothing of its look (spine §0). The table below is about look only.
+- **No stone pedestal.** There is no elevation drawing, no stages stacked as masonry, no pedestal top that "your application stands on", and no widths that encode nothing. A spine's thickness encodes planned minutes and nothing else. The brief retired the metaphor because the elevation drew a tower that read as a lock (A7-14; review digest R17). The word survives only in the roadmap's toy-language names, Mini-Plinth and `miniplinth check` (OD-2). Home is Today for return visits and an ordered path of stages with a list mirror (spine §0); the start page is the series cover.
+- **Not kernelspace.** kernelspace is dark-only: navy surfaces, a mint accent, a terminal aesthetic. statespace inherits kernelspace's learning engine and nothing of its look (spine §0). The table below is about look only; §2.7 records where two volume inks and the night teal come close.
 
   | | kernelspace | statespace |
   |---|---|---|
-  | Default theme | dark only | light (vellum); a neutral graphite night on request or by system setting |
-  | Ground | navy (surface `#18212F`) | vellum `#F1F3EF`; night `#121412`, a near-neutral graphite |
-  | Accent | mint (hue 154°), which also marks the learner's own components | none; color belongs to stamps; links are verdigris in light and ink in night |
-  | Aesthetic | a mint-and-cyan terminal | a drawing: Archivo labels, serif reading text, monospace only for code and logic; hairlines and frames, no shadows, gradients or glow |
+  | Default theme | dark only | light (cool newsprint); a neutral graphite night on request or by system setting |
+  | Ground | navy (surface `#18212F`) | newsprint `#ECEDE8`; night `#121311`, a near-neutral graphite |
+  | Accent | mint (hue 154°), which also marks the learner's own components | ten volume inks, confined to covers, spines and catalogue numerals; color for status belongs to stamps; links are teal and underlined |
+  | Aesthetic | a mint-and-cyan terminal | a paperback series: Jost cover lettering and labels, serif reading text, monospace only for code and logic; flat ink, halftone and rules, no shadows, gradients or glow |
   | Status | — | ink: words, node shapes, counts with intervals |
 
-- **Not a game.** No XP, badges, levels, streak flames, confetti, leaderboards or daily counters. Expected rewards undermine motivation and mastery gating cuts completion (A [deci99][kulik90]); BRIEF §3.3 lists what is never built.
+- **Not a game.** No XP, badges, levels, streak flames, confetti, leaderboards or daily counters. Expected rewards undermine motivation and mastery gating cuts completion (A [deci99][kulik90]); BRIEF §3.3 lists what is never built. A spine's ink marks the volume in hand, never completion.
 - **Not a hacker terminal.** Code sits on paper inside instrument cells. The interface itself speaks in plain words.
 
 ### 1.4 Wordmark and mark
 
-- **Wordmark:** `statespace`, lowercase, Archivo 700 at width 118%, set in a single-rule title-block cell.
-- **Mark:** `S′` in JuliaMono, ink, inside a 2-px graphite square: the next state, the object every claim in the course is about (spine §0). It is not a stamp and uses no stamp hue. The logic-glyph brand the design review proposed (⊢) is rejected with the glyph stamps, because ⊢ is what Lean prints before every open goal (review digest R11).
-- **Favicon:** the mark, ink on vellum; in night, ink on graphite.
+- **Wordmark:** `statespace`, lowercase, Jost 600 at 23 px, beside the mark in the masthead.
+- **Mark:** `S′` in Source Serif 4 italic 600, white on volume 1's ink in a 32-px square: the next state, the object every claim in the course is about (spine §0). It is not a stamp and uses no stamp hue. The logic-glyph brand the design review proposed (⊢) is rejected with the glyph stamps, because ⊢ is what Lean prints before every open goal (review digest R11).
+- **Favicon:** the mark, white on volume 1's ink. The shipped `favicon.svg` is still a plain gray square outline and does not yet carry the mark.
 
 ### 1.5 The rules the interface enforces
 
@@ -91,47 +96,73 @@ These four rules carry over from v1, rewritten for v2's vocabulary.
 
 ### 2.1 Token rules
 
-1. **Color is semantic.** The only saturated colors are stamp hues. Nothing is colored for decoration.
-2. **Hue scope.** Stamp hues appear only inside stamps (`.stamp`) and claim strips (`.strip`), plus the two vermilion line styles the line language defines, witnessed violation (`.line-violation`) and erosion crack (`.line-crack`). GATE-stamps checks that allowlist (spine §10.2, §11.2).
-3. **Progress is ink.** Signed off, settled, in progress, counts, calibration, the path and the Mirror are drawn in ink and pencil. They never borrow a stamp hue or a stamp frame (V2-02, A7-02).
-4. **Verdigris marks links and "you are here", in light only.** Links are always underlined, because verdigris against ink is 2.37:1 and fails color-only distinction (WCAG 1.4.1). "You are here" is the pointer glyph ▸, drawn in verdigris, so it never depends on color. Night has no verdigris: links are ink and underlined, and the pointer is ink.
+1. **Color is semantic, or it names a volume.** The saturated colors are the stamp hues and the ten volume inks. Stamp hues carry status. A volume ink identifies its volume and carries nothing else. It floods covers, the held spine, spine numbers and mini-covers, and appears as the catalogue numeral, the series mark and text selection. It never colors status, progress, rows or controls.
+2. **Hue scope.** Stamp hues appear only inside stamps (`.stamp`) and claim strips (`.strip`), plus the two vermilion line styles the line language defines, witnessed violation (`.line-violation`) and erosion crack (`.line-crack`). GATE-stamps checks that allowlist (spine §10.2, §11.2). On a volume cover the violation line is cased in white, because vermilion against a volume ink is between 1.33:1 and 3.14:1 [D].
+3. **Progress is ink.** Signed off, settled, in progress, counts, calibration, the path and the Mirror are drawn in ink and pencil. They never borrow a stamp hue, a volume ink or a stamp frame (V2-02, A7-02).
+4. **Teal marks links, in both themes; "you are here" is ink.** Links are always underlined, because link teal against ink is 2.26:1 in light and 1.45:1 in night and fails color-only distinction (WCAG 1.4.1). `--here` is ink: the current destination carries a 3-px ink rule and heavier weight, and on the path the ▸ pointer is ink, so neither depends on color. `--rubric` sets interior section headings and is never the only cue for anything.
 5. **Meaningful boundaries use the component rule** (at least 3:1, WCAG 1.4.11): inputs, buttons, focusable cells, trace cells. Hairlines are decorative only and never the sole boundary of a control.
-6. **No shadows, gradients, glow, blur or translucency.** The one pattern is the [?] hatch, and it means nothing else (§4.2).
-7. **Primary buttons are ink,** never a stamp hue (v1 painted its Run button in PROVED blue).
+6. **No shadows, gradients, glow, blur or translucency.** The one status pattern is the [?] hatch, and it means UNKNOWN and nothing else (§4.2). The halftone screen is cover printing, outside §4.2's scope: it appears only on a volume ink, behind a cover figure, and means nothing about status.
+7. **Primary buttons are ink,** never a stamp hue or a volume ink (v1 painted its Run button in PROVED blue).
 
 ### 2.2 Light theme: vellum
 
+The light theme is cool newsprint; the heading keeps its v2 name so that citations hold.
+
 | Token | Value | Role | Contrast [D] |
 |---|---|---|---|
-| `--ground` | `#F1F3EF` | vellum ground | — |
-| `--sheet` | `#FAFBF8` | sheets, cards, stamps without a fill | — |
-| `--paper` | `#FFFFFF` | code areas, instrument bodies, trace tables | — |
-| `--ink` | `#1C211E` | primary text, structure lines, primary buttons, focus ring | 14.63 on ground · 15.73 on sheet · 16.33 on paper |
-| `--pencil` | `#4A534D` | secondary text, labels, captions, [N] | 7.14 on ground · 7.67 on sheet · 7.97 on paper |
-| `--rule` | `#7A837B` | component boundaries (non-text) | 3.51 on ground · 3.77 on sheet · 3.92 on paper |
-| `--rule-hair` | `#C9CFC6` | decorative hairlines only | 1.53 on sheet (decorative; never a sole boundary) |
-| `--rule-soft` | `#DDE2DA` | decorative dividers inside a framed component | decorative |
-| `--link`, `--here` | `#0E6655` | underlined links; the ▸ pointer | 6.17 on ground · 6.63 on sheet · 6.88 on paper; 2.37 against ink |
-| `--band` | `#E8ECE5` | the shared-state band in traces | ink 13.66 · pencil 6.66 on band |
-| `--focus` | ink, 2 px, with a 2-px ground offset | focus ring | 14.63 against ground |
+| `--ground` | `#ECEDE8` | newsprint ground; the masthead | — |
+| `--sheet` | `#F4F4F0` | sheets, cards, spines at rest, stamps without a fill | — |
+| `--paper` | `#FAFAF7` | code areas, instrument bodies, trace tables, the Go-to field | — |
+| `--ink`, `--structure` | `#161715` | primary text, structure lines and 3-px section rules, primary buttons, focus ring | 15.29 on ground · 16.31 on sheet · 17.20 on paper |
+| `--pencil` | `#4A4C47` | secondary text, labels, captions, [N] | 7.39 on ground · 7.88 on sheet · 8.31 on paper |
+| `--rule` | `#7B7D76` | component boundaries (non-text); row rules | 3.54 on ground · 3.78 on sheet · 3.99 on paper |
+| `--rule-hair` | `#C6C8C0` | decorative hairlines only | 1.53 on sheet (decorative; never a sole boundary) |
+| `--rule-soft` | `#DADBD4` | decorative dividers inside a framed component | decorative |
+| `--link` | `#0B5A5E` | underlined links | 6.76 on ground · 7.22 on sheet · 7.61 on paper; 2.26 against ink |
+| `--here` | ink `#161715` | the current destination's rule; the ▸ pointer | as ink |
+| `--rubric` | `#0F6468` (volume 1's ink) | interior section headings | 5.86 on ground · 6.26 on sheet · 6.60 on paper |
+| `--band` | `#E1E2DB` | the shared-state band in traces | ink 13.79 · pencil 6.67 on band |
+| `--plate`, `--plate-ink` | `#ECEDE8`, `#161715` | the series flag's disc and its type, on a cover | 15.29 |
+| `--on-vol` | `#FFFFFF` | all type and line work on a volume ink | see the volume inks below |
+| `--focus-ring`, `--focus-width`, `--focus-offset` | ink, 2 px, with a 2-px ground offset; white on a cover | focus ring | 15.29 against ground |
+
+**Volume inks.** One flat ink per stage, the same in both themes, always with white type (`--on-vol`). The halftone dot and the second plate are mixed from the ink in oklab: `color-mix(in oklab, var(--vol) 62%, black)` (38% toward black) and `color-mix(in oklab, var(--vol) 58%, white)` (42% toward white). They are not tokens.
+
+| Token | Value | Volume | White on ink [D] | Ink against night ground [D] |
+|---|---|---|---|---|
+| `--vol-1` | `#0F6468` | S1 | 6.90 | 2.70 |
+| `--vol-2` | `#33308A` | S2 | 10.88 | 1.71 |
+| `--vol-3` | `#6A2C5B` | S3 | 9.89 | 1.88 |
+| `--vol-4` | `#46621C` | S4 | 6.94 | 2.68 |
+| `--vol-5` | `#172033` | S5 | 16.27 | 1.15 |
+| `--vol-6` | `#7A3920` | S6 | 8.63 | 2.16 |
+| `--vol-7` | `#43306F` | S7 | 11.11 | 1.68 |
+| `--vol-8` | `#0D573A` | S8 | 8.60 | 2.17 |
+| `--vol-9` | `#8E2C52` | S9 | 7.98 | 2.34 |
+| `--vol-10` | `#262624` | S10 | 15.16 | 1.23 |
+
+A volume ink used as text on the ground (the catalogue numeral) is at least 5.86:1 in light. In night the same numeral falls to 1.15–2.70:1, because the inks do not change with the theme. That is an open defect: the numeral is hidden from assistive technology and repeated in words, but a sighted reader in night cannot rely on it.
 
 ### 2.3 Night theme: graphite night
 
-The night ground, sheet, ink and pencil are the design review's validated values (A7-20; spine §10.2). The remaining tokens are this file's, computed the same way.
+The night values were retuned for the Little Library, starting from the design review's validated graphite (A7-20), and recomputed here [D]. They depart from the values spine §10.2 adopts; Spine issue 14 records the departure. The volume inks are the same as in light.
 
 | Token | Value | Role | Contrast [D] |
 |---|---|---|---|
-| `--ground` | `#121412` | graphite ground | — |
-| `--sheet` | `#1A1D1A` | sheets, cards | — |
-| `--paper` | `#151815` | code areas, instrument bodies, trace tables | — |
-| `--ink` | `#E9ECE6` | primary text, links (underlined), focus ring, primary buttons | 15.52 on ground · 14.26 on sheet · 15.00 on paper |
-| `--pencil` | `#B4BCB2` | secondary text, labels, [N] | 9.50 on ground · 8.73 on sheet · 9.18 on paper |
-| `--structure` | `#9AA39A` | 1.5-px structure lines (frames, path) | 7.12 on ground · 6.54 on sheet · 6.89 on paper |
-| `--rule` | `#6E776E` | component boundaries (non-text) | 3.99 on ground · 3.67 on sheet · 3.86 on paper |
-| `--rule-hair` | `#333833` | decorative hairlines only | 1.42 on sheet (decorative) |
-| `--link`, `--here` | ink `#E9ECE6` | underlined links; the ▸ pointer | as ink |
-| `--band` | `#252A25` | the shared-state band in traces | ink 12.26 · pencil 7.50 on band |
-| `--focus` | ink, 2 px, with a 2-px ground offset | focus ring | 15.52 against ground |
+| `--ground` | `#121311` | graphite ground | — |
+| `--sheet` | `#1A1B19` | sheets, cards | — |
+| `--paper` | `#161715` | code areas, instrument bodies, trace tables | — |
+| `--ink` | `#E8E9E3` | primary text, focus ring, primary buttons | 15.26 on ground · 14.16 on sheet · 14.73 on paper |
+| `--pencil` | `#B4B6AE` | secondary text, labels | 9.09 on ground · 8.43 on sheet · 8.77 on paper |
+| `--structure` | `#9D9F97` | 1.5-px structure lines (frames, path); the bounded line | 6.96 on ground · 6.45 on sheet · 6.71 on paper |
+| `--rule` | `#6E7069` | component boundaries (non-text) | 3.71 on ground · 3.44 on sheet · 3.58 on paper |
+| `--rule-hair` | `#333430` | decorative hairlines only | 1.38 on sheet (decorative) |
+| `--rule-soft` | `#262724` | decorative dividers inside a framed component | decorative |
+| `--link`, `--rubric` | `#8ACFCB` | underlined links; interior section headings | 10.53 on ground · 9.77 on sheet · 10.17 on paper; 1.45 against ink |
+| `--here` | ink `#E8E9E3` | the current destination's rule; the ▸ pointer | as ink |
+| `--band` | `#232421` | the shared-state band in traces | ink 12.78 · pencil 7.61 on band |
+| `--plate`, `--plate-ink` | `#1A1B19`, `#E8E9E3` | the series flag's disc and its type | 14.16 |
+| `--focus-ring`, `--focus-width`, `--focus-offset` | ink, 2 px, with a 2-px ground offset | focus ring | 15.26 against ground |
 
 ### 2.4 Stamp tokens
 
@@ -139,19 +170,19 @@ Each stamp has a text color, the surface behind its text, and an identifying str
 
 | Code | Frame | Light: text / surface / stroke or fill | Light contrast | Night: text / surface / stroke or fill | Night contrast |
 |---|---|---|---|---|---|
-| [P] | solid fill | `#FFFFFF` / `#1D3F8F` / fill `#1D3F8F` | 9.72 · 9.36 | `#0B1430` / `#8FB0F5` / fill `#8FB0F5` | 8.38 · 7.85 |
-| [M] | 2-px dotted frame, tint fill | `#1D3F8F` / `#E3E9F6` / dotted `#1D3F8F` | 7.99 · 9.36 | `#8FB0F5` / `#1E2A44` / dotted `#8FB0F5` | 6.60 · 7.85 |
-| [T] | 2-px solid frame, no fill | `#7A5A00` / sheet / `#7A5A00` | 6.15 · 6.15 | `#E0B44C` / sheet / `#E0B44C` | 8.75 · 8.75 |
-| [E] | 4-px double frame, no fill | `#3B4A57` / sheet / `#3B4A57` | 8.78 · 8.78 | `#B7C4D1` / sheet / `#B7C4D1` | 9.58 · 9.58 |
-| [C] | 1-px rules above and below, open sides | `#6A3E80` / sheet / `#6A3E80` | 7.74 · 7.74 | `#CDB6E6` / sheet / `#CDB6E6` | 9.26 · 9.26 |
-| [A] | 2-px dashed frame, no fill | `#3A423D` / sheet / dashed `#5F675F` | 9.98 · 5.63 | `#CDD3CB` / sheet / dashed `#A9B1A9` | 11.16 · 7.73 |
-| [?] | 2-px solid frame, 45° hatch fill | `#45463F` / hatch stripe `#E8E8E3` / `#6B6C64` | 7.76 · 5.11 | `#DADBD5` / hatch stripe `#2A2C29` / `#9A9C96` | 10.11 · 6.13 |
-| [N] | bare: no frame, no fill | `#4A534D` / sheet / — | 7.67 · — | `#B4BCB2` / sheet / — | 8.73 · — |
-| [R] | solid fill, ringed by a heavy outer rule with a 2-px gap | `#FFFFFF` / `#C2410C` / fill and ring `#C2410C` | 5.18 · 4.99 | `#2A0E00` / `#FF8A50` / fill and ring `#FF8A50` | 7.75 · 7.29 |
+| [P] | solid fill | `#FFFFFF` / `#1D3F8F` / fill `#1D3F8F` | 9.72 · 8.82 | `#0B1430` / `#8FB0F5` / fill `#8FB0F5` | 8.38 · 7.98 |
+| [M] | 2-px dotted frame, tint fill | `#1D3F8F` / `#E3E9F6` / dotted `#1D3F8F` | 7.99 · 8.82 | `#8FB0F5` / `#1E2A44` / dotted `#8FB0F5` | 6.60 · 7.98 |
+| [T] | 2-px solid frame, no fill | `#7A5A00` / sheet / `#7A5A00` | 5.79 · 5.79 | `#E0B44C` / sheet / `#E0B44C` | 8.89 · 8.89 |
+| [E] | 4-px double frame, no fill | `#3B4A57` / sheet / `#3B4A57` | 8.27 · 8.27 | `#B7C4D1` / sheet / `#B7C4D1` | 9.74 · 9.74 |
+| [C] | 1-px rules above and below, open sides | `#6A3E80` / sheet / `#6A3E80` | 7.29 · 7.29 | `#CDB6E6` / sheet / `#CDB6E6` | 9.41 · 9.41 |
+| [A] | 2-px dashed frame, no fill | `#3A423D` / sheet / dashed `#5F675F` | 9.40 · 5.30 | `#CDD3CB` / sheet / dashed `#A9B1A9` | 11.34 · 7.86 |
+| [?] | 2-px solid frame, 45° hatch fill | `#45463F` / hatch stripe `#E8E8E3` / `#6B6C64` | 7.76 · 4.82 | `#DADBD5` / hatch stripe `#2A2C29` / `#9A9C96` | 10.11 · 6.23 |
+| [N] | bare: no frame, no fill | `#4A534D` / sheet / — | 7.23 · — | `#B4BCB2` / sheet / — | 8.87 · — |
+| [R] | solid fill, ringed by a heavy outer rule with a 2-px gap | `#FFFFFF` / `#C2410C` / fill and ring `#C2410C` | 5.18 · 4.70 | `#2A0E00` / `#FF8A50` / fill and ring `#FF8A50` | 7.75 · 7.41 |
 
 Notes on the table:
 
-- **Lowest pairs.** The lowest text pair in either theme is light [R], 5.18:1, above the 4.5:1 floor. The lowest meaningful non-text pair is the light component rule on vellum, 3.51:1, above 3:1.
+- **Lowest pairs.** The lowest text pair in either theme is light [R], 5.18:1, above the 4.5:1 floor. The lowest meaningful non-text pair is now the night component rule on the sheet, 3.44:1, above 3:1; in light it is the component rule on newsprint, 3.54:1. Stamp tokens did not change with the Little Library; only the sheet behind them did.
 - **[?] moved off ochre in both themes.** v1 shared one ochre between TESTED and UNKNOWN (A7-06). The design review moved light UNKNOWN to neutral gray but proposed a yellow night UNKNOWN (`#E0C878`) beside a yellow night TESTED (`#E0B44C`), which recreates the clash; both themes here use a neutral gray hatch (spine §10.2).
 - **[C] is new.** Neither v1 nor the review defined a CONFIGURED hue. Plum keeps it apart from the blues of [P] and [M] in normal vision; its open-sided frame keeps it apart from everything in grayscale.
 - **The [?] hatch** is a 45° stripe pattern at 6-px pitch. Text sits directly on it and is measured against the stripe nearer in luminance to the text, so the ratio holds wherever a glyph lands.
@@ -160,12 +191,14 @@ Notes on the table:
 
 | Line | Light | Night | Against sheet · ground [D] |
 |---|---|---|---|
-| Structure (solid, 1.5 px) | ink `#1C211E` | `#9AA39A` | light 15.73 · 14.63; night 6.54 · 7.12 |
-| Component boundary (solid, 1 px) | `#7A837B` | `#6E776E` | light 3.77 · 3.51; night 3.67 · 3.99 |
-| Assumed (dashed, 2 px) | `#5F675F` | `#A9B1A9` | light 5.63 · 5.24; night 7.73 · 8.42 |
-| Bounded (dotted, 2 px) | `#1D3F8F` | `#8FB0F5` | light 9.36 · 8.71; night 7.85 · 8.55 |
-| Witnessed violation (solid, 3 px) | `#C2410C` | `#FF8A50` | light 4.99 · 4.64; night 7.29 · 7.94 |
+| Structure (solid, 1.5 px; 3 px for section rules) | ink `#161715` | `#9D9F97` | light 16.31 · 15.29; night 6.45 · 6.96 |
+| Component boundary (solid, 1 px) | `#7B7D76` | `#6E7069` | light 3.78 · 3.54; night 3.44 · 3.71 |
+| Assumed (dashed, 2 px) | `#5F675F` | `#A9B1A9` | light 5.30 · 4.97; night 7.86 · 8.47 |
+| Bounded (dotted, 2 px) | `--structure`: ink `#161715` | `--structure`: `#9D9F97` | as structure |
+| Witnessed violation (solid, 3 px) | `#C2410C` | `#FF8A50` | light 4.70 · 4.40; night 7.41 · 7.99 |
 | Erosion crack (zig-zag, 2 px) | `#C2410C` | `#FF8A50` | as violation |
+
+The bounded line is dotted structure ink, not [M]'s blue, so stamp hues stay inside stamps and strips (spine §10.2). On a volume cover the line language holds in white: the bounded frontier is a white dotted ring, and the violation keeps its own ink, cased in white.
 
 ### 2.6 Color vision, grayscale and print
 
@@ -187,9 +220,14 @@ Color is the fourth cue on a stamp, after the word, the code and the frame. The 
 
 ### 2.7 Distance from kernelspace
 
-- The night ground and sheet sit at ΔE76 13.3 and 12.6 from kernelspace's surface `#18212F`. v1's "blueprint" sheet sat at 3.7, effectively the same navy (A7-20) [D].
-- Every night neutral is a near-neutral graphite: HSL saturation 7% or less, and the near-white ink 14% [D].
-- No night token has a hue within 30° of kernelspace's mint (154°) at any saturation above 7%. The light theme's only green is verdigris (168°), used for underlined links and the pointer glyph, never as a fill or a state color.
+- The night ground and sheet sit at ΔE76 13.5 and 12.2 from kernelspace's surface `#18212F`. v1's "blueprint" sheet sat at 3.7, effectively the same navy (A7-20) [D].
+- Every night neutral is a near-neutral graphite: HSL saturation 6% or less, and the near-white ink 12% [D].
+- The rule is that no night token has a hue within 30° of kernelspace's mint (154°) at any saturation above 7%. The volume inks are night tokens too, because they do not change with the theme. Three values break that rule, and so do the night link and rubric. They are recorded here as open, for an owner decision, not as accepted [D]:
+  - `--vol-5` `#172033` sits at ΔE76 3.7 from kernelspace's surface: S5's cover is the same navy that v1's blueprint sheet was faulted for.
+  - `--vol-8` `#0D573A` has hue 156° at 74% saturation, 2° from the mint.
+  - `--vol-1` `#0F6468` (also the light rubric) has hue 183° at 75% saturation, 29° from the mint.
+  - The night `--link` and `--rubric` `#8ACFCB` have hue 177° at 42% saturation, 23° from the mint.
+- The light theme's link teal `#0B5A5E` (hue 183°) is used only for underlined links, never as a fill or a state color.
 
 ### 2.8 Space, size and shape
 
@@ -197,22 +235,25 @@ Color is the fourth cue on a stamp, after the word, the code and the frame. The 
 |---|---|
 | Spacing scale | 4-px base: 4, 8, 12, 16, 24, 32, 48, 64 |
 | Side gutter | 16 px on phones; 24 px from 600 px; 32 px from 1100 px |
-| Borders | 1 px component rule; 1.5 px structure frames; 2 px stamp frames; 3 px witnessed violation; 4 px double frame for [E] |
-| Corner radius | 0 or 2 px; nothing rounder |
-| Elevation | none: layers separate by sheet and ground and by rules, never by shadow |
+| Borders | 1 px component rule; 1.5 px structure frames; 2 px stamp frames; 3 px ink section rules (masthead, footer, catalogue and colophon heads, shelf baseline, current destination); 3 px witnessed violation; 4 px double frame for [E] |
+| Corner radius | 0 or 2 px; covers, spines and fields are square; the series flag is the one circle |
+| Elevation | none: layers separate by sheet and ground and by rules, never by shadow; covers get depth from the halftone and the off-register plate |
 | Targets | at least 44 × 44 px for every control (stricter than WCAG 2.5.8's 24 px) |
-| Content widths | prose measure at most 680 px; content maximum 1180 px |
-| Breakpoints | 320 (the reflow floor), 360 (phone design width), 600, 900 (tables appear), 1100 (sidenotes move to the margin), 1280 (desktop design width); see §7 |
+| Content widths | prose measure at most 680 px; content maximum 1180 px; full-bleed pages (start, stages, a stage) hold their content in a 1320-px column under an edge-to-edge cover |
+| Breakpoints | 320 (the reflow floor), 360 (phone design width), 600, 900 (tables appear), 1100 (sidenotes move to the margin), 1280 (desktop design width); see §7. The start cover, interior sections and catalogue lines also split at 1000 px |
 
 ### 2.9 Token sketch
 
 ```css
 :root {
   color-scheme: light;
-  --ground: #F1F3EF; --sheet: #FAFBF8; --paper: #FFFFFF;
-  --ink: #1C211E; --pencil: #4A534D; --structure: #1C211E;
-  --rule: #7A837B; --rule-hair: #C9CFC6; --rule-soft: #DDE2DA;
-  --link: #0E6655; --here: #0E6655; --band: #E8ECE5;
+  --ground: #ECEDE8; --sheet: #F4F4F0; --paper: #FAFAF7;
+  --ink: #161715; --pencil: #4A4C47; --structure: #161715;
+  --rule: #7B7D76; --rule-hair: #C6C8C0; --rule-soft: #DADBD4;
+  --link: #0B5A5E; --here: #161715; --band: #E1E2DB;
+  --vol-1: #0F6468; --vol-2: #33308A; --vol-3: #6A2C5B; --vol-4: #46621C; --vol-5: #172033;
+  --vol-6: #7A3920; --vol-7: #43306F; --vol-8: #0D573A; --vol-9: #8E2C52; --vol-10: #262624;
+  --on-vol: #FFFFFF; --plate: #ECEDE8; --plate-ink: #161715; --rubric: #0F6468;
   --st-p-fill: #1D3F8F; --st-p-text: #FFFFFF;
   --st-m-line: #1D3F8F; --st-m-fill: #E3E9F6; --st-m-text: #1D3F8F;
   --st-t: #7A5A00; --st-e: #3B4A57; --st-c: #6A3E80;
@@ -220,14 +261,15 @@ Color is the fourth cue on a stamp, after the word, the code and the frame. The 
   --st-q-line: #6B6C64; --st-q-stripe: #E8E8E3; --st-q-text: #45463F;
   --st-n-text: #4A534D;
   --st-r-fill: #C2410C; --st-r-text: #FFFFFF;
-  --line-assumed: #5F675F; --line-bounded: #1D3F8F; --line-violation: #C2410C;
+  --line-assumed: #5F675F; --line-bounded: var(--structure); --line-violation: #C2410C;
 }
 :root[data-theme="night"] {
   color-scheme: dark;
-  --ground: #121412; --sheet: #1A1D1A; --paper: #151815;
-  --ink: #E9ECE6; --pencil: #B4BCB2; --structure: #9AA39A;
-  --rule: #6E776E; --rule-hair: #333833; --rule-soft: #262A26;
-  --link: #E9ECE6; --here: #E9ECE6; --band: #252A25;
+  --ground: #121311; --sheet: #1A1B19; --paper: #161715;
+  --ink: #E8E9E3; --pencil: #B4B6AE; --structure: #9D9F97;
+  --rule: #6E7069; --rule-hair: #333430; --rule-soft: #262724;
+  --link: #8ACFCB; --here: #E8E9E3; --band: #232421;
+  --plate: #1A1B19; --plate-ink: #E8E9E3; --rubric: #8ACFCB;
   --st-p-fill: #8FB0F5; --st-p-text: #0B1430;
   --st-m-line: #8FB0F5; --st-m-fill: #1E2A44; --st-m-text: #8FB0F5;
   --st-t: #E0B44C; --st-e: #B7C4D1; --st-c: #CDB6E6;
@@ -235,9 +277,9 @@ Color is the fourth cue on a stamp, after the word, the code and the frame. The 
   --st-q-line: #9A9C96; --st-q-stripe: #2A2C29; --st-q-text: #DADBD5;
   --st-n-text: #B4BCB2;
   --st-r-fill: #FF8A50; --st-r-text: #2A0E00;
-  --line-assumed: #A9B1A9; --line-bounded: #8FB0F5; --line-violation: #FF8A50;
+  --line-assumed: #A9B1A9; --line-violation: #FF8A50;
 }
-/* The same night block also applies under
+/* The volume inks and --on-vol are not redefined in night. The same night block also applies under
    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { … } } */
 ```
 
@@ -251,7 +293,7 @@ The theme follows the system setting, falls back to light when the system states
 
 | Role | Face | Cut | Used for |
 |---|---|---|---|
-| Structure | **Archivo**, a grotesque with a width axis | variable, weights 400–800, widths 100–125 | headings, labels, navigation, buttons, stamp words, title blocks, tables |
+| Structure | **Jost**, a geometric sans in the tradition of mid-century cover lettering | variable, weights 100–900; no width axis | covers, spines, headings, labels, navigation, buttons, stamp words, title blocks, tables |
 | Reading | **Source Serif 4** | regular, italic, semibold | lesson prose, sidenotes, drawers, technical notes |
 | Code and logic | **JuliaMono** [X RUN-juliamono-glyphs] | regular, semibold | instrument code, theorem statements, traces, goal strips, SMT-LIB, stamp codes and qualifiers, inline math in prose |
 
@@ -261,22 +303,25 @@ The theme follows the system setting, falls back to light when the system states
 
 | Style | Face and settings | Phone px | Desktop px | Line height |
 |---|---|---|---|---|
-| Stage title | Archivo 700, width 118 | 26 | 34 | 1.15 |
-| Page title | Archivo 700, width 110 | 24 | 30 | 1.2 |
-| Section | Archivo 650, width 105 | 20 | 24 | 1.25 |
-| Subsection | Archivo 650, width 100 | 17 | 19 | 1.3 |
-| Label | Archivo 600, width 118, uppercase, tracking 0.12 em | 12 | 12 | 1.3 |
-| Stamp word | Archivo 700, width 118, uppercase, tracking 0.08 em | 12 | 13 | 1.15 |
+| Stage title | Jost 700 | 26 | 34 | 1.15 |
+| Page title | Jost 700 | 24 | 30 | 1.2 |
+| Section | Jost 650 | 20 | 24 | 1.25 |
+| Subsection | Jost 650 | 17 | 19 | 1.3 |
+| Label | Jost 600, uppercase, tracking 0.12 em (`--fs-label`, `--tracking-label`; kicker, bottom bar) | 12 | 12 | 1.3 |
+| Field label | Jost 600, uppercase, tracking 0.1 em (colophon keys, Go-to, graph legends) | 13 | 13 | 1.3 |
+| Stamp word | Jost 700, uppercase, tracking 0.08 em | 12 | 13 | 1.15 |
 | Stamp code and qualifier | JuliaMono 600 | 12 | 13 | 1.15 |
-| Interface text | Archivo 600, width 100 | 16 | 16 | 1.25 |
-| Table text | Archivo 400; values in JuliaMono | 14 | 15 | 1.4 |
+| Interface text | Jost 400 (status, colophon values, skip link) | 16 | 16 | 1.25 |
+| Button | Jost 600 | 16 | 16 | 1.25 |
+| Table text | Jost 400; values in JuliaMono | 14 | 15 | 1.4 |
 | Prose | Source Serif 4 400 | 17 | 19 | 1.6 |
 | Sidenote, caption | Source Serif 4 400 | 15 | 16 | 1.5 |
 | Code block | JuliaMono 400 | 14 | 15 | 1.5 |
 | Inline math | JuliaMono 400 at 0.92 em of the surrounding text | — | — | inherits |
 
+- **Covers, spines and the catalogue** set their own larger Jost sizes (cover headline up to 92 px, a stage cover's title up to 104 px, its numeral at Jost 300); `/DESIGN.md` records them. Structure has no width axis: the Jost subset carries only `wght`, so it speaks through weight, tracking and capitals. Legacy styles (`.kicker`, `.screen h1`, `.screen h2` and some component sheets) still declare `font-stretch`, which has no effect on this face.
 - **Floor.** No text is smaller than 12 px, on any screen (spine §10.2 sets 12 px for phone labels; this file applies it everywhere). v1's 11-px labels and qualifiers are gone.
-- **Case.** Uppercase only for labels and stamp words. Headings are sentence case.
+- **Case.** Uppercase only for labels, stamp words, spine titles, the cover masthead's series lines and the series flag's verb. Headings and cover headlines are sentence case.
 - **Figures.** Tabular lining figures in tables, stamps, title blocks and every count (`font-variant-numeric: tabular-nums lining-nums`); lining figures in prose too, because numbers here sit beside code.
 - **Measure.** Prose at most 680 px, about 70 characters at 19 px.
 
@@ -352,7 +397,7 @@ EROSION is an event, drawn as a crack (§5.7). It is never a tenth stamp.
 
 `WORD [code] · qualifier`
 
-- The word, uppercase in Archivo; the bracketed code and the qualifier in JuliaMono at the **same size as the word** (v1 set the qualifier as the smallest text on the page; A7-06).
+- The word, uppercase in Jost; the bracketed code and the qualifier in JuliaMono at the **same size as the word** (v1 set the qualifier as the smallest text on the page; A7-06).
 - **The qualifier is required.** A stamp without one fails GATE-stamps. [A] states why; [N] states what is outside.
 - **Bound first** for [M] and [T]: constants or n lead the qualifier.
 - Parts of a qualifier are separated by ` · `. Word and code never wrap apart. A long qualifier wraps inside the frame with a hanging indent; inside a strip it may truncate behind a disclosure control, but the full text is always one tap or keypress away and is always the accessible name.
@@ -801,7 +846,7 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 
 - **Destinations:** Today · Stages · Bench · Audit · Claims, plus search (spine §0).
 - **Phones (below 900 px):** a bottom bar of the five destinations, each a 56-px-tall target with an icon and a 12-px label; the Bench carries the caption "laptop". A 48-px top bar holds the wordmark, search and settings.
-- **Desktop (900 px and wider):** a top bar with the wordmark, the five destinations as text links, the search field with its shortcut (Ctrl K or ⌘K, a modified key, so WCAG 2.1.4 is met), and settings. The current destination carries the ▸ pointer and heavier weight, never color alone.
+- **Desktop (900 px and wider):** a top bar with the wordmark, the five destinations as text links, and the masthead Go-to field for printed addresses (S5, S5.L3, D-12, LAB-5). Planned, not shipped yet: the search field with its shortcut (Ctrl K or ⌘K, a modified key, so WCAG 2.1.4 is met), and settings. The current destination carries a 3-px ink rule beneath it and heavier weight, never color alone.
 - **The Mirror** is reached from Today and never appears on Claims.
 - **Footer:** the course's assurance page (SCR-assurance), changes (SCR-changes), settings, license and source.
 - **Order and landmarks:** "Skip to content" comes first; then banner, navigation, main, complementary (rail, sidenotes) and content information.
@@ -828,7 +873,7 @@ Each Today card is a sheet with a 12-px caps kind label, a title, one context li
 
 ### 7.5 Frames, sheets and wide content
 
-- A screen's content sits on one or more sheets on the vellum ground: a 1.5-px structure frame, a radius of at most 2 px, and 16-, 24- or 32-px padding by width.
+- A screen's content sits on one or more sheets on the ground: a 1.5-px structure frame, a radius of at most 2 px, and 16-, 24- or 32-px padding by width.
 - Sticky parts (top bar, bottom bar, a cell's Call It sheet, the Theater's action bar) are separated by a 1.5-px rule, never a shadow.
 - **No horizontal page scroll.** Code, verdict lines, traces and tables that need width scroll inside their frames. Each such frame is a focusable, labeled region, so a keyboard can scroll it, and shows a hairline edge with the caption "scrolls sideways" instead of a fade.
 
@@ -1655,3 +1700,4 @@ Things in `docs/spine/SPINE.md` (revision 2) that this file believes are wrong, 
 11. **The gates will fail on the history this spine keeps.** GATE-numbers and GATE-links scan artboards (§11.2), and W0-T03's acceptance resolves "every ID in docs and canvas", yet §10.2 keeps the v1 canvas in `design/canvas/`. Those sheets use v1's ID formats, which cannot resolve against the spine's registry, and contain sentences on the BRIEF §2.2 deny-list. Exempt `design/canvas/` and `docs/history/` from both gates, or move the canvas under `docs/history/v1/`. No task owns redrawing artboards from runs. *Revision 3: already resolved in the spine (§10.2 Artboards, §11.2); moving the canvas is declined, because it stays in design/canvas/, labeled.*
 12. **Phone-first is defined twice.** §0 names four phone-first surfaces (Today, Lesson, Audit, Claims); §10.1 marks seventeen screens phone-first. One of them should be reworded, for example "flagship phone surfaces" in §0, or a §10.1 column that separates phone-first from phone-capable (§7.4). *Revision 3: already resolved in the spine (§0 Navigation, §10.1).*
 13. **The kept v1 light tokens have no compliant component boundary, and night has no link token.** v1's `--rule` (`#C9CFC6`) is 1.53:1 on the sheet, below WCAG 1.4.11's 3:1 for a control's boundary, and §10.2's night list stops at four tokens. This file adds a component rule (`#7A837B`, at least 3.51:1), demotes v1's value to a decorative hairline, and makes night links and the location pointer ink, with no verdigris (§2.2, §2.3). *Revision 3: applied (§10.2 tokens).*
+14. **The Little Library departs from spine §10.2's tokens and type.** §10.2 adopts the design review's graphite night (ground `#121412`, sheet `#1A1D1A`, ink `#E9ECE6`, pencil `#B4BCB2`; A7-20) with links and the location pointer in ink, and names Archivo for structure. This file now uses retuned night neutrals (ground `#121311`, sheet `#1A1B19`, ink `#E8E9E3`, pencil `#B4B6AE`), night links and rubric in teal `#8ACFCB` instead of ink, a light link `#0B5A5E` in place of v1's verdigris `#0E6655`, with `--here` now ink rather than verdigris, and Jost for structure (§2.2, §2.3, §3.1). Contrast figures are recomputed [D]. The spine should adopt these values or this file should return to them. *Open; pending an owner amendment to the spine.*

@@ -3382,7 +3382,7 @@ export const PLANTS = [
   ["tokens.css without its night setting's block", [x('tokens', PATHS.tokens, /no :root\[data-theme="night"\] block/)], (d) => subs(d, PATHS.tokens, [':root[data-theme="night"] {', ':root[data-theme="dusk"] {'])],
   ["tokens.css without its system night block", [x('tokens', PATHS.tokens, /no @media \(prefers-color-scheme: dark\)/)], (d) => subs(d, PATHS.tokens, ['@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {', '@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="day"]) {'])],
   ['tokens.css without its light block', [x('tokens', PATHS.tokens, /no :root block of tokens/)], (d) => subs(d, PATHS.tokens, [':root {\n  color-scheme: light;', '.root {\n  color-scheme: light;'])],
-  ['a sheet colour the gate cannot read', [x('tokens', PATHS.tokens, /light: --sheet is not a hex colour/)], (d) => subs(d, PATHS.tokens, ['  --sheet: #FAFBF8;', '  --sheet: rgb(250 251 248);'])],
+  ['a sheet colour the gate cannot read', [x('tokens', PATHS.tokens, /light: --sheet is not a hex colour/)], (d) => subs(d, PATHS.tokens, ['  --sheet: #F4F4F0;', '  --sheet: rgb(244 244 240);'])],
   ['stamp.css missing', [x('tokens', PATHS.stampCss, /is missing/)], (d) => fs.rmSync(path.join(d, PATHS.stampCss))],
   [
     'font files, licenses and @font-face rules that no longer match the manifest',
@@ -3390,9 +3390,9 @@ export const PLANTS = [
       x('tokens', `${PATHS.fonts}/juliamono-400-core.woff2`, /no longer has the SHA-256/),
       // a byte changed in place: the size stays, the hash does not
       x('tokens', `${PATHS.fonts}/source-serif-4-600-core.woff2`, /no longer has the SHA-256/),
-      x('tokens', `${PATHS.fonts}/archivo-var-ext.woff2`, /not on disk/),
+      x('tokens', `${PATHS.fonts}/jost-var-ext.woff2`, /not on disk/),
       x('tokens', `${PATHS.fonts}/extra.woff2`, /a font file fonts\.json does not list/),
-      x('tokens', `${PATHS.fonts}/OFL-Archivo.txt`, /license beside the subsets is missing or changed/),
+      x('tokens', `${PATHS.fonts}/OFL-Jost.txt`, /license beside the subsets is missing or changed/),
       x('tokens', PATHS.tokens, /does not declare juliamono-600-ext\.woff2/),
       x('tokens', PATHS.tokens, /source-serif-4-400-ext\.woff2's unicode-range differs/),
       x('tokens', PATHS.tokens, /declares \/fonts\/stray\.woff2/),
@@ -3403,9 +3403,9 @@ export const PLANTS = [
       const bytes = fs.readFileSync(same)
       bytes[bytes.length >> 1] ^= 0xff
       fs.writeFileSync(same, bytes)
-      fs.rmSync(path.join(d, PATHS.fonts, 'archivo-var-ext.woff2'))
+      fs.rmSync(path.join(d, PATHS.fonts, 'jost-var-ext.woff2'))
       fs.writeFileSync(path.join(d, PATHS.fonts, 'extra.woff2'), Buffer.from([0]))
-      fs.appendFileSync(path.join(d, PATHS.fonts, 'OFL-Archivo.txt'), '\n')
+      fs.appendFileSync(path.join(d, PATHS.fonts, 'OFL-Jost.txt'), '\n')
       edit(d, PATHS.tokens, (t) => {
         const face = /@font-face \{\n  font-family: 'JuliaMono';\n  src: url\('\/fonts\/juliamono-600-ext\.woff2'\)[^}]*\}\n/.exec(t)
         if (!face) throw new Error("the plant's @font-face block is not in tokens.css")

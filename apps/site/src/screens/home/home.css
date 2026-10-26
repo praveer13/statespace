@@ -1,130 +1,434 @@
-/* The start page. Every value comes from styles/tokens.css. */
+/* The start page: the series cover, the shelf, and two interior pages. Every value comes from styles/tokens.css. The
+   cover is volume 1's ink, and its figure is printed on the ink in white line work; below it, interior pages ruled in
+   ink with rubric headings. */
 
 .home {
+  --vol: var(--vol-1);
   display: grid;
+  gap: var(--space-8);
+  padding-bottom: var(--space-7);
+}
+
+/* ------------------------------------------------------------------ the cover */
+
+.cover {
+  position: relative;
+  background: var(--vol);
+  color: var(--on-vol);
+}
+
+/* The halftone field behind the type: the series' printed screen, in the deep ink (an SVG pattern, not a gradient). */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9'%3E%3Ccircle cx='4.5' cy='4.5' r='1.5' fill='black'/%3E%3C/svg%3E");
+  opacity: 0.24;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Ccircle cx='8' cy='92' r='62' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+  pointer-events: none;
+}
+
+.cover-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: var(--space-7) var(--gutter) var(--space-6);
+  box-sizing: border-box;
 }
 
-.home-head {
+.cover-text {
   display: grid;
-  gap: var(--space-3);
-  padding-block: var(--space-5) var(--space-2);
-  border-bottom: 1px solid var(--rule);
+  align-content: start;
+  gap: var(--space-5);
 }
 
-.home-kicker {
+.cover-title {
   margin: 0;
   font-family: var(--font-structure);
-  font-size: var(--fs-label);
-  line-height: var(--lh-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--pencil);
-}
-
-.home h1 {
-  margin: 0;
-  font-family: var(--font-structure);
-  font-size: var(--fs-stage-title);
-  line-height: var(--lh-stage-title);
-  font-weight: 700;
-  font-stretch: 112%;
+  font-weight: 600;
+  font-size: clamp(42px, 6.2vw, 92px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
-.home-lede {
+.cover-lede {
   margin: 0;
-  max-width: var(--measure);
-  color: var(--pencil);
+  max-width: 30em;
+  font-family: var(--font-reading);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--on-vol) 86%, var(--vol));
 }
 
-.home h2 {
-  margin: 0 0 var(--space-3);
+.cover-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5) var(--space-6);
+  margin-top: var(--space-3);
+}
+
+.cover-link {
   font-family: var(--font-structure);
-  font-size: var(--fs-section);
-  line-height: var(--lh-section);
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--on-vol);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+  min-height: var(--target);
+  display: inline-flex;
+  align-items: center;
 }
 
-.home section p {
-  max-width: var(--measure);
-  margin: 0 0 var(--space-3);
+.cover-link:focus-visible {
+  outline-color: var(--on-vol);
 }
 
-.stage-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--rule);
+/* The cover's masthead: the series name across the top of every cover, ruled off from the title. */
+.cover-masthead {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-5);
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--gutter) var(--space-3);
+  box-sizing: border-box;
+  font-family: var(--font-structure);
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--on-vol) 88%, var(--vol));
 }
 
-.stage-list li {
-  display: grid;
-  grid-template-columns: 3.5em 1fr;
-  gap: var(--space-3);
-  padding-block: var(--space-3);
-  border-bottom: 1px solid var(--rule-hair);
+.cover-masthead::after {
+  content: '';
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 0;
+  height: 3px;
+  background: var(--on-vol);
 }
 
-.stage-code {
-  font-family: var(--font-code);
-  font-size: var(--fs-code);
-  line-height: var(--lh-code);
-  font-variant-numeric: tabular-nums lining-nums;
-  color: var(--pencil);
-  padding-top: 2px;
+.cover-band-name {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 15px;
+  color: var(--on-vol);
 }
 
-.stage-body {
-  display: grid;
-  gap: var(--space-1);
+.cover-figure {
   min-width: 0;
 }
 
-.stage-name {
-  font-family: var(--font-structure);
-  font-size: var(--fs-subsection);
-  line-height: var(--lh-subsection);
-  font-weight: 600;
+@media (min-width: 1000px) {
+  .cover-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-7);
+    align-items: start;
+  }
 }
 
-.stage-question {
+/* ------------------------------------------------------------------ the cover figure: Boot's state space, printed
+   on the cover in white line work. Overdrafts are the violation's own ink, filled and cased in white so they hold
+   their contrast on any cover. */
+
+.graph {
+  --g-faint: color-mix(in oklab, var(--on-vol) 34%, var(--vol));
+  --g-soft: color-mix(in oklab, var(--on-vol) 86%, var(--vol));
+  margin: 0;
+  display: grid;
+  gap: var(--space-4);
+  color: var(--on-vol);
+}
+
+.graph-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 64vh;
+  min-height: 240px;
+}
+
+.graph-grid line {
+  stroke: var(--g-faint);
+  stroke-width: 1;
+}
+
+.graph-edge {
+  fill: none;
+  stroke: var(--on-vol);
+  stroke-width: 2;
+}
+
+.graph-corner,
+.graph-label {
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 14px;
+  fill: var(--on-vol);
+  paint-order: stroke;
+  stroke: var(--vol);
+  stroke-width: 6px;
+  stroke-linejoin: round;
+}
+
+.graph-label {
+  font-family: var(--font-code);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.graph-unreached circle {
+  fill: var(--vol);
+  stroke: var(--g-soft);
+  stroke-width: 1.2;
+}
+
+.graph-reached circle {
+  fill: var(--on-vol);
+}
+
+.graph .graph-over .line-violation {
+  fill: var(--line-violation);
+  stroke: var(--on-vol);
+  stroke-width: 1.2px;
+}
+
+.graph-casing {
+  fill: none;
+  stroke: var(--on-vol);
+  stroke-width: 7px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.graph .graph-witness {
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.graph .graph-frontier {
+  stroke: var(--on-vol);
+  stroke-width: 1.5px;
+}
+
+.graph-start {
+  fill: none;
+  stroke: var(--on-vol);
+  stroke-width: 2.5;
+}
+
+.graph-dot {
+  animation: graph-land 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes graph-land {
+  from {
+    transform: scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) .graph-dot {
+    animation: none;
+  }
+}
+
+:root[data-motion="reduce"] .graph-dot {
+  animation: none;
+}
+
+/* The figure's colophon: guard, depth and what the exploration established, ruled like a title page. */
+.graph-controls {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 3px solid var(--on-vol);
+  font-family: var(--font-structure);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.graph-guard {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.graph-guard legend,
+.graph-depth-name {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.graph-guard label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  cursor: pointer;
+}
+
+.graph-guard input,
+.graph-depth input {
+  accent-color: var(--on-vol);
+}
+
+.graph-guard input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+}
+
+.graph-guard input:focus-visible,
+.graph-depth input:focus-visible {
+  outline-color: var(--on-vol);
+}
+
+.graph-guard code {
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+.graph-depth {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.graph-depth output {
+  font-family: var(--font-code);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.graph-depth input {
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+}
+
+.graph-status {
+  margin: 0;
+  min-height: 3em;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--g-faint);
+  font-family: var(--font-reading);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.graph-cap {
+  font-family: var(--font-reading);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--g-soft);
+}
+
+@media (min-width: 1000px) {
+  .graph-controls {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    column-gap: var(--space-5);
+  }
+
+  .graph-status {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ------------------------------------------------------------------ interior pages below the cover */
+
+.home h2 {
+  margin: 0;
+  color: var(--rubric);
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.home-shelf {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.home-shelf-head {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.home-shelf-head p {
+  margin: 0;
+  max-width: 38em;
   color: var(--pencil);
 }
 
-.open-list {
-  list-style: none;
-  margin: 0 0 var(--space-4);
-  padding: 0;
+.home-about,
+.home-open {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
-.open-card {
+/* The section rule spans the content column, not the gutter: drawn as the grid's first, full-width row. */
+.home-about::before,
+.home-open::before {
+  content: '';
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--ink);
+}
+
+.home-about-text p,
+.home-status {
+  margin: 0 0 var(--space-3);
+  max-width: var(--measure);
+}
+
+.open-plate {
   display: grid;
   gap: var(--space-1);
-  padding: var(--space-4);
+  max-width: var(--measure);
+  padding: var(--space-4) var(--space-5);
   background: var(--sheet);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
+  border: 1.5px solid var(--ink);
+  border-top: 8px solid var(--rubric);
   color: var(--ink);
   text-decoration: none;
 }
 
-.open-card:hover .open-name {
+.open-plate:hover .open-name {
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .open-name {
   font-family: var(--font-structure);
   font-size: var(--fs-subsection);
-  line-height: var(--lh-subsection);
   font-weight: 600;
-  color: var(--link);
-}
-
-.open-name::after {
-  content: ' →';
 }
 
 .open-text {
@@ -137,9 +441,15 @@
   color: var(--pencil);
 }
 
-.home-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin: var(--space-2) 0 0;
+@media (min-width: 1000px) {
+  .home-about,
+  .home-open {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--space-7);
+    align-items: start;
+  }
+
+  .home-open .home-status {
+    grid-column: 2;
+  }
 }
