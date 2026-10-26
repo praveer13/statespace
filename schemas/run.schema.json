@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:run@1",
+  "title": "statespace run record, version 1",
+  "description": "One recorded tool execution in the runs registry, runs/<RUN-id>.json (spine section 9.5; ARCHITECTURE.md section 9.1). Copy cites it as {{run:RUN-id}} and documents as [X RUN-id]; GATE-numbers requires those citations and GATE-runs resolves them and checks this record's integrity. A record is identified by its path, so it carries no schema tag. Field names are snake_case, the form every W0 record uses; spine section 9.5 writes the same fields in camelCase (binarySha256, inputSha256, recordedAt), and runs/README.md maps the two. Every value is copied from the execution's own output or computed from files on disk, never typed from memory. A value that the execution did not record is null, and an imported record (origin imported) names each such field in unrecorded with the reason. The root stays open: an engine adds its own fields (checks, values, probes and so on) beside the core, which this schema types.",
+  "x-typeName": "RunRecord",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "title", "engine", "version", "binary", "binary_sha256", "image", "recorded_at", "started_at", "duration_s", "argv", "inputs", "budget", "exit_code", "verdict_lines", "outputs", "environment", "notes"],
+  "properties": {
+    "id": {
+      "description": "The run's ID from the spine, RUN-{kebab}. GATE-runs requires it to equal the file name.",
+      "$ref": "#/$defs/runId"
+    },
+    "title": {
+      "description": "One line saying what the run establishes, in plain words.",
+      "$ref": "urn:statespace:defs@1#/$defs/prose"
+    },
+    "task": {
+      "description": "The task that recorded the run, such as W0-S11.",
+      "type": "string",
+      "pattern": "^W[0-9]-[ST][0-9]{2}(?![\\s\\S])"
+    },
+    "origin": {
+      "description": "recorded: the task executed the run and wrote this record from its outputs (the default when absent). imported: the run executed earlier and this record registers it from the logs on disk in research/; its null core fields are listed in unrecorded.",
+      "enum": ["recorded", "imported"]
+    },
+    "records": {
+      "description": "What the run records, as the spine's table of executed runs states it (spine section 9.5, the Records column).",
+      "$ref": "urn:statespace:defs@1#/$defs/prose"
+    },
+    "engine": {
+      "description": "The engine that ran, such as z3, cvc5, lean, tlc, postgres, pglite or chromium.",
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "description": "The engine's version, verbatim as it printed it (for example 5.3.1, 1.4.2-modified or 2026.10.20.183001).",
+      "type": "string",
+      "minLength": 1
+    },
+    "version_string": {
+      "description": "The engine's whole version line, verbatim, when it says more than the version (a commit, a build, a platform).",
+      "type": "string",
+      "minLength": 1
+    },
+    "binary": {
+      "description": "What binary_sha256 is the hash of: the binary, jar, wheel or archive that ran. Null when no single file ran (per-configuration hashes are then under configs).",
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "binary_sha256": {
+      "description": "SHA-256 of the binary, jar, wheel or native library that ran. Null when the execution did not record it or no single file ran.",
+      "anyOf": [{ "$ref": "urn:statespace:defs@1#/$defs/sha256" }, { "type": "null" }]
+    },
+    "image": {
+      "description": "The container image as name@digest, or the browser build for a browser run. Null when the run used no container, or the execution did not record its image.",
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "recorded_at": {
+      "description": "When this record was written.",
+      "$ref": "urn:statespace:defs@1#/$defs/instant"
+    },
+    "started_at": {
+      "description": "When the execution started: a date-time, or only a date when the execution recorded no time of day. Null when not recorded.",
+      "anyOf": [{ "$ref": "urn:statespace:defs@1#/$defs/instant" }, { "$ref": "urn:statespace:defs@1#/$defs/localDate" }, { "type": "null" }]
+    },
+    "duration_s": {
+      "description": "Wall-clock duration of the execution in seconds. Null when not recorded.",
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "argv": {
+      "description": "The exact command line, flags included, one element per argument; for a run made of several commands executed in order, one such list per command. Null when the execution did not record it; such a run is re-run with argv before copy cites its numbers (spine section 9.5).",
+      "anyOf": [
+        { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        { "type": "array", "minItems": 1, "items": { "type": "array", "minItems": 1, "items": { "type": "string" } } },
+        { "type": "null" }
+      ]
+    },
+    "inputs": {
+      "description": "The files the run read (specs, scripts, configurations, archives), each with its SHA-256 at execution time.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/input" }
+    },
+    "budget": {
+      "description": "The budget and limits the run had: rlimit, workers, seeds, state caps, timeouts, container memory. The bus Budget shape where it applies (ARCHITECTURE.md section 5.8); empty when the run had none.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "rlimit": { "description": "Z3's resource limit.", "type": "integer", "minimum": 0 },
+        "workers": { "description": "TLC's -workers value, or another engine's worker count.", "type": "integer", "minimum": 1 },
+        "timeout_s": { "description": "A wall-clock limit in seconds.", "type": "number", "minimum": 0 }
+      }
+    },
+    "exit_code": {
+      "description": "The process exit code. Recorded, never read alone: the verdict comes from verdict_lines. Null when not recorded.",
+      "type": ["integer", "null"]
+    },
+    "verdict_lines": {
+      "description": "The lines that carry the verdict, copied verbatim from the tool's output (paths normalised to repository-relative paths or <sandbox>).",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "outputs": {
+      "description": "The files that hold the run's output, each with its SHA-256 and size. A recorded run's outputs live under runs/<RUN-id>/; an imported run's outputs are the logs in research/.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/output" }
+    },
+    "values": {
+      "description": "Named values parsed from the outputs, which copy can print with a value reference, {{run:RUN-id#values.<name>}}.",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "environment": {
+      "description": "Where the run executed. Null fields were not recorded.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["os", "cpu_count"],
+      "properties": {
+        "os": { "description": "The operating system and kernel, such as Linux 6.12.63.", "type": ["string", "null"], "minLength": 1 },
+        "cpu_count": { "description": "Logical CPUs available to the run.", "type": ["integer", "null"], "minimum": 1 },
+        "ram_gib": { "description": "Memory of the host in GiB.", "type": ["number", "null"], "minimum": 0 },
+        "cpu_architecture": { "description": "The CPU architecture, such as x86_64.", "type": ["string", "null"], "minLength": 1 }
+      }
+    },
+    "configs": {
+      "description": "One entry per configuration when the run has several (spine section 9.5): each repeats the fields that differ, such as argv, inputs, budget and outputs.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/config" }
+    },
+    "primary_config": {
+      "description": "The id of the configuration whose argv, exit code and verdict lines the top level repeats.",
+      "type": "string",
+      "minLength": 1
+    },
+    "checks": {
+      "description": "Named pass/fail checks the recording script applied to the outputs.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/check" }
+    },
+    "pass": {
+      "description": "Whether every check passed.",
+      "type": "boolean"
+    },
+    "ttl_days": {
+      "description": "Days until the run is stale, for a run that describes a moving upstream such as RUN-twin-pins (ARCHITECTURE.md section 18, item 15).",
+      "type": "integer",
+      "minimum": 1
+    },
+    "unrecorded": {
+      "description": "The core fields that are null because the execution did not record them, each with the reason. Required for every null core field of an imported record (GATE-runs).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/unrecorded" }
+    },
+    "notes": {
+      "description": "What a reader needs to judge the run: substitutions, emulations, caveats, differences from earlier runs.",
+      "type": "array",
+      "items": { "$ref": "urn:statespace:defs@1#/$defs/prose" }
+    }
+  },
+  "$defs": {
+    "runId": {
+      "x-typeName": "RunId",
+      "description": "A run ID, RUN-{kebab}, such as RUN-tlc-doublespend.",
+      "type": "string",
+      "pattern": "^RUN-[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "runPath": {
+      "x-typeName": "RunPath",
+      "description": "A path relative to the repository root: . for the root, or segments of letters, digits and . _ @ + = , - joined by single slashes, with an optional trailing slash for a directory. No leading slash, no empty segment, and no segment that is . or .. A path outside the repository starts with a placeholder segment such as <sandbox> or <scratch> (private paths are never recorded); GATE-runs does not hash those.",
+      "type": "string",
+      "pattern": "^(?:\\.|(?:<[a-z][a-z0-9_-]*>|(?!\\.{1,2}(?:/|(?![\\s\\S])))[A-Za-z0-9._@+=,-]+)(?:/(?!\\.{1,2}(?:/|(?![\\s\\S])))[A-Za-z0-9._@+=,-]+)*/?)(?![\\s\\S])"
+    },
+    "input": {
+      "x-typeName": "RunInput",
+      "description": "A file the run read, located by a repository path, a URL or a file name, with its SHA-256 at execution time. A directory's sha256 is a manifest hash, named by sha256_method.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["sha256"],
+      "anyOf": [{ "required": ["path"] }, { "required": ["url"] }, { "required": ["name"] }, { "required": ["file"] }],
+      "properties": {
+        "path": { "description": "The file's path in the repository.", "$ref": "#/$defs/runPath" },
+        "url": { "description": "Where the file was downloaded from.", "type": "string", "pattern": "^https?://[!-~]+(?![\\s\\S])" },
+        "name": { "description": "The file's name inside an archive or image, when it has no repository path.", "type": "string", "minLength": 1 },
+        "file": { "description": "The downloaded file's name.", "type": "string", "minLength": 1 },
+        "sha256": { "description": "SHA-256 of the file's bytes when the run read it.", "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "bytes": { "description": "The file's size in bytes.", "type": "integer", "minimum": 0 },
+        "role": { "description": "What the run used the file for: spec, config, script, harness, fixture.", "type": "string", "minLength": 1 }
+      }
+    },
+    "output": {
+      "x-typeName": "RunOutput",
+      "description": "A file that holds output of the run, with its SHA-256 and size. GATE-runs fails when a file under runs/ no longer matches.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": { "description": "The file's path in the repository.", "$ref": "#/$defs/runPath" },
+        "sha256": { "description": "SHA-256 of the file's bytes.", "$ref": "urn:statespace:defs@1#/$defs/sha256" },
+        "bytes": { "description": "The file's size in bytes.", "type": "integer", "minimum": 0 },
+        "kind": { "description": "What the file holds: a log, a trace, a report.", "type": "string", "minLength": 1 }
+      }
+    },
+    "config": {
+      "x-typeName": "RunConfig",
+      "description": "One configuration of a run with several. It repeats only the fields that differ from the top level.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id"],
+      "properties": {
+        "id": { "description": "The configuration's name, unique within the run.", "type": "string", "minLength": 1 },
+        "purpose": { "description": "What this configuration shows.", "type": "string", "minLength": 1 },
+        "origin": { "description": "As origin at the top level, for this configuration.", "enum": ["recorded", "imported"] },
+        "engine": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "binary_sha256": { "anyOf": [{ "$ref": "urn:statespace:defs@1#/$defs/sha256" }, { "type": "null" }] },
+        "image": { "type": ["string", "null"], "minLength": 1 },
+        "started_at": { "anyOf": [{ "$ref": "urn:statespace:defs@1#/$defs/instant" }, { "$ref": "urn:statespace:defs@1#/$defs/localDate" }, { "type": "null" }] },
+        "duration_s": { "type": ["number", "null"], "minimum": 0 },
+        "argv": { "description": "The exact command line of this configuration; empty when the configuration executed nothing (a file hashed, not run).", "type": ["array", "null"], "items": { "type": "string" } },
+        "inputs": { "type": "array", "items": { "$ref": "#/$defs/input" } },
+        "budget": { "type": "object", "additionalProperties": true },
+        "exit_code": { "type": ["integer", "null"] },
+        "verdict_lines": { "type": "array", "items": { "type": "string" } },
+        "outputs": {
+          "description": "Output files of this configuration, as output records or as paths of files listed at the top level.",
+          "type": "array",
+          "items": { "anyOf": [{ "$ref": "#/$defs/runPath" }, { "$ref": "#/$defs/output" }] }
+        }
+      }
+    },
+    "check": {
+      "x-typeName": "RunCheck",
+      "description": "A named check on the run's outputs and whether it passed.",
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "pass"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "pass": { "type": "boolean" }
+      }
+    },
+    "unrecorded": {
+      "x-typeName": "RunUnrecorded",
+      "description": "A core field that is null because the execution did not record it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "reason"],
+      "properties": {
+        "field": { "description": "The field's name, such as argv or binary_sha256.", "type": "string", "minLength": 1 },
+        "reason": { "description": "Why the value is missing, and how it could be recovered.", "$ref": "urn:statespace:defs@1#/$defs/prose" }
+      }
+    }
+  }
+}

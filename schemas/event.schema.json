@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:statespace:event@1",
+  "x-typeName": "LedgerEvent",
+  "title": "statespace practice event, version 1",
+  "description": "One record of the browser's evidence log (ARCHITECTURE.md section 7.2; spine section 8.2). The log is a grow-only set of events keyed by id: two records that share an id and differ are resolved by the canonical conflict rule (the one whose canonical JSON is smaller wins), so double imports, merges and stale tabs converge (packages/ledger). Learner state is derived from the log at read time and never stored (I2). Fields are the spine's plus kernelspace's envelope fields v, tz, day and dev (ARCHITECTURE.md section 18, item 9). W1-T03 finished this first version before any event was written: provenance has no automated value (a flag on receipts and claims only), the uncredited view kind logs a drawer opened, and an item met in a drawer, a placement walk, a test-out or a confirmation names that context in its ref. The ref grammar is a [D] reading of ARCHITECTURE.md section 7.2.",
+  "$comment": "ref grammar by kind: call: call:S{n}.L{k}/{cell} for the first run of an authored cell, call:GEN-{family}/{template} for a generated item, or call:ER-{k}/forecast for an erosion forecast; item: item:GEN-{family}/{template}, or the context the item was met in: drawer:D-{nn}/{item}, placement:{step}, testout:KC-{n}.{slug} or confirm:KC-{n}.{slug}; probe: probe:S{n}/A/{attempt}/{index}; prove-it: prove-it:LAB-{n}/{mutant}, or prove-it:S{n}/B/{attempt}/{mutant} for Defence Part B; audit: audit:AUD-{n}.{k}/{variant}, audit:harvest/{hash} or audit:S{n}/C/{attempt}/{index}; lab-check: lab-check:LAB-{n}.c{k}; receipt-import: receipt-import:{sha256}; explain-back: explain-back:S{n}; note: note:{n}; view: view:D-{nn}, the drawer opened (uncredited)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "v", "kind", "ref", "provenance", "exposure", "at", "tz", "day", "dev"],
+  "properties": {
+    "id": {
+      "description": "A unique identifier, crypto.randomUUID() in the browser. Never parsed.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+(?![\\s\\S])",
+      "maxLength": 64
+    },
+    "v": {
+      "description": "The shape version of the event's kind.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": { "$ref": "#/$defs/kind" },
+    "ref": {
+      "description": "What the event is about; the grammar depends on the kind (see the allOf below).",
+      "type": "string",
+      "minLength": 1
+    },
+    "itemRev": {
+      "description": "A fingerprint of the item as graded. A newer revision shows re-check and never deducts.",
+      "type": "string",
+      "minLength": 1
+    },
+    "engine": {
+      "description": "The engine that keyed or graded the event, as name@version.",
+      "$ref": "urn:statespace:defs@1#/$defs/engineAtVersion"
+    },
+    "seed": {
+      "description": "The seed drawn at grade time, an unsigned 32-bit integer.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "ok": {
+      "description": "The graded verdict. Absent when the event is ungraded: the engine returned unknown or reached its budget at grade time, or the answer fell outside the item's language (ASSESSMENT.md section 2.1, which writes it as null). An ungraded event never counts as a miss.",
+      "type": "boolean"
+    },
+    "conf": {
+      "description": "The Call It confidence, kept as a category; the bands are applied at read time.",
+      "enum": ["guess", "think", "sure"]
+    },
+    "resp": {
+      "description": "The learner's response. Its shape depends on the kind and is checked by the module that reads it."
+    },
+    "mis": {
+      "description": "The misconception tag the response matched, which M-refutation-card reads.",
+      "$ref": "urn:statespace:defs@1#/$defs/misconceptionKey"
+    },
+    "provenance": {
+      "description": "Self-declared (OD-8): own, the learner declared no help; assisted, a hint past rung R2, a context packet, or the learner's own \"I had help\"; agent, an agent produced the answer. Weights are applied at read time, never stored (spine section 8.2). automated is not a value: it is a flag on receipts and claims only.",
+      "enum": ["own", "assisted", "agent"]
+    },
+    "exposure": {
+      "description": "unseen when no earlier event has the same identity (ref and itemRev) and the instance was never shown with its key before the first submission; seen otherwise (ASSESSMENT.md section 2.3). An uncredited view event is written as seen.",
+      "enum": ["seen", "unseen"]
+    },
+    "at": {
+      "description": "When the event happened, from an injectable clock; it carries the local UTC offset.",
+      "$ref": "urn:statespace:defs@1#/$defs/instant"
+    },
+    "tz": {
+      "description": "Minutes east of UTC, frozen at write time so travel never rewrites history.",
+      "type": "integer",
+      "minimum": -720,
+      "maximum": 840
+    },
+    "day": {
+      "description": "The local date, frozen at write time; the weekly rhythm reads it.",
+      "$ref": "urn:statespace:defs@1#/$defs/localDate"
+    },
+    "dev": {
+      "description": "A random identifier per browser profile, used by multi-device merges.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+(?![\\s\\S])",
+      "maxLength": 64
+    },
+    "ms": {
+      "description": "Time on task, in milliseconds.",
+      "type": "number",
+      "minimum": 0
+    },
+    "data": {
+      "description": "Kind-specific data: a module's SHA-256, per-check status, a receipt's hash. Checked by the module that reads it.",
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "call" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": {
+            "pattern": "^call:(?:S[0-9]+\\.L[0-9]+/[A-Za-z0-9._-]+|GEN-[a-z0-9-]+/[A-Za-z0-9._-]+|ER-[0-9]+/forecast)(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "item" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": {
+            "pattern": "^(?:item:GEN-[a-z0-9-]+/[A-Za-z0-9._-]+|drawer:D-[0-9]{2}/[A-Za-z0-9._-]+|placement:[A-Za-z0-9._-]+|testout:KC-[1-9][0-9]*\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*|confirm:KC-[1-9][0-9]*\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "probe" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^probe:S[0-9]+/A/[0-9]+/[0-9]+(?![\\s\\S])" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "prove-it" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": {
+            "pattern": "^prove-it:(?:LAB-[0-9]+/[A-Za-z0-9._-]+|S[0-9]+/B/[0-9]+/[A-Za-z0-9._-]+)(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "audit" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": {
+            "pattern": "^audit:(?:AUD-[0-9]+\\.[0-9]+/[A-Za-z0-9._-]+|harvest/[0-9a-f]+|S[0-9]+/C/[0-9]+/[0-9]+)(?![\\s\\S])"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "lab-check" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^lab-check:LAB-[0-9]+\\.c[0-9]+(?![\\s\\S])" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "receipt-import" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^receipt-import:[0-9a-f]{64}(?![\\s\\S])" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "explain-back" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^explain-back:S[0-9]+(?![\\s\\S])" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "note" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^note:[0-9]+(?![\\s\\S])" }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["kind"],
+        "properties": {
+          "kind": { "const": "view" }
+        }
+      },
+      "then": {
+        "properties": {
+          "ref": { "pattern": "^view:D-[0-9]{2}(?![\\s\\S])" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "kind": {
+      "x-typeName": "EventKind",
+      "description": "What the event records (spine section 8.2). Reading and viewing write no evidence; opening a drawer writes an uncredited view event, logged as help-seeking, which never counts (ARCHITECTURE.md section 7.1).",
+      "enum": [
+        "call",
+        "item",
+        "probe",
+        "prove-it",
+        "audit",
+        "lab-check",
+        "receipt-import",
+        "explain-back",
+        "note",
+        "view"
+      ]
+    },
+    "expSeedDraw": {
+      "x-typeName": "ExpSeedDraw",
+      "description": "A draw of the keep/kill experiment seed (content/governance/keepkill-rules.yaml, common.experiment_seed; spine section 12, item 58). It is drawn once from the platform's cryptographic random source when the comparisons are turned on, before the first event is written, and never redrawn. It lives in the event log beside the events and travels in the log's export. When a merge meets a different draw, the one drawn first governs (on equal instants, the smaller value); units exposed under the other are deviations, left out of every estimate. Every read checks that the rules it applies hash to rulesSha256.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expSeed", "drawnAt", "rulesSha256", "dev"],
+      "properties": {
+        "expSeed": {
+          "description": "The seed, an unsigned 32-bit integer.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "drawnAt": {
+          "description": "When the seed was drawn, from the same clock as an event's at.",
+          "$ref": "urn:statespace:defs@1#/$defs/instant"
+        },
+        "rulesSha256": {
+          "description": "The SHA-256 of the keep/kill rules file in force when the seed was drawn, the value runs/RUN-keepkill-rules.json records.",
+          "$ref": "urn:statespace:defs@1#/$defs/sha256"
+        },
+        "dev": {
+          "description": "The browser profile that drew the seed.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+(?![\\s\\S])",
+          "maxLength": 64
+        }
+      }
+    }
+  }
+}
