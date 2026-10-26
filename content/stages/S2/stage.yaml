@@ -1,0 +1,64 @@
+schema: statespace/lesson@1
+id: S2
+draft: true
+summary: >-
+  Prove that a small program meets its stated properties, then say exactly what the proof establishes and what it does
+  not. The program is a two-account ledger. You read Lean first in the tab, as recorded goal states, then prove on the Bench that a transfer
+  conserves money, keeps balances non-negative, leaves the state unchanged when it rejects, and conserves across a whole
+  sequence of transfers. You finish by learning what a proof checker's acceptance covers, and why every checker can
+  agree while none of them reads the requirement.
+newTool: "Lean 4: read in the tab as Goal Replay, then run on the Bench"
+roadmapTime: "3–6 weeks"
+seams: [SEAM-2, SEAM-15]
+anchors: [AUD-2.1, AUD-2.2, AUD-2.3, AUD-2.4]
+drawers: [D-02, D-04, D-05, D-06, D-07, D-08, D-15]
+cards:
+  - type: card
+    variant: feels-harder
+    title: "This will feel harder"
+    md: >-
+      Lean will feel slower than anything so far: you will read a goal, predict the next one, and be wrong, and that is
+      how the skill forms. Effortful practice often feels slower than rereading, and it tends to stick better. Expect
+      that here.
+  - type: card
+    variant: twin
+    title: "Comparator Live"
+    md: >-
+      Comparator Live, a public site that checks Lean solutions against challenge statements, identifies each trusted
+      challenge by a hash of its text and flags the untrusted ones as unreliable. Your receipts hash a challenge the same
+      way. The pins are {{run:RUN-twin-pins}}. Two questions to trace: does `statespace hash` on your challenge equal the
+      receipt's `challengeSha` and the published hash? Who wrote the statement you proved?
+  - type: card
+    variant: twin
+    title: "lean-eval"
+    md: >-
+      lean-eval counts a problem as solved if and only if comparator accepts the submitted solution. The pins are
+      {{run:RUN-twin-pins}}. Three questions to trace: who writes its challenges, what would a wrong challenge reward,
+      and where do the trusted hashes live?
+  - type: card
+    variant: twin
+    title: "Lean pull request 14577"
+    md: >-
+      "fix: missing check at kernel inductive declaration" is the fix behind the 2026 kernel bug that this stage retells.
+      The pins are {{run:RUN-twin-pins}}. Three questions to trace: which component lacked the check, which second
+      checker accepted the term and why, and which release shipped the fix?
+  - type: card
+    variant: reading
+    title: "Reading for this stage"
+    md: >-
+      The roadmap's reading, section by section. The Natural Number Game, first four worlds: Tutorial, Addition,
+      Multiplication and Implication (list read 2026-10-23 from the game's repository), at
+      https://adam.math.hhu.de/#/g/leanprover-community/NNG4. *Theorem Proving in Lean 4*, sections 3.1 to 3.3.3, 4.1,
+      4.4, 5.1, 5.2, 5.8, 7.4, 7.6, 8.3, 12.2, 12.4 and 12.5 (read 2026-10-23; sections 4.1 and 4.4 read 2026-10-24),
+      at https://lean-lang.org/theorem_proving_in_lean4/. "Validating a Lean Proof" in the Lean reference manual:
+      Printing Axioms, Re-Checking Proofs, Gold Standard and Remaining Issues (read 2026-10-23), at
+      https://lean-lang.org/doc/reference/4.35.0/ValidatingProofs/. "Did you prove it?" (read 2026-10-23), at
+      https://leanprover-community.github.io/did_you_prove_it.html.
+defence: >-
+  The Defence is untimed and runs over at least two sessions, with the agent closed in Parts A and B. Part A, about 35
+  minutes: twelve unseen items with a call on each, on reading axiom lists and comparator output, reading proofs, and
+  judging what each check establishes and what it does not. Part B, about 20 minutes: four to six mutations of your own
+  ledger proofs, such as dropping `generalizing s`, switching `Int` to `Nat` or weakening a statement under the same
+  name, each predicted before Lean and comparator grade it. Part C, about 20 minutes: four audit cases from this stage's
+  pool, at least one of them sound, with typed evidence. Part D, about 10 minutes: explain the induction in
+  `run_conserves` aloud for two minutes, then compare yourself with three ideas. Part D is not graded.

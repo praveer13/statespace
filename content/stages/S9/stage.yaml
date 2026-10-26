@@ -1,0 +1,97 @@
+schema: statespace/lesson@1
+id: S9
+draft: true
+summary: >-
+  Translate a small subset of Mini-Plinth into a simpler intermediate representation, prove that the
+  translation preserves what a client can observe, break the proof with a bad optimization, validate
+  generated SQL one command at a time, and keep three claims apart: the command preserves invariants, the
+  compiler preserves meaning, and the runtime follows the target. The stage runs in two halves. The first
+  starts with a validator you run in two minutes and ends with the choice of observations. The second draws
+  the simulation diagram, proves preservation case by case, and ends by drawing the trusted base of your own
+  system.
+newTool: "No new tool: Lean returns on your Bench, and your Rust validator runs in the tab"
+roadmapTime: "6–10 weeks"
+seams:
+  - SEAM-5
+  - SEAM-10
+  - SEAM-11
+  - SEAM-13
+  - SEAM-15
+anchors:
+  - AUD-9.1
+  - AUD-9.2
+drawers:
+  - D-14
+  - D-17
+  - D-22
+  - D-31
+cards:
+  - type: card
+    variant: twin
+    title: CompCert
+    md: >-
+      CompCert states its preservation theorem as a backward simulation and lists the parts of the compiler
+      its proof does not cover (manual, chapter 1; `common/Smallstep.v`; Leroy, CACM 2009). Your theorem has
+      the same shape and the same kind of list. Pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: Alive2
+    md: >-
+      Alive2 is bounded translation validation for LLVM. It checks each optimization's output within a bound
+      and reports a counterexample when it finds one (Lopes et al., PLDI 2021). S9.L2 and LAB-9.1 are the same
+      move on your compiler. Pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: Isabelle HOL-IMP
+    md: >-
+      The `ASM` and `Compiler` theories prove a stack-machine compiler by induction on the expression, with the
+      stack left arbitrary. S9.L1 ports the proof to account balances. Pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: Cedar
+    md: >-
+      `cedar-spec` proves its policy analysis in Lean and tests the Rust implementation against the Lean
+      specification. S9.L6 reads one of its theorems, and S9.L9 asks where compiled Lean runs in its test
+      harness. Pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: QED and SQLSolver
+    md: >-
+      Provers for SQL query equivalence. Each reports EQ, NEQ, UNKNOWN or a timeout, and each verdict has a
+      stated meaning and a fragment it is complete for. S9.L8 reads what an NEQ does and does not establish.
+      Pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: reading
+    title: Reading
+    md: >-
+      CompCert manual, chapter 1, sections 1.2 and 1.3: https://compcert.org/man/manual001.html (read
+      2026-10-23). Leroy, "Formal verification of a realistic compiler" (CACM 2009), sections 2.1 to 2.4, 4.3
+      and 5. The HOL-IMP `ASM` theory and *Concrete Semantics*, sections 3.3 and 8.1 to 8.4. The Alive2 paper
+      (PLDI 2021), sections 1 and 2. For SQL, Chandra and Merlin (STOC 1977) and the QED and SQLSolver papers.
+      Lean 4 Metaprogramming is a drawer, read selectively.
+defence: >-
+  Two mini-Defences, each sampling only its own half, untimed and taken over at least two sessions within a
+  week. The first follows the observations lesson and covers the stack machine, validator witnesses, the IR
+  and observers that miss aborts. Its mutations of your own work include dropping `generalizing stk`, closing
+  an IR golden with `native_decide`, reading both balances first and evaluating the amount twice. The second
+  follows the last lab stage and covers the case lemmas, bad optimizations, SQL instances, step and size
+  observers and the trusted base. Its mutations include making aborts unobservable, hoisting the debit,
+  validating shape only and weakening R. Each ends with an explain-back: the refinement relation and the
+  IR's boundary in the first, the three claims and why they stay apart in the second.
+extra:
+  completionTest: >-
+    Describe the refinement relation, its abstraction boundaries, and which pieces of the executable system
+    remain unverified.
+  erosions:
+    - id: ER-5
+      seam: SEAM-5
+      cashedIn: S9.L7
+      specimen: SP-9.1
+    - id: ER-11
+      seam: SEAM-11
+      cashedIn: S9.L8
+      specimen: SP-9.4
+    - id: ER-10
+      seam: SEAM-10
+      cashedIn: S9.L9
+      specimen: SP-9.6

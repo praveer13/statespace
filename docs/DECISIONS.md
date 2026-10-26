@@ -439,6 +439,19 @@ W0's results raised two questions, which the review page put to the owner beside
 - **Consequences.** W0-S13 writes a decision record with a fallback and records its run under the ID that W0-T10 registers. W5-T14 builds on that record, and its branch for a declined W0-S13 is gone (tracker/tasks.yaml). W0-S05's owner action to decide on W0-S13 (its section 7, action 2) is settled (tracker/tasks.yaml), and W0-T10 decides how the spine's RUN-trace-validate-spike (§3.8, §9.5, §9.6 and W0-S05's row in §13) resolves against W0-S13's run. The owner's review queue gains 0.5 h [D].
 - **Status.** Accepted 2026-10-25 by the owner (review page).
 
+### Owner direction: the happy path first
+
+**In one line.** Build the course's happy path completely first, so a learner can go through every stage on the site; fix bugs, repair gates and improve in separate, incremental passes.
+
+- **Context.** W1's first batch (2026-10-25) ran each task through an adversarial verifier and up to two fix rounds, and a repair run on 2026-10-26 added two graded verifiers and three more rounds. Most findings in the later rounds were new edge cases in gates rather than defects a learner would meet, seven of the twelve tasks stayed in repair, and the app shell never started, so the site showed nothing new.
+- **Decision.** The owner's direction in conversation on 2026-10-26: build the happy path for the whole course first, and fix bugs, repair and improve incrementally and separately.
+- **Consequences.**
+  - Every lesson, stage page, lab page and drawer is written now as a draft (`draft: true`) and published on the site as the build lands. A cell whose run is not yet recorded shows "run not yet recorded", as packages/content/README.md §1.7 allows in a draft.
+  - During the build, a check is a smoke test: the content build, the site build, every page rendering at 360 px with no console error, and the privacy scan. Verifier findings become listed follow-ups instead of blocking a task.
+  - The 10-hour review cap (OD-7) does not hold the happy-path build back. The owner reviews the live site, and the tracker catches up once the build lands.
+  - W1's tasks keep their IDs and acceptance criteria. The open findings of W1-T01, W1-T07, W1-T37, W1-T38, W1-T40 and W1-T41 (docs/waves/W1-report.md) are worked off in the hardening passes, along with recording the remaining runs, the generators, live engines in the tab, the lab starters and checkers, and the Audit Desk.
+- **Status.** Decided 2026-10-26 by the owner (in conversation).
+
 ## 2. Contested items in the brief (BRIEF §5.1)
 
 BRIEF §5.1 resolves sixteen items where the reviews and digests disagreed. Each record restates the positions, keeps the reason the brief gave, and adds where the resolution lands in the spine. Round-1 and round-2 change IDs (D1, A4, R9 and the like) are those of the two review digests, `dr1` and `dr2`.

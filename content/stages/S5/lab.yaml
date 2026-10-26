@@ -1,0 +1,173 @@
+schema: statespace/lesson@1
+id: LAB-5
+draft: true
+summary: >-
+  The holds spec. You model a transfer and then a hold in TLA+ and check them with TLC
+  on the Bench. TLC runs on your machine, and each stage imports a receipt that carries
+  the exact command line. The tab re-checks a safety stage from your spec text when the
+  whole exploration is small enough, and then shows the badge re-checked here. Liveness
+  results stay reported from your machine. The template gives you the DoubleSpend module
+  and its configuration, a read-only environment module, stubs for the properties, folders
+  for broken and fixed variants, and the command `statespace check lab5`. On a phone you
+  predict, read the recorded run, and queue the stage for your machine.
+stages:
+  - id: LAB-5.1
+    what: >-
+      Run the provided DoubleSpend configuration on the Bench and read the receipt. Find
+      the command line, the result line and the counts, and note which flags the run used.
+    checks:
+      - id: LAB-5.c1
+        label: The receipt is the deadlock-off run of the provided configuration.
+        passes: >-
+          The receipt is valid. Its result line says the invariant `NoOverspend` was
+          violated, with {{run:RUN-tlc-doublespend#values.deadlock_off.distinct_states}}
+          distinct states at depth {{run:RUN-tlc-doublespend#values.deadlock_off.depth}}
+          and a trace of {{run:RUN-tlc-doublespend#values.deadlock_off.trace_actions}}
+          actions in which both reads come before both writes. Its command line has
+          `-deadlock` and one worker {{run:RUN-tlc-help}}. The jar's SHA-256 equals the pin
+          {{run:RUN-tlc-jars}}, and the spec and configuration hashes equal the template's
+          {{run:RUN-tlc-doublespend}}.
+  - id: LAB-5.2
+    what: >-
+      Make the critical step atomic: merge the guard and the write into one action, then
+      run a complete check.
+    checks:
+      - id: LAB-5.c2
+        label: Your atomic spec passes a complete check, and a spend is reachable.
+        passes: >-
+          On your spec, whose hash differs from the provided one, TLC finishes with no
+          error and nothing left on its queue, `NoOverspend` is among the checked
+          invariants, and the constants are printed. To rule out a vacuous pass, a witness
+          operator `NoSpend == spent = 0`, checked as an invariant, is violated, so a
+          spend is reachable (the newer jar can also take an invariant on the command line
+          with `-inv` {{run:RUN-tlc-help}}). The reference fix is the atomic spec
+          {{run:RUN-tlc-atomic}}. Your own variables need not give the same state count.
+  - id: LAB-5.3
+    what: >-
+      Write the one-hold lifecycle, Place and then Capture or Release, with a counter for
+      resolutions, and state that a hold never resolves twice.
+    checks:
+      - id: LAB-5.c3
+        label: NeverTwice and TypeOK hold, and both outcomes are reachable.
+        passes: >-
+          `NeverTwice` and `TypeOK` hold, and the exploration is complete. To rule out a
+          vacuous pass, two witness operators, `hst # "captured"` and `hst # "released"`,
+          each checked as an invariant, are both violated, so both outcomes are
+          reachable. The reference is {{run:RUN-tlc-lifecycle}}.
+  - id: LAB-5.4
+    what: >-
+      Add the environment as actions: replies delivered at least once, expiry, crash and
+      restart. Find the hold that resolves twice in the unsafe variant, then fix it.
+    checks:
+      - id: LAB-5.c4
+        label: The unsafe variant breaks NeverTwice, and the fix holds with crashes on.
+        passes: >-
+          (a) On the unsafe variant, kept in `broken/`, TLC reports `NeverTwice` violated,
+          and the trace has an expiry step. The reference is
+          {{run:RUN-tlc-resolved-twice}}. (b) On the fix, kept in `fixed/`, TLC finishes
+          with no error and nothing left on its queue, with `CrashesOn = TRUE`, and every
+          action of the environment module is taken at least once in the explored graph,
+          as TLC's coverage output shows. The witness operators of the previous check are
+          still violated. The reference is {{run:RUN-tlc-never-twice}}.
+  - id: LAB-5.5
+    what: >-
+      State that a hold eventually resolves, under the fairness your own actions justify,
+      and check it. Then validate the starving lasso that appears when the fairness is
+      removed.
+    checks:
+      - id: LAB-5.c5
+        label: EventuallyResolves holds under your fairness, and the starving lasso is valid.
+        passes: >-
+          (a) `EventuallyResolves` holds under your `SysFairness`, and the exploration is
+          complete. TLA+'s parser (SANY) reads `SysFairness` and finds no action defined
+          in the environment module. `CrashesOn = FALSE` is recorded, with no `SYMMETRY`
+          and no `CONSTRAINT`. The reference is {{run:RUN-tlc-eventually}}. (b) The
+          starving variant's JSON trace is accepted by the lasso checker: it is a path of
+          the graph, it closes, `EventuallyResolves` is false at every state of the cycle,
+          and every conjunct of `SysFairness` holds on it.
+  - id: LAB-5.6
+    what: >-
+      Write the bound statement and the claim cards for CL-5.1, CL-5.2 and CL-5.3. This is
+      a write stage.
+    checks:
+      - id: LAB-5.c6
+        label: The three claim cards are complete, and each stamp prints its bound.
+        passes: >-
+          CL-5.1, CL-5.2 and CL-5.3 pass claim validation: six fields and a requirement
+          row. Every model-checked stamp prints its constants, "complete" or "partial", the
+          version line, the jar hash, the command line, symmetry, any constraint and any
+          fingerprint line. CL-5.2 lists SEAM-4 as assumed. CL-5.3 lists every fairness
+          conjunct as assumed and records that crash actions are off (SEAM-8). Each "if
+          weakened" field names a witness that refutes its own claim's proposition: SP-5.1,
+          SP-5.4 and SP-5.3, or your own. A bound statement names the constants and links
+          SP-5.6.
+  - id: LAB-5.7
+    what: >-
+      Optional. Check with TLC that your invariant is inductive at fixed constants, which
+      earns a model-checked stamp at those constants and nothing more. Then discharge the
+      inductive step in Z3 with the workers as an uninterpreted sort, which covers every
+      number of workers, with the translation from your spec as an open defeater. Apalache
+      is an optional second check, bounded the same way.
+extra:
+  explanationGate: >-
+    Before the first hint on any check, you write at least 12 words on the failing check,
+    the property it protects and your hypothesis. It is compared with three authored ideas,
+    self-assessed, and never credited. A check passed after the second hint counts as
+    assisted until an unseen variant passes: other constants or another number of workers,
+    drawn when it is graded.
+  hints:
+    - check: LAB-5.c1
+      R1: The deadlock flag turns the deadlock check off.
+      R2: Read the command line and the version lines in the receipt.
+      R3: "`statespace check lab5.1` reruns the provided configuration unchanged."
+      R4: Rerun it, and do not edit the template.
+    - check: LAB-5.c2
+      R1: The guard and the write must be one step.
+      R2: Look at the action that reads `seen` and the action that writes `bal`.
+      R3: |-
+        `Spend(w) == /\ pc[w] = "go"`
+        `/\ IF bal >= Amount THEN ... ELSE UNCHANGED <<bal, spent>>`
+      R4: One action tests and writes the balance. Add the witness run.
+    - check: LAB-5.c3
+      R1: Events need a history variable.
+      R2: Look at every action that resolves the hold.
+      R3: "`res' = res + 1` in each of them, and `NeverTwice == res <= 1`."
+      R4: Count resolutions, and show that both outcomes are reachable.
+    - check: LAB-5.c4
+      R1: Resolve by compare-and-set on the stored state.
+      R2: Look at the two-step handler and the two-step expiry.
+      R3: |-
+        `Expire == /\ hst = "held" /\ hst' = "released"`
+        `/\ res' = res + 1`
+      R4: Every resolution tests and writes `hst` in one action. Keep crashes on.
+    - check: LAB-5.c5
+      R1: Weak fairness forces only an action that stays enabled.
+      R2: Look at the expiry action's enabling condition along the lasso.
+      R3: |-
+        `Timeout == /\ st \in {"held", "pending"} ...`
+        `SysFairness == WF_vars(Timeout)`
+      R4: Let expiry apply while a request is outstanding, and put fairness on your own actions only.
+    - check: LAB-5.c6
+      R1: A model-checked stamp needs its bound.
+      R2: Look at the receipt's constants, command line and queue line.
+      R3: '`stamp: "[M] · Workers = {w1, w2}, Init = 100, Amount = 80 · complete"`'
+      R4: Copy the bound from the receipt, and name the seam each card rests on.
+  proveIt:
+    - operator: Split the atomic action.
+      appliedTo: LAB-5.2
+      prediction: Is the invariant violated or not, and how long is the witness, as an interval in actions?
+    - operator: Drop weak fairness on the expiry action.
+      appliedTo: LAB-5.5
+      prediction: Does the property hold or fail, and what is the shape of the lasso?
+    - operator: Add a duplicate-reply handler outside the compare-and-set.
+      appliedTo: LAB-5.4
+      prediction: Does NeverTwice hold?
+    - operator: Raise Workers from 2 to 3.
+      appliedTo: LAB-5.2
+      prediction: What is the verdict, and which fields of the stamp's qualifier change?
+    - operator: Restrict the expiry action to the held state.
+      appliedTo: LAB-5.5
+      prediction: Does a starving lasso come back?
+    - operator: Add SYMMETRY to the liveness configuration.
+      appliedTo: LAB-5.5
+      prediction: What does TLC print about the declaration?

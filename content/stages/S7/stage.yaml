@@ -1,0 +1,68 @@
+schema: statespace/lesson@1
+id: S7
+draft: true
+summary: >-
+  Give your system users, teams, roles, documents and sharing, and state the read
+  rule the roadmap gives you: a user may see a document when they are a team member
+  or it is explicitly shared. You write that rule as Datalog, check it with Z3, and
+  enforce it with row-level security in PostgreSQL. Then you meet what enforcement
+  leaves open. A check on every read is not noninterference, so you say who the
+  observer is, which worlds it must not tell apart, what your system releases on
+  purpose, and why revoking access cannot unsee what was already delivered.
+newTool: "Soufflé on the Bench; in the tab, Z3's Datalog engine behind an adapter"
+roadmapTime: 4 to 8 weeks
+seams:
+  - SEAM-10
+anchors:
+  - AUD-7.1
+  - AUD-7.2
+drawers:
+  - D-10
+  - D-16
+  - D-17
+  - D-20
+  - D-21
+cards:
+  - type: card
+    variant: twin
+    title: "Cedar's three layers of evidence"
+    md: >-
+      Cedar, an authorization language, backs its authorizer with three layers: a
+      Lean model with properties checked in Lean, such as default deny and "forbid
+      trumps permit"; a per-change symbolic analysis that returns a distinguishing
+      request; and daily differential random testing of the Rust authorizer against
+      the model. S7.L2, S7.L3 and S7.L4 each take one layer. See the
+      [Cedar paper](https://arxiv.org/abs/2403.04651) and
+      [How We Built Cedar](https://arxiv.org/abs/2407.01688). Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: "Zanzibar's new enemy"
+    md: >-
+      Zanzibar, Google's authorization system, names a case that a permission check
+      alone misses: a person is removed from a document's ACL, new content is added,
+      and a check against a stale copy of the ACL still lets them read it. Section 2.2
+      of the [Zanzibar paper](https://www.usenix.org/conference/atc19/presentation/pang)
+      states it, and S7.L8 reproduces it on a model whose ACL replica lags.
+      Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: reading
+    title: Reading for the stage
+    md: |-
+      All read 2026-10-23.
+
+      - The [Soufflé tutorial](https://souffle-lang.github.io/tutorial), the [rules page](https://souffle-lang.github.io/rules) and the [provenance page](https://souffle-lang.github.io/provenance).
+      - PostgreSQL 18, section 5.9, ["Row Security Policies"](https://www.postgresql.org/docs/18/ddl-rowsecurity.html), and [CREATE POLICY](https://www.postgresql.org/docs/18/sql-createpolicy.html).
+      - [Security Foundations](https://softwarefoundations.cis.upenn.edu/secf-current/toc.html): "Defining Secrecy and Secure Multi-Execution" and "Information-Flow-Control Type Systems".
+      - Sabelfeld and Sands, ["Declassification: Dimensions and principles"](https://www.cse.chalmers.se/~andrei/sabelfeld-sands-jcs07.pdf), sections 2 and 3.
+      - The [Zanzibar paper](https://www.usenix.org/conference/atc19/presentation/pang), sections 2.1 and 2.2.
+      - Cedar's [language paper](https://arxiv.org/abs/2403.04651), sections 2.3, 4.3 and 4.4.
+      - Jackson, "Analyzable models for software design" (York, 2004-02-04), [slides](https://people.csail.mit.edu/dnj/talks/york04/york-04.ppt.pdf) 18 and 19.
+defence: >-
+  Part A is twelve probes on unseen worlds, with a call on each: write the tenant
+  equivalence for a given observer and release list, find a field leak, a count channel or
+  an error channel as a pair of worlds, give a pair that a legitimate feature produces and
+  a blanket claim forbids, and say what a one-world matrix, a bounded check, an `unsat`
+  with witnesses and an `unknown` each establish. Part B predicts what happens when your
+  own policy and view are mutated: widen the observer, drop a declassification, write `in`
+  where overlap was meant, drop `FORCE`. Part C is four audit cases, at least one of them
+  sound. Part D is a two-minute explanation of why enforcement is not noninterference.

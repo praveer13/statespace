@@ -1,0 +1,63 @@
+schema: statespace/lesson@1
+id: S5
+draft: true
+summary: >-
+  You model concurrency and time. You find a race as a trace, tell "never" from
+  "eventually", state the fairness a progress claim rests on, and say exactly what a
+  model check that finds nothing establishes. The running example starts with the
+  transfer that reads a balance and writes it back, and ends with a hold that can be
+  captured or released while the world duplicates, delays and crashes.
+newTool: TLA+ with TLC on the Bench, met first in the tab through the Theater and Spectacle
+roadmapTime: 3 to 6 weeks
+seams:
+  - SEAM-4
+  - SEAM-8
+anchors:
+  - AUD-5.1
+  - AUD-5.2
+  - AUD-5.3
+  - AUD-5.4
+drawers:
+  - D-09
+  - D-15
+  - D-18
+cards:
+  - type: card
+    variant: twin
+    title: TigerBeetle's two-phase transfers
+    md: >-
+      TigerBeetle documents a pending transfer that is posted or voided once, and the
+      errors a repeat returns. Set your hold lifecycle beside it, and ask what a pending
+      transfer's expiry needs in order to run. Pins: {{run:RUN-twin-pins}}. See
+      [docs.tigerbeetle.com](https://docs.tigerbeetle.com/coding/two-phase-transfers/).
+  - type: card
+    variant: twin
+    title: TLA+ By Example's authoring contract
+    md: >-
+      TLA+ By Example labels every count as a first counterexample or a complete
+      exploration, and states the scope of each result. Your receipts and claim cards
+      carry the same labels. Pins: {{run:RUN-twin-pins}}. See
+      [learning.tlapl.us](https://learning.tlapl.us/).
+  - type: card
+    variant: dated-incident
+    title: "2015: a transfer confirmed twice"
+    md: >-
+      A researcher confirmed one staged gift-card transfer twice at nearly the same
+      moment, and $15 spread over three cards became $20 (Sakurity, 2015-05-21;
+      [the write-up](https://sakurity.com/blog/2015/05/21/starbucks.html)). The toy
+      model is {{run:RUN-tlc-starbucks15}}.
+  - type: card
+    variant: reading
+    title: Learn TLA+
+    md: >-
+      Learn TLA+ by Hillel Wayne, read 2026-10-23, is the stage's reading. Start with
+      Core › Writing Specifications and Core › Temporal Properties at
+      [learntla.com](https://learntla.com/).
+defence: >-
+  The Defence for this stage has four parts, untimed, over at least two sessions within
+  a week of the lab. Part A is 12 unseen items with your agent closed: trace prefixes,
+  lassos, calls about property kinds and trace lengths, and bounded results that need a
+  stamp. Part B mutates your own specs, and you predict each verdict before TLC grades
+  it: split the atomic action, drop weak fairness, add a duplicate-reply action, raise
+  the worker constant. Part C is four audit cases, at least one of them sound. Part D is
+  an explain-back of safety and liveness for holds, which is required and uncredited.

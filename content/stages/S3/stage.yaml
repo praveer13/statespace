@@ -1,0 +1,44 @@
+schema: statespace/lesson@1
+id: S3
+draft: true
+
+summary: |-
+  Invent Mini-Plinth as a language. You give the roadmap's toy syntax a precise meaning in Lean, independent of SQL, Rust and any screen. You prove that every successful step of a well-typed command keeps the ledger's invariant, then add an unsafe command and watch that proof become impossible. You finish with four recorded decisions about the edge cases, a JSON export of your semantics, and a Rust parser, typechecker and interpreter that agree with the course's kernel-checked goldens.
+
+newTool: "No new tool: Lean again, with the interpreter's views as a second instrument"
+
+roadmapTime: "4–8 weeks"
+
+seams:
+  - SEAM-6
+  - SEAM-3
+  - SEAM-13
+
+anchors:
+  - AUD-3.1
+  - AUD-3.2
+
+drawers:
+  - D-07
+  - D-14
+  - D-22
+
+cards:
+  - type: card
+    variant: reading
+    title: "Reading, minimum path"
+    md: |-
+      Read 2026-10-23. Harper, *Practical Foundations for Programming Languages*, free abbreviated edition: section 1.1 (skip 1.2), sections 2.1 to 2.4, 4.1 to 4.3, 5.1 and 5.2, 6.1 to 6.3, and 34.1 "Basic Commands". *Functional Programming in Lean*, cited by chapter title because the 2025 port renumbered the chapters: "Getting to Know Lean" sections 1.4 to 1.6, "Hello, World!" section 2.3 "Starting a Project", "Monads" sections 4.1 and 4.3, and "Functors, Applicative Functors, and Monads" §5.2.1.2 "Subtypes". The Lean Language Reference, §7.6.2 "Structural Recursion" and §7.6.3 "Well-Founded Recursion". Allow about two to four hours across the stage.
+  - type: card
+    variant: twin
+    title: "Production twin: Cedar"
+    md: |-
+      Cedar's Lean model states its type-soundness theorem together with the run-time errors it still allows, and ties production code to the model by testing. That is the shape of this stage's step-invariant claim and its interpreter claim. Read `typecheck_is_sound` and "How We Built Cedar", sections 3 and 4, pinned in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: "Production twin: TigerBeetle"
+    md: |-
+      TigerBeetle's two-phase transfers: a pending transfer reserves an amount, and a later post or void resolves it. Match pending, post and void to `hold`, `capture` and `release` in S3.L2. The pinned documentation page is in {{run:RUN-twin-pins}}.
+
+defence: |-
+  The Defence is untimed and runs over at least two sessions within a week of finishing the lab. Part A is twelve unseen items, one for each idea of the stage, each with a call, with your agent closed. Part B is five seeded mutations of your own lab, which you predict first and `statespace defend` then runs: some break your proof and some do not, so predicting "breaks" every time fails. Part C is four audit cases from the stage's pool, at least one of them sound. Part D asks you to explain what progress and preservation buy and what they do not. It is required and uncredited.

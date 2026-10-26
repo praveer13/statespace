@@ -36,7 +36,7 @@ test('the home screen renders under its meta CSP, blocks nothing and calls no ot
   const res = await page.goto('/')
   expect(res?.status()).toBe(200)
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('statespace')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/formal methods/)
   await expect(page.getByRole('main')).toBeVisible()
   const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content')
   expect(csp).toContain("default-src 'self'")
@@ -54,7 +54,7 @@ test('an unknown path shows the not-found screen', async ({ page }) => {
   expect(res?.status()).toBe(200)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Not found')
   await page.getByRole('link', { name: 'Go to the start.' }).click()
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('statespace')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/formal methods/)
   expect(seen.problems).toEqual([])
 })
 

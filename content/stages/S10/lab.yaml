@@ -1,0 +1,247 @@
+schema: statespace/lesson@1
+id: LAB-10
+draft: true
+
+summary: >-
+  Assemble your Core and use it. You wire the parts you built in Stages 3, 4, 6 and 8 into one pipeline and re-run
+  each part's gate. Then you take an agent's proposal through it: parse it, triage it, exhibit the violation or
+  prove the restricted obligation, run the corrected command on PostgreSQL with systematic tests, and record the
+  demonstration end to end. Last, you export a report from your claim graph and publish a bundle that anyone can
+  re-run. Agent proposals come from a mutation generator, and a seeded share of them is sound. No language model
+  grades anything.
+
+stages:
+  - id: LAB-10.1
+    what: >-
+      Run the reference pipeline on the provided agent proposal, and read the report skeleton it writes.
+    checks:
+      - id: LAB-10.c1
+        label: The skeleton reproduces the recorded one
+        passes: >-
+          `statespace demo` runs the reference parser, typechecker, checker, interpreter, compiler and runtime on
+          PostgreSQL, and writes a report skeleton whose section list, verdict lines and statement hashes equal
+          {{run:RUN-core-demo}}. The provided proposal is `command TransferWithFee(from, to, amount, fee)` with
+          `requires balance(from) >= amount` and `do move amount from from to to; move fee from from to sink`, and
+          its claim is "never overdraws; conserves; 200 tests green". The guard leaves out the fee, and the
+          expected verdicts are recorded in the same run.
+
+  - id: LAB-10.2
+    what: >-
+      Wire your parser, typechecker, checker and interpreter into one pipeline, after you re-run the gate of each.
+    checks:
+      - id: LAB-10.c2
+        label: Your pipeline agrees with the fixtures end to end
+        passes: >-
+          On the fixture corpus and on seeds drawn when the gate runs, your pipeline in the tab (a) emits IR equal
+          to the Lean export on every golden, valid under `IR@1`; (b) agrees with the typing goldens; (c) returns
+          the reference checker's verdict class on every fixture obligation; (d) replays every REFUTED [R] witness
+          in your interpreter and in the tab's interpreter; and (e) shows no PROVED [P] without a satisfiable
+          premise witness. The number of samples is printed.
+
+  - id: LAB-10.3
+    what: >-
+      Wire your compiler, runtime and simulator behind the pipeline, and run the fixtures through PostgreSQL.
+    checks:
+      - id: LAB-10.c3
+        label: The same fixtures pass through PostgreSQL
+        passes: >-
+          Every fixture's outcome class on PostgreSQL (success, zero rows mapped to a typed error, or an SQLSTATE)
+          equals the interpreter's, and R(S, D) holds after each commit. The attempt log groups retries by
+          SQLSTATE and never retries {{run:RUN-pg-claims#values.e6_overflow_sqlstate}}. `transaction_isolation` reads back
+          `serializable`. Simulator seed 1 yields an NDJSON trace that `statespace trace validate` accepts. No
+          wired component is a reference module: the Core is the one you built.
+
+  - id: LAB-10.4
+    what: >-
+      Draw an unseen agent proposal and take it in: parse it, record your typechecker's verdict, store its claim as
+      quoted text with no stamp, and name a checker for each part of the claim.
+    checks:
+      - id: LAB-10.c4
+        label: The proposal parses, and its claim is quoted text
+        passes: >-
+          `statespace proposal draw` returns an unseen proposal for a seed drawn when the gate runs. Your parser
+          parses it, and your typechecker's verdict is recorded; a typed rejection is a valid outcome of triage.
+          The claim is stored in `claims/` as quoted, unreviewed text with no stamp. Your triage plan names a
+          checker for each part of the claim. The plan is not credited.
+
+  - id: LAB-10.5
+    what: >-
+      Exhibit the violation with a witness that replays, or prove the restricted obligation with its premise
+      witness.
+    checks:
+      - id: LAB-10.c5
+        label: The witness replays, or the fragment is proved with a premise witness
+        passes: >-
+          Your verdict matches the reference key. For a flawed proposal, the decoded witness replays in your
+          interpreter and in the tab's interpreter against the named invariant, is minimized (under an Optimize
+          objective where it is numeric), has its class named, and is mounted as a specimen with its label. For a
+          sound proposal, every obligation is `unsat` for the stated fragment, a premise witness is `sat`, and
+          cvc5 agrees on every `unsat`. A disagreement with the reference opens a doubt against both sides. It
+          passes only if your witness replays in the tab's interpreter, which makes the reference wrong and files
+          an erratum.
+
+  - id: LAB-10.6
+    what: >-
+      Run the corrected command on PostgreSQL with systematic tests: the differential suite and the simulation
+      suite.
+    checks:
+      - id: LAB-10.c6
+        label: Both suites pass, and the fix kills a non-minimal witness
+        passes: >-
+          The corrected command, or the accepted proposal, compiled by your compiler and run by your runtime,
+          passes the differential suite (outcome classes and R(S, D) against the interpreter) and the simulation
+          suite (traces that TLC accepts). The receipt prints n, the seeds and the generator statistics, with n at
+          least the floors of LAB-6.c4 and LAB-8.c6. The fix also kills a non-minimal witness of the specimen's
+          class.
+
+  - id: LAB-10.7
+    what: >-
+      Record the demonstration end to end, as a bundle that can be replayed.
+    checks:
+      - id: LAB-10.c7
+        label: The recording cites every artifact by run id and every statement by hash
+        passes: >-
+          `statespace demo record` writes `demo/` with the proposal and its hash, the triage plan, the checker and
+          replay receipts (or the premise-witness receipt), the fix diff, the re-check, the PostgreSQL and
+          simulation receipts, and CL-10.1, citing every artifact by run id and every statement by hash.
+          `statespace check demo/` replays the witness and checks every hash. It is a replayable bundle, not a
+          video.
+
+  - id: LAB-10.8
+    what: >-
+      Export the report from your claim graph, in nine passes. Each pass fits a weekday window of about 25 minutes
+      or a weekend window of about 45, and ends with a result from `statespace export --section`. Pass 1 exports
+      the skeleton and re-checks every receipt marked stale or touched by an advisory. Pass 2 is PROVED, with the
+      theorem statements and their hashes. Pass 3 is MODEL-CHECKED and TESTED, each with its bound or n and its
+      generator statistics. Pass 4 is ENFORCED and CONFIGURED: you mint CONFIGURED claims from read-backs of
+      `transaction_isolation`, the server version and the row-security settings. Pass 5 is the doubt hunt, with
+      the checklist run over each group of claims, their statuses and their m|n. Pass 6 is ASSUMED, NOT COVERED
+      and the erosion log. Pass 7 is the demonstration, the specimens and the agent incident ledger. Pass 8 is the
+      operational semantics, the edge-case decisions and the known limitations. Pass 9 is "What this report
+      establishes and what it does not", written last, and the validator. If a pass runs past its window, stop at
+      the next section boundary and write what is missing as a dated NOT COVERED line.
+    checks:
+      - id: LAB-10.c8
+        label: The report validates, and the rules hold
+        passes: >-
+          The report validates under `report@1`, with sections for PROVED, MODEL-CHECKED, TESTED, ENFORCED,
+          CONFIGURED, ASSUMED and NOT COVERED, plus UNKNOWN and the specimens, a checker matrix, statement hashes,
+          budgets and advisories, and a doubt log as m|n. `statespace check report/` confirms rules T1 to T12 and
+          re-derives every stamp from its receipt.
+
+  - id: LAB-10.9
+    what: >-
+      Publish the bundle. Where to publish is your choice, and the check runs on the local bundle.
+    checks:
+      - id: LAB-10.c9
+        label: Every link and every hash in the bundle resolves
+        passes: >-
+          `statespace check bundle/` finds every link resolving, every statement hash matching (the text with
+          trailing whitespace removed, plus one newline), every receipt re-verifiable, the privacy check clean (no
+          private paths, secrets or identifiers you did not choose to publish, and nothing from your private
+          overlay), a license and reproduction instructions present, and the bundle building from a clean clone in
+          the devcontainer.
+
+  - id: LAB-10.10
+    what: >-
+      Stretch: find a counterexample in a public project, and report it as an issue or a pull request with a
+      witness that any browser can replay.
+
+extra:
+  explanationGate: >-
+    Before the first hint on any check, you write at least 12 words on the failing check, the property it protects
+    and your hypothesis. It is compared with authored ideas, self-assessed, and never credited. A check passed with
+    help past the second hint counts as assisted until an unseen variant passes without help.
+  badges:
+    LAB-10.1: Reported from your machine
+    LAB-10.2: Re-checked here
+    LAB-10.3: Reported from your machine
+    LAB-10.4: Re-checked here
+    LAB-10.5: Re-checked here, with the cvc5 cross-check reported from your machine
+    LAB-10.6: Reported from your machine
+    LAB-10.7: Reported from your machine
+    LAB-10.8: Reported from your machine
+    LAB-10.9: Reported from your machine
+  hints:
+    - check: LAB-10.c1
+      r0: Say which pipeline step prints the first difference.
+      r1: "`statespace doctor`, and drawer D-15."
+      r2: Compare the receipt's `tools[]` with the pins.
+      r3: A solved case, a wrong devcontainer digest.
+      r4: The reproduction checklist.
+    - check: LAB-10.c2
+      r0: Say which fixture disagrees first, and which component produced it.
+      r1: The step's own gate (LAB-3.c8 to LAB-3.c10, LAB-4.c5), and drawer D-14.
+      r2: The IR diff for that fixture.
+      r3: A solved mismatch of the same kind on another fixture.
+      r4: The `IR@1` contract, field by field.
+    - check: LAB-10.c3
+      r0: Say the interpreter's outcome class and PostgreSQL's.
+      r1: S6.L2, the rowcount as guard, and specimen SP-6.1.
+      r2: Which rowcount or SQLSTATE the runtime maps wrongly.
+      r3: A solved NULL-guard fixture.
+      r4: The outcome-class table and the R(S, D) check.
+    - check: LAB-10.c4
+      r0: Say whether the failure is in parsing, typing or claim storage.
+      r1: S10.L1's gate, and the quoted-claim block of `claim@1`.
+      r2: The grammar rule at the error position.
+      r3: An intake of another proposal family.
+      r4: The intake contract.
+    - check: LAB-10.c5
+      r0: Say the invariant, your verdict, and whether the reference agrees.
+      r1: S4.L6, S1.L3 and the three decisions of S10.L6.
+      r2: For a `sat`, the replay diff. For an `unsat`, the premise query. For a mismatch, which component to suspect first.
+      r3: The worked self-transfer triage of S10.L6.
+      r4: The obligation's shape for this family, never the key.
+    - check: LAB-10.c6
+      r0: Say the first diverging sequence and both outcome classes.
+      r1: S6.L3 and S8.L6.
+      r2: The generator statistics around the divergence.
+      r3: A triaged divergence, as a spec, implementation, tool or proof error.
+      r4: The suite configuration checklist.
+    - check: LAB-10.c7
+      r0: Say which artifact lacks a run id or a hash.
+      r1: The `runs[]` and `statements[]` of `receipt@1`.
+      r2: "`statespace demo record --explain`"
+      r3: LAB-10.1's reference recording.
+      r4: The recording manifest.
+    - check: LAB-10.c8
+      r0: Say the failing rule and its line.
+      r1: The rules of S10.L7, and section 6 of the Bloomfield, Netkachova and Rushby report.
+      r2: The validator's pointer.
+      r3: A fix of the same rule on another claim.
+      r4: Every rule, with an example.
+    - check: LAB-10.c9
+      r0: Say the unresolved link or the mismatched hash.
+      r1: The statement-hash rule of S10.L7.
+      r2: "`statespace hash` on both copies."
+      r3: A statement edited after its receipt.
+      r4: The publication checklist.
+  proveIt:
+    - id: skip-premise-witness
+      template: t3
+      mutant: The checker skips the premise-witness query.
+      key: A fixture with contradictory premises reports PROVED [P] where it should report no stamp, which is the class of specimen SP-4.4. Graded on the checker's fixtures.
+    - id: drop-rowcount-check
+      template: t2
+      mutant: The compiler drops the rowcount check.
+      key: Commands whose credit targets a missing account commit the debit, so the outcome classes diverge from the interpreter. Graded on the differential fixtures.
+    - id: rc-pool
+      template: t4
+      mutant: The runtime's pool runs READ COMMITTED.
+      key: Abstract serializability rejects the recorded holds history, in which both transactions commit and 160 is held against a balance of 100 {{run:RUN-pg-claims}}. Graded on the recorded histories.
+    - id: retry-out-of-range
+      template: t2
+      mutant: The runtime retries a value-out-of-range failure.
+      key: The attempt log shows the same failure repeated until the budget is spent, so the command ends in GaveUp and not in a typed error. The failure code is {{run:RUN-pg-claims#values.e6_overflow_sqlstate}}. Graded on the attempt fixtures.
+    - id: restamp-test
+      template: t1
+      mutant: One TESTED [T] line is restamped PROVED [P].
+      key: The validator reports the line, because PROVED [P] needs a checker's receipt and this line's receipt is a test. Graded by the validator.
+    - id: edit-after-receipt
+      template: t1
+      mutant: A pinned statement is edited after its receipt.
+      key: The claim lands under UNKNOWN [?] with the reason "statement mismatch" (rule T5). Graded by the validator.
+  proveItWhen: >-
+    After LAB-10.3 and again after LAB-10.8. A surviving mutant is a gap in coverage, and it enters the report as an
+    active doubt.

@@ -1,0 +1,199 @@
+schema: statespace/lesson@1
+id: LAB-4
+draft: true
+summary: >-
+  Build `miniplinth check`, a checker for Mini-Plinth commands. It reads a command and an invariant, emits an SMT-LIB
+  obligation, asks Z3, decodes a model into a state and replays it in the interpreter, and reports a stamp with its
+  premise witness. The first stage runs the reference checker so you see the output before you write any. Stages 2 to
+  7 are your Rust, compiled to wasm and graded in the tab on seeds drawn at grade time. Stage 8 runs on your machine
+  and compares Z3 with cvc5. This lab builds capstone step S10.L3.
+stages:
+  - id: LAB-4.1
+    what: >-
+      Run the reference checker on the guarded Transfer and read what it reports: the verdict, the stamp and the
+      premise witness. It runs in the tab and earns nothing. It shows the output your own checker will produce.
+    checks:
+      - id: LAB-4.c1
+        label: The reference output, reproduced
+        passes: >-
+          The verdict is `unsat`, the stamp names the solver, its version, the word uncertified and the `rlimit`, and
+          the premise witness satisfies `Inv ∧ Guard ∧ Step` and replays as a successful step.
+          {{run:RUN-check-fragment}} The witness is checked by running it, never by matching its values.
+  - id: LAB-4.2
+    what: >-
+      Write `wp_emit`: the weakest precondition of an assignment or a ResourceOp, as SMT-LIB. The seeds include
+      aliasing and capture-prone commands.
+    checks:
+      - id: LAB-4.c2
+        label: Weakest preconditions match the reference
+        passes: >-
+          On 20 fresh seeds of assignment shapes, aliasing and capture-prone seeds included, your output is
+          Z3-equivalent to the reference on every seed. A failing seed shows the state where the two disagree. A seed
+          Z3 cannot decide is drawn again and counted, and each seed's `rlimit` is printed.
+  - id: LAB-4.3
+    what: >-
+      Extend `wp_emit` to sequences, conditionals and guards, with all four readings of a guard. Name the
+      intermediate formulas so that a chain of conditionals stays small.
+    checks:
+      - id: LAB-4.c3
+        label: Conditionals and guards match the reference
+        passes: >-
+          The same equivalence check on 20 fresh seeds of sequences and guarded commands, all four guard readings,
+          plus a chain of 12 sequential `if`s whose query stays within the check's size and time limits. Copying `Q`
+          at every `if` does not.
+  - id: LAB-4.4
+    what: >-
+      Write `vc_emit` with its forward route: `Inv ∧ Guard ∧ Step ∧ ¬Inv′`, with a named frame for every account the
+      command leaves alone.
+    checks:
+      - id: LAB-4.c4
+        label: Frames are stated, and every one is needed
+        passes: >-
+          First, on 20 fresh obligations over at least three accounts that are known to hold, the forward route
+          reports a proved obligation with a premise witness that replays. Second, every `frame_<k>` is load-bearing:
+          deleting it turns `unsat` into `sat`, with account k changing. Third, the two routes agree on every seed.
+  - id: LAB-4.5
+    what: >-
+      Capstone S10.L3. Write `model_decode`: turn a Z3 model into a Mini-Plinth state and replay it in the
+      interpreter. A model that does not replay is a defect in your generator, never a finding about the command.
+    checks:
+      - id: LAB-4.c5
+        label: Every refutation replays
+        passes: >-
+          On the fixtures and 10 fresh seeds, every REFUTED result decodes into a state that the interpreter replays
+          to the same violation, and every premise witness replays as a success. A model that does not replay is
+          reported as spurious, a defect in the generator, and never as REFUTED. The check tests this with an
+          injected query that has no frame.
+  - id: LAB-4.6
+    what: >-
+      Write the driver that decides, for an invariant, `inductive`, `CTI`, `REACHABLE in k` or `none within N`, and
+      chooses between claim CL-4.4 and claim CL-4.5.
+    checks:
+      - id: LAB-4.c6
+        label: Verdicts match the reference
+        passes: >-
+          On 10 generated invariants your output matches the reference on every seed. Every REACHABLE trace replays
+          in the interpreter with k ≤ N. Every bounded verdict prints its bound N. CL-4.4 or CL-4.5 is chosen as the
+          stamp rules direct.
+  - id: LAB-4.7
+    what: >-
+      Break your own checker on purpose. Miscompile one construct so that a known-false obligation is reported
+      proved, find the faulty translation, and keep the broken build in `broken/`. Dropping a frame conjunct is not
+      enough, because it only gives a false alarm. Over-constrain instead: strengthen a guard, drop an effect or
+      widen a frame.
+    checks:
+      - id: LAB-4.c7
+        label: A false proof, located and fixed
+        passes: >-
+          One: `broken/` reports PROVED on a fixture whose reference verdict is REFUTED, through a strengthened guard,
+          a dropped effect or an over-broad frame. Two: its premise-witness status is recorded, `sat` for a proof that
+          is not vacuous and `unsat` for one that is. Three: `fixed/` reports REFUTED with a witness that replays.
+          Four: fixture and semantics hashes match across builds. Five: reverting the hunk tagged `MISCOMPILE`
+          restores REFUTED, so locating the bug is graded.
+  - id: LAB-4.8
+    what: >-
+      On your machine, run cvc5 beside Z3 on every `unsat` you authored, then write the claim cards for CL-4.2 and
+      for CL-4.4 or CL-4.5. A disagreement between the solvers is never overridden: it becomes a specimen candidate.
+    checks:
+      - id: LAB-4.c8
+        label: Two solvers agree, and the cards hold
+        passes: >-
+          cvc5 and Z3 agree on every authored `unsat` in your fixtures and claims, and a disagreement fails the
+          check. CL-4.2 and CL-4.4 or CL-4.5 pass claim validation, their statement hashes match the receipt, and each
+          "if weakened" witness refutes its own proposition.
+  - id: LAB-4.9
+    weekend: true
+    what: >-
+      Optional. In Lean, prove that substitution is sound and that a weakest-precondition generator for assignment
+      and `if` is sound, over a small pinned language: `subst_sound` and `wp_sound`. The theorem is about a Lean
+      model of your Rust generator, so the claim it supports says how that model corresponds to your code.
+extra:
+  grading: >-
+    LAB-4.1 runs the reference module in the tab and earns nothing. LAB-4.2 to LAB-4.7 run your Rust compiled to wasm
+    in the tab and are graded on seeds drawn at grade time (badge: re-checked here); each check runs in a fresh
+    instance of your module. LAB-4.8 and LAB-4.9 run on your machine (badge: reported from your machine).
+  template: >-
+    The template supplies the reader for the command format, the vocabulary, the output format, the fragment
+    declaration, the host and the fixtures: known-true and known-false obligations, the third-account fee fixture, the
+    off-by-one Withdraw and the capture-prone postconditions. You write the weakest-precondition emitter, the forward
+    step with its frames, the model decoder, the CTI driver, a miscompile and its fix, and the claim cards.
+  contract:
+    exports: wp_emit, vc_emit (route `wp` or `forward`), model_decode, bmc_emit(system, inv, k), verdict_compose
+    vocabulary: >-
+      State symbols come from the command format. The post-state suffix is `_p`, and parameters are `p_<name>`. The
+      obligation is one `assert`, shared through `let` and `define-fun`, with no extra `declare-const`, so
+      equivalence with the reference is quantifier-free over a fixed vocabulary.
+    namedConjuncts: "`guard`, `step_<i>`, `frame_<k>`, `inv_pre` and `neg_inv_post`, written as `(! … :named …)`"
+    outputLines: command, fragment, query (SHA-256), solver (version, `rlimit`, entry path), verdict, premise, stamp, defeaters
+  hints:
+    gate: >-
+      Every ladder opens with an explanation gate: write a teach-back of the failing check (what it tested, the
+      invariant, your hypothesis), then reveal three authored ideas and tick the ones you covered. It is
+      self-assessed and never credited. R1 opens after a teach-back of at least 12 words. Work past R2 is credited as
+      assisted until an unseen variant passes.
+    ladders:
+      - check: LAB-4.c1
+        r1: A premise witness shows that the premises can hold together.
+        r2: Look at the `premise` line.
+        r4: An `unsat` on its own may be vacuous.
+      - check: LAB-4.c2
+        r1: A weakest precondition is substitution, and ResourceOps substitute sequential updates.
+        r2: Look at `subst` on `forall`, and at the order of the two updates in `move`.
+        r3: |-
+          Forall(y,b) => { let y2 = fresh(y, fv(e) ∪ fv(b)); Forall(y2, subst(rename(b,y,y2), x, e)) }
+        r4: Substituting under a ∀y binds a free y of e, and renaming first prevents it.
+      - check: LAB-4.c3
+        r1: Each guard reading has its own weakest precondition, and naming intermediate formulas keeps them small.
+        r2: Look at the guard's value in the distinguishing state, and at the size of the chain's query.
+        r3: |-
+          emit(define_fun(q_i, state, wp_rest)); wp(If(b,c1,c2)) = and(implies(b, app(q_i, post(c1))), implies(not(b), app(q_i, post(c2))))
+        r4: An application costs one node and a copy costs the whole formula, so twelve copies double twelve times.
+      - check: LAB-4.c4
+        r1: A forward step states every untouched location as unchanged.
+        r2: Look at the `frame_<k>` that the check deleted.
+        r3: |-
+          for k in accounts \ writes(cmd) { emit(named(eq(post(k), pre(k)), frame(k))) }
+        r4: Without it `post(k)` is free, and `¬Inv′` holds at k.
+      - check: LAB-4.c5
+        r1: A witness claims something about the semantics, so it must replay.
+        r2: Compare the decoded state with the interpreter's.
+        r3: |-
+          if !replays(decode(m)) { report(Spurious(VcgDefect)) }
+        r4: A model that does not replay is a step the semantics forbids, so the encoding is incomplete.
+      - check: LAB-4.c6
+        r1: A satisfiable step is not yet a bug.
+        r2: Look at the unrolling in `bmc_emit` and at `Init`.
+        r3: |-
+          for k in 0..=n { if sat(bmc(k)) { return Reachable(k) } }
+        r4: Reachability makes the CTI a bug, and a strengthening makes it unreachable.
+      - check: LAB-4.c7
+        r1: Dropping premises cannot give a proof, and over-constraining can.
+        r2: Look at the guard's comparison and at the write set of the fee fixture.
+        r3: |-
+          emit(lt(amount, plus(bal(from), 1))) // MISCOMPILE: source says le
+        r4: A stronger guard excludes the boundary state that overdraws.
+      - check: LAB-4.c8
+        r1: Two solvers catch solver bugs, and encoding bugs pass through both.
+        r2: Look at the hash of the query they disagree on.
+        r4: Agreement leaves the open question of whether the encoding is right.
+  proveIt:
+    note: Predict first. `statespace defend` mutates your checker and grades the prediction with Z3 and replay.
+    mutations:
+      - mutation: delete one `frame_<k>`
+        predict: >-
+          The frame fixture changes from `unsat` to `sat` and is reported spurious, because the witness changes
+          account k and does not replay. {{run:RUN-z3-missing-frame}}
+      - mutation: delete `guard`
+        predict: >-
+          Transfer becomes `sat` and is reported spurious, because the witness violates the guard and replay rejects
+          the command. Deposit stays proved, since dropping its guard is sound.
+      - mutation: put a capture-prone postcondition into `wp_emit`
+        predict: >-
+          Equivalent if you rename the bound variable, otherwise stronger, and a spurious `sat` follows.
+          {{run:RUN-z3-capture}}
+      - mutation: drop the strengthening conjunct from LAB-4.6
+        predict: An inductive verdict becomes a CTI, and the bounded search finds nothing within N.
+      - mutation: emit `≤` as `<` in a guard
+        predict: The off-by-one fixture is reported proved, and its premise witness is still `sat`.
+      - mutation: signed 64-bit mode, if you built one
+        predict: Transfer is refuted through the recipient's wrap. {{run:RUN-z3-bv64}}

@@ -1,0 +1,103 @@
+schema: statespace/lesson@1
+id: LAB-1
+draft: true
+summary: >-
+  Project 00 is the roadmap's first-weekend checklist plus conservation and a double capture.
+  It runs on your machine with `uv run`, pinned to the same solver version as the tab
+  ({{run:RUN-z3-starter#values.version}}), or entirely in the tab. It never needs a
+  devcontainer. Each stage ends in a check that reads the solver's answer, and a model is
+  graded by replaying it, never by matching its values. Every stage opens with a call:
+  predict, then run the reference.
+stages:
+  - id: LAB-1.1
+    what: >-
+      Run the Z3Py introductory example, then the roadmap's starter, and see the answer
+      change when the guard arrives. Call the two answers first. The starter prints its own
+      answer, so this call is practice and is never scored.
+    weekend: false
+    checks:
+      - id: LAB-1.c1
+        label: The answer pair reproduces.
+        passes: >-
+          `z3.get_version_string()` reports the pinned version, and `starter.py` prints a
+          model and then `unsat` {{run:RUN-z3-starter}}. Model values are not compared. The
+          introductory example is run and logged, not graded.
+  - id: LAB-1.2
+    what: >-
+      Find a transfer that makes the source balance negative. Then minimize your witness's
+      amount with Optimize, and say what "minimal" covers.
+    weekend: false
+    checks:
+      - id: LAB-1.c2
+        label: Your violation query finds a real overdraft.
+        passes: >-
+          Your violation query has a model, and that model satisfies `a >= 0`, `b >= 0` and
+          `amount > 0` and leaves the sender below zero under your encoding. Reported but not
+          required: whether your query is equivalent to the premises plus the negated
+          property. A narrower query gets a distinguishing state, "your query would miss this
+          violation".
+  - id: LAB-1.3
+    what: >-
+      Add the sufficient-funds guard. The violation query should then have no model, and a
+      premise query beside it should have one. Then drop `amount > 0` and predict the
+      sender's answer over `Int`.
+    weekend: false
+    checks:
+      - id: LAB-1.c3
+        label: The guard works, and its answer is not empty.
+        passes: >-
+          The guarded violation query has no model. The premise query, with the premises and
+          the guard and no negated property, has a model that satisfies every premise. The
+          guard is equivalent to `amount <= a` under the premises, so a guard that also
+          rejects a full-balance transfer fails with the state that shows it. The violation
+          query is equivalent to the premises plus the guard plus the negated property, so
+          extra constraints cannot make "no model" cheap.
+  - id: LAB-1.4
+    what: >-
+      Introduce the buggy refund rule and find the second counterexample. Fix it so that a
+      witness you have not seen dies too. Then find which conjunct of your fixed refund is
+      load-bearing by deleting each in turn.
+    weekend: false
+    checks:
+      - id: LAB-1.c4
+        label: The fix kills the whole class.
+        passes: >-
+          Your mint query on `broken/refund.py` has a model that replays, and the witness is
+          written to your specimens. Your mint query on `fixed/refund.py` has no model for the
+          base parameters, and for two parameter sets drawn at grade time from the bug's
+          family: a non-zero floor, a prior partial refund, a fee. The fixed rule's premise
+          query has a model, so some refund with `r > 0` is accepted, because rejecting every
+          refund is not a fix. A non-minimal witness of the clamp class, drawn at grade time,
+          is rejected or conserves under your fixed rule.
+  - id: LAB-1.5
+    what: >-
+      Write conservation and the double capture as two-state properties, with primed
+      variables. Then ask whether conservation catches your double capture.
+    weekend: false
+    checks:
+      - id: LAB-1.c5
+        label: Both properties give the expected answers on fresh seeds.
+        passes: >-
+          On the base model and on three seeds drawn at grade time (hold amounts, other holds
+          pooled in `held`, initial status): the transfer step, written with primed variables,
+          conserves the total (the negation has no model) and the step relation itself has a
+          model. The buggy capture applied twice has a model for the at-most-once query, with
+          a witness that replays. The fixed capture has none. One fixed capture succeeds.
+  - id: LAB-1.6
+    what: >-
+      Write the README with the property, assumptions, solver answer, example model and
+      limitations. Two claim cards are prefilled from your receipt.
+    weekend: false
+    checks:
+      - id: LAB-1.c6
+        label: The README matches the receipt, and the cards hold.
+        passes: >-
+          The README has the headings Property, Assumptions, Solver answer, Example model and
+          Limitations, each non-empty. Every answer line under Solver answer matches a receipt
+          line word for word, with the solver version and the budget. The example model replays
+          as a violation of the stated property. Both cards (CL-1.1 and CL-1.4) pass the claim
+          check: six fields present, method, tool and version equal to the receipt's, the
+          statement hash equal to the hash of your `claims/*.smt2` file, the "if weakened"
+          witness refuting the claim's own proposition on replay, and requirement-fit never
+          marked [P]. Prose quality is not graded, and nothing here is graded by a language
+          model.

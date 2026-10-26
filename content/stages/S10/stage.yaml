@@ -1,0 +1,86 @@
+schema: statespace/lesson@1
+id: S10
+draft: true
+
+summary: >-
+  Assemble the Core. You wire the parser, typechecker and interpreter of Stage 3, the checker of Stage 4, the
+  compiler and runtime of Stage 6 and the simulator of Stage 8 into one pipeline that you own, and you re-run
+  each part's own gate before it goes in. Then the Core judges an agent's proposal in front of you: you choose
+  the checker for each part of its claim, refute it with a witness that replays or prove a stated fragment, keep
+  a sound command and strengthen a weak invariant, or fail closed, and you run the corrected command on
+  PostgreSQL under your runtime and record the demonstration end to end. You finish by exporting a report from
+  your claim graph and publishing a bundle that says exactly what each line establishes, what it assumes and what
+  it does not cover. The course plans about six weeks for all of this, shown as ranges.
+
+newTool: "No new tool: your own Core, driven by `statespace demo`, `statespace export` and `statespace check`"
+
+roadmapTime: "Open-ended; the course plans about six weeks"
+
+drawers:
+  - D-06
+  - D-14
+  - D-15
+  - D-30
+  - D-31
+  - D-32
+  - D-33
+  - D-34
+  - D-35
+  - D-36
+  - D-37
+  - D-38
+  - D-39
+  - D-40
+
+cards:
+  - type: card
+    variant: reading
+    title: "Reading, minimum path"
+    md: >-
+      Read 2026-10-23. About half an hour to an hour. Bloomfield, Netkachova and Rushby, "Defeaters and
+      Eliminative Argumentation in Assurance 2.0" (SRI-CSL-2024-01, https://arxiv.org/abs/2405.15800), section 6,
+      "Defeaters and Confidence". Goodenough, Weinstock and Klein, "Eliminative Argumentation: A Basis for Arguing
+      Confidence in System Properties" (CMU/SEI-2015-TR-005, 2015-02-25), section 2.1 for m|n, section 2.2 for the
+      three kinds of doubt, section 3.1, "Unidentified Defeaters", and section 3.5, "True Defeaters
+      (Counterevidence)". The Lean Language Reference for the pinned Lean release, "Validating a Lean Proof": its
+      opening threat model, "Gold Standard: comparator and external checkers" and "Remaining Issues". The CompCert
+      manual, chapter 1, sections 1.2 and 1.3: what its proof covers, what it does not, and "observable behavior".
+  - type: card
+    variant: reading
+    title: "Reading, optional"
+    md: >-
+      Read 2026-10-23. Gohar, Hunter, Cohen and Lutz, "A Taxonomy of Real-World Defeaters in Safety Assurance
+      Cases" (https://arxiv.org/abs/2502.00238), sections IV-A to IV-G: the checklist for hunting doubts. The Lean
+      community's page "Did you prove it?": "Does the repository compile? Is the proof being checked?" and "Does
+      your work prove what you claim it proves?". The PostgreSQL manual, section 13.2.3, "Serializable Isolation
+      Level" (https://www.postgresql.org/docs/18/transaction-iso.html): the retry requirement, and a guarantee
+      stated for committed SERIALIZABLE transactions.
+  - type: card
+    variant: twin
+    title: "Production twin: Cedar's release gate"
+    md: >-
+      Cedar ships a release only when its evidence is up to date: "A new version of Cedar isn't released unless its
+      model, proofs, and differential tests are up to date" (Hietala and Torlak, "Lean Into Verified Software
+      Development", AWS Open Source Blog, 2024-04-08, section "How Cedar uses Lean for verification-guided
+      development"). That is the shape of this stage: a report that says which evidence stands behind each line,
+      and a check that fails when the evidence is out of date. Pins are in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: dated-incident
+    title: "Dated incident: OEIS Open, 2026-08-12"
+    md: >-
+      A headline of 147 results out of 492 became 144 out of 492 under comparator's verdicts (Adamczewski, "OEIS
+      Open", https://arxiv.org/abs/2608.11941, section 2.3, "Proof verification", read 2026-10-23). The difference
+      is why your report shows which checker re-checked each line, and why a discrepancy is a doubt and never a
+      footnote.
+
+defence: >-
+  Untimed, over at least two sessions within a week of publishing the bundle, with your agent closed. Part A is
+  twelve unseen probes across all seven outcome families, with one item each on the two ideas Stage 8 marked as
+  thresholds, that committing is not sending and that at-least-once delivery duplicates, and four probes on this
+  stage: a fresh agent proposal to triage, a report line to stamp, what your report establishes, and a doubt
+  status. Part B is seven seeded mutations of your own Core, one for each component you own, which you predict
+  first and the component's own checker then grades: the parser, the typechecker, the checker, the interpreter,
+  the compiler, the runtime and the simulator. Part C is four cases, one from your own repo, harvested from your
+  agent's commits or generated when none touched a statement, and three from the cross-stage pool, at least one
+  of them sound. Part D asks you to explain, in two minutes, what the report establishes and what it does not,
+  and then to compare a three-idea self-check with Part A. It is required and uncredited.

@@ -1,0 +1,253 @@
+schema: statespace/lesson@1
+id: LAB-9
+draft: true
+summary: >-
+  Compile a subset of Mini-Plinth into a small IR, prove that the compiler preserves what a client observes,
+  and validate generated SQL one command at a time. The template supplies the source semantics with its
+  adapter, the IR's syntax, the `skip`, `seq` and `abort` clauses of `compile`, and named register-index
+  lemmas, so manual mode keeps `omega` and `grind` off. You write the IR's semantics, `compE`, the `move` and
+  `require` clauses, `InFragment`, `obs`, the matching relation R, every proof and the Rust SQL validator. The
+  first stage is a two-minute win with a reference validator. Seven stages are weekend proof stages of 45
+  minutes, and a goal you park at the stuck protocol's last step enters CL-9.2 as one more assumed case.
+stages:
+  - id: LAB-9.1
+    what: >-
+      Run the reference translation validator on `transfer 30 1 2`, compiled two ways: the compiler's output,
+      and one an agent edited "to reuse a register", which writes the credit to the source account. The
+      validator is a reference module and earns no credit.
+    weekend: false
+    checks:
+      - id: LAB-9.c1
+        label: Both verdicts reproduce
+        passes: >-
+          The validator accepts the compiler's output and prints its bound: the accounts, the balance range
+          and the number of stores enumerated. It rejects the wrong-account output with a store that the
+          interpreter replays as different observations {{run:RUN-tv-reference}}.
+  - id: LAB-9.2
+    what: >-
+      Prove `exec_append` and `exec_comp` for the stack machine yourself, against the pinned statements. The
+      induction generalizes the stack.
+    weekend: true
+    checks:
+      - id: LAB-9.c2
+        label: The comparator accepts both theorems
+        passes: >-
+          The comparator accepts `exec_append` and `exec_comp` against the pinned statement pack. The axioms
+          stay within the allowed list, with no `sorryAx` and no native-computation axiom, and the receipt
+          records that manual mode was on. Reference proof: {{run:RUN-lean-stack-machine}}.
+  - id: LAB-9.3
+    what: >-
+      Write the IR's semantics, the `move` and `require` clauses of the compiler, and the lemma that the IR is
+      deterministic. The amount is saved before the first write, and the credit reads the debited store.
+    weekend: false
+    checks:
+      - id: LAB-9.c3
+        label: The goldens pass and the determinism lemma is accepted
+        passes: >-
+          The comparator accepts every golden of the IR pack by `decide`, and accepts `exec_deterministic`. The
+          lint finds no `native_decide`, `implemented_by`, `extern`, `partial` or `unsafe` in `S9/Defs.lean`.
+          The receipt freezes `S9/Defs.lean` by SHA-256.
+  - id: LAB-9.4
+    what: >-
+      Choose the observations and the matching relation R, and freeze them as your statement module. Aborts,
+      error codes and every balance must be observable, and R must imply equal observations.
+    weekend: false
+    checks:
+      - id: LAB-9.c4
+        label: The adequacy theorems are accepted
+        passes: >-
+          The comparator accepts `obs_sees_aborts`, `obs_sees_errors`, `obs_sees_balances`, `R_init` and
+          `R_obs` against the course's adequacy module, which imports your frozen `S9/Defs.lean` and
+          `S9/Statement.lean`. The receipt freezes `S9/Statement.lean`. An observer that cannot see aborts
+          cannot pass (SP-9.3).
+  - id: LAB-9.5
+    what: >-
+      Prove the expression lemma: compiled expressions evaluate as the source does, leave the store alone, and
+      change only registers at or above the one that holds the value.
+    weekend: true
+    checks:
+      - id: LAB-9.c5
+        label: The comparator accepts the expression lemma
+        passes: The comparator accepts `compE_correct`.
+  - id: LAB-9.6
+    what: >-
+      Prove the posting case: a posting pair compiled to IR writes keeps the matching relation. Your first
+      case also mints the claim for the whole theorem.
+    weekend: true
+    checks:
+      - id: LAB-9.c6
+        label: The posting case is accepted and CL-9.2 is minted
+        passes: >-
+          The comparator accepts `move_sim`. CL-9.2 is minted as "PROVED modulo the remaining pinned lemmas",
+          and each remaining lemma is carried as [A].
+  - id: LAB-9.7
+    what: >-
+      Prove the guard case, a failing guard included: the compiled assert aborts with the source's error.
+    weekend: true
+    checks:
+      - id: LAB-9.c7
+        label: The guard case is accepted
+        passes: The comparator accepts `require_sim`.
+  - id: LAB-9.8
+    what: >-
+      Prove the sequence case: the second command's code starts from the registers and the store that the
+      first command's code left behind.
+    weekend: true
+    checks:
+      - id: LAB-9.c8
+        label: The append law and the commit branch are accepted
+        passes: The comparator accepts `exec_append`, the IR's append law, and `seq_commit`.
+  - id: LAB-9.9
+    what: >-
+      Prove the abort case, with aborts observable: a command that aborts propagates its error, and the code
+      after it never runs.
+    weekend: true
+    checks:
+      - id: LAB-9.c9
+        label: The abort cases are accepted
+        passes: The comparator accepts `seq_abort`, `abort_sim` and `skip_sim`.
+  - id: LAB-9.10
+    what: >-
+      Assemble the theorem: induction on the command with the case lemmas, then equal observations from the
+      matching relation. Close with `#print axioms`, the comparator and manual mode.
+    weekend: true
+    checks:
+      - id: LAB-9.c10
+        label: The assembled theorem is accepted
+        passes: >-
+          The comparator accepts `seq_sim`, `compile_correct`, `compile_complete` and `preservation`, and
+          `#print axioms preservation` stays within the allowed list. CL-9.2 becomes PROVED [P] · Lean
+          {{run:RUN-lean-toolchain#version}} kernel · axioms listed {{run:RUN-lean-preservation-frag}}. The
+          paranoid run, with every checker, happens at the Defence.
+  - id: LAB-9.11
+    what: >-
+      Write a SQL validator in Rust that compiles to wasm and runs in the tab. It checks each generated plan
+      against its source command and replays every rejection on PGlite and in the interpreter.
+    weekend: false
+    checks:
+      - id: LAB-9.c11
+        label: Wrong plans are rejected, honest plans are accepted, and every rejection replays
+        passes: >-
+          On seeds drawn at grade time: (1) every semantically wrong mutant is rejected, the shape-only
+          mutant included, a plan with the right statement shapes whose credit names `$from`; (2) no honest
+          plan is rejected; (3) every rejection carries a schema-valid instance and parameters that give
+          different outcome classes when replayed on PGlite for the SQL and in the interpreter for the
+          source, and an instance that cannot be inserted, or does not replay as a divergence, fails the
+          check; (4) every verdict prints its bound or n. Reference: {{run:RUN-sql-validation}}.
+  - id: LAB-9.12
+    what: >-
+      Keep the bad optimization as a specimen, draw the trusted base of your own system, and write the claim
+      cards for the three claims.
+    weekend: false
+    checks:
+      - id: LAB-9.c12
+        label: The specimen replays and the cards pass
+        passes: >-
+          `broken/hoist/` sits beside `fixed/`. Two `decide` goldens replay SP-9.1: the minimal witness and a
+          non-minimal member of its class. The trusted-base table gives every component a status. CL-9.1 to
+          CL-9.3 pass the claim validation of `statespace check`, each "if weakened" witness refuting its own
+          proposition.
+extra:
+  badges:
+    LAB-9.1: Re-checked here
+    LAB-9.2: Reported from your machine
+    LAB-9.3: Reported from your machine
+    LAB-9.4: Reported from your machine
+    LAB-9.5: Reported from your machine
+    LAB-9.6: Reported from your machine
+    LAB-9.7: Reported from your machine
+    LAB-9.8: Reported from your machine
+    LAB-9.9: Reported from your machine
+    LAB-9.10: Reported from your machine
+    LAB-9.11: Re-checked here
+    LAB-9.12: Reported from your machine
+  hints:
+    - check: LAB-9.c1
+      r1: A validator checks one output on the stores within its bound.
+      r2: Look at the counterexample store on the receipt.
+      r3: Open the store and compare the destination account in both runs.
+      r4: The edit credits the source account, so the destination never changes.
+    - check: LAB-9.c2
+      r1: The second operand's code runs on a taller stack.
+      r2: Look at the plus case, and at `exec_append`.
+      r3: Induct on the expression with the stack generalized, split the code, and use both hypotheses.
+      r4: HOL-IMP's argument, case by case.
+    - check: LAB-9.c3
+      r1: Save the amount, and credit after the debit.
+      r2: Look at the command of the failing golden.
+      r3: Snapshot the amount in a register before the first write.
+      r4: The compile scheme of S9.L3.
+    - check: LAB-9.c4
+      r1: Aborts and errors must be visible to the observer.
+      r2: Find which adequacy theorem fails.
+      r3: Observe the outcome itself.
+      r4: "`obs` as the outcome, and R as store equality."
+    - check: LAB-9.c5
+      r1: "The frame: lower registers and the store are unchanged."
+      r2: Look at the second operand of the `add` case.
+      r3: Use the first hypothesis at `r` and the second at `r + 1`.
+      r4: The value, the frame and the store, by induction.
+    - check: LAB-9.c6
+      r1: R forgets registers, and a posting is two writes.
+      r2: Look at the expression lemma at base register 0.
+      r3: Rewrite the amount as the register's value.
+      r4: The stores agree pointwise after the six steps.
+    - check: LAB-9.c7
+      r1: The assert compares registers, not the store.
+      r2: Look at the frame clause for register `r`.
+      r3: Case on the guard, and let the failing branch abort.
+      r4: Both branches, with the frame clause.
+    - check: LAB-9.c8
+      r1: The second command starts at the first command's final state.
+      r2: Look at the append law and the commit branch.
+      r3: Use the first simulation, then the second at the new state.
+      r4: The composition of the two diagrams.
+    - check: LAB-9.c9
+      r1: Aborts short-circuit.
+      r2: Look at the error branch of the append law.
+      r3: The prefix fails, so the second command's code never runs.
+      r4: The error propagates without any hypothesis about the second command.
+    - check: LAB-9.c10
+      r1: Induction first, then observations.
+      r2: Look at `R_init`, `R_obs` and `compile_complete`.
+      r3: Assemble the case lemmas, then derive equal observations.
+      r4: The whole argument in prose.
+    - check: LAB-9.c11
+      r1: Compare meaning, and replay every rejection.
+      r2: Look at the shape-only mutant.
+      r3: Lift each statement to IR form and compare outcome classes.
+      r4: The validator design of S9.L8.
+    - check: LAB-9.c12
+      r1: Every component of your system has a status.
+      r2: Look at the hoisted compile at the witness.
+      r3: "Golden: the source commits and the target aborts."
+      r4: The trusted-base table of S9.L9.
+  proveIt:
+    - after: LAB-9.2
+      mutation: Drop `generalizing stk`.
+      prediction: The proof fails to elaborate at the plus case.
+      gradedBy: Lean
+    - after: LAB-9.3
+      mutation: Read both balances before writing.
+      prediction: The self-transfer golden fails.
+      gradedBy: Lean, by `decide`
+    - after: LAB-9.3
+      mutation: Evaluate the amount again after the debit.
+      prediction: The `move (bal src)` golden fails.
+      gradedBy: Lean, by `decide`
+    - after: LAB-9.4
+      mutation: Return the pre-state on abort.
+      prediction: '`obs_sees_aborts` cannot be proved.'
+      gradedBy: The comparator
+    - after: LAB-9.7
+      mutation: Delete the frame clause from `compE_correct`.
+      prediction: '`require_sim` breaks, and `move_sim` survives.'
+      gradedBy: The comparator
+    - after: LAB-9.10
+      mutation: Hoist the debit above the guard's read.
+      prediction: '`compile_correct` fails, with a witness in the class `amt ≤ bal < 2·amt`.'
+      gradedBy: Lean and the interpreter
+    - after: LAB-9.11
+      mutation: Replace the semantic check with a shape check.
+      prediction: The shape-only mutant is accepted.
+      gradedBy: The validator's test harness

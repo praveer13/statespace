@@ -1,0 +1,76 @@
+schema: statespace/lesson@1
+id: S6
+draft: true
+summary: >-
+  Compile your transfer into PostgreSQL transactions, run the same generated commands through your interpreter and
+  the database, and say what that comparison establishes and what it cannot. SQL brings its own semantics: NULL,
+  bags, numbers the database refuses and failures it raises. Under concurrency, the way you compile a command, and
+  not the isolation level alone, decides which anomaly you meet. The stage ends with the refinement relation R(S, D):
+  for every successful database step, a legal step of your model that R still relates.
+newTool: "PostgreSQL on the Bench, driven by statespace isorun; PGlite in the tab, on one connection"
+roadmapTime: "4–8 weeks"
+seams: [SEAM-9, SEAM-11, SEAM-14]
+anchors: [AUD-6.1, AUD-6.2, AUD-6.3]
+drawers: [D-11, D-14, D-15, D-21, D-23, D-30]
+cards:
+  - type: card
+    variant: reading
+    title: Core reading before S6.L6
+    md: >-
+      PostgreSQL manual, chapter 13: section 13.2 "Transaction Isolation" (13.2.1 to 13.2.3), section 13.4.1
+      "Enforcing Consistency with Serializable Transactions" with its warning about replicas, and section 13.5
+      "Serialization Failure Handling" (https://www.postgresql.org/docs/18/mvcc.html), read 2026-10-23. The course
+      pins the version 18 pages rather than the current ones, because the current pages move when the next major
+      version is released.
+  - type: card
+    variant: reading
+    title: Optional reading
+    md: >-
+      Hermitage (Kleppmann, CC BY 4.0, https://github.com/ept/hermitage): the README summary table and the sections
+      of its PostgreSQL page on lost update, read skew and write skew. Ports and Grittner, "Serializable Snapshot
+      Isolation in PostgreSQL", PVLDB 5(12), 2012. Kingsbury and Alvaro, "Elle", PVLDB 14(3), 2020. All read
+      2026-10-23.
+  - type: card
+    variant: twin
+    title: PostgreSQL's own isolation specs
+    md: >-
+      PostgreSQL tests its isolation levels with isolationtester specs, the format this stage's catalog copies: each
+      spec declares sessions and steps, and a recorded output file says what the server did. One spec re-checks a
+      WHERE clause after a concurrent update; another lists no permutations, so every interleaving runs. Pins are in
+      {{run:RUN-twin-pins}}. Which interleavings commit both transactions, and why are they exactly the serial orders?
+  - type: card
+    variant: twin
+    title: Cedar's differential random testing
+    md: >-
+      Cedar compares its production implementation with its formal model on randomly generated inputs
+      (https://arxiv.org/abs/2407.01688, section 4, read 2026-10-23; pins in {{run:RUN-twin-pins}}). Section 4.3
+      notes that full line coverage still sent many inputs only through error handling.
+  - type: card
+    variant: twin
+    title: Hermitage
+    md: >-
+      Hermitage runs one set of isolation tests against many databases (https://github.com/ept/hermitage, read
+      2026-10-23). Its PostgreSQL results come from an old release. The course re-records them on the version it
+      pins and names every history by its compilation pattern, never by isolation level alone.
+  - type: card
+    variant: twin
+    title: TigerBeetle's transfer results
+    md: >-
+      TigerBeetle's `create_transfers` names every refusal as a result code, from `accounts_must_be_different` to
+      `overflows_credits_posted` (https://docs.tigerbeetle.com/reference/requests/create_transfers/, read 2026-10-23;
+      pins in {{run:RUN-twin-pins}}). Map your typed outcomes onto its results.
+  - type: card
+    variant: dated-incident
+    title: Jepsen on PostgreSQL, 2020-06-12
+    md: >-
+      Jepsen reported G2-item anomalies under SERIALIZABLE in several PostgreSQL releases, including 12.3, caused
+      by a conflict-detection bug that was fixed in 2020 (https://jepsen.io/analyses/postgresql-12.3, section 3.2,
+      read 2026-10-23). S6.L9 asks what your claim assumes about the database underneath it, and this report is
+      the dated example.
+defence: >-
+  Untimed, over at least two sessions within a week of the lab. Part A is twelve unseen probes with a call on each,
+  including what differential tests establish and what they cannot, and the four SQL mismatches: NULL, bags,
+  numeric overflow and serialization failures. Part B is four mutations of your own compiler and runtime, predicted
+  first: read-modify-write compilation, a dropped rowcount check, a retry policy that handles one failure code only,
+  and a pool set to READ COMMITTED. Part C is four audit cases, at least one of them sound. Part D is a short
+  explanation of R(S, D) and of what one simulation step checks.

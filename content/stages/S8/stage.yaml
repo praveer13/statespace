@@ -1,0 +1,85 @@
+schema: statespace/lesson@1
+id: S8
+draft: true
+summary: |-
+  You model what happens after the commit. You find every crash window between your
+  database and an external service, say which guarantee needs which assumption, and check
+  that your code behaves like your model. The running example is the hold from the time
+  stage, now with the outbox, the worker, the provider and the acknowledgement as separate
+  steps.
+
+  Take the lessons and lab stages in this order: S8.L1, LAB-8.1, S8.L2, LAB-8.2, S8.L3,
+  LAB-8.4, S8.L4, LAB-8.5, S8.L5, LAB-8.3, S8.L6, LAB-8.6, LAB-8.7, S8.L7, LAB-8.8.
+  LAB-8.3 comes after S8.L5 because it checks what that lesson teaches.
+newTool: No new tool. TLA+ with TLC returns, and so does Rust.
+roadmapTime: 3 to 6 weeks
+seams:
+  - SEAM-12
+anchors:
+  - AUD-8.1
+  - AUD-8.2
+drawers:
+  - D-09
+  - D-12
+  - D-14
+  - D-19
+  - D-21
+cards:
+  - type: card
+    variant: twin
+    title: "TigerBeetle: reliable transaction submission"
+    md: >-
+      TigerBeetle's page "Reliable Transaction Submission" (read 2026-10-23) has the client
+      generate the id, persist it "before submitting the transfer", and resend with the
+      same id; a duplicate returns `exists`. Set your table of crash windows beside it, and
+      ask which windows persisting first closes. Pins: {{run:RUN-twin-pins}}. See
+      [docs.tigerbeetle.com](https://docs.tigerbeetle.com/).
+  - type: card
+    variant: twin
+    title: "CCF: smart casual verification"
+    md: >-
+      CCF checks its implementation against its TLA+ specification, with trace validation
+      run in CI, and reports six consensus bugs (Howard et al., NSDI 2025;
+      [arXiv 2406.17455](https://arxiv.org/abs/2406.17455), v2, 2024-10-16). Read where its
+      trace module aligns a coarser grain of atomicity, and how CI decides a trace failed.
+      Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: "TigerBeetle: the VOPR"
+    md: >-
+      TigerBeetle's simulator runs a cluster "running real code" against "network, storage
+      and process faults" from a seed (the Safety page, read 2026-10-23). Compare it with
+      your own harness: where a seed fixes the fault schedule, how a failing seed replays,
+      and where invariants are checked. Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: dated-incident
+    title: "Stripe: documented key pruning"
+    md: >-
+      Stripe's API reference, "Idempotent requests" (read 2026-10-21, re-read 2026-10-23),
+      says that for API v1 a key can be removed once it is at least 24 hours old, and that
+      a key reused after the original is pruned makes a new request
+      ([the page](https://docs.stripe.com/api/idempotent_requests)). The outage that
+      outlives that retention is specimen SP-8.5: {{run:RUN-tlc-key-ttl}}.
+  - type: card
+    variant: reading
+    title: The stage's reading
+    md: |-
+      | Reading | Sections | Read or dated |
+      |---|---|---|
+      | [Learn TLA+](https://learntla.com/) | Core › Temporal Properties; Topics › Message Queues and Finite State Machines | updated 2023-08-02; read 2026-10-23 |
+      | Cirstea, Kuppe, Loillier, Merz ([arXiv 2404.16075](https://arxiv.org/abs/2404.16075)) | §3, §4.2, §4.3, §4.5 | v2, 2024-09-17 |
+      | Howard et al., NSDI 2025 ([arXiv 2406.17455](https://arxiv.org/abs/2406.17455)) | §6 (required); §7 and §8 (optional) | v2, 2024-10-16 |
+      | [Stripe API reference](https://docs.stripe.com/api/idempotent_requests), "Idempotent requests" | the API v1 paragraphs | read 2026-10-21, re-read 2026-10-23 |
+      | TigerBeetle documentation ([docs.tigerbeetle.com](https://docs.tigerbeetle.com/)) | Reliable Transaction Submission; Safety (the VOPR) | read 2026-10-23 |
+      | [PostgreSQL 18 documentation](https://www.postgresql.org/docs/18/) | SELECT › The Locking Clause; sequence functions; INSERT › ON CONFLICT; §9.14; §9.27.8; §13.5 | read 2026-10-21 and 2026-10-23 |
+      | Davis, Hirschhorn, Schvimer, PVLDB 13(9) ([arXiv 2006.00915](https://arxiv.org/abs/2006.00915)) | the abstract | 2020 |
+      | Hillel Wayne, "List of TLA+ Examples" | "Thread Pool" and "Batch Installer" (optional) | 2018-03-08, updated 2024-06-25 |
+defence: >-
+  The Defence for this stage has four parts, untimed, over at least two sessions. Part A is
+  12 unseen items with your agent closed: every crash window, why at-least-once delivery
+  can duplicate calls, trace prefixes and enabled actions, lassos, and when a provider's
+  idempotency joins the trusted assumptions. Part B mutates your own machine and spec, and
+  you predict each verdict before TLC and trace validation grade it: a fresh key per retry,
+  an ack before the durable write, reply validation dropped, crash actions switched off in
+  the liveness check. Part C is four audit cases, at least one of them sound. Part D is an
+  explain-back of every crash window, which is required and uncredited.

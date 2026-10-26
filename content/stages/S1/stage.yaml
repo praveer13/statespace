@@ -1,0 +1,73 @@
+schema: statespace/lesson@1
+id: S1
+draft: true
+summary: >-
+  Find a bug mathematically. You state a property, assert its negation, read the solver's
+  answer exactly, and say what that answer is about: one query, one encoding, one run of
+  one solver. You meet Z3Py in your browser tab first, then on your own machine in the lab.
+newTool: Z3Py, met first in your browser tab
+roadmapTime: 2 to 4 focused sessions
+seams:
+  - SEAM-1
+  - SEAM-7
+anchors:
+  - AUD-1.1
+  - AUD-1.2
+  - AUD-1.3
+drawers:
+  - D-01
+  - D-02
+  - D-03
+  - D-04
+  - D-06
+  - D-13
+cards:
+  - type: card
+    variant: twin
+    title: "Twin: TigerBeetle's two-phase transfers"
+    md: >-
+      In TigerBeetle, a pending transfer "can be posted or voided only once". A second post
+      fails with `pending_transfer_already_posted`, and posting more than the pending amount
+      fails with `exceeds_pending_transfer_amount` ("Resolve Funds" and "Errors", read
+      2026-10-23). That is your hold and its capture. The pins are in {{run:RUN-twin-pins}}.
+  - type: card
+    variant: reading
+    title: "Reading: AWS Automated Reasoning checks"
+    md: >-
+      The concepts page ("Findings and validation results" and "Validation results
+      reference", read 2026-10-23) lists seven results: VALID, INVALID, SATISFIABLE,
+      IMPOSSIBLE, TRANSLATION_AMBIGUOUS, TOO_COMPLEX and NO_TRANSLATIONS. Here is how the
+      course reads them against its stamps. VALID is [P] for the translated statements only.
+      INVALID is [R]. SATISFIABLE means premises are missing: true in some scenarios, false
+      in others. IMPOSSIBLE means contradictory premises, the case from S1.L3.
+      TRANSLATION_AMBIGUOUS and TOO_COMPLEX are [?] with a reason. NO_TRANSLATIONS is [N].
+      That mapping is the course's own, not AWS's.
+  - type: card
+    variant: dated-incident
+    title: "Bitcoin, 2010-08-15"
+    md: >-
+      It was found that Bitcoin's transaction checks "didn't account for the case of outputs
+      so large that they overflowed when summed". A transaction in block 74638 had created
+      184,467,440,737.09551616 bitcoins. Source: the Bitcoin wiki page for CVE-2010-5139, read
+      2026-10-23. The specimen cabinet holds it as a toy model.
+  - type: card
+    variant: dated-incident
+    title: "Bloch, 2006-06-02"
+    md: >-
+      Joshua Bloch's post "Extra, Extra - Read All About It: Nearly All Binary Searches and
+      Mergesorts are Broken" describes a midpoint, `(low + high) / 2`, that leaves its
+      interval when the sum overflows. The post gives the fixes, and has an update of
+      2008-02-17. Read 2026-10-23. The specimen cabinet holds it as a toy model.
+defence: >-
+  The Defence is untimed, over at least two sessions within a week of the lab, and the
+  agent stays closed. Part A is probes: ten items on seeds you have not seen, covering
+  why a violation search asserts the negation, what `sat`, `unsat` and `unknown` mean
+  precisely, why the answer depends on the encoding, and what changes if the amount may
+  be zero or negative. Part B is defend: four mutations of your own Project 00, each
+  predicted first and graded by Z3 on the mutated files. Part C is audit: four cases, at
+  least one of them sound, with typed evidence. Part D is an explain-back, required and
+  uncredited: two minutes on why searching for a violation means asserting the negation,
+  then a three-idea self-check. You are signed off when parts A to C reach 75% overall
+  with part A at 60% or more, parts B and C each have at most one miss, and fresh items
+  pass in at least three spaced sessions. You are settled when a fresh probe passes 30
+  days or more later. A part you miss is retaken on fresh seeds, and nothing else waits.

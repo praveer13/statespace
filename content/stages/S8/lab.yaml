@@ -1,0 +1,195 @@
+schema: statespace/lesson@1
+id: LAB-8
+draft: true
+summary: >-
+  The effects lab. You write the outbox spec, the worker as a sans-I/O machine, the fault
+  plan, the reply handler and the trace mapping, and you check each against the others. The
+  template supplies the simulator, `statespace trace validate`, the trace schema and a
+  harness for the clock, the provider, the network and the disk. It pins the spec's
+  interface, the property files, each check's configuration and the trace-validation
+  module, so a weakened statement voids your claim to UNKNOWN [?]. LAB-8.4 and LAB-8.5 are
+  checked in your tab and show the badge re-checked here. The other stages run on your
+  machine and show reported from your machine. Once your machine passes LAB-8.4, it plugs
+  into the Clearinghouse's provider, which sends duplicate replies, outages and late
+  replies.
+stages:
+  - id: LAB-8.1
+    what: >-
+      Run the reference simulator on seed 1, then watch TLC accept the NDJSON trace it
+      wrote. This is the quick first win.
+    checks:
+      - id: LAB-8.c1
+        label: The reference trace for seed 1 is accepted.
+        passes: >-
+          The receipt's verdict line reads "accepted" for `traces/seed-1.ndjson`
+          {{run:RUN-tlc-trace-validation}}. The trace's SHA-256 equals the recorded seed-1
+          hash {{run:RUN-sim-determinism}}, and the jar's SHA-256 equals the pin
+          {{run:RUN-tlc-jars}}.
+  - id: LAB-8.2
+    what: >-
+      Write the outbox spec with crash, duplicate and delay actions, then check its safety.
+      The variant whose provider ignores keys must double-charge, and the full design must
+      not.
+    checks:
+      - id: LAB-8.c2
+        label: The unsafe variant double-charges, and the full design passes all three invariants.
+        passes: >-
+          With `Dedup = FALSE` and `CrashWindows = {"CW3"}`, `NoDoubleCharge` is violated by
+          a trace with a Crash between Accept and Persist. On the full design,
+          `NoLostIntent`, `AckedIsDurable` and `NoDoubleCharge` pass: no error, the
+          exploration complete, the constants printed. The pinned file hashes match
+          {{run:RUN-tlc-outbox-safety}}.
+  - id: LAB-8.3
+    what: >-
+      State which fairness and which recovery each progress property needs, and check both
+      properties under them. Take recovery away and read the lasso that comes back.
+    checks:
+      - id: LAB-8.c3
+        label: Both properties hold under the stated assumptions, and a lasso appears without recovery.
+        passes: >-
+          Both properties hold under the stated fairness, with `MaxCrashes` finite. Without
+          fair Recover, TLC returns a lasso that the lasso checker accepts.
+          `claims/progress.yaml`, your table of what each property needs, matches TLC on
+          every configuration that drops one assumption. The receipt lists the fairness
+          conjuncts and the crash budget {{run:RUN-tlc-recovery}}.
+  - id: LAB-8.4
+    what: >-
+      Write a sans-I/O outbox machine and test it under seeded faults, in your tab. Recovery
+      acts on what is durable, and every output comes from the inputs alone.
+    checks:
+      - id: LAB-8.c4
+        label: The machine keeps its safety properties on fresh fault schedules.
+        passes: >-
+          On n schedules drawn at grade time (n, the step cap and the fault rate are
+          printed), with a deduplicating provider, your machine allows no double charge and
+          no lost intent, acknowledges only what it has stored, and writes identical traces
+          for a seed run twice. The systematic mode, which crashes it in each of CW1 to CW4,
+          passes too. A failure prints its seed and its first violating step.
+  - id: LAB-8.5
+    what: >-
+      Write the inbound-key table and the reply validation on PGlite, with the key minted by
+      `uuidv7()` {{run:RUN-pglite-inbound-key}}. Duplicate, late and invalid replies are
+      rejected as specified.
+    checks:
+      - id: LAB-8.c5
+        label: At most one capture per intent, and bad replies rejected.
+        passes: >-
+          On fresh reply sequences (duplicates, reorderings, late, over-cost, invalid and
+          unknown-key replies) on PGlite, there is at most one capture per intent, through
+          the key row and the rowcount guard. Late and invalid replies are rejected, and the
+          late one is reconciled. A re-run after a dropped COMMIT reports "already applied".
+          The recorded same-key race (row H12a {{run:RUN-pg-catalog}}) is handled by the
+          retry policy of LAB-6.6 {{run:RUN-pglite-inbound-key}}.
+  - id: LAB-8.6
+    what: >-
+      Write one trace disjunct for each worker event, and validate your machine's NDJSON
+      traces against your spec over n seeds. The seeded ack-before-store mutant must be
+      rejected, with its first non-conforming line named.
+    checks:
+      - id: LAB-8.c6
+        label: Traces over n seeds are accepted, and the mutant is rejected.
+        passes: >-
+          The traces of n seeds are accepted, with n at least the minimum and the seed list
+          hashed. The seeded ack-before-store mutant is rejected, and its first
+          non-conforming line is named. The schema lint requires the End record and each
+          event's fields, the ones your trace disjunct constrains
+          {{run:RUN-tlc-trace-validation}}. The stamp is TESTED [T] · n seeds.
+  - id: LAB-8.7
+    what: >-
+      The capstone for your whole system. Run the differential and simulation suite, and
+      turn each failure into a specimen that replays from its seed.
+    checks:
+      - id: LAB-8.c7
+        label: Seeds are recorded, and every failure is mounted as a specimen.
+        passes: >-
+          The receipt records the differential and fault seeds. A planted failure mounts as
+          a specimen, labeled from its run, and replays from its seed, as does every other
+          failure.
+  - id: LAB-8.8
+    what: >-
+      Write the claim cards for CL-8.1 to CL-8.5, with the provider's idempotency and its
+      horizon stated as assumptions. This is a write stage.
+    checks:
+      - id: LAB-8.c8
+        label: The five claim cards are complete, and the horizon is stated.
+        passes: >-
+          CL-8.1 to CL-8.5 pass claim@1 validation. CL-8.2 carries both assumption clauses:
+          the provider's idempotency, and the horizon with its provider, API version,
+          retention and date read. Each "if weakened" witness refutes its own proposition.
+  - id: LAB-8.9
+    what: >-
+      Optional. Add the provider's key TTL and replayed 500 responses to your spec, and see
+      which of your claims survive.
+extra:
+  explanationGate: >-
+    Before the first hint on any check, you write at least 12 words on the failing check,
+    the property it protects and your hypothesis. It is compared with three authored ideas,
+    self-assessed, and never credited. A check passed after the second hint counts as
+    assisted until an unseen variant passes: other constants or another fault schedule,
+    drawn when it is graded.
+  hints:
+    - check: LAB-8.c1
+      R1: Accepted means one behavior of the spec consumed every line.
+      R2: Read the verdict line, not the exit code.
+      R3: "`statespace trace validate spec/Outbox.tla traces/seed-1.ndjson`"
+      R4: Run it, import the receipt, and compare the hash.
+    - check: LAB-8.c2
+      R1: A crash loses the worker's memory, not the database.
+      R2: Look at what Crash empties, and at what Recover does with stored results.
+      R3: "On recover: inflight and not stored goes to pending; stored goes to Ack."
+      R4: Walk CW1 to CW4, one guard for each window.
+    - check: LAB-8.c3
+      R1: Weak fairness needs an action continuously enabled, and a crashed worker has none.
+      R2: Look at Recover's fairness and at the crash budget.
+      R3: "Weak fairness on each worker action, on Accept and on Recover, with `MaxCrashes` finite."
+      R4: Use the two forms of recovery from S8.L5.
+    - check: LAB-8.c4
+      R1: Recovery acts on what is durable.
+      R2: Look at the `Restarted` arm of `step`.
+      R3: "On Restarted: stored goes to Ack; otherwise Send(intent.key)."
+      R4: One key for each intent, and outputs from inputs alone.
+    - check: LAB-8.c5
+      R1: The key row and the capture commit together.
+      R2: Look at the rowcount after the key insert.
+      R3: "Insert the key with ON CONFLICT DO NOTHING; 0 rows means AlreadyApplied; validate; guarded UPDATE, 1 row."
+      R4: Apply the five checks of S8.L4 in order.
+    - check: LAB-8.c6
+      R1: The first unmatched line marks the drift.
+      R2: Look at the fields your Ack disjunct constrains.
+      R3: '`IsEvent("Ack") /\ Ack(Line.cmd)`'
+      R4: Log at the spec's grain, and constrain every required field.
+    - check: LAB-8.c7
+      R1: A seed is a bug report.
+      R2: Look at the seed lists in the receipt.
+      R3: "On failure: mount(seed, first violation)."
+      R4: Replay, shrink, mount, and label the specimen from its run.
+    - check: LAB-8.c8
+      R1: "An assumption is stamped too: ASSUMED [A], with its reason."
+      R2: Look at the assumptions of CL-8.2.
+      R3: "If weakened: prune after ack gives the in-flight trace."
+      R4: "Write the pair from S8.L7: yours, and the provider's."
+  proveIt:
+    - operator: Make the provider ignore keys.
+      appliedTo: LAB-8.2
+      prediction: In which windows does NoDoubleCharge fail?
+    - operator: Write the intent after the commit instead of with it.
+      appliedTo: LAB-8.2
+      prediction: Does NoLostIntent hold?
+    - operator: Set MaxCrashes to 0.
+      appliedTo: LAB-8.3
+      prediction: Does the liveness check pass, and what must its stamp say about crashes?
+    - operator: Remove the provider's fairness.
+      appliedTo: LAB-8.3
+      prediction: Which of EventuallyDispatched and EventuallyAcked still holds?
+    - operator: Mint the key at send time.
+      appliedTo: LAB-8.4
+      prediction: On which seeds does the suite fail?
+    - operator: Make restart re-send stored intents.
+      appliedTo: LAB-8.4
+      prediction: Does the suite pass, and does LAB-8.6 accept the traces?
+    - operator: Write the key row in its own transaction after the capture.
+      appliedTo: LAB-8.5
+      prediction: What does a re-delivery after a crash between the two commits do?
+    - operator: Drop the key from the Dispatch log lines.
+      appliedTo: LAB-8.6
+      prediction: Is the fresh-key mutant accepted or rejected, and what flags it?

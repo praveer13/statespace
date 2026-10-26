@@ -2,6 +2,7 @@
 // and the glossary: no internal names, no stamp words used loosely, no tool numbers (those belong to recorded runs).
 
 import { Link } from 'react-router'
+import { useTitle } from '../../app/title.ts'
 import './home.css'
 
 interface Stage {
@@ -24,6 +25,7 @@ const STAGES: readonly Stage[] = [
 ]
 
 export function Home() {
+  useTitle(undefined)
   return (
     <article className="home">
       <header className="home-head">
@@ -32,6 +34,14 @@ export function Home() {
         <p className="home-lede">
           And learn to say exactly what each proof, model check and test establishes: about which property, under which
           assumptions, by which tool, and what it leaves unchecked.
+        </p>
+        <p className="home-actions">
+          <Link to="/lessons/S1.L0" className="button button-primary">
+            Start the course
+          </Link>
+          <Link to="/stages" className="button button-secondary">
+            All stages
+          </Link>
         </p>
       </header>
 
@@ -57,7 +67,9 @@ export function Home() {
             <li key={s.code}>
               <span className="stage-code">{s.code}</span>
               <span className="stage-body">
-                <span className="stage-name">{s.name}</span>
+                <Link to={`/stages/${s.code}`} className="stage-name">
+                  {s.name}
+                </Link>
                 <span className="stage-question">{s.question}</span>
               </span>
             </li>

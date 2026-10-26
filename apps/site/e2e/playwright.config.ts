@@ -2,9 +2,11 @@ import { defineConfig } from '@playwright/test'
 
 // `npm run build` first: this serves dist/ with `vite preview` and drives it in the three engines.
 // Browsers do not run natively on every host; the course's CI and the Bench use the Playwright container
-// (mcr.microsoft.com/playwright, the same version as @playwright/test). PW_PORT picks another port and
-// PW_JSON writes the JSON report to that path.
+// (mcr.microsoft.com/playwright, the same version as @playwright/test). PW_PORT picks another port,
+// PW_JSON writes the JSON report to that path, and PW_OUTDIR serves another build directory than dist/
+// (scripts/site/smoke.sh serves a build with test content that way).
 const PORT = Number(process.env.PW_PORT) || 4173
+const OUTDIR = process.env.PW_OUTDIR ? ` --outDir ${JSON.stringify(process.env.PW_OUTDIR)}` : ''
 
 export default defineConfig({
   testDir: '.',
@@ -24,7 +26,7 @@ export default defineConfig({
     { name: 'webkit', use: { browserName: 'webkit' } },
   ],
   webServer: {
-    command: `npx vite preview --host 127.0.0.1 --port ${PORT} --strictPort`,
+    command: `npx vite preview --host 127.0.0.1 --port ${PORT} --strictPort${OUTDIR}`,
     cwd: '..',
     url: `http://127.0.0.1:${PORT}/`,
     reuseExistingServer: false,

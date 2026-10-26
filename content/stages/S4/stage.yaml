@@ -1,0 +1,90 @@
+schema: statespace/lesson@1
+id: S4
+draft: true
+summary: >-
+  Stage 1 asked Z3 about one state at a time. Stage 4 turns that into a method. You derive weakest preconditions by
+  hand, assemble the obligation `Inv ∧ Guard ∧ Step ∧ ¬Inv′` two ways, learn what a satisfiable inductive step does
+  and does not prove, and build `miniplinth check`: a checker that emits SMT-LIB, asks Z3, and replays every
+  counterexample in the interpreter. You finish by breaking your own checker on purpose, so that a false theorem
+  looks proved, and by finding where the translation went wrong.
+newTool: The Derivation Board for hand derivations, then your own Rust checker, miniplinth check, which emits SMT-LIB
+roadmapTime: 3 to 6 weeks
+seams:
+  - SEAM-5
+anchors:
+  - AUD-4.1
+  - AUD-4.2
+  - AUD-4.3
+drawers:
+  - D-02
+  - D-04
+  - D-06
+  - D-10
+  - D-13
+  - D-14
+  - D-18
+  - D-32
+cards:
+  - type: card
+    variant: twin
+    title: Lean's vcgen, after your own generator
+    md: >-
+      Lean's experimental `vcgen` tactic generates verification conditions for a program and its specification. The
+      course runs it on a Mini-Plinth-style command beside your own checker, after you have built yours. It proves
+      the guarded Transfer once it is given a weakest-precondition instance and one specification per construct, and
+      with the guard weakened it leaves an unproved goal: the same obligation your checker answers with a
+      satisfiable negation. {{run:RUN-lean-vcgen}} {{run:RUN-vcgen-cmd}} Lean's reference calls `vcgen`
+      experimental and subject to change (read 2026-10-23). Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: Cedar's symbolic compiler
+    md: >-
+      Cedar, an authorization language, compiles its policies to SMT and proves that compilation sound and complete
+      in Lean (arXiv 2407.01688, 2024). Those are the two halves of what a verification-condition generator owes
+      you. With the invariant encoded exactly, it is sound when its step relation contains every real step, and
+      complete when it contains nothing else. Replaying a satisfiable model in the interpreter tests completeness,
+      and known-false fixtures with a premise witness test soundness. SymCert (FMCAD 2026) put production SMT
+      analyses through Lean proofs, and those proofs caught encoder bugs. Pins: {{run:RUN-twin-pins}}.
+  - type: card
+    variant: twin
+    title: TigerBeetle's pending balances
+    md: >-
+      TigerBeetle's flag `debits_must_not_exceed_credits` rejects a transfer when the pending debits, the posted
+      debits and the new amount together exceed the posted credits. Its two-phase transfers reserve the pending
+      amount, so a later post or void never breaks the balance invariant (documentation read 2026-10-23). It is the
+      production shape of the Hold guard in S4.L6: the guard counts what is already held. Pins:
+      {{run:RUN-twin-pins}}.
+  - type: card
+    variant: dated-incident
+    title: A solver that was wrong
+    md: >-
+      Z3 issue 11179, reported 2026-10-15, shows a solver answering `unsat` on inputs that are satisfiable, in
+      nonlinear real exponentiation. The answer depends on the solver's version and on how the query enters it. The
+      recorded run replays it. {{run:RUN-z3-11179}} The defect sits outside the fragment your checker handles. What
+      carries over is that an `unsat` names its solver, its version and its entry path, and stays uncertified until
+      something independent checks it.
+  - type: card
+    variant: reading
+    title: Reading
+    md: >-
+      Read 2026-10-23, optional: [Programming Language Foundations](https://softwarefoundations.cis.upenn.edu/plf-current/)
+      (Software Foundations, volume 2), chapter Hoare ("Hoare Triples, Informally" and "Formally", "Proof Rules",
+      "Additional Exercises") and chapter Hoare2 ("Decorated Programs", "Formal Decorated Programs", "Weakest
+      Preconditions (Optional)"). The [Z3 guide](https://microsoft.github.io/z3guide/): Logic ("Basic Commands",
+      "Quantifiers") and Theories ("Arithmetic", "Arrays", "Bitvectors"). Drawer D-10 maps the Rocq notation, and
+      drawer D-13 is SMT-LIB in one page.
+  - type: card
+    variant: reading
+    title: More reading
+    md: >-
+      Lamport, "Using TLC to Check Inductive Invariance", section 1 (2018-08-23). Schultz, Dardik and Tripakis,
+      arXiv 2205.06360 (2022-05-12), for the definition of a counterexample to induction. Dijkstra, "Guarded
+      commands, nondeterminacy and formal derivation of programs" (1975), and Flanagan and Saxe on compact
+      verification conditions (2001), both optional beside the third lesson.
+defence: >-
+  Four parts, untimed, over at least two sessions within a week of the lab, with your agent closed and a call on
+  every probe. Part A is twelve probes: derive weakest preconditions by hand for assignments and conditionals, build
+  obligations, sort invariants from inductive ones, and read raw checker output as a stamp. Part B asks you to
+  predict what seeded mutations do to your own checker: a deleted frame, a capture-prone postcondition, a deleted
+  guard and a dropped strengthening. Part C is four audit cases, at least one of them sound. Part D is two minutes
+  aloud on why a satisfiable inductive step is not yet a bug.

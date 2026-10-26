@@ -1,0 +1,129 @@
+schema: statespace/lesson@1
+id: LAB-3
+draft: true
+
+summary: |-
+  Build Mini-Plinth's semantics yourself in Lean and check it against a reference you cannot import. You write the syntax, the typing rules, the evaluator and the proof that every successful step keeps the invariant. Then you record your edge-case decisions, export your semantics as JSON, and write a Rust parser, typechecker and interpreter that agree with the course's kernel-checked goldens. The Lean stages run on your Bench, and the Rust stages are graded in the tab.
+
+stages:
+  - id: LAB-3.1
+    what: |-
+      Run the reference evaluator on the template and watch one golden, a recorded expected outcome, pass.
+    checks:
+      - id: LAB-3.c1
+        label: |-
+          One golden passes on the template
+        passes: |-
+          `statespace check lab3.1` succeeds on the template, and the receipt shows `golden_transfer_ok` accepted by the kernel with no axioms {{run:RUN-lean-golden-harness}}.
+
+  - id: LAB-3.2
+    what: |-
+      Write your AST, `ResourceOp` and `HasType` for the fragment, starting from the signature file that fixes your constructor names.
+    weekend: true
+    checks:
+      - id: LAB-3.c2
+        label: |-
+          Typing goldens build
+        passes: |-
+          Every typing golden, `typecheck Γₖ cₖ = rₖ := by decide`, builds. The pool holds an accepted command and a rejection for each rule, so a checker that rejects everything fails. The signature file compiles, and `autoImplicit false` holds everywhere.
+
+  - id: LAB-3.3
+    what: |-
+      Write an evaluator whose every failure is a value, and declare the policy it implements as `Lab3.policy`.
+    weekend: true
+    checks:
+      - id: LAB-3.c3
+        label: |-
+          Evaluator goldens build
+        passes: |-
+          Every evaluator golden, `exec pₖ cₖ sₖ = rₖ := by decide`, builds, with each `rₖ` selected by your `policy`. A golden that fails to reduce is "no verdict", not a pass. No golden uses an axiom. The lint finds no `implemented_by`, `extern`, `partial`, `unsafe` or `native_decide` in your semantics modules, and no import of the reference module.
+
+  - id: LAB-3.4
+    what: |-
+      Prove the per-operation lemmas for the step invariant, one `ResourceOp` at a time, starting from `post_inv`.
+    weekend: true
+    checks:
+      - id: LAB-3.c4
+        label: |-
+          The operation lemmas are accepted
+        passes: |-
+          Comparator accepts `post_inv` and the five operation lemmas against the frozen challenge. Axioms stay within the permitted list, there are no `sorry`s, and no `grind` appears.
+
+  - id: LAB-3.5
+    what: |-
+      Assemble the theorem over every successful step from your lemmas, using `covers_sound` for the coverage hypothesis.
+    weekend: true
+    checks:
+      - id: LAB-3.c5
+        label: |-
+          The step-invariant theorem is accepted
+        passes: |-
+          Comparator accepts `covers_sound` and `step_preserves_inv` against the frozen challenge. Axioms stay within the permitted list, and LAB-3.c3's goldens pass at the same source hash, on the same receipt.
+
+  - id: LAB-3.6
+    what: |-
+      Add `force move` to your semantics, watch the step-invariant theorem fail, and keep that version in `broken/`.
+    checks:
+      - id: LAB-3.c6
+        label: |-
+          The counterexample is kernel-checked
+        passes: |-
+          In `broken/`, a typing golden shows that the `force move` command type-checks, and `cex_force`, the negation of the pinned statement proved with witnesses and `decide`, builds with permitted axioms. An edited statement is rejected by comparator {{run:RUN-lean-comparator}}. `fixed/` still passes LAB-3.c5.
+
+  - id: LAB-3.7
+    what: |-
+      Write a decision record for each of zero, self-transfer, failed guard and overflow, and export your semantics as JSON.
+    checks:
+      - id: LAB-3.c7
+        label: |-
+          Four records and a valid export
+        passes: |-
+          `decisions/zero.md`, `decisions/self-transfer.md`, `decisions/failed-guard.md` and `decisions/overflow.md` each have "Decision", "Alternative considered", "Consequence" and "Downstream" sections and a `choice:` equal to the matching `Lab3.policy` field. The output of `lake exe export-ir` validates against the JSON format, with golden right-hand sides taken from the golden module's literals.
+
+  - id: LAB-3.8
+    what: |-
+      Write a Rust parser for the toy syntax, graded in the tab.
+    checks:
+      - id: LAB-3.c8
+        label: |-
+          The parser reads the corpus
+        passes: |-
+          The parser accepts every positive corpus file, the roadmap's text verbatim included. It rejects every negative file with a located error. For each pool program it emits JSON equal to the Lean export.
+
+  - id: LAB-3.9
+    what: |-
+      Write a Rust typechecker that mirrors your `HasType`, graded in the tab.
+    checks:
+      - id: LAB-3.c9
+        label: |-
+          The typechecker agrees with the typing goldens
+        passes: |-
+          On typing goldens sampled by a seed drawn at grading time, your verdict, accept or the name of the rule, equals the golden's on every sample. The number of samples is printed.
+
+  - id: LAB-3.10
+    what: |-
+      Write a Rust reference interpreter for your semantics, graded in the tab.
+    checks:
+      - id: LAB-3.c10
+        label: |-
+          The interpreter agrees with the evaluator goldens
+        passes: |-
+          On evaluator goldens sampled by a seed drawn at grading time, under your policy, stratified by operation and outcome class and including boundary values, every outcome equals the golden's. The number of samples and the count for each stratum are printed.
+
+  - id: LAB-3.11
+    what: |-
+      Run your interpreter against the course's on fresh programs, and write the claim cards for what that establishes.
+    checks:
+      - id: LAB-3.c11
+        label: |-
+          Claim cards and a triaged differential run
+        passes: |-
+          CL-3.3, CL-3.4 and CL-3.5 pass the claim card format. The TESTED [T] stamps print the number of samples and the generator statistics. A run against the course's interpreter on m fresh programs reports m and triages each disagreement as a spec, implementation, tool or proof error.
+
+  - id: LAB-3.12
+    what: |-
+      Stretch: prove progress for the fragment. This mints CL-3.1.
+
+  - id: LAB-3.13
+    what: |-
+      Stretch: prove preservation for the fragment. This mints CL-3.2.

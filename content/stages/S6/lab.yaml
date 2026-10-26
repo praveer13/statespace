@@ -1,0 +1,203 @@
+schema: statespace/lesson@1
+id: LAB-6
+draft: true
+summary: >-
+  Build the bridge between your model and PostgreSQL: a compiler from Transfer to a plan with exact expectations,
+  typed errors, a differential harness with your own generator, specs for the anomalies, a retry policy, your own
+  R(S, D), and a runtime that ties them together. The template supplies `statespace isorun`, the catalog specs with
+  their recorded outputs, the checker for abstract serializability, the reference interpreter, the plan and outcome
+  types, the attempt-log fixtures, the fixture manifest and the mutation operators. You write the schema, the
+  compiler, the typed-error map, the generator and comparison, the isolationtester-format specs, the retry classifier
+  and loop, alpha, wf and R, the runtime and the claim cards. LAB-6 has no proof stage. Its statements are pinned
+  instead: the refinement file, the schema file, the catalog specs and the fixture manifest are hashed on your
+  receipt, and a changed hash voids the claim that depends on it.
+stages:
+  - id: LAB-6.1
+    what: >-
+      Run `statespace doctor`, then replay the provided read-modify-write history with `statespace isorun` against a
+      real PostgreSQL server. Predict first, then read the receipt. This stage is reported from your machine.
+    checks:
+      - id: LAB-6.c1
+        label: The recorded history replays as recorded.
+        passes: >-
+          The server version your receipt reads back begins with PostgreSQL 18.6. Session B blocks and then commits,
+          and the history spends {{run:RUN-pg-anomalies#values.rmw_rc_spent}} from a balance of 100, as recorded
+          {{run:RUN-pg-claims}}.
+  - id: LAB-6.2
+    what: >-
+      Compile Transfer into a plan on PGlite in which every UPDATE expects exactly one row and every zero becomes a
+      named outcome. The schema says `NOT NULL CHECK (bal >= 0)`. This stage is re-checked here.
+    checks:
+      - id: LAB-6.c2
+        label: Your plan's outcomes equal the reference's.
+        passes: >-
+          On a sample drawn when the check runs (at least 200 commands, with at least 10 percent guard refusals, 5
+          percent missing `from` and 5 percent missing `to`), every outcome class on PGlite equals the reference
+          interpreter's, and every committed command leaves a database state that alpha maps to the reference's new
+          state. The first divergence prints its seed.
+  - id: LAB-6.3
+    what: >-
+      Give your typed errors their own outcomes and put your self-transfer decision into the SQL. This stage is
+      re-checked here.
+    checks:
+      - id: LAB-6.c3
+        label: Typed errors are distinct, and the self-transfer follows your decision.
+        passes: >-
+          Fresh self-transfers return the outcome your decision record names and leave alpha(D) unchanged.
+          `Insufficient`, `NoSuchAccount(from)` and `NoSuchAccount(to)` are distinct on fresh seeds. The course's
+          case-merge mutation of your plan (SP-6.7) fails on a fresh self-transfer seed, because your declared
+          expectations reject the merged statement's single row.
+  - id: LAB-6.4
+    what: >-
+      Write a differential harness with your own generator, outcome classes and statistics, and run it on PGlite in
+      the tab and on PostgreSQL on the Bench. The tab half is re-checked here and the Bench half is reported from
+      your machine.
+    checks:
+      - id: LAB-6.c4
+        label: Your suite runs on both engines and catches the course's mutants.
+        passes: >-
+          The suite runs on PostgreSQL on the Bench and on PGlite in the tab. The receipt names both engines and
+          their versions, n, and the statistics: the share of each outcome class, the self-transfer share and the
+          largest balance. With your own generator and comparison it kills the three course mutants: a CHECK-only
+          guard, an unchecked credit and the case-merge.
+  - id: LAB-6.5
+    what: >-
+      Write isolationtester-format specs for the lost update, write skew, a deadlock and the conditional-UPDATE twin,
+      and run them with `statespace isorun`. This stage is reported from your machine.
+    checks:
+      - id: LAB-6.c5
+        label: Each spec reproduces the matching catalog row.
+        passes: >-
+          Every permutation of each of your specs, at the stated isolation level, yields the commit, abort and
+          SQLSTATE classes of the matching catalog row's recorded output ({{run:RUN-pg-claims}} for the rows it
+          holds, {{run:RUN-pg-catalog}} for the rest). Your spec hashes are on the receipt.
+  - id: LAB-6.6
+    what: >-
+      Write a retry policy for serialization failures and deadlocks, with attempt logs. The classifier is re-checked
+      here, and the loop against a real server is reported from your machine.
+    checks:
+      - id: LAB-6.c6
+        label: The classifier retries the right failures and stops.
+        passes: >-
+          On the attempt fixtures your classifier re-runs the command from BEGIN on 40001 and 40P01, never retries
+          22003 or a typed refusal, and retries 23505 or 23P01 only for a command your declared policy marks as
+          re-reading the key before it writes, never by re-sending a blind insert {{run:RUN-pg-catalog}}. It stops
+          at your declared k with `GaveUp`, and the Bench log records each attempt's SQLSTATE.
+  - id: LAB-6.7
+    what: >-
+      Write alpha, wf and R, and run the abstract-serializability check over recorded histories. This stage is
+      re-checked here.
+    checks:
+      - id: LAB-6.c7
+        label: Your R classifies the fixtures as the reference does.
+        passes: >-
+          With your alpha and wf, the checker classifies every fixture in the pinned manifest as the reference does
+          (accept or reject, and for an accept an order the replay confirms) and rejects the two R-mutant fixtures
+          {{run:RUN-serializability-fixtures}}.
+  - id: LAB-6.8
+    what: >-
+      Wire a transaction runtime to your compiler: one connection per session, the isolation level asserted per
+      transaction, your retry loop, and the commit-time check from S6.L5 in the schema. This is the capstone for S10
+      and is reported from your machine.
+    checks:
+      - id: LAB-6.c8
+        label: The runtime passes your suite and its histories are accepted.
+        passes: >-
+          On PostgreSQL on the Bench the LAB-6.4 suite passes through the runtime with no outcome-class divergence,
+          and every session reads back `serializable`. A concurrent run of compiled commands driven by
+          `statespace isorun` yields histories your LAB-6.7 checker accepts. Attempts are logged by SQLSTATE, and the
+          receipt names the deferred triggers that re-stamp CL-6.4.
+  - id: LAB-6.9
+    what: >-
+      Write the claim cards for CL-6.1 to CL-6.5 and their ASSUMED [A] clauses. This is a write stage with no run.
+    checks:
+      - id: LAB-6.c9
+        label: Your claim cards pass validation.
+        passes: >-
+          CL-6.1 to CL-6.5 pass claim@1 validation: six fields, an "if weakened" witness that refutes the card's own
+          proposition, and matching statement hashes.
+extra:
+  fixtures:
+    - read-modify-write at READ COMMITTED
+    - conditional UPDATE at READ COMMITTED
+    - conditional UPDATE at SERIALIZABLE with a retry
+    - holds at REPEATABLE READ
+    - holds at SERIALIZABLE with a retry
+    - opposite-order moves with a deadlock and a retry
+    - read skew at READ COMMITTED
+    - report before transfer at SERIALIZABLE, where the serial order differs from the commit order
+    - an overflow history, accepted only under the Except Overflow remedy
+    - mixed isolation levels
+    - the toy G2-item history
+    - R-mutant, a NULL balance outside wf
+    - R-mutant, equal totals with money on the wrong account
+  hints:
+    - check: LAB-6.c1
+      r1: A history is an order of steps, not a clock.
+      r2: The pg block of your receipt.
+      r3: "`statespace doctor`, then `statespace isorun <spec>`"
+      r4: Check the image pin first, then the interleaving.
+    - check: LAB-6.c2
+      r1: A zero-row result is an outcome that several causes share.
+      r2: The first divergence, and the expectation of the credit.
+      r3: "`if rows(s2) != 1 { rollback; Err(NoSuchAccount(to)) }`"
+      r4: Every statement expects exactly one row, and zeros are classified inside the transaction.
+    - check: LAB-6.c3
+      r1: One row can play both roles.
+      r2: Your decision record from LAB-3.7.
+      r3: "`if from == to { return decision() }`"
+      r4: Decide before the SQL runs. Exact expectations make a merged statement fail loudly.
+    - check: LAB-6.c4
+      r1: A test reaches only what its generator draws.
+      r2: The statistics panel, and the mutant you missed.
+      r3: "`quota(SelfTransfer, 0.05); quota(MissingTo, 0.05)`"
+      r4: Compare outcome classes, not balances, and report a share per class.
+    - check: LAB-6.c5
+      r1: A spec fixes the interleavings, and blocking is detected, not timed.
+      r2: The permutation that differs from the catalog row.
+      r3: "`permutation \"r1\" \"r2\" \"w1\" \"c1\" \"w2\" \"c2\"`"
+      r4: One session per transaction. Let `isorun` enumerate the permutations.
+    - check: LAB-6.c6
+      r1: Retry the decision, not the statement.
+      r2: The attempt you retried wrongly.
+      r3: "`match code { retry codes => retry_whole(), _ => stop }`"
+      r4: Classify, bound, back off and log. An overflow refusal and a typed refusal are final.
+    - check: LAB-6.c7
+      r1: Some serial order, not the commit order.
+      r2: The fixture you misclassify.
+      r3: "`wf(d) && alpha(d) == s`"
+      r4: R is wf and S = alpha(D). The outputs include the old and new pairs.
+    - check: LAB-6.c8
+      r1: A runtime is a compiler, an isolation level and retries.
+      r2: The isolation level your session reads back.
+      r3: "`SHOW transaction_isolation` must read serializable."
+      r4: One connection per session, and the level asserted per transaction.
+    - check: LAB-6.c9
+      r1: The "if weakened" witness refutes your own card.
+      r2: The validation message.
+      r4: Write the proposition first, then what no receipt can show.
+  proveIt:
+    - id: rmw-compile
+      template: t4
+      mutant: The debit becomes a SELECT followed by an UPDATE to a constant, which splits the atomic action.
+      key: At READ COMMITTED the recorded permutation commits both and the checker rejects it. At SERIALIZABLE the second session fails. Graded on `isorun` histories.
+    - id: drop-credit-check
+      template: t1
+      mutant: Commands with a missing `to` commit the debit.
+      key: The outcome classes diverge. Re-checked here.
+    - id: retry-40001-only
+      template: t2
+      mutant: Only one failure code is retried.
+      key: The opposite-order fixture surfaces the deadlock as a failed outcome. Graded on the attempt fixtures.
+    - id: rc-pool
+      template: t3
+      mutant: Sessions default to READ COMMITTED.
+      key: The holds spec commits both sessions and the checker rejects the history. Graded on `isorun` histories.
+    - id: strict-guard
+      template: t2
+      mutant: The guard is `bal > $amt`.
+      key: A debit equal to the balance is refused. Re-checked here.
+    - id: r-totals-only
+      template: t4
+      mutant: R compares totals only.
+      key: The wrong-account fixture is accepted. Graded on the fixture manifest.
