@@ -10,7 +10,7 @@
   "binary": "the Lean 4.35.0 toolchain installed by elan",
   "binary_sha256": null,
   "image": null,
-  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "recorded_at": "2026-10-26T23:23:44.038Z",
   "started_at": null,
   "duration_s": null,
   "argv": null,
@@ -80,6 +80,36 @@
       "sha256": "5bde4a08a2429fb68161280fdc1dc1bd3a683fe4753e4fefa1de0b775278d804",
       "bytes": 906,
       "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-axioms/check-bad.log",
+      "sha256": "4a92abc22fbea8b7eafc53ce58cc9c346f81b584afa3549e034b084e9f9cf2dc",
+      "bytes": 1246,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-axioms/lean-bad.log",
+      "sha256": "c8b0d0ec278885ddb13b063544c3749df79732c9126af5e916a7c343506c0f51",
+      "bytes": 269,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-axioms/trust-probe.log",
+      "sha256": "bd222a474c977cce7a3dd04c396c9b7ef40422223a46e06df3721454ff3985be",
+      "bytes": 707,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-axioms/sound.log",
+      "sha256": "3d4d59acde2be081f67b3ee36eb6cb281974be641df40fdf1cc1b21b5da75260",
+      "bytes": 605,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-axioms/flawed.log",
+      "sha256": "b35e697ca8bef54a29c6e346acdc17b877722327222c654ba0bb525f8b5f7d1b",
+      "bytes": 595,
+      "kind": "log"
     }
   ],
   "values": {
@@ -93,7 +123,22 @@
       "Quot.sound"
     ],
     "sorry_file_exit": 0,
-    "lake_check_kernel_line": "Lean default kernel accepts the solution"
+    "lake_check_kernel_line": "Lean default kernel accepts the solution",
+    "rerun": {
+      "sorry_file_exit": 0,
+      "lake_check_exit": 1,
+      "lake_check_kernel_line": "Lean default kernel accepts the solution",
+      "sound": {
+        "build_exit": 0,
+        "leanchecker_exit": 0,
+        "axioms": "'transfer_conserves' depends on axioms: [propext, Quot.sound]"
+      },
+      "flawed": {
+        "build_exit": 0,
+        "leanchecker_exit": 0,
+        "axioms": "'transfer_conserves' depends on axioms: [rebalance]"
+      }
+    }
   },
   "environment": {
     "os": null,
@@ -101,7 +146,110 @@
   },
   "configs": [
     {
-      "id": "check-bad",
+      "id": "original",
+      "origin": "imported",
+      "purpose": "the execution W0-S11 imported from research/ (research/evidence/lean-measure/proj/check-bad.out; research/evidence/lean-measure/run.out; research/evidence/a2r3/out/lean_trust.txt), as the record's top level states it",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": null,
+      "image": null,
+      "started_at": null,
+      "duration_s": null,
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/evidence/lean-measure/proj/ledger/Ledger/Basic.lean",
+          "sha256": "86da2841a350f6ad5f580ae8fe4a224863f1572689809b03ec359c853f29a3a3",
+          "bytes": 892,
+          "role": "source"
+        },
+        {
+          "path": "research/evidence/lean-measure/proj/ledger/Ledger/Bad.lean",
+          "sha256": "80a5ed00b60f586b486523f8b52008f1cca395205dd998712819fb5322a72dfe",
+          "bytes": 371,
+          "role": "source"
+        },
+        {
+          "path": "research/evidence/a2r3/lean/proj/Probe/Trust.lean",
+          "sha256": "6dd61b8f884d2fa1a810fc9cacb061b6d0506867d4f5a8a4b92861603812b857",
+          "bytes": 315,
+          "role": "source"
+        },
+        {
+          "path": "research/evidence/a2r3/lean/proj/Probe/Conserve.lean",
+          "sha256": "30a960545d472c9de793e887d7d6860d07104b497ef50b52d4a2ad8d0ef4a99a",
+          "bytes": 937,
+          "role": "source"
+        },
+        {
+          "path": "research/evidence/lean-measure/scripts/measure-local.sh",
+          "sha256": "eafe46fb1148c80917f54a59ac5fe0818420f58c30258fd6bcea4367eb25e67a",
+          "bytes": 4356,
+          "role": "script"
+        }
+      ],
+      "budget": {},
+      "exit_code": null,
+      "verdict_lines": [
+        "WARNING: Sandbox disabled, this run is not trustworthy.",
+        "info: Ledger/Basic.lean:27:0: 'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "info: Ledger/Basic.lean:28:0: 'transfer_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "warning: Ledger/Bad.lean:4:8: declaration uses `sorry`",
+        "info: Ledger/Bad.lean:7:0: 'big_native' depends on axioms: [big_native._native.native_decide.ax_1_1]",
+        "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]",
+        "info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]",
+        "error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'",
+        "Lean default kernel accepts the solution",
+        "[01:23:24] lean Ledger/Bad.lean rc=0: 0.1 s",
+        "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'by_omega' depends on axioms: [propext, Quot.sound]"
+      ],
+      "outputs": [
+        "research/evidence/lean-measure/proj/check-bad.out",
+        "research/evidence/lean-measure/run.out",
+        "research/evidence/a2r3/out/lean_trust.txt"
+      ],
+      "environment": {
+        "os": null,
+        "cpu_count": null
+      },
+      "unrecorded": [
+        {
+          "field": "binary_sha256",
+          "reason": "the logs do not hash the toolchain"
+        },
+        {
+          "field": "image",
+          "reason": "lean-measure ran on the host with elan (measure-local.sh); the a2r3 probe paths do not name an image"
+        },
+        {
+          "field": "started_at",
+          "reason": "the lean-measure log stamps times of day ([01:23:08]) without a date"
+        },
+        {
+          "field": "duration_s",
+          "reason": "the log does not time the run"
+        },
+        {
+          "field": "argv",
+          "reason": "the logs hold the output; lean-measure's log is written by measure-local.sh, whose command lines are in the script, and the check-bad run's command line is not recorded"
+        },
+        {
+          "field": "exit_code",
+          "reason": "one exit code per configuration; there is no single one"
+        },
+        {
+          "field": "environment.os",
+          "reason": "the logs come from separate sessions: lean-measure/run.out describes its own host (the lean-bad configuration), the other two describe none"
+        },
+        {
+          "field": "environment.cpu_count",
+          "reason": "the logs come from separate sessions: lean-measure/run.out describes its own host (the lean-bad configuration), the other two describe none"
+        }
+      ]
+    },
+    {
+      "id": "original-check-bad",
       "origin": "imported",
       "purpose": "lake check with the sandbox disabled on the project with Bad.lean (lean-measure/proj/check-bad.out)",
       "verdict_lines": [
@@ -110,7 +258,7 @@
       ]
     },
     {
-      "id": "lean-bad",
+      "id": "original-lean-bad",
       "origin": "imported",
       "purpose": "lean Ledger/Bad.lean, which uses sorry, a native axiom and a custom axiom (lean-measure/run.out)",
       "exit_code": 0,
@@ -125,7 +273,7 @@
       ]
     },
     {
-      "id": "trust-probe",
+      "id": "original-trust-probe",
       "origin": "imported",
       "purpose": "lake build and #print axioms on the a2r3 probe project (a2r3/out/lean_trust.txt)",
       "verdict_lines": [
@@ -133,6 +281,494 @@
         "'by_native' depends on axioms: [by_native._native.native_decide.ax_1_1]",
         "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
         "'by_omega' depends on axioms: [propext, Quot.sound]"
+      ]
+    },
+    {
+      "id": "check-bad",
+      "origin": "recorded",
+      "purpose": "run.sh check-bad: lake check --inadvisably-no-sandbox on the imported lean-measure project with Ledger/Bad.lean imported (the original check-bad, with argv)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:22:40.757Z",
+      "duration_s": 58.284,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-axioms-check-bad",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "check-bad"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger/Bad.lean",
+          "sha256": "80a5ed00b60f586b486523f8b52008f1cca395205dd998712819fb5322a72dfe",
+          "bytes": 371,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger/Basic.lean",
+          "sha256": "86da2841a350f6ad5f580ae8fe4a224863f1572689809b03ec359c853f29a3a3",
+          "bytes": 892,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger.lean",
+          "sha256": "1f70269b5803ae60074eb248c5192f66a7b1f714b8bb973c0d47f67dc4be81c6",
+          "bytes": 20,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/lake-manifest.json",
+          "sha256": "ea9bf319d1a3dcf89073ea9fb3418c0b36c0904203511c7443b4292f5a9feadb",
+          "bytes": 138,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/lakefile.toml",
+          "sha256": "cd1da7ff036ad7101508d2528b290218e3b4350f0228f245f05578a615d77392",
+          "bytes": 92,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/run.sh",
+          "sha256": "0a7fd02c71087b30210f7d2e026aa53b1dd59ab81789f850e67d5c34c01c6237",
+          "bytes": 1286,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "WARNING: Sandbox disabled, this run is not trustworthy.",
+        "ℹ [2/5] Built Ledger.Basic (195ms)",
+        "info: Ledger/Basic.lean:27:0: 'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "info: Ledger/Basic.lean:28:0: 'transfer_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "⚠ [3/5] Built Ledger.Bad (157ms)",
+        "warning: Ledger/Bad.lean:4:8: declaration uses `sorry`",
+        "info: Ledger/Bad.lean:7:0: 'big_native' depends on axioms: [big_native._native.native_decide.ax_1_1]",
+        "info: Ledger/Bad.lean:8:0: 'by_decide' does not depend on any axioms",
+        "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]",
+        "info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]",
+        "✔ [4/5] Built Ledger (139ms)",
+        "error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'",
+        "Axiom 'sorryAx' is not permitted; it is used by 'with_sorry'",
+        "Axiom 'cheat' is not permitted; it is used by 'with_axiom'",
+        "Lean default kernel accepts the solution",
+        "Uses axioms: Classical.choice, propext, Quot.sound, big_native._native.native_decide.ax_1_1, sorryAx, cheat",
+        "check exit=1"
+      ],
+      "outputs": [
+        "runs/RUN-lean-axioms/check-bad.log"
+      ]
+    },
+    {
+      "id": "lean-bad",
+      "origin": "recorded",
+      "purpose": "run.sh lean-bad: lean Ledger/Bad.lean, which uses sorry, a native axiom and a custom axiom (the original lean-bad, with argv)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:23:39.045Z",
+      "duration_s": 0.308,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-axioms-lean-bad",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "lean-bad"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger/Bad.lean",
+          "sha256": "80a5ed00b60f586b486523f8b52008f1cca395205dd998712819fb5322a72dfe",
+          "bytes": 371,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger/Basic.lean",
+          "sha256": "86da2841a350f6ad5f580ae8fe4a224863f1572689809b03ec359c853f29a3a3",
+          "bytes": 892,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/Ledger.lean",
+          "sha256": "1f70269b5803ae60074eb248c5192f66a7b1f714b8bb973c0d47f67dc4be81c6",
+          "bytes": 20,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/lake-manifest.json",
+          "sha256": "ea9bf319d1a3dcf89073ea9fb3418c0b36c0904203511c7443b4292f5a9feadb",
+          "bytes": 138,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/ledger/lakefile.toml",
+          "sha256": "cd1da7ff036ad7101508d2528b290218e3b4350f0228f245f05578a615d77392",
+          "bytes": 92,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/run.sh",
+          "sha256": "0a7fd02c71087b30210f7d2e026aa53b1dd59ab81789f850e67d5c34c01c6237",
+          "bytes": 1286,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "Ledger/Bad.lean:4:8: warning: declaration uses `sorry`",
+        "'big_native' depends on axioms: [big_native._native.native_decide.ax_1_1]",
+        "'by_decide' does not depend on any axioms",
+        "'with_sorry' depends on axioms: [sorryAx]",
+        "'with_axiom' depends on axioms: [cheat]",
+        "lean-bad exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-axioms/lean-bad.log"
+      ]
+    },
+    {
+      "id": "trust-probe",
+      "origin": "recorded",
+      "purpose": "run.sh trust-probe: lake build and #print axioms on the imported a2r3 probe project (the original trust-probe, with argv)",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:23:39.359Z",
+      "duration_s": 1.65,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-axioms-trust-probe",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "trust-probe"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/Probe/Bypass.lean",
+          "sha256": "535804bc2def76d4233675f27a6032ffa0c8de77985dadbd49ad47b15764c3b1",
+          "bytes": 359,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/Probe/Conserve.lean",
+          "sha256": "30a960545d472c9de793e887d7d6860d07104b497ef50b52d4a2ad8d0ef4a99a",
+          "bytes": 937,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/Probe/Trust.lean",
+          "sha256": "6dd61b8f884d2fa1a810fc9cacb061b6d0506867d4f5a8a4b92861603812b857",
+          "bytes": 315,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/Probe.lean",
+          "sha256": "84d8bffffa54e311c703ad4d1665445b031c39acf6df927ea18204c1c4b747e4",
+          "bytes": 61,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/Report.lean",
+          "sha256": "24d5954b1baa1897fda4042d2dbdf059c7f0317f7a200ab4eb383000a551fc6b",
+          "bytes": 230,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/lake-manifest.json",
+          "sha256": "21737af7ef3c14df724d989efa9f88b58e530efd86938d5a42ad0432c2591fec",
+          "bytes": 137,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/probe/lakefile.toml",
+          "sha256": "194bc103b4c5783062513b14f74b1282a1a8a3d26f646366e9f100d874a9f04b",
+          "bytes": 70,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/run.sh",
+          "sha256": "0a7fd02c71087b30210f7d2e026aa53b1dd59ab81789f850e67d5c34c01c6237",
+          "bytes": 1286,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Probe.Conserve (183ms)",
+        "✔ [3/6] Built Probe.Trust (195ms)",
+        "✔ [4/6] Built Probe.Bypass (478ms)",
+        "✔ [5/6] Built Probe (448ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]",
+        "'step_conserves' depends on axioms: [propext, Quot.sound]",
+        "'by_decide' does not depend on any axioms",
+        "'by_native' depends on axioms: [by_native._native.native_decide.ax_1_1]",
+        "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'by_omega' depends on axioms: [propext, Quot.sound]",
+        "'by_classical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'oops' does not depend on any axioms",
+        "'anything' does not depend on any axioms",
+        "report exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-axioms/trust-probe.log"
+      ]
+    },
+    {
+      "id": "sound",
+      "origin": "recorded",
+      "purpose": "run.sh sound: AUD-2.2's sound member (RUN-lean-axioms-pair's sound project, rebalance proved by omega): lake build, #print axioms transfer_conserves, leanchecker Ledger, then the step-3 scenarios",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:23:41.014Z",
+      "duration_s": 1.516,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-axioms-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Ledger/Arith.lean",
+          "sha256": "17b85faa2b7a3f5b6e5cdb64166dd0431ea203e9f899ddf0663d960157dc2c07",
+          "bytes": 78,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Ledger/Conserve.lean",
+          "sha256": "c6274ed744522aede684ef11b74176e3aebb222107b1880fad218adc7d50f189",
+          "bytes": 228,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Ledger/Transfer.lean",
+          "sha256": "cab112cd355891f1e13ec3070115102b6d808aa2a112cdc44926982c5d7c6121",
+          "bytes": 184,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Ledger.lean",
+          "sha256": "90a561dc825c9ed02ed57a605ea9c79fc899206c07c30a855304d056f3d98f14",
+          "bytes": 66,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Report.lean",
+          "sha256": "dc8492f09bbf144e584c3680cab8c6ab798e26a94e51043fb07705463966b347",
+          "bytes": 47,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/Scenarios.lean",
+          "sha256": "6fd9a3225b343f9601db7fc377382be009d96a3ca653ea0d8d2069afac21e4a2",
+          "bytes": 678,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/sound/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/run.sh",
+          "sha256": "0a7fd02c71087b30210f7d2e026aa53b1dd59ab81789f850e67d5c34c01c6237",
+          "bytes": 1286,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Ledger.Transfer (153ms)",
+        "✔ [3/6] Built Ledger.Arith (150ms)",
+        "✔ [4/6] Built Ledger.Conserve (126ms)",
+        "✔ [5/6] Built Ledger (128ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'transfer_conserves' depends on axioms: [propext, Quot.sound]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", false, { a := 3, b := 5 })",
+        "(\"s2\", true, { a := 3, b := 5 })",
+        "(\"s3\", false, { a := 5, b := 3 })",
+        "(\"s4\", false, { a := 5, b := 3 })",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-axioms/sound.log"
+      ]
+    },
+    {
+      "id": "flawed",
+      "origin": "recorded",
+      "purpose": "run.sh flawed: AUD-2.2's flawed member (RUN-lean-axioms-pair's flawed project, rebalance declared as an axiom): lake build, #print axioms transfer_conserves, leanchecker Ledger, then the step-3 scenarios",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:23:42.537Z",
+      "duration_s": 1.499,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-axioms-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Ledger/Arith.lean",
+          "sha256": "cef1e5a52f3d10d0d5e54491be8e797737a094488bbcb030fc9c568969aa1af7",
+          "bytes": 64,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Ledger/Conserve.lean",
+          "sha256": "c6274ed744522aede684ef11b74176e3aebb222107b1880fad218adc7d50f189",
+          "bytes": 228,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Ledger/Transfer.lean",
+          "sha256": "cab112cd355891f1e13ec3070115102b6d808aa2a112cdc44926982c5d7c6121",
+          "bytes": 184,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Ledger.lean",
+          "sha256": "90a561dc825c9ed02ed57a605ea9c79fc899206c07c30a855304d056f3d98f14",
+          "bytes": 66,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Report.lean",
+          "sha256": "dc8492f09bbf144e584c3680cab8c6ab798e26a94e51043fb07705463966b347",
+          "bytes": 47,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/Scenarios.lean",
+          "sha256": "6fd9a3225b343f9601db7fc377382be009d96a3ca653ea0d8d2069afac21e4a2",
+          "bytes": 678,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/flawed/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-axioms/inputs/run.sh",
+          "sha256": "0a7fd02c71087b30210f7d2e026aa53b1dd59ab81789f850e67d5c34c01c6237",
+          "bytes": 1286,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Ledger.Transfer (150ms)",
+        "✔ [3/6] Built Ledger.Arith (137ms)",
+        "✔ [4/6] Built Ledger.Conserve (138ms)",
+        "✔ [5/6] Built Ledger (125ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'transfer_conserves' depends on axioms: [rebalance]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", false, { a := 3, b := 5 })",
+        "(\"s2\", true, { a := 3, b := 5 })",
+        "(\"s3\", false, { a := 5, b := 3 })",
+        "(\"s4\", false, { a := 5, b := 3 })",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-axioms/flawed.log"
       ]
     }
   ],
@@ -171,6 +807,26 @@
     }
   ],
   "notes": [
-    "Imported by W0-S11 from evidence/lean-measure/proj/check-bad.out; lean-measure/run.out; a2r3/out/lean_trust.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now."
-  ]
+    "Imported by W0-S11 from evidence/lean-measure/proj/check-bad.out; lean-measure/run.out; a2r3/out/lean_trust.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
+    "Re-run in place by W1-T32 (runs/README.md section 3). The top level is the imported execution, unchanged, and is also configuration original (primary_config); the imported configurations are kept as original-check-bad, original-lean-bad and original-trust-probe. The course quotes the top level's lines. Configurations check-bad, lean-bad, trust-probe, sound and flawed were executed with argv in the pinned Bench image by content/audit/tools/rerun-lean-imported.mjs.",
+    "check-bad, lean-bad and trust-probe re-run the imported projects, copied verbatim into inputs/ledger (lakefile, manifest, Ledger.lean, Basic.lean and Bad.lean of research/evidence/lean-measure/proj/ledger) and inputs/probe (research/evidence/a2r3/lean/proj without BV.lean, which the library does not import). The lean-measure log's timed line ([01:23:24] ... rc=0) came from measure-local.sh's own timer; the re-run prints lean-bad exit=N instead.",
+    "sound and flawed are AUD-2.2's pair (content/audit/AUD-2.2.yaml), the projects of RUN-lean-axioms-pair copied verbatim: the helper rebalance is a theorem proved by omega in one and an axiom in the other."
+  ],
+  "rerun": {
+    "task": "W1-T32",
+    "recorded_at": "2026-10-26T23:23:44.038Z",
+    "environment": {
+      "os": "Linux 6.12.63",
+      "cpu_count": 20,
+      "ram_gib": 31.2,
+      "cpu_architecture": "x86_64",
+      "docker": "29.1.3",
+      "container": {
+        "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "user": "uid 1000 (learner)"
+      }
+    },
+    "recorder": "content/audit/tools/rerun-lean-imported.mjs"
+  },
+  "primary_config": "original"
 }

@@ -1,0 +1,392 @@
+{
+  "id": "RUN-tlc-reply-order",
+  "title": "AUD-8.2's variant pair v2: the course's reference simulator on seed 1, with its reference machine as it stands (q5) and with the reply branch returning the ack before the store (q6); both pass the end-state suite, and trace validation against OutboxRef.tla accepts q5's trace and rejects q6's at its first Ack",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-8.2 (content/audit/AUD-8.2.yaml): variant pair v2, its receipts and step-3 scenarios",
+  "engine": "tlc",
+  "version": "1.8.0",
+  "version_string": "TLC2 Version 2026.10.20.183001 (rev: d2e1472)",
+  "binary": "tla2tools-1.8.0.jar in the statespace-bench image (/opt/tla2tools/tla2tools-1.8.0.jar)",
+  "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-27T00:34:32.390Z",
+  "started_at": "2026-10-27T00:34:30.877Z",
+  "duration_s": 0.529,
+  "argv": [
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-tlc-reply-order-q5",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<repo>:/r:ro",
+      "-e",
+      "PYTHONPATH=/r/bench",
+      "-e",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-B",
+      "reply.py",
+      "q5"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-tlc-reply-order-q6",
+      "--memory=6g",
+      "--network",
+      "none",
+      "-v",
+      "<repo>:/r:ro",
+      "-e",
+      "PYTHONPATH=/r/bench",
+      "-e",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-B",
+      "reply.py",
+      "q6"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/OutboxIface.tla",
+      "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+      "bytes": 5522,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceConstants.cfg",
+      "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+      "bytes": 484,
+      "role": "config"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceValidation.tla",
+      "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+      "bytes": 4326,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRef.tla",
+      "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+      "bytes": 2653,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRefTrace.tla",
+      "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+      "bytes": 1646,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/inputs/reply.py",
+      "sha256": "dbee2a54d5120d1cb6f8fb22447428098fedbe4d173212fffb6f5dea44bd1212",
+      "bytes": 2371,
+      "role": "script"
+    },
+    {
+      "path": "bench/statespace/sim.py",
+      "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+      "bytes": 20347,
+      "role": "script"
+    },
+    {
+      "path": "bench/statespace/trace.py",
+      "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+      "bytes": 29222,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q5] seed 1: 7 trace lines written to traces/q5-seed-1.ndjson",
+    "[q5]      1\t{\"event\":\"Commit\",\"cmd\":\"c1\"}",
+    "[q5]      2\t{\"event\":\"Dispatch\",\"cmd\":\"c1\",\"key\":[\"c1\",0],\"att\":1}",
+    "[q5]      3\t{\"event\":\"TimerArmed\",\"cmd\":\"c1\"}",
+    "[q5]      4\t{\"event\":\"Receive\",\"cmd\":\"c1\"}",
+    "[q5]      5\t{\"event\":\"Persist\",\"cmd\":\"c1\"}",
+    "[q5]      6\t{\"event\":\"Ack\",\"cmd\":\"c1\"}",
+    "[q5]      7\t{\"event\":\"End\"}",
+    "[q5] suite: c1 acked, result stored True, charged 1 time(s): ok",
+    "[q5] monitor: seed 1: ok (steps 3, faults 0: crash 0, tick 0, dup 0; 7 lines, sha256 5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a)",
+    "[q5] trace traces/q5-seed-1.ndjson: accepted (7 of 7 lines)",
+    "[q5] 1 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only",
+    "[q5] validate exit=0"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-tlc-reply-order/q5.log",
+      "sha256": "f2b1c061cc66bee0902dd55e803213de8f644f682bde630886aa3e70fe96a714",
+      "bytes": 767,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-tlc-reply-order/q6.log",
+      "sha256": "4dd1e38534eb4e39eb2417e9c6e05e822959f2b1f18db86eb10fc4c7c1bb210b",
+      "bytes": 773,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "primary_config": "q5",
+  "configs": [
+    {
+      "id": "q5",
+      "origin": "recorded",
+      "purpose": "reply.py q5: seed 1, its trace, the end-state suite, the harness monitor, and statespace trace validate",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-27T00:34:30.877Z",
+      "duration_s": 0.529,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-tlc-reply-order-q5",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<repo>:/r:ro",
+        "-e",
+        "PYTHONPATH=/r/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-B",
+        "reply.py",
+        "q5"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/OutboxIface.tla",
+          "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+          "bytes": 5522,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceConstants.cfg",
+          "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+          "bytes": 484,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceValidation.tla",
+          "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+          "bytes": 4326,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRef.tla",
+          "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+          "bytes": 2653,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRefTrace.tla",
+          "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+          "bytes": 1646,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/reply.py",
+          "sha256": "dbee2a54d5120d1cb6f8fb22447428098fedbe4d173212fffb6f5dea44bd1212",
+          "bytes": 2371,
+          "role": "script"
+        },
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "script"
+        },
+        {
+          "path": "bench/statespace/trace.py",
+          "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+          "bytes": 29222,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q5] seed 1: 7 trace lines written to traces/q5-seed-1.ndjson",
+        "[q5]      1\t{\"event\":\"Commit\",\"cmd\":\"c1\"}",
+        "[q5]      2\t{\"event\":\"Dispatch\",\"cmd\":\"c1\",\"key\":[\"c1\",0],\"att\":1}",
+        "[q5]      3\t{\"event\":\"TimerArmed\",\"cmd\":\"c1\"}",
+        "[q5]      4\t{\"event\":\"Receive\",\"cmd\":\"c1\"}",
+        "[q5]      5\t{\"event\":\"Persist\",\"cmd\":\"c1\"}",
+        "[q5]      6\t{\"event\":\"Ack\",\"cmd\":\"c1\"}",
+        "[q5]      7\t{\"event\":\"End\"}",
+        "[q5] suite: c1 acked, result stored True, charged 1 time(s): ok",
+        "[q5] monitor: seed 1: ok (steps 3, faults 0: crash 0, tick 0, dup 0; 7 lines, sha256 5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a)",
+        "[q5] trace traces/q5-seed-1.ndjson: accepted (7 of 7 lines)",
+        "[q5] 1 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only",
+        "[q5] validate exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-reply-order/q5.log"
+      ]
+    },
+    {
+      "id": "q6",
+      "origin": "recorded",
+      "purpose": "reply.py q6: seed 1, its trace, the end-state suite, the harness monitor, and statespace trace validate",
+      "engine": "tlc",
+      "version": "1.8.0",
+      "binary_sha256": "5bd7b64db99ae4c6c35f290de5e809c0ee41af43f8699cf696099ffb6452b1e2",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-27T00:34:31.414Z",
+      "duration_s": 0.561,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-tlc-reply-order-q6",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<repo>:/r:ro",
+        "-e",
+        "PYTHONPATH=/r/bench",
+        "-e",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-B",
+        "reply.py",
+        "q6"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/OutboxIface.tla",
+          "sha256": "ca6ad23e1eb7df9bb3cfa759ec8f4b1694bfa3574d226051370ff598e0cc5a7a",
+          "bytes": 5522,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceConstants.cfg",
+          "sha256": "7aa7eafb764c3e6ee8d39fa99a633de27dc9897e42df93a7420a5620dd7d94c0",
+          "bytes": 484,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/challenge/TraceValidation.tla",
+          "sha256": "0db179896b2ae0c411aeef9eec6301efcc848dbedc06a07843a30b669b4b891c",
+          "bytes": 4326,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRef.tla",
+          "sha256": "ef85ba74e49d6ea4c06104941e79a92ecc8ef6d1dd47353795f4a0105a129958",
+          "bytes": 2653,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/labs/LAB-8/reference/OutboxRefTrace.tla",
+          "sha256": "352d279da36f5f6b143429553acff3c28d9fc906bf20bec1030e2fbdddfc8a04",
+          "bytes": 1646,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-tlc-reply-order/inputs/reply.py",
+          "sha256": "dbee2a54d5120d1cb6f8fb22447428098fedbe4d173212fffb6f5dea44bd1212",
+          "bytes": 2371,
+          "role": "script"
+        },
+        {
+          "path": "bench/statespace/sim.py",
+          "sha256": "3570dc9673740da4bfe97fe2a0bff138c10712cda2779aa75b0ce002706f74ac",
+          "bytes": 20347,
+          "role": "script"
+        },
+        {
+          "path": "bench/statespace/trace.py",
+          "sha256": "d8cedea236ea3807c095405fea9268ea15900aa63cc40bf660a8b211ed3ce601",
+          "bytes": 29222,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q6] seed 1: 7 trace lines written to traces/q6-seed-1.ndjson",
+        "[q6]      1\t{\"event\":\"Commit\",\"cmd\":\"c1\"}",
+        "[q6]      2\t{\"event\":\"Dispatch\",\"cmd\":\"c1\",\"key\":[\"c1\",0],\"att\":1}",
+        "[q6]      3\t{\"event\":\"TimerArmed\",\"cmd\":\"c1\"}",
+        "[q6]      4\t{\"event\":\"Receive\",\"cmd\":\"c1\"}",
+        "[q6]      5\t{\"event\":\"Ack\",\"cmd\":\"c1\"}",
+        "[q6]      6\t{\"event\":\"Persist\",\"cmd\":\"c1\"}",
+        "[q6]      7\t{\"event\":\"End\"}",
+        "[q6] suite: c1 acked, result stored True, charged 1 time(s): ok",
+        "[q6] monitor: seed 1: FAIL AckedIsDurable at step 3 (line 5): c1 was acknowledged before its result was stored",
+        "[q6] trace traces/q6-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)",
+        "[q6] 0 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only",
+        "[q6] validate exit=1"
+      ],
+      "outputs": [
+        "runs/RUN-tlc-reply-order/q6.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted at /w; the inputs are kept under inputs/ as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-exemplars.mjs), copied in log order.",
+    "<repo> in argv is the course repository at the commit the inputs' hashes name, mounted read-only at /r with PYTHONPATH=/r/bench, as RUN-sql-shape-validator and RUN-tlc-trace-validation mount it; inputs lists the files of it the run reads.",
+    "reply.py imports the course's reference simulator, bench/statespace/sim.py, from the read-only mount; for q6 it replaces ReferenceMachine with a subclass whose step answers a reply with the block between the '--- q6' markers in reply.py, and leaves every other branch to the reference. labs/LAB-8/reference/ and labs/LAB-8/challenge/ under inputs/ are the files of RUN-tlc-trace-validation's inputs, copied verbatim, which statespace trace validate reads.",
+    "The end-state suite is the agent's: after the run, c1 is acked, its result stored, and the provider charged it once. The monitor line is the harness's own describe() of the run, which checks NoDoubleCharge and AckedIsDurable while the run goes."
+  ]
+}

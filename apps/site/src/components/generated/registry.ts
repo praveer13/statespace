@@ -7,6 +7,7 @@
 
 import type { EnginePort, Generator, InstanceBase, InstrumentReply, InstrumentRequest, KeyBase, TemplateId } from '@statespace/generators/core'
 import { isPending } from '@statespace/generators/core'
+import templateIndex from './templates.generated.json'
 
 export interface FamilyModule {
   readonly generator: Generator<InstanceBase, KeyBase>
@@ -34,6 +35,20 @@ const LOADERS: Readonly<Record<string, () => Promise<FamilyModule>>> = {
 export const LIVE_FAMILIES: readonly string[] = Object.keys(LOADERS).sort()
 
 export const isLiveFamily = (family: string): boolean => family in LOADERS
+
+/** A live template as the template index lists it: its id and its primary KC. */
+export interface TemplateEntry {
+  readonly template: string
+  readonly primary: string
+}
+
+const INDEX = (templateIndex as { families: Readonly<Record<string, readonly TemplateEntry[]>> }).families
+
+/**
+ * The family's live templates without loading the family (scripts/site/build-templates.mjs writes the index from the
+ * families' own declarations at build time), in the family's order; empty for a family this build has no generator for.
+ */
+export const templatesOf = (family: string): readonly TemplateEntry[] => (family in LOADERS ? (INDEX[family] ?? []) : [])
 
 const loaded = new Map<string, Promise<FamilyModule>>()
 

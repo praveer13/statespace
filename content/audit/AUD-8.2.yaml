@@ -6,6 +6,9 @@
 # q3/q4 variant pair v1 (flawed/sound). The receipts show what the agent showed, the suite and the trace; the trace
 # validation verdict is the key. Spine section 6.2's key run cell names RUN-tlc-trace-validation, which LAB-8 records
 # on the reference simulator; until it exists, content/audit/README.md lists the cell as an open item.
+# Variant pair v2 is the course's reference simulator itself (bench/statespace/sim.py): its sound form is the reference
+# machine's reply branch, keyed by the spine's run RUN-tlc-trace-validation, and both forms' receipts and scenarios are
+# RUN-tlc-reply-order's (q5 the reference machine, q6 its reply branch answering ack first).
 id: AUD-8.2
 stage: S8
 class: G8
@@ -244,3 +247,109 @@ variants:
     key_lines:
       - { config: q4, line: '[q4] <<"trace-validation", [diameter |-> 9, verdict |-> "accepted", lines |-> 7, matched |-> 7, first_unmatched |-> 0' }
     explain: "The two inserts sit inside one transaction, and the log records only its Commit, so their order is invisible to the spec: TLC accepts the trace. The swap changes nothing the spec can see."
+
+  - id: v2-flawed
+    pair: v2
+    operator: reorder-effects
+    medium: python
+    artifact: reference-machine-reply
+    key: { class: G8, also: [G11] }
+    description: "Folds the reply's two outputs into one list. All tests pass."
+    statement: |
+      # bench/statespace/sim.py: ReferenceMachine.step, and its branch for a provider's reply
+          def step(self, inp: tuple[Any, ...]) -> list[tuple[Any, ...]]:
+              kind = inp[0]
+              # ... the commit and tick branches, unchanged
+              if kind == "reply":
+                  _, cmd, key, _att = inp
+                  i = self.intents.get(cmd)
+                  if i and not i.stored and not i.acked and i.key == key:
+                      i.stored = i.acked = True
+                      return [("ack", cmd), ("store", cmd)]
+                  return []
+              # ... the restarted branch, unchanged
+    diff: |
+      --- a/bench/statespace/sim.py
+      +++ b/bench/statespace/sim.py
+      @@ -110,5 +110,5 @@
+                   i = self.intents.get(cmd)
+                   if i and not i.stored and not i.acked and i.key == key:
+                       i.stored = i.acked = True
+      -                return [("store", cmd)] + [("ack", cmd)]
+      +                return [("ack", cmd), ("store", cmd)]
+                   return []
+    receipt: |
+      [q6] suite: c1 acked, result stored True, charged 1 time(s): ok
+      [q6] seed 1: 7 trace lines written to traces/q6-seed-1.ndjson
+      [q6]      1	{"event":"Commit","cmd":"c1"}
+      [q6]      2	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q6]      3	{"event":"TimerArmed","cmd":"c1"}
+      [q6]      4	{"event":"Receive","cmd":"c1"}
+      [q6]      5	{"event":"Ack","cmd":"c1"}
+      [q6]      6	{"event":"Persist","cmd":"c1"}
+      [q6]      7	{"event":"End"}
+    receipt_run: RUN-tlc-reply-order
+    restatement:
+      run: RUN-tlc-reply-order
+      scenarios:
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: false, key_line: "[q6] trace traces/q6-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)", why: "TLC's trace validation matches lines 1 to 4 and rejects line 5, the Ack: no behavior of the spec acknowledges before the result is stored." }
+        - { id: s2, text: "On seed 1, the worker stores the provider's result before it acknowledges.", answer: false, key_line: "[q6]      5	{\"event\":\"Ack\",\"cmd\":\"c1\"}", why: "Line 5 is Ack and line 6 is Persist." }
+        - { id: s3, text: "The end-state suite would fail if the worker acknowledged before it stored the result.", answer: false, key_line: "[q6] suite: c1 acked, result stored True, charged 1 time(s): ok", why: "The end state is the same either way: acked, stored, charged once." }
+        - { id: s4, text: "The harness's own monitor flags the run.", answer: true, key_line: "[q6] monitor: seed 1: FAIL AckedIsDurable at step 3 (line 5): c1 was acknowledged before its result was stored", why: "The harness's in-run monitor sees c1 acknowledged before its result was stored." }
+    evidence: { type: witness, load_bearing: ["statement:10", "diff:8"], reference: { run: RUN-tlc-reply-order, line: "[q6] trace traces/q6-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)" } }
+    key_run: RUN-tlc-reply-order
+    key_lines: ["[q6] suite: c1 acked, result stored True, charged 1 time(s): ok", "[q6] trace traces/q6-seed-1.ndjson: rejected at line 5 of 7: {\"event\":\"Ack\",\"cmd\":\"c1\"} (lines 1-4 match)", "[q6] monitor: seed 1: FAIL AckedIsDurable at step 3 (line 5): c1 was acknowledged before its result was stored"]
+    explain: "The two outputs now go out ack first: the trace's line 5 is Ack, line 6 Persist. The end-state suite passes, because once both have run the state is the same; the spec says the result is stored before the ack, so that a crash between the two cannot lose a result the outbox reports done. Trace validation rejects the trace at line 5, and the harness's own monitor flags it."
+
+  - id: v2-sound
+    pair: v2
+    operator: reorder-effects
+    medium: python
+    artifact: reference-machine-reply
+    key: none
+    description: "Folds the reply's two outputs into one list. All tests pass."
+    statement: |
+      # bench/statespace/sim.py: ReferenceMachine.step, and its branch for a provider's reply
+          def step(self, inp: tuple[Any, ...]) -> list[tuple[Any, ...]]:
+              kind = inp[0]
+              # ... the commit and tick branches, unchanged
+              if kind == "reply":
+                  _, cmd, key, _att = inp
+                  i = self.intents.get(cmd)
+                  if i and not i.stored and not i.acked and i.key == key:
+                      i.stored = i.acked = True
+                      return [("store", cmd), ("ack", cmd)]
+                  return []
+              # ... the restarted branch, unchanged
+    diff: |
+      --- a/bench/statespace/sim.py
+      +++ b/bench/statespace/sim.py
+      @@ -110,5 +110,5 @@
+                   i = self.intents.get(cmd)
+                   if i and not i.stored and not i.acked and i.key == key:
+                       i.stored = i.acked = True
+      -                return [("store", cmd)] + [("ack", cmd)]
+      +                return [("store", cmd), ("ack", cmd)]
+                   return []
+    receipt: |
+      [q5] suite: c1 acked, result stored True, charged 1 time(s): ok
+      [q5] seed 1: 7 trace lines written to traces/q5-seed-1.ndjson
+      [q5]      1	{"event":"Commit","cmd":"c1"}
+      [q5]      2	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+      [q5]      3	{"event":"TimerArmed","cmd":"c1"}
+      [q5]      4	{"event":"Receive","cmd":"c1"}
+      [q5]      5	{"event":"Persist","cmd":"c1"}
+      [q5]      6	{"event":"Ack","cmd":"c1"}
+      [q5]      7	{"event":"End"}
+    receipt_run: RUN-tlc-reply-order
+    restatement:
+      run: RUN-tlc-reply-order
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "Some behavior of the Outbox spec produces the seed-1 trace.", answer: true, key_line: "[q5] trace traces/q5-seed-1.ndjson: accepted (7 of 7 lines)", why: "Trace validation against OutboxRef.tla matched all seven lines: accepted." }
+        - { id: s2, text: "On seed 1, the worker stores the provider's result before it acknowledges.", answer: true, key_line: "[q5]      5	{\"event\":\"Persist\",\"cmd\":\"c1\"}", why: "Line 5 is Persist and line 6 is Ack." }
+        - { id: s3, text: "The end-state suite would fail if the worker acknowledged before it stored the result.", answer: false, key_line: "[q6] suite: c1 acked, result stored True, charged 1 time(s): ok", why: "The suite reads the end state only. The ack-first machine (q6 in the same run) passes it." }
+        - { id: s4, text: "The harness's own monitor flags the run.", answer: false, key_line: "[q5] monitor: seed 1: ok (steps 3, faults 0: crash 0, tick 0, dup 0; 7 lines, sha256 5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a)", why: "The harness checks NoDoubleCharge and AckedIsDurable as the run goes, and finds nothing." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-tlc-trace-validation
+    key_lines: [{ config: seed-1, line: "trace labs/LAB-8/traces/seed-1.ndjson: accepted (7 of 7 lines)" }, { config: gen-seed-1, line: "seed 1: ok (steps 3, faults 0: crash 0, tick 0, dup 0; 7 lines, sha256 5d31a41b23728743e35ae246e4aa40ad3091359e08eda48c8f1c3b365dd16e6a)" }]
+    explain: "This is the reference machine's own reply branch, and the spine's run keys it: LAB-8's seed-1 trace of it is accepted against OutboxRef.tla, all 7 lines. RUN-tlc-reply-order's q5 writes the same trace (the same sha256) and validates it again. That is TESTED [T] over one seed, composed with the spec's MODEL-CHECKED [M] result."

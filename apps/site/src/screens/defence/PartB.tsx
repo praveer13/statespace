@@ -60,7 +60,7 @@ export function PartB({ stage, lab, checks, attempt, mutants, outcomes, store, e
         ) : (
           <p className="dfn-plain">Write every prediction first. The run comes after, so it cannot inform them.</p>
         )}
-        <pre className="dfn-cmd">
+        <pre className="dfn-cmd" tabIndex={0} aria-label="The defend command">
           <code>
             statespace defend {labSlug} --defence {stage} --attempt {attempt} --only {mutants.map((m) => m.id).join(',')}
           </code>

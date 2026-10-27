@@ -1,8 +1,11 @@
 # AUD-2.3 · S2 · G6c Hidden trust: kernel bypass (docs/AUDIT-DESK.md section 3.2). The format is
-# content/audit/README.md's. Both members are keyed by RUN-lean-skipkernel-pair, recorded in the Bench image: the same
-# statement built twice, once with a proof and once from a declaration added while debug.skipKernelTC was set. The
-# flawed member shows the option line and the run's verdict lines, never the construction (AUDIT-DESK 1.3). Spine
-# section 6 ships this anchor keyed by executed runs, without variants; they land with W2-T13.
+# content/audit/README.md's. Both members are keyed by the spine's run, RUN-lean-skipkernel, re-run in place with
+# argv in the Bench image (content/audit/tools/rerun-lean-imported.mjs): its configurations sound and flawed build
+# the same statement twice, once with a proof and once from a declaration added while debug.skipKernelTC was set; the
+# imported execution is kept as configuration original. The receipts and scenarios are copied from
+# RUN-lean-skipkernel-pair, the same two projects, whose lines the re-run repeats. The flawed member shows the option
+# line and the run's verdict lines, never the construction (AUDIT-DESK 1.3). Spine section 6 ships this anchor keyed
+# by executed runs, without variants; they land with W2-T13.
 id: AUD-2.3
 stage: S2
 class: G6c
@@ -58,7 +61,7 @@ cases:
         - { id: s4, text: "transfer 5 3 9 returns (5, 3)", answer: false, key_line: '("s4", false, 5, 3)', why: "A refused transfer keeps the total." }
         - { id: s5, text: "transfer 5 3 2 returns (5, 3)", answer: false, key_line: '("s5", false, 3, 5)', why: "Nothing moved, and the total is kept: the theorem allows a transfer that never happens." }
     evidence: { type: restatement, scenarios: *scenarios }
-    key_run: RUN-lean-skipkernel-pair
+    key_run: RUN-lean-skipkernel
     key_lines:
       - { config: sound, line: "lake exit=0" }
       - { config: sound, line: "'conserves' depends on axioms: [propext, Quot.sound]" }
@@ -102,7 +105,7 @@ cases:
       run: RUN-lean-skipkernel-pair
       scenarios: *scenarios
     evidence: { type: declaration, load_bearing: ["diff:13", "receipt:5", "receipt:7"] }
-    key_run: RUN-lean-skipkernel-pair
+    key_run: RUN-lean-skipkernel
     key_lines:
       - { config: flawed, line: "lake exit=0" }
       - { config: flawed, line: "'conserves' does not depend on any axioms" }

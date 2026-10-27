@@ -5,6 +5,8 @@
 # f4 are the step-3 scenarios, the same model under one environment each. The flawed member is keyed by
 # RUN-tlc-double-charge (spine section 6.2's key run): with the provider's idempotency off, a crash after the send
 # leads to a second dispatch and a second charge (SP-8.1).
+# Variant pair v2 is keyed by RUN-tlc-outbox-timers (content/audit/tools/record-exemplars.mjs), the same Outbox spec:
+# q5 sound, q6 flawed, g1 to g4 its step-3 scenarios.
 id: AUD-8.1
 stage: S8
 class: G7
@@ -207,3 +209,83 @@ variants:
       - { config: q4, line: "[q4] Model checking completed. No error has been found." }
       - { config: f2, line: "[f2] Error: Invariant NoDoubleCharge is violated." }
     explain: "MaxCrashes = 0 switches the crash actions off, and the claim's assumptions never say so. The no-error result is about a worker that cannot crash; allow one crash after the send and TLC finds a double charge. An outbox exists for crashes, so this is the assumption a reader most needs to see."
+
+  - id: v2-sound
+    pair: v2
+    operator: drop-environment-assumption
+    artifact: outbox-timer-resend
+    key: none
+    claim: "Exactly once, via the outbox."
+    description: "Switches the timer re-sends off so the check runs in seconds, and writes down its assumption. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: one command, two attempts, one crash before the send.
+      \* [A] no timer re-sends an unanswered request (Timeouts = FALSE).
+      CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW1"}
+                Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,5 +1,6 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+       \* [M] TLC over Spec: one command, two attempts, one crash before the send.
+      +\* [A] no timer re-sends an unanswered request (Timeouts = FALSE).
+       CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW1"}
+      -          Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = TRUE
+      +          Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+    receipt: |
+      [q5] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q5] Model checking completed. No error has been found.
+      [q5] 14 states generated, 14 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-outbox-timers
+      scenarios: &v2-scenarios
+        - { id: g1, text: "One crash before the send, and no timer re-sends a request.", answer: true, key_line: "[g1] Model checking completed. No error has been found.", why: "Nothing was sent before the crash, so the retry is the first send: one charge." }
+        - { id: g2, text: "One crash before the send, and a timer re-sends an unanswered request.", answer: false, key_line: "[g2] Error: Invariant NoDoubleCharge is violated.", why: "The re-send is a second request, and a provider without dedup performs it: two charges." }
+        - { id: g3, text: "No crash; a timer re-sends, and the provider dedups a repeated key.", answer: true, key_line: "[g3] Model checking completed. No error has been found.", why: "The provider performs a repeated key's effect once: one charge." }
+        - { id: g4, text: "No crash, and no timer re-sends a request.", answer: true, key_line: "[g4] Model checking completed. No error has been found.", why: "One dispatch, one charge." }
+    evidence: { type: restatement, scenarios: *v2-scenarios }
+    key_run: RUN-tlc-outbox-timers
+    key_lines: ["[q5] Model checking completed. No error has been found.", "[g2] Error: Invariant NoDoubleCharge is violated."]
+    explain: "A small claim, honestly scoped: with the timer's re-sends switched off, the outbox charges once, and the claim says so as [A]. It is no evidence about re-sends (g2), and a reader can see that from the claim alone."
+
+  - id: v2-flawed
+    pair: v2
+    operator: drop-environment-assumption
+    artifact: outbox-timer-resend
+    key: G7
+    claim: "Exactly once, via the outbox."
+    description: "Switches the timer re-sends off so the check runs in seconds, and writes down its assumption. TLC finds no error."
+    statement: |
+      \* CL-8.2: each command the client commits is charged at most once.
+      \* [M] TLC over Spec: one command, two attempts, one crash before the send.
+      \* [A] the database keeps every committed row across a worker crash.
+      CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW1"}
+                Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+      INIT Init
+      NEXT Next
+      INVARIANT NoDoubleCharge
+    diff: |
+      --- a/claims/Outbox.cfg
+      +++ b/claims/Outbox.cfg
+      @@ -1,5 +1,6 @@
+       \* CL-8.2: each command the client commits is charged at most once.
+       \* [M] TLC over Spec: one command, two attempts, one crash before the send.
+      +\* [A] the database keeps every committed row across a worker crash.
+       CONSTANTS Cmds = {c1}  MaxCrashes = 1  MaxAttempts = 2  CrashWindows = {"CW1"}
+      -          Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = TRUE
+      +          Dedup = FALSE  FreshKey = FALSE  Forgets = "never"  Timeouts = FALSE
+    receipt: |
+      [q6] TLC2 Version 2026.10.20.183001 (rev: d2e1472)
+      [q6] Model checking completed. No error has been found.
+      [q6] 14 states generated, 14 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-outbox-timers
+      scenarios: *v2-scenarios
+    evidence: { type: witness, load_bearing: ["statement:5", "statement:3"], reference: "RUN-tlc-outbox-timers (g2): Commit, Dispatch, Timeout, Dispatch; Invariant NoDoubleCharge is violated" }
+    key_run: RUN-tlc-outbox-timers
+    key_lines: ["[q6] Model checking completed. No error has been found.", "[g2] Error: Invariant NoDoubleCharge is violated."]
+    explain: "Timeouts = FALSE switches the timer's re-sends off, and the claim's assumptions never say so; the [A] it writes is about the database, which this configuration does not narrow. Allow the timer to re-send an unanswered request and TLC finds a double charge: Commit, Dispatch, Timeout, Dispatch."

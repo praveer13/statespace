@@ -4,6 +4,8 @@
 # the case's module with some actions defined as FALSE, so they are never enabled and fairness on them asks for
 # nothing; x1 is the flawed member with the provider's fairness removed. The sound member's spec is RUN-tlc-eventually's
 # HoldLive verbatim, which the spine's run RUN-tlc-hold-fairness checks as r6.
+# Variant pair v2 is keyed by RUN-tlc-budget-fairness (content/audit/tools/record-exemplars.mjs): q5 sound, q6 flawed,
+# s1 to s4 the same kind of environments.
 id: AUD-5.2
 stage: S5
 class: G7
@@ -212,3 +214,101 @@ variants:
     key_run: RUN-tlc-hold-env
     key_lines: ["[q4] Model checking completed. No error has been found.", "[q4 t1] Error: Temporal property EventuallyFinished was violated."]
     explain: "SF_st(Settle) assumes the bank settles a payout it is sent often enough. Settle is the bank's action, not the service's, and the claim leaves the assumption out; with a bank that never settles, TLC finds a payout that bounces forever."
+
+  - id: v2-sound
+    pair: v2
+    operator: drop-or-misplace-fairness
+    artifact: hold-busy-budget
+    key: none
+    claim: "Liveness proved: every hold eventually resolves."
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC reports no error."
+    statement: |
+      ---- MODULE HoldBudget ----
+      EXTENDS Naturals
+      VARIABLES st, busy
+      vars == <<st, busy>>
+      Init == st = "held" /\ busy = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ UNCHANGED busy
+      Busy    == st = "pending" /\ busy < 2 /\ st' = "held" /\ busy' = busy + 1
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED busy
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED busy
+      Next == Try \/ Busy \/ Capture \/ Timeout
+      Fair == WF_vars(Timeout)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* Hold.cfg, checked with -deadlock
+      SPECIFICATION Spec
+      PROPERTY EventuallyResolves
+    diff: |
+      --- a/specs/HoldBudget.tla
+      +++ b/specs/HoldBudget.tla
+      @@ -10,3 +10,3 @@
+       Next == Try \/ Busy \/ Capture \/ Timeout
+      -Fair == TRUE
+      +Fair == WF_vars(Timeout)
+       Spec == Init /\ [][Next]_vars /\ Fair
+    receipt: |
+      [q5] Model checking completed. No error has been found.
+      [q5] 15 states generated, 12 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-budget-fairness
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "The provider never answers: Busy and Capture are never enabled", answer: true, key_line: "[q5 s1] Model checking completed. No error has been found.", why: "The service times out by itself; nothing waits on the provider." }
+        - { id: s2, text: "The provider answers busy every time it can: Capture is never enabled", answer: true, key_line: "[q5 s2] Model checking completed. No error has been found.", why: "Timeout resolves the hold, however often the provider answers busy." }
+        - { id: s3, text: "The provider captures every hold it is sent: Busy is never enabled", answer: true, key_line: "[q5 s3] Model checking completed. No error has been found.", why: "Captured or timed out, every hold resolves." }
+        - { id: s4, text: "The service never times out: Timeout is never enabled", answer: false, key_line: "[q5 s4] Error: Temporal property EventuallyResolves was violated.", why: "The result rests on the service's own Timeout, and says so in its one fairness conjunct." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-tlc-budget-fairness
+    key_lines: ["[q5] Model checking completed. No error has been found.", "[q5 s1] Model checking completed. No error has been found.", "[q5 s2] Model checking completed. No error has been found."]
+    explain: "Weak fairness on Timeout, the service's own action: the result holds whatever the provider does, and rests on an assumption the service can keep."
+
+  - id: v2-flawed
+    pair: v2
+    operator: drop-or-misplace-fairness
+    artifact: hold-busy-budget
+    key: G7
+    claim: "Liveness proved: every hold eventually resolves."
+    description: "Replaces Fair == TRUE with the fairness the liveness check needs. TLC reports no error."
+    statement: |
+      ---- MODULE HoldBudget ----
+      EXTENDS Naturals
+      VARIABLES st, busy
+      vars == <<st, busy>>
+      Init == st = "held" /\ busy = 0
+      Try     == st = "held"    /\ st' = "pending"  /\ UNCHANGED busy
+      Busy    == st = "pending" /\ busy < 2 /\ st' = "held" /\ busy' = busy + 1
+      Capture == st = "pending" /\ st' = "captured" /\ UNCHANGED busy
+      Timeout == st \in {"held", "pending"} /\ st' = "released" /\ UNCHANGED busy
+      Next == Try \/ Busy \/ Capture \/ Timeout
+      Fair == WF_vars(Try) /\ WF_vars(Capture)
+      Spec == Init /\ [][Next]_vars /\ Fair
+      Resolved == st \in {"captured", "released"}
+      EventuallyResolves == <>Resolved
+      ====
+      \* Hold.cfg, checked with -deadlock
+      SPECIFICATION Spec
+      PROPERTY EventuallyResolves
+    diff: |
+      --- a/specs/HoldBudget.tla
+      +++ b/specs/HoldBudget.tla
+      @@ -10,3 +10,3 @@
+       Next == Try \/ Busy \/ Capture \/ Timeout
+      -Fair == TRUE
+      +Fair == WF_vars(Try) /\ WF_vars(Capture)
+       Spec == Init /\ [][Next]_vars /\ Fair
+    receipt: |
+      [q6] Model checking completed. No error has been found.
+      [q6] 15 states generated, 12 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-budget-fairness
+      scenarios:
+        - { id: s1, text: "The provider never answers: Busy and Capture are never enabled", answer: false, key_line: "[q6 s1] Error: Temporal property EventuallyResolves was violated.", why: "TLC prints Try, then stuttering: the hold waits forever on a provider that never answers." }
+        - { id: s2, text: "The provider answers busy every time it can: Capture is never enabled", answer: false, key_line: "[q6 s2] Error: Temporal property EventuallyResolves was violated.", why: "After two busy answers the hold is pending with Capture off and Timeout unfair: it waits forever." }
+        - { id: s3, text: "The provider captures every hold it is sent: Busy is never enabled", answer: true, key_line: "[q6 s3] Model checking completed. No error has been found.", why: "With a provider that always captures, every hold resolves." }
+        - { id: s4, text: "The service never times out: Timeout is never enabled", answer: true, key_line: "[q6 s4] Model checking completed. No error has been found.", why: "The result never leaned on Timeout; it leaned on the provider and on the busy budget." }
+    evidence: { type: witness, load_bearing: ["statement:11", "statement:7", "diff:6"], reference: "RUN-tlc-budget-fairness [q6 s1]: Try, then Stuttering; Temporal property EventuallyResolves was violated" }
+    key_run: RUN-tlc-budget-fairness
+    key_lines: ["[q6] Model checking completed. No error has been found.", "[q6 s1] Error: Temporal property EventuallyResolves was violated.", "[q6 s2] Error: Temporal property EventuallyResolves was violated."]
+    explain: "WF_vars(Capture) assumes the provider captures a hold it keeps pending, and the model's Busy, which stops after two busy answers, assumes the provider runs out of them. Both are the provider's behavior, and the claim states neither: with a provider that never answers, or answers busy every time, TLC finds a hold that waits forever."

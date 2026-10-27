@@ -39,7 +39,6 @@ import {
   rel,
   render,
   shapeOf,
-  shiftFirstBoundary,
   showVar,
   some,
   term,
@@ -133,16 +132,19 @@ const WHY = {
   assert: 'This is the requirement itself, so a sat answer shows a state that keeps it, not one that breaks it.',
   shift: 'This moves a boundary by one. On the boundary itself it disagrees with the violation, so it reports a state that keeps the requirement or misses one that breaks it.',
   swapSides: 'This swaps the two sides instead of negating the comparison. Swapping the sides turns the comparison around; it does not negate it, so this query and the violation disagree on some states.',
+  swapRequirement: 'This swaps the sides of the requirement and keeps its comparison. That turns the comparison around and moves the boundary: on the boundary itself the requirement holds, and this query still accepts it.',
   keepConnective: 'Negating an "and" gives an "or", and negating an "or" gives an "and". This negates each part but keeps the connective, so it asks for the wrong combination of failures.',
   flipConnective: 'This swaps "and" and "or" but leaves each part as it was: half of De Morgan\'s law. It accepts states that keep the requirement.',
   dropGuard: 'This drops the guard from the premises, so its sat answers include steps that never run: states where the guard is false.',
   stepImplication: 'An implication holds whenever its premises are false, so this query is satisfied by states where the step never runs. Its sat answers prove nothing.',
   stepAssert: 'This asks for a step that keeps the property. A sat answer shows a good step, not a violation.',
+  stepObligation: 'This is the proof obligation, not its negation: every step the guard lets through keeps the property. A sat answer shows a step that keeps it, or a state where the step never runs; neither is a violation.',
   keepQuantifiers: 'This negates the body but leaves the quantifiers as they were. ¬∀ is ∃¬ and ¬∃ is ∀¬, so every quantifier must flip; as written it misses states where only some accounts break the requirement.',
   swapQuantifiers: 'This flips the quantifiers but not the body: half of the negation. It accepts states where the requirement holds.',
   converse: (cond: string): string => `This looks for a refusal when ${cond}: a violation of the converse, which the sentence never states. "P only if Q" and "not P unless Q" both say P → Q, so the arrow points from ok to the condition.`,
   biconditional: 'This violates "if and only if". Refusing when the condition holds breaks no "only if", so this query also reports states that keep the requirement.',
   falseAntecedent: 'An implication holds whenever ok is false, so this query is satisfied by every refused case. Its sat answers prove nothing.',
+  goodCase: (ok: string): string => `This asks for a case where ${ok} and the condition holds: a state that keeps the requirement, not one that breaks it.`,
 } as const
 
 // ---------------------------------------------------------------- helpers
@@ -249,9 +251,14 @@ function t1(band: Band, draw: SeededDraw): Built {
     p = outer(inner(atom(draw, v0, v1), atom(draw, v2 as string, v3 as string)), inner(atom(draw, v0, v2 as string), atom(draw, v1, v3 as string)))
   }
   const reference = negate(p)
-  const mutants: Mutant<Formula>[] = [fixed('dp:Z1', 'assert the requirement', WHY.assert, p), fixed('dp:O1', 'shift a boundary', WHY.shift, shiftFirstBoundary(reference))]
-  if (band === 1 && p.f === 'rel') mutants.push(fixed('dp:G5', 'swap the sides', WHY.swapSides, rel(p.rhs, (reference as Extract<Formula, { f: 'rel' }>).op, p.lhs)))
-  else {
+  // The options are two independent mistakes and their combination, so no option sits at the centre of the others
+  // [D]: band 1 crosses negating the comparison with swapping the sides (the swapped requirement is the shifted
+  // boundary), bands 2 and 3 cross negating the atoms with flipping the connective (De Morgan's two halves).
+  const mutants: Mutant<Formula>[] = [fixed('dp:Z1', 'assert the requirement', WHY.assert, p)]
+  if (band === 1 && p.f === 'rel') {
+    mutants.push(fixed('dp:G5', 'swap the sides', WHY.swapSides, rel(p.rhs, (reference as Extract<Formula, { f: 'rel' }>).op, p.lhs)))
+    mutants.push(fixed('dp:G5', 'swap the sides of the requirement', WHY.swapRequirement, rel(p.rhs, p.op, p.lhs)))
+  } else {
     mutants.push(fixed('dp:G5', 'keep the connective', WHY.keepConnective, negateAtoms(p)))
     mutants.push(fixed('dp:G5', 'flip the connective only', WHY.flipConnective, swapConnectives(p)))
   }
@@ -303,12 +310,15 @@ function t2(band: Band, draw: SeededDraw): Built {
   const p = rel(term("a'"), '>=', num(m))
   const premises = [guard, ...step, ...frame]
   const notP = negate(p)
-  const reference = and(...premises, notP)
+  // The premises are grouped in every option, so the options differ only where the mistakes are [D].
+  const before = and(...premises)
+  const reference = and(before, notP)
+  // Two independent mistakes and their combination [D]: asserting the property in place of its negation, and the
+  // premises as an implication in place of a conjunction. Together they are the proof obligation itself.
   const mutants: Mutant<Formula>[] = [
-    fixed('dp:Z1', 'assert the property', WHY.stepAssert, and(...premises, p)),
-    fixed('dp:Z5', 'drop the guard', WHY.dropGuard, and(...step, ...frame, notP)),
+    fixed('dp:Z1', 'assert the property', WHY.stepAssert, and(before, p)),
     fixed('dp:G4', 'premises as an implication', WHY.stepImplication, implies(and(...premises), notP)),
-    fixed('dp:O1', 'shift the boundary', WHY.shift, and(...premises, shiftFirstBoundary(notP) as Formula)),
+    fixed('dp:G4', 'the proof obligation', WHY.stepObligation, implies(and(...premises), p)),
   ]
   const updates = [...step, ...frame].map((f) => `\`${render(f)}\``).join(', ')
   return {
@@ -339,11 +349,11 @@ function t3(band: Band, draw: SeededDraw): Built {
   }
   const { prefix, body } = prefixOf(p)
   const reference = negate(p)
+  // The two halves of the negation and neither of them [D], so no option sits at the centre of the others.
   const mutants: Mutant<Formula>[] = [
     fixed('dp:Z1', 'assert the requirement', WHY.assert, p),
     fixed('dp:G5', 'negate the body only', WHY.keepQuantifiers, requantify(prefix, negate(body))),
     fixed('dp:G5', 'flip the quantifiers only', WHY.swapQuantifiers, requantify(prefix.map((q) => ({ ...q, q: dual(q.q) })), body)),
-    fixed('dp:O1', 'shift the boundary', WHY.shift, shiftFirstBoundary(reference)),
   ]
   return {
     stem: `Requirement over accounts 1 to ${n}: \`${render(p)}\`, where \`bal[i]\` is account i's balance, an integer from 0 to 3. Which query, if sat, shows a state that violates the requirement?`,
@@ -422,11 +432,13 @@ function t4(band: Band, draw: SeededDraw): Built {
   const p = implies(ok, cond)
   const reference = negate(p)
   const notCond = negate(cond)
+  // The converse, and a square of two independent mistakes around the violation [D]: the arrow in place of "and",
+  // and the condition kept in place of negated.
   const mutants: Mutant<Formula>[] = [
     fixed('dp:G1', 'violate the converse', WHY.converse(says), and(cond, not(ok))),
-    fixed('dp:G1', 'violate the biconditional', WHY.biconditional, or(and(ok, notCond), and(not(ok), cond))),
     fixed('dp:Z1', 'assert the requirement', WHY.assert, p),
     fixed('dp:G4', 'negate the consequent only', WHY.falseAntecedent, implies(ok, notCond)),
+    fixed('dp:Z1', 'a case that keeps the requirement', WHY.goodCase(story.ok), and(ok, cond)),
   ]
   const ints4 = varsOf(cond)
   return {

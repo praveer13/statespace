@@ -1,2 +1,18 @@
-GATE-audit-blind: there is no audit pool yet (content/audit/ arrives with W1-T33 and W1-T34); nothing to simulate
-GATE-audit-blind: green (no pool yet); bound: none, the pool is empty
+GATE-audit-blind: 176 cases in 25 anchors (S1, S2, S3, S4, S5, S6, S7, S8, S9); composer: desk reference, today reference, part-c reference; Clearinghouse: none shipped yet (W3-T14); scorer: reference
+  ok    default/desk           8 × 1520 decisions, 95 tests (20 could vary); largest longest-diff-is-flawed tnr +0.033 (2.43 SD)
+  ok    default/today          8 × 1200 decisions, 95 tests (20 could vary); largest longest-diff-is-flawed tpr +0.031 (2.34 SD)
+  ok    default/part-c         8 × 2160 decisions, 103 tests (13 could vary); largest longest-diff-is-flawed tpr +0.005 (0.65 SD)
+  ok    builder/desk           8 × 1976 decisions, 95 tests (20 could vary); largest longest-diff-is-flawed precision:none +0.014 (1.77 SD)
+  ok    builder/today          8 × 1560 decisions, 95 tests (20 could vary); largest longest-diff-is-flawed precision:none +0.012 (1.27 SD)
+  ok    builder/part-c         8 × 2160 decisions, 103 tests (13 could vary); largest longest-diff-is-flawed tnr +0.003 (0.25 SD)
+  stage-only floor (report-only, AUDIT-DESK 7.6), default: recall-macro 0.053, recall:G1 0, recall:G2 0.383, recall:G3 0, recall:G4 0, recall:G5 0, recall:G6 0.24, recall:G7 0, recall:G8 0, recall:G9 0, recall:G10 0, recall:G11 0.061, recall:G12 0, recall:G13 0
+  stage-only floor (report-only, AUDIT-DESK 7.6), builder: recall-macro 0.053, recall:G1 0, recall:G2 0.299, recall:G3 0, recall:G4 0, recall:G5 0, recall:G6 0.273, recall:G7 0, recall:G8 0, recall:G9 0, recall:G10 0, recall:G11 0.12, recall:G12 0, recall:G13 0
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/desk: longest-diff-is-flawed beats chance on tpr: 0.408 against chance 0.382 (SD 0.011, limit 0.404, advantage +0.026 = 2.4 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/desk: longest-diff-is-flawed beats chance on tnr: 0.650 against chance 0.617 (SD 0.013, limit 0.644, advantage +0.033 = 2.4 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/desk: longest-diff-is-flawed beats chance on ba: 0.529 against chance 0.499 (SD 0.012, limit 0.524, advantage +0.029 = 2.4 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/desk: longest-diff-is-flawed beats chance on precision:none: 0.470 against chance 0.447 (SD 0.010, limit 0.466, advantage +0.024 = 2.4 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/today: longest-diff-is-flawed beats chance on tpr: 0.440 against chance 0.409 (SD 0.013, limit 0.435, advantage +0.031 = 2.3 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/today: longest-diff-is-flawed beats chance on tnr: 0.628 against chance 0.591 (SD 0.016, limit 0.623, advantage +0.037 = 2.3 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/today: longest-diff-is-flawed beats chance on ba: 0.534 against chance 0.500 (SD 0.015, limit 0.529, advantage +0.034 = 2.3 SD over 8 streams)
+  note: advisory (AUDIT-DESK 7.2 proposal; blocks under --strict): default/today: longest-diff-is-flawed beats chance on precision:none: 0.483 against chance 0.454 (SD 0.012, limit 0.479, advantage +0.029 = 2.3 SD over 8 streams)
+GATE-audit-blind: green; bound: 176 cases (88 sound, 88 flawed) in 25 anchors; 6 streams × 8 replicates of 1200-2160 decisions, 1000 permutations per strategy and figure; a pass means no blocking strategy's advantage over chance, averaged over 8 replicate streams, exceeded 2 SD of one stream (at most +0.019 on ba, +0.015 on recall-macro); an expected advantage above 2.76 SD is caught with 95% probability (at most +0.027 on ba, +0.021 on recall-macro)

@@ -1,7 +1,8 @@
 // GEN-spot-the-gap (ASSESSMENT.md section 4.16): an audit case, a variant of an Audit Desk anchor, and the gap class
 // the learner names for it. Four templates by the kind of defeater: t1 rebutting (G1, G2, G12), t2 undermining (G4,
 // G5, G7), t3 undercutting (G8, G10, G13), t4 sound. Every class is always offered, with "none: sound", in the
-// taxonomy's order, so the misconception lies in the choice and not in which options appear.
+// taxonomy's order read cyclically from a drawn class, so the misconception lies in the choice and not in which
+// options appear or where.
 //
 // Keys are never stored. key() asks the family's checker, the gap check (engine.ts), to run the case's checks on the
 // case's own artifact; the class it certifies must be the one the generator's operator meant, and the evidence it
@@ -20,7 +21,7 @@ import type { EnginePort } from '../core/port.ts'
 import type { Band, ChoiceOption, ChoicePart, Generator, InstanceBase, Json, KeyBase, Measure, MisconceptionKey, TemplateId, TemplateSpec } from '../core/types.ts'
 import { buildT1, buildT2, buildT3, buildT4 } from './cases.ts'
 import type { Built } from './cases.ts'
-import { GAP_CHECK, GAP_CHECK_MAX_STATES, GAP_CHECK_VERSION, gapCheckPort } from './engine.ts'
+import { GAP_CHECK, GAP_CHECK_MAX_STATES, GAP_CHECK_VERSION, gapCheckPort, scopeOf } from './engine.ts'
 import type { AuditQuery, Finding, GapCase, GapClass } from './engine.ts'
 
 export { GAP_CHECK, GAP_CHECK_VERSION, gapCheckPort } from './engine.ts'
@@ -111,7 +112,11 @@ function make(seed: number, band: Band, template: TemplateId): SpotTheGapInstanc
   const ref = CLASSES.find((c) => c.id === b.intended) as (typeof CLASSES)[number]
   const options: ChoiceOption[] = []
   const values: Record<string, GapClass> = {}
-  CLASSES.forEach((c, i) => {
+  // The taxonomy's order, read cyclically from a drawn class [D]: neighbours stay neighbours, but no class, "none"
+  // among them, is always first or always last.
+  const start = draw.int(0, CLASSES.length - 1)
+  const shown = [...CLASSES.slice(start), ...CLASSES.slice(0, start)]
+  shown.forEach((c, i) => {
     const id = String.fromCharCode(65 + i)
     values[id] = c.id
     if (c.id === b.intended) {
@@ -137,6 +142,7 @@ function make(seed: number, band: Band, template: TemplateId): SpotTheGapInstanc
     seed,
     kcs: spec.kcs,
     item: { stem, parts: [part] },
+    bound: scopeOf(b.case),
     data: { anchor: b.anchor, operator: b.operator, case: b.case, level: b.level, values },
   }
 }

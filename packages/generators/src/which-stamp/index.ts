@@ -17,6 +17,7 @@ import { STRIP_SEGMENTS } from '@statespace/stamps'
 import type { StripSegment } from '@statespace/stamps'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -168,10 +169,19 @@ function t2(band: Band, draw: SeededDraw): Built {
     .sample(readable, band)
     .map(({ i }) => i)
     .sort((a, b) => a - b)
-  // Each mutant changes one blanked field the way one misconception would, and keeps the others as the deriver gave them.
-  const mutants: Mutant<StampValue>[] = blanks.flatMap((i) =>
-    fieldMutants(view.qualifier[i] as string).map((w) => fixed(w.tag, w.operator, w.why, withField(view.code, view.qualifier, i, w.value))),
-  )
+  // Each mutant changes one blanked field the way one misconception would, and keeps the others as the deriver gave them;
+  // with two or more blanks, a mutant may also change two fields at once [D], so the deriver's completion is not the
+  // one closest to every other option. choose.ts shows two.
+  const singles = blanks.flatMap((i) => fieldMutants(view.qualifier[i] as string).map((w) => ({ i, w })))
+  const mutants: Mutant<StampValue>[] = [
+    ...singles.map(({ i, w }) => fixed(w.tag, w.operator, w.why, withField(view.code, view.qualifier, i, w.value))),
+    ...singles.flatMap((a, x) =>
+      singles.slice(x + 1).filter((b) => b.i !== a.i).map((b) => {
+        const both = view.qualifier.map((q, k) => (k === a.i ? a.w.value : k === b.i ? b.w.value : q))
+        return fixed(a.w.tag, `${a.w.operator}, and ${b.w.operator}`, `Two fields are wrong. ${a.w.why} ${b.w.why}`, withField(view.code, both, a.i, a.w.value))
+      }),
+    ),
+  ]
   return {
     output,
     stem: `${shown(output)}\n\nThe stamp it earns, with ${band === 1 ? 'one field' : `${band} fields`} of the qualifier left blank: \`${blankedText(view.code, view.qualifier, blanks)}\``,
@@ -213,10 +223,12 @@ function make(seed: number, band: Band, template: TemplateId): WhichStampInstanc
   if (spec === undefined || template === 't4') throw new RangeError(`${WHICH_STAMP_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${WHICH_STAMP_ID}/${template}/b${band}`))
   const b = BUILDERS[template](band, draw)
+  // The distractors shown, chosen among the wrong stamps so the key does not stand out (choose.ts).
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: b.distractors, draw: draw.fork('choose'), render: (v) => v.text })
   const { options, values } = assembleOptions({
     reference: b.reference,
     referenceWhy: b.referenceWhy,
-    mutants: b.mutants,
+    mutants: chosen,
     distractors: b.distractors,
     draw: draw.fork('options'),
     render: (v) => v.text,

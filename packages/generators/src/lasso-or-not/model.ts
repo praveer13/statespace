@@ -274,9 +274,10 @@ export function findLasso(m: HoldModel, fair: readonly Fairness[]): Lasso | null
 export const showFair = (f: Fairness): string => `${f.kind}_vars(${f.action})`
 export const showFairness = (fair: readonly Fairness[]): string => (fair.length === 0 ? 'TRUE' : fair.map(showFair).join(' ∧ '))
 
+// Actions are joined by arrows, so a longer lasso is not also the one with the most commas [D].
 export function renderLasso(l: Lasso): string {
-  if (l.cycle.length === 0) return l.stem.length === 0 ? 'Stutter forever in the initial state' : `${l.stem.join(', ')}, then stutter forever`
-  return l.stem.length === 0 ? `From the initial state, repeat ${l.cycle.join(', ')} forever` : `${l.stem.join(', ')}, then repeat ${l.cycle.join(', ')} forever`
+  if (l.cycle.length === 0) return l.stem.length === 0 ? 'Stutter forever in the initial state' : `${l.stem.join(' → ')}, then stutter forever`
+  return l.stem.length === 0 ? `From the initial state, repeat ${l.cycle.join(' → ')} forever` : `${l.stem.join(' → ')}, then repeat ${l.cycle.join(' → ')} forever`
 }
 
 /** The spec as the stem prints it, in TLA+. */

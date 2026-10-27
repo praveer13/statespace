@@ -19,6 +19,7 @@ import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard } from '../core/define.ts'
 import type { DiscardOf } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -209,15 +210,20 @@ const DESIGNS: Readonly<Record<string, { readonly single: readonly Design[]; rea
 
 // ---------------------------------------------------------------- copy
 
+// Every prediction reads alike [D]: what happens to the build, a comma, then what the check does, in six words and
+// about as many letters, so no outcome stands out by its length or punctuation.
 const TEXT: Readonly<Record<'passes' | 'no-build' | 'rejects', string>> = {
-  passes: 'Passes `statespace check`',
-  'no-build': 'Does not build',
+  passes: 'Builds, and `statespace check` accepts it',
+  'no-build': "Won't build, and `statespace check` stops",
   rejects: 'Builds, and `statespace check` rejects it',
 }
 
 export function predictionText(p: Prediction): string {
   if (p === 'passes' || p === 'no-build' || p === 'rejects') return TEXT[p]
-  return `Builds; \`statespace check\` stops at \`${p.slice('rejects:'.length)}\``
+  // The wording takes up the slack of a short or long check name, so every stop reads about as long [D].
+  const at = p.slice('rejects:'.length)
+  const lead = at.length >= 15 ? 'Builds, then fails at' : at.length <= 10 ? 'Builds, and the check stops at' : 'Builds, and check stops at'
+  return `${lead} \`${at}\``
 }
 
 const expected = (d: Design, locus: number): Prediction => (d.expect.verdict === 'rejects' ? (locus === 1 ? `rejects:${d.expect.locus}` : 'rejects') : d.expect.verdict)
@@ -288,7 +294,10 @@ function make(seed: number, band: Band, template: TemplateId): DefendInstance {
       why: () => wrongWhy(p, d),
       apply: () => p,
     }))
-  const { options, values } = assembleOptions({ reference, referenceWhy: d.explain, mutants, distractors: locus === 1 ? 3 : 2, draw: draw.fork('options'), render: predictionText })
+  // The distractors shown, chosen among the other predictions so the key does not stand out (choose.ts).
+  const n = locus === 1 ? 3 : 2
+  const chosen = chooseDistractors({ reference, candidates: mutants, n, draw: draw.fork('choose'), render: predictionText })
+  const { options, values } = assembleOptions({ reference, referenceWhy: d.explain, mutants: chosen, distractors: n, draw: draw.fork('options'), render: predictionText })
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: locus === 1 ? 'Your prediction, with the check it stops at:' : 'Your prediction:', options }
   const mutant = applyOps(base, d.ops)
   return {

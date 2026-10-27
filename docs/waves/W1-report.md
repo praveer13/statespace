@@ -726,3 +726,29 @@ Clearinghouse incident; Today's session; export, import and undo; offline reads)
 - **Platform:** the 640-px desktop search palette; the Today and lesson route budgets; `budget.fonts`; Today's
   backup card; `scripts/site/smoke.sh` copying `agent/` and `llms.txt` for a CONTENT_DIR run.
 - **Clearinghouse:** the Lane A module host, the remaining world phases, ER-12, and sizing from Set your week.
+
+## Phase 7 — hardening (2026-10-26)
+
+Five owners worked on separate areas. The release step was stopped after about three hours: it was re-recording RUN-ci-fastlane, about an hour per attempt, for the third time. Its half-written records were restored from HEAD, and the run re-records listed below are left as release follow-ups.
+
+| Gate | Before | After |
+|---|---|---|
+| GATE-a11y | 4 sideways scrolls on /stages (360, 320) | green: 282 pages (every route, 360, 320 and 1280, both themes), 0 violations; keyboard pass fixed (focus after Call It, Submit, Draw another, Audit steps) |
+| GATE-audit | 15 findings | 2 (battery: `spot-the-gap` exports no `auditBattery`); 176 cases, every gap class has at least 6 exemplars, key-run findings cleared |
+| GATE-items | 736 findings | 68: spot-the-gap 38 and which-stamp 21 on families, plus 9 authored calls/surprises findings |
+| GATE-kc, GATE-facts, GATE-numbers | 7 doses, 27 copy findings | green |
+| GATE-stamps | S8.L7 requirement finding | green |
+| GATE-bundle | 3 budget failures | budget.fonts passes; budget.route.today (275.5 KB against 200) and budget.route.lesson (371.0 KB against 250) still fail |
+| GATE-runs | registry intact | PASS; the release lane warns that RUN-ci-fastlane, RUN-w0-integration, RUN-schema-gate, RUN-links-gate, RUN-budget-gate, RUN-facts-gate and others need re-recording, because their inputs changed |
+
+**Owner decisions waiting:**
+- S7.L7 and S7.L8 each have two prequestions (GATE-lessons).
+- Create the private companion repository for the lab solutions (ARCHITECTURE §13.5).
+- Register or decline the 48 proposed IDs in packages/ids/proposals.json.
+- Review queue over OD-7's 10 h.
+
+**Still to do:**
+- Route budgets: lazy generator families on Today; split the lesson route.
+- The spot-the-gap audit battery.
+- GATE-calls engines for the Bench and receipt cells.
+- The release-lane re-records, then GATE-release.

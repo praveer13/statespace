@@ -1,0 +1,12 @@
+; Transfer(x, y, amt)'s obligation over the account map. Inv: every account at 0 or above
+(declare-fun bal (Int) Int)
+(declare-fun bal_p (Int) Int)
+(declare-const x Int)
+(declare-const y Int)
+(declare-const amt Int)
+(assert (forall ((i Int)) (=> (and (<= 1 i) (<= i 2)) (>= (bal i) 0))))
+(assert (and (<= 1 x) (<= x 2) (<= 1 y) (<= y 2) (distinct x y)))
+(assert (and (> amt 0) (<= amt (bal x))))
+(assert (forall ((i Int)) (= (bal_p i) (ite (= i x) (- (bal i) amt) (ite (= i y) (+ (bal i) amt) (bal i))))))
+(assert (not (exists ((i Int)) (and (<= 1 i) (<= i 2) (>= (bal_p i) 0)))))
+(check-sat)

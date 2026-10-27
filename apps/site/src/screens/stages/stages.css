@@ -125,6 +125,23 @@
   font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* At phone widths a holdings part and a long stage name may wrap, so the catalogue never scrolls sideways (WCAG 1.4.10 Reflow). */
+@media (max-width: 400px) {
+  .catalogue-meta-part {
+    white-space: normal;
+  }
+
+  .catalogue-title {
+    font-size: 22px;
+    min-width: 0;
+  }
+
+  .catalogue-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
 /* From 1000 px the catalogue reads across: cover, title, question, holdings, aligned on one baseline grid. */
 @media (min-width: 1000px) {
   .catalogue-entry {

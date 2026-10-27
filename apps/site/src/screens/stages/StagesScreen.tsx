@@ -2,7 +2,7 @@
 // with its cover, its number and title, its tools, the roadmap's question, and what it holds. Nothing locks: every
 // entry opens.
 
-import type { CSSProperties } from 'react'
+import { Fragment, type CSSProperties } from 'react'
 import { Link } from 'react-router'
 import { loadStages, useLoaded } from '../../app/content.ts'
 import { useTitle } from '../../app/title.ts'
@@ -52,10 +52,10 @@ export function StagesScreen() {
                   {sizeLine(summarize(s))
                     .split(' · ')
                     .map((part, i) => (
-                      <span key={part} className="catalogue-meta-part">
+                      <Fragment key={part}>
                         {i > 0 ? ' · ' : ''}
-                        {part}
-                      </span>
+                        <span className="catalogue-meta-part">{part}</span>
+                      </Fragment>
                     ))}
                 </span>
               </Link>

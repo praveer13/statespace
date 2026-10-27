@@ -1,0 +1,21 @@
+[q11] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed
+[q11 p1] a: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET
+[q11 p1] b: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET
+[q11 p1] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]
+[q11 p1] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]
+[q11 p1] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1
+[q11 p1] b: UPDATE limits SET used = %s WHERE acct = %s <waiting ...>
+[q11 p1] a: COMMIT -> COMMIT
+[q11 p1] b: UPDATE limits SET used = %s WHERE acct = %s <... completed> -> ERROR 40001: could not serialize access due to concurrent update
+[q11 p1] b: COMMIT -> ROLLBACK
+[q11 p1] a returned True, b returned error could not serialize access due to concurrent update
+[q11 p1] final used=80; spent=80 of 100
+[q11 p2] a: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET
+[q11 p2] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]
+[q11 p2] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1
+[q11 p2] a: COMMIT -> COMMIT
+[q11 p2] b: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET
+[q11 p2] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[80]]
+[q11 p2] b: COMMIT -> COMMIT
+[q11 p2] a returned True, b returned False
+[q11 p2] final used=80; spent=80 of 100

@@ -1,19 +1,17 @@
 GATE-schema
-  ok    schemas: 4 published (claim, defs, event, ir); 3 describe a value, 2 of them tagged records; subset and portable patterns hold
+  ok    schemas: 8 published (claim, defs, event, ir, lesson, receipt, run, specimen); 7 describe a value, 4 of them tagged records; subset and portable patterns hold
   ok    drafts: 1 draft parse; drafts are not published and generate no types
-  todo  schema receipt: schemas/receipt.schema.json is published by W0-S11; the generators pick it up when it lands
-  todo  schema run: schemas/run.schema.json is published by W0-S11; the generators pick it up when it lands
   ok    expected schemas: defs, claim, event, ir present
-  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:7d43fdf25723...)
+  ok    generated files: 6 files equal a fresh generation from schemas/ (sha256:2c68eec89274...)
   ok    statement-hash.json: equals a fresh generation (106 vectors, every expected value from the engine's own trimEnd and node:crypto)
   ok    package loads: @statespace/schema imports under Node and embeds every published schema
   ok    typescript: Version 5.9.3: packages/schema and its tests compile (strict, exactOptionalPropertyTypes, erasable syntax only)
-  ok    fixtures: 26 valid and 63 invalid record fixtures, 149 values for 14 shared definitions
-  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (19 object types across all schemas) and Python
+  ok    fixtures: 57 valid and 292 invalid record fixtures, 149 values for 14 shared definitions
+  ok    self-test generation: the kitchen-sink schema generates TypeScript that parses (131 object types across all schemas) and Python
   ok    raw json: 21 documents sent as text, to be read by JSON.parse and by json.loads
-  todo  records: 17 files (runs/RUN-*.json) are run@1 records, whose schema W0-S11 publishes; they are validated once it lands
-  ok    records: 42 files declare a statespace/... schema: 0 JSON records validated, 0 YAML records validated
-  note  records: id-proposals (1 file), ids (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here
+  todo  records: 12 files (runs/RUN-serializability-fixtures/out/cond-rc.history.json, runs/RUN-serializability-fixtures/out/cond-ser-retry.history.json) are history@1 records, whose schema a later task publishes; they are validated once it lands
+  ok    records: 444 files declare a statespace/... schema: 349 JSON records validated, 22 YAML records validated
+  note  records: goal-strips (2 files), font-manifest (1 file), which-stamp-fixtures (1 file), kc-graph (1 file), budget (1 file), lab10-skeleton (2 files), prove-it (1 file), lab4-fixture (7 files), lab6-fixtures (1 file), proveit (1 file), generator-determinism (16 files), id-proposals (1 file), ids (1 file), stamp-fixtures (1 file), nightly-status (1 file), goal-strip-spike (18 files), goal-strips-manifest-spike (4 files), goal-replay-spec-spike (1 file) declare schemas that schemas/ does not publish; they are other formats' own records and are not validated here
   ok    trim set: 25 code points: the schema's list equals this engine's trimEnd over all 1114112 code points and WhiteSpace plus LineTerminator derived from \p{Zs}; x-statementHash is written once
   ok    vectors (TypeScript): 89 hash vectors and 17 error vectors reproduced by packages/schema (text and bytes entry points)
   ok    python: Python 3.13.12, jsonschema 4.26.0, referencing 0.37.0, PyYAML 6.0.3
@@ -25,11 +23,11 @@ GATE-schema
   note  dialect probes: . on a line separator (ECMAScript false, Python true)
   note  dialect probes: \s on U+0085 (kept by ECMAScript) (ECMAScript false, Python true)
   note  dialect probes: \s on U+FEFF (removed by ECMAScript) (ECMAScript true, Python false)
-  ok    meta-schema: 5 schemas pass the draft 2020-12 meta-schema (jsonschema)
-  ok    validators agree: 7817 documents (87 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 0 repository records, 7480 generated mutants): TypeScript and Python reach the same verdict on all; 1381 valid, 6436 invalid; every invalid fixture fails on its stated keyword and path in both
-  ok    yaml: 2 YAML records read by PyYAML and validated by both validators
-  ok    types in sync: 12 object types and 19 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (19 object types) agrees too
+  ok    meta-schema: 9 schemas pass the draft 2020-12 meta-schema (jsonschema)
+  ok    validators agree: 20633 documents (346 fixtures, 149 definition values, 80 self-test, 21 sent as raw JSON text, 349 repository records, 19688 generated mutants): TypeScript and Python reach the same verdict on all; 2909 valid, 17724 invalid; every invalid fixture fails on its stated keyword and path in both
+  ok    yaml: 25 YAML records read by PyYAML and validated by both validators
+  ok    types in sync: 124 object types and 52 aliases: the TypeScript interfaces and the Python TypedDicts have the same keys, in the same order, with the same required keys, as the schemas; the type tables by tag and by name match; the self-test schema (131 object types) agrees too
   ok    vectors (Python): statespace.schema reproduces all 106 vectors through its text, bytes and file entry points
   ok    hash agreement: TypeScript and Python agree on all 106 of 106 shared vectors (17 are errors both reject with the same code); str.rstrip() would differ from the schema's set on 6 code points (U+001C U+001D U+001E U+001F U+0085 U+FEFF)
-  todo  keep/kill rules: content/governance/keepkill-rules.yaml and runs/RUN-keepkill-rules.json are committed by W0-T07; this gate then checks that the file's SHA-256 never changes
-GATE-schema: PASS (21 checks, 4 waiting on a later task; 2.6 s)
+  ok    keep/kill rules: content/governance/keepkill-rules.yaml hashes to the SHA-256 recorded in runs/RUN-keepkill-rules.json
+GATE-schema: PASS (22 checks, 1 waiting on a later task; 21.5 s)

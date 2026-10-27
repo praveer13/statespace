@@ -1,0 +1,21 @@
+WARNING: Sandbox disabled, this run is not trustworthy.
+Resolving dependencies
+ℹ [2/5] Built Ledger.Basic (195ms)
+info: Ledger/Basic.lean:26:0: { a := 7, b := 3 }
+info: Ledger/Basic.lean:27:0: 'transfer_conserves' depends on axioms: [propext, Quot.sound]
+info: Ledger/Basic.lean:28:0: 'transfer_conserves_grind' depends on axioms: [propext, Classical.choice, Quot.sound]
+⚠ [3/5] Built Ledger.Bad (157ms)
+warning: Ledger/Bad.lean:4:8: declaration uses `sorry`
+info: Ledger/Bad.lean:7:0: 'big_native' depends on axioms: [big_native._native.native_decide.ax_1_1]
+info: Ledger/Bad.lean:8:0: 'by_decide' does not depend on any axioms
+info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]
+info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]
+✔ [4/5] Built Ledger (139ms)
+Building and exporting
+Running Lean default kernel on solution
+error: Axiom 'big_native._native.native_decide.ax_1_1' is not permitted; it is used by 'big_native'
+Axiom 'sorryAx' is not permitted; it is used by 'with_sorry'
+Axiom 'cheat' is not permitted; it is used by 'with_axiom'
+Lean default kernel accepts the solution
+Uses axioms: Classical.choice, propext, Quot.sound, big_native._native.native_decide.ax_1_1, sorryAx, cheat
+check exit=1

@@ -441,7 +441,9 @@ function runAction(action, inputs, { container, scratch, overlays }) {
       const list = path.join(scratch, 'files.list');
       const files = spawnSync('git', ['ls-files', '-z', '-c', '-o', '--exclude-standard'], { cwd: REPO, maxBuffer: 256 * 1024 * 1024 });
       if (files.status !== 0) throw new EmulationError('git ls-files failed');
-      fs.writeFileSync(list, files.stdout);
+      // The working tree as it is: a tracked file deleted from it (a recorder clearing its own outputs) is not copied.
+      const present = files.stdout.toString('utf8').split('\0').filter((f) => f !== '' && fs.existsSync(path.join(REPO, f)));
+      fs.writeFileSync(list, present.map((f) => `${f}\0`).join(''));
       const tarFile = path.join(scratch, 'tree.tar');
       const pack = spawnSync('tar', ['-C', REPO, '--null', '-T', list, '-cf', tarFile], { encoding: 'utf8' });
       if (pack.status !== 0) throw new EmulationError(`tar failed: ${pack.stderr}`);

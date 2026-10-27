@@ -2,7 +2,9 @@
 # Pair members are keyed by RUN-z3-vacuous-unsat (spine section 6.2's key run); the receipts the Desk shows, the two
 # variant pairs and every step-3 scenario are keyed by RUN-z3-vacuous-variants, recorded in the Bench image. That
 # run tags its queries q1 to q6 so a receipt line never names a case's key: q1 sound member, q2 flawed member,
-# q3/q4 variant pair v1 (flawed/sound), q5/q6 variant pair v2 (sound/flawed).
+# q3/q4 variant pair v1 (flawed/sound), q5/q6 variant pair v2 (sound/flawed). Variant pairs v3 to v5 are keyed by
+# RUN-z3-vacuous-exemplars (content/audit/tools/record-exemplars.mjs), which tags them q7/q8 (v3, sound/flawed),
+# q9/q10 (v4, flawed/sound) and q11/q12 (v5, sound/flawed).
 id: AUD-1.1
 stage: S1
 class: G2
@@ -257,3 +259,239 @@ variants:
     key_run: RUN-z3-vacuous-variants
     key_lines: ["[q6 violation] unsat", "[q6 premises] unsat", "[q6 core] unsat_core=['amount > 0', 'w + amount <= 500', 'w >= 500']"]
     explain: "The check is written the wrong way round: w >= LIMIT, beside w + amount <= LIMIT and amount > 0, leaves no withdrawal at all. The premises alone are unsat."
+
+  - id: v3-sound
+    pair: v3
+    operator: add-contradictory-hypothesis
+    artifact: refund-window
+    key: none
+    description: "Inlines refund_allowed()'s window check into the refund query. Still unsat."
+    statement: |
+      paid, refund, days = Ints('paid refund days')
+      s = Solver()
+      s.add(paid >= 0, refund > 0)
+      s.add(refund <= paid)
+      s.add(days >= 0, days <= 30)    # the refund window, in days since payment
+      s.add(days < 31)                # the window check, inlined from refund_allowed()
+      s.add(paid - refund < 0)        # the violation: more refunded than was paid
+      print(s.check())
+    diff: |
+      --- a/checks/refund_query.py
+      +++ b/checks/refund_query.py
+      @@ -4,3 +4,4 @@
+       s.add(refund <= paid)
+       s.add(days >= 0, days <= 30)    # the refund window, in days since payment
+      +s.add(days < 31)                # the window check, inlined from refund_allowed()
+       s.add(paid - refund < 0)        # the violation: more refunded than was paid
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q7 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "paid = 100, refund = 40, days = 3", answer: true, key_line: "[q7 s1 paid=100 refund=40 days=3] sat (covered)", why: "Within the amount paid and within the window: covered." }
+        - { id: s2, text: "paid = 100, refund = 40, days = 45", answer: false, key_line: "[q7 s2 paid=100 refund=40 days=45] unsat (not covered)", why: "Outside the 30-day window, so the query never considers it." }
+        - { id: s3, text: "paid = 100, refund = 100, days = 30", answer: true, key_line: "[q7 s3 paid=100 refund=100 days=30] sat (covered)", why: "A full refund on the window's last day: covered." }
+        - { id: s4, text: "paid = 20, refund = 40, days = 3", answer: false, key_line: "[q7 s4 paid=20 refund=40 days=3] unsat (not covered)", why: "More than was paid: refund <= paid refuses it." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q7 violation] unsat", "[q7 premises] sat"]
+    explain: "Over integers, days < 31 is days <= 30 again: the inlined line repeats the window and removes nothing. The premises stay satisfiable, so the unsat speaks about every refund inside the window."
+
+  - id: v3-flawed
+    pair: v3
+    operator: add-contradictory-hypothesis
+    artifact: refund-window
+    key: { class: G2, also: [G1] }
+    description: "Inlines refund_allowed()'s window check into the refund query. Still unsat."
+    statement: |
+      paid, refund, days = Ints('paid refund days')
+      s = Solver()
+      s.add(paid >= 0, refund > 0)
+      s.add(refund <= paid)
+      s.add(days >= 0, days <= 30)    # the refund window, in days since payment
+      s.add(days > 30)                # the window check, inlined from refund_allowed()
+      s.add(paid - refund < 0)        # the violation: more refunded than was paid
+      print(s.check())
+    diff: |
+      --- a/checks/refund_query.py
+      +++ b/checks/refund_query.py
+      @@ -4,3 +4,4 @@
+       s.add(refund <= paid)
+       s.add(days >= 0, days <= 30)    # the refund window, in days since payment
+      +s.add(days > 30)                # the window check, inlined from refund_allowed()
+       s.add(paid - refund < 0)        # the violation: more refunded than was paid
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q8 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios:
+        - { id: s1, text: "paid = 100, refund = 40, days = 3", answer: false, key_line: "[q8 s1 paid=100 refund=40 days=3] unsat (not covered)", why: "days > 30 fails at 3; and no refund meets the premises anyway." }
+        - { id: s2, text: "paid = 100, refund = 40, days = 45", answer: false, key_line: "[q8 s2 paid=100 refund=40 days=45] unsat (not covered)", why: "Outside the window, and no refund meets the premises anyway." }
+        - { id: s3, text: "paid = 100, refund = 100, days = 30", answer: false, key_line: "[q8 s3 paid=100 refund=100 days=30] unsat (not covered)", why: "days > 30 fails on the window's last day." }
+        - { id: s4, text: "paid = 20, refund = 40, days = 3", answer: false, key_line: "[q8 s4 paid=20 refund=40 days=3] unsat (not covered)", why: "More than was paid, and no refund meets the premises anyway." }
+    evidence: { type: declaration, load_bearing: ["statement:5", "statement:6"] }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q8 violation] unsat", "[q8 premises] unsat", "[q8 core] unsat_core=['days <= 30', 'days > 30']"]
+    explain: "The inlined check is the late test, not the in-window test: days > 30 beside days <= 30 leaves no day at all. The premises alone are unsat, so the unsat says nothing about any refund."
+
+  - id: v4-flawed
+    pair: v4
+    operator: add-contradictory-hypothesis
+    artifact: withdrawal-fee-cap
+    medium: smt-lib
+    key: { class: G2, also: [G1] }
+    description: "Adds the pricing spec's fee cap to the withdrawal query. Z3 still answers unsat."
+    statement: |
+      ; withdraw.smt2: a withdrawal of amount plus its 1% fee
+      (declare-const bal Int)
+      (declare-const amount Int)
+      (declare-const fee Int)
+      (assert (>= bal 0))
+      (assert (> amount 0))
+      (assert (= fee (div amount 100)))      ; the fee, rounded down
+      (assert (<= (+ amount fee) bal))
+      (assert (>= fee amount))              ; the fee cap
+      (assert (< (- bal (+ amount fee)) 0))  ; the violation: the balance ends below zero
+      (check-sat)
+    diff: |
+      --- a/checks/withdraw.smt2
+      +++ b/checks/withdraw.smt2
+      @@ -7,2 +7,3 @@
+       (assert (<= (+ amount fee) bal))
+      +(assert (>= fee amount))              ; the fee cap
+       (assert (< (- bal (+ amount fee)) 0))  ; the violation: the balance ends below zero
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q9 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios:
+        - { id: s1, text: "bal = 1000, amount = 500", answer: false, key_line: "[q9 s1 bal=1000 amount=500] unsat (not covered)", why: "The fee is 5, and 5 >= 500 fails; no withdrawal meets the premises anyway." }
+        - { id: s2, text: "bal = 1000, amount = 1000", answer: false, key_line: "[q9 s2 bal=1000 amount=1000] unsat (not covered)", why: "1000 plus its fee is more than the balance, and no withdrawal meets the premises anyway." }
+        - { id: s3, text: "bal = 50, amount = 50", answer: false, key_line: "[q9 s3 bal=50 amount=50] unsat (not covered)", why: "The fee rounds down to 0, and 0 >= 50 fails." }
+        - { id: s4, text: "bal = 1000, amount = 99", answer: false, key_line: "[q9 s4 bal=1000 amount=99] unsat (not covered)", why: "The fee is 0 here too: the cap line fails for every positive amount." }
+    evidence: { type: declaration, load_bearing: ["statement:6", "statement:7", "statement:9"] }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q9 violation] unsat", "[q9 premises] unsat", "[q9 core] unsat_core=['(= fee (div amount 100))', '(> amount 0)', '(>= fee amount)']"]
+    explain: "The cap is written the wrong way round. A fee of amount div 100 is below the amount for every positive amount, so fee >= amount leaves no withdrawal; the premises alone are unsat, and their core is the three lines that clash."
+
+  - id: v4-sound
+    pair: v4
+    operator: add-contradictory-hypothesis
+    artifact: withdrawal-fee-cap
+    medium: smt-lib
+    key: none
+    description: "Adds the pricing spec's fee cap to the withdrawal query. Z3 still answers unsat."
+    statement: |
+      ; withdraw.smt2: a withdrawal of amount plus its 1% fee
+      (declare-const bal Int)
+      (declare-const amount Int)
+      (declare-const fee Int)
+      (assert (>= bal 0))
+      (assert (> amount 0))
+      (assert (= fee (div amount 100)))      ; the fee, rounded down
+      (assert (<= (+ amount fee) bal))
+      (assert (<= fee amount))              ; the fee cap
+      (assert (< (- bal (+ amount fee)) 0))  ; the violation: the balance ends below zero
+      (check-sat)
+    diff: |
+      --- a/checks/withdraw.smt2
+      +++ b/checks/withdraw.smt2
+      @@ -7,2 +7,3 @@
+       (assert (<= (+ amount fee) bal))
+      +(assert (<= fee amount))              ; the fee cap
+       (assert (< (- bal (+ amount fee)) 0))  ; the violation: the balance ends below zero
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q10 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "bal = 1000, amount = 500", answer: true, key_line: "[q10 s1 bal=1000 amount=500] sat (covered)", why: "500 plus a fee of 5 fits in the balance: covered." }
+        - { id: s2, text: "bal = 1000, amount = 1000", answer: false, key_line: "[q10 s2 bal=1000 amount=1000] unsat (not covered)", why: "1000 plus a fee of 10 is more than the balance: refused." }
+        - { id: s3, text: "bal = 50, amount = 50", answer: true, key_line: "[q10 s3 bal=50 amount=50] sat (covered)", why: "The fee rounds down to 0, so the whole balance can go: covered." }
+        - { id: s4, text: "bal = 1000, amount = 99", answer: true, key_line: "[q10 s4 bal=1000 amount=99] sat (covered)", why: "A fee of 0 again: covered." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q10 violation] unsat", "[q10 premises] sat"]
+    explain: "fee <= amount holds whenever fee is amount div 100 and the amount is positive, so the cap removes no withdrawal. The premises stay satisfiable (bal = 1, amount = 1, fee = 0) and the unsat keeps its meaning."
+
+  - id: v5-sound
+    pair: v5
+    operator: drop-parentheses
+    artifact: daily-cap-remaining
+    key: none
+    description: "Rewrites the daily-cap line in the sign-first form the linter asks for. Still unsat."
+    statement: |
+      LIMIT = 500                                  # the daily cap
+      bal, used, amount = Ints('bal used amount')  # used: sent so far today
+      s = Solver()
+      s.add(bal >= 0, used >= 0)
+      s.add(amount > 0)
+      s.add(amount <= bal)
+      s.add(amount <= -(used - LIMIT))             # what is left of today's cap
+      s.add(bal - amount < 0)                      # the violation: the balance ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/send_query.py
+      +++ b/checks/send_query.py
+      @@ -6,3 +6,3 @@
+       s.add(amount <= bal)
+      -s.add(amount <= LIMIT - used)                # what is left of today's cap
+      +s.add(amount <= -(used - LIMIT))             # what is left of today's cap
+       s.add(bal - amount < 0)                      # the violation: the balance ends below zero
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q11 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios: &v5-sound-scenarios
+        - { id: s1, text: "bal = 300, used = 0, amount = 200", answer: true, key_line: "[q11 s1 bal=300 used=0 amount=200] sat (covered)", why: "Within the balance and the cap: covered." }
+        - { id: s2, text: "bal = 300, used = 450, amount = 100", answer: false, key_line: "[q11 s2 bal=300 used=450 amount=100] unsat (not covered)", why: "Only 50 of today's cap is left: refused." }
+        - { id: s3, text: "bal = 1000, used = 100, amount = 400", answer: true, key_line: "[q11 s3 bal=1000 used=100 amount=400] sat (covered)", why: "Exactly what is left of the cap: covered." }
+        - { id: s4, text: "bal = 100, used = 0, amount = 150", answer: false, key_line: "[q11 s4 bal=100 used=0 amount=150] unsat (not covered)", why: "More than the balance: refused by amount <= bal." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q11 violation] unsat", "[q11 premises] sat"]
+    explain: "-(used - LIMIT) is LIMIT - used, written another way: the parentheses keep the subtraction whole. The premises stay satisfiable and the unsat covers every send within the balance and the cap."
+
+  - id: v5-flawed
+    pair: v5
+    operator: drop-parentheses
+    artifact: daily-cap-remaining
+    key: { class: G2, also: [G1] }
+    description: "Rewrites the daily-cap line in the sign-first form the linter asks for. Still unsat."
+    statement: |
+      LIMIT = 500                                  # the daily cap
+      bal, used, amount = Ints('bal used amount')  # used: sent so far today
+      s = Solver()
+      s.add(bal >= 0, used >= 0)
+      s.add(amount > 0)
+      s.add(amount <= bal)
+      s.add(amount <= -used - LIMIT)               # what is left of today's cap
+      s.add(bal - amount < 0)                      # the violation: the balance ends below zero
+      print(s.check())
+    diff: |
+      --- a/checks/send_query.py
+      +++ b/checks/send_query.py
+      @@ -6,3 +6,3 @@
+       s.add(amount <= bal)
+      -s.add(amount <= LIMIT - used)                # what is left of today's cap
+      +s.add(amount <= -used - LIMIT)               # what is left of today's cap
+       s.add(bal - amount < 0)                      # the violation: the balance ends below zero
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q12 violation] unsat
+    restatement:
+      run: RUN-z3-vacuous-exemplars
+      scenarios:
+        - { id: s1, text: "bal = 300, used = 0, amount = 200", answer: false, key_line: "[q12 s1 bal=300 used=0 amount=200] unsat (not covered)", why: "The cap line now reads amount <= -500 at used = 0: no positive amount meets it." }
+        - { id: s2, text: "bal = 300, used = 450, amount = 100", answer: false, key_line: "[q12 s2 bal=300 used=450 amount=100] unsat (not covered)", why: "Over what is left of the cap, and no send meets the premises anyway." }
+        - { id: s3, text: "bal = 1000, used = 100, amount = 400", answer: false, key_line: "[q12 s3 bal=1000 used=100 amount=400] unsat (not covered)", why: "amount <= -600 fails; no send meets the premises." }
+        - { id: s4, text: "bal = 100, used = 0, amount = 150", answer: false, key_line: "[q12 s4 bal=100 used=0 amount=150] unsat (not covered)", why: "More than the balance, and no send meets the premises anyway." }
+    evidence: { type: declaration, load_bearing: ["statement:4", "statement:5", "statement:7"] }
+    key_run: RUN-z3-vacuous-exemplars
+    key_lines: ["[q12 violation] unsat", "[q12 premises] unsat", "[q12 core] unsat_core=['amount <= -used - 500', 'amount > 0', 'used >= 0']"]
+    explain: "Without the parentheses the sign reaches only used: -used - LIMIT is at most -500 when used >= 0, so no positive amount meets the cap. The premises alone are unsat, and the core is the three lines that clash."

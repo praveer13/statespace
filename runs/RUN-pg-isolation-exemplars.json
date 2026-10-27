@@ -1,0 +1,664 @@
+{
+  "id": "RUN-pg-isolation-exemplars",
+  "title": "AUD-6.3's variant pairs v2 and v3 on PostgreSQL 18.6: ALTER DATABASE ... SET default_transaction_isolation reaches only connections opened after it (q3, q4), and SET LOCAL in an autocommit on_connect hook is a warning with no effect where SET applies (q5, q6); the team debit run by both pools interleaved (p1) and one after the other (p2)",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-6.3 (content/audit/AUD-6.3.yaml): variant pairs v2 and v3, their receipts, keys and step-3 scenarios",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-27T00:10:33.562Z",
+  "started_at": "2026-10-27T00:10:31.865Z",
+  "duration_s": 0.345,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-pg-isolation-exemplars"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-pg-isolation-exemplars",
+      "--network",
+      "ssrec-net-pg-isolation-exemplars",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-isolation-exemplars-q3",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-isolation-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-isolation-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "pools.py",
+      "q3"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-isolation-exemplars-q4",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-isolation-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-isolation-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "pools.py",
+      "q4"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-isolation-exemplars-q5",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-isolation-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-isolation-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "pools.py",
+      "q5"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-isolation-exemplars-q6",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-isolation-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-isolation-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "pools.py",
+      "q6"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-pg-isolation-exemplars"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-pg-isolation-exemplars"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/inputs/pools.py",
+      "sha256": "86dff70e0c93a21b7e9df6f53555aa756cbd09fc8933ba14cb148a4959f9b238",
+      "bytes": 4482,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/inputs/q3.sql",
+      "sha256": "e7b440347fa319e743f9fd929371552101030ac30ecca68eae5d0fc6c8b51de9",
+      "bytes": 463,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/inputs/q4.sql",
+      "sha256": "625648005696bc0e7b661dfe96156a04285bf8d6d9b29d4d647890953817a710",
+      "bytes": 451,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/inputs/q5.sql",
+      "sha256": "48d20d81d9cd3e8aee3728f53c5cf26391b393d1dd5112f422f704cbdbc7a9a1",
+      "bytes": 413,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/inputs/q6.sql",
+      "sha256": "22b5bd9c8cd76bf2ac06e2366dd0cf035dad0cbab36e8ef394e7d56f1ab1bcc7",
+      "bytes": 419,
+      "role": "data"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-net-pg-isolation-exemplars"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q3] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed",
+    "[q3 p1] admin: NOTICE 00000: table \"acct\" does not exist, skipping",
+    "[q3 p1] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+    "[q3 p1] a: BEGIN -> BEGIN",
+    "[q3 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+    "[q3 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+    "[q3 p1] b: BEGIN -> BEGIN",
+    "[q3 p1] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+    "[q3 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+    "[q3 p1] a: COMMIT -> COMMIT",
+    "[q3 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions",
+    "[q3 p1] check: [[1, -50], [2, 100]]; team total 50",
+    "[q3 p2] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+    "[q3 p2] a: BEGIN -> BEGIN",
+    "[q3 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+    "[q3 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+    "[q3 p2] a: COMMIT -> COMMIT",
+    "[q3 p2] b: BEGIN -> BEGIN",
+    "[q3 p2] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+    "[q3 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0",
+    "[q3 p2] b: COMMIT -> COMMIT",
+    "[q3 p2] check: [[1, -50], [2, 100]]; team total 50"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/q3.log",
+      "sha256": "1edca31813660108b832431b4f6c6feed6dbd1a41eb199930bea0b26e55a2456",
+      "bytes": 1532,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/q4.log",
+      "sha256": "07c425196b171877b80acfda3095b03e016473a70a04a7fe757acf3c6978972b",
+      "bytes": 1392,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/q5.log",
+      "sha256": "f8f47e7dac4b87d68fc9556b8408eabaf2b643fdb6a5452faeea8182f10c2397",
+      "bytes": 1527,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-isolation-exemplars/q6.log",
+      "sha256": "88bd7654e0b1dd06652a445c3dbe2059877afe30190845fb4b1abcaf336e7e33",
+      "bytes": 1778,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "server": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "client": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "client_user": "uid 1000 (learner)",
+      "driver": "psycopg 3.3.6 on the Bench image's Python 3.13"
+    }
+  },
+  "primary_config": "q3",
+  "configs": [
+    {
+      "id": "q3",
+      "origin": "recorded",
+      "purpose": "pools.py q3: the case's q3.sql, its pools opened and its debits run under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:10:31.865Z",
+      "duration_s": 0.345,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-isolation-exemplars-q3",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-isolation-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-isolation-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "pools.py",
+        "q3"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/pools.py",
+          "sha256": "86dff70e0c93a21b7e9df6f53555aa756cbd09fc8933ba14cb148a4959f9b238",
+          "bytes": 4482,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q3.sql",
+          "sha256": "e7b440347fa319e743f9fd929371552101030ac30ecca68eae5d0fc6c8b51de9",
+          "bytes": 463,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q4.sql",
+          "sha256": "625648005696bc0e7b661dfe96156a04285bf8d6d9b29d4d647890953817a710",
+          "bytes": 451,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q5.sql",
+          "sha256": "48d20d81d9cd3e8aee3728f53c5cf26391b393d1dd5112f422f704cbdbc7a9a1",
+          "bytes": 413,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q6.sql",
+          "sha256": "22b5bd9c8cd76bf2ac06e2366dd0cf035dad0cbab36e8ef394e7d56f1ab1bcc7",
+          "bytes": 419,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-isolation-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q3] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed",
+        "[q3 p1] admin: NOTICE 00000: table \"acct\" does not exist, skipping",
+        "[q3 p1] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+        "[q3 p1] a: BEGIN -> BEGIN",
+        "[q3 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q3 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q3 p1] b: BEGIN -> BEGIN",
+        "[q3 p1] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q3 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q3 p1] a: COMMIT -> COMMIT",
+        "[q3 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions",
+        "[q3 p1] check: [[1, -50], [2, 100]]; team total 50",
+        "[q3 p2] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+        "[q3 p2] a: BEGIN -> BEGIN",
+        "[q3 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q3 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q3 p2] a: COMMIT -> COMMIT",
+        "[q3 p2] b: BEGIN -> BEGIN",
+        "[q3 p2] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q3 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0",
+        "[q3 p2] b: COMMIT -> COMMIT",
+        "[q3 p2] check: [[1, -50], [2, 100]]; team total 50"
+      ],
+      "outputs": [
+        "runs/RUN-pg-isolation-exemplars/q3.log"
+      ]
+    },
+    {
+      "id": "q4",
+      "origin": "recorded",
+      "purpose": "pools.py q4: the case's q4.sql, its pools opened and its debits run under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:10:32.212Z",
+      "duration_s": 0.35,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-isolation-exemplars-q4",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-isolation-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-isolation-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "pools.py",
+        "q4"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/pools.py",
+          "sha256": "86dff70e0c93a21b7e9df6f53555aa756cbd09fc8933ba14cb148a4959f9b238",
+          "bytes": 4482,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q3.sql",
+          "sha256": "e7b440347fa319e743f9fd929371552101030ac30ecca68eae5d0fc6c8b51de9",
+          "bytes": 463,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q4.sql",
+          "sha256": "625648005696bc0e7b661dfe96156a04285bf8d6d9b29d4d647890953817a710",
+          "bytes": 451,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q5.sql",
+          "sha256": "48d20d81d9cd3e8aee3728f53c5cf26391b393d1dd5112f422f704cbdbc7a9a1",
+          "bytes": 413,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q6.sql",
+          "sha256": "22b5bd9c8cd76bf2ac06e2366dd0cf035dad0cbab36e8ef394e7d56f1ab1bcc7",
+          "bytes": 419,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-isolation-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q4] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed",
+        "[q4 p1] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+        "[q4 p1] a: BEGIN -> BEGIN",
+        "[q4 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q4 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q4 p1] b: BEGIN -> BEGIN",
+        "[q4 p1] b: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q4 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q4 p1] a: COMMIT -> COMMIT",
+        "[q4 p1] b: COMMIT -> COMMIT",
+        "[q4 p1] check: [[1, -50], [2, -50]]; team total -100",
+        "[q4 p2] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE",
+        "[q4 p2] a: BEGIN -> BEGIN",
+        "[q4 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q4 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q4 p2] a: COMMIT -> COMMIT",
+        "[q4 p2] b: BEGIN -> BEGIN",
+        "[q4 p2] b: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q4 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0",
+        "[q4 p2] b: COMMIT -> COMMIT",
+        "[q4 p2] check: [[1, -50], [2, 100]]; team total 50"
+      ],
+      "outputs": [
+        "runs/RUN-pg-isolation-exemplars/q4.log"
+      ]
+    },
+    {
+      "id": "q5",
+      "origin": "recorded",
+      "purpose": "pools.py q5: the case's q5.sql, its pools opened and its debits run under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:10:32.565Z",
+      "duration_s": 0.354,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-isolation-exemplars-q5",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-isolation-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-isolation-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "pools.py",
+        "q5"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/pools.py",
+          "sha256": "86dff70e0c93a21b7e9df6f53555aa756cbd09fc8933ba14cb148a4959f9b238",
+          "bytes": 4482,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q3.sql",
+          "sha256": "e7b440347fa319e743f9fd929371552101030ac30ecca68eae5d0fc6c8b51de9",
+          "bytes": 463,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q4.sql",
+          "sha256": "625648005696bc0e7b661dfe96156a04285bf8d6d9b29d4d647890953817a710",
+          "bytes": 451,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q5.sql",
+          "sha256": "48d20d81d9cd3e8aee3728f53c5cf26391b393d1dd5112f422f704cbdbc7a9a1",
+          "bytes": 413,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q6.sql",
+          "sha256": "22b5bd9c8cd76bf2ac06e2366dd0cf035dad0cbab36e8ef394e7d56f1ab1bcc7",
+          "bytes": 419,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-isolation-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q5] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed",
+        "[q5 p1] a: SET default_transaction_isolation = 'serializable'; -> SET",
+        "[q5 p1] b: SET default_transaction_isolation = 'serializable'; -> SET",
+        "[q5 p1] a: BEGIN -> BEGIN",
+        "[q5 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q5 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q5 p1] b: BEGIN -> BEGIN",
+        "[q5 p1] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q5 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q5 p1] a: COMMIT -> COMMIT",
+        "[q5 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions",
+        "[q5 p1] check: [[1, -50], [2, 100]]; team total 50",
+        "[q5 p2] a: SET default_transaction_isolation = 'serializable'; -> SET",
+        "[q5 p2] b: SET default_transaction_isolation = 'serializable'; -> SET",
+        "[q5 p2] a: BEGIN -> BEGIN",
+        "[q5 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q5 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q5 p2] a: COMMIT -> COMMIT",
+        "[q5 p2] b: BEGIN -> BEGIN",
+        "[q5 p2] b: SHOW transaction_isolation -> SHOW [['serializable']]",
+        "[q5 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0",
+        "[q5 p2] b: COMMIT -> COMMIT",
+        "[q5 p2] check: [[1, -50], [2, 100]]; team total 50"
+      ],
+      "outputs": [
+        "runs/RUN-pg-isolation-exemplars/q5.log"
+      ]
+    },
+    {
+      "id": "q6",
+      "origin": "recorded",
+      "purpose": "pools.py q6: the case's q6.sql, its pools opened and its debits run under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:10:32.922Z",
+      "duration_s": 0.351,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-isolation-exemplars-q6",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-isolation-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-isolation-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "pools.py",
+        "q6"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/pools.py",
+          "sha256": "86dff70e0c93a21b7e9df6f53555aa756cbd09fc8933ba14cb148a4959f9b238",
+          "bytes": 4482,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q3.sql",
+          "sha256": "e7b440347fa319e743f9fd929371552101030ac30ecca68eae5d0fc6c8b51de9",
+          "bytes": 463,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q4.sql",
+          "sha256": "625648005696bc0e7b661dfe96156a04285bf8d6d9b29d4d647890953817a710",
+          "bytes": 451,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q5.sql",
+          "sha256": "48d20d81d9cd3e8aee3728f53c5cf26391b393d1dd5112f422f704cbdbc7a9a1",
+          "bytes": 413,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-isolation-exemplars/inputs/q6.sql",
+          "sha256": "22b5bd9c8cd76bf2ac06e2366dd0cf035dad0cbab36e8ef394e7d56f1ab1bcc7",
+          "bytes": 419,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-isolation-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q6] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed",
+        "[q6 p1] a: WARNING 25P01: SET LOCAL can only be used in transaction blocks",
+        "[q6 p1] a: SET LOCAL default_transaction_isolation = 'serializable'; -> SET",
+        "[q6 p1] b: WARNING 25P01: SET LOCAL can only be used in transaction blocks",
+        "[q6 p1] b: SET LOCAL default_transaction_isolation = 'serializable'; -> SET",
+        "[q6 p1] a: BEGIN -> BEGIN",
+        "[q6 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q6 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q6 p1] b: BEGIN -> BEGIN",
+        "[q6 p1] b: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q6 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q6 p1] a: COMMIT -> COMMIT",
+        "[q6 p1] b: COMMIT -> COMMIT",
+        "[q6 p1] check: [[1, -50], [2, -50]]; team total -100",
+        "[q6 p2] a: WARNING 25P01: SET LOCAL can only be used in transaction blocks",
+        "[q6 p2] a: SET LOCAL default_transaction_isolation = 'serializable'; -> SET",
+        "[q6 p2] b: WARNING 25P01: SET LOCAL can only be used in transaction blocks",
+        "[q6 p2] b: SET LOCAL default_transaction_isolation = 'serializable'; -> SET",
+        "[q6 p2] a: BEGIN -> BEGIN",
+        "[q6 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q6 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1",
+        "[q6 p2] a: COMMIT -> COMMIT",
+        "[q6 p2] b: BEGIN -> BEGIN",
+        "[q6 p2] b: SHOW transaction_isolation -> SHOW [['read committed']]",
+        "[q6 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0",
+        "[q6 p2] b: COMMIT -> COMMIT",
+        "[q6 p2] check: [[1, -50], [2, 100]]; team total 50"
+      ],
+      "outputs": [
+        "runs/RUN-pg-isolation-exemplars/q6.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted at /w; the inputs are kept under inputs/ as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-exemplars.mjs), copied in log order.",
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on the user network ssrec-net-pg-isolation-exemplars with --memory=6g; before the first driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0. argv lists the commands in order.",
+    "pools.py reads the case's statement, inputs/qN.sql, and runs its SQL lines as written: the ALTER DATABASE line by an admin connection, before or after the two pool connections open as its '-- deploy:' line says, any other line before the debit as the pools' on_connect hook on each new connection in autocommit, and the debit as each pool's transaction. Notices are printed with their severity and SQLSTATE."
+  ]
+}

@@ -15,6 +15,7 @@ import { createDraw, deriveSeed } from '@statespace/rng'
 import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -123,22 +124,30 @@ function t1(band: Band, draw: SeededDraw): Built {
     const kk = draw.int(1, 2)
     const model: Model = { width: 0, vars: ['a', 'x'], guard: [at(vr('x'), '<=', add(vr('a'), k(kk)))], step: { "a'": sub(vr('a'), vr('x')) }, property: at(vr("a'"), '>=', k(0)) }
     const a = draw.int(0, 6)
+    // A second balance for the distractors, so they share values among themselves and not only with the key [D].
+    const a2 = (a + draw.int(1, 6)) % 7
     const s = (aa: number, x: number): Candidate => ({ state: { a: big(aa), x: big(x) } })
     const render = (c: Candidate): string => ('state' in c ? renderAssignment(model.vars, c.state) : '?')
+    const ignored = 'The balance would go below 0, but the guard is false here, so the step never runs: a state the guard refuses is not a violation of the guarded step.'
+    const boundary = 'Here the amount equals the balance: the balance after the step is exactly 0, which the property allows. The violation starts one past the boundary.'
+    const keeps = 'The guard holds and the balance stays non-negative: a state where the property holds, which shows nothing.'
     return {
       stem: `A withdrawal over unbounded integers: \`a\` is the balance and \`x\` the amount. Guard: \`${renderAtom(model.guard[0] as never)}\`. The step sets \`a′ = a − x\`. Property after the step: \`a′ ≥ 0\`.`,
       ask: 'Which state is a witness: one the guard lets through, after which the property is broken?',
       reference: s(a, a + draw.int(1, kk)),
       referenceWhy: `The guard holds (the amount is at most ${kk} over the balance), and the balance after the step is below 0: a violation the guard lets through.`,
       mutants: [
-        fixed('dp:G4', 'the guard ignored', 'The balance would go below 0, but the guard is false here, so the step never runs: a state the guard refuses is not a violation of the guarded step.', s(a, a + kk + 1 + draw.int(0, 2))),
-        fixed('dp:O1', 'the boundary taken for a violation', 'Here the amount equals the balance: the balance after the step is exactly 0, which the property allows. The violation starts one past the boundary.', s(a, a)),
-        fixed('dp:Z1', 'a state that keeps the property', 'The guard holds and the balance stays non-negative: a state where the property holds, which shows nothing.', s(a + 2, draw.int(0, a + 1))),
+        fixed('dp:G4', 'the guard ignored', ignored, s(a, a + kk + 1 + draw.int(0, 2))),
+        fixed('dp:O1', 'the boundary taken for a violation', boundary, s(a, a)),
+        fixed('dp:Z1', 'a state that keeps the property', keeps, s(a + 2, draw.int(0, a + 1))),
+        fixed('dp:G4', 'the guard ignored', ignored, s(a2, a2 + kk + 1 + draw.int(0, 2))),
+        fixed('dp:O1', 'the boundary taken for a violation', boundary, s(a2, a2)),
+        fixed('dp:Z1', 'a state that keeps the property', keeps, s(a2, draw.int(0, a2))),
       ],
       distractors: 3,
       render,
       data: { model },
-      bound: 'the candidate states shown, evaluated exactly over unbounded integers',
+      bound: 'the 4 candidate states shown, evaluated exactly over unbounded integers',
     }
   }
   const width = band === 3 ? 64 : draw.pick([16, 32] as const)
@@ -157,11 +166,18 @@ function t1(band: Band, draw: SeededDraw): Built {
       ask: 'Which state is a witness: an allowed transfer after which the recipient’s balance is negative?',
       reference: s(a, max - r, x),
       referenceWhy: `The guard holds, and b + x is past ${big(max)}, so it wraps to a negative number in signed ${width}-bit arithmetic. The guard protects the sender, not the recipient.`,
-      mutants: [
-        fixed('dp:Z4', 'integers taken for bit-vectors', `b is large, but b + x stays at or below ${big(max)}, so nothing wraps and b′ is non-negative. The violation needs b + x past the largest value.`, s(a, max - x - BigInt(draw.int(0, 50)), x)),
-        fixed('dp:G4', 'the guard ignored', 'b + x wraps here, but the amount is more than the sender has, so the guard is false and the step never runs.', s(x - 1n, max, x)),
-        fixed('dp:Z1', 'a state that keeps the property', 'The guard holds and b + x is small: the recipient stays non-negative, so the property holds.', s(x, BigInt(draw.int(0, 100)), x)),
-      ],
+      // Each mistake at the key's amount and at a second one [D], so the distractors share values among themselves.
+      mutants: (() => {
+        const x2 = x + 1n + BigInt(draw.int(0, 9))
+        const noWrap = `b is large, but b + x stays at or below ${big(max)}, so nothing wraps and b′ is non-negative. The violation needs b + x past the largest value.`
+        const ignored = 'b + x wraps here, but the amount is more than the sender has, so the guard is false and the step never runs.'
+        const keeps = 'The guard holds and b + x is small: the recipient stays non-negative, so the property holds.'
+        return [x, x2].flatMap((xx) => [
+          fixed('dp:Z4', 'integers taken for bit-vectors', noWrap, s(xx === x ? a : a + (x2 - x), max - xx - BigInt(draw.int(0, 50)), xx)),
+          fixed('dp:G4', 'the guard ignored', ignored, s(xx - 1n, max, xx)),
+          fixed('dp:Z1', 'a state that keeps the property', keeps, s(xx, BigInt(draw.int(0, 100)), xx)),
+        ])
+      })(),
       distractors: 3,
       render,
       data: { model },
@@ -175,11 +191,18 @@ function t1(band: Band, draw: SeededDraw): Built {
     ask: 'Which state is a witness with the smallest amount any witness can have?',
     reference: s(a, max, 1n),
     referenceWhy: `An amount of 1 is the least the guard allows (0 < x), and with b at ${big(max)} it already wraps b + x: no witness has a smaller amount, which is the minimum a Z3 Optimize objective defines (recorded run [X RUN-z3-optimize-min]).`,
-    mutants: [
-      fixed('dp:Z3', 'a witness taken for the smallest', 'This is a witness, but not a minimal one: an amount of 1 wraps the recipient when b is at its largest. The smallest witness shows the class most plainly.', s(x2 + BigInt(draw.int(0, 100)), max - 1n, x2)),
-      fixed('dp:Z4', 'integers taken for bit-vectors', `b + x is exactly ${big(max)}: the largest value, not past it, so nothing wraps and the property holds.`, s(a, max - 1n, 1n)),
-      fixed('dp:G4', 'the guard ignored', 'b + x wraps, but the sender has 0, so x ≤ a is false and the step never runs.', s(0n, max, 1n)),
-    ],
+    mutants: (() => {
+      const notMin = 'This is a witness, but not a minimal one: an amount of 1 wraps the recipient when b is at its largest. The smallest witness shows the class most plainly.'
+      const a2 = a + BigInt(draw.int(1, 100))
+      return [
+        fixed('dp:Z3', 'a witness taken for the smallest', notMin, s(x2 + BigInt(draw.int(0, 100)), max - 1n, x2)),
+        fixed('dp:Z3', 'a witness taken for the smallest', notMin, s(a2, max, x2)),
+        fixed('dp:Z4', 'integers taken for bit-vectors', `b + x is exactly ${big(max)}: the largest value, not past it, so nothing wraps and the property holds.`, s(a, max - 1n, 1n)),
+        fixed('dp:Z4', 'integers taken for bit-vectors', `b + x is exactly ${big(max)}: the largest value, not past it, so nothing wraps and the property holds.`, s(a2, max - x2, x2)),
+        fixed('dp:G4', 'the guard ignored', 'b + x wraps, but the sender has 0, so x ≤ a is false and the step never runs.', s(0n, max, 1n)),
+        fixed('dp:G4', 'the guard ignored', `b + x wraps, but the sender has less than the amount, so x ≤ a is false and the step never runs.`, s(x2 - 1n, max, x2)),
+      ]
+    })(),
     distractors: 3,
     render,
     data: { model, minimize: 'x' },
@@ -201,6 +224,13 @@ function t2(band: Band, draw: SeededDraw): Built {
   for (let w = 1; w <= spec.workers; w++) for (const st of stepNames(spec)) sequential.push({ step: st, worker: w })
   const lastCheck = [...key].reverse().find((a) => a.step === 'Check')
   const skipped = lastCheck === undefined ? key.slice(1) : key.filter((a) => a !== lastCheck)
+  // A worker's first step taken twice in a row [D]: as long as the key or longer, and not a behaviour.
+  const firstOf = key[0] as Action
+  const doubled: Action[] = [firstOf, ...key]
+  const lastOf = key[key.length - 1] as Action
+  const doubledLast: Action[] = [...key, lastOf]
+  // The sequential run with its last step left off, and the key with its first worker's steps run first.
+  const sequentialShort = sequential.slice(0, -1)
   const names = stepNames(spec).join(', ')
   return {
     stem: `${spec.workers} workers withdraw ${spec.amount} each from a balance that starts at ${spec.init}. A withdrawal takes ${stepNames(spec).length} steps (${names}): ${spec.steps >= 3 ? 'Read copies the balance, Check passes only if the copy covers the amount, ' : 'Check passes only if the balance covers the amount, '}${spec.steps === 4 ? 'Log does nothing, ' : ''}Debit subtracts the amount. A worker whose check fails stops. The property: the balance never goes below 0.`,
@@ -211,6 +241,9 @@ function t2(band: Band, draw: SeededDraw): Built {
       fixed('dp:C1', 'each withdrawal run alone', 'Each worker runs all its steps before the next starts. Every step is allowed, but a later check sees the debited balance and fails: run one at a time, the withdrawals never overspend. The bug needs an interleaving.', { trace: sequential }),
       fixed('dp:T6', 'stopped one action short', 'Every step is allowed, but the trace stops before its last debit: the balance has not gone below 0 yet. A trace of n actions has n + 1 states; the violation is in the last one.', { trace: key.slice(0, -1) }),
       fixed('dp:Z5', 'a step skipped', 'A worker debits without having passed its check: that step is not allowed there, so this is not a behaviour of the system at all.', { trace: skipped }),
+      fixed('dp:Z5', 'a step taken twice', `${actionText(firstOf)} comes twice in a row, but after it the worker has moved on to its next step: the second one is not allowed there, so this is not a behaviour of the system.`, { trace: doubled }),
+      fixed('dp:Z5', 'a step taken twice', `${actionText(lastOf)} comes twice in a row, but after it the worker has finished: the second one is not allowed there, so this is not a behaviour of the system.`, { trace: doubledLast }),
+      fixed('dp:C1', 'each withdrawal run alone', 'Each worker runs its steps before the next starts. Every step is allowed, but a later check sees the debited balance and fails: run one at a time, the withdrawals never overspend. The bug needs an interleaving.', { trace: sequentialShort }),
     ],
     distractors: 3,
     render,
@@ -220,6 +253,9 @@ function t2(band: Band, draw: SeededDraw): Built {
 }
 
 // ---------------------------------------------------------------- t3: history
+
+/** A serial order as an option: "T1 then T2 then T3", without commas, so a longer order is no enumeration [D]. */
+const orderOption = (o: readonly string[]): string => o.join(' then ')
 
 const KEYS: Readonly<Record<Band, readonly string[]>> = { 1: ['x', 'y'], 2: ['x', 'y'], 3: ['x', 'y', 'z'] }
 
@@ -281,7 +317,8 @@ function t3(band: Band, draw: SeededDraw): Built {
           : `Run one after another in this order, every transaction reads exactly the values the history shows.`,
       mutants,
       distractors,
-      render: (c) => ('none' in c ? 'no serial order' : 'order' in c ? orderText(c.order) : '?'),
+      // "None" is as long as an order of the same transactions [D], so length does not tell it from them.
+      render: (c) => ('none' in c ? (n === 2 ? 'none works' : n === 3 ? 'none of the orders' : 'none of the 24 orders fits') : 'order' in c ? orderOption(c.order) : '?'),
       data: { history: h },
       bound: `all ${n === 2 ? 2 : n === 3 ? 6 : 24} serial orders of the ${n} committed transactions`,
     }
@@ -322,10 +359,12 @@ function t4(band: Band, draw: SeededDraw): Built {
     mutants: [
       fixed('dp:A17', 'a pair that differs in public data', `These states differ in \`${publics[publics.length - 1]}\`, which the observer already knows, so the body differs for a reason that leaks nothing. A leak witness agrees on all public data.`, { pair: [st(pv, s1), st(changed, s2)] }),
       fixed('dp:A5', 'a pair the observer cannot tell apart', 'Both secrets fall on the same side of the threshold, so the observer gets the same body and status for both: this pair shows no leak.', { pair: [st(pv, q1 as number), st(pv, q2 as number)] }),
+      fixed('dp:A17', 'a pair that differs in public data', `These states differ in \`${publics[publics.length - 1]}\`, which the observer already knows, so the body differs for a reason that leaks nothing. A leak witness agrees on all public data.`, { pair: [st(pv, s2), st(changed, s1)] }),
+      fixed('dp:A5', 'a pair the observer cannot tell apart', 'Both states are the same as far as the answer goes: the same public data and secrets on the same side of the threshold, so this pair shows no leak.', { pair: [st(changed, q1 as number), st(changed, q2 as number)] }),
       fixed('dp:A16', 'the observer taken to see only the body', 'The body echoes only public fields, but the observer also sees the status, which depends on the secret: a pair exists.', { none: true }),
     ],
     distractors: 3,
-    render: (c) => ('none' in c ? 'none: no pair leaks' : 'pair' in c ? `${show(c.pair[0])} and ${show(c.pair[1])}` : '?'),
+    render: (c) => ('none' in c ? 'none: each pair that agrees on public data gets the same answer' : 'pair' in c ? `${show(c.pair[0])} and ${show(c.pair[1])}` : '?'),
     data: { observer },
     bound: `every field from 0 to ${domain - 1}, ${fields} fields`,
   }
@@ -340,7 +379,9 @@ function make(seed: number, band: Band, template: TemplateId): FindTheWitnessIns
   if (spec === undefined) throw new RangeError(`${FIND_THE_WITNESS_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${FIND_THE_WITNESS_ID}/${template}/b${band}`))
   const b = BUILDERS[template](band, draw)
-  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: b.mutants, distractors: b.distractors, draw: draw.fork('options'), render: b.render })
+  // The distractors shown, chosen among the mistakes so the key does not stand out (choose.ts).
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: b.distractors, draw: draw.fork('choose'), render: b.render })
+  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: chosen, distractors: b.distractors, draw: draw.fork('options'), render: b.render })
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: b.ask, options }
   return { family: FIND_THE_WITNESS_ID, template, band, seed, kcs: spec.kcs, item: { stem: b.stem, parts: [part] }, bound: b.bound, data: { ...b.data, values } }
 }

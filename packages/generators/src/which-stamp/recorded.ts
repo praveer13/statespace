@@ -238,11 +238,12 @@ export const RECORDED: readonly RecordedOutput[] = [
   {
     "id": "lean-sorry",
     "run": "RUN-lean-axioms",
+    "config": "lean-bad",
     "tier": 2,
     "parser": "lean",
     "lines": [
-      "warning: Ledger/Bad.lean:4:8: declaration uses `sorry`",
-      "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]"
+      "Ledger/Bad.lean:4:8: warning: declaration uses `sorry`",
+      "'with_sorry' depends on axioms: [sorryAx]"
     ],
     "checker": {
       "name": "Lean",
@@ -253,10 +254,11 @@ export const RECORDED: readonly RecordedOutput[] = [
   {
     "id": "lean-custom-axiom",
     "run": "RUN-lean-axioms",
+    "config": "lean-bad",
     "tier": 2,
     "parser": "lean",
     "lines": [
-      "info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]"
+      "'with_axiom' depends on axioms: [cheat]"
     ],
     "checker": {
       "name": "Lean",

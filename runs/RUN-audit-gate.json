@@ -8,9 +8,9 @@
   "binary": "node (the host binary; no container)",
   "binary_sha256": "bf964e97049e83c7254cd3e8ed989963bbb52aeb4049ad0e22eda613cf113152",
   "image": null,
-  "recorded_at": "2026-10-26T09:33:00.449Z",
-  "started_at": "2026-10-26T09:30:05.661Z",
-  "duration_s": 174.627,
+  "recorded_at": "2026-10-27T02:51:33.504Z",
+  "started_at": "2026-10-27T02:50:22.501Z",
+  "duration_s": 70.942,
   "argv": [
     "node",
     "scripts/verify-audit.mjs",
@@ -57,8 +57,8 @@
     },
     {
       "path": "tracker/tasks.yaml",
-      "sha256": "1abb42088ed9d98471c6d9f90a6112b1d5df8ee3748c342c102a5a5aae5f76a9",
-      "bytes": 351876,
+      "sha256": "71b7ace5cca2ad1126895bd159b8c2bd632b36ea86fced7885b0045aef805fb4",
+      "bytes": 404482,
       "role": "the landing tasks of pending declarations"
     },
     {
@@ -89,14 +89,14 @@
   "outputs": [
     {
       "path": "runs/RUN-audit-gate/nightly.log",
-      "sha256": "b43e529d57b5f2b74fad7d2af21ffb340d3ece7723a3eed027b102570e1bac83",
-      "bytes": 167,
+      "sha256": "cdc965d73687a8008c99bee877646b4f8059ef19e8485ce564a93db5aa6c4c3a",
+      "bytes": 772,
       "kind": "log"
     },
     {
       "path": "runs/RUN-audit-gate/fixture-pool-no-battery.log",
-      "sha256": "44068373b8f978816ea5b31412a1b98f1032a923d61b16e5d5f112803783fea5",
-      "bytes": 609,
+      "sha256": "90712252b5694ab4abc8778bd793b1d42dafa97c267b40a2a542b9c98f04aaf8",
+      "bytes": 852,
       "kind": "log"
     },
     {
@@ -125,8 +125,8 @@
     },
     {
       "path": "runs/RUN-audit-gate/tests.log",
-      "sha256": "24fba8245d465bc580f7bdfc351522175ac0805c62cc63d9d93dbdcb040b9bb2",
-      "bytes": 12058,
+      "sha256": "7c049b3ea05bb9f46ae222971e8b8ee35914305679856b7c8b9bfb7effe3a63f",
+      "bytes": 13038,
       "kind": "log"
     },
     {
@@ -149,13 +149,13 @@
       "verdict": "GATE-audit: FAIL (6 findings: exemplars 6)"
     },
     "self_check_cases": 136,
-    "tests": "48",
+    "tests": "47",
     "mutants": "mutants: 143 of 143 killed, 0 survived, 0 errors (GATE-audit 143 of 143)"
   },
   "checks": [
     {
       "id": "nightly-green",
-      "pass": true
+      "pass": false
     },
     {
       "id": "fails-closed-without-battery",
@@ -179,14 +179,14 @@
     },
     {
       "id": "tests-pass",
-      "pass": true
+      "pass": false
     },
     {
       "id": "every-mutant-killed",
       "pass": true
     }
   ],
-  "pass": true,
+  "pass": false,
   "environment": {
     "os": "Linux 6.12.63",
     "cpu_count": 20,
@@ -201,26 +201,29 @@
       "id": "nightly",
       "origin": "recorded",
       "purpose": "GATE-audit as the nightly lane runs it, on this repository, whose pool does not exist yet",
-      "started_at": "2026-10-26T09:30:05.661Z",
-      "duration_s": 0.086,
+      "started_at": "2026-10-27T02:50:22.501Z",
+      "duration_s": 0.244,
       "argv": [
         "node",
         "scripts/verify-audit.mjs"
       ],
-      "exit_code": 0,
+      "exit_code": 1,
       "expected_exit_codes": [
         0
       ],
       "verdict_lines": [
-        "GATE-audit: there is no audit pool yet (content/audit/ arrives with W1-T33 and W1-T34)",
+        "GATE-audit: 25 anchors, 176 cases; 0 re-keyed by the battery (no battery: W1-T25), 0 keyed by their runs while their engine's lane is pending",
+        "  exemplars: G1 6; G2 6; G3 6; G4 6; G5 8; G6 6; G7 6; G8 8; G9 6; G10 9; G11 9; G12 6; G13 6",
         "  Clearinghouse: no family shipped yet (W3-T14)",
-        "GATE-audit: green (no pool yet)"
+        "FAIL  battery  packages/generators/src/spot-the-gap/index.ts  packages/generators/src/spot-the-gap/index.ts exports no auditBattery {engines, key(case, port)}: GATE-audit re-keys every case with it (scripts/spikes/W1-T40/README.md section 4)",
+        "FAIL  battery  packages/generators/src/spot-the-gap/index.ts  no keying battery, so 176 cases cannot be re-keyed: GEN-spot-the-gap (W1-T25) exports auditBattery (scripts/spikes/W1-T40/README.md section 4)",
+        "GATE-audit: FAIL (2 findings: battery 2)"
       ],
       "outputs": [
         {
           "path": "runs/RUN-audit-gate/nightly.log",
-          "sha256": "b43e529d57b5f2b74fad7d2af21ffb340d3ece7723a3eed027b102570e1bac83",
-          "bytes": 167,
+          "sha256": "cdc965d73687a8008c99bee877646b4f8059ef19e8485ce564a93db5aa6c4c3a",
+          "bytes": 772,
           "kind": "log"
         }
       ]
@@ -229,8 +232,8 @@
       "id": "fixture-pool-no-battery",
       "origin": "recorded",
       "purpose": "the gate on the W1-shaped fixture pool with no keying battery: it fails closed on every case it cannot re-key and names W1-T25",
-      "started_at": "2026-10-26T09:30:05.747Z",
-      "duration_s": 0.13,
+      "started_at": "2026-10-27T02:50:22.746Z",
+      "duration_s": 0.085,
       "argv": [
         "node",
         "scripts/verify-audit.mjs",
@@ -245,14 +248,15 @@
         "GATE-audit: 8 anchors, 52 cases; 0 re-keyed by the battery (no battery: W1-T25), 8 keyed by their runs while their engine's lane is pending",
         "  exemplars: G1 1 (variants pending: AUD-2.1 (W2-T13)); G2 7; G4 7; G5 8; G6 2 (variants pending: AUD-2.2 (W2-T13), AUD-2.3 (W2-T13)); G8 1 (variants pending: AUD-2.4 (W2-T13))",
         "  Clearinghouse: no family shipped yet (W3-T14)",
+        "FAIL  battery  packages/generators/src/spot-the-gap/index.ts  packages/generators/src/spot-the-gap/index.ts exports no auditBattery {engines, key(case, port)}: GATE-audit re-keys every case with it (scripts/spikes/W1-T40/README.md section 4)",
         "FAIL  battery  packages/generators/src/spot-the-gap/index.ts  no keying battery, so 44 cases cannot be re-keyed: GEN-spot-the-gap (W1-T25) exports auditBattery (scripts/spikes/W1-T40/README.md section 4)",
-        "GATE-audit: FAIL (1 finding: battery 1)"
+        "GATE-audit: FAIL (2 findings: battery 2)"
       ],
       "outputs": [
         {
           "path": "runs/RUN-audit-gate/fixture-pool-no-battery.log",
-          "sha256": "44068373b8f978816ea5b31412a1b98f1032a923d61b16e5d5f112803783fea5",
-          "bytes": 609,
+          "sha256": "90712252b5694ab4abc8778bd793b1d42dafa97c267b40a2a542b9c98f04aaf8",
+          "bytes": 852,
           "kind": "log"
         }
       ]
@@ -261,8 +265,8 @@
       "id": "fixture-pool-battery",
       "origin": "recorded",
       "purpose": "the gate on the same pool with the stand-in battery in GEN-spot-the-gap's place: every pair member and variant re-keyed on the box engine or keyed by its executed run, and six structurally distinct exemplars or more for G2, G4 and G5 (each S1 anchor's seven flawed cases differ in label and in their texts beyond numeric literals)",
-      "started_at": "2026-10-26T09:30:05.878Z",
-      "duration_s": 0.276,
+      "started_at": "2026-10-27T02:50:22.831Z",
+      "duration_s": 0.082,
       "argv": [
         "node",
         "scripts/verify-audit.mjs",
@@ -293,8 +297,8 @@
       "id": "fixture-pool-relabeled-copies",
       "origin": "recorded",
       "purpose": "the same pool with the battery, AUD-1.2's six variant pairs replaced by byte-identical copies of its pair v1 relabeled copy-1 to copy-6: the gate must fail, each copy after the first repeating copy-1 under another label and G4 short of six exemplars",
-      "started_at": "2026-10-26T09:30:06.154Z",
-      "duration_s": 0.187,
+      "started_at": "2026-10-27T02:50:22.914Z",
+      "duration_s": 0.085,
       "argv": [
         "node",
         "scripts/verify-audit.mjs",
@@ -331,8 +335,8 @@
       "id": "fixture-pool-battery-misspelled-lines",
       "origin": "recorded",
       "purpose": "the same pool with AUD-1.1's flawed member declaring load-bearing lines that are not its unsat core, and a battery in GEN-spot-the-gap's place that wraps the stand-in and returns each flawed key's lines as loadBearing, the spelling of the case it receives: the gate must fail on every flawed key that carries no evidence {type, load_bearing}, instead of reading the missing lines as agreement",
-      "started_at": "2026-10-26T09:30:06.341Z",
-      "duration_s": 0.209,
+      "started_at": "2026-10-27T02:50:22.999Z",
+      "duration_s": 0.096,
       "argv": [
         "node",
         "scripts/verify-audit.mjs",
@@ -385,8 +389,8 @@
       "id": "self-check",
       "origin": "recorded",
       "purpose": "one planted fault at a time in the fixture pool, each of which must fail the gate: the anchor (its ID, registration, file name, stage, class, medium, scheduling, KCs, its \"based on\" card with its incident, date, date marks and source and without code, spine 6.2's key-run cell, the pair, the anchor's class on a flawed member, the variants field); the cases (form, id, duplicates, keys and acceptable classes, a key that writes primary, a sound key with acceptable classes, acceptable classes that are not a list, statement, texts); typed evidence (missing, of the wrong type, without its artifact, a sound case's restatement with no scenarios or two while three pass, no load-bearing lines or four, malformed, out of range or repeated ones, line-anchored evidence on three lines while four pass); key runs and key lines (missing, not a run ID, not on disk, malformed, empty, not stated, stated only inside a word, not stated in the configuration named); the keying battery (another class or a subclass of the case's, a flawed case keyed sound, an acceptable set narrower, wider, or of the same size with another class, another evidence type, load-bearing lines that differ, hold one line more or hold part of the core, a vacuous sound case, unknown, no port, no key, no battery, a variant whose statement, diff or receipt drifted, or whose statement gained a blank first line, while a faithful regenerate passes, and the case as the battery receives it); the key's shape (keys that spell their lines loadBearing, flawed keys without evidence, with evidence null or without its type, with their acceptable classes as text or as numbers, or with an empty class, G2 keys without their recomputed lines or with their lines as numbers, sound keys without their primary class); exemplars (five while exactly six pass, one shared label, relabeled copies, copies that differ only in white space, copies re-seeded in decimal literals or in every literal form README section 3 names, a flipped sign included, empty variants lists); pending declarations (variants on an anchor that ships with them, done or unknown tasks, a re-keying with no task, malformed or without a key run, a re-key still pending once its engine has a port); variants (no pair, no sound form, two claims, no operator, an operator the spine does not list or one that cannot key the class, a generator reference to template t5, to band 4 or with a seed past the uint32 range, while t4, band 3 and seed 2^32 - 1 pass); nine Clearinghouse faults (a naive baseline above its bar, a naive mean exactly at it, a naive mean that meets it though its first and lowest seed does not, a reference below its bar, a reference mean below it though its first and highest seed reaches it, scores that change between executions, reference scores alone that change, no recorded seeds, a score that is not a number), with a reference exactly at its bar passing; --strict on a pending re-key, pending variants and an empty pool; --only naming a missing anchor; and three file faults (a file that does not parse, one that holds no mapping, two files for one anchor). The clean pool must pass, in memory and read from files, with a draft file named with an underscore and a readme beside it",
-      "started_at": "2026-10-26T09:30:06.551Z",
-      "duration_s": 1.582,
+      "started_at": "2026-10-27T02:50:23.095Z",
+      "duration_s": 0.645,
       "argv": [
         "node",
         "scripts/verify-audit.mjs",
@@ -491,27 +495,28 @@
       "id": "tests",
       "origin": "recorded",
       "purpose": "the tests of both gates and their library",
-      "started_at": "2026-10-26T09:30:08.133Z",
-      "duration_s": 99.196,
+      "started_at": "2026-10-27T02:50:23.741Z",
+      "duration_s": 41.206,
       "argv": [
         "node",
         "--test",
         "scripts/spikes/W1-T40/*.test.mjs"
       ],
-      "exit_code": 0,
+      "exit_code": 1,
       "expected_exit_codes": [
         0
       ],
       "verdict_lines": [
+        "not ok 18 - with no pool both gates pass and say why",
         "# tests 48",
-        "# pass 48",
-        "# fail 0"
+        "# pass 47",
+        "# fail 1"
       ],
       "outputs": [
         {
           "path": "runs/RUN-audit-gate/tests.log",
-          "sha256": "24fba8245d465bc580f7bdfc351522175ac0805c62cc63d9d93dbdcb040b9bb2",
-          "bytes": 12058,
+          "sha256": "7c049b3ea05bb9f46ae222971e8b8ee35914305679856b7c8b9bfb7effe3a63f",
+          "bytes": 13038,
           "kind": "log"
         }
       ]
@@ -520,8 +525,8 @@
       "id": "mutants",
       "origin": "recorded",
       "purpose": "GATE-audit's rules weakened one at a time in a scratch copy of the gates and lib/ (scripts/spikes/W1-T40/mutants.mjs): the exemplar count, the battery's comparisons in both directions and the key's shape, the regenerated texts, the pending declarations, --strict and --only, the Clearinghouse at its bar and over every seed, and every rule of the pool contract with the edges of its counts and literal forms, plus, made stricter, the values at an edge that pass; its self-check must fail on every one",
-      "started_at": "2026-10-26T09:31:47.329Z",
-      "duration_s": 72.961,
+      "started_at": "2026-10-27T02:51:04.947Z",
+      "duration_s": 28.499,
       "argv": [
         "node",
         "scripts/spikes/W1-T40/mutants.mjs",

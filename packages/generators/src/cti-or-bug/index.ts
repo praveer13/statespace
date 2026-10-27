@@ -18,6 +18,7 @@ import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard } from '../core/define.ts'
 import type { DiscardOf } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -45,6 +46,25 @@ export const VERDICT_TEXT: Readonly<Record<Verdict, string>> = {
   cti: 'True but not inductive: a CTI, so strengthen the invariant',
   reachable: 'Reachable: a run from Init breaks it, so fix the command',
 }
+
+/**
+ * Each verdict in a short, a middle and a long wording [D], all of one shape (the verdict, ", so", what to do), with no
+ * colon, acronym or absolute word. A template keys one verdict, so a fixed wording would let its length or its words
+ * single it out; an item draws the key's wording, and choose.ts the others'.
+ */
+export const VERDICT_WORDINGS: Readonly<Record<Verdict, readonly [string, string, string]>> = {
+  inductive: ['Inductive, so keep the invariant', 'It is inductive, so keep the invariant as stated', 'Inductive as it is, so change no command and keep it'],
+  cti: ['Not inductive, so add a conjunct', 'True but not inductive, so add a new conjunct', 'A counterexample to induction, so add a conjunct to it'],
+  reachable: ['Reachable, so fix the bad command', 'Broken by a reachable run, so patch that command', 'Broken by a reachable run, so repair a guilty command'],
+}
+
+/** A verdict as an option: which verdict, in which wording. */
+interface Worded {
+  readonly v: Verdict
+  readonly form: 0 | 1 | 2
+}
+
+const wordedText = (w: Worded): string => VERDICT_WORDINGS[w.v][w.form]
 
 export interface CtiOrBugData {
   readonly sys: System
@@ -310,7 +330,16 @@ function make(seed: number, band: Band, template: TemplateId): CtiOrBugInstance 
   const draw = createDraw(deriveSeed(seed, `${CTI_OR_BUG_ID}/${template}/b${band}`))
   const b = build(band, draw)
   const { referenceWhy, mutants } = whys(ref, b)
-  const { options, values } = assembleOptions({ reference: ref, referenceWhy, mutants, distractors: 2, draw: draw.fork('options'), render: (x) => VERDICT_TEXT[x] })
+  // The key in a drawn wording, each other verdict in every wording; choose.ts shows one wording of each.
+  const reference: Worded = { v: ref, form: draw.int(0, 2) as 0 | 1 | 2 }
+  const candidates: Mutant<Worded>[] = mutants.flatMap((m) =>
+    ([0, 1, 2] as const).map((form): Mutant<Worded> => ({ tag: m.tag, operator: m.operator, why: () => m.why(ref), apply: (_r, d) => ({ v: m.apply(ref, d) as Verdict, form }) })),
+  )
+  const chosen = chooseDistractors({ reference, candidates, n: 2, draw: draw.fork('choose'), render: wordedText, meaning: (w) => w.v })
+  const worded = assembleOptions({ reference, referenceWhy, mutants: chosen, distractors: 2, draw: draw.fork('options'), render: wordedText })
+  const options = worded.options
+  const values: Record<string, Verdict> = {}
+  for (const [id, w] of Object.entries(worded.values)) values[id] = w.v
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: ASK, options }
   const box: Box = { lo: -1, hi: b.t + 1 }
   const params = b.sys.commands.flatMap((c) => (c.param === undefined ? [] : [c.param.lo === c.param.hi ? `${c.param.v} = ${c.param.lo}` : `${c.param.v} from ${c.param.lo} to ${c.param.hi}`]))

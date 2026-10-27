@@ -2,297 +2,319 @@ TAP version 13
 # Subtest: the sound range is [ceil(0.3 n), floor(0.6 n)] in integers (AUDIT-DESK 5.2)
 ok 1 - the sound range is [ceil(0.3 n), floor(0.6 n)] in integers (AUDIT-DESK 5.2)
   ---
-  duration_ms: 1.767184
+  duration_ms: 1.837874
   type: 'test'
   ...
 # Subtest: the published paths are read from content/stages/budget.yaml
 ok 2 - the published paths are read from content/stages/budget.yaml
   ---
-  duration_ms: 283.722234
+  duration_ms: 65.048351
   type: 'test'
   ...
 # Subtest: cases are served after the labs that teach their class, on each path
 ok 3 - cases are served after the labs that teach their class, on each path
   ---
-  duration_ms: 96.985922
+  duration_ms: 12.79562
   type: 'test'
   ...
 # Subtest: the reference composer keeps the share rule, pairs apart and the topic cap
 ok 4 - the reference composer keeps the share rule, pairs apart and the topic cap
   ---
-  duration_ms: 80.523053
+  duration_ms: 21.652564
   type: 'test'
   ...
 # Subtest: a sitting that breaks the rules is reported
 ok 5 - a sitting that breaks the rules is reported
   ---
-  duration_ms: 1.246821
+  duration_ms: 0.671185
   type: 'test'
   ...
 # Subtest: a composer's null is checked against the reference composer: declined where the reference fills the sitting, skipped where it cannot
 ok 6 - a composer's null is checked against the reference composer: declined where the reference fills the sitting, skipped where it cannot
   ---
-  duration_ms: 71.534059
+  duration_ms: 13.264985
   type: 'test'
   ...
 # Subtest: a composer that declines sittings, or never serves a family it is offered, is reported per path and surface
 ok 7 - a composer that declines sittings, or never serves a family it is offered, is reported per path and surface
   ---
-  duration_ms: 295.972134
+  duration_ms: 70.3501
   type: 'test'
   ...
 # Subtest: constant strategies score exactly what their permutations score: balanced accuracy 0.5, SD 0
 ok 8 - constant strategies score exactly what their permutations score: balanced accuracy 0.5, SD 0
   ---
-  duration_ms: 231.837966
+  duration_ms: 75.213015
   type: 'test'
   ...
 # Subtest: the reference scorer gives an oracle full marks and counts a correct finding only with valid evidence
 ok 9 - the reference scorer gives an oracle full marks and counts a correct finding only with valid evidence
   ---
-  duration_ms: 36.103207
+  duration_ms: 7.682822
   type: 'test'
   ...
 # Subtest: one replicate reproduces AUDIT-DESK 7.4's rule: fail when observed exceeds chance + 2 SD
 ok 10 - one replicate reproduces AUDIT-DESK 7.4's rule: fail when observed exceeds chance + 2 SD
   ---
-  duration_ms: 0.612576
+  duration_ms: 0.352537
   type: 'test'
   ...
 # Subtest: one configuration gives one verdict: the simulation is deterministic
 ok 11 - one configuration gives one verdict: the simulation is deterministic
   ---
-  duration_ms: 366.68792
+  duration_ms: 108.05513
   type: 'test'
   ...
 # Subtest: the stage-only floor names each case's own stage class and is reported, never tested
 ok 12 - the stage-only floor names each case's own stage class and is reported, never tested
   ---
-  duration_ms: 39.13326
+  duration_ms: 11.196663
   type: 'test'
   ...
 # Subtest: an external scorer's figure is tested against the gate's null for its id, whatever kind the scorer gives it
 ok 13 - an external scorer's figure is tested against the gate's null for its id, whatever kind the scorer gives it
   ---
-  duration_ms: 13.516102
+  duration_ms: 7.459939
   type: 'test'
   ...
 # Subtest: a figure the scorer shows but no permutation pass gathers is reported, not dropped
 ok 14 - a figure the scorer shows but no permutation pass gathers is reported, not dropped
   ---
-  duration_ms: 66.009265
+  duration_ms: 18.021605
   type: 'test'
   ...
 # Subtest: a strategy knows the base rates of the cases its stream serves from: the pool on a path, the incidents in the Clearinghouse
 ok 15 - a strategy knows the base rates of the cases its stream serves from: the pool on a path, the incidents in the Clearinghouse
   ---
-  duration_ms: 4.96692
+  duration_ms: 0.70021
   type: 'test'
   ...
 # Subtest: the figures the Desk must show: the reference shows every one, and a scorer that drops one is reported
 ok 16 - the figures the Desk must show: the reference shows every one, and a scorer that drops one is reported
   ---
-  duration_ms: 165.260272
+  duration_ms: 38.950609
   type: 'test'
   ...
 # Subtest: the bound: what a pass establishes (2 SD, averaged over R replicates) and what is caught with 95% probability
 ok 17 - the bound: what a pass establishes (2 SD, averaged over R replicates) and what is caught with 95% probability
   ---
-  duration_ms: 2.27657
+  duration_ms: 0.743168
   type: 'test'
   ...
 # Subtest: with no pool both gates pass and say why
-ok 18 - with no pool both gates pass and say why
+not ok 18 - with no pool both gates pass and say why
   ---
-  duration_ms: 239.414597
+  duration_ms: 105.456368
   type: 'test'
+  location: 'scripts/spikes/W1-T40/gates.test.mjs:38:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    GATE-audit: there is no audit pool yet (content/audit/ arrives with W1-T33 and W1-T34)
+      Clearinghouse: no family shipped yet (W3-T14)
+    FAIL  battery  packages/generators/src/spot-the-gap/index.ts  packages/generators/src/spot-the-gap/index.ts exports no auditBattery {engines, key(case, port)}: GATE-audit re-keys every case with it (scripts/spikes/W1-T40/README.md section 4)
+    GATE-audit: FAIL (1 finding: battery 1)
+    
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://scripts/spikes/W1-T40/gates.test.mjs:41:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
   ...
 # Subtest: GATE-audit-blind prints its bound as its last line, and the JSON report carries it
 ok 19 - GATE-audit-blind prints its bound as its last line, and the JSON report carries it
   ---
-  duration_ms: 6268.084767
+  duration_ms: 1927.487161
   type: 'test'
   ...
 # Subtest: GATE-audit without the battery fails on every case it cannot re-key, and names W1-T25
 ok 20 - GATE-audit without the battery fails on every case it cannot re-key, and names W1-T25
   ---
-  duration_ms: 71.665316
+  duration_ms: 88.553372
   type: 'test'
   ...
 # Subtest: a usage error exits 2
 ok 21 - a usage error exits 2
   ---
-  duration_ms: 142.380455
+  duration_ms: 76.98659
   type: 'test'
   ...
 # Subtest: both self-checks hold
 ok 22 - both self-checks hold
   ---
-  duration_ms: 46791.166421
+  duration_ms: 18183.808199
   type: 'test'
   ...
 # Subtest: a battery exported by GEN-spot-the-gap's folder is found and used (W1-T25's hook)
 ok 23 - a battery exported by GEN-spot-the-gap's folder is found and used (W1-T25's hook)
   ---
-  duration_ms: 168.120238
+  duration_ms: 107.085603
   type: 'test'
   ...
 # Subtest: a battery key that leaves out a field, or spells it otherwise, fails the gate instead of reading as agreement (README section 4)
 ok 24 - a battery key that leaves out a field, or spells it otherwise, fails the gate instead of reading as agreement (README section 4)
   ---
-  duration_ms: 978.491083
+  duration_ms: 389.357906
   type: 'test'
   ...
 # Subtest: the Desk's composer and scorer are found and driven (W1-T32's hook), at its folder or through the package's export
 ok 25 - the Desk's composer and scorer are found and driven (W1-T32's hook), at its folder or through the package's export
   ---
-  duration_ms: 11827.742093
+  duration_ms: 5226.185556
   type: 'test'
   ...
 # Subtest: a Desk scorer that drops ba and shows v1's figure under another name fails the gate (AUDIT-DESK 1.4 and 7.3)
 ok 26 - a Desk scorer that drops ba and shows v1's figure under another name fails the gate (AUDIT-DESK 1.4 and 7.3)
   ---
-  duration_ms: 5170.631919
+  duration_ms: 2692.38802
   type: 'test'
   ...
 # Subtest: a Desk composer that declines every Desk sitting the reference composer fills fails the gate, instead of passing untested (W1-T32's hook)
 ok 27 - a Desk composer that declines every Desk sitting the reference composer fills fails the gate, instead of passing untested (W1-T32's hook)
   ---
-  duration_ms: 3060.863245
+  duration_ms: 1501.877166
   type: 'test'
   ...
 # Subtest: a Desk composer that declines a single Desk sitting the reference composer fills fails the gate (the rule at its edge)
 ok 28 - a Desk composer that declines a single Desk sitting the reference composer fills fails the gate (the rule at its edge)
   ---
-  duration_ms: 4919.719265
+  duration_ms: 2487.764931
   type: 'test'
   ...
 # Subtest: a Clearinghouse module whose auditIncidentBlocks returns nothing, or fewer blocks than asked for, fails the gate instead of reading as no world
 ok 29 - a Clearinghouse module whose auditIncidentBlocks returns nothing, or fewer blocks than asked for, fails the gate instead of reading as no world
   ---
-  duration_ms: 4380.872159
+  duration_ms: 1914.039834
   type: 'test'
   ...
 # Subtest: a judgment folder without the module the contract names fails the gate instead of falling back
 ok 30 - a judgment folder without the module the contract names fails the gate instead of falling back
   ---
-  duration_ms: 3929.695555
+  duration_ms: 1875.783685
   type: 'test'
   ...
 # Subtest: the Clearinghouse's families and incidents are picked up once W3-T14 ships them
 ok 31 - the Clearinghouse's families and incidents are picked up once W3-T14 ships them
   ---
-  duration_ms: 3092.036208
+  duration_ms: 1124.433021
   type: 'test'
   ...
 # Subtest: the world's incidents never move a path stream: fair incidents of a class the pool lacks (G7 at S1) leave every path stream's verdicts and the floor as they were
 ok 32 - the world's incidents never move a path stream: fair incidents of a class the pool lacks (G7 at S1) leave every path stream's verdicts and the floor as they were
   ---
-  duration_ms: 4665.201154
+  duration_ms: 1997.426913
   type: 'test'
   ...
 # Subtest: every mutant of mutants.mjs applies to the current source, once, and a weakened rule fails its self-check
 ok 33 - every mutant of mutants.mjs applies to the current source, once, and a weakened rule fails its self-check
   ---
-  duration_ms: 3030.095081
+  duration_ms: 1393.807329
   type: 'test'
   ...
 # Subtest: a key is none, a class, or {class, also}; `primary` is refused because GATE-kc reads it as a KC tag key
 ok 34 - a key is none, a class, or {class, also}; `primary` is refused because GATE-kc reads it as a KC tag key
   ---
-  duration_ms: 4.689201
+  duration_ms: 1.04079
   type: 'test'
   ...
 # Subtest: a key line is stated only at word boundaries, after collapsing white space
 ok 35 - a key line is stated only at word boundaries, after collapsing white space
   ---
-  duration_ms: 0.346962
+  duration_ms: 0.222476
   type: 'test'
   ...
 # Subtest: texts become lines; a diff is sized by its changed lines
 ok 36 - texts become lines; a diff is sized by its changed lines
   ---
-  duration_ms: 0.202815
+  duration_ms: 0.133146
   type: 'test'
   ...
 # Subtest: a run's verdict lines include each configuration's, with its id
 ok 37 - a run's verdict lines include each configuration's, with its id
   ---
-  duration_ms: 3.627678
+  duration_ms: 0.350066
   type: 'test'
   ...
 # Subtest: spine section 6.2's classes and key runs are read
 ok 38 - spine section 6.2's classes and key runs are read
   ---
-  duration_ms: 1.693974
+  duration_ms: 1.068763
   type: 'test'
   ...
 # Subtest: the tracker gives each task its status
 ok 39 - the tracker gives each task its status
   ---
-  duration_ms: 7.54666
+  duration_ms: 3.428312
   type: 'test'
   ...
 # Subtest: the vocabulary covers the registry: every class has an evidence row, every operator keys real classes
 ok 40 - the vocabulary covers the registry: every class has an evidence row, every operator keys real classes
   ---
-  duration_ms: 0.370888
+  duration_ms: 0.375041
   type: 'test'
   ...
 # Subtest: the W1-shaped fixture pool satisfies the whole contract
 ok 41 - the W1-shaped fixture pool satisfies the whole contract
   ---
-  duration_ms: 21.244984
+  duration_ms: 8.309091
   type: 'test'
   ...
 # Subtest: a case with a shape problem is left out of the simulation, its anchor kept
 ok 42 - a case with a shape problem is left out of the simulation, its anchor kept
   ---
-  duration_ms: 1.400074
+  duration_ms: 0.888981
   type: 'test'
   ...
 # Subtest: load-bearing references must point at non-blank lines of the case
 ok 43 - load-bearing references must point at non-blank lines of the case
   ---
-  duration_ms: 5.228816
+  duration_ms: 0.6081
   type: 'test'
   ...
 # Subtest: the stand-in battery recomputes a premise set's unsat core on the box engine
 ok 44 - the stand-in battery recomputes a premise set's unsat core on the box engine
   ---
-  duration_ms: 9.29702
+  duration_ms: 2.728533
   type: 'test'
   ...
 # Subtest: spine section 6 names the anchors that ship without variants: the only ones whose variants may wait
 ok 45 - spine section 6 names the anchors that ship without variants: the only ones whose variants may wait
   ---
-  duration_ms: 2.45575
+  duration_ms: 1.812967
   type: 'test'
   ...
 # Subtest: a case's structure sets aside numeric literals and white space, never digits inside identifiers (AUDIT-DESK 4)
 ok 46 - a case's structure sets aside numeric literals and white space, never digits inside identifiers (AUDIT-DESK 4)
   ---
-  duration_ms: 9.251552
+  duration_ms: 1.642834
   type: 'test'
   ...
 # Subtest: an empty variants list is a finding, not an anchor shipped with no variant
 ok 47 - an empty variants list is a finding, not an anchor shipped with no variant
   ---
-  duration_ms: 3.705682
+  duration_ms: 0.378593
   type: 'test'
   ...
 # Subtest: the literal forms of the later media are set aside too: digit groups, Rust suffixes, octal, SMT-LIB bit-vectors, range bounds; projections are kept
 ok 48 - the literal forms of the later media are set aside too: digit groups, Rust suffixes, octal, SMT-LIB bit-vectors, range bounds; projections are kept
   ---
-  duration_ms: 0.177279
+  duration_ms: 0.093842
   type: 'test'
   ...
 1..48
 # tests 48
 # suites 0
-# pass 48
-# fail 0
+# pass 47
+# fail 1
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 99102.512065
+# duration_ms 41183.645511

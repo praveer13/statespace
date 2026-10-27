@@ -14,6 +14,7 @@ import { createDraw, deriveSeed } from '@statespace/rng'
 import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -54,10 +55,10 @@ export interface EnabledValue {
 export type Verdict =
   | { readonly kind: 'verdict'; readonly yes: true }
   | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'jump'; readonly at: number }
-  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'repeat'; readonly at: number }
-  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'end' }
-  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'order' }
-  | { readonly kind: 'verdict'; readonly yes: 'flag' }
+  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'repeat'; readonly at: number; readonly short?: true }
+  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'end'; readonly at?: number; readonly short?: true }
+  | { readonly kind: 'verdict'; readonly yes: false; readonly reason: 'order'; readonly short?: true }
+  | { readonly kind: 'verdict'; readonly yes: 'flag'; readonly short?: true }
 
 export type OptionValue = TraceValue | EnabledValue | Verdict
 
@@ -118,22 +119,29 @@ const TEMPLATES: readonly TemplateSpec[] = [
 // ---------------------------------------------------------------- rendering
 
 const renderStep = (s: readonly string[]): string => s.join(' and ')
-const renderTrace = (v: TraceValue): string => `${v.steps.map(renderStep).join(', ')} · ${v.claim} action${v.claim === 1 ? '' : 's'}`
+// Steps are joined by arrows, not commas [D], so a longer trace is not also the one with the most punctuation.
+const renderTrace = (v: TraceValue): string => `${v.steps.map(renderStep).join(' → ')} · ${v.claim} action${v.claim === 1 ? '' : 's'}`
 const renderEnabled = (v: EnabledValue): string =>
   v.actions.length === 0 ? 'none: only stuttering steps are possible' : `${v.actions.join(', ')}${v.together === true ? ', or two of them together as one step' : ''}`
 
+// Every verdict reads alike [D]: a capitalized answer, one comma, Next named, and no absolute word, so none of them
+// stands out by its punctuation, capitals or wording. A wrong verdict comes in a shorter and a longer wording, so its
+// length says nothing either.
 function renderVerdict(v: Verdict): string {
-  if (v.yes === true) return 'Yes: every step is a step of Next or a stuttering step that changes nothing'
-  if (v.yes === 'flag') return 'It depends on whether TLC runs with -deadlock'
+  if (v.yes === true) return 'Yes: each step is a step of Next, or a stuttering step that changes nothing'
+  const short = 'short' in v && v.short === true
+  if (v.yes === 'flag') return short ? 'It depends on whether TLC checks this sequence, run with -deadlock' : 'It depends on TLC: run with -deadlock, a state with no step of Next is not reported to you'
   switch (v.reason) {
     case 'jump':
-      return `No: from state ${v.at} to state ${v.at + 1} is neither a step of Next nor a stuttering step`
+      return `No: state ${v.at} to state ${v.at + 1} is neither a step of Next, nor a stuttering step`
     case 'repeat':
-      return `No: state ${v.at + 1} repeats state ${v.at}, and every step must change something`
-    case 'end':
-      return 'No: a behavior goes on until nothing is enabled, and its last state still enables an action'
+      return short ? `No: state ${v.at + 1} repeats state ${v.at}, and a step of Next changes it` : `No: state ${v.at + 1} repeats state ${v.at}, and each step of Next must change at least something`
+    case 'end': {
+      const where = v.at === undefined ? 'the last state' : `state ${v.at}`
+      return short ? `No: ${where} still enables Next, so this behavior is not at its end` : `No: ${where} still enables Next, and a behavior goes on as long as an action is enabled`
+    }
     case 'order':
-      return 'No: one worker acts before another has finished, and steps follow program order'
+      return short ? "No: a worker steps before the other is done, out of Next's order" : 'No: a worker takes a step of Next before the other is done, out of program order'
   }
 }
 
@@ -232,6 +240,8 @@ const WHY = {
     'This runs each worker to the end before the next starts: steps in program order, as if the workers took turns. That is one behavior of the spec, but it never overspends, because each read sees the last write.',
   together:
     'Two actions in one step is not a step of this spec: every step of Next is one worker taking one action. Interleaving means the actions alternate, one per step; it never fuses them.',
+  past: (n: number): string => `This runs one action past the violation and still claims ${n} actions: it has ${n + 1}. The length in actions counts every step taken.`,
+  leftOut: (a: string): string => `This leaves out ${a}. Its worker's guard holds in this state, so ${a} can take the next step, whichever worker moved last.`,
   enabledOrder: 'This lets only the first unfinished worker move, as if steps followed program order across workers. Any worker whose own next action is enabled can take the next step.',
   enabledExists: 'This lists every action of a worker that has not finished, guards ignored. An action is enabled only where its guard holds: a worker at `read` can Read, not Write.',
   enabledBehind: (n: number): string =>
@@ -319,10 +329,18 @@ function t1(band: Band, draw: SeededDraw): Built {
   const fused: TraceValue | null =
     fuse < 0 ? null : { kind: 'trace', steps: [...prefix.slice(0, fuse).map((a) => [a]), [prefix[fuse] as string, prefix[fuse + 1] as string], ...prefix.slice(fuse + 2).map((a) => [a])], claim: n - 1 }
   const order = programOrder(m, g)
+  const at = reach(g, prefix)
+  const past = at === undefined ? null : (enabledAt(g, at).sort()[0] ?? null)
+  // The single mistakes and each with the states counted [D]; choose.ts shows three of them.
+  const two = (a: string, b: string): string => `Two mistakes at once. ${a} ${b.replace(/^This /, 'It also ')}`
   const mutants: Mutant<OptionValue>[] = [
     fixed('dp:T6', 'count states', WHY.states(n), { ...reference, claim: n + 1 }),
     fixed('dp:C1', 'program order', WHY.order, { kind: 'trace', steps: order.map((a) => [a]), claim: order.length }),
     fixed('dp:T16', 'two actions in one step', WHY.together, fused),
+    fixed('dp:C1', 'program order, and count states', two(WHY.order, WHY.states(order.length)), { kind: 'trace', steps: order.map((a) => [a]), claim: order.length + 1 }),
+    fixed('dp:T16', 'two actions in one step, and count states', two(WHY.together, WHY.states(n)), fused === null ? null : { ...fused, claim: n + 1 }),
+    fixed('dp:T16', 'two actions in one step, counted as two', WHY.together, fused === null ? null : { ...fused, claim: n }),
+    fixed('dp:T6', 'one action past the violation, counted short', WHY.past(n), past === null ? null : { kind: 'trace', steps: [...prefix, past].map((a) => [a]), claim: n }),
   ]
   return {
     stem: `${describeModel(m)}\n\nWhich of these is a prefix of a behavior of the spec that violates NoOverspend, with its length given correctly in actions?`,
@@ -381,6 +399,11 @@ function t2(band: Band, draw: SeededDraw): Built {
       fixed('dp:T10', 'guards ignored', WHY.enabledExists, { kind: 'enabled', actions: exists.sort() }),
       fixed('dp:T6', 'one state behind', WHY.enabledBehind(n), { kind: 'enabled', actions: before }),
       fixed('dp:T16', 'two actions in one step', WHY.enabledTogether, { kind: 'enabled', actions: truth, together: true }),
+      // Two mistakes at once [D]; choose.ts shows three of the candidates.
+      fixed('dp:T6', 'one state behind, and two actions in one step', `Two mistakes at once. ${WHY.enabledBehind(n)} ${WHY.enabledTogether}`, before.length >= 2 ? { kind: 'enabled', actions: before, together: true } : null),
+      fixed('dp:T10', 'guards ignored, and two actions in one step', `Two mistakes at once. ${WHY.enabledExists} ${WHY.enabledTogether}`, { kind: 'enabled', actions: [...exists].sort(), together: true }),
+      fixed('dp:C1', 'program order, and two actions in one step', `Two mistakes at once. ${WHY.enabledOrder} ${WHY.enabledTogether}`, orderSet.length >= 2 && orderSet.length < truth.length ? { kind: 'enabled', actions: orderSet, together: true } : null),
+      ...truth.map((a) => fixed('dp:C1', 'an enabled action left out', WHY.leftOut(a), { kind: 'enabled', actions: truth.filter((x) => x !== a) })),
     ]
     return {
       stem: `${describeModel(m)}\n\nFrom the initial state the system takes these ${n} actions: ${actions.join(', ')}. The state it reaches is \`${showState(s)}\`. Which actions are enabled there?`,
@@ -426,11 +449,14 @@ function t3(band: Band, draw: SeededDraw): Built {
       repeatAt = i
       break
     }
+    // Each wrong verdict in both wordings; choose.ts shows one wording of three of them.
     const mutants: Mutant<OptionValue>[] = [
-      fixed('dp:T7', 'stuttering is not a step', WHY.repeat, repeatAt > 0 ? { kind: 'verdict', yes: false, reason: 'repeat', at: repeatAt } : null),
-      fixed('dp:T8', 'behaviors end when nothing is enabled', WHY.end, { kind: 'verdict', yes: false, reason: 'end' }),
-      fixed('dp:T9', 'TLC flags as the meaning', WHY.flag, { kind: 'verdict', yes: 'flag' }),
-      fixed('dp:C1', 'program order across workers', WHY.orderVerdict, { kind: 'verdict', yes: false, reason: 'order' }),
+      ...[undefined, true as const].flatMap((short) => [
+        fixed('dp:T7', 'stuttering is not a step', WHY.repeat, repeatAt > 0 ? { kind: 'verdict', yes: false, reason: 'repeat', at: repeatAt, ...(short ? { short } : {}) } : null),
+        fixed('dp:T8', 'behaviors end when nothing is enabled', WHY.end, { kind: 'verdict', yes: false, reason: 'end', at: seq.length, ...(short ? { short } : {}) }),
+        fixed('dp:T9', 'TLC flags as the meaning', WHY.flag, { kind: 'verdict', yes: 'flag', ...(short ? { short } : {}) }),
+        fixed('dp:C1', 'program order across workers', WHY.orderVerdict, { kind: 'verdict', yes: false, reason: 'order', ...(short ? { short } : {}) }),
+      ]),
       fixed('dp:T6', 'miss a skipped state', WHY.yesMissed, truth.yes === true ? null : { kind: 'verdict', yes: true }),
     ]
     const rows = seq.map((s, i) => `| ${i + 1} | \`${showState(s)}\` |`).join('\n')
@@ -458,10 +484,12 @@ function make(seed: number, band: Band, template: TemplateId): TraceAllowedInsta
   if (spec === undefined || build === undefined) throw new RangeError(`${TRACE_ALLOWED_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${TRACE_ALLOWED_ID}/${template}/b${band}`))
   const b = build(band, draw)
+  // The distractors shown, chosen among the mistakes so the key does not stand out (choose.ts).
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: b.distractors, draw: draw.fork('choose'), render: renderValue })
   const { options, values } = assembleOptions({
     reference: b.reference,
     referenceWhy: b.referenceWhy,
-    mutants: b.mutants,
+    mutants: chosen,
     distractors: b.distractors,
     draw: draw.fork('options'),
     render: renderValue,

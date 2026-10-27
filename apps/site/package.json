@@ -5,8 +5,8 @@
   "type": "module",
   "description": "The main origin: the static course site (React 19, Vite 7).",
   "scripts": {
-    "content": "node ../../scripts/build-content.mjs && node ../../scripts/site/build-llms.mjs && node ../../scripts/site/build-names.mjs",
-    "dev": "node ../../scripts/site/build-names.mjs && (node ../../scripts/build-content.mjs && node ../../scripts/site/build-llms.mjs || echo 'site: the content build failed; serving the last content it wrote') && vite",
+    "content": "node ../../scripts/build-content.mjs && node ../../scripts/site/build-llms.mjs && node ../../scripts/site/build-names.mjs && node ../../scripts/site/build-templates.mjs",
+    "dev": "node ../../scripts/site/build-names.mjs && node ../../scripts/site/build-templates.mjs && (node ../../scripts/build-content.mjs && node ../../scripts/site/build-llms.mjs || echo 'site: the content build failed; serving the last content it wrote') && vite",
     "labs": "node ../../scripts/labs/build-zips.mjs",
     "build": "npm run content && npm run labs && npm run typecheck && vite build && node ../../scripts/site/postbuild.mjs && node src/sw/build-sw.mjs",
     "preview": "vite preview",

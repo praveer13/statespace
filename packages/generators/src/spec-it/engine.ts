@@ -260,30 +260,33 @@ function cartesian(xs: readonly (readonly number[])[]): number[][] {
 
 /**
  * The posts a step scope tries for a pre-state: the command's own result, the state unchanged, the reverse move,
- * then each one-field change of the command's result.
+ * then each one-field change of the command's result and of the reverse move. The reverse move's neighbours tell
+ * apart two postconditions that both move the amount the wrong way but differ in a frame or a write [D].
  */
 function stepPosts(s: StepSpace, pre: StepPoint, run: StepPoint): StepPoint[] {
   const reverse = runCommand(s.cmd, { ...pre, x: pre.y, y: pre.x })
   const out: StepPoint[] = [run, pre, reverse]
-  for (let k = 0; k < s.accounts; k++)
-    for (let v = s.post.lo; v <= s.post.hi; v++) {
-      if (v === run.bal[k]) continue
-      const bal = [...run.bal]
-      bal[k] = v
-      out.push({ ...run, bal })
-    }
-  for (const f of s.fields)
-    for (let v = s.post.lo; v <= s.post.hi; v++) {
-      if (v === run.fields[f.v]) continue
-      out.push({ ...run, fields: { ...run.fields, [f.v]: v } })
-    }
+  for (const base of [run, reverse]) {
+    for (let k = 0; k < s.accounts; k++)
+      for (let v = s.post.lo; v <= s.post.hi; v++) {
+        if (v === base.bal[k]) continue
+        const bal = [...base.bal]
+        bal[k] = v
+        out.push({ ...base, bal })
+      }
+    for (const f of s.fields)
+      for (let v = s.post.lo; v <= s.post.hi; v++) {
+        if (v === base.fields[f.v]) continue
+        out.push({ ...base, fields: { ...base.fields, [f.v]: v } })
+      }
+  }
   return out
 }
 
 export function stepScopeSize(s: StepSpace): number {
   const pres = stepPres(s).length
   const width = s.post.hi - s.post.lo + 1
-  return pres * (3 + (s.accounts + s.fields.length) * (width - 1))
+  return pres * (3 + 2 * (s.accounts + s.fields.length) * (width - 1))
 }
 
 export function spaceSize(s: Space): number {
@@ -414,7 +417,8 @@ function* pointsOf(space: Space): Generator<At> {
     return
   }
   for (const pre of stepPres(space)) {
-    // The posts tried: the command's result, the state unchanged, the reverse move, and each one-field change.
+    // The posts tried: the command's result, the state unchanged, the reverse move, and each one-field change of the
+    // result and of the reverse move.
     const run = runCommand(space.cmd, pre)
     for (const post of stepPosts(space, pre, run)) yield { kind: 'step', pre, post, p: stepPoint(space.accounts, pre, post) }
   }

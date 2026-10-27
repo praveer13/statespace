@@ -1,0 +1,24 @@
+[q0] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+[q0] bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances
+[q13 plan] ASSERT $3 > 0 ELSE NonPositive
+[q13 plan] SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount
+[q13 plan] ASSERT r1 >= $3 ELSE Insufficient
+[q13 plan] UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+[q13 plan] UPDATE accounts SET bal = bal + $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+[q13 shape] accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[q13 semantic] rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1
+[q13 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:3, 2:0 | interpreter committed 1:2, 2:1 | differ
+[q13 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same
+[q13 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same
+[q13 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | differ
+[q14 plan] ASSERT $3 > 0 ELSE NonPositive
+[q14 plan] SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount
+[q14 plan] ASSERT r1 >= $3 ELSE Insufficient
+[q14 plan] UPDATE accounts SET bal = bal + $3 WHERE id = $2 EXPECT 1 ELSE NoSuchAccount
+[q14 plan] UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+[q14 shape] accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+[q14 semantic] accepted, 1125 of 1125 instances
+[q14 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:2, 2:1 | interpreter committed 1:2, 2:1 | same
+[q14 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same
+[q14 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same
+[q14 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:0 | interpreter committed 1:1, 2:0 | same

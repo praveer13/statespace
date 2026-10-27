@@ -2,8 +2,10 @@
 # The pair and variant v2 are keyed by RUN-pg-validator-pairs, recorded on PostgreSQL 18.6 (the postgres:18 image
 # RUN-pg-one-db pins) by content/audit/tools/record-aud9.mjs; variant v1 is SP-9.4 and is keyed by RUN-pg-one-db.
 # The run tags its cases q1 to q12 so a receipt line never names a key: q1 sound member, q2 flawed member, q3/q4 variant
-# pair v1 (flawed/sound), q5/q6 v2 (sound/flawed), q7/q8 v3, q9/q10 v4 and q11/q12 v5 (each flawed/sound). Spine 6.2's Key run cell names RUN-sql-shape-validator,
-# which waits for the reference validator (LAB-9.11); until it is recorded, GATE-audit reports a key-run finding here.
+# pair v1 (flawed/sound), q5/q6 v2 (sound/flawed), q7/q8 v3, q9/q10 v4 and q11/q12 v5 (each flawed/sound). Variant pair
+# v6 is LAB-9.11's own suite: its flawed form, SP-9.2's wrong-account plan, is keyed by the spine's run,
+# RUN-sql-shape-validator, and both forms' receipts and scenarios are RUN-pg-shape-pair's (q13 wrong-account, q14
+# credit-first), the reference validators run again with neutral tags.
 id: AUD-9.2
 stage: S9
 class: G11
@@ -519,3 +521,87 @@ variants:
     key_lines:
       - "[q12 fixture] same: compiled result 150; rewrite result 150"
     explain: "One instance, stamped as one instance. The description calls the coalesce redundant, and step 3 shows that it is not when no row matches; the report itself claims only the fixture."
+
+  - id: v6-flawed
+    pair: v6
+    operator: replace-proof-by-single-db-test
+    medium: sql
+    artifact: transfer-plan-validator
+    key: { class: G11, also: [G10] }
+    description: "Regenerates the transfer plan with the new planner, which checks each write's row count. The validator accepts it."
+    statement: |
+      -- schema: accounts (id bigint PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled transfer, as the new planner emits it ($1 from, $2 to, $3 amount)
+      ASSERT $3 > 0 ELSE NonPositive
+      SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount
+      ASSERT r1 >= $3 ELSE Insufficient
+      UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+      UPDATE accounts SET bal = bal + $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+      -- validation report
+      method  shape: two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present
+      stamp   PROVED [P] · equivalent
+    diff: |
+      --- a/plan/transfer.sql
+      +++ b/plan/transfer.sql
+      @@ -3,3 +3,3 @@
+       ASSERT r1 >= $3 ELSE Insufficient
+      -UPDATE accounts SET bal = bal - $3 WHERE id = $1
+      -UPDATE accounts SET bal = bal + $3 WHERE id = $2
+      +UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+      +UPDATE accounts SET bal = bal + $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+    receipt: |
+      [q13 shape] accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)
+    receipt_run: RUN-pg-shape-pair
+    restatement:
+      run: RUN-pg-shape-pair
+      scenarios:
+        - { id: s1, text: "Accounts 1 and 2 at 3 and 0; transfer 1 from account 1 to account 2", answer: false, key_line: "[q13 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:3, 2:0 | interpreter committed 1:2, 2:1 | differ", why: "The credit names $1, the source: PostgreSQL leaves account 1 at 3 and account 2 at 0, where the source moves 1 to account 2." }
+        - { id: s2, text: "Accounts 1 and 2 at 3 and 0; transfer 0 from account 1 to account 2", answer: true, key_line: "[q13 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same", why: "A zero amount fails the first guard in both." }
+        - { id: s3, text: "Account 1 alone, at 2; transfer 1 from account 1 to itself", answer: true, key_line: "[q13 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same", why: "A transfer to itself: the debit and the credit cancel, as the source's do." }
+        - { id: s4, text: "Accounts 1 and 2 at 0 and 1; transfer 1 from account 2 to account 1", answer: false, key_line: "[q13 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | differ", why: "The instance the semantic validator reports: the plan credits the source back, the source moves the 1 to account 1." }
+    evidence: { type: verdict-line, load_bearing: ["statement:9", "statement:10", "receipt:1"] }
+    key_run: RUN-sql-shape-validator
+    key_lines: ["[wrong-account] shape check: accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)", "[wrong-account] (wrong) semantic validator: rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1"]
+    explain: "The spine's run keys this plan, SP-9.2's wrong-account mutant: a shape check reads two UPDATEs on parameters with their guards and accepts it, and the semantic validator rejects it at instance 63 of 1125, where the plan credits the source account back. The report stamps [P] for a check of the text's shape, which no proof is; a replay of one ordinary transfer (s1) already shows the difference."
+
+  - id: v6-sound
+    pair: v6
+    operator: replace-proof-by-single-db-test
+    medium: sql
+    artifact: transfer-plan-validator
+    key: none
+    description: "Regenerates the transfer plan with the new planner, which checks each write's row count. The validator accepts it."
+    statement: |
+      -- schema: accounts (id bigint PRIMARY KEY, bal bigint NOT NULL CHECK (bal >= 0))
+      -- the compiled transfer, as the new planner emits it ($1 from, $2 to, $3 amount)
+      ASSERT $3 > 0 ELSE NonPositive
+      SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount
+      ASSERT r1 >= $3 ELSE Insufficient
+      UPDATE accounts SET bal = bal + $3 WHERE id = $2 EXPECT 1 ELSE NoSuchAccount
+      UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+      -- validation report
+      method  semantic: every instance of ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3: 1125
+      stamp   MODEL-CHECKED [M] · that bound
+    diff: |
+      --- a/plan/transfer.sql
+      +++ b/plan/transfer.sql
+      @@ -3,3 +3,3 @@
+       ASSERT r1 >= $3 ELSE Insufficient
+      -UPDATE accounts SET bal = bal - $3 WHERE id = $1
+      -UPDATE accounts SET bal = bal + $3 WHERE id = $2
+      +UPDATE accounts SET bal = bal + $3 WHERE id = $2 EXPECT 1 ELSE NoSuchAccount
+      +UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount
+    receipt: |
+      [q14 semantic] accepted, 1125 of 1125 instances
+    receipt_run: RUN-pg-shape-pair
+    restatement:
+      run: RUN-pg-shape-pair
+      scenarios: &v6-sound-scenarios
+        - { id: s1, text: "Accounts 1 and 2 at 3 and 0; transfer 1 from account 1 to account 2", answer: true, key_line: "[q14 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:2, 2:1 | interpreter committed 1:2, 2:1 | same", why: "Credit first, then debit: the same result as the source." }
+        - { id: s2, text: "Accounts 1 and 2 at 3 and 0; transfer 0 from account 1 to account 2", answer: true, key_line: "[q14 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same", why: "Both refuse a zero amount." }
+        - { id: s3, text: "Account 1 alone, at 2; transfer 1 from account 1 to itself", answer: true, key_line: "[q14 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same", why: "The two writes cancel, as the source's do." }
+        - { id: s4, text: "Accounts 1 and 2 at 0 and 1; transfer 1 from account 2 to account 1", answer: true, key_line: "[q14 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:0 | interpreter committed 1:1, 2:0 | same", why: "The same outcome as the source." }
+    evidence: { type: restatement, scenarios: *v6-sound-scenarios }
+    key_run: RUN-pg-shape-pair
+    key_lines: ["[q14 semantic] accepted, 1125 of 1125 instances", "[q14 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:0 | interpreter committed 1:1, 2:0 | same"]
+    explain: "The plan writes the credit before the debit, each reading the current balance, so its effect is the source transfer's. The semantic validator replays all 1125 instances of its bound and finds no difference, and the report stamps exactly that: [M] with the bound."

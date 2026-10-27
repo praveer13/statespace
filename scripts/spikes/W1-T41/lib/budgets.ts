@@ -446,9 +446,13 @@ export function checkFonts(siteDir: string): FontReport {
       remoteImports(rel, cssText)
       for (const face of fontFacesOf(cssText, rel)) {
         faces.push(face)
-        // the exact family names W1-T01's generator writes (DESIGN.md section 3.4); 'Archivo Black' is another face
-        const allowed = (FONT_FAMILIES as readonly string[]).includes(face.family)
-        if (!allowed) findings.push({ css: rel, family: face.family, message: `${face.family} is not one of ${FONT_FAMILIES.join(', ')}` })
+        // the exact family names W1-T01's generator writes (DESIGN.md section 3.4); 'Archivo Black' is another face. DESIGN.md's
+        // Typography names each face's metric-matched fallback ('Jost fallback', a metric-matched Arial, and so on): such a face
+        // is allowed only as local() faces, loading no file, so it can never bring a fourth downloaded face
+        const allowed =
+          (FONT_FAMILIES as readonly string[]).includes(face.family) ||
+          (FONT_FAMILIES.some((f) => face.family === `${f} fallback`) && face.urls.length === 0)
+        if (!allowed) findings.push({ css: rel, family: face.family, message: `${face.family} is not one of ${FONT_FAMILIES.join(', ')}${/ fallback$/.test(face.family) ? ' (a fallback face loads local() faces only)' : ''}` })
         for (const u of face.urls) {
           const file = fontFileOf(u, rel)
           if (file === null) {

@@ -1,0 +1,719 @@
+{
+  "id": "RUN-pg-split-exemplars",
+  "title": "AUD-5.4's variant pairs v4 and v5 on PostgreSQL 18.6: a hold placed after reading the balance with FOR UPDATE (q9) and without it (q10), and a daily-limit counter read and written at REPEATABLE READ (q11) and at READ COMMITTED (q12), each run by two sessions interleaved (p1) and one after the other (p2)",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-5.4 (content/audit/AUD-5.4.yaml): variant pairs v4 and v5, their receipts, keys and step-3 scenarios",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-27T00:12:54.080Z",
+  "started_at": "2026-10-27T00:12:49.443Z",
+  "duration_s": 1.356,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-pg-split-exemplars"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-pg-split-exemplars",
+      "--network",
+      "ssrec-net-pg-split-exemplars",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-split-exemplars-q9",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-split-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-split-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "hold_q9",
+      "q9"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-split-exemplars-q10",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-split-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-split-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "hold_q10",
+      "q10"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-split-exemplars-q11",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-split-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-split-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "limit_q11",
+      "q11"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-split-exemplars-q12",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-split-exemplars",
+      "-e",
+      "PGHOST=ssrec-pg-pg-split-exemplars",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-I",
+      "gated.py",
+      "limit_q12",
+      "q12"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-pg-split-exemplars"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-pg-split-exemplars"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/gated.py",
+      "sha256": "ae3432a32911cc43a2b50e3c66efa70314ecd452a141bce3bbf939f880296259",
+      "bytes": 6347,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/hold_q10.py",
+      "sha256": "420b05b662c54fef5bbded524ecae5e974ef7a16b5451204203bc0e322ea0dfc",
+      "bytes": 596,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/hold_q9.py",
+      "sha256": "a00860c9a0388827dbfb87dd90a982608c1eb97314ed45a33598498b3dd1f66b",
+      "bytes": 605,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/holds_setup.sql",
+      "sha256": "73a98d344dd1fc4ef5a09f933bb485205f39e9b0c5c167a88a95d870000bcda4",
+      "bytes": 243,
+      "role": "data"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/limit_q11.py",
+      "sha256": "abf7803a8844e6917ef2cbaf38f1b81dc2fee672aae74bbba5e09d20e8a9eb8e",
+      "bytes": 620,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/limit_q12.py",
+      "sha256": "4936f49150884158634bdf0f464630af3b7e57fabaf53573ad4e6b8ec920f18d",
+      "bytes": 619,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/inputs/limits_setup.sql",
+      "sha256": "d38671f6bdc23563739ec6b967f9f24d110c0a700254e0eaa9cb42b835174632",
+      "bytes": 129,
+      "role": "data"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-net-pg-split-exemplars"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q9] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+    "[q9 p1] a: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+    "[q9 p1] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE <waiting ...>",
+    "[q9 p1] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+    "[q9 p1] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+    "[q9 p1] a: COMMIT -> COMMIT",
+    "[q9 p1] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE <... completed> -> SELECT 1 [[100]]",
+    "[q9 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]",
+    "[q9 p1] b: COMMIT -> COMMIT",
+    "[q9 p1] a returned True, b returned False",
+    "[q9 p1] final held=80; placed=80 of 100",
+    "[q9 p2] a: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+    "[q9 p2] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+    "[q9 p2] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+    "[q9 p2] a: COMMIT -> COMMIT",
+    "[q9 p2] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+    "[q9 p2] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]",
+    "[q9 p2] b: COMMIT -> COMMIT",
+    "[q9 p2] a returned True, b returned False",
+    "[q9 p2] final held=80; placed=80 of 100"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-split-exemplars/q9.log",
+      "sha256": "03da862f0d7455759ef8e531b4a3cc76bc2392b7714cbbbd64872438179eab93",
+      "bytes": 1281,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/q10.log",
+      "sha256": "632dd6f2e50c6597c641b86072f4c52999d33ceb02d586dc62b469162861667d",
+      "bytes": 1241,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/q11.log",
+      "sha256": "c7d99c70b941fd0a1f93cdbc21048cce3f7d4794a6b18bdcbc66e158d11a2790",
+      "bytes": 1314,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-pg-split-exemplars/q12.log",
+      "sha256": "9cf9ca6c4a58e2422f5b7a7850e2440afad55755e388aca05995e28d245396bf",
+      "bytes": 1200,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "server": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "client": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "client_user": "uid 1000 (learner)",
+      "driver": "psycopg 3.3.6 on the Bench image's Python 3.13"
+    }
+  },
+  "primary_config": "q9",
+  "configs": [
+    {
+      "id": "q9",
+      "origin": "recorded",
+      "purpose": "hold_q9.py: place_hold with the balance read FOR UPDATE, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:12:49.443Z",
+      "duration_s": 1.356,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-split-exemplars-q9",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-split-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-split-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "hold_q9",
+        "q9"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/gated.py",
+          "sha256": "ae3432a32911cc43a2b50e3c66efa70314ecd452a141bce3bbf939f880296259",
+          "bytes": 6347,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q10.py",
+          "sha256": "420b05b662c54fef5bbded524ecae5e974ef7a16b5451204203bc0e322ea0dfc",
+          "bytes": 596,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q9.py",
+          "sha256": "a00860c9a0388827dbfb87dd90a982608c1eb97314ed45a33598498b3dd1f66b",
+          "bytes": 605,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/holds_setup.sql",
+          "sha256": "73a98d344dd1fc4ef5a09f933bb485205f39e9b0c5c167a88a95d870000bcda4",
+          "bytes": 243,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q11.py",
+          "sha256": "abf7803a8844e6917ef2cbaf38f1b81dc2fee672aae74bbba5e09d20e8a9eb8e",
+          "bytes": 620,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q12.py",
+          "sha256": "4936f49150884158634bdf0f464630af3b7e57fabaf53573ad4e6b8ec920f18d",
+          "bytes": 619,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limits_setup.sql",
+          "sha256": "d38671f6bdc23563739ec6b967f9f24d110c0a700254e0eaa9cb42b835174632",
+          "bytes": 129,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-split-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q9] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q9 p1] a: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+        "[q9 p1] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE <waiting ...>",
+        "[q9 p1] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+        "[q9 p1] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+        "[q9 p1] a: COMMIT -> COMMIT",
+        "[q9 p1] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE <... completed> -> SELECT 1 [[100]]",
+        "[q9 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]",
+        "[q9 p1] b: COMMIT -> COMMIT",
+        "[q9 p1] a returned True, b returned False",
+        "[q9 p1] final held=80; placed=80 of 100",
+        "[q9 p2] a: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+        "[q9 p2] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+        "[q9 p2] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+        "[q9 p2] a: COMMIT -> COMMIT",
+        "[q9 p2] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE -> SELECT 1 [[100]]",
+        "[q9 p2] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]",
+        "[q9 p2] b: COMMIT -> COMMIT",
+        "[q9 p2] a returned True, b returned False",
+        "[q9 p2] final held=80; placed=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-split-exemplars/q9.log"
+      ]
+    },
+    {
+      "id": "q10",
+      "origin": "recorded",
+      "purpose": "hold_q10.py: place_hold with a plain read of the balance, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:12:50.805Z",
+      "duration_s": 0.327,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-split-exemplars-q10",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-split-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-split-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "hold_q10",
+        "q10"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/gated.py",
+          "sha256": "ae3432a32911cc43a2b50e3c66efa70314ecd452a141bce3bbf939f880296259",
+          "bytes": 6347,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q10.py",
+          "sha256": "420b05b662c54fef5bbded524ecae5e974ef7a16b5451204203bc0e322ea0dfc",
+          "bytes": 596,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q9.py",
+          "sha256": "a00860c9a0388827dbfb87dd90a982608c1eb97314ed45a33598498b3dd1f66b",
+          "bytes": 605,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/holds_setup.sql",
+          "sha256": "73a98d344dd1fc4ef5a09f933bb485205f39e9b0c5c167a88a95d870000bcda4",
+          "bytes": 243,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q11.py",
+          "sha256": "abf7803a8844e6917ef2cbaf38f1b81dc2fee672aae74bbba5e09d20e8a9eb8e",
+          "bytes": 620,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q12.py",
+          "sha256": "4936f49150884158634bdf0f464630af3b7e57fabaf53573ad4e6b8ec920f18d",
+          "bytes": 619,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limits_setup.sql",
+          "sha256": "d38671f6bdc23563739ec6b967f9f24d110c0a700254e0eaa9cb42b835174632",
+          "bytes": 129,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-split-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q10] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q10 p1] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q10 p1] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q10 p1] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+        "[q10 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+        "[q10 p1] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+        "[q10 p1] b: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+        "[q10 p1] a: COMMIT -> COMMIT",
+        "[q10 p1] b: COMMIT -> COMMIT",
+        "[q10 p1] a returned True, b returned True",
+        "[q10 p1] final held=160; placed=160 of 100",
+        "[q10 p2] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q10 p2] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]",
+        "[q10 p2] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1",
+        "[q10 p2] a: COMMIT -> COMMIT",
+        "[q10 p2] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]",
+        "[q10 p2] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]",
+        "[q10 p2] b: COMMIT -> COMMIT",
+        "[q10 p2] a returned True, b returned False",
+        "[q10 p2] final held=80; placed=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-split-exemplars/q10.log"
+      ]
+    },
+    {
+      "id": "q11",
+      "origin": "recorded",
+      "purpose": "limit_q11.py: spend at REPEATABLE READ, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:12:51.136Z",
+      "duration_s": 1.343,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-split-exemplars-q11",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-split-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-split-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "limit_q11",
+        "q11"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/gated.py",
+          "sha256": "ae3432a32911cc43a2b50e3c66efa70314ecd452a141bce3bbf939f880296259",
+          "bytes": 6347,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q10.py",
+          "sha256": "420b05b662c54fef5bbded524ecae5e974ef7a16b5451204203bc0e322ea0dfc",
+          "bytes": 596,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q9.py",
+          "sha256": "a00860c9a0388827dbfb87dd90a982608c1eb97314ed45a33598498b3dd1f66b",
+          "bytes": 605,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/holds_setup.sql",
+          "sha256": "73a98d344dd1fc4ef5a09f933bb485205f39e9b0c5c167a88a95d870000bcda4",
+          "bytes": 243,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q11.py",
+          "sha256": "abf7803a8844e6917ef2cbaf38f1b81dc2fee672aae74bbba5e09d20e8a9eb8e",
+          "bytes": 620,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q12.py",
+          "sha256": "4936f49150884158634bdf0f464630af3b7e57fabaf53573ad4e6b8ec920f18d",
+          "bytes": 619,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limits_setup.sql",
+          "sha256": "d38671f6bdc23563739ec6b967f9f24d110c0a700254e0eaa9cb42b835174632",
+          "bytes": 129,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-split-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q11] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q11 p1] a: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET",
+        "[q11 p1] b: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET",
+        "[q11 p1] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q11 p1] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q11 p1] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1",
+        "[q11 p1] b: UPDATE limits SET used = %s WHERE acct = %s <waiting ...>",
+        "[q11 p1] a: COMMIT -> COMMIT",
+        "[q11 p1] b: UPDATE limits SET used = %s WHERE acct = %s <... completed> -> ERROR 40001: could not serialize access due to concurrent update",
+        "[q11 p1] b: COMMIT -> ROLLBACK",
+        "[q11 p1] a returned True, b returned error could not serialize access due to concurrent update",
+        "[q11 p1] final used=80; spent=80 of 100",
+        "[q11 p2] a: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET",
+        "[q11 p2] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q11 p2] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1",
+        "[q11 p2] a: COMMIT -> COMMIT",
+        "[q11 p2] b: SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -> SET",
+        "[q11 p2] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[80]]",
+        "[q11 p2] b: COMMIT -> COMMIT",
+        "[q11 p2] a returned True, b returned False",
+        "[q11 p2] final used=80; spent=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-split-exemplars/q11.log"
+      ]
+    },
+    {
+      "id": "q12",
+      "origin": "recorded",
+      "purpose": "limit_q12.py: spend at READ COMMITTED, under p1 and p2",
+      "engine": "postgresql",
+      "version": "18.6",
+      "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+      "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "started_at": "2026-10-27T00:12:52.483Z",
+      "duration_s": 1.343,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-ex-pg-split-exemplars-q12",
+        "--memory=6g",
+        "--network",
+        "ssrec-net-pg-split-exemplars",
+        "-e",
+        "PGHOST=ssrec-pg-pg-split-exemplars",
+        "-e",
+        "PGUSER=postgres",
+        "-e",
+        "PGPASSWORD=x",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "python3",
+        "-I",
+        "gated.py",
+        "limit_q12",
+        "q12"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/gated.py",
+          "sha256": "ae3432a32911cc43a2b50e3c66efa70314ecd452a141bce3bbf939f880296259",
+          "bytes": 6347,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q10.py",
+          "sha256": "420b05b662c54fef5bbded524ecae5e974ef7a16b5451204203bc0e322ea0dfc",
+          "bytes": 596,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/hold_q9.py",
+          "sha256": "a00860c9a0388827dbfb87dd90a982608c1eb97314ed45a33598498b3dd1f66b",
+          "bytes": 605,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/holds_setup.sql",
+          "sha256": "73a98d344dd1fc4ef5a09f933bb485205f39e9b0c5c167a88a95d870000bcda4",
+          "bytes": 243,
+          "role": "data"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q11.py",
+          "sha256": "abf7803a8844e6917ef2cbaf38f1b81dc2fee672aae74bbba5e09d20e8a9eb8e",
+          "bytes": 620,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limit_q12.py",
+          "sha256": "4936f49150884158634bdf0f464630af3b7e57fabaf53573ad4e6b8ec920f18d",
+          "bytes": 619,
+          "role": "script"
+        },
+        {
+          "path": "runs/RUN-pg-split-exemplars/inputs/limits_setup.sql",
+          "sha256": "d38671f6bdc23563739ec6b967f9f24d110c0a700254e0eaa9cb42b835174632",
+          "bytes": 129,
+          "role": "data"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "ssrec-net-pg-split-exemplars"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "[q12] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed",
+        "[q12 p1] a: SET TRANSACTION ISOLATION LEVEL READ COMMITTED -> SET",
+        "[q12 p1] b: SET TRANSACTION ISOLATION LEVEL READ COMMITTED -> SET",
+        "[q12 p1] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q12 p1] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q12 p1] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1",
+        "[q12 p1] b: UPDATE limits SET used = %s WHERE acct = %s <waiting ...>",
+        "[q12 p1] a: COMMIT -> COMMIT",
+        "[q12 p1] b: UPDATE limits SET used = %s WHERE acct = %s <... completed> -> UPDATE 1",
+        "[q12 p1] b: COMMIT -> COMMIT",
+        "[q12 p1] a returned True, b returned True",
+        "[q12 p1] final used=80; spent=160 of 100",
+        "[q12 p2] a: SET TRANSACTION ISOLATION LEVEL READ COMMITTED -> SET",
+        "[q12 p2] a: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[0]]",
+        "[q12 p2] a: UPDATE limits SET used = %s WHERE acct = %s -> UPDATE 1",
+        "[q12 p2] a: COMMIT -> COMMIT",
+        "[q12 p2] b: SET TRANSACTION ISOLATION LEVEL READ COMMITTED -> SET",
+        "[q12 p2] b: SELECT used FROM limits WHERE acct = %s -> SELECT 1 [[80]]",
+        "[q12 p2] b: COMMIT -> COMMIT",
+        "[q12 p2] a returned True, b returned False",
+        "[q12 p2] final used=80; spent=80 of 100"
+      ],
+      "outputs": [
+        "runs/RUN-pg-split-exemplars/q12.log"
+      ]
+    }
+  ],
+  "notes": [
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted at /w; the inputs are kept under inputs/ as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-exemplars.mjs), copied in log order.",
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on the user network ssrec-net-pg-split-exemplars with --memory=6g; before the first driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0. argv lists the commands in order.",
+    "gated.py is runs/RUN-pg-withdraw-split/inputs/gated.py with the action, its setup file and its final check read from the case's module, and with a session whose step waits giving up its turns until the step completes (its docstring says why). It runs the module's function unchanged in two threads, a and b, each with its own connection, and gates every statement and every commit on a schedule: p1 interleaves the two sessions statement by statement, p2 runs a to its commit and then b. A step still running after 1 s is reported as waiting and the schedule moves on, as isolationtester does. Each case's statement is the block between its '--- qN' markers in its module, verbatim."
+  ]
+}

@@ -118,6 +118,24 @@ const asSpec = (s: SpecValue): Spec => (s.kind === 'formula' ? { kind: 'formula'
 
 const fixed = (tag: MisconceptionKey, operator: string, why: string, value: SpecValue): Mutant<SpecValue> => ({ tag, operator, why: () => why, apply: () => value })
 
+/** One mistake of a square: its tag, its name, what it says alone, and the specification it gives. */
+interface Side {
+  readonly tag: MisconceptionKey
+  readonly operator: string
+  readonly why: string
+  readonly value: SpecValue
+}
+
+/**
+ * The distractors of a square [D]: two independent mistakes and both at once. Every option is then one mistake away
+ * from two others and two from the last, the key included, so no option sits at the centre of the rest, and two
+ * mistakes that each keep the length keep every option the same length.
+ */
+function square(a: Side, b: Side, both: SpecValue): Mutant<SpecValue>[] {
+  const also = b.why.replace(/^This /, 'It also ')
+  return [fixed(a.tag, a.operator, a.why, a.value), fixed(b.tag, b.operator, b.why, b.value), fixed(a.tag, `${a.operator}, and ${b.operator}`, `Two mistakes at once. ${a.why} ${also}`, both)]
+}
+
 // ---------------------------------------------------------------- t1: property
 
 const le = (strict: boolean): Rel => (strict ? '<' : '<=')
@@ -141,12 +159,16 @@ function t1(band: Band, draw: SeededDraw): Built {
         requirement: { kind: 'property', req },
         reference: F(ref),
         referenceWhy: `"P only if Q" is P → Q: whenever the transfer is allowed, the amount is ${atMost} the balance. A refused transfer breaks nothing.`,
-        mutants: [
-          fixed('dp:G1', 'the converse', 'This is the converse, "a transfer is allowed if the balance covers it". The sentence never says a covered transfer must be allowed.', F(implies(covered, ok))),
-          fixed('dp:G1', 'the biconditional', 'This reads "only if" as "if and only if", so it also forbids refusing a covered transfer, which the sentence allows.', F(iff(ok, covered))),
-          fixed('dp:O1', 'shift the boundary', `This moves the boundary by one: on \`x = a\` it disagrees with "${atMost}".`, F(implies(ok, coveredOff))),
-          fixed('dp:O2', 'too strong', 'This demands that every state be an allowed, covered transfer. A refused transfer keeps the requirement, and this property rejects it.', F(and(ok, covered))),
-        ],
+        // The boundary moved, crossed with one misreading of "only if" [D].
+        mutants: (() => {
+          const shift: Side = { tag: 'dp:O1', operator: 'shift the boundary', why: `This moves the boundary by one: on \`x = a\` it disagrees with "${atMost}".`, value: F(implies(ok, coveredOff)) }
+          const misread = draw.pick([
+            { tag: 'dp:G1', operator: 'the converse', why: 'This is the converse, "a transfer is allowed if the balance covers it". The sentence never says a covered transfer must be allowed.', of: (c: Formula) => implies(c, ok) },
+            { tag: 'dp:G1', operator: 'the biconditional', why: 'This reads "only if" as "if and only if", so it also forbids refusing a covered transfer, which the sentence allows.', of: (c: Formula) => iff(ok, c) },
+            { tag: 'dp:O2', operator: 'too strong', why: 'This demands that every state be an allowed, covered transfer. A refused transfer keeps the requirement, and this property rejects it.', of: (c: Formula) => and(ok, c) },
+          ] as const)
+          return square({ tag: misread.tag, operator: misread.operator, why: misread.why, value: F(misread.of(covered)) }, shift, F(misread.of(coveredOff)))
+        })(),
         distractors: 3,
         bound: 'every state with ok true or false and a, x from 0 to 4',
         measure: { atoms: atomsOf(ref), quantifiers: 0, alternations: 0 },
@@ -162,12 +184,20 @@ function t1(band: Band, draw: SeededDraw): Built {
       requirement: { kind: 'property', req },
       reference: F(ref),
       referenceWhy: `Both conditions must hold: \`x > 0\` for positive and \`${render(covered)}\` for ${atMost} the balance.`,
-      mutants: [
-        fixed('dp:O1', 'zero counted as positive', 'This lets the amount be 0, and 0 is not positive.', F(and(rel(v('x'), '>=', num(0)), covered))),
-        fixed('dp:O1', 'shift the boundary', `This moves the boundary by one: on \`x = a\` it disagrees with "${atMost}".`, F(and(pos, coveredOff))),
-        fixed('dp:O2', 'drop a condition', 'This drops "positive", so a zero amount passes.', F(covered)),
-        fixed('dp:Z5', 'or for and', 'This joins the conditions with "or", so an amount that meets only one of them passes.', F(or(pos, covered))),
-      ],
+      // Two of three independent mistakes, each a change of one symbol, and both at once [D].
+      mutants: (() => {
+        const zeroPos = rel(v('x'), '>=', num(0))
+        const sides = draw.sample(['zero', 'shift', 'or'] as const, 2)
+        const build = (zero: boolean, shift: boolean, disj: boolean): SpecValue => F((disj ? or : and)(zero ? zeroPos : pos, shift ? coveredOff : covered))
+        const side = (k: 'zero' | 'shift' | 'or'): Side =>
+          k === 'zero'
+            ? { tag: 'dp:O1', operator: 'zero counted as positive', why: 'This lets the amount be 0, and 0 is not positive.', value: build(true, false, false) }
+            : k === 'shift'
+              ? { tag: 'dp:O1', operator: 'shift the boundary', why: `This moves the boundary by one: on \`x = a\` it disagrees with "${atMost}".`, value: build(false, true, false) }
+              : { tag: 'dp:Z5', operator: 'or for and', why: 'This joins the conditions with "or", so an amount that meets only one of them passes.', value: build(false, false, true) }
+        const has = (k: 'zero' | 'shift' | 'or'): boolean => sides.includes(k)
+        return square(side(sides[0] as 'zero'), side(sides[1] as 'zero'), build(has('zero'), has('shift'), has('or')))
+      })(),
       distractors: 3,
       bound: 'every state with a from 0 to 4 and x from −1 to 4',
       measure: { atoms: atomsOf(ref), quantifiers: 0, alternations: 0 },
@@ -188,14 +218,21 @@ function t1(band: Band, draw: SeededDraw): Built {
       requirement: { kind: 'property', req },
       reference: F(ref),
       referenceWhy: `"Every account" is one ∀ over the accounts, with both bounds inside it, beside the condition on the cap.`,
-      mutants: [
-        fixed('dp:G6', 'every read as some', 'This says some account is within the bounds. "Every account" is a ∀: each account must be.', F(and(cPos, some('i', and(lo('i'), hi('i', le(strict))))))),
-        fixed('dp:O1', 'shift the upper bound', `This moves the upper bound by one: a balance equal to the cap is ${strict ? 'not below it' : 'up to it'}.`, F(and(cPos, all('i', and(lo('i'), hi('i', flip(le(strict)))))))),
-        fixed('dp:O1', 'shift the lower bound', 'This moves the lower bound by one, so a zero balance fails, though "from 0" includes it.', F(and(cPos, all('i', and(rel(num(0), '<', arr('bal', 'i')), hi('i', le(strict))))))),
-        fixed('dp:O2', 'drop a condition', 'This drops "the cap is at least 2", so a cap of 1 with every balance 0 passes.', F(all('i', and(lo('i'), hi('i', le(strict)))))),
-        fixed('dp:A2', 'one account for all', 'This bounds every balance below by 0 but checks the cap on account 1 alone: a constraint set once, not per account.', F(and(cPos, all('i', lo('i')), hi(1, le(strict))))),
-      ],
-      distractors: 4,
+      // Two of three independent mistakes, each a change of one symbol, and both at once [D].
+      mutants: (() => {
+        const sides = draw.sample(['some', 'upper', 'lower'] as const, 2)
+        const build = (ex: boolean, upper: boolean, lower: boolean): SpecValue =>
+          F(and(cPos, (ex ? some : all)('i', and(lower ? rel(num(0), '<', arr('bal', 'i')) : lo('i'), hi('i', upper ? flip(le(strict)) : le(strict))))))
+        const side = (k: 'some' | 'upper' | 'lower'): Side =>
+          k === 'some'
+            ? { tag: 'dp:G6', operator: 'every read as some', why: 'This says some account is within the bounds. "Every account" is a ∀: each account must be.', value: build(true, false, false) }
+            : k === 'upper'
+              ? { tag: 'dp:O1', operator: 'shift the upper bound', why: `This moves the upper bound by one: a balance equal to the cap is ${strict ? 'not below it' : 'up to it'}.`, value: build(false, true, false) }
+              : { tag: 'dp:O1', operator: 'shift the lower bound', why: 'This moves the lower bound by one, so a zero balance fails, though "from 0" includes it.', value: build(false, false, true) }
+        const has = (k: 'some' | 'upper' | 'lower'): boolean => sides.includes(k)
+        return square(side(sides[0] as 'some'), side(sides[1] as 'some'), build(has('some'), has('upper'), has('lower')))
+      })(),
+      distractors: 3,
       bound: 'every state with c from 0 to 3 and bal(1) to bal(3) from −1 to 3',
       measure: { atoms: atomsOf(ref), quantifiers: quantifiersOf(ref), alternations: alternationsOf(ref) },
       shape: shapeOf(ref),
@@ -216,14 +253,18 @@ function t1(band: Band, draw: SeededDraw): Built {
     requirement: { kind: 'property', req },
     reference: F(ref),
     referenceWhy: 'For each account i in credit there is some j, chosen after i, that is a different account, not frozen, and large enough: ∀i then ∃j.',
-    mutants: [
-      fixed('dp:G6', 'quantifiers swapped', 'This puts ∃j before ∀i: one single account must back every account in credit, which the requirement does not ask.', F(some('j', all('i', implies(rel(arr('bal', 'i'), '>', num(0)), body([ixNe('j', 'i'), rel(arr('fz', 'j'), '=', num(0)), cover(op)])))))),
-      fixed('dp:O2', 'drop "different"', 'This drops `j ≠ i`, so an unfrozen account can back itself.', F(all('i', implies(rel(arr('bal', 'i'), '>', num(0)), some('j', body([rel(arr('fz', 'j'), '=', num(0)), cover(op)])))))),
-      fixed('dp:O2', 'drop "not frozen"', 'This drops the frozen test, so a frozen account counts as backing.', F(all('i', implies(rel(arr('bal', 'i'), '>', num(0)), some('j', body([ixNe('j', 'i'), cover(op)])))))),
-      fixed('dp:O1', 'shift the boundary', 'This asks for a backer for every account at 0 or above. An account at 0 is not in credit, so the requirement asks nothing of it.', F(all('i', implies(rel(arr('bal', 'i'), '>=', num(0)), some('j', body([ixNe('j', 'i'), rel(arr('fz', 'j'), '=', num(0)), cover(op)])))))),
-      fixed('dp:A2', 'some read as every', 'This asks every other account to back i: an extra ∀ where the requirement asks for one backer.', F(all('i', implies(rel(arr('bal', 'i'), '>', num(0)), all('j', implies(ixNe('j', 'i'), body([rel(arr('fz', 'j'), '=', num(0)), cover(op)]))))))),
-    ],
-    distractors: 4,
+    // The quantifier order crossed with the boundary of "in credit" [D]: two mistakes that keep every symbol's count.
+    mutants: (() => {
+      const credit = (atZero: boolean): Formula => rel(arr('bal', 'i'), atZero ? '>=' : '>', num(0))
+      const backer = body([ixNe('j', 'i'), rel(arr('fz', 'j'), '=', num(0)), cover(op)])
+      const build = (swapped: boolean, atZero: boolean): SpecValue => F(swapped ? some('j', all('i', implies(credit(atZero), backer))) : all('i', implies(credit(atZero), some('j', backer))))
+      return square(
+        { tag: 'dp:G6', operator: 'quantifiers swapped', why: 'This puts ∃j before ∀i: one single account must back every account in credit, which the requirement does not ask.', value: build(true, false) },
+        { tag: 'dp:O1', operator: 'shift the boundary', why: 'This asks for a backer for every account at 0 or above. An account at 0 is not in credit, so the requirement asks nothing of it.', value: build(false, true) },
+        build(true, true),
+      )
+    })(),
+    distractors: 3,
     bound: 'every state with bal(1) to bal(3) from 0 to 2 and fz(1) to fz(3) 0 or 1',
     measure: { atoms: atomsOf(ref), quantifiers: quantifiersOf(ref), alternations: alternationsOf(ref) },
     shape: shapeOf(ref),
@@ -244,6 +285,10 @@ const TEAM = rule([L('member', 'u', 't'), L('share_team', 'd', 't')])
 const SUBSET_OWNER: Rule[] = [rule([L('member', 'u', 't'), N('owns', 't', 'd')], 'gap'), rule([L('user', 'u'), L('doc', 'd'), N('gap', 'u', 'd')])]
 const SET_LEVEL_OWNER = rule([L('member', 'u', 't'), L('owns', 't2', 'd')])
 const ANYONE = rule([L('user', 'u'), L('doc', 'd')])
+/** The owner rule without the membership: any team owning d grants the read. */
+const ANY_OWNER = rule([L('user', 'u'), L('owns', 't', 'd')])
+/** The team-share rule without the membership. */
+const ANY_TEAM = rule([L('user', 'u'), L('share_team', 'd', 't')])
 
 function t2(band: Band, draw: SeededDraw): Built {
   const may = draw.pick(['may read', 'can read'])
@@ -267,6 +312,11 @@ function t2(band: Band, draw: SeededDraw): Built {
       shape: `policy:${ref.length}:${relationsOf(ref).length}:${negationsOf(ref)}`,
     }
   }
+  // Each band offers a menu of distractor sets, every one checked so that no option, the key included, shares more
+  // symbols with the others than the rest do, and drawn so the key is the longest, the shortest or in between about
+  // equally often across the template [D]. A set keeps the band's misconceptions: the subset reading, the set-level
+  // match, a dropped condition, a dropped way in, and (band 3) the revocation.
+  const set = (...ms: Mutant<SpecValue>[]): Mutant<SpecValue>[] => ms
   if (band === 1) {
     const req: PolicyStory = { owners: true, direct: false, revocable: false, teamShare: false }
     return done(
@@ -274,49 +324,57 @@ function t2(band: Band, draw: SeededDraw): Built {
       [OWNER],
       `A user ${may} a document when one of their teams owns it.`,
       '',
-      [
+      set(
         fixed('dp:A1', 'subset for overlap', 'This grants a read when every team of the user owns the document: a subset test where one shared team was meant. It is vacuously true for a user on no team, who then reads everything.', P(SUBSET_OWNER)),
-        fixed('dp:A2', 'set-level match', 'This needs some team of the user and some team owning the document, not the same team: the match is made for the sets, not per team.', P([SET_LEVEL_OWNER])),
-        fixed('dp:O2', 'drop a condition', 'This grants a read to anyone on any team, whoever owns the document.', P([rule([L('member', 'u', 't')])])),
+        fixed('dp:O2', 'drop the membership', 'This drops `member(u, t)`, so the user reads any document some team owns, whether or not the user is on that team.', P([ANY_OWNER])),
         fixed('dp:A5', 'grants every request', 'This grants every request. No request tells it apart from "allow all", so it says nothing about who may read.', P([ANYONE])),
-      ],
+      ),
       3,
       'One rule: a team t that the user is on and that owns the document. The shared variable `t` makes it the same team.',
     )
   }
   if (band === 2) {
     const req: PolicyStory = { owners: true, direct: true, revocable: false, teamShare: false }
+    const subsetD = fixed('dp:A1', 'subset for overlap', 'The first rule tests that every team of the user owns the document, a subset where one shared team was meant, and it is vacuously true for a user on no team.', P([...SUBSET_OWNER, DIRECT]))
+    const subsetNoD = fixed('dp:A1', 'subset for overlap, and drop a way in', 'This tests that every team of the user owns the document, a subset where one shared team was meant, vacuously true for a user on no team; and it drops the direct share, so a document shared with the user is refused.', P(SUBSET_OWNER))
+    const longer = fixed('dp:A2', 'set-level match', 'The first rule needs some team of the user and some team owning the document, not the same team.', P([SET_LEVEL_OWNER, DIRECT]))
+    const shorter = draw.pick([
+      fixed('dp:O2', 'drop a way in', 'This drops the direct share, so a document shared with the user is refused.', P([OWNER])),
+      fixed('dp:A5', 'grants every request', 'This grants every request. No request tells it apart from "allow all".', P([ANYONE])),
+      fixed('dp:O2', 'drop the membership', 'The first rule drops `member(u, t)`, so the user reads any document some team owns, whether or not the user is on that team.', P([ANY_OWNER, DIRECT])),
+      fixed('dp:O2', 'drop the owner rule', 'This drops the owner rule, so a document one of the user\'s teams owns is refused unless it is shared directly.', P([DIRECT])),
+    ])
     return done(
       req,
       [OWNER, DIRECT],
       `A user ${may} a document when one of their teams owns it, or when it is shared with them directly.`,
       ', `share_user(d, u)` (d is shared with u)',
-      [
-        fixed('dp:A1', 'subset for overlap', 'The first rule tests that every team of the user owns the document, a subset where one shared team was meant, and it is vacuously true for a user on no team.', P([...SUBSET_OWNER, DIRECT])),
-        fixed('dp:A2', 'one rule for two ways in', 'One rule joins the two ways in, so it demands both at once.', P([rule([L('member', 'u', 't'), L('owns', 't', 'd'), L('share_user', 'd', 'u')])])),
-        fixed('dp:A2', 'set-level match', 'The first rule needs some team of the user and some team owning the document, not the same team.', P([SET_LEVEL_OWNER, DIRECT])),
-        fixed('dp:O2', 'drop a way in', 'This drops the direct share, so a document shared with the user is refused.', P([OWNER])),
-        fixed('dp:A5', 'grants every request', 'This grants every request. No request tells it apart from "allow all".', P([ANYONE])),
-      ],
-      4,
+      set(subsetD, subsetNoD, draw.bool() ? longer : shorter),
+      3,
       'Two rules, one per way in: rules with the same head are alternatives, so either grants the read.',
     )
   }
   const req: PolicyStory = { owners: true, direct: true, revocable: true, teamShare: true }
   const okRules: Rule[] = [rule([L('member', 'u', 't'), L('owns', 't', 'd')], 'ok'), rule([L('share_user', 'd', 'u')], 'ok'), rule([L('member', 'u', 't'), L('share_team', 'd', 't')], 'ok'), rule([L('ok', 'u', 'd'), N('revoked', 'd', 'u')])]
+  const ignore = fixed('dp:A8', 'ignore the revocation', 'The direct-share rule ignores revocations, so a revoked share still allows the read.', P([OWNER, DIRECT, TEAM]))
+  const every = fixed('dp:O2', 'revocation on every route', "This applies the revocation to every way in, so a revoked direct share also blocks a read the user's team grants. The requirement revokes only the direct share.", P(okRules))
+  const subset = fixed('dp:A1', 'subset for overlap', 'The owner rule tests that every team of the user owns the document: a subset where one shared team was meant, vacuously true for a user on no team.', P([...SUBSET_OWNER, DIRECT_REV, TEAM]))
+  const setLevel = fixed('dp:A2', 'set-level match', 'The owner rule needs some team of the user and some team owning the document, not the same team.', P([SET_LEVEL_OWNER, DIRECT_REV, TEAM]))
+  const anyOwner = fixed('dp:O2', 'drop the membership', 'The owner rule drops `member(u, t)`, so the user reads any document some team owns, whether or not the user is on that team.', P([ANY_OWNER, DIRECT_REV, TEAM]))
+  const anyTeam = fixed('dp:O2', 'drop the membership', 'The team-share rule drops `member(u, t)`, so the user reads any document shared with some team, whether or not the user is on it.', P([OWNER, DIRECT_REV, ANY_TEAM]))
+  const ignoreAny = fixed('dp:A8', 'ignore the revocation, and drop the membership', 'The direct-share rule ignores revocations, so a revoked share still allows the read; and the owner rule drops `member(u, t)`, so any team owning the document grants it.', P([ANY_OWNER, DIRECT, TEAM]))
+  const dropTeam = fixed('dp:O2', 'drop a way in', "This drops the team share, so a document shared with one of the user's teams is refused.", P([OWNER, DIRECT_REV]))
+  const dropOwner = fixed('dp:O2', 'drop a way in', "This drops the owner rule, so a document one of the user's teams owns is refused unless it is shared.", P([DIRECT_REV, TEAM]))
+  const menu = draw.bool()
+    ? draw.pick([set(ignore, anyOwner, anyTeam), set(ignore, anyOwner, ignoreAny), set(ignore, anyTeam, ignoreAny), set(dropTeam, anyOwner, anyTeam), set(anyOwner, anyTeam, dropOwner)])
+    : draw.pick([set(every, subset, anyOwner), set(every, subset, anyTeam), set(subset, anyOwner, setLevel), set(subset, setLevel, anyTeam)])
   return done(
     req,
     [OWNER, DIRECT_REV, TEAM],
     `A user ${may} a document when one of their teams owns it, when it is shared with one of their teams, or when it is shared with them directly, unless that direct share is revoked.`,
     ', `share_team(d, t)` (d is shared with team t), `share_user(d, u)` (d is shared with u), `revoked(d, u)` (that direct share is revoked)',
-    [
-      fixed('dp:A8', 'ignore the revocation', 'The direct-share rule ignores revocations, so a revoked share still allows the read.', P([OWNER, DIRECT, TEAM])),
-      fixed('dp:O2', 'revocation on every route', "This applies the revocation to every way in, so a revoked direct share also blocks a read the user's team grants. The requirement revokes only the direct share.", P(okRules)),
-      fixed('dp:A1', 'subset for overlap', 'The owner rule tests that every team of the user owns the document: a subset where one shared team was meant, vacuously true for a user on no team.', P([...SUBSET_OWNER, DIRECT_REV, TEAM])),
-      fixed('dp:O2', 'drop a way in', 'This drops the team share, so a document shared with one of the user\'s teams is refused.', P([OWNER, DIRECT_REV])),
-      fixed('dp:A5', 'grants every request', 'This grants every request. No request tells it apart from "allow all".', P([ANYONE])),
-    ],
-    4,
+    menu,
+    3,
     'Three rules, one per way in; only the direct-share rule carries `!revoked(d, u)`, because the requirement revokes only that share.',
   )
 }
@@ -327,7 +385,7 @@ const balP = (ix: string | number): Term => arr("bal'", ix)
 const bal = (ix: string | number): Term => arr('bal', ix)
 const eq = (l: Term, r: Term): Formula => rel(l, '=', r)
 
-function t3(band: Band, _draw: SeededDraw): Built {
+function t3(band: Band, draw: SeededDraw): Built {
   const accounts = band + 1
   const aliasing = band === 3
   const writes: CommandStory['writes'] = band === 1 ? [] : band === 2 ? ['count'] : ['count', 'last']
@@ -346,22 +404,29 @@ function t3(band: Band, _draw: SeededDraw): Built {
   const frameOthers = accounts > 2 ? [others] : []
   const writesF = [...(writes.includes('count') ? [count] : []), ...(writes.includes('last') ? [last] : [])]
   const ref = and(transfer, ...frameOthers, ...writesF, limit)
-  const mutants: Mutant<SpecValue>[] = [
-    fixed('dp:O4', 'drop a frame conjunct', 'This says nothing about `limit′`, so a result that changes the limit passes. A postcondition must say what stays the same.', F(and(transfer, ...frameOthers, ...writesF))),
-    fixed('dp:Z5', 'direction swapped', 'This moves the amount the wrong way: into x and out of y.', F(and(aliasing ? and(implies(ixNe('x', 'y'), swapped), implies(ixEq('x', 'y'), eq(balP('x'), bal('x')))) : swapped, ...frameOthers, ...writesF, limit))),
+  // The direction of the move crossed with one other mistake [D]: swapping the direction keeps every symbol, so each
+  // option has a twin that differs from it only there, and the other mistake adds a conjunct as often as it drops
+  // one, so the key is no more often the longest than the shortest.
+  const turned = aliasing ? and(implies(ixNe('x', 'y'), swapped), implies(ixEq('x', 'y'), eq(balP('x'), bal('x')))) : swapped
+  const moves = (dir: boolean): Formula => (dir ? turned : transfer)
+  const shorter: { side: Omit<Side, 'value'>; of: (dir: boolean) => Formula }[] = [
+    { side: { tag: 'dp:O4', operator: 'drop a frame conjunct', why: 'This says nothing about `limit′`, so a result that changes the limit passes. A postcondition must say what stays the same.' }, of: (dir) => and(moves(dir), ...frameOthers, ...writesF) },
+    ...(accounts > 2 ? [{ side: { tag: 'dp:O4' as const, operator: 'drop the account frame', why: 'This says nothing about the accounts other than x and y, so a result in which an untouched account changes passes.' }, of: (dir: boolean) => and(moves(dir), ...writesF, limit) }] : []),
+    ...(band === 2 ? [{ side: { tag: 'dp:O2' as const, operator: 'a write left out', why: 'This says `count′ = count`, but Pay increments the counter, so every real run fails it.' }, of: (dir: boolean) => and(moves(dir), ...frameOthers, eq(v("count'"), v('count')), limit) }] : []),
+    ...(band === 3 ? [{ side: { tag: 'dp:O2' as const, operator: 'aliasing ignored', why: 'This states the move without the case `x = y`. When x and y are the same account, Pay changes nothing, and this postcondition asks for both `bal(x) − amt` and `bal(x) + amt` at once, so the real run fails it.' }, of: (dir: boolean) => and(dir ? swapped : move, others, ...writesF, limit) }] : []),
   ]
-  if (band === 1) mutants.push(fixed('dp:O2', 'too strong', 'This adds `bal′(x) ≥ 0`. Pay has no guard, so a run from a balance below the amount ends negative, and this postcondition rejects that real run.', F(and(ref, rel(balP('x'), '>=', num(0))))))
-  if (accounts > 2) mutants.push(fixed('dp:O4', 'drop the account frame', 'This says nothing about the accounts other than x and y, so a result in which an untouched account changes passes.', F(and(transfer, ...writesF, limit))))
-  if (band === 2) {
-    mutants.push(fixed('dp:O2', 'a write left out', 'This says `count′ = count`, but Pay increments the counter, so every real run fails it.', F(and(transfer, ...frameOthers, eq(v("count'"), v('count')), limit))))
-    mutants.push(fixed('dp:O2', 'frame over every account', 'This keeps every balance the same, x and y included, which contradicts the move itself, so no real run passes.', F(and(move, all('j', eq(balP('j'), bal('j'))), ...writesF, limit))))
-  }
-  if (band === 3) {
-    mutants.push(fixed('dp:O2', 'aliasing ignored', 'This states the move without the case `x = y`. When x and y are the same account, Pay changes nothing, and this postcondition asks for both `bal(x) − amt` and `bal(x) + amt` at once, so the real run fails it.', F(and(move, others, ...writesF, limit))))
-    mutants.push(fixed('dp:O2', 'a write left out', 'This says `last′ = last`, but Pay records the amount, so most real runs fail it.', F(and(transfer, others, count, eq(v("last'"), v('last')), limit))))
-  }
+  const longer = [
+    { side: { tag: 'dp:O2' as const, operator: 'too strong', why: 'This adds `amt ≤ bal(x)`, a guard Pay does not have. A run from a balance below the amount is a real run of Pay, and this postcondition rejects it.' }, of: (dir: boolean) => and(moves(dir), ...frameOthers, ...writesF, limit, rel(v('amt'), '<=', bal('x'))) },
+    ...(band === 3 ? [{ side: { tag: 'dp:O2' as const, operator: 'a write left out', why: 'This says `last′ = last`, but Pay records the amount, so most real runs fail it.' }, of: (dir: boolean) => and(moves(dir), others, count, eq(v("last'"), v('last')), limit) }] : []),
+  ]
+  const other = draw.pick(draw.bool() ? longer : shorter)
+  const mutants = square(
+    { tag: 'dp:Z5', operator: 'direction swapped', why: 'This moves the amount the wrong way: into x and out of y.', value: F(and(moves(true), ...frameOthers, ...writesF, limit)) },
+    { ...other.side, value: F(other.of(false)) },
+    F(other.of(true)),
+  )
   const fieldText = [...(writes.includes('count') ? ['`count`, a counter that Pay increments'] : []), ...(writes.includes('last') ? ['`last`, the last amount moved, which Pay sets to `amt`'] : []), '`limit`, which Pay never writes'].join('; ')
-  const bound = `every pre-state with balances and fields from 0 to 1, amt from 1 to 2, x and y any accounts${aliasing ? '' : ' with x ≠ y'}; for each, Pay's own result, the state unchanged, the reverse move, and every result that differs from Pay's in one value, from −2 to 3`
+  const bound = `every pre-state with balances and fields from 0 to 1, amt from 1 to 2, x and y any accounts${aliasing ? '' : ' with x ≠ y'}; for each, Pay's own result, the state unchanged, the reverse move, and every result that differs from Pay's or from the reverse move in one value, from −2 to 3`
   return {
     stem: `\`Pay(x, y, amt)\` moves \`amt\` from account \`x\` to account \`y\` among accounts 1 to ${accounts}${aliasing ? '; x and y may be the same account, and then the balances do not change' : ', where x and y are different accounts'}. State: \`bal(i)\`, each account's balance; ${fieldText}. A primed name is its value after Pay.`,
     ask: 'Pick the postcondition that describes Pay completely: every run of Pay satisfies it, and nothing else does.',
@@ -370,7 +435,7 @@ function t3(band: Band, _draw: SeededDraw): Built {
     reference: F(ref),
     referenceWhy: `It states each write and a frame for everything Pay leaves alone${aliasing ? ', with the case x = y apart' : ''}, so it holds of Pay's result and of nothing else.`,
     mutants,
-    distractors: band === 1 ? 3 : 4,
+    distractors: 3,
     bound,
     measure: { written: 1 + writes.length, accounts, aliasing: aliasing ? 1 : 0 },
     shape: `post:${shapeOf(ref)}`,

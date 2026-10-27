@@ -275,10 +275,38 @@ export function wrap(n: number, bits: number): number {
   return ((((n + half) % span) + span) % span) - half
 }
 
+/**
+ * The scope a case's checks run over, printed with every verdict (I10) and on the instance before it is answered; each
+ * names its numbers.
+ */
+export function scopeOf(c: GapCase): string {
+  switch (c.kind) {
+    case 'query':
+      return `every state with ${showBox(c.doms)}`
+    case 'scenario':
+      return `every behaviour with ${showBox(c.doms)} that the system allows, of ${boxSize(c.doms)} in the box`
+    case 'log':
+      return `the run's own box (${showBox(c.doms)}) and a wider one (${showBox(c.wider)})`
+    case 'width': {
+      let span = 1
+      for (let i = 0; i < c.bits; i++) span *= 2
+      return `every b and x from ${showN(-(span / 2))} to ${span / 2 - 1}, the code's ${c.bits}-bit range`
+    }
+    case 'fair':
+      return `the ${c.names.hold} system's 4 states, every fair cycle`
+    case 'idents':
+      return 'the 2 statements, token by token'
+    case 'observer':
+      return `every pair of states with a and s from 0 to ${c.max}`
+    case 'cti':
+      return `every state with ${showBox(c.doms)}, steps x := x + y`
+  }
+}
+
 function audit(c: GapCase): Finding {
   switch (c.kind) {
     case 'query': {
-      const bound = `every state with ${showBox(c.doms)}`
+      const bound = scopeOf(c)
       const all = AND(...c.premises.map((p) => p.x))
       const witness = first(c.doms, all)
       if (witness === null) {
@@ -296,7 +324,7 @@ function audit(c: GapCase): Finding {
       return { classes: ['none'], evidence: { 'the premises can hold': showState(witness), 'premises and violation together': 'no state in the box' }, bound, premise: witness }
     }
     case 'scenario': {
-      const bound = `every behaviour with ${showBox(c.doms)} that the system allows`
+      const bound = scopeOf(c)
       const weak = first(c.doms, AND(c.system, c.statement, NOT(c.requirement)))
       const strong = first(c.doms, AND(c.system, c.requirement, NOT(c.statement)))
       const classes: GapClass[] = []
@@ -314,7 +342,7 @@ function audit(c: GapCase): Finding {
     }
     case 'log': {
       const unknown = c.verdictLine.startsWith('unknown')
-      const bound = `the run's own box (${showBox(c.doms)}) and a wider one (${showBox(c.wider)})`
+      const bound = scopeOf(c)
       const outside = first(c.wider, c.query)
       if (unknown && c.claimScope !== 'the-box') return { classes: ['G5'], evidence: { 'the verdict line': c.verdictLine, 'what it means': 'no verdict: the run stopped at its budget' }, bound }
       if (!unknown && c.claimScope === 'all-integers') {
@@ -328,7 +356,7 @@ function audit(c: GapCase): Finding {
       for (let i = 0; i < c.bits; i++) span *= 2
       const min = -(span / 2)
       const max = span / 2 - 1
-      const bound = `every b and x from ${showN(min)} to ${max}, the code's ${c.bits}-bit range`
+      const bound = scopeOf(c)
       // The claim: a guarded deposit never lowers the balance. Over Int it holds whenever x > 0.
       for (let b = min; b <= max; b++)
         for (let x = min; x <= max; x++) {
@@ -343,7 +371,7 @@ function audit(c: GapCase): Finding {
       return { classes: ['none'], evidence: { [`under the code's ${c.bits}-bit arithmetic`]: 'no guarded input lowers the balance' }, bound }
     }
     case 'fair': {
-      const bound = `the ${c.names.hold} system's four states, every fair cycle`
+      const bound = scopeOf(c)
       const envFair = c.fair.filter((a) => c.actions.find((x) => x.name === a)?.owner === 'environment')
       const sysFair = c.fair.filter((a) => !envFair.includes(a))
       const lasso = fairLasso(c, sysFair)
@@ -354,7 +382,7 @@ function audit(c: GapCase): Finding {
       return { classes: ['none'], evidence: { 'fairness': `${c.fair.map((a) => `WF(${a})`).join(', ')}, all on the system's own actions`, 'fair cycles that never release': 'none' }, bound }
     }
     case 'idents': {
-      const bound = 'the two statements, token by token'
+      const bound = scopeOf(c)
       const a = tokens(c.pinned)
       const b = tokens(c.proved)
       const diff: string[] = []
@@ -363,7 +391,7 @@ function audit(c: GapCase): Finding {
       return { classes: ['none'], evidence: { 'pinned and proved statements': 'the same, token by token' }, bound }
     }
     case 'observer': {
-      const bound = `every pair of states with a and s from 0 to ${c.max}`
+      const bound = scopeOf(c)
       const see = (names: readonly string[], a: number, s: number): string => names.map((n) => `${n}=${c.fields.find((f) => f.name === n)?.secret === true ? a + s : a}`).join(',')
       const all = c.fields.map((f) => f.name)
       for (let a = 0; a <= c.max; a++)
@@ -377,7 +405,7 @@ function audit(c: GapCase): Finding {
       return { classes: ['none'], evidence: { 'pairs that differ only in the other tenant’s documents': 'every field reads the same in both' }, bound }
     }
     case 'cti': {
-      const bound = `every state with ${showBox(c.doms)}, steps x := x + y`
+      const bound = scopeOf(c)
       const step = (s: State): State => ({ x: (s['x'] as number) + (s['y'] as number), y: s['y'] as number })
       const inBox = (s: State): boolean => c.doms.every((d) => 'flag' in d || ((s[d.v] as number) >= d.lo && (s[d.v] as number) <= d.hi))
       // Reachable states from init, inside the box.

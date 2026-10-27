@@ -14,6 +14,7 @@
 import { createDraw, deriveSeed } from '@statespace/rng'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -174,6 +175,28 @@ function whyNot(opt: AnomalyClass, c: Classification, h: History): string {
   }
 }
 
+/**
+ * Each class as an option, in a short, a middle and a long wording [D], with no SQLSTATE code, bracket, capital or
+ * absolute word. The recorded pool keys some classes far more often than others, so one fixed label per class would
+ * let the frequent keys' lengths and symbols name them; an item draws the key's wording, and choose.ts the others'.
+ */
+const CLASS_WORDINGS: Readonly<Record<AnomalyClass, readonly [string, string, string]>> = {
+  'lost-update': ['lost update', 'a lost update on commit', 'lost update across two sessions'],
+  'write-skew': ['write skew', 'write skew between rows', 'write skew across two accounts'],
+  'read-skew': ['read skew', 'read skew between reads', 'read skew across two snapshots'],
+  'serialization-failure': ['serialization failure', 'a serialization failure', 'a serialization failure at commit'],
+  deadlock: ['deadlock', 'a deadlock between them', 'a deadlock between two sessions'],
+  none: ['no anomaly', 'no anomaly of any kind', 'no anomaly worth naming here'],
+}
+
+/** A class as an option: which class, in which wording. */
+interface Worded {
+  readonly c: AnomalyClass
+  readonly form: 0 | 1 | 2
+}
+
+const wordedText = (w: Worded): string => CLASS_WORDINGS[w.c][w.form]
+
 const TAG: Readonly<Record<AnomalyClass, MisconceptionKey>> = {
   none: 'dp:Q5',
   'serialization-failure': 'dp:Q4',
@@ -198,7 +221,16 @@ function make(seed: number, band: Band, template: TemplateId): AnomalyInstance {
   const c = classify(h)
   if ('unknown' in c) throw new RangeError(`${ANOMALY_ID_ID}: ${h.id} cannot be classified: ${c.unknown}`)
   const mutants: Mutant<AnomalyClass>[] = CLASSES.filter((x) => x !== c.cls).map((x) => ({ tag: TAG[x], operator: `name it ${CLASS_TEXT[x]}`, why: () => whyNot(x, c, h), apply: () => x }))
-  const { options, values } = assembleOptions({ reference: c.cls, referenceWhy: referenceWhy(c), mutants, distractors: 5, draw: draw.fork('options'), render: (x) => CLASS_TEXT[x] })
+  // The key in a drawn wording, each other class in every wording; choose.ts shows one wording of each.
+  const reference: Worded = { c: c.cls, form: draw.int(0, 2) as 0 | 1 | 2 }
+  const candidates: Mutant<Worded>[] = mutants.flatMap((m) =>
+    ([0, 1, 2] as const).map((form): Mutant<Worded> => ({ tag: m.tag, operator: m.operator, why: () => m.why(c.cls), apply: (_r, d) => ({ c: m.apply(c.cls, d) as AnomalyClass, form }) })),
+  )
+  const chosen = chooseDistractors({ reference, candidates, n: 5, draw: draw.fork('choose'), render: wordedText, meaning: (w) => w.c })
+  const worded = assembleOptions({ reference, referenceWhy: referenceWhy(c), mutants: chosen, distractors: 5, draw: draw.fork('options'), render: wordedText })
+  const options = worded.options
+  const values: Record<string, AnomalyClass> = {}
+  for (const [id, w] of Object.entries(worded.values)) values[id] = w.c
   const levels = Object.entries(h.levels).map(([s, l]) => `${s} ${LEVEL_NAME[l]}`).join(', ')
   const setup = h.pattern.includes('holds') ? `account 1 holds ${h.balance}, with no holds placed` : `accounts 1 and 2 each hold ${h.balance}`
   const stem = [

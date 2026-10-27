@@ -2,8 +2,11 @@
 # Every case is keyed by RUN-z3-declassify-pairs, recorded in the Bench image by
 # content/audit/tools/record-keys-s7-s8.mjs. Its tags are neutral: q1 sound member, q2 flawed member, q3/q4 variant
 # pair v1 (sound/flawed). Each statement is the case's query as declassify.py runs it, with World, Usage,
-# shares_agree() and count() as in that file. Spine section 6.2's key run cell names RUN-z3-selfcomp, which keys
-# S7.L6's Open and none of these statements; content/audit/README.md lists the cell as an open item.
+# shares_agree() and count() as in that file. Variant pairs v2 to v5 are keyed by RUN-z3-declassify-exemplars
+# (content/audit/tools/record-exemplars.mjs), whose tags are q5/q6 (v2), q7/q8 (v3), q9/q10 (v4) and q11/q12 (v5),
+# each sound/flawed. The sound forms of v2 and v3 are S7.L6's Open v1 in Z3Py (cell 2) and in SMT-LIB (cell 3), and
+# their key run is the spine's, RUN-z3-selfcomp; their receipts and scenarios come from RUN-z3-declassify-exemplars,
+# which re-checks the same statements.
 id: AUD-7.2
 stage: S7
 class: G12
@@ -203,3 +206,439 @@ variants:
     key_run: RUN-z3-declassify-pairs
     key_lines: ["[q4 proof] unsat", "[q4 s1] forbids"]
     explain: "The declassification of the platform-wide count is gone, so the statement forbids the panel the requirement asks for; the check passes because the panel no longer shows the count. A true statement about the wrong system."
+
+  - id: v2-sound
+    pair: v2
+    operator: drop-declassification
+    artifact: open-by-name
+    key: none
+    description: "Gives Open one answer for both refusals and restates Rel for the sharing release, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def open_doc(exists, mayread, body):          # one answer for both refusals
+          code = If(And(exists, mayread), 2, 0)
+          return code, If(code == 2, body, 0)
+
+      def related():
+          eL, eR = Bools('exists_L exists_R')
+          mL, mR = Bools('mayread_L mayread_R')
+          bL, bR = Ints('body_L body_R')
+          # Rel: the worlds agree on what Acme may know.
+          rel = And(mL == mR, Implies(mL, And(eL == eR, bL == bR)))
+          return (eL, mL, bL), (eR, mR, bR), rel
+
+      L, R, rel = related()
+      (cL, xL), (cR, xR) = open_doc(*L), open_doc(*R)
+      s = Solver()
+      s.add(rel, Or(cL != cR, xL != xR))           # the negated conclusion: frank's responses differ
+      print(s.check())
+    diff: |
+      --- a/checks/open_selfcomp.py
+      +++ b/checks/open_selfcomp.py
+      @@ -1,3 +1,3 @@
+      -def open_doc(exists, mayread, body):          # not_found, forbidden or a page
+      -    code = If(Not(exists), 0, If(Not(mayread), 1, 2))
+      +def open_doc(exists, mayread, body):          # one answer for both refusals
+      +    code = If(And(exists, mayread), 2, 0)
+           return code, If(code == 2, body, 0)
+      @@ -9,2 +9,2 @@
+           # Rel: the worlds agree on what Acme may know.
+      -    rel = And(mL == mR, eL == eR, Implies(mL, bL == bR))
+      +    rel = And(mL == mR, Implies(mL, And(eL == eR, bL == bR)))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q5 proof] unsat
+      [q5 premises] sat
+    receipt_run: RUN-z3-declassify-exemplars
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "Birch edits layoffs-memo, which it shares with Acme, and frank's page shows the new body.", answer: true, key_line: "[q5 s1] allows", why: "The document is shared with Acme, so frank may read it: the worlds differ in a released body and are not related." }
+        - { id: s2, text: "Birch creates layoffs-memo without sharing it, and frank's answer changes.", answer: false, key_line: "[q5 s2] forbids", why: "frank may not read it, so whether it exists is not released: related worlds, so frank's answer must stay the same." }
+        - { id: s3, text: "Birch shares layoffs-memo with Acme, and frank's answer becomes a page.", answer: true, key_line: "[q5 s3] allows", why: "Whether frank may read it is part of the release, so the worlds are not related." }
+        - { id: s4, text: "Birch edits layoffs-memo while it is not shared, and frank's answer changes.", answer: false, key_line: "[q5 s4] forbids", why: "A body frank may not read is not released: related worlds." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-z3-selfcomp
+    key_lines: ["v1 unsat", "premise witness sat"]
+    explain: "This is S7.L6's Open v1, keyed by its own run: worlds that agree on whether frank may read the document, and on its existence and body when he may, give frank equal answers (v1 unsat), and such worlds can still differ in what he may not read (premise witness sat). The statement releases a shared document's body and nothing else."
+
+  - id: v2-flawed
+    pair: v2
+    operator: drop-declassification
+    artifact: open-by-name
+    key: { class: G12, also: [G1] }
+    description: "Gives Open one answer for both refusals and restates Rel for the sharing release, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def open_doc(exists, mayread, body):          # one answer for every request
+          code = IntVal(0)
+          return code, If(code == 2, body, 0)
+
+      def related():
+          eL, eR = Bools('exists_L exists_R')
+          mL, mR = Bools('mayread_L mayread_R')
+          bL, bR = Ints('body_L body_R')
+          # Rel: the worlds agree on what Acme may know.
+          rel = And(mL == mR)                       # nothing of Birch's document reaches frank
+          return (eL, mL, bL), (eR, mR, bR), rel
+
+      L, R, rel = related()
+      (cL, xL), (cR, xR) = open_doc(*L), open_doc(*R)
+      s = Solver()
+      s.add(rel, Or(cL != cR, xL != xR))           # the negated conclusion: frank's responses differ
+      print(s.check())
+    diff: |
+      --- a/checks/open_selfcomp.py
+      +++ b/checks/open_selfcomp.py
+      @@ -1,3 +1,3 @@
+      -def open_doc(exists, mayread, body):          # not_found, forbidden or a page
+      -    code = If(Not(exists), 0, If(Not(mayread), 1, 2))
+      +def open_doc(exists, mayread, body):          # one answer for every request
+      +    code = IntVal(0)
+           return code, If(code == 2, body, 0)
+      @@ -9,2 +9,2 @@
+           # Rel: the worlds agree on what Acme may know.
+      -    rel = And(mL == mR, eL == eR, Implies(mL, bL == bR))
+      +    rel = And(mL == mR)                       # nothing of Birch's document reaches frank
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q6 proof] unsat
+      [q6 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios:
+        - { id: s1, text: "Birch edits layoffs-memo, which it shares with Acme, and frank's page shows the new body.", answer: false, key_line: "[q6 s1] forbids", why: "The worlds agree on whether frank may read the document, so they are related, and the statement requires frank's answer to stay the same. The requirement wants the shared body shown." }
+        - { id: s2, text: "Birch creates layoffs-memo without sharing it, and frank's answer changes.", answer: false, key_line: "[q6 s2] forbids", why: "Related worlds: forbidden, as the requirement also says." }
+        - { id: s3, text: "Birch shares layoffs-memo with Acme, and frank's answer becomes a page.", answer: true, key_line: "[q6 s3] allows", why: "Whether frank may read it differs, so the worlds are not related." }
+        - { id: s4, text: "Birch edits layoffs-memo while it is not shared, and frank's answer changes.", answer: false, key_line: "[q6 s4] forbids", why: "Related worlds: forbidden, as the requirement says." }
+    evidence: { type: scenario, load_bearing: ["statement:2", "statement:10"], reference: "RUN-z3-declassify-exemplars [q6 s1] forbids: Birch edits a document it shares with Acme, and the statement requires frank's answer to stay the same" }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q6 proof] unsat", "[q6 premises] sat", "[q6 s1] forbids"]
+    explain: "The proof goes through, and it is the wrong statement. Rel releases nothing of Birch's document but whether frank may read it, so every change must leave his answer alone; the check passes only because Open now answers 0 to every request. Reading a shared document is a feature the requirement wants: the statement forbids it (s1), and the code no longer delivers it."
+
+  - id: v3-flawed
+    pair: v3
+    operator: drop-parentheses
+    artifact: open-by-name-smt
+    medium: smt-lib
+    key: { class: G12, also: [G1] }
+    description: "Open now returns a page's body: restates Rel to release it, then re-runs the check. Z3 answers unsat."
+    statement: |
+      ; Self-composition of Open v1 for frank and layoffs-memo.
+      ; _L is the left world and _R the right world.
+      (declare-const exists_L Bool)
+      (declare-const exists_R Bool)
+      (declare-const mayread_L Bool)
+      (declare-const mayread_R Bool)
+      (declare-const body_L Int)
+      (declare-const body_R Int)
+
+      ; Rel: the worlds agree on what Acme may know.
+      (assert (= mayread_L mayread_R))
+      (assert (and (=> mayread_L (= exists_L exists_R)) (= body_L body_R)))
+
+      ; The view, once per world: a page only when the document exists and frank may read it.
+      (define-fun resp_code ((e Bool) (m Bool)) Int (ite (and e m) 2 0))
+      (define-fun resp_body ((e Bool) (m Bool) (b Int)) Int b)
+
+      ; The negated conclusion: frank's two responses differ.
+      (assert (or (distinct (resp_code exists_L mayread_L) (resp_code exists_R mayread_R))
+                  (distinct (resp_body exists_L mayread_L body_L) (resp_body exists_R mayread_R body_R))))
+      (check-sat)
+    diff: |
+      --- a/checks/open_selfcomp.smt2
+      +++ b/checks/open_selfcomp.smt2
+      @@ -11,6 +11,6 @@
+       (assert (= mayread_L mayread_R))
+      -(assert (=> mayread_L (= exists_L exists_R)))
+      +(assert (and (=> mayread_L (= exists_L exists_R)) (= body_L body_R)))
+
+       ; The view, once per world: a page only when the document exists and frank may read it.
+       (define-fun resp_code ((e Bool) (m Bool)) Int (ite (and e m) 2 0))
+      -(define-fun resp_body ((e Bool) (m Bool) (b Int)) Int 0)
+      +(define-fun resp_body ((e Bool) (m Bool) (b Int)) Int b)
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q8 proof] unsat
+      [q8 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios:
+        - { id: s1, text: "Birch edits layoffs-memo, which it shares with Acme, and frank's page shows the new body.", answer: true, key_line: "[q8 s1] allows", why: "Shared with Acme: the requirement lets frank see the new body, and the statement allows it." }
+        - { id: s2, text: "Birch creates layoffs-memo without sharing it, and frank's answer changes.", answer: true, key_line: "[q8 s2] allows", why: "The bodies differ (none, then one), and Rel now requires equal bodies in every related pair, so the worlds are not related: the statement lets frank's answer change, though nothing here is shared." }
+        - { id: s3, text: "Birch shares layoffs-memo with Acme, and frank's answer becomes a page.", answer: true, key_line: "[q8 s3] allows", why: "Whether frank may read it differs: not related." }
+        - { id: s4, text: "Birch edits layoffs-memo while it is not shared, and frank's answer changes.", answer: true, key_line: "[q8 s4] allows", why: "The bodies differ, so the worlds are not related: the statement allows frank's answer to change with a body he may not read. The requirement forbids it." }
+    evidence: { type: scenario, load_bearing: ["statement:12", "statement:16"], reference: "RUN-z3-declassify-exemplars [q8 s4] allows: Birch edits a document it does not share with Acme, and the statement lets frank's answer change" }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q8 proof] unsat", "[q8 s4] allows", "[q8 s2] allows"]
+    explain: "A parenthesis closes the implication early: (= body_L body_R) left the => and now holds between any two related worlds. Rel releases the body whether or not frank may read the document, and resp_body returns it unconditionally. The check passes on a statement that allows what the requirement forbids (s2, s4)."
+
+  - id: v3-sound
+    pair: v3
+    operator: drop-parentheses
+    artifact: open-by-name-smt
+    medium: smt-lib
+    key: none
+    description: "Open now returns a page's body: restates Rel to release it, then re-runs the check. Z3 answers unsat."
+    statement: |
+      ; Self-composition of Open v1 for frank and layoffs-memo.
+      ; _L is the left world and _R the right world.
+      (declare-const exists_L Bool)
+      (declare-const exists_R Bool)
+      (declare-const mayread_L Bool)
+      (declare-const mayread_R Bool)
+      (declare-const body_L Int)
+      (declare-const body_R Int)
+
+      ; Rel: the worlds agree on what Acme may know.
+      (assert (= mayread_L mayread_R))
+      (assert (=> mayread_L (and (= exists_L exists_R) (= body_L body_R))))
+
+      ; The view, once per world: a page only when the document exists and frank may read it.
+      (define-fun resp_code ((e Bool) (m Bool)) Int (ite (and e m) 2 0))
+      (define-fun resp_body ((e Bool) (m Bool) (b Int)) Int (ite (and e m) b 0))
+
+      ; The negated conclusion: frank's two responses differ.
+      (assert (or (distinct (resp_code exists_L mayread_L) (resp_code exists_R mayread_R))
+                  (distinct (resp_body exists_L mayread_L body_L) (resp_body exists_R mayread_R body_R))))
+      (check-sat)
+    diff: |
+      --- a/checks/open_selfcomp.smt2
+      +++ b/checks/open_selfcomp.smt2
+      @@ -11,6 +11,6 @@
+       (assert (= mayread_L mayread_R))
+      -(assert (=> mayread_L (= exists_L exists_R)))
+      +(assert (=> mayread_L (and (= exists_L exists_R) (= body_L body_R))))
+
+       ; The view, once per world: a page only when the document exists and frank may read it.
+       (define-fun resp_code ((e Bool) (m Bool)) Int (ite (and e m) 2 0))
+      -(define-fun resp_body ((e Bool) (m Bool) (b Int)) Int 0)
+      +(define-fun resp_body ((e Bool) (m Bool) (b Int)) Int (ite (and e m) b 0))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q7 proof] unsat
+      [q7 premises] sat
+    receipt_run: RUN-z3-declassify-exemplars
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "Birch edits layoffs-memo, which it shares with Acme, and frank's page shows the new body.", answer: true, key_line: "[q7 s1] allows", why: "Shared with Acme: not related, so frank may see the new body." }
+        - { id: s2, text: "Birch creates layoffs-memo without sharing it, and frank's answer changes.", answer: false, key_line: "[q7 s2] forbids", why: "frank may not read it: related worlds, and his answer must stay the same." }
+        - { id: s3, text: "Birch shares layoffs-memo with Acme, and frank's answer becomes a page.", answer: true, key_line: "[q7 s3] allows", why: "Whether frank may read it differs: not related." }
+        - { id: s4, text: "Birch edits layoffs-memo while it is not shared, and frank's answer changes.", answer: false, key_line: "[q7 s4] forbids", why: "A body frank may not read is not released: related worlds." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-selfcomp
+    key_lines: ["unsat", "premise witness sat"]
+    explain: "This is S7.L6 cell 3, the SMT-LIB of Open v1, keyed by its own run: the existence and the body sit inside (=> mayread_L ...), so they are released only when frank may read the document (unsat), and the same Rel holds with a secret that differs (cell 2's premise witness, sat)."
+
+  - id: v4-sound
+    pair: v4
+    operator: swap-quantifiers
+    artifact: share-rule-inline
+    key: none
+    description: "Restates tenant isolation for the sharing release with the share rule written inline, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # what Acme's client receives
+          return [W.own_A] + [If(sh, c, HIDDEN) for c, sh in W.docs_B]
+
+      def rel(L, R):                                   # what Acme may know: DCL-7.1, written inline
+          return And(L.own_A == R.own_A, And([And(shL == shR, Implies(shL, cL == cR))
+                                              for (cL, shL), (cR, shR) in zip(L.docs_B, R.docs_B)]))
+
+      L, R = World('L'), World('R')                    # Acme's document; two of Birch's, each maybe shared
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/isolation.py
+      +++ b/checks/isolation.py
+      @@ -1,5 +1,6 @@
+       def view_A(W):                                   # what Acme's client receives
+      -    return [W.own_A]
+      +    return [W.own_A] + [If(sh, c, HIDDEN) for c, sh in W.docs_B]
+
+       def rel(L, R):                                   # what Acme may know: DCL-7.1, written inline
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A, And([And(shL == shR, Implies(shL, cL == cR))
+      +                                        for (cL, shL), (cR, shR) in zip(L.docs_B, R.docs_B)]))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q9 proof] unsat
+      [q9 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "Birch edits contract, which Birch has shared with Acme, and Acme's view shows the new body.", answer: true, key_line: "[q9 s1] allows", why: "A shared document's body is released (DCL-7.1): not related, so Acme may see it." }
+        - { id: s2, text: "Birch edits a private document while sharing contract with Acme, and Acme's view changes.", answer: false, key_line: "[q9 s2] forbids", why: "The private document's body is not released: related worlds, so Acme's view must stay the same." }
+        - { id: s3, text: "Birch, sharing nothing with Acme, edits a document, and Acme's view changes.", answer: false, key_line: "[q9 s3] forbids", why: "Nothing is shared: related worlds." }
+        - { id: s4, text: "Acme edits its own document, and Acme's view changes.", answer: true, key_line: "[q9 s4] allows", why: "Acme's own document differs: not related." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q9 proof] unsat", "[q9 premises] sat", "[q9 s2] forbids"]
+    explain: "Each document's body is released under its own share flag: Implies(shL, cL == cR), inside the per-document And. Worlds that agree on Acme's document and on what Birch shares give equal views (unsat), and they can still differ in Birch's private data (premises sat)."
+
+  - id: v4-flawed
+    pair: v4
+    operator: swap-quantifiers
+    artifact: share-rule-inline
+    key: { class: G12, also: [G1] }
+    description: "Restates tenant isolation for the sharing release with the share rule written inline, then re-runs the check. Z3 answers unsat."
+    statement: |
+      def view_A(W):                                   # what Acme's client receives
+          return [W.own_A] + [If(Or([s for _, s in W.docs_B]), c, HIDDEN) for c, sh in W.docs_B]
+
+      def rel(L, R):                                   # what Acme may know: DCL-7.1, written inline
+          return And(L.own_A == R.own_A, And([And(shL == shR, Implies(Or([s for _, s in L.docs_B]), cL == cR))
+                                              for (cL, shL), (cR, shR) in zip(L.docs_B, R.docs_B)]))
+
+      L, R = World('L'), World('R')                    # Acme's document; two of Birch's, each maybe shared
+      s = Solver()
+      s.add(rel(L, R))
+      s.add(Or([a != b for a, b in zip(view_A(L), view_A(R))]))
+      print(s.check())
+    diff: |
+      --- a/checks/isolation.py
+      +++ b/checks/isolation.py
+      @@ -1,5 +1,6 @@
+       def view_A(W):                                   # what Acme's client receives
+      -    return [W.own_A]
+      +    return [W.own_A] + [If(Or([s for _, s in W.docs_B]), c, HIDDEN) for c, sh in W.docs_B]
+
+       def rel(L, R):                                   # what Acme may know: DCL-7.1, written inline
+      -    return L.own_A == R.own_A
+      +    return And(L.own_A == R.own_A, And([And(shL == shR, Implies(Or([s for _, s in L.docs_B]), cL == cR))
+      +                                        for (cL, shL), (cR, shR) in zip(L.docs_B, R.docs_B)]))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q10 proof] unsat
+      [q10 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios:
+        - { id: s1, text: "Birch edits contract, which Birch has shared with Acme, and Acme's view shows the new body.", answer: true, key_line: "[q10 s1] allows", why: "Released, as the requirement wants." }
+        - { id: s2, text: "Birch edits a private document while sharing contract with Acme, and Acme's view changes.", answer: true, key_line: "[q10 s2] allows", why: "Birch shares one document, so Rel releases every body, and the view shows them: the worlds are not related and the statement allows Acme to see a private document change. The requirement forbids it." }
+        - { id: s3, text: "Birch, sharing nothing with Acme, edits a document, and Acme's view changes.", answer: false, key_line: "[q10 s3] forbids", why: "Nothing is shared, so no body is released: related worlds." }
+        - { id: s4, text: "Acme edits its own document, and Acme's view changes.", answer: true, key_line: "[q10 s4] allows", why: "Acme's own document differs: not related." }
+    evidence: { type: scenario, load_bearing: ["statement:2", "statement:5"], reference: "RUN-z3-declassify-exemplars [q10 s2] allows: Birch edits a private document while sharing another, and the statement lets Acme's view change" }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q10 proof] unsat", "[q10 premises] sat", "[q10 s2] allows"]
+    explain: "The share rule asks whether Birch shares any document, Or over all of them, where DCL-7.1 asks about this one: once Birch shares one document, every body is released, and the view shows them all. The check passes on a statement that allows what the requirement forbids (s2)."
+
+  - id: v5-flawed
+    pair: v5
+    operator: drop-declassification
+    artifact: usage-panel-count-smt
+    medium: smt-lib
+    key: { class: G12, also: [G1] }
+    description: "Adds the document count to Acme's usage panel and restates tenant isolation for it, then re-runs the check. Z3 answers unsat."
+    statement: |
+      ; Self-composition of Acme's usage panel. Acme has one document; Birch has two private ones, each maybe present.
+      (declare-const own_L Int)
+      (declare-const own_R Int)
+      (declare-const ex0_L Bool)
+      (declare-const ex0_R Bool)
+      (declare-const ex1_L Bool)
+      (declare-const ex1_R Bool)
+      (declare-const body0_L Int)
+      (declare-const body0_R Int)
+      (declare-const body1_L Int)
+      (declare-const body1_R Int)
+      (define-fun cnt ((a Bool) (b Bool)) Int (+ (ite a 1 0) (ite b 1 0)))
+
+      ; Rel: what Acme may know.
+      (assert (and (= own_L own_R)))                                       ; every tenant: nothing of Birch's reaches Acme
+
+      ; Acme's usage panel, once per world.
+      (define-fun panel ((x0 Bool) (x1 Bool)) Int 1)                       ; its document, and its own document count
+
+      ; The negated conclusion: Acme's two panels differ.
+      (assert (or (distinct own_L own_R) (distinct (panel ex0_L ex1_L) (panel ex0_R ex1_R))))
+      (check-sat)
+    diff: |
+      --- a/checks/usage_selfcomp.smt2
+      +++ b/checks/usage_selfcomp.smt2
+      @@ -14,7 +14,8 @@
+       ; Rel: what Acme may know.
+      -(assert (= own_L own_R))
+      +(assert (and (= own_L own_R)))                                       ; every tenant: nothing of Birch's reaches Acme
+
+       ; Acme's usage panel, once per world.
+      +(define-fun panel ((x0 Bool) (x1 Bool)) Int 1)                       ; its document, and its own document count
+
+       ; The negated conclusion: Acme's two panels differ.
+      -(assert (distinct own_L own_R))
+      +(assert (or (distinct own_L own_R) (distinct (panel ex0_L ex1_L) (panel ex0_R ex1_R))))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q12 proof] unsat
+      [q12 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios:
+        - { id: s1, text: "Birch creates a private document, and the count on Acme's usage panel goes up by one.", answer: false, key_line: "[q12 s1] forbids", why: "Without the declassification the worlds are related, so the panel must not change. The requirement wants the platform-wide count shown." }
+        - { id: s2, text: "Birch edits a private document's body, and Acme's usage panel changes.", answer: false, key_line: "[q12 s2] forbids", why: "Related worlds: forbidden, as the requirement says." }
+        - { id: s3, text: "Birch deletes one private document and creates another, and Acme's usage panel changes.", answer: false, key_line: "[q12 s3] forbids", why: "Related worlds: forbidden, as the requirement says." }
+        - { id: s4, text: "Acme edits its own document, and Acme's usage panel changes.", answer: true, key_line: "[q12 s4] allows", why: "Acme's own document differs: not related." }
+    evidence: { type: scenario, load_bearing: ["statement:15", "statement:18"], reference: "RUN-z3-declassify-exemplars [q12 s1] forbids: Birch creates a document, and the statement forbids the platform-wide count from changing" }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q12 proof] unsat", "[q12 s1] forbids"]
+    explain: "The declassification of the platform-wide count is gone from Rel, so the statement forbids the count the requirement asks for; the check passes because the panel shows a constant 1. A true statement about the wrong panel."
+
+  - id: v5-sound
+    pair: v5
+    operator: drop-declassification
+    artifact: usage-panel-count-smt
+    medium: smt-lib
+    key: none
+    description: "Adds the document count to Acme's usage panel and restates tenant isolation for it, then re-runs the check. Z3 answers unsat."
+    statement: |
+      ; Self-composition of Acme's usage panel. Acme has one document; Birch has two private ones, each maybe present.
+      (declare-const own_L Int)
+      (declare-const own_R Int)
+      (declare-const ex0_L Bool)
+      (declare-const ex0_R Bool)
+      (declare-const ex1_L Bool)
+      (declare-const ex1_R Bool)
+      (declare-const body0_L Int)
+      (declare-const body0_R Int)
+      (declare-const body1_L Int)
+      (declare-const body1_R Int)
+      (define-fun cnt ((a Bool) (b Bool)) Int (+ (ite a 1 0) (ite b 1 0)))
+
+      ; Rel: what Acme may know.
+      (assert (and (= own_L own_R) (= (cnt ex0_L ex1_L) (cnt ex0_R ex1_R))))   ; DCL-7.2: the platform-wide count
+
+      ; Acme's usage panel, once per world.
+      (define-fun panel ((x0 Bool) (x1 Bool)) Int (+ 1 (cnt x0 x1)))   ; its document, and the platform-wide count
+
+      ; The negated conclusion: Acme's two panels differ.
+      (assert (or (distinct own_L own_R) (distinct (panel ex0_L ex1_L) (panel ex0_R ex1_R))))
+      (check-sat)
+    diff: |
+      --- a/checks/usage_selfcomp.smt2
+      +++ b/checks/usage_selfcomp.smt2
+      @@ -14,7 +14,8 @@
+       ; Rel: what Acme may know.
+      -(assert (= own_L own_R))
+      +(assert (and (= own_L own_R) (= (cnt ex0_L ex1_L) (cnt ex0_R ex1_R))))   ; DCL-7.2: the platform-wide count
+
+       ; Acme's usage panel, once per world.
+      +(define-fun panel ((x0 Bool) (x1 Bool)) Int (+ 1 (cnt x0 x1)))   ; its document, and the platform-wide count
+
+       ; The negated conclusion: Acme's two panels differ.
+      -(assert (distinct own_L own_R))
+      +(assert (or (distinct own_L own_R) (distinct (panel ex0_L ex1_L) (panel ex0_R ex1_R))))
+    receipt: |
+      z3 5.3.1 rlimit=5000000
+      [q11 proof] unsat
+      [q11 premises] sat
+    restatement:
+      run: RUN-z3-declassify-exemplars
+      scenarios: &v5-sound-scenarios
+        - { id: s1, text: "Birch creates a private document, and the count on Acme's usage panel goes up by one.", answer: true, key_line: "[q11 s1] allows", why: "The platform-wide count is released (DCL-7.2): not related, so the panel may change." }
+        - { id: s2, text: "Birch edits a private document's body, and Acme's usage panel changes.", answer: false, key_line: "[q11 s2] forbids", why: "The count is unchanged and bodies are not released: related worlds." }
+        - { id: s3, text: "Birch deletes one private document and creates another, and Acme's usage panel changes.", answer: false, key_line: "[q11 s3] forbids", why: "One document fewer and one more: the count is unchanged, so the worlds are related and the panel must stay the same." }
+        - { id: s4, text: "Acme edits its own document, and Acme's usage panel changes.", answer: true, key_line: "[q11 s4] allows", why: "Acme's own document differs: not related." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-z3-declassify-exemplars
+    key_lines: ["[q11 proof] unsat", "[q11 premises] sat", "[q11 s1] allows"]
+    explain: "The count is declassified on purpose, with its record (DCL-7.2), and Rel includes it. Worlds that agree on Acme's document and on the count give equal panels (unsat); they can still differ in which of Birch's documents exist and in their bodies (premises sat)."

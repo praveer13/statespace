@@ -5,6 +5,7 @@
 // the probe is written as assisted, which scores 0.
 
 import { useEffect, useRef, useState } from 'react'
+import type { RefObject } from 'react'
 import { GRAPH, kcById } from '@statespace/kc'
 import type { LedgerEvent } from '@statespace/ledger'
 import type { ChoicePart, Grade, InstanceBase, Json, KeyBase, TrueFalsePart } from '@statespace/generators/core'
@@ -35,6 +36,23 @@ export interface ProbeProps {
 type Drawn = { readonly mod: FamilyModule; readonly instance: InstanceBase; readonly seed: number }
 type State = { readonly status: 'loading' } | { readonly status: 'error'; readonly message: string } | { readonly status: 'ready'; readonly drawn: Drawn }
 
+// Next probe and Draw another remove the button that was pressed, which drops a keyboard user's focus to the page. The
+// button marks the hand-off; the probe (or the line that ends Part A) that is on screen next takes the focus (WCAG 2.4.3).
+let probeHandoff = false
+
+export function useProbeFocus<T extends HTMLElement>(): RefObject<T | null> {
+  const ref = useRef<T>(null)
+  useEffect(() => {
+    if (!probeHandoff || ref.current === null) return
+    const active = document.activeElement
+    // the pressed button can outlive one render (Draw another redraws in place): wait while focus is still on it
+    if (active !== null && active !== document.body && (ref.current.closest('.dfn-probe')?.contains(active) ?? false)) return
+    probeHandoff = false
+    if (active === null || active === document.body) ref.current.focus()
+  })
+  return ref
+}
+
 function entropy(): number {
   const a = new Uint32Array(1)
   crypto.getRandomValues(a)
@@ -54,6 +72,16 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
   const shownAt = useRef(0)
   const eventsRef = useRef(events)
   eventsRef.current = events
+  const headRef = useProbeFocus<HTMLHeadingElement>()
+  // Submit disables itself while the checker runs; when it settles, focus moves to what it answered.
+  const outcome = useRef<HTMLDivElement>(null)
+  const submitted = useRef(false)
+  useEffect(() => {
+    if (busy || !submitted.current) return
+    submitted.current = false
+    const active = document.activeElement
+    if (active === null || active === document.body) outcome.current?.focus()
+  }, [busy])
 
   useEffect(() => {
     let live = true
@@ -89,7 +117,7 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
   }, [slot.family, slot.template, draw])
 
   const head = (
-    <h3 className="exercise-head">
+    <h3 ref={headRef} tabIndex={-1} className="exercise-head">
       <span className="exercise-word">Probe</span> <span className="exercise-n">A.{slot.index}</span>{' '}
       <span className="exercise-role">
         · of {size}
@@ -106,7 +134,14 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
         {state.status === 'error' ? (
           <p className="question-later">
             No question could be drawn: {state.message}.{' '}
-            <button type="button" className="gen-link" onClick={() => setDraw((n) => n + 1)}>
+            <button
+              type="button"
+              className="gen-link"
+              onClick={() => {
+                probeHandoff = true
+                setDraw((n) => n + 1)
+              }}
+            >
               Draw again
             </button>
           </p>
@@ -128,6 +163,7 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
 
   const submit = async (): Promise<void> => {
     if (blocked !== null || done || busy || conf === null) return
+    submitted.current = true
     setBusy(true)
     try {
       const port = portOf(mod)
@@ -238,7 +274,7 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
           </div>
         </>
       ) : null}
-      <div role="status" aria-live="polite">
+      <div ref={outcome} role="status" aria-live="polite" tabIndex={-1}>
         {done ? (
           <div className="dfn-result">
             <p className="question-result">
@@ -294,11 +330,25 @@ export function Probe({ stage, attempt, size, slot, store, events, onAnswering, 
       {done || note !== undefined ? (
         <p className="actions">
           {done ? (
-            <button type="button" className="button button-primary" onClick={onDone}>
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={() => {
+                probeHandoff = true
+                onDone()
+              }}
+            >
               Next probe
             </button>
           ) : (
-            <button type="button" className="button button-secondary" onClick={() => setDraw((n) => n + 1)}>
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={() => {
+                probeHandoff = true
+                setDraw((n) => n + 1)
+              }}
+            >
               Draw another
             </button>
           )}

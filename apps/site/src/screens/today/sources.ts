@@ -5,12 +5,11 @@
 
 import { GRAPH } from '@statespace/kc'
 import type { LedgerEvent } from '@statespace/ledger'
-import { liveTemplates } from '@statespace/generators/core'
 import type { AuditInput, ChangeInput, RefindInput, TemplateRef } from '@statespace/learner/schedule'
 import { foldOrder } from '@statespace/learner/schedule'
 import { loadPage } from '../../app/content.ts'
 import { isLessonId, pageOf, questionOf } from '../../app/progress.ts'
-import { LIVE_FAMILIES, loadFamily } from '../../components/generated/index.ts'
+import { LIVE_FAMILIES, templatesOf } from '../../components/generated/index.ts'
 import { browseOrder, loadAudit } from '../audit/pool.ts'
 import cabinetData from '../specimens/data/cabinet.generated.json'
 import { refindSchedule, statesOf } from '../specimens/model/status.ts'
@@ -47,16 +46,16 @@ let sources: Promise<Sources> | undefined
 /** The generator templates and the audit pool, loaded once per tab. A pool that fails to load leaves Today without an audit case. */
 export function loadSources(): Promise<Sources> {
   sources ??= (async () => {
-    const mods = await Promise.all(LIVE_FAMILIES.map((f) => loadFamily(f)).filter((p) => p !== null))
+    // from the template index, so listing the templates downloads no family; GeneratedItem loads a family when it draws
     const templates = new Map<string, TemplateRef[]>()
     const callTemplates: TemplateRef[] = []
-    for (const mod of mods) {
-      for (const t of liveTemplates(mod.generator)) {
-        const ref = { family: mod.generator.id, template: t.id }
-        const list = templates.get(t.kcs.primary)
-        if (list === undefined) templates.set(t.kcs.primary, [ref])
+    for (const family of LIVE_FAMILIES) {
+      for (const t of templatesOf(family)) {
+        const ref = { family, template: t.template }
+        const list = templates.get(t.primary)
+        if (list === undefined) templates.set(t.primary, [ref])
         else list.push(ref)
-        if (mod.generator.id === 'GEN-call-it') callTemplates.push(ref)
+        if (family === 'GEN-call-it') callTemplates.push(ref)
       }
     }
     let audits: AuditInput[] = []

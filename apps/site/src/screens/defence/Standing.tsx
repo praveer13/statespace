@@ -24,7 +24,7 @@ function partState(l: PartAttempt | null): string {
 /** One sentence: where the Defence stands, and what comes next. Nothing locks either way. */
 export function outcomeLine(v: DefenceView): string {
   if (v.signedOff) return `Signed off${v.signOffAt !== null ? ` on ${dayText(v.signOffAt.slice(0, 10))}` : ''}.`
-  if (v.passed) return 'Defence passed. Sign-off follows once each of the stage’s skills has fresh correct answers in three spaced sessions.'
+  if (v.passed) return 'Defence passed. Sign-off follows once each of the stage’s skills has fresh answers that match the key in three spaced sessions.'
   const started = PARTS.some((p) => v.parts[p].latest !== null) || v.explainBack !== null
   if (!started) return 'Not taken yet. It is open now, untimed, and runs over at least two sittings.'
   if (v.failedParts.length > 0) {
@@ -107,7 +107,7 @@ export function Standing({ view, compact = false }: { readonly view: DefenceView
         <div>
           <dt>Skills relearned</dt>
           <dd>
-            {relearned} of {view.kcs.length}, each by fresh correct answers in {RELEARN_SESSIONS} spaced sessions
+            {relearned} of {view.kcs.length}, each by fresh answers that match the key in {RELEARN_SESSIONS} spaced sessions
           </dd>
         </div>
         {view.passed && view.overall !== null ? (

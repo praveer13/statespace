@@ -1,0 +1,22 @@
+[q3] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed
+[q3 p1] admin: NOTICE 00000: table "acct" does not exist, skipping
+[q3 p1] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE
+[q3 p1] a: BEGIN -> BEGIN
+[q3 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]
+[q3 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q3 p1] b: BEGIN -> BEGIN
+[q3 p1] b: SHOW transaction_isolation -> SHOW [['serializable']]
+[q3 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q3 p1] a: COMMIT -> COMMIT
+[q3 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions
+[q3 p1] check: [[1, -50], [2, 100]]; team total 50
+[q3 p2] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE
+[q3 p2] a: BEGIN -> BEGIN
+[q3 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]
+[q3 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q3 p2] a: COMMIT -> COMMIT
+[q3 p2] b: BEGIN -> BEGIN
+[q3 p2] b: SHOW transaction_isolation -> SHOW [['serializable']]
+[q3 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+[q3 p2] b: COMMIT -> COMMIT
+[q3 p2] check: [[1, -50], [2, 100]]; team total 50

@@ -1,0 +1,159 @@
+{
+  "id": "RUN-pg-shape-pair",
+  "title": "AUD-9.2's variant pair v6: the shape check accepts both the wrong-account plan (q13) and the credit-first plan (q14); the semantic validator rejects q13 at instance 63 of 1125 and accepts q14, and the step-3 instances replayed on PostgreSQL 18.6 and in the interpreter differ for q13 only",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-9.2 (content/audit/AUD-9.2.yaml): variant pair v6, its receipts and step-3 scenarios",
+  "engine": "postgresql",
+  "version": "18.6",
+  "version_string": "postgres (PostgreSQL) 18.6 (Debian 18.6-1.pgdg13+2)",
+  "binary": "the postgres server of postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "binary_sha256": "4944085dba4adcf0f65b8fb4e698c5ac353ecff890fdc89afe8007c2547b1469",
+  "image": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+  "recorded_at": "2026-10-27T00:11:36.987Z",
+  "started_at": "2026-10-27T00:11:36.401Z",
+  "duration_s": 0.36,
+  "argv": [
+    [
+      "docker",
+      "network",
+      "create",
+      "ssrec-net-pg-shape-pair"
+    ],
+    [
+      "docker",
+      "run",
+      "-d",
+      "--rm",
+      "--name",
+      "ssrec-pg-pg-shape-pair",
+      "--network",
+      "ssrec-net-pg-shape-pair",
+      "--memory=6g",
+      "-e",
+      "POSTGRES_PASSWORD=x",
+      "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
+    ],
+    [
+      "docker",
+      "run",
+      "--rm",
+      "--name",
+      "ssrec-ex-pg-shape-pair-q13-q14",
+      "--memory=6g",
+      "--network",
+      "ssrec-net-pg-shape-pair",
+      "-e",
+      "PGHOST=ssrec-pg-pg-shape-pair",
+      "-e",
+      "PGUSER=postgres",
+      "-e",
+      "PGPASSWORD=x",
+      "-v",
+      "<repo>:/r:ro",
+      "-e",
+      "PYTHONPATH=/r/bench",
+      "-e",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "-v",
+      "<sandbox>/work:/w",
+      "-w",
+      "/w",
+      "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "python3",
+      "-B",
+      "shape9.py"
+    ],
+    [
+      "docker",
+      "stop",
+      "ssrec-pg-pg-shape-pair"
+    ],
+    [
+      "docker",
+      "network",
+      "rm",
+      "ssrec-net-pg-shape-pair"
+    ]
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-pg-shape-pair/inputs/shape9.py",
+      "sha256": "de6fbde6088bf5b3b7e071fab292efdafc574afbbe099b73d6a3b4c38844fabd",
+      "bytes": 2334,
+      "role": "script"
+    },
+    {
+      "path": "bench/statespace/labs/lab9.py",
+      "sha256": "60ed553c67c4d16ba7cc22e5aa4afdc0bb5edfc2d85e4c84583d79bed92380db",
+      "bytes": 66240,
+      "role": "script"
+    },
+    {
+      "path": "labs/reference/sql-validator/validators.py",
+      "sha256": "afea1a66f3390e7601e2454aac418b610ea00ef6a878ec1b648600d2b436d6e5",
+      "bytes": 5405,
+      "role": "script"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "ssrec-net-pg-shape-pair"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "[q0] server: PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "[q0] bound: ids 1..3 (rows 1 and 2 present or absent), balances 0..3, amounts -1..3; 1125 instances",
+    "[q13 plan] ASSERT $3 > 0 ELSE NonPositive",
+    "[q13 plan] SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount",
+    "[q13 plan] ASSERT r1 >= $3 ELSE Insufficient",
+    "[q13 plan] UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount",
+    "[q13 plan] UPDATE accounts SET bal = bal + $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount",
+    "[q13 shape] accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[q13 semantic] rejected at instance 63 of 1125: accounts=1:0,2:1 from=2 to=1 amount=1",
+    "[q13 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:3, 2:0 | interpreter committed 1:2, 2:1 | differ",
+    "[q13 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same",
+    "[q13 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same",
+    "[q13 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:0, 2:1 | interpreter committed 1:1, 2:0 | differ",
+    "[q14 plan] ASSERT $3 > 0 ELSE NonPositive",
+    "[q14 plan] SELECT bal FROM accounts WHERE id = $1 INTO r1 EXPECT 1 ELSE NoSuchAccount",
+    "[q14 plan] ASSERT r1 >= $3 ELSE Insufficient",
+    "[q14 plan] UPDATE accounts SET bal = bal + $3 WHERE id = $2 EXPECT 1 ELSE NoSuchAccount",
+    "[q14 plan] UPDATE accounts SET bal = bal - $3 WHERE id = $1 EXPECT 1 ELSE NoSuchAccount",
+    "[q14 shape] accepted (two UPDATEs, each WHERE id = <parameter>, each expecting one row; both guards present)",
+    "[q14 semantic] accepted, 1125 of 1125 instances",
+    "[q14 s1] accounts=1:3,2:0 from=1 to=2 amount=1: PostgreSQL committed 1:2, 2:1 | interpreter committed 1:2, 2:1 | same",
+    "[q14 s2] accounts=1:3,2:0 from=1 to=2 amount=0: PostgreSQL error NonPositive | interpreter error NonPositive | same",
+    "[q14 s3] accounts=1:2 from=1 to=1 amount=1: PostgreSQL committed 1:2 | interpreter committed 1:2 | same",
+    "[q14 s4] accounts=1:0,2:1 from=2 to=1 amount=1: PostgreSQL committed 1:1, 2:0 | interpreter committed 1:1, 2:0 | same"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-pg-shape-pair/q13-q14.log",
+      "sha256": "e4a086f1c9ff9142b87aa4c36daed56c0ecefc463f4ac183284b12665cef671d",
+      "bytes": 2194,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "server": "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+      "client": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "client_user": "uid 1000 (learner)",
+      "driver": "psycopg 3.3.6 on the Bench image's Python 3.13"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted at /w; the inputs are kept under inputs/ as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-exemplars.mjs), copied in log order.",
+    "<repo> in argv is the course repository at the commit the inputs' hashes name, mounted read-only at /r with PYTHONPATH=/r/bench, as RUN-sql-shape-validator and RUN-tlc-trace-validation mount it; inputs lists the files of it the run reads.",
+    "The server ran in postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336 on the user network ssrec-net-pg-shape-pair with --memory=6g; before the first driver started, the recorder waited until docker logs showed \"database system is ready to accept connections\" twice and pg_isready -h 127.0.0.1 exited 0. argv lists the commands in order.",
+    "shape9.py runs labs/reference/sql-validator/validators.py's shape() and semantic() on two plans of statespace.labs.lab9's PLANS, with the roles of RUN-sql-shape-validator ($1 from, $2 to, $3 amount), and replays each scenario's instance with replay_plan (PostgreSQL) and source_transfer (the interpreter), as that run's record.py does. It runs with python3 -B, not -I, so that PYTHONPATH reaches the mounted bench package; [q0] lines are the server and the bound, shared by both cases."
+  ]
+}

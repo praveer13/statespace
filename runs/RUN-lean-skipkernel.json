@@ -9,7 +9,7 @@
   "binary": "the Lean 4.35.0 toolchain",
   "binary_sha256": null,
   "image": null,
-  "recorded_at": "2026-10-24T14:32:22.348Z",
+  "recorded_at": "2026-10-26T23:22:40.573Z",
   "started_at": null,
   "duration_s": null,
   "argv": null,
@@ -44,12 +44,47 @@
       "sha256": "5bde4a08a2429fb68161280fdc1dc1bd3a683fe4753e4fefa1de0b775278d804",
       "bytes": 906,
       "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel/probe.log",
+      "sha256": "d054626ca9b2fc5c78c4beb585efe7b683dc345e2db3f1ff1a69606a4d8bc856",
+      "bytes": 947,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel/sound.log",
+      "sha256": "2174bd0db9e0226e5ce0d246b799d4710b4be18e6a6b04adc5ffdb1eb15ad2b9",
+      "bytes": 523,
+      "kind": "log"
+    },
+    {
+      "path": "runs/RUN-lean-skipkernel/flawed.log",
+      "sha256": "84abc6a134a8f2940fdf16c6aecabd86f42bad67b976093a6997b1173c5e4e44",
+      "bytes": 736,
+      "kind": "log"
     }
   ],
   "values": {
     "build_exit": 0,
     "leanchecker": "rejects",
-    "declaration": "oops"
+    "declaration": "oops",
+    "rerun": {
+      "probe": {
+        "build_exit": 0,
+        "leanchecker_exit": 1,
+        "leanchecker": "rejects"
+      },
+      "sound": {
+        "build_exit": 0,
+        "leanchecker_exit": 0,
+        "leanchecker": "accepts"
+      },
+      "flawed": {
+        "build_exit": 0,
+        "leanchecker_exit": 1,
+        "leanchecker": "rejects"
+      }
+    }
   },
   "environment": {
     "os": null,
@@ -87,6 +122,403 @@
   ],
   "notes": [
     "Imported by W0-S11 from a2r3/out/lean_trust.txt (spine section 9.5). The verdict lines are copied verbatim from the outputs listed here; every file is hashed as it is on disk now.",
-    "exit_code is the build's, as the log prints it (lake exit=0); leanchecker's exit code is not printed."
+    "exit_code is the build's, as the log prints it (lake exit=0); leanchecker's exit code is not printed.",
+    "Re-run in place by W1-T32 (runs/README.md section 3). The top level is the imported execution, unchanged, and is also configuration original (primary_config): the course quotes its lines. Configurations probe, sound and flawed were executed with argv in the pinned Bench image by content/audit/tools/rerun-lean-imported.mjs.",
+    "probe re-runs the imported project, research/evidence/a2r3/lean/proj, copied verbatim into inputs/probe (its BV.lean, which the library does not import, is left out): the proof of False built under debug.skipKernelTC builds, #print axioms lists no axiom for oops, and leanchecker rejects it.",
+    "sound and flawed are AUD-2.3's pair (content/audit/AUD-2.3.yaml), the projects of RUN-lean-skipkernel-pair copied verbatim. The Audit Desk shows the option line and these verdict lines, never the construction in inputs/flawed/Ledger/Fast.lean (docs/AUDIT-DESK.md section 3.2)."
+  ],
+  "rerun": {
+    "task": "W1-T32",
+    "recorded_at": "2026-10-26T23:22:40.573Z",
+    "environment": {
+      "os": "Linux 6.12.63",
+      "cpu_count": 20,
+      "ram_gib": 31.2,
+      "cpu_architecture": "x86_64",
+      "docker": "29.1.3",
+      "container": {
+        "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "user": "uid 1000 (learner)"
+      }
+    },
+    "recorder": "content/audit/tools/rerun-lean-imported.mjs"
+  },
+  "primary_config": "original",
+  "configs": [
+    {
+      "id": "original",
+      "origin": "imported",
+      "purpose": "the execution W0-S11 imported from research/ (research/evidence/a2r3/out/lean_trust.txt), as the record's top level states it",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": null,
+      "image": null,
+      "started_at": null,
+      "duration_s": null,
+      "argv": null,
+      "inputs": [
+        {
+          "path": "research/evidence/a2r3/lean/proj/Probe/Bypass.lean",
+          "sha256": "535804bc2def76d4233675f27a6032ffa0c8de77985dadbd49ad47b15764c3b1",
+          "bytes": 359,
+          "role": "source"
+        },
+        {
+          "path": "research/evidence/a2r3/lean/proj/lakefile.toml",
+          "sha256": "194bc103b4c5783062513b14f74b1282a1a8a3d26f646366e9f100d874a9f04b",
+          "bytes": 70,
+          "role": "config"
+        }
+      ],
+      "budget": {},
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [4/6] Built Probe.Bypass (827ms)",
+        "lake exit=0",
+        "'oops' does not depend on any axioms",
+        "--- leanchecker Probe",
+        "leanchecker found a problem in Probe.Bypass",
+        "uncaught exception: while replaying declaration 'oops':",
+        "(kernel) declaration type mismatch, 'oops' has type"
+      ],
+      "outputs": [
+        "research/evidence/a2r3/out/lean_trust.txt"
+      ],
+      "environment": {
+        "os": null,
+        "cpu_count": null
+      },
+      "unrecorded": [
+        {
+          "field": "binary_sha256",
+          "reason": "the log does not hash the toolchain"
+        },
+        {
+          "field": "image",
+          "reason": "the log names no container image"
+        },
+        {
+          "field": "started_at",
+          "reason": "the log is undated"
+        },
+        {
+          "field": "duration_s",
+          "reason": "the log does not time the run"
+        },
+        {
+          "field": "argv",
+          "reason": "the log holds the output, not the command lines"
+        },
+        {
+          "field": "environment.os",
+          "reason": "the log does not describe the host"
+        },
+        {
+          "field": "environment.cpu_count",
+          "reason": "the log does not describe the host"
+        }
+      ]
+    },
+    {
+      "id": "probe",
+      "origin": "recorded",
+      "purpose": "run.sh probe: the imported probe project again, with argv: lake build, #print axioms (Report.lean), leanchecker Probe",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:22:31.875Z",
+      "duration_s": 2.758,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-skipkernel-probe",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "probe"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/Probe/Bypass.lean",
+          "sha256": "535804bc2def76d4233675f27a6032ffa0c8de77985dadbd49ad47b15764c3b1",
+          "bytes": 359,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/Probe/Conserve.lean",
+          "sha256": "30a960545d472c9de793e887d7d6860d07104b497ef50b52d4a2ad8d0ef4a99a",
+          "bytes": 937,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/Probe/Trust.lean",
+          "sha256": "6dd61b8f884d2fa1a810fc9cacb061b6d0506867d4f5a8a4b92861603812b857",
+          "bytes": 315,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/Probe.lean",
+          "sha256": "84d8bffffa54e311c703ad4d1665445b031c39acf6df927ea18204c1c4b747e4",
+          "bytes": 61,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/Report.lean",
+          "sha256": "24d5954b1baa1897fda4042d2dbdf059c7f0317f7a200ab4eb383000a551fc6b",
+          "bytes": 230,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/lake-manifest.json",
+          "sha256": "21737af7ef3c14df724d989efa9f88b58e530efd86938d5a42ad0432c2591fec",
+          "bytes": 137,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/probe/lakefile.toml",
+          "sha256": "194bc103b4c5783062513b14f74b1282a1a8a3d26f646366e9f100d874a9f04b",
+          "bytes": 70,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/run.sh",
+          "sha256": "659f5dde62ab063adcb2f06c59ee76619eeabe333fd3f91fb7db4b88f51383f8",
+          "bytes": 609,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Probe.Conserve (220ms)",
+        "✔ [3/6] Built Probe.Trust (219ms)",
+        "✔ [4/6] Built Probe.Bypass (533ms)",
+        "✔ [5/6] Built Probe (505ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'run_conserves' depends on axioms: [propext, Quot.sound]",
+        "'step_conserves' depends on axioms: [propext, Quot.sound]",
+        "'by_decide' does not depend on any axioms",
+        "'by_native' depends on axioms: [by_native._native.native_decide.ax_1_1]",
+        "'by_bv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'by_omega' depends on axioms: [propext, Quot.sound]",
+        "'by_classical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'oops' does not depend on any axioms",
+        "'anything' does not depend on any axioms",
+        "report exit=0",
+        "leanchecker found a problem in Probe.Bypass",
+        "uncaught exception: while replaying declaration 'oops':",
+        "(kernel) declaration type mismatch, 'oops' has type",
+        "leanchecker exit=1"
+      ],
+      "outputs": [
+        "runs/RUN-lean-skipkernel/probe.log"
+      ]
+    },
+    {
+      "id": "sound",
+      "origin": "recorded",
+      "purpose": "run.sh sound: AUD-2.3's sound member (RUN-lean-skipkernel-pair's sound project): lake build, #print axioms conserves, leanchecker Ledger, then the step-3 scenarios",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:22:34.638Z",
+      "duration_s": 1.51,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-skipkernel-sound",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "sound"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/Ledger/Conserve.lean",
+          "sha256": "a644391a68891bbbe516b29cf8afc53e84a38563baa77b91b7eea4abd804802d",
+          "bytes": 167,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/Ledger/Transfer.lean",
+          "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+          "bytes": 108,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/Ledger.lean",
+          "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+          "bytes": 46,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/Report.lean",
+          "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+          "bytes": 38,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/Scenarios.lean",
+          "sha256": "a57e7836f7b79c8d69e35912019770718131877ca2d0f1346458775151810c5b",
+          "bytes": 610,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/sound/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/run.sh",
+          "sha256": "659f5dde62ab063adcb2f06c59ee76619eeabe333fd3f91fb7db4b88f51383f8",
+          "bytes": 609,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/5] Built Ledger.Transfer (157ms)",
+        "✔ [3/5] Built Ledger.Conserve (156ms)",
+        "✔ [4/5] Built Ledger (143ms)",
+        "Build completed successfully (5 jobs).",
+        "lake exit=0",
+        "'conserves' depends on axioms: [propext, Quot.sound]",
+        "report exit=0",
+        "leanchecker exit=0",
+        "(\"s1\", false, 3, 5)",
+        "(\"s2\", true, 3, 5)",
+        "(\"s3\", false, 5, 3)",
+        "(\"s4\", false, 5, 3)",
+        "(\"s5\", false, 3, 5)",
+        "scenarios exit=0"
+      ],
+      "outputs": [
+        "runs/RUN-lean-skipkernel/sound.log"
+      ]
+    },
+    {
+      "id": "flawed",
+      "origin": "recorded",
+      "purpose": "run.sh flawed: AUD-2.3's flawed member (RUN-lean-skipkernel-pair's flawed project), its conserves closed by a declaration added under debug.skipKernelTC: lake build, #print axioms conserves, leanchecker Ledger",
+      "engine": "lean",
+      "version": "4.35.0",
+      "binary_sha256": "bf8d54e4714cc4b03d3f6bb34c83b7202b87e49c8bfcbff6895c085bb90ceb38",
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "started_at": "2026-10-26T23:22:36.156Z",
+      "duration_s": 4.416,
+      "argv": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "ssrec-rerun-lean-skipkernel-flawed",
+        "--memory=6g",
+        "--network",
+        "none",
+        "-v",
+        "<sandbox>/work:/w",
+        "-w",
+        "/w",
+        "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+        "sh",
+        "run.sh",
+        "flawed"
+      ],
+      "inputs": [
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/Ledger/Conserve.lean",
+          "sha256": "1002b959b10c29693afb3245f4479efe450607b8810d8dd0faf02479ece93818",
+          "bytes": 163,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/Ledger/Fast.lean",
+          "sha256": "c4719575f2c6839f907939c612f773d54b2e5ea619c879418e1588c32c512b45",
+          "bytes": 697,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/Ledger/Transfer.lean",
+          "sha256": "413f11d50a7162435a44bb01dafb31ceabcaeec234ee5e461a642a69a393da19",
+          "bytes": 108,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/Ledger.lean",
+          "sha256": "9c930a084b2548e346b66629c8e6507d99e8c14ae95cec86bf8773e6a3f635b4",
+          "bytes": 46,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/Report.lean",
+          "sha256": "29cfcd08d6a134dfdd94626cf9ec66dd189df3756ed3be0ac232d82575eff826",
+          "bytes": 38,
+          "role": "source"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/flawed/lakefile.toml",
+          "sha256": "0027833de8c77a1384782365c55130b62819035b17115c1367422d88c43f41b0",
+          "bytes": 73,
+          "role": "config"
+        },
+        {
+          "path": "runs/RUN-lean-skipkernel/inputs/run.sh",
+          "sha256": "659f5dde62ab063adcb2f06c59ee76619eeabe333fd3f91fb7db4b88f51383f8",
+          "bytes": 609,
+          "role": "script"
+        }
+      ],
+      "budget": {
+        "container_memory": "6g",
+        "network": "none"
+      },
+      "exit_code": 0,
+      "verdict_lines": [
+        "✔ [2/6] Built Ledger.Transfer (154ms)",
+        "✔ [3/6] Built Ledger.Fast (531ms)",
+        "✔ [4/6] Built Ledger.Conserve (484ms)",
+        "✔ [5/6] Built Ledger (498ms)",
+        "Build completed successfully (6 jobs).",
+        "lake exit=0",
+        "'conserves' does not depend on any axioms",
+        "report exit=0",
+        "leanchecker found a problem in Ledger.Fast",
+        "uncaught exception: while replaying declaration 'conserves_fast':",
+        "(kernel) declaration type mismatch, 'conserves_fast' has type",
+        "leanchecker exit=1"
+      ],
+      "outputs": [
+        "runs/RUN-lean-skipkernel/flawed.log"
+      ]
+    }
   ]
 }

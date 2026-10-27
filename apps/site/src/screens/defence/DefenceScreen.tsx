@@ -22,7 +22,7 @@ import { PartC } from './PartC.tsx'
 import { PartD } from './PartD.tsx'
 import { planOf } from './plan.ts'
 import type { StagePlan } from './plan.ts'
-import { Probe } from './Probe.tsx'
+import { Probe, useProbeFocus } from './Probe.tsx'
 import { mutantsOf, planPartA, samplePartB, samplePartC } from './sample.ts'
 import { PART_NAME, Standing } from './Standing.tsx'
 import { dayText, today, useDefence } from './useDefence.ts'
@@ -210,8 +210,17 @@ function PartAView({ plan, attempt, store, events }: { readonly plan: StagePlan;
           )
         })}
       </ol>
-      {current !== undefined ? <Probe key={`${attempt}-${current.index}`} stage={plan.stage} attempt={attempt} size={list.length} slot={current} store={store} events={events} onAnswering={() => setHeld(current.index)} onDone={() => setHeld(null)} /> : <p className="dfn-plain">Every probe of this attempt is answered.</p>}
+      {current !== undefined ? <Probe key={`${attempt}-${current.index}`} stage={plan.stage} attempt={attempt} size={list.length} slot={current} store={store} events={events} onAnswering={() => setHeld(current.index)} onDone={() => setHeld(null)} /> : <AllAnswered />}
     </div>
+  )
+}
+
+function AllAnswered() {
+  const ref = useProbeFocus<HTMLParagraphElement>()
+  return (
+    <p ref={ref} tabIndex={-1} className="dfn-plain">
+      Every probe of this attempt is answered.
+    </p>
   )
 }
 

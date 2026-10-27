@@ -14,6 +14,7 @@ import { createDraw, deriveSeed } from '@statespace/rng'
 import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors, WORDS } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -34,7 +35,7 @@ const PART = 'main'
 export const LEAKS_BASIS =
   'the pair check in this page: each pair judged for low-equivalence and for what the observer sees, and "none" decided by trying every state of the printed scope (checked by this page over this instance, not a Z3 run)'
 
-export type LeakValue = { readonly kind: 'pair'; readonly pair: Pair } | { readonly kind: 'none'; readonly says: string }
+export type LeakValue = { readonly kind: 'pair'; readonly pair: Pair; readonly form?: 1 } | { readonly kind: 'none'; readonly says: string }
 
 export interface LeaksData {
   readonly world: World
@@ -84,7 +85,10 @@ const TEMPLATES: readonly TemplateSpec[] = [
   },
 ]
 
-export const renderValue = (v: LeakValue): string => (v.kind === 'pair' ? renderPair(v.pair) : v.says)
+export const renderValue = (v: LeakValue): string => (v.kind === 'pair' ? renderPair(v.pair, v.form ?? 0) : v.says)
+
+/** What an option means: the pair's difference, or "none"; two wordings of one option mean the same. */
+const meaningOf = (v: LeakValue): string => (v.kind === 'pair' ? JSON.stringify(v.pair.diff) : 'none')
 
 // ---------------------------------------------------------------- copy
 
@@ -123,6 +127,16 @@ interface Built {
 
 const fixed = (tag: Mutant<LeakValue>['tag'], operator: string, why: string, value: LeakValue | null): Mutant<LeakValue> => ({ tag, operator, why: () => why, apply: () => value })
 
+/**
+ * A distractor in each of its wordings [D]: a pair in its longer and shorter form, "none" in the two sentences given.
+ * choose.ts shows one wording at most.
+ */
+function worded(tag: Mutant<LeakValue>['tag'], operator: string, why: string, value: LeakValue | null, alt?: string): Mutant<LeakValue>[] {
+  if (value === null) return [fixed(tag, operator, why, null)]
+  if (value.kind === 'pair') return [fixed(tag, operator, why, value), fixed(tag, operator, why, { ...value, form: 1 })]
+  return [fixed(tag, operator, why, value), ...(alt === undefined ? [] : [fixed(tag, operator, why, { kind: 'none', says: alt })])]
+}
+
 const str = (name: string, a: string, b: string, low: boolean): Cell => ({ name, values: [a, b], low })
 const flag = (name: string, low: boolean): Cell => ({ name, values: [true, false], low })
 
@@ -135,6 +149,9 @@ function one(w: World, cell: string): Pair {
 
 const pairOf = (w: World, cell: string): LeakValue => ({ kind: 'pair', pair: one(w, cell) })
 
+/** The key's pair, in a wording drawn for it. */
+const keyPair = (w: World, cell: string, draw: SeededDraw): LeakValue => (draw.bool() ? pairOf(w, cell) : { kind: 'pair', pair: one(w, cell), form: 1 })
+
 const ASK_LINE = 'Pick two states that differ only in data u may not see and that u can tell apart after the request, or "none".'
 
 function t1(band: Band, draw: SeededDraw): Built {
@@ -146,17 +163,19 @@ function t1(band: Band, draw: SeededDraw): Built {
   // The projection: in the leaking view, at least one private field; in the projected pair member, released fields only.
   const projected = leak ? [...draw.sample(declassified, draw.int(0, declassified.length)), draw.pick(high)] : draw.sample(declassified, draw.int(1, declassified.length))
   const order = fields.filter((f) => projected.includes(f))
-  const cells: Cell[] = [str('a.title', 'a1', 'a2', true), ...fields.map((f) => str(`d.${f}`, `${f.slice(0, 2)}1`, `${f.slice(0, 2)}2`, declassified.includes(f))), str('e.title', 'e1', 'e2', false)]
+  const cells: Cell[] = [str('a.title', 'atA', 'atB', true), ...fields.map((f) => str(`d.${f}`, `${f.slice(0, 2)}A`, `${f.slice(0, 2)}B`, declassified.includes(f))), str('e.title', 'etA', 'etB', false)]
   const channels: Channel[] = [{ name: 'body.mine', expr: { c: 'a.title' }, seen: true }, ...order.map((f) => ({ name: `body.shared.${f}`, expr: { c: `d.${f}` }, seen: true }))]
   const world: World = { cells, channels }
   const leaking = order.filter((f) => !declassified.includes(f))
   const releasedShown = order.filter((f) => declassified.includes(f))
-  const reference: LeakValue = leaking.length > 0 ? pairOf(world, `d.${draw.pick(leaking)}`) : { kind: 'none', says: 'None: every field the view returns is u\'s own or released to u' }
+  const reference: LeakValue = leaking.length > 0 ? keyPair(world, `d.${draw.pick(leaking)}`, draw) : { kind: 'none', says: draw.pick(["No two such states, as each field the view returns is u's own or released to u", "No two such states, as the view returns u's own and released fields"]) }
+  const hiddenD = fields.filter((f) => !declassified.includes(f) && !order.includes(f))
   const mutants: Mutant<LeakValue>[] = [
-    fixed('dp:A4', 'enforcement read as noninterference', WHY.enforcement, leaking.length > 0 ? { kind: 'none', says: 'None: every field u receives passed the sharing check' } : null),
-    fixed('dp:A12', 'a pair in the observer\'s own data', WHY.ownData, pairOf(world, 'a.title')),
-    fixed('dp:A12', 'a pair in a released field', releasedShown.length > 0 ? WHY.declassified(`d.${releasedShown[0] as string}`) : '', releasedShown.length > 0 ? pairOf(world, `d.${releasedShown[0] as string}`) : null),
-    fixed('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, 'e.title')),
+    ...worded('dp:A4', 'enforcement read as noninterference', WHY.enforcement, leaking.length > 0 ? { kind: 'none', says: 'No two such states, as each field u receives passed the sharing check' } : null, 'No two such states, as the sharing check passed for d'),
+    ...worded('dp:A12', 'a pair in the observer\'s own data', WHY.ownData, pairOf(world, 'a.title')),
+    ...releasedShown.flatMap((f) => worded('dp:A12', 'a pair in a released field', WHY.declassified(`d.${f}`), pairOf(world, `d.${f}`))),
+    ...worded('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, 'e.title')),
+    ...hiddenD.flatMap((f) => worded('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, `d.${f}`))),
   ]
   const stem = [
     `*World:* tenants A and B. User u belongs to tenant A and owns document a. Document d belongs to B and is shared with u; document e belongs to B and is not shared. Document d's ${declassified.map((f) => `\`${f}\``).join(' and ')} ${declassified.length === 1 ? 'is' : 'are'} released (declassified) to whoever it is shared with; its other fields (${high.map((f) => `\`${f}\``).join(', ')}) are private to B.`,
@@ -195,25 +214,25 @@ function t2(band: Band, draw: SeededDraw): Built {
   if (band === 1) {
     total = leak ? 'the number of matching documents in the whole table' : 'the number of matching documents u can see'
     slots = [
-      { id: 'a1', what: "u's own document", visible: true, matches: true, counted: true },
-      { id: 'b1', what: "B's private document", visible: false, matches: true, counted: leak },
-      { id: 'b2', what: "B's private document", visible: false, matches: false, counted: false },
+      { id: 'ax', what: "u's own document", visible: true, matches: true, counted: true },
+      { id: 'bx', what: "B's private document", visible: false, matches: true, counted: leak },
+      { id: 'by', what: "B's private document", visible: false, matches: false, counted: false },
     ]
   } else if (band === 2) {
     total = leak ? 'the number of matching documents on team x, whoever owns them' : 'the number of matching documents on team x that u can see'
     slots = [
-      { id: 'a1', what: "u's own document, on team x", visible: true, matches: true, counted: true },
-      { id: 'c1', what: "B's document on team x, shared with u", visible: true, matches: true, counted: true },
-      { id: 'b1', what: "B's private document on team x", visible: false, matches: true, counted: leak },
-      { id: 'b2', what: "B's private document on team y", visible: false, matches: true, counted: false },
+      { id: 'ax', what: "u's own document, on team x", visible: true, matches: true, counted: true },
+      { id: 'cx', what: "B's document on team x, shared with u", visible: true, matches: true, counted: true },
+      { id: 'bx', what: "B's private document on team x", visible: false, matches: true, counted: leak },
+      { id: 'by', what: "B's private document on team y", visible: false, matches: true, counted: false },
     ]
   } else {
     total = leak ? 'the number of matching documents u owns or was ever shared, read from the share log' : 'the number of matching documents u can see now'
     slots = [
-      { id: 'a1', what: "u's own document", visible: true, matches: true, counted: true },
-      { id: 'c1', what: "B's document, shared with u", visible: true, matches: true, counted: true },
-      { id: 'r1', what: "B's document, shared with u and then revoked", visible: false, matches: true, counted: leak },
-      { id: 'b2', what: "B's private document, never shared", visible: false, matches: true, counted: false },
+      { id: 'ax', what: "u's own document", visible: true, matches: true, counted: true },
+      { id: 'cx', what: "B's document, shared with u", visible: true, matches: true, counted: true },
+      { id: 'rx', what: "B's document, shared with u and then revoked", visible: false, matches: true, counted: leak },
+      { id: 'by', what: "B's private document, never shared", visible: false, matches: true, counted: false },
     ]
   }
   const cells: Cell[] = slots.map((s) => flag(`${s.id}.exists`, s.visible))
@@ -224,16 +243,17 @@ function t2(band: Band, draw: SeededDraw): Built {
   const world: World = { cells, channels }
   const leaking = slots.filter((s) => !s.visible && s.counted)
   const hiddenUncounted = slots.filter((s) => !s.visible && !s.counted)
-  const reference: LeakValue = leaking.length > 0 ? pairOf(world, `${(leaking[0] as Slot).id}.exists`) : { kind: 'none', says: 'None: the hits and the total depend only on documents u can see' }
-  const noneSays = draw.bool()
+  const reference: LeakValue = leaking.length > 0 ? keyPair(world, `${(leaking[0] as Slot).id}.exists`, draw) : { kind: 'none', says: draw.pick(['No two such states, as hits and totals depend on documents visible to u', 'No two such states, as both the hits and totals depend on visible documents']) }
   const mutants: Mutant<LeakValue>[] = [
-    leaking.length === 0
-      ? fixed('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, `${(slots.find((s) => !s.visible && s.matches) as Slot).id}.exists`))
-      : noneSays
-        ? fixed('dp:A4', 'enforcement read as noninterference', WHY.enforcement, { kind: 'none', says: 'None: every hit u receives passed the access check' })
-        : fixed('dp:P1', 'the observer reads the rows only', WHY.totalMetadata, { kind: 'none', says: 'None: u sees only the rows it may read; the total is metadata' }),
-    fixed('dp:A12', "a pair in the observer's own data", WHY.ownData, pairOf(world, 'a1.exists')),
-    fixed('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, `${(hiddenUncounted[hiddenUncounted.length - 1] as Slot).id}.exists`)),
+    ...(leaking.length === 0
+      ? slots.filter((s) => !s.visible && s.matches).flatMap((s) => worded('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, `${s.id}.exists`)))
+      : [
+          ...worded('dp:A4', 'enforcement read as noninterference', WHY.enforcement, { kind: 'none', says: 'No two such states, as each hit u receives passed the access check' }, 'No two such states, as the access check passed for each hit'),
+          ...worded('dp:P1', 'the observer reads the rows only', WHY.totalMetadata, { kind: 'none', says: 'No two such states, as u sees the rows it may read and the total is metadata' }, 'No two such states, as the total is metadata'),
+        ]),
+    ...worded('dp:A12', "a pair in the observer's own data", WHY.ownData, pairOf(world, 'ax.exists')),
+    ...slots.filter((s) => s.visible && s.id !== 'ax').flatMap((s) => worded('dp:A12', "a pair in data u can see", WHY.ownData, pairOf(world, `${s.id}.exists`))),
+    ...hiddenUncounted.flatMap((s) => worded('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, `${s.id}.exists`))),
   ]
   const list = slots.map((s) => `\`${s.id}\` (${s.what}${s.matches ? '' : ', not matching the search'})`).join(', ')
   const stem = [
@@ -251,7 +271,7 @@ function t2(band: Band, draw: SeededDraw): Built {
     reference,
     referenceWhy:
       reference.kind === 'pair'
-        ? `The two states agree on every document u can see, so they are low-equivalent, and \`total\` counts a document u cannot see: it is one higher in s1 than in s2. The hits passed the access check; the count did not need to.`
+        ? `The two states agree on every document u can see, so they are low-equivalent, and \`total\` counts a document u cannot see: it is one higher in one state than in the other. The hits passed the access check; the count did not need to.`
         : 'Both the hits and the total are computed from documents u can see, so low-equivalent states give the same response: no pair inside the scope leaks.',
     mutants,
     measure: { slots: slots.length, revoked: band === 3 ? 1 : 0 },
@@ -265,7 +285,7 @@ function t3(band: Band, draw: SeededDraw): Built {
   // In the leaking variant, every channel the band names depends on B's private data; in the fixed one, none does.
   const cells: Cell[] = [
     str('u.name', 'ana', 'ann', true),
-    ...(size ? [str('d.body', 'ok', 'okay', false), str('d.title', 't1', 't2', false)] : [str('d.title', 't1', 't2', false)]),
+    ...(size ? [str('d.body', 'ok', 'okay', false), str('d.title', 'tA', 'tB', false)] : [str('d.title', 'tA', 'tB', false)]),
     ...(aborts ? [flag('b.plan.exists', false)] : []),
   ]
   const channels: Channel[] = [
@@ -276,12 +296,13 @@ function t3(band: Band, draw: SeededDraw): Built {
   ]
   const world: World = { cells, channels }
   const sees = [size ? 'the Content-Length header' : null, aborts ? 'whether its insert fails' : null].filter((x) => x !== null).join(' and ')
-  const reference: LeakValue = leak ? pairOf(world, size && (!aborts || draw.bool()) ? 'd.body' : 'b.plan.exists') : { kind: 'none', says: 'None: everything u observes is the same whatever B stores' }
+  const reference: LeakValue = leak ? keyPair(world, size && (!aborts || draw.bool()) ? 'd.body' : 'b.plan.exists', draw) : { kind: 'none', says: draw.pick(['No two such states, as u observes the same in each pair of states', 'No two such states, as u sees the same for any data of the other tenant']) }
   const mutants: Mutant<LeakValue>[] = [
-    fixed('dp:P1', 'the observer ignores side channels', WHY.bodyOnly(sees), leak ? { kind: 'none', says: 'None: u sees only the response body, which is the same "forbidden" either way' } : null),
-    fixed('dp:A12', "a pair in the observer's own data", WHY.ownData, pairOf(world, 'u.name')),
-    fixed('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, 'd.title')),
-    fixed('dp:A13', 'a difference nothing shows', WHY.hidden, !leak && size ? pairOf(world, 'd.body') : !leak && aborts ? pairOf(world, 'b.plan.exists') : null),
+    ...worded('dp:P1', 'the observer ignores side channels', WHY.bodyOnly(sees), leak ? { kind: 'none', says: 'No two such states, as u sees the response body and it says "forbidden" either way' } : null, 'No two such states, as the body says "forbidden" either way'),
+    ...worded('dp:A12', "a pair in the observer's own data", WHY.ownData, pairOf(world, 'u.name')),
+    ...worded('dp:A13', 'a difference nothing shows', WHY.hidden, pairOf(world, 'd.title')),
+    ...worded('dp:A13', 'a difference nothing shows', WHY.hidden, !leak && size ? pairOf(world, 'd.body') : !leak && aborts ? pairOf(world, 'b.plan.exists') : null),
+    ...worded('dp:A13', 'a difference nothing shows', WHY.hidden, !leak && size && aborts ? pairOf(world, 'b.plan.exists') : null),
   ]
   const requests = [
     size ? `\`GET /doc/d\` for B's private document d answers \`{error: "forbidden", you: u.name}\` with a \`Content-Length\` header, ${leak ? "computed from the stored document's body" : 'the length of the error response itself'}` : null,
@@ -317,7 +338,9 @@ function make(seed: number, band: Band, template: TemplateId): LeaksInstance {
   if (spec === undefined || build === undefined) throw new RangeError(`${LEAKS_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${LEAKS_ID}/${template}/b${band}`))
   const b = build(band, draw)
-  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: b.mutants, distractors: 3, draw: draw.fork('options'), render: renderValue })
+  // The distractors shown, chosen among the wrong answers and their wordings so the key does not stand out (choose.ts).
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: 3, draw: draw.fork('choose'), render: renderValue, meaning: meaningOf, features: [WORDS] })
+  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: chosen, distractors: 3, draw: draw.fork('options'), render: renderValue })
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: 'Pick the pair, or "none".', options }
   return {
     family: LEAKS_ID,

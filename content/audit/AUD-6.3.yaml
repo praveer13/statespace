@@ -5,6 +5,9 @@
 # spine's run, RUN-history-g2item: Souffle finds the G2-item cycle in the q2-p1 history (h2), as in the toy history of
 # Jepsen's PostgreSQL 12.3 report (h1), and none in q1-p1 (h3). Variant pair v1 is the holds transaction at
 # serializable and at repeatable read, keyed by RUN-pg-claims (E1, E3).
+# Variant pairs v2 and v3 are keyed by RUN-pg-isolation-exemplars on PostgreSQL 18.6: q3/q4 the database-wide default
+# (applied before the pools open, or while they keep their connections) and q5/q6 the pools' on_connect hook (SET, or
+# SET LOCAL in autocommit), each sound/flawed; each statement is that run's qN.sql, verbatim.
 id: AUD-6.3
 stage: S6
 class: G6e
@@ -163,3 +166,139 @@ variants:
     key_run: RUN-pg-claims
     key_lines: ["[E3 holds write-skew, REPEATABLE READ] avail seen 100,100; A commit=ok ; B commit=ok ; total held=160 vs bal 100"]
     explain: "PostgreSQL's REPEATABLE READ is snapshot isolation, not SERIALIZABLE: two holds that each insert a new row never write the same row, so nothing conflicts and both commit, 160 held against 100. The receipt's test updates one row twice, the conflict REPEATABLE READ does catch, so it passes."
+
+  - id: v2-flawed
+    pair: v2
+    operator: change-isolation-level
+    artifact: database-default-isolation
+    key: { class: G6e, also: [G7, G8] }
+    description: "Sets serializable once for the whole database, so that no writer pool can miss it. The debit tests pass."
+    statement: |
+      -- db/migrations/042_isolation.sql: every writer serializable, set once for the database (PostgreSQL 18.6)
+      ALTER DATABASE postgres SET default_transaction_isolation = 'serializable';
+      -- deploy: run the migration while both writer pools keep the connections they hold
+      -- each pool's connection: the team debit, retried on SQLSTATE 40001 and 40P01
+      UPDATE acct SET bal = bal - 150 WHERE id = $1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0;
+    diff: |
+      --- /dev/null
+      +++ b/db/migrations/042_isolation.sql
+      @@ -0,0 +1,3 @@
+      +-- db/migrations/042_isolation.sql: every writer serializable, set once for the database (PostgreSQL 18.6)
+      +ALTER DATABASE postgres SET default_transaction_isolation = 'serializable';
+      +-- deploy: run the migration while both writer pools keep the connections they hold
+    receipt: |
+      [q4 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]
+      [q4 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+      [q4 p2] check: [[1, -50], [2, 100]]; team total 50
+    restatement:
+      run: RUN-pg-isolation-exemplars
+      scenarios:
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: false, key_line: "[q4 p1] check: [[1, -50], [2, -50]]; team total -100", why: "Both pools' connections were open before the migration and keep read committed: both guards saw 200, both commit, and the team ends at -100." }
+        - { id: s2, text: "A writer's transaction runs below serializable", answer: false, key_line: "[q4 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]", why: "The read-back says read committed: ALTER DATABASE sets the default for sessions that start after it." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q4 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0", why: "The second guard sees 50 and updates no row." }
+    evidence: { type: declaration, load_bearing: ["statement:3", "receipt:1"] }
+    key_run: RUN-pg-isolation-exemplars
+    key_lines: ["[q4 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]", "[q4 p1] check: [[1, -50], [2, -50]]; team total -100"]
+    explain: "ALTER DATABASE ... SET changes the default for new sessions only, and the deployment keeps the pools' connections: every writer still runs at read committed, as its read-back says, and the two debits commit together. \"Every writer is SERIALIZABLE\" is an [A] clause the claim cannot back, and the deployed pools are not the configuration the migration names."
+
+  - id: v2-sound
+    pair: v2
+    operator: change-isolation-level
+    artifact: database-default-isolation
+    key: none
+    description: "Sets serializable once for the whole database, so that no writer pool can miss it. The debit tests pass."
+    statement: |
+      -- db/migrations/042_isolation.sql: every writer serializable, set once for the database (PostgreSQL 18.6)
+      ALTER DATABASE postgres SET default_transaction_isolation = 'serializable';
+      -- deploy: run the migration, then recycle both writer pools so every connection opens after it
+      -- each pool's connection: the team debit, retried on SQLSTATE 40001 and 40P01
+      UPDATE acct SET bal = bal - 150 WHERE id = $1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0;
+    diff: |
+      --- /dev/null
+      +++ b/db/migrations/042_isolation.sql
+      @@ -0,0 +1,3 @@
+      +-- db/migrations/042_isolation.sql: every writer serializable, set once for the database (PostgreSQL 18.6)
+      +ALTER DATABASE postgres SET default_transaction_isolation = 'serializable';
+      +-- deploy: run the migration, then recycle both writer pools so every connection opens after it
+    receipt: |
+      [q3 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]
+      [q3 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+      [q3 p2] check: [[1, -50], [2, 100]]; team total 50
+    restatement:
+      run: RUN-pg-isolation-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: true, key_line: "[q3 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions", why: "Both connections opened after the migration and run serializable: b's commit fails with 40001, which the service retries, and the team stays at 50." }
+        - { id: s2, text: "A writer's transaction runs below serializable", answer: true, key_line: "[q3 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]", why: "Every writer reads back serializable." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q3 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0", why: "The second guard sees 50 and updates no row." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-pg-isolation-exemplars
+    key_lines: ["[q3 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]", "[q3 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions"]
+    explain: "The pools are recycled after the migration, so every connection starts with the new default and reads back serializable; the interleaving that would end at -100 fails at b's commit with 40001. The result still rests on PostgreSQL 18.6's SERIALIZABLE behaving as documented, an [A] clause."
+
+  - id: v3-sound
+    pair: v3
+    operator: change-isolation-level
+    artifact: pool-hook-set-local
+    key: none
+    description: "Moves the writer pools' isolation setting into their shared on_connect hook. The debit tests pass."
+    statement: |
+      -- db/pool.py: the on_connect hook both writer pools run once on each new connection (PostgreSQL 18.6)
+      SET default_transaction_isolation = 'serializable';
+      -- the hook runs in autocommit, before the connection's first transaction
+      -- each pool's connection: the team debit, retried on SQLSTATE 40001 and 40P01
+      UPDATE acct SET bal = bal - 150 WHERE id = $1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0;
+    diff: |
+      --- /dev/null
+      +++ b/db/on_connect.sql
+      @@ -0,0 +1,3 @@
+      +-- db/pool.py: the on_connect hook both writer pools run once on each new connection (PostgreSQL 18.6)
+      +SET default_transaction_isolation = 'serializable';
+      +-- the hook runs in autocommit, before the connection's first transaction
+    receipt: |
+      [q5 p2] a: SHOW transaction_isolation -> SHOW [['serializable']]
+      [q5 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+      [q5 p2] check: [[1, -50], [2, 100]]; team total 50
+    restatement:
+      run: RUN-pg-isolation-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: true, key_line: "[q5 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions", why: "Both sessions run serializable: b's commit fails with 40001, which the service retries, and the team stays at 50." }
+        - { id: s2, text: "A writer's transaction runs below serializable", answer: true, key_line: "[q5 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]", why: "The hook's SET applies to the session, and every writer reads back serializable." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q5 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0", why: "The second guard sees 50 and updates no row." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-pg-isolation-exemplars
+    key_lines: ["[q5 p1] a: SHOW transaction_isolation -> SHOW [['serializable']]", "[q5 p1] b: COMMIT -> ERROR 40001: could not serialize access due to read/write dependencies among transactions"]
+    explain: "SET in the hook changes the session's default, so every transaction on the connection starts serializable, as the read-back shows; the interleaving that would end at -100 fails with 40001. The result rests on PostgreSQL 18.6's SERIALIZABLE, an [A] clause."
+
+  - id: v3-flawed
+    pair: v3
+    operator: change-isolation-level
+    artifact: pool-hook-set-local
+    key: { class: G6e, also: [G7, G8] }
+    description: "Moves the writer pools' isolation setting into their shared on_connect hook. The debit tests pass."
+    statement: |
+      -- db/pool.py: the on_connect hook both writer pools run once on each new connection (PostgreSQL 18.6)
+      SET LOCAL default_transaction_isolation = 'serializable';
+      -- the hook runs in autocommit, before the connection's first transaction
+      -- each pool's connection: the team debit, retried on SQLSTATE 40001 and 40P01
+      UPDATE acct SET bal = bal - 150 WHERE id = $1 AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0;
+    diff: |
+      --- /dev/null
+      +++ b/db/on_connect.sql
+      @@ -0,0 +1,3 @@
+      +-- db/pool.py: the on_connect hook both writer pools run once on each new connection (PostgreSQL 18.6)
+      +SET LOCAL default_transaction_isolation = 'serializable';
+      +-- the hook runs in autocommit, before the connection's first transaction
+    receipt: |
+      [q6 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]
+      [q6 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+      [q6 p2] check: [[1, -50], [2, 100]]; team total 50
+    restatement:
+      run: RUN-pg-isolation-exemplars
+      scenarios:
+        - { id: s1, text: "The two debits run at the same time, both commit, and the team total ends at -100", answer: false, key_line: "[q6 p1] check: [[1, -50], [2, -50]]; team total -100", why: "The hook's SET LOCAL did nothing, so both sessions run at read committed: both guards saw 200, both commit, and the team ends at -100." }
+        - { id: s2, text: "A writer's transaction runs below serializable", answer: false, key_line: "[q6 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]", why: "The read-back says read committed." }
+        - { id: s3, text: "The debits run one after the other and the team total ends below zero", answer: true, key_line: "[q6 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0", why: "The second guard sees 50 and updates no row." }
+    evidence: { type: declaration, load_bearing: ["statement:2", "receipt:1"] }
+    key_run: RUN-pg-isolation-exemplars
+    key_lines: ["[q6 p1] a: WARNING 25P01: SET LOCAL can only be used in transaction blocks", "[q6 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]", "[q6 p1] check: [[1, -50], [2, -50]]; team total -100"]
+    explain: "SET LOCAL lasts until the end of the current transaction, and the hook runs in autocommit, outside any: PostgreSQL answers with WARNING 25P01 and changes nothing. Every writer reads back read committed and the two debits commit together. The claim leans on a level the pools never set."

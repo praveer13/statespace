@@ -3,7 +3,8 @@
 // establishes; name the kind of gap, with nothing chosen for you; anchor the evidence to one to three lines. Filing
 // writes one audit event (record.ts). The key, the pair and the "based on" card come after filing (Feedback.tsx).
 
-import { useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+import type { RefObject } from 'react'
 import type { LedgerEvent } from '@statespace/ledger'
 import type { LedgerStore } from '../../storage/index.ts'
 import type { AuditAnchor, AuditCase, AuditPool, TextPart } from './pool.ts'
@@ -33,6 +34,21 @@ export interface CaseDeskProps {
   readonly onFiled: (finding: Finding, graded: Graded) => void
 }
 
+// Filing replaces the desk with what comes next (the answer key, the next case or the session's counts), which drops a
+// keyboard user's focus to the page. The desk marks the hand-off; the next heading on screen takes the focus (WCAG 2.4.3).
+let filedHandoff = false
+
+export function useFiledFocus<T extends HTMLElement>(): RefObject<T | null> {
+  const ref = useRef<T>(null)
+  useEffect(() => {
+    if (!filedHandoff || ref.current === null) return
+    filedHandoff = false
+    const active = document.activeElement
+    if (active === null || active === document.body) ref.current.focus()
+  })
+  return ref
+}
+
 export function CaseDesk({ pool, anchor, c, n, sitting, seed, store, events, onFiled }: CaseDeskProps) {
   const uid = useId().replace(/[^a-zA-Z0-9-]/g, '')
   const started = useRef(Date.now())
@@ -45,6 +61,14 @@ export function CaseDesk({ pool, anchor, c, n, sitting, seed, store, events, onF
   const [named, setNamed] = useState<string | null>(null)
   const [lines, setLines] = useState<string[]>([])
   const [filing, setFiling] = useState<'idle' | 'writing' | 'failed'>('idle')
+  // Recording the call removes its button, which drops a keyboard user's focus to the page: focus moves on to the change
+  // the call reveals (WCAG 2.4.3).
+  const revealHead = useRef<HTMLHeadingElement>(null)
+  const deskHead = useFiledFocus<HTMLHeadingElement>()
+  useEffect(() => {
+    const active = document.activeElement
+    if (called && (active === null || active === document.body)) revealHead.current?.focus()
+  }, [called])
 
   const scenariosDone = answers.every((a) => a !== undefined)
   const linesDone = named === 'none' || (lines.length >= 1 && lines.length <= 3)
@@ -63,6 +87,7 @@ export function CaseDesk({ pool, anchor, c, n, sitting, seed, store, events, onF
         return
       }
     }
+    filedHandoff = true
     onFiled(finding, graded)
   }
 
@@ -73,7 +98,7 @@ export function CaseDesk({ pool, anchor, c, n, sitting, seed, store, events, onF
   return (
     <article className="acase" style={{ ['--vol' as string]: stageInk(anchor.stage) }} aria-labelledby={`${uid}-h`}>
       <header className="acase-head">
-        <h2 id={`${uid}-h`} className="acase-title">
+        <h2 id={`${uid}-h`} ref={deskHead} tabIndex={-1} className="acase-title">
           <span className="acase-n">{sitting.id === 'open' ? 'The case' : `Case ${n}`}</span> {anchor.subject}
         </h2>
         <p className="acase-meta">
@@ -155,7 +180,7 @@ export function CaseDesk({ pool, anchor, c, n, sitting, seed, store, events, onF
         <>
           {/* 2. Reveal the change */}
           <section className="ax" aria-labelledby={`${uid}-x2`}>
-            <h3 id={`${uid}-x2`} className="exercise-head">
+            <h3 id={`${uid}-x2`} ref={revealHead} tabIndex={-1} className="exercise-head">
               <span className="exercise-word">Exercise</span> <span className="exercise-n">{n}.2</span> <span className="exercise-role">· Read the change</span>
             </h3>
             <div className="aclaim">

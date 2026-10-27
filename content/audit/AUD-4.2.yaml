@@ -2,7 +2,8 @@
 # content/audit/README.md's. The sound member is keyed by RUN-z3-conservation-noguard (spine section 6.2's Key run):
 # conservation over Int holds with no guard at all. Receipts, the flawed member, the variant pair and every step-3
 # scenario are keyed by RUN-z3-noguard-pair, recorded in the Bench image. Its tags are neutral: q1 flawed, q2 sound,
-# q3 v1-sound, q4 v1-flawed. Both pairs make an edit of the same shape with opposite effects: dropping a premise
+# q3 v1-sound, q4 v1-flawed. Variant pairs v2 to v4 are keyed by RUN-z3-noguard-exemplars
+# (content/audit/tools/record-exemplars.mjs): q5/q6 v2, q7/q8 v3, q9/q10 v4, each sound/flawed. Both pairs make an edit of the same shape with opposite effects: dropping a premise
 # makes an obligation stronger, and dropping a conjunct of Inv′ makes it weaker.
 id: AUD-4.2
 stage: S4
@@ -184,3 +185,253 @@ variants:
     key_run: RUN-z3-noguard-pair
     key_lines: ["[q4 check] unsat", "[q4 implied] sat held_p=1 bal_p=0", "[q4 full] unsat"]
     explain: "The dropped conjunct, held_p <= bal_p, does not follow from the other two: held_p = 1, bal_p = 0 meets both and breaks it. The unsat covers less than Capture's obligation. Capture does keep the full Inv (that query is unsat too), but this check is not the evidence for it."
+
+  - id: v2-sound
+    pair: v2
+    operator: swap-quantifiers
+    artifact: account-map-obligation
+    claim: "Z3 proved Transfer's invariant obligation over the account map."
+    key: none
+    description: "Restates the conclusion over the account map, as the new emitter writes it. Still unsat."
+    statement: |
+      ; Transfer(x, y, amt)'s obligation over the account map. Inv: every account at 0 or above
+      (declare-fun bal (Int) Int)
+      (declare-fun bal_p (Int) Int)
+      (declare-const x Int)
+      (declare-const y Int)
+      (declare-const amt Int)
+      (assert (forall ((i Int)) (=> (and (<= 1 i) (<= i 2)) (>= (bal i) 0))))
+      (assert (and (<= 1 x) (<= x 2) (<= 1 y) (<= y 2) (distinct x y)))
+      (assert (and (> amt 0) (<= amt (bal x))))
+      (assert (forall ((i Int)) (= (bal_p i) (ite (= i x) (- (bal i) amt) (ite (= i y) (+ (bal i) amt) (bal i))))))
+      (assert (not (forall ((i Int)) (=> (and (<= 1 i) (<= i 2)) (>= (bal_p i) 0)))))
+      (check-sat)
+    diff: |
+      --- a/obligations/transfer_map.smt2
+      +++ b/obligations/transfer_map.smt2
+      @@ -10,2 +10,2 @@
+       (assert (forall ((i Int)) (= (bal_p i) (ite (= i x) (- (bal i) amt) (ite (= i y) (+ (bal i) amt) (bal i))))))
+      -(assert (not (and (>= (bal_p 1) 0) (>= (bal_p 2) 0))))
+      +(assert (not (forall ((i Int)) (=> (and (<= 1 i) (<= i 2)) (>= (bal_p i) 0)))))
+    receipt: |
+      z3 5.3.1
+      [q5 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "the result bal_p(1) = 50, bal_p(2) = 30", answer: false, key_line: "[q5 s1 bal_p(1)=50 bal_p(2)=30] ruled out: no", why: "Both accounts at 0 or above: allowed." }
+        - { id: s2, text: "the result bal_p(1) = -10, bal_p(2) = 90", answer: true, key_line: "[q5 s2 bal_p(1)=-10 bal_p(2)=90] ruled out: yes", why: "Account 1 below zero: the forall catches it." }
+        - { id: s3, text: "the result bal_p(1) = -5, bal_p(2) = -5", answer: true, key_line: "[q5 s3 bal_p(1)=-5 bal_p(2)=-5] ruled out: yes", why: "Both below zero: ruled out." }
+        - { id: s4, text: "the result bal_p(1) = 0, bal_p(2) = 80", answer: false, key_line: "[q5 s4 bal_p(1)=0 bal_p(2)=80] ruled out: no", why: "A balance of exactly 0 meets Inv: allowed." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q5 check] unsat", "[q5 full] unsat", "[q5 without guard] sat"]
+    explain: "The conclusion quantifies over both accounts with forall, so it is Inv after the step. Remove the guard and the query turns sat: it catches an overdraft, and with the guard in place it finds none."
+
+  - id: v2-flawed
+    pair: v2
+    operator: swap-quantifiers
+    artifact: account-map-obligation
+    claim: "Z3 proved Transfer's invariant obligation over the account map."
+    key: G1
+    description: "Restates the conclusion over the account map, as the new emitter writes it. Still unsat."
+    statement: |
+      ; Transfer(x, y, amt)'s obligation over the account map. Inv: every account at 0 or above
+      (declare-fun bal (Int) Int)
+      (declare-fun bal_p (Int) Int)
+      (declare-const x Int)
+      (declare-const y Int)
+      (declare-const amt Int)
+      (assert (forall ((i Int)) (=> (and (<= 1 i) (<= i 2)) (>= (bal i) 0))))
+      (assert (and (<= 1 x) (<= x 2) (<= 1 y) (<= y 2) (distinct x y)))
+      (assert (and (> amt 0) (<= amt (bal x))))
+      (assert (forall ((i Int)) (= (bal_p i) (ite (= i x) (- (bal i) amt) (ite (= i y) (+ (bal i) amt) (bal i))))))
+      (assert (not (exists ((i Int)) (and (<= 1 i) (<= i 2) (>= (bal_p i) 0)))))
+      (check-sat)
+    diff: |
+      --- a/obligations/transfer_map.smt2
+      +++ b/obligations/transfer_map.smt2
+      @@ -10,2 +10,2 @@
+       (assert (forall ((i Int)) (= (bal_p i) (ite (= i x) (- (bal i) amt) (ite (= i y) (+ (bal i) amt) (bal i))))))
+      -(assert (not (and (>= (bal_p 1) 0) (>= (bal_p 2) 0))))
+      +(assert (not (exists ((i Int)) (and (<= 1 i) (<= i 2) (>= (bal_p i) 0)))))
+    receipt: |
+      z3 5.3.1
+      [q6 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios:
+        - { id: s1, text: "the result bal_p(1) = 50, bal_p(2) = 30", answer: false, key_line: "[q6 s1 bal_p(1)=50 bal_p(2)=30] ruled out: no", why: "Both accounts at 0 or above: allowed." }
+        - { id: s2, text: "the result bal_p(1) = -10, bal_p(2) = 90", answer: false, key_line: "[q6 s2 bal_p(1)=-10 bal_p(2)=90] ruled out: no", why: "Account 2 is at 90, so some account is at 0 or above, and the negated exists is false: the query never considers this overdraft." }
+        - { id: s3, text: "the result bal_p(1) = -5, bal_p(2) = -5", answer: true, key_line: "[q6 s3 bal_p(1)=-5 bal_p(2)=-5] ruled out: yes", why: "No account at 0 or above: the only result the exists rules out." }
+        - { id: s4, text: "the result bal_p(1) = 0, bal_p(2) = 80", answer: false, key_line: "[q6 s4 bal_p(1)=0 bal_p(2)=80] ruled out: no", why: "Allowed." }
+    evidence: { type: scenario, load_bearing: ["statement:11", "diff:6"], reference: { run: RUN-z3-noguard-exemplars, line: "[q6 s2 bal_p(1)=-10 bal_p(2)=90] ruled out: no" } }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q6 check] unsat", "[q6 without guard] unsat", "[q5 without guard] sat"]
+    explain: "The emitter wrote exists where Inv says every account: the unsat says only that some account ends at 0 or above, which the credited account always does. The same query stays unsat with the guard removed, where the forall form turns sat. Transfer does keep Inv ([q6 full] is unsat), but this check is not the evidence for it."
+
+  - id: v3-flawed
+    pair: v3
+    operator: weaken-postcondition
+    artifact: fee-obligation
+    claim: "Z3 proved Transfer's invariant obligation, fee included."
+    key: G1
+    description: "Spells out Inv′ in Transfer's obligation and drops the conjunct the others imply. Still unsat."
+    statement: |
+      ; Transfer's obligation with its fee. Inv: a, b and the fee account f at 0 or above, f at most 100, total 100
+      (define-fun Inv ((a Int) (b Int) (f Int)) Bool (and (>= a 0) (>= b 0) (>= f 0) (<= f 100) (= (+ a b f) 100)))
+      (declare-const a Int)
+      (declare-const b Int)
+      (declare-const f Int)
+      (declare-const amt Int)
+      (declare-const a_p Int)
+      (declare-const b_p Int)
+      (declare-const f_p Int)
+      (assert (Inv a b f))
+      (assert (and (> amt 0) (<= (+ amt 1) a)))
+      (assert (and (= a_p (- a amt 1)) (= b_p (+ b amt)) (= f_p (+ f 1))))
+      (assert (not (and (>= b_p 0) (>= f_p 0) (<= f_p 100) (= (+ a_p b_p f_p) 100))))
+      (check-sat)
+    diff: |
+      --- a/obligations/transfer_fee.smt2
+      +++ b/obligations/transfer_fee.smt2
+      @@ -12,2 +12,2 @@
+       (assert (and (= a_p (- a amt 1)) (= b_p (+ b amt)) (= f_p (+ f 1))))
+      -(assert (not (Inv a_p b_p f_p)))
+      +(assert (not (and (>= b_p 0) (>= f_p 0) (<= f_p 100) (= (+ a_p b_p f_p) 100))))
+    receipt: |
+      z3 5.3.1
+      [q8 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios:
+        - { id: s1, text: "the result a_p = 60, b_p = 39, f_p = 1", answer: false, key_line: "[q8 s1 a_p=60 b_p=39 f_p=1] ruled out: no", why: "It meets every conjunct of Inv: allowed." }
+        - { id: s2, text: "the result a_p = -5, b_p = 100, f_p = 5", answer: false, key_line: "[q8 s2 a_p=-5 b_p=100 f_p=5] ruled out: no", why: "a_p >= 0 was the conjunct dropped, so the query allows the sender below zero. Inv forbids it." }
+        - { id: s3, text: "the result a_p = 50, b_p = 40, f_p = 20", answer: true, key_line: "[q8 s3 a_p=50 b_p=40 f_p=20] ruled out: yes", why: "The total is 110: still ruled out." }
+        - { id: s4, text: "the result a_p = 30, b_p = 60, f_p = 0", answer: true, key_line: "[q8 s4 a_p=30 b_p=60 f_p=0] ruled out: yes", why: "The total is 90: still ruled out." }
+    evidence: { type: scenario, load_bearing: ["statement:13", "diff:6"], reference: { run: RUN-z3-noguard-exemplars, line: "[q8 s2 a_p=-5 b_p=100 f_p=5] ruled out: no" } }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q8 check] unsat", "[q8 implied] sat a_p=-1 b_p=101 f_p=0", "[q8 full] unsat"]
+    explain: "The dropped conjunct, a_p >= 0, does not follow from the four kept: a_p = -1, b_p = 101, f_p = 0 meets them all. The unsat covers less than Transfer's obligation. Transfer does keep the full Inv ([q8 full] is unsat), but this check is not the evidence for it."
+
+  - id: v3-sound
+    pair: v3
+    operator: weaken-postcondition
+    artifact: fee-obligation
+    claim: "Z3 proved Transfer's invariant obligation, fee included."
+    key: none
+    description: "Spells out Inv′ in Transfer's obligation and drops the conjunct the others imply. Still unsat."
+    statement: |
+      ; Transfer's obligation with its fee. Inv: a, b and the fee account f at 0 or above, f at most 100, total 100
+      (define-fun Inv ((a Int) (b Int) (f Int)) Bool (and (>= a 0) (>= b 0) (>= f 0) (<= f 100) (= (+ a b f) 100)))
+      (declare-const a Int)
+      (declare-const b Int)
+      (declare-const f Int)
+      (declare-const amt Int)
+      (declare-const a_p Int)
+      (declare-const b_p Int)
+      (declare-const f_p Int)
+      (assert (Inv a b f))
+      (assert (and (> amt 0) (<= (+ amt 1) a)))
+      (assert (and (= a_p (- a amt 1)) (= b_p (+ b amt)) (= f_p (+ f 1))))
+      (assert (not (and (>= a_p 0) (>= b_p 0) (>= f_p 0) (= (+ a_p b_p f_p) 100))))
+      (check-sat)
+    diff: |
+      --- a/obligations/transfer_fee.smt2
+      +++ b/obligations/transfer_fee.smt2
+      @@ -12,2 +12,2 @@
+       (assert (and (= a_p (- a amt 1)) (= b_p (+ b amt)) (= f_p (+ f 1))))
+      -(assert (not (Inv a_p b_p f_p)))
+      +(assert (not (and (>= a_p 0) (>= b_p 0) (>= f_p 0) (= (+ a_p b_p f_p) 100))))
+    receipt: |
+      z3 5.3.1
+      [q7 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "the result a_p = 60, b_p = 39, f_p = 1", answer: false, key_line: "[q7 s1 a_p=60 b_p=39 f_p=1] ruled out: no", why: "It meets every conjunct of Inv: allowed." }
+        - { id: s2, text: "the result a_p = -5, b_p = 100, f_p = 5", answer: true, key_line: "[q7 s2 a_p=-5 b_p=100 f_p=5] ruled out: yes", why: "The sender below zero: ruled out by a_p >= 0." }
+        - { id: s3, text: "the result a_p = 50, b_p = 40, f_p = 20", answer: true, key_line: "[q7 s3 a_p=50 b_p=40 f_p=20] ruled out: yes", why: "The total is 110: ruled out." }
+        - { id: s4, text: "the result a_p = 30, b_p = 60, f_p = 0", answer: true, key_line: "[q7 s4 a_p=30 b_p=60 f_p=0] ruled out: yes", why: "The total is 90: ruled out." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q7 check] unsat", "[q7 implied] unsat", "[q7 full] unsat"]
+    explain: "f_p <= 100 follows from the conjuncts kept: with a_p and b_p at 0 or above and a total of 100, f_p is at most 100. Dropping it leaves the obligation as strong as Inv after the step, and the full obligation is unsat as well."
+
+  - id: v4-sound
+    pair: v4
+    operator: drop-parentheses
+    artifact: transfer-obligation-py
+    medium: z3py
+    claim: "Z3 proved the invariant obligation, spelled out."
+    key: none
+    description: "Spells out Inv(a_p, b_p) in the query so that the report can name each conjunct. Still unsat."
+    statement: |
+      a, b, amount, a_p, b_p = Ints('a b amount a_p b_p')
+      Inv = lambda x, y: And(x >= 0, y >= 0, x + y == 100)
+      s = Solver()
+      s.add(Inv(a, b))
+      s.add(amount > 0, amount <= a)
+      s.add(a_p == a - amount, b_p == b + amount)
+      s.add(Not(And(a_p >= 0, b_p >= 0, a_p + b_p == 100)))   # Inv(a_p, b_p), spelled out
+      print(s.check())
+    diff: |
+      --- a/checks/transfer_obligation.py
+      +++ b/checks/transfer_obligation.py
+      @@ -6,2 +6,2 @@
+       s.add(a_p == a - amount, b_p == b + amount)
+      -s.add(Not(Inv(a_p, b_p)))
+      +s.add(Not(And(a_p >= 0, b_p >= 0, a_p + b_p == 100)))   # Inv(a_p, b_p), spelled out
+    receipt: |
+      z3 5.3.1
+      [q9 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "the result a_p = 50, b_p = 50", answer: false, key_line: "[q9 s1 a_p=50 b_p=50] ruled out: no", why: "Inv holds: allowed." }
+        - { id: s2, text: "the result a_p = 50, b_p = 60", answer: true, key_line: "[q9 s2 a_p=50 b_p=60] ruled out: yes", why: "The total is 110: ruled out." }
+        - { id: s3, text: "the result a_p = -20, b_p = 120", answer: true, key_line: "[q9 s3 a_p=-20 b_p=120] ruled out: yes", why: "The sender below zero: ruled out." }
+        - { id: s4, text: "the result a_p = -20, b_p = 130", answer: true, key_line: "[q9 s4 a_p=-20 b_p=130] ruled out: yes", why: "Below zero, and a total of 110: ruled out." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q9 check] unsat", "[q9 full] unsat", "[q9 step b_p == b + amount + 1] sat"]
+    explain: "All three conjuncts sit inside Not(And(...)): the query is Inv after the step, negated. A step that creates one unit turns it sat, so it checks conservation as well as the signs."
+
+  - id: v4-flawed
+    pair: v4
+    operator: drop-parentheses
+    artifact: transfer-obligation-py
+    medium: z3py
+    claim: "Z3 proved the invariant obligation, spelled out."
+    key: G1
+    description: "Spells out Inv(a_p, b_p) in the query so that the report can name each conjunct. Still unsat."
+    statement: |
+      a, b, amount, a_p, b_p = Ints('a b amount a_p b_p')
+      Inv = lambda x, y: And(x >= 0, y >= 0, x + y == 100)
+      s = Solver()
+      s.add(Inv(a, b))
+      s.add(amount > 0, amount <= a)
+      s.add(a_p == a - amount, b_p == b + amount)
+      s.add(Not(And(a_p >= 0, b_p >= 0)), a_p + b_p == 100)   # Inv(a_p, b_p), spelled out
+      print(s.check())
+    diff: |
+      --- a/checks/transfer_obligation.py
+      +++ b/checks/transfer_obligation.py
+      @@ -6,2 +6,2 @@
+       s.add(a_p == a - amount, b_p == b + amount)
+      -s.add(Not(Inv(a_p, b_p)))
+      +s.add(Not(And(a_p >= 0, b_p >= 0)), a_p + b_p == 100)   # Inv(a_p, b_p), spelled out
+    receipt: |
+      z3 5.3.1
+      [q10 check] unsat
+    restatement:
+      run: RUN-z3-noguard-exemplars
+      scenarios:
+        - { id: s1, text: "the result a_p = 50, b_p = 50", answer: false, key_line: "[q10 s1 a_p=50 b_p=50] ruled out: no", why: "Inv holds: allowed." }
+        - { id: s2, text: "the result a_p = 50, b_p = 60", answer: false, key_line: "[q10 s2 a_p=50 b_p=60] ruled out: no", why: "The total sits outside Not(...) as an assumption, so the query considers only results that total 100; this one it never looks at." }
+        - { id: s3, text: "the result a_p = -20, b_p = 120", answer: true, key_line: "[q10 s3 a_p=-20 b_p=120] ruled out: yes", why: "Below zero: the signs are still checked." }
+        - { id: s4, text: "the result a_p = -20, b_p = 130", answer: false, key_line: "[q10 s4 a_p=-20 b_p=130] ruled out: no", why: "A total of 110 is outside what the query assumes, so its unsat says nothing about it." }
+    evidence: { type: scenario, load_bearing: ["statement:7", "diff:6"], reference: { run: RUN-z3-noguard-exemplars, line: "[q10 s2 a_p=50 b_p=60] ruled out: no" } }
+    key_run: RUN-z3-noguard-exemplars
+    key_lines: ["[q10 check] unsat", "[q10 step b_p == b + amount + 1] unsat", "[q9 step b_p == b + amount + 1] sat"]
+    explain: "A parenthesis closes early: a_p + b_p == 100 left the negation and became an assumption. The query checks the signs under the assumption that the total is kept, so it stays unsat on a step that creates one unit, where the spelled-out Inv turns sat. Transfer does keep Inv ([q10 full] is unsat), but this check is not the evidence for it."

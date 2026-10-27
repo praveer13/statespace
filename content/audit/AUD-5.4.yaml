@@ -4,6 +4,12 @@
 # one after the other (p2). The flawed member's key is the spine's run, RUN-tlc-rtw3: the read, check and write split
 # in TLA+. Variant pair v1 is the same split inside TLA+ (RUN-tlc-split-guard: q1 sound, q2 flawed; c1-c3 constants),
 # with the agent's receipt copied from the atomic model's run, RUN-tlc-atomic.
+# Variant pairs v2 and v3 are keyed by RUN-tlc-split-exemplars (content/audit/tools/record-exemplars.mjs): q5/q6 the
+# hold placement and q7/q8 the idempotent charge, each sound/flawed, with their receipts from the atomic models a5
+# and a7 of the same run.
+# Variant pairs v4 and v5 are keyed by RUN-pg-split-exemplars on PostgreSQL 18.6: q9/q10 the hold placement and
+# q11/q12 the daily-limit counter, each sound/flawed, run by two sessions interleaved (p1) and one after the other (p2).
+# Each statement is the block between its case's markers in that run's module, verbatim.
 id: AUD-5.4
 stage: S5
 class: G9
@@ -220,3 +226,377 @@ variants:
     key_run: RUN-tlc-split-guard
     key_lines: ["[q2 c1] Error: Invariant NoOverspend is violated.", "[q2 c3] Error: Invariant NoOverspend is violated."]
     explain: "The receipt is the atomic model's run, 4 distinct states and no error; it says nothing about the split. The split writes the balance it read, so a Write can follow another worker's Write: TLC on the split itself finds NoOverspend violated by Read(w1), Read(w2), Write(w1), Write(w2)."
+
+  - id: v2-flawed
+    pair: v2
+    operator: split-atomic-action
+    medium: tla
+    artifact: hold-split-model
+    key: G9
+    claim: "The two-step hold placement implements the atomic action, which TLC checks."
+    description: "Splits PlaceHold into Check and Place, the two steps the service takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Holds ----
+      EXTENDS Naturals
+      CONSTANTS Bal, Amt, Workers
+      VARIABLES held, pc
+      vars == <<held, pc>>
+      Initial == held = 0 /\ pc = [w \in Workers |-> "check"]
+      Check(w) == /\ pc[w] = "check"
+                  /\ pc' = [pc EXCEPT ![w] = IF Bal - held >= Amt THEN "place" ELSE "done"]
+                  /\ UNCHANGED held
+      Place(w) == /\ pc[w] = "place" /\ pc' = [pc EXCEPT ![w] = "done"]
+                  /\ held' = held + Amt
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Check(w) \/ Place(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      NoOverHold == held <= Bal
+      ====
+    diff: |
+      --- a/specs/Holds.tla
+      +++ b/specs/Holds.tla
+      @@ -7,4 +7,7 @@
+      -PlaceHold(w) == /\ pc[w] = "check" /\ pc' = [pc EXCEPT ![w] = "done"]
+      -                /\ IF Bal - held >= Amt THEN held' = held + Amt ELSE UNCHANGED held
+      +Check(w) == /\ pc[w] = "check"
+      +            /\ pc' = [pc EXCEPT ![w] = IF Bal - held >= Amt THEN "place" ELSE "done"]
+      +            /\ UNCHANGED held
+      +Place(w) == /\ pc[w] = "place" /\ pc' = [pc EXCEPT ![w] = "done"]
+      +            /\ held' = held + Amt
+       Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      -Next == (\E w \in Workers : PlaceHold(w)) \/ Idle
+      +Next == (\E w \in Workers : Check(w) \/ Place(w)) \/ Idle
+    receipt: |
+      [a5] Model checking completed. No error has been found.
+      [a5] 6 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-split-exemplars
+      scenarios:
+        - { id: c1, text: "Bal = 100, Amt = 80, two workers: more than 100 is held", answer: false, key_line: "[q6 c1] Error: Invariant NoOverHold is violated.", why: "Check(w1), Check(w2), Place(w1), Place(w2): both checks see 100 available, and both place." }
+        - { id: c2, text: "Bal = 100, Amt = 40, two workers: more than 100 is held", answer: true, key_line: "[q6 c2] Model checking completed. No error has been found.", why: "Two holds of 40 hold 80 at most, so the race does not show at these constants." }
+        - { id: c3, text: "Bal = 100, Amt = 40, three workers: more than 100 is held", answer: false, key_line: "[q6 c3] Error: Invariant NoOverHold is violated.", why: "Three checks pass before the places, and 120 is held." }
+    evidence: { type: witness, load_bearing: ["statement:11", "diff:10"], reference: "RUN-tlc-split-exemplars [q6 c1]: Check(w1), Check(w2), Place(w1), Place(w2); Invariant NoOverHold is violated" }
+    key_run: RUN-tlc-split-exemplars
+    key_lines: ["[q6 c1] Error: Invariant NoOverHold is violated.", "[q6 c3] Error: Invariant NoOverHold is violated."]
+    explain: "The receipt is the atomic model's run, 4 distinct states and no error; it says nothing about the split. Place adds the hold that its Check approved, whatever has been placed since: TLC on the split itself finds NoOverHold violated by Check(w1), Check(w2), Place(w1), Place(w2)."
+
+  - id: v2-sound
+    pair: v2
+    operator: split-atomic-action
+    medium: tla
+    artifact: hold-split-model
+    key: none
+    claim: "The two-step hold placement implements the atomic action, which TLC checks."
+    description: "Splits PlaceHold into Check and Place, the two steps the service takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Holds ----
+      EXTENDS Naturals
+      CONSTANTS Bal, Amt, Workers
+      VARIABLES held, pc
+      vars == <<held, pc>>
+      Initial == held = 0 /\ pc = [w \in Workers |-> "check"]
+      Check(w) == /\ pc[w] = "check"
+                  /\ pc' = [pc EXCEPT ![w] = IF Bal - held >= Amt THEN "place" ELSE "done"]
+                  /\ UNCHANGED held
+      Place(w) == /\ pc[w] = "place" /\ pc' = [pc EXCEPT ![w] = "done"]
+                  /\ IF Bal - held >= Amt THEN held' = held + Amt ELSE UNCHANGED held
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Check(w) \/ Place(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      NoOverHold == held <= Bal
+      ====
+    diff: |
+      --- a/specs/Holds.tla
+      +++ b/specs/Holds.tla
+      @@ -7,4 +7,7 @@
+      -PlaceHold(w) == /\ pc[w] = "check" /\ pc' = [pc EXCEPT ![w] = "done"]
+      -                /\ IF Bal - held >= Amt THEN held' = held + Amt ELSE UNCHANGED held
+      +Check(w) == /\ pc[w] = "check"
+      +            /\ pc' = [pc EXCEPT ![w] = IF Bal - held >= Amt THEN "place" ELSE "done"]
+      +            /\ UNCHANGED held
+      +Place(w) == /\ pc[w] = "place" /\ pc' = [pc EXCEPT ![w] = "done"]
+      +            /\ IF Bal - held >= Amt THEN held' = held + Amt ELSE UNCHANGED held
+       Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      -Next == (\E w \in Workers : PlaceHold(w)) \/ Idle
+      +Next == (\E w \in Workers : Check(w) \/ Place(w)) \/ Idle
+    receipt: |
+      [a5] Model checking completed. No error has been found.
+      [a5] 6 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-split-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: c1, text: "Bal = 100, Amt = 80, two workers: more than 100 is held", answer: true, key_line: "[q5 c1] Model checking completed. No error has been found.", why: "Place re-checks what is still available, so the second worker places nothing." }
+        - { id: c2, text: "Bal = 100, Amt = 40, two workers: more than 100 is held", answer: true, key_line: "[q5 c2] Model checking completed. No error has been found.", why: "Two holds of 40 fit in 100 however they interleave." }
+        - { id: c3, text: "Bal = 100, Amt = 40, three workers: more than 100 is held", answer: true, key_line: "[q5 c3] Model checking completed. No error has been found.", why: "The third Place finds 20 available and places nothing; 27 distinct states, no error." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-tlc-split-exemplars
+    key_lines: ["[q5 c1] Model checking completed. No error has been found.", "[q5 c3] Model checking completed. No error has been found."]
+    explain: "The split keeps the guard inside the write: Place adds the hold only if Bal - held still covers it, so a Place has the atomic action's effect. TLC finds no overhold at any of the three sets of constants."
+
+  - id: v3-sound
+    pair: v3
+    operator: split-atomic-action
+    medium: tla
+    artifact: charge-split-model
+    key: none
+    claim: "The two-step charge implements the atomic ChargeOnce, which TLC checks."
+    description: "Splits ChargeOnce into Check and Charge, the two steps the payment worker takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Charges ----
+      EXTENDS Naturals
+      CONSTANTS Workers
+      VARIABLES used, charges, pc
+      vars == <<used, charges, pc>>
+      Initial == used = FALSE /\ charges = 0 /\ pc = [w \in Workers |-> "check"]
+      Check(w)  == /\ pc[w] = "check"
+                   /\ pc' = [pc EXCEPT ![w] = IF used THEN "done" ELSE "charge"]
+                   /\ UNCHANGED <<used, charges>>
+      Charge(w) == /\ pc[w] = "charge" /\ pc' = [pc EXCEPT ![w] = "done"]
+                   /\ IF used THEN UNCHANGED <<used, charges>> ELSE used' = TRUE /\ charges' = charges + 1
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Check(w) \/ Charge(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      AtMostOnce == charges <= 1
+      ====
+    diff: |
+      --- a/specs/Charges.tla
+      +++ b/specs/Charges.tla
+      @@ -7,4 +7,7 @@
+      -ChargeOnce(w) == /\ pc[w] = "check" /\ pc' = [pc EXCEPT ![w] = "done"]
+      -                 /\ IF used THEN UNCHANGED <<used, charges>> ELSE used' = TRUE /\ charges' = charges + 1
+      +Check(w)  == /\ pc[w] = "check"
+      +             /\ pc' = [pc EXCEPT ![w] = IF used THEN "done" ELSE "charge"]
+      +             /\ UNCHANGED <<used, charges>>
+      +Charge(w) == /\ pc[w] = "charge" /\ pc' = [pc EXCEPT ![w] = "done"]
+      +             /\ IF used THEN UNCHANGED <<used, charges>> ELSE used' = TRUE /\ charges' = charges + 1
+       Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      -Next == (\E w \in Workers : ChargeOnce(w)) \/ Idle
+      +Next == (\E w \in Workers : Check(w) \/ Charge(w)) \/ Idle
+    receipt: |
+      [a7] Model checking completed. No error has been found.
+      [a7] 6 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-split-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: c1, text: "one worker: the key is charged more than once", answer: true, key_line: "[q7 c1] Model checking completed. No error has been found.", why: "One worker charges once." }
+        - { id: c2, text: "two workers: the key is charged more than once", answer: true, key_line: "[q7 c2] Model checking completed. No error has been found.", why: "Charge re-checks the key, so the second worker charges nothing." }
+        - { id: c3, text: "three workers: the key is charged more than once", answer: true, key_line: "[q7 c3] Model checking completed. No error has been found.", why: "The key is used after the first Charge; every later Charge finds it used." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-tlc-split-exemplars
+    key_lines: ["[q7 c2] Model checking completed. No error has been found.", "[q7 c3] Model checking completed. No error has been found."]
+    explain: "Charge tests and sets the key in one step, as the atomic action does, so at most one Charge finds it unused. TLC finds no second charge with one, two or three workers."
+
+  - id: v3-flawed
+    pair: v3
+    operator: split-atomic-action
+    medium: tla
+    artifact: charge-split-model
+    key: G9
+    claim: "The two-step charge implements the atomic ChargeOnce, which TLC checks."
+    description: "Splits ChargeOnce into Check and Charge, the two steps the payment worker takes. The atomic model still checks."
+    statement: |
+      ---- MODULE Charges ----
+      EXTENDS Naturals
+      CONSTANTS Workers
+      VARIABLES used, charges, pc
+      vars == <<used, charges, pc>>
+      Initial == used = FALSE /\ charges = 0 /\ pc = [w \in Workers |-> "check"]
+      Check(w)  == /\ pc[w] = "check"
+                   /\ pc' = [pc EXCEPT ![w] = IF used THEN "done" ELSE "charge"]
+                   /\ UNCHANGED <<used, charges>>
+      Charge(w) == /\ pc[w] = "charge" /\ pc' = [pc EXCEPT ![w] = "done"]
+                   /\ used' = TRUE /\ charges' = charges + 1
+      Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      Next == (\E w \in Workers : Check(w) \/ Charge(w)) \/ Idle
+      Spec == Initial /\ [][Next]_vars
+      AtMostOnce == charges <= 1
+      ====
+    diff: |
+      --- a/specs/Charges.tla
+      +++ b/specs/Charges.tla
+      @@ -7,4 +7,7 @@
+      -ChargeOnce(w) == /\ pc[w] = "check" /\ pc' = [pc EXCEPT ![w] = "done"]
+      -                 /\ IF used THEN UNCHANGED <<used, charges>> ELSE used' = TRUE /\ charges' = charges + 1
+      +Check(w)  == /\ pc[w] = "check"
+      +             /\ pc' = [pc EXCEPT ![w] = IF used THEN "done" ELSE "charge"]
+      +             /\ UNCHANGED <<used, charges>>
+      +Charge(w) == /\ pc[w] = "charge" /\ pc' = [pc EXCEPT ![w] = "done"]
+      +             /\ used' = TRUE /\ charges' = charges + 1
+       Idle == (\A w \in Workers : pc[w] = "done") /\ UNCHANGED vars
+      -Next == (\E w \in Workers : ChargeOnce(w)) \/ Idle
+      +Next == (\E w \in Workers : Check(w) \/ Charge(w)) \/ Idle
+    receipt: |
+      [a7] Model checking completed. No error has been found.
+      [a7] 6 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-split-exemplars
+      scenarios:
+        - { id: c1, text: "one worker: the key is charged more than once", answer: true, key_line: "[q8 c1] Model checking completed. No error has been found.", why: "One worker charges once: nothing to race with." }
+        - { id: c2, text: "two workers: the key is charged more than once", answer: false, key_line: "[q8 c2] Error: Invariant AtMostOnce is violated.", why: "Check(w1), Check(w2), Charge(w1), Charge(w2): both checks see the key unused, and both charge." }
+        - { id: c3, text: "three workers: the key is charged more than once", answer: false, key_line: "[q8 c3] Error: Invariant AtMostOnce is violated.", why: "Three checks pass before the charges: more than one charge." }
+    evidence: { type: witness, load_bearing: ["statement:11", "diff:10"], reference: "RUN-tlc-split-exemplars [q8 c2]: Check(w1), Check(w2), Charge(w1), Charge(w2); Invariant AtMostOnce is violated" }
+    key_run: RUN-tlc-split-exemplars
+    key_lines: ["[q8 c2] Error: Invariant AtMostOnce is violated.", "[q8 c3] Error: Invariant AtMostOnce is violated."]
+    explain: "The receipt is the atomic model's run, 4 distinct states and no error; it says nothing about the split. Charge trusts the Check that came before it, so two workers that both checked both charge: TLC on the split finds AtMostOnce violated by Check(w1), Check(w2), Charge(w1), Charge(w2)."
+
+  - id: v4-flawed
+    pair: v4
+    operator: split-atomic-action
+    medium: sql
+    artifact: hold-placement-sql
+    key: G9
+    claim: "Implements the atomic PlaceHold action."
+    description: "Splits the availability query in two, so that a refusal can say whether the balance or the holds fell short. The hold tests pass."
+    statement: |
+      def place_hold(conn, acct, amount):
+          with conn.transaction():
+              (bal,) = conn.execute("SELECT bal FROM acct WHERE id = %s", (acct,)).fetchone()
+              (held,) = conn.execute("SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s", (acct,)).fetchone()
+              if bal - held < amount:
+                  return False
+              conn.execute("INSERT INTO holds (acct, amt) VALUES (%s, %s)", (acct, amount))
+              return True
+    diff: |
+      --- a/service/holds.py
+      +++ b/service/holds.py
+      @@ -2,5 +2,6 @@
+           with conn.transaction():
+      -        (avail,) = conn.execute("SELECT bal - (SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s) FROM acct WHERE id = %s FOR UPDATE", (acct, acct)).fetchone()
+      -        if avail < amount:
+      +        (bal,) = conn.execute("SELECT bal FROM acct WHERE id = %s", (acct,)).fetchone()
+      +        (held,) = conn.execute("SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s", (acct,)).fetchone()
+      +        if bal - held < amount:
+                   return False
+    receipt: |
+      [q10 p2] a returned True, b returned False
+      [q10 p2] final held=80; placed=80 of 100
+    restatement:
+      run: RUN-pg-split-exemplars
+      scenarios:
+        - { id: s1, text: "Two concurrent holds of 80 against a balance of 100 both succeed", answer: false, key_line: "[q10 p1] a returned True, b returned True", why: "Both read a balance of 100 and nothing held, both insert, both commit: 160 held against 100." }
+        - { id: s2, text: "Run one after the other, two holds of 80 both succeed", answer: true, key_line: "[q10 p2] a returned True, b returned False", why: "The second sees 80 held and refuses: that is the test the receipt shows." }
+        - { id: s3, text: "Each session sees nothing held yet when it checks", answer: false, key_line: "[q10 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]", why: "b reads the holds before a commits its insert, and finds none." }
+    evidence: { type: witness, load_bearing: ["statement:3", "statement:7"], reference: { run: RUN-pg-split-exemplars, line: "[q10 p1] final held=160; placed=160 of 100" } }
+    key_run: RUN-pg-split-exemplars
+    key_lines: ["[q10 p1] a returned True, b returned True", "[q10 p1] final held=160; placed=160 of 100"]
+    explain: "The model's PlaceHold reads the available amount and places the hold in one step. Here the read and the insert are separate statements, and nothing stops a second session between them: at READ COMMITTED two holds that each insert a new row never touch the same row, so both commit, 160 held against 100. The receipt's test runs the holds one after the other, where the split cannot show."
+
+  - id: v4-sound
+    pair: v4
+    operator: split-atomic-action
+    medium: sql
+    artifact: hold-placement-sql
+    key: none
+    claim: "Implements the atomic PlaceHold action."
+    description: "Splits the availability query in two, so that a refusal can say whether the balance or the holds fell short. The hold tests pass."
+    statement: |
+      def place_hold(conn, acct, amount):
+          with conn.transaction():
+              (bal,) = conn.execute("SELECT bal FROM acct WHERE id = %s FOR UPDATE", (acct,)).fetchone()
+              (held,) = conn.execute("SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s", (acct,)).fetchone()
+              if bal - held < amount:
+                  return False
+              conn.execute("INSERT INTO holds (acct, amt) VALUES (%s, %s)", (acct, amount))
+              return True
+    diff: |
+      --- a/service/holds.py
+      +++ b/service/holds.py
+      @@ -2,5 +2,6 @@
+           with conn.transaction():
+      -        (avail,) = conn.execute("SELECT bal - (SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s) FROM acct WHERE id = %s FOR UPDATE", (acct, acct)).fetchone()
+      -        if avail < amount:
+      +        (bal,) = conn.execute("SELECT bal FROM acct WHERE id = %s FOR UPDATE", (acct,)).fetchone()
+      +        (held,) = conn.execute("SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s", (acct,)).fetchone()
+      +        if bal - held < amount:
+                   return False
+    receipt: |
+      [q9 p2] a returned True, b returned False
+      [q9 p2] final held=80; placed=80 of 100
+    restatement:
+      run: RUN-pg-split-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "Two concurrent holds of 80 against a balance of 100 both succeed", answer: true, key_line: "[q9 p1] a returned True, b returned False", why: "b's SELECT ... FOR UPDATE waits for a's commit, then b sees a's hold and refuses." }
+        - { id: s2, text: "Run one after the other, two holds of 80 both succeed", answer: true, key_line: "[q9 p2] a returned True, b returned False", why: "The second sees 80 held and refuses." }
+        - { id: s3, text: "Each session sees nothing held yet when it checks", answer: true, key_line: "[q9 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]", why: "b's lock wait ends at a's commit, so b's next statement sees the 80 held." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-pg-split-exemplars
+    key_lines: ["[q9 p1] b: SELECT bal FROM acct WHERE id = %s FOR UPDATE <waiting ...>", "[q9 p1] final held=80; placed=80 of 100"]
+    explain: "SELECT ... FOR UPDATE locks the account row until the transaction ends, so a second placement waits there, and at READ COMMITTED its next statement reads the holds a committed. Read, check and insert behave as the one atomic step: 80 held, however the sessions interleave."
+
+  - id: v5-sound
+    pair: v5
+    operator: change-isolation-level
+    medium: sql
+    artifact: daily-limit-counter
+    key: none
+    claim: "Implements the atomic Spend action."
+    description: "Lowers the limit check's isolation level from SERIALIZABLE, to cut retries under load. The limit tests pass."
+    statement: |
+      def spend(conn, acct, amount):          # the caller retries a whole spend on SQLSTATE 40001
+          with conn.transaction():
+              conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ")
+              (used,) = conn.execute("SELECT used FROM limits WHERE acct = %s", (acct,)).fetchone()
+              if used + amount > 100:
+                  return False
+              conn.execute("UPDATE limits SET used = %s WHERE acct = %s", (used + amount, acct))
+              return True
+    diff: |
+      --- a/service/limits.py
+      +++ b/service/limits.py
+      @@ -2,3 +2,3 @@
+           with conn.transaction():
+      -        conn.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+      +        conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ")
+               (used,) = conn.execute("SELECT used FROM limits WHERE acct = %s", (acct,)).fetchone()
+    receipt: |
+      [q11 p2] a returned True, b returned False
+      [q11 p2] final used=80; spent=80 of 100
+    restatement:
+      run: RUN-pg-split-exemplars
+      scenarios: &v5-sound-scenarios
+        - { id: s1, text: "Two concurrent spends of 80 against a daily limit of 100 both succeed", answer: true, key_line: "[q11 p1] a returned True, b returned error could not serialize access due to concurrent update", why: "b's UPDATE waits for a, then fails with 40001: REPEATABLE READ refuses to write over a value b never saw. The caller retries, and the retry sees 80 used." }
+        - { id: s2, text: "Run one after the other, two spends of 80 both succeed", answer: true, key_line: "[q11 p2] a returned True, b returned False", why: "The second reads 80 used and refuses." }
+        - { id: s3, text: "The counter ends at 80 while 160 has been spent", answer: true, key_line: "[q11 p1] final used=80; spent=80 of 100", why: "Only a's spend went through: 80 used, 80 spent." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-pg-split-exemplars
+    key_lines: ["[q11 p1] b: UPDATE limits SET used = %s WHERE acct = %s <... completed> -> ERROR 40001: could not serialize access due to concurrent update", "[q11 p1] final used=80; spent=80 of 100"]
+    explain: "At REPEATABLE READ, PostgreSQL refuses an UPDATE of a row another transaction changed since the snapshot (40001), which the caller retries. A lost update cannot happen, so read, check and write keep the atomic step's effect."
+
+  - id: v5-flawed
+    pair: v5
+    operator: change-isolation-level
+    medium: sql
+    artifact: daily-limit-counter
+    key: G9
+    claim: "Implements the atomic Spend action."
+    description: "Lowers the limit check's isolation level from SERIALIZABLE, to cut retries under load. The limit tests pass."
+    statement: |
+      def spend(conn, acct, amount):          # the caller retries a whole spend on SQLSTATE 40001
+          with conn.transaction():
+              conn.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED")
+              (used,) = conn.execute("SELECT used FROM limits WHERE acct = %s", (acct,)).fetchone()
+              if used + amount > 100:
+                  return False
+              conn.execute("UPDATE limits SET used = %s WHERE acct = %s", (used + amount, acct))
+              return True
+    diff: |
+      --- a/service/limits.py
+      +++ b/service/limits.py
+      @@ -2,3 +2,3 @@
+           with conn.transaction():
+      -        conn.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+      +        conn.execute("SET TRANSACTION ISOLATION LEVEL READ COMMITTED")
+               (used,) = conn.execute("SELECT used FROM limits WHERE acct = %s", (acct,)).fetchone()
+    receipt: |
+      [q12 p2] a returned True, b returned False
+      [q12 p2] final used=80; spent=80 of 100
+    restatement:
+      run: RUN-pg-split-exemplars
+      scenarios:
+        - { id: s1, text: "Two concurrent spends of 80 against a daily limit of 100 both succeed", answer: false, key_line: "[q12 p1] a returned True, b returned True", why: "Both read 0 used, b's UPDATE waits for a and then overwrites it: both succeed." }
+        - { id: s2, text: "Run one after the other, two spends of 80 both succeed", answer: true, key_line: "[q12 p2] a returned True, b returned False", why: "The second reads 80 used and refuses: the receipt's test." }
+        - { id: s3, text: "The counter ends at 80 while 160 has been spent", answer: false, key_line: "[q12 p1] final used=80; spent=160 of 100", why: "b wrote 0 + 80 over a's 80: the counter says 80, and 160 went out." }
+    evidence: { type: witness, load_bearing: ["statement:3", "statement:7"], reference: { run: RUN-pg-split-exemplars, line: "[q12 p1] final used=80; spent=160 of 100" } }
+    key_run: RUN-pg-split-exemplars
+    key_lines: ["[q12 p1] a returned True, b returned True", "[q12 p1] final used=80; spent=160 of 100"]
+    explain: "READ COMMITTED lets b's UPDATE wait for a and then write the value b computed from its own stale read: a lost update. Two spends of 80 both succeed against a limit of 100, and the counter records one. The isolation level was what made the read-check-write one step; the receipt's serial test cannot see it."

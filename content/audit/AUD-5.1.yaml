@@ -3,6 +3,8 @@
 # are neutral: q1 sound member, q2 flawed member, q3/q4 variant pair v1 (sound/flawed); s1-s4 and t1-t3 are the
 # scenarios' edits of the case's module, checked with the case's own configuration. The flawed member is keyed by the
 # spine's run, RUN-tlc-hold-lasso: a deadlock-free hold spec that loops forever.
+# Variant pairs v2 to v5 are keyed by RUN-tlc-kind-exemplars (content/audit/tools/record-exemplars.mjs), whose tags are
+# q5/q6 (v2), q7/q8 (v3), q9/q10 (v4) and q11/q12 (v5), each the property check and then the state or deadlock check.
 id: AUD-5.1
 stage: S5
 class: G3
@@ -207,3 +209,371 @@ variants:
     key_run: RUN-tlc-hold-kind
     key_lines: ["[q4] Model checking completed. No error has been found.", "[q3 t1] Error: Temporal property EventuallyFinished was violated.", "[q4 t1] Model checking completed. No error has been found."]
     explain: "NeverLost is a check of single states. On the spec with its fairness deleted, TLC finds EventuallyFinished violated by a payout that stutters forever, and this configuration reports no error on the same spec: it cannot see whether a payout finishes."
+
+  - id: v2-flawed
+    pair: v2
+    operator: restate-property-kind
+    artifact: withdrawal-approval
+    key: G3
+    claim: "TLC finds no deadlock and no error: every withdrawal request is decided."
+    description: "Adds the TLC configuration for the approval model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Approval ----
+      VARIABLES st
+      Init == st = "requested"
+      Review  == st = "requested" /\ st' = "reviewing"
+      Recheck == st = "reviewing" /\ st' = "requested"
+      Approve == st = "reviewing" /\ st' = "approved"
+      Deny    == st = "reviewing" /\ st' = "denied"
+      Done    == st \in {"approved", "denied"} /\ UNCHANGED st
+      Next == Review \/ Recheck \/ Approve \/ Deny \/ Done
+      Fair == WF_st(Review) /\ SF_st(Deny)
+      Spec == Init /\ [][Next]_st /\ Fair
+      TypeOK == st \in {"requested", "reviewing", "approved", "denied"}
+      Decided == st \in {"approved", "denied"}
+      EventuallyDecided == <>Decided
+      ====
+      \* Approval.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      INVARIANT TypeOK
+    diff: |
+      --- /dev/null
+      +++ b/specs/Approval.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +INVARIANT TypeOK
+    receipt: |
+      [q6] Model checking completed. No error has been found.
+      [q6] 7 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios:
+        - { id: t1, text: "Fair is deleted from Spec", answer: false, key_line: "[q6 t1] Model checking completed. No error has been found.", why: "Every state is still one of the four named, so TypeOK holds, though a request may now wait forever." }
+        - { id: t2, text: "Approve moves the request to \"aproved\", a typo", answer: true, key_line: "[q6 t2] Error: Invariant TypeOK is violated.", why: "The misspelled state is not one of the four, so the invariant catches it." }
+        - { id: t3, text: "Deny's strong fairness is weakened to WF_st(Deny)", answer: false, key_line: "[q6 t3] Model checking completed. No error has been found.", why: "Nothing leaves the four states, so nothing to report." }
+    evidence: { type: witness, load_bearing: ["statement:18", "diff:5"], reference: "RUN-tlc-kind-exemplars [q5 t3]: Review and Recheck loop forever; Temporal property EventuallyDecided was violated, where [q6 t3] reports no error" }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q6] Model checking completed. No error has been found.", "[q5 t3] Error: Temporal property EventuallyDecided was violated.", "[q6 t3] Model checking completed. No error has been found."]
+    explain: "TypeOK is a check of single states. On the spec with Deny's fairness weakened, TLC finds EventuallyDecided violated by a request that loops between Review and Recheck, and this configuration reports no error on the same spec: it cannot see whether a request is ever decided."
+
+  - id: v2-sound
+    pair: v2
+    operator: restate-property-kind
+    artifact: withdrawal-approval
+    key: none
+    claim: "TLC finds no deadlock and no error: every withdrawal request is decided."
+    description: "Adds the TLC configuration for the approval model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Approval ----
+      VARIABLES st
+      Init == st = "requested"
+      Review  == st = "requested" /\ st' = "reviewing"
+      Recheck == st = "reviewing" /\ st' = "requested"
+      Approve == st = "reviewing" /\ st' = "approved"
+      Deny    == st = "reviewing" /\ st' = "denied"
+      Done    == st \in {"approved", "denied"} /\ UNCHANGED st
+      Next == Review \/ Recheck \/ Approve \/ Deny \/ Done
+      Fair == WF_st(Review) /\ SF_st(Deny)
+      Spec == Init /\ [][Next]_st /\ Fair
+      TypeOK == st \in {"requested", "reviewing", "approved", "denied"}
+      Decided == st \in {"approved", "denied"}
+      EventuallyDecided == <>Decided
+      ====
+      \* Approval.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY EventuallyDecided
+    diff: |
+      --- /dev/null
+      +++ b/specs/Approval.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +PROPERTY EventuallyDecided
+    receipt: |
+      [q5] Model checking completed. No error has been found.
+      [q5] 7 states generated, 4 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: t1, text: "Fair is deleted from Spec", answer: true, key_line: "[q5 t1] Error: Temporal property EventuallyDecided was violated.", why: "Without fairness a request may wait forever; the temporal property catches it." }
+        - { id: t2, text: "Approve moves the request to \"aproved\", a typo", answer: true, key_line: "[q5 t2] Error: Deadlock reached.", why: "The misspelled state has no next step: TLC stops at a deadlock." }
+        - { id: t3, text: "Deny's strong fairness is weakened to WF_st(Deny)", answer: true, key_line: "[q5 t3] Error: Temporal property EventuallyDecided was violated.", why: "Review and Recheck can loop forever with Deny enabled only now and then; weak fairness does not force it, and the property catches the loop." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q5] Model checking completed. No error has been found.", "[q5 t3] Error: Temporal property EventuallyDecided was violated."]
+    explain: "EventuallyDecided is checked as a temporal property, so a request that loops or waits forever would show up as a counterexample. With weak fairness on Review and strong fairness on Deny there is none in 4 distinct states."
+
+  - id: v3-sound
+    pair: v3
+    operator: restate-property-kind
+    artifact: settlement-retries
+    key: none
+    claim: "TLC finds no deadlock and no error: every submitted batch settles or fails."
+    description: "Adds the TLC configuration for the settlement batch model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Batch ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "open" /\ tries = 0
+      Submit == st = "open"      /\ st' = "submitted" /\ UNCHANGED tries
+      Fail   == st = "submitted" /\ tries < 2 /\ st' = "open" /\ tries' = tries + 1
+      Settle == st = "submitted" /\ st' = "settled"   /\ UNCHANGED tries
+      GiveUp == st = "submitted" /\ tries = 2 /\ st' = "failed" /\ UNCHANGED tries
+      Done   == st \in {"settled", "failed"} /\ UNCHANGED vars
+      Next == Submit \/ Fail \/ Settle \/ GiveUp \/ Done
+      Spec == Init /\ [][Next]_vars /\ WF_vars(Submit) /\ WF_vars(Settle \/ GiveUp)
+      TriesBound == tries <= 2
+      SubmittedLeadsToEnd == (st = "submitted") ~> (st \in {"settled", "failed"})
+      ====
+      \* Batch.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY SubmittedLeadsToEnd
+    diff: |
+      --- /dev/null
+      +++ b/specs/Batch.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +PROPERTY SubmittedLeadsToEnd
+    receipt: |
+      [q7] Model checking completed. No error has been found.
+      [q7] 14 states generated, 10 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: t1, text: "The fairness conditions are deleted from Spec", answer: true, key_line: "[q7 t1] Error: Temporal property SubmittedLeadsToEnd was violated.", why: "Without fairness a submitted batch may wait forever: the leads-to property catches it." }
+        - { id: t2, text: "Fail no longer counts its tries (tries' = tries)", answer: true, key_line: "[q7 t2] Error: Temporal property SubmittedLeadsToEnd was violated.", why: "Fail can now repeat forever, and Settle is enabled only between failures: the property catches the loop." }
+        - { id: t3, text: "Fail is allowed while tries < 3", answer: false, key_line: "[q7 t3] Model checking completed. No error has been found.", why: "Settle stays enabled once Fail runs out, so every submitted batch still ends: no error." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q7] Model checking completed. No error has been found.", "[q7 t2] Error: Temporal property SubmittedLeadsToEnd was violated."]
+    explain: "SubmittedLeadsToEnd is a leads-to property, checked as one: a batch that loops between Submit and Fail, or stays submitted forever, would be a counterexample. With weak fairness on Submit and on Settle or GiveUp there is none in 10 distinct states."
+
+  - id: v3-flawed
+    pair: v3
+    operator: restate-property-kind
+    artifact: settlement-retries
+    key: G3
+    claim: "TLC finds no deadlock and no error: every submitted batch settles or fails."
+    description: "Adds the TLC configuration for the settlement batch model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Batch ----
+      EXTENDS Naturals
+      VARIABLES st, tries
+      vars == <<st, tries>>
+      Init == st = "open" /\ tries = 0
+      Submit == st = "open"      /\ st' = "submitted" /\ UNCHANGED tries
+      Fail   == st = "submitted" /\ tries < 2 /\ st' = "open" /\ tries' = tries + 1
+      Settle == st = "submitted" /\ st' = "settled"   /\ UNCHANGED tries
+      GiveUp == st = "submitted" /\ tries = 2 /\ st' = "failed" /\ UNCHANGED tries
+      Done   == st \in {"settled", "failed"} /\ UNCHANGED vars
+      Next == Submit \/ Fail \/ Settle \/ GiveUp \/ Done
+      Spec == Init /\ [][Next]_vars /\ WF_vars(Submit) /\ WF_vars(Settle \/ GiveUp)
+      TriesBound == tries <= 2
+      SubmittedLeadsToEnd == (st = "submitted") ~> (st \in {"settled", "failed"})
+      ====
+      \* Batch.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      INVARIANT TriesBound
+    diff: |
+      --- /dev/null
+      +++ b/specs/Batch.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +INVARIANT TriesBound
+    receipt: |
+      [q8] Model checking completed. No error has been found.
+      [q8] 14 states generated, 10 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios:
+        - { id: t1, text: "The fairness conditions are deleted from Spec", answer: false, key_line: "[q8 t1] Model checking completed. No error has been found.", why: "TriesBound is about single states: tries never passes 2, whether or not a batch ever ends." }
+        - { id: t2, text: "Fail no longer counts its tries (tries' = tries)", answer: false, key_line: "[q8 t2] Model checking completed. No error has been found.", why: "tries stays at 0, so the bound holds while the batch loops forever." }
+        - { id: t3, text: "Fail is allowed while tries < 3", answer: true, key_line: "[q8 t3] Error: Invariant TriesBound is violated.", why: "tries reaches 3: the invariant catches the change to the bound, which says nothing about ending." }
+    evidence: { type: witness, load_bearing: ["statement:18", "diff:5"], reference: "RUN-tlc-kind-exemplars [q7 t2]: Submit, Fail, back to Submit; Temporal property SubmittedLeadsToEnd was violated, where [q8 t2] reports no error" }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q8] Model checking completed. No error has been found.", "[q7 t2] Error: Temporal property SubmittedLeadsToEnd was violated.", "[q8 t2] Model checking completed. No error has been found."]
+    explain: "A bound on tries is a check of single states, and the claim is that every batch ends. On the spec where Fail stops counting, TLC finds a batch that loops between Submit and Fail forever, and this configuration reports no error: the bound it checks says nothing about ending."
+
+  - id: v4-flawed
+    pair: v4
+    operator: restate-property-kind
+    artifact: webhook-delivery
+    key: G3
+    claim: "TLC finds no deadlock and no error: every webhook is delivered or dead-lettered."
+    description: "Adds the TLC configuration for the webhook model, with two webhooks. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Webhooks ----
+      CONSTANT Hooks
+      VARIABLES st
+      Init == st = [h \in Hooks |-> "queued"]
+      Send(h)  == st[h] = "queued" /\ st' = [st EXCEPT ![h] = "sent"]
+      Retry(h) == st[h] = "sent"   /\ st' = [st EXCEPT ![h] = "queued"]
+      Ack(h)   == st[h] = "sent"   /\ st' = [st EXCEPT ![h] = "delivered"]
+      Dead(h)  == st[h] \in {"queued", "sent"} /\ st' = [st EXCEPT ![h] = "dead"]
+      Idle == (\A h \in Hooks : st[h] \in {"delivered", "dead"}) /\ UNCHANGED st
+      Next == (\E h \in Hooks : Send(h) \/ Retry(h) \/ Ack(h) \/ Dead(h)) \/ Idle
+      Spec == Init /\ [][Next]_st /\ \A h \in Hooks : WF_st(Dead(h))
+      TypeOK == st \in [Hooks -> {"queued", "sent", "delivered", "dead"}]
+      AllSettle == \A h \in Hooks : <>(st[h] \in {"delivered", "dead"})
+      ====
+      \* Webhooks.cfg, checked with TLC's default flags
+      CONSTANT Hooks = {h1, h2}
+      SPECIFICATION Spec
+      INVARIANT TypeOK
+    diff: |
+      --- /dev/null
+      +++ b/specs/Webhooks.cfg
+      @@ -0,0 +1,3 @@
+      +CONSTANT Hooks = {h1, h2}
+      +SPECIFICATION Spec
+      +INVARIANT TypeOK
+    receipt: |
+      [q10] Model checking completed. No error has been found.
+      [q10] 45 states generated, 16 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios:
+        - { id: t1, text: "The fairness condition is deleted from Spec", answer: false, key_line: "[q10 t1] Model checking completed. No error has been found.", why: "Every state is still a function into the four statuses, so TypeOK holds, though a webhook may now wait forever." }
+        - { id: t2, text: "Dead is enabled only for queued webhooks", answer: false, key_line: "[q10 t2] Model checking completed. No error has been found.", why: "Nothing leaves the four statuses, so nothing to report." }
+        - { id: t3, text: "Ack marks the webhook \"delivred\", a typo", answer: true, key_line: "[q10 t3] Error: Invariant TypeOK is violated.", why: "The misspelled status is not one of the four, so the invariant catches it." }
+    evidence: { type: witness, load_bearing: ["statement:18", "diff:6"], reference: "RUN-tlc-kind-exemplars [q9 t2]: a webhook loops between Send and Retry; Temporal property AllSettle was violated, where [q10 t2] reports no error" }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q10] Model checking completed. No error has been found.", "[q9 t2] Error: Temporal property AllSettle was violated.", "[q10 t2] Model checking completed. No error has been found."]
+    explain: "TypeOK checks each state's statuses, one state at a time. On the spec where Dead waits for a queued webhook, TLC finds AllSettle violated by a webhook that loops between Send and Retry, and this configuration reports no error on the same spec."
+
+  - id: v4-sound
+    pair: v4
+    operator: restate-property-kind
+    artifact: webhook-delivery
+    key: none
+    claim: "TLC finds no deadlock and no error: every webhook is delivered or dead-lettered."
+    description: "Adds the TLC configuration for the webhook model, with two webhooks. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE Webhooks ----
+      CONSTANT Hooks
+      VARIABLES st
+      Init == st = [h \in Hooks |-> "queued"]
+      Send(h)  == st[h] = "queued" /\ st' = [st EXCEPT ![h] = "sent"]
+      Retry(h) == st[h] = "sent"   /\ st' = [st EXCEPT ![h] = "queued"]
+      Ack(h)   == st[h] = "sent"   /\ st' = [st EXCEPT ![h] = "delivered"]
+      Dead(h)  == st[h] \in {"queued", "sent"} /\ st' = [st EXCEPT ![h] = "dead"]
+      Idle == (\A h \in Hooks : st[h] \in {"delivered", "dead"}) /\ UNCHANGED st
+      Next == (\E h \in Hooks : Send(h) \/ Retry(h) \/ Ack(h) \/ Dead(h)) \/ Idle
+      Spec == Init /\ [][Next]_st /\ \A h \in Hooks : WF_st(Dead(h))
+      TypeOK == st \in [Hooks -> {"queued", "sent", "delivered", "dead"}]
+      AllSettle == \A h \in Hooks : <>(st[h] \in {"delivered", "dead"})
+      ====
+      \* Webhooks.cfg, checked with TLC's default flags
+      CONSTANT Hooks = {h1, h2}
+      SPECIFICATION Spec
+      PROPERTY AllSettle
+    diff: |
+      --- /dev/null
+      +++ b/specs/Webhooks.cfg
+      @@ -0,0 +1,3 @@
+      +CONSTANT Hooks = {h1, h2}
+      +SPECIFICATION Spec
+      +PROPERTY AllSettle
+    receipt: |
+      [q9] Model checking completed. No error has been found.
+      [q9] 45 states generated, 16 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: t1, text: "The fairness condition is deleted from Spec", answer: true, key_line: "[q9 t1] Error: Temporal property AllSettle was violated.", why: "Without fairness a webhook may sit queued forever: the temporal property catches it." }
+        - { id: t2, text: "Dead is enabled only for queued webhooks", answer: true, key_line: "[q9 t2] Error: Temporal property AllSettle was violated.", why: "A webhook can loop between Send and Retry with Dead enabled only now and then: weak fairness does not force it, and the property catches the loop." }
+        - { id: t3, text: "Ack marks the webhook \"delivred\", a typo", answer: true, key_line: "[q9 t3] Error: Deadlock reached.", why: "The misspelled webhook has no next step, and once the other one finishes nothing is enabled: TLC stops at a deadlock." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q9] Model checking completed. No error has been found.", "[q9 t2] Error: Temporal property AllSettle was violated."]
+    explain: "AllSettle is checked as a temporal property for both webhooks, so one that loops or waits forever would show up as a counterexample. With weak fairness on each webhook's Dead there is none in 16 distinct states."
+
+  - id: v5-sound
+    pair: v5
+    operator: restate-property-kind
+    artifact: refund-request
+    key: none
+    claim: "TLC finds no deadlock, so every refund request is answered."
+    description: "Adds the TLC configuration for the refund request model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE RefundAsk ----
+      EXTENDS Naturals
+      VARIABLES st, n
+      vars == <<st, n>>
+      Init == st = "open" /\ n = 0
+      Ask    == st = "open"  /\ st' = "asked" /\ UNCHANGED n
+      Info   == st = "asked" /\ n < 3 /\ st' = "open" /\ n' = n + 1
+      Grant  == st = "asked" /\ st' = "granted" /\ UNCHANGED n
+      Refuse == st = "asked" /\ st' = "refused" /\ UNCHANGED n
+      Done   == st \in {"granted", "refused"} /\ UNCHANGED vars
+      Next == Ask \/ Info \/ Grant \/ Refuse \/ Done
+      Spec == Init /\ [][Next]_vars /\ WF_vars(Ask) /\ WF_vars(Grant \/ Refuse)
+      Answered == <>(st \in {"granted", "refused"})
+      ====
+      \* RefundAsk.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      PROPERTY Answered
+    diff: |
+      --- /dev/null
+      +++ b/specs/RefundAsk.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +PROPERTY Answered
+    receipt: |
+      [q11] Model checking completed. No error has been found.
+      [q11] 24 states generated, 16 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios: &v5-sound-scenarios
+        - { id: t1, text: "The fairness conditions are deleted from Spec", answer: true, key_line: "[q11 t1] Error: Temporal property Answered was violated.", why: "Without fairness a request may wait forever: the temporal property catches it." }
+        - { id: t2, text: "Done is deleted from Next", answer: true, key_line: "[q11 t2] Error: Deadlock reached.", why: "The answered states have no next step: TLC stops at a deadlock." }
+        - { id: t3, text: "Info no longer counts its requests (n' = n)", answer: true, key_line: "[q11 t3] Error: Temporal property Answered was violated.", why: "Ask and Info can now loop forever, with Grant and Refuse enabled only between them: the property catches the loop." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q11] Model checking completed. No error has been found.", "[q11 t3] Error: Temporal property Answered was violated."]
+    explain: "Answered is checked as a temporal property, so a request that loops or waits forever would show up as a counterexample. With weak fairness on Ask and on Grant or Refuse there is none in 16 distinct states."
+
+  - id: v5-flawed
+    pair: v5
+    operator: restate-property-kind
+    artifact: refund-request
+    key: G3
+    claim: "TLC finds no deadlock, so every refund request is answered."
+    description: "Adds the TLC configuration for the refund request model. TLC finds no deadlock and no error."
+    statement: |
+      ---- MODULE RefundAsk ----
+      EXTENDS Naturals
+      VARIABLES st, n
+      vars == <<st, n>>
+      Init == st = "open" /\ n = 0
+      Ask    == st = "open"  /\ st' = "asked" /\ UNCHANGED n
+      Info   == st = "asked" /\ n < 3 /\ st' = "open" /\ n' = n + 1
+      Grant  == st = "asked" /\ st' = "granted" /\ UNCHANGED n
+      Refuse == st = "asked" /\ st' = "refused" /\ UNCHANGED n
+      Done   == st \in {"granted", "refused"} /\ UNCHANGED vars
+      Next == Ask \/ Info \/ Grant \/ Refuse \/ Done
+      Spec == Init /\ [][Next]_vars /\ WF_vars(Ask) /\ WF_vars(Grant \/ Refuse)
+      Answered == <>(st \in {"granted", "refused"})
+      ====
+      \* RefundAsk.cfg, checked with TLC's default flags
+      SPECIFICATION Spec
+      CHECK_DEADLOCK TRUE
+    diff: |
+      --- /dev/null
+      +++ b/specs/RefundAsk.cfg
+      @@ -0,0 +1,2 @@
+      +SPECIFICATION Spec
+      +CHECK_DEADLOCK TRUE
+    receipt: |
+      [q12] Model checking completed. No error has been found.
+      [q12] 24 states generated, 16 distinct states found, 0 states left on queue.
+    restatement:
+      run: RUN-tlc-kind-exemplars
+      scenarios:
+        - { id: t1, text: "The fairness conditions are deleted from Spec", answer: false, key_line: "[q12 t1] Model checking completed. No error has been found.", why: "A request that waits forever is not a deadlock: Done and the stuttering steps keep a next state, so the check reports nothing." }
+        - { id: t2, text: "Done is deleted from Next", answer: true, key_line: "[q12 t2] Error: Deadlock reached.", why: "The answered states have no next step: a deadlock, which this check does see." }
+        - { id: t3, text: "Info no longer counts its requests (n' = n)", answer: false, key_line: "[q12 t3] Model checking completed. No error has been found.", why: "A loop between Ask and Info always has a next step: no deadlock, so nothing to report." }
+    evidence: { type: witness, load_bearing: ["statement:17", "diff:5"], reference: "RUN-tlc-kind-exemplars [q11 t3]: Ask and Info loop forever; Temporal property Answered was violated, where [q12 t3] reports no error" }
+    key_run: RUN-tlc-kind-exemplars
+    key_lines: ["[q12] Model checking completed. No error has been found.", "[q11 t3] Error: Temporal property Answered was violated.", "[q12 t3] Model checking completed. No error has been found."]
+    explain: "This configuration checks only for deadlock, a property of single states. A request that loops between Ask and Info forever never deadlocks: on that spec TLC finds Answered violated, and this check reports no error. No deadlock is not every request answered."

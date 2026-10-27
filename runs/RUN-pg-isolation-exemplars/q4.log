@@ -1,0 +1,21 @@
+[q4] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed
+[q4 p1] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE
+[q4 p1] a: BEGIN -> BEGIN
+[q4 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]
+[q4 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q4 p1] b: BEGIN -> BEGIN
+[q4 p1] b: SHOW transaction_isolation -> SHOW [['read committed']]
+[q4 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q4 p1] a: COMMIT -> COMMIT
+[q4 p1] b: COMMIT -> COMMIT
+[q4 p1] check: [[1, -50], [2, -50]]; team total -100
+[q4 p2] admin: ALTER DATABASE postgres SET default_transaction_isolation = 'serializable'; -> ALTER DATABASE
+[q4 p2] a: BEGIN -> BEGIN
+[q4 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]
+[q4 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q4 p2] a: COMMIT -> COMMIT
+[q4 p2] b: BEGIN -> BEGIN
+[q4 p2] b: SHOW transaction_isolation -> SHOW [['read committed']]
+[q4 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+[q4 p2] b: COMMIT -> COMMIT
+[q4 p2] check: [[1, -50], [2, 100]]; team total 50

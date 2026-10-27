@@ -10,9 +10,9 @@
   "binary": "libz3.so from the z3-solver 5.3.1.0 wheel in the bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so), loaded by the Python API",
   "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
   "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
-  "recorded_at": "2026-10-26T16:36:25.758Z",
-  "started_at": "2026-10-26T16:36:25.538Z",
-  "duration_s": 0.22,
+  "recorded_at": "2026-10-27T02:12:10.377Z",
+  "started_at": "2026-10-27T02:12:10.183Z",
+  "duration_s": 0.194,
   "argv": [
     "docker",
     "run",
@@ -34,8 +34,7 @@
       "path": "runs/RUN-z3-count-channel/cells/count_channel.py",
       "sha256": "3583f4a9e33097cbf706484fc5784513867c33e57f9accbd20ef73b1ccaaeacc",
       "bytes": 2625,
-      "role": "script",
-      "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell3.txt (content/stages/S7/S7.L7.md line 109); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+      "role": "script"
     },
     {
       "path": "runs/RUN-z3-count-channel/cells/s7l7_cell3.txt",
@@ -51,13 +50,11 @@
   },
   "exit_code": 0,
   "verdict_lines": [
-    "== selfcomp: python -I count_channel.py",
     "self-composition, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0",
     "the lesson pair, total counted before the filter: sat | hits L=0 R=0 | total L=1 R=0",
     "the lesson pair, total counted after the filter: unsat",
     "self-composition, total counted after the filter: unsat",
-    "premise witness: Rel and the lesson pair, layoffs-memo in one world only: sat",
-    "-- exit 0"
+    "premise witness: Rel and the lesson pair, layoffs-memo in one world only: sat"
   ],
   "outputs": [
     {
@@ -138,8 +135,7 @@
           "path": "runs/RUN-z3-count-channel/cells/count_channel.py",
           "sha256": "3583f4a9e33097cbf706484fc5784513867c33e57f9accbd20ef73b1ccaaeacc",
           "bytes": 2625,
-          "role": "script",
-          "source": "written for this record from the cell, committed verbatim beside it as s7l7_cell3.txt (content/stages/S7/S7.L7.md line 109); the lesson cell is written in a notation no engine reads yet (W1 report, follow-up 4), so the script states it in Z3; the cell itself is committed beside it, verbatim"
+          "role": "script"
         },
         {
           "path": "runs/RUN-z3-count-channel/cells/s7l7_cell3.txt",
@@ -153,8 +149,8 @@
         "timeout_s": 300,
         "rlimit": 5000000
       },
-      "started_at": "2026-10-26T16:36:25.538Z",
-      "duration_s": 0.22,
+      "started_at": "2026-10-27T02:12:10.183Z",
+      "duration_s": 0.194,
       "exit_code": 0,
       "outputs": [
         {
@@ -163,7 +159,8 @@
           "bytes": 360,
           "kind": "log"
         }
-      ]
+      ],
+      "verdict_lines": []
     }
   ],
   "primary_config": "selfcomp",
@@ -172,6 +169,7 @@
     "Recorded with the bench image built from bench/image/Dockerfile (a local build; the digest is its manifest list's, never pushed). Each configuration ran once, in a fresh container with the run's cells mounted read-only at /w; <sandbox>/work stands for the scratch copy of runs/RUN-z3-count-channel/cells/.",
     "Every verdict line is copied from the logs; values.configs.<config>.lines is parsed from those lines by label (slugged), and the other values are read from that parse, never typed.",
     "Recorded for the W1 report's follow-up 1 (task_label: W1-followup-1). run@1's task field must match W<n>-S<nn> or W<n>-T<nn>, which that name does not, so the record leaves task out.",
-    "Z3's model values are not canonical: a witness is checked by its property, never matched by value."
+    "Z3's model values are not canonical: a witness is checked by its property, never matched by value.",
+    "Re-executed on 2026-10-27 with scripts/runs/rerun-argv.mjs, from the same argv and the same staged inputs; every log matched the earlier recording byte for byte; 2 verdict line(s) the recorder had added (\"== <config>: <command>\", \"-- exit N\"), which the tool never prints and no log holds, were dropped, so every verdict line is now a line of a log."
   ]
 }

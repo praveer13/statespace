@@ -146,6 +146,14 @@
   white-space: nowrap;
 }
 
+/* At the narrowest widths a long run tag may break at its hyphens rather than push the page sideways (WCAG 1.4.10 Reflow). */
+@media (max-width: 400px) {
+  .md-run {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
 .md-pending {
   font-family: var(--font-structure);
   font-size: 0.86em;

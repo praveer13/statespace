@@ -89,6 +89,16 @@ function CallItSheet({ item, recorded, onCommit, onCommitted, actionLabel = COPY
   const shownAt = useRef<number>(clock())
   const inflight = useRef(false)
   const root = useRef<HTMLDivElement>(null)
+  const record = useRef<HTMLDivElement>(null)
+  // The action disables itself while the call is written, which drops a keyboard user's focus to the page; once the write
+  // settles, focus moves to the record that answers it (WCAG 2.4.3), unless the reader has already moved on.
+  const refocus = useRef(false)
+  useEffect(() => {
+    if (!refocus.current || session.phase === 'committing') return
+    refocus.current = false
+    const active = document.activeElement
+    if (active === null || active === document.body || (root.current?.contains(active) ?? false)) record.current?.focus()
+  }, [session.phase, session.notice])
   useDockHeight(root, layout === 'sheet' && session.phase !== 'recorded')
   // The log is read again (a call from another tab arrives, the page finishes loading): the call that counts is the one shown.
   useEffect(() => {
@@ -105,6 +115,7 @@ function CallItSheet({ item, recorded, onCommit, onCommitted, actionLabel = COPY
   const commit = async (): Promise<void> => {
     if (inflight.current || session.phase !== 'choosing' || !go) return
     inflight.current = true
+    refocus.current = true
     dispatch({ t: 'commit' })
     let outcome: CommitOutcome
     try {
@@ -212,7 +223,7 @@ function CallItSheet({ item, recorded, onCommit, onCommitted, actionLabel = COPY
         </button>
       ) : null}
 
-      <div className="ci-record" role="status" aria-live="polite">
+      <div ref={record} className="ci-record" role="status" aria-live="polite" tabIndex={-1}>
         {session.phase === 'committing' ? <p>{COPY.saving}</p> : null}
         {session.notice?.kind === 'failed' ? <p className="ci-error">{COPY.failed(session.notice.message)}</p> : null}
         {session.notice?.kind === 'elsewhere' ? <p>{COPY.elsewhere}</p> : null}

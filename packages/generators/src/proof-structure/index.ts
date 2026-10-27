@@ -21,6 +21,7 @@ import type { Answer, EnginePort } from '../core/port.ts'
 import type { Band, ChoicePart, Generator, InstanceBase, Json, KeyBase, Measure, MisconceptionKey, TemplateId, TemplateSpec } from '../core/types.ts'
 import { dropLine, storyOf, swapLines, theoryText, ungeneralized, withLine, withTac } from './corpus.ts'
 import type { Story, StoryId } from './corpus.ts'
+import { chooseDistractors } from './choose.ts'
 import { decide, TACTIC_MODEL, TACTIC_MODEL_MAX_REWRITES, TACTIC_MODEL_VERSION, tacticModelPort } from './engine.ts'
 import type { RunQuery, RunWitness } from './engine.ts'
 import { cons, runScript, showGoal, showGoals, showLine, showScript, splitsOf, stepsOf, substitute, tv } from './tactics.ts'
@@ -108,6 +109,8 @@ interface Built {
   readonly mutants: readonly Mutant<ProofValue>[]
   readonly distractors: number
   readonly extra: Partial<ProofStructureData>
+  /** What an option means to the checker, so the shown set never holds two it cannot tell apart; the text when absent. */
+  readonly meaning?: (v: ProofValue) => string
 }
 
 const fixed = (tag: MisconceptionKey, operator: string, why: string, value: ProofValue): Mutant<ProofValue> => ({ tag, operator, why: () => why, apply: () => value })
@@ -161,7 +164,7 @@ function t1(band: Band, draw: SeededDraw): Built {
     const key = showGoals(after)
     const before = goalsAt(s, k)
     const line = s[k] as Line
-    const mutants: Mutant<ProofValue>[] = [fixed('dp:L2', 'automation closes it', 'This says nothing is left to prove after the line. The model still has a goal open after it, which a later line has to close.', { kind: 'goals', text: 'no goals' })]
+    const mutants: Mutant<ProofValue>[] = [fixed('dp:L2', 'automation closes it', 'This says nothing is left to prove after the line. The model still has a goal open after it, which a later line has to close.', { kind: 'goals', text: 'no goals: nothing is left to prove after this line' })]
     if (before !== null && before.length > 0) mutants.push(fixed('dp:L4', 'the line changes nothing', 'This is the goal before the line, unchanged. The line does change it.', { kind: 'goals', text: showGoals(before) }))
     const further = goalsAt(s, k + 2)
     if (k + 1 < s.length && further !== null && further.length > 0) mutants.push(fixed('dp:L4', 'one line too far', 'This is the goal after the next line as well: it runs one line further than asked.', { kind: 'goals', text: showGoals(further) }))
@@ -174,6 +177,22 @@ function t1(band: Band, draw: SeededDraw): Built {
     if (story.needsGen && story.induction !== undefined && k > story.induction) {
       const ungen = goalsAt(ungeneralized(story), k + 1)
       if (ungen !== null && ungen.length > 0) mutants.push(fixed('dp:L5', 'hypothesis not generalized', `This is the goal without \`generalizing ${story.gen.join(' ')}\`: the hypothesis would hold only for the original ${story.gen.join(', ')}, and the context would not list ${story.gen.join(', ')} again after it.`, { kind: 'goals', text: showGoals(ungen) }))
+    }
+    // Halfway readings of the line [D]: one side of the equation rewritten, or the context and the target updated
+    // one without the other. They sit between the goal before the line and the goal after it, so the key is not the
+    // option closest to all the others.
+    if (before !== null && before.length >= 1 && before.length === after.length) {
+      // On the focused goal; any other open goals are shown as they are after the line.
+      const [b0, a0] = [before[0] as Goal, after[0] as Goal]
+      const showGoals1 = (g: Goal): string => showGoals([g, ...after.slice(1)])
+      const tac = line.k === 'tacs' || line.k === 'case' ? line.tacs[0] : undefined
+      if (tac !== undefined && (tac.t === 'simp' || tac.t === 'rw')) {
+        const how = tac.t === 'simp' ? '`simp only` rewrites both sides of the equation.' : '`rw` rewrites every occurrence, on both sides of the equation.'
+        mutants.push(fixed('dp:L4', 'the right side only', `${how} This rewrites only the right side.`, { kind: 'goals', text: showGoals1({ ...a0, target: { l: b0.target.l, r: a0.target.r } }) }))
+        if (tac.t === 'rw') mutants.push(fixed('dp:L4', 'the left side only', `${how} This rewrites only the left side.`, { kind: 'goals', text: showGoals1({ ...a0, target: { l: a0.target.l, r: b0.target.r } }) }))
+      }
+      mutants.push(fixed('dp:L4', 'the context left as it was', 'This updates the target but keeps the context from before the line. The line changes the context too: it adds or renames what it introduces.', { kind: 'goals', text: showGoals1({ ctx: b0.ctx, target: a0.target }) }))
+      mutants.push(fixed('dp:L4', 'the target left as it was', 'This updates the context but keeps the target from before the line. The line changes the target as well.', { kind: 'goals', text: showGoals1({ ctx: a0.ctx, target: b0.target }) }))
     }
     const circ = circularIh(after[0] as Goal, consLine)
     if (circ !== null) mutants.push(fixed('dp:L6', 'hypothesis for the whole list', 'This states the induction hypothesis for the very list of this case. Induction gives the hypothesis for the tail only; for the whole list it would be the goal itself, a circular step.', { kind: 'goals', text: circ }))
@@ -217,20 +236,27 @@ function t2(band: Band, draw: SeededDraw): Built {
   // Block numbers are positions in the shuffled list, 1-based. The same line text never appears twice.
   const numberOf = (line: Line): number => blocks.findIndex((x) => showLine(x.line) === showLine(line)) + 1
   const order = (script: Script): ProofValue => ({ kind: 'order', order: script.map(numberOf), script })
-  const mutants: Mutant<ProofValue>[] = pool.map((p) => fixed(p.tag, p.operator, p.why, order(withLine(s, p.replaces, p.line))))
+  const singles: { tag: MisconceptionKey; operator: string; why: string; script: Script }[] = pool.map((p) => ({ tag: p.tag, operator: p.operator, why: p.why, script: withLine(s, p.replaces, p.line) }))
   const nilAt = s.findIndex((l) => l.k === 'case' && l.ctor === 'nil')
-  mutants.push(fixed('dp:L6', 'base case left out', 'This order leaves out the `nil` alternative. Induction needs the base case as well as the step; without it the model reports the alternative missing.', order(dropLine(s, nilAt))))
-  // The first adjacent swap, in a seeded order, that the model rejects.
-  const pairs = draw.shuffle(Array.from({ length: s.length - 1 }, (_, i) => i))
-  for (const i of pairs) {
-    // Two alternatives may come in either order, so swapping them is no mistake.
-    if ((s[i] as Line).k === 'case' && (s[i + 1] as Line).k === 'case') continue
-    const swapped = swapLines(s, i, i + 1)
-    if (!runScript(th, swapped).ok) {
-      mutants.push(fixed('dp:L4', 'two lines swapped', `This order swaps two neighbouring lines, \`${showLine(s[i] as Line)}\` and \`${showLine(s[i + 1] as Line)}\`, and the model rejects it: each line has to meet the goal it fits.`, order(swapped)))
-      break
+  singles.push({ tag: 'dp:L6', operator: 'base case left out', why: 'This order leaves out the `nil` alternative. Induction needs the base case as well as the step; without it the model reports the alternative missing.', script: dropLine(s, nilAt) })
+  // Every adjacent swap the model rejects, alone and on top of each other mistake [D], so the item can show a set in
+  // which no order sits at the centre of the others; the choice is made by choose.ts.
+  const swapsOf = (base: Script): { i: number; script: Script }[] => {
+    const out: { i: number; script: Script }[] = []
+    for (let i = 0; i + 1 < base.length; i++) {
+      // Two alternatives may come in either order, so swapping them is no mistake.
+      if ((base[i] as Line).k === 'case' && (base[i + 1] as Line).k === 'case') continue
+      const swapped = swapLines(base, i, i + 1)
+      if (!runScript(th, swapped).ok) out.push({ i, script: swapped })
     }
+    return out
   }
+  const swapWhy = (base: Script, i: number): string => `This order swaps two neighbouring lines, \`${showLine(base[i] as Line)}\` and \`${showLine(base[i + 1] as Line)}\`, and the model rejects it: each line has to meet the goal it fits.`
+  const mutants: Mutant<ProofValue>[] = [
+    ...singles.map((m) => fixed(m.tag, m.operator, m.why, order(m.script))),
+    ...swapsOf(s).map((x) => fixed('dp:L4', 'two lines swapped', swapWhy(s, x.i), order(x.script))),
+    ...singles.flatMap((m) => swapsOf(m.script).map((x) => fixed(m.tag, `${m.operator}, and two lines swapped`, `Two mistakes at once. ${m.why} ${swapWhy(m.script, x.i).replace(/^This order /, 'It also ')}`, order(x.script)))),
+  ]
   const list = blocks.map((x, i) => `${i + 1}. \`${showLine(x.line)}\``).join('\n')
   return {
     stem: `${theoryBlock(th)}Blocks, in no particular order:\n\n${list}\n\nA proof uses some of the blocks, one per line, read top to bottom; the alternatives \`| … =>\` mark the cases, and indentation follows them. ${pool.length === 1 ? 'One block belongs' : `${pool.length} blocks belong`} to no proof. ${MODEL_NOTE}`,
@@ -241,6 +267,7 @@ function t2(band: Band, draw: SeededDraw): Built {
     mutants,
     distractors: band === 3 ? 4 : 3,
     extra: { blocks: blocks.map((x) => x.line), distractors: pool.length },
+    meaning: (v) => (v.kind === 'goals' ? v.text : outcome(decide({ op: 'run', theory: th, script: v.script }, TACTIC_MODEL_MAX_REWRITES).witness as RunWitness)),
   }
 }
 
@@ -258,18 +285,24 @@ function t3(band: Band, draw: SeededDraw): Built {
   const deleted = without.k === 'tacs' && without.tacs.length === 0 ? dropLine(s, rwAt.line) : withLine(s, rwAt.line, without)
   const on = story.on?.n ?? 'the list'
   const gen = story.gen.join(' ')
-  const refLabel = story.gen.length > 0 ? `ih, from \`induction ${on} generalizing ${gen}\`: it holds for every ${story.gen.join(', ')}` : `ih, the hypothesis \`induction ${on}\` gives for the tail`
+  // Every candidate reads the same way, a name, where it comes from and what it says, in a shorter or a longer
+  // wording drawn for each [D], so neither its length nor its punctuation nor its words single out the hypothesis the
+  // step needs.
+  const g = story.gen.join(' and ')
+  const say = (short: string, long: string): string => (draw.bool() ? short : long)
+  // Each distractor is offered in a short, a middle and a long wording; choose.ts shows one of them.
+  const both = (tag: MisconceptionKey, operator: string, why: string, labels: readonly string[], script: Script): Mutant<ProofValue>[] => labels.map((label) => fixed(tag, operator, why, { kind: 'candidate', label, script }))
+  const refLabel =
+    story.gen.length > 0
+      ? say(`\`ih\`, from \`induction ${on} generalizing ${gen}\`: it holds at each ${g}`, `\`ih\`, from \`induction ${on} generalizing ${gen}\`: it holds at each ${g} on the way`)
+      : say(`\`ih\`, from \`induction ${on}\`: it holds for the tail`, `\`ih\`, from \`induction ${on}\`: it holds for the tail of the list`)
   const mutants: Mutant<ProofValue>[] = [
-    fixed('dp:L6', 'the theorem itself', `\`${th.theorem.name}\` is the theorem being proved. A proof cannot use the theorem it proves; the model reports an unknown identifier, as Lean does.`, { kind: 'candidate', label: `${th.theorem.name}, the theorem being proved`, script: withLine(s, rwAt.line, withTac(rwLine, rwAt.tac, { t: 'rw', rules: [th.theorem.name] })) }),
-    fixed('dp:L2', 'automation closes it', 'Without the rewrite, the goal still mentions the recursive call, which only the hypothesis speaks about; the lines after it cannot close the case.', { kind: 'candidate', label: 'none: leave the rewrite out; the lines after it close the case', script: deleted }),
+    ...both('dp:L6', 'the theorem itself', `\`${th.theorem.name}\` is the theorem being proved. A proof cannot use the theorem it proves; the model reports an unknown identifier, as Lean does.`, [`\`${th.theorem.name}\`, the theorem itself, being proved`, `\`${th.theorem.name}\`, the theorem itself: the claim this proof proves`, `\`${th.theorem.name}\`, the theorem itself: it is the very claim this proof is in the middle of proving`], withLine(s, rwAt.line, withTac(rwLine, rwAt.tac, { t: 'rw', rules: [th.theorem.name] }))),
+    ...both('dp:L2', 'automation closes it', 'Without the rewrite, the goal still mentions the recursive call, which only the hypothesis speaks about; the lines after it cannot close the case.', [`nothing: the step closes without it`, `nothing: with the rewrite left out, the step closes`, `nothing: with the rewrite left out, the step from \`induction ${on}\` closes on its own`], deleted),
   ]
   if (band === 3) {
     mutants.push(
-      fixed('dp:L5', 'hypothesis not generalized', `Without \`generalizing ${gen}\`, the hypothesis speaks only about the original ${story.gen.join(', ')}, but the unfolded goal needs it at a different one.`, {
-        kind: 'candidate',
-        label: `ih, from \`induction ${on}\` without \`generalizing ${gen}\`: it holds for the original ${story.gen.join(', ')} only`,
-        script: ungeneralized(story),
-      }),
+      ...both('dp:L5', 'hypothesis not generalized', `Without \`generalizing ${gen}\`, the hypothesis speaks only about the original ${story.gen.join(', ')}, but the unfolded goal needs it at a different one.`, [`\`ih\`, from plain \`induction ${on}\`, at the first ${g}`, `\`ih\`, from plain \`induction ${on}\`: it holds at the first ${g}`, `\`ih\`, from \`induction ${on}\` with no \`generalizing\`: it holds at the first ${g} it started from`], ungeneralized(story)),
     )
   }
   return {
@@ -281,6 +314,7 @@ function t3(band: Band, draw: SeededDraw): Built {
     mutants,
     distractors: band,
     extra: { deleted },
+    meaning: (v) => (v.kind === 'goals' ? v.text : JSON.stringify(v.script)),
   }
 }
 
@@ -294,7 +328,9 @@ function make(seed: number, band: Band, template: TemplateId): ProofStructureIns
   if (spec === undefined || build === undefined) throw new RangeError(`${PROOF_STRUCTURE_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${PROOF_STRUCTURE_ID}/${template}/b${band}`))
   const b = build(band, draw)
-  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: b.mutants, distractors: b.distractors, draw: draw.fork('options'), render })
+  // The distractors shown, chosen among the mistakes so the key does not stand out (choose.ts).
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: b.distractors, draw: draw.fork('choose'), render, ...(b.meaning === undefined ? {} : { meaning: b.meaning }) })
+  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: chosen, distractors: b.distractors, draw: draw.fork('options'), render })
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: b.ask, options }
   return {
     family: PROOF_STRUCTURE_ID,

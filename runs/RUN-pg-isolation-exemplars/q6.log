@@ -1,0 +1,27 @@
+[q6] server: 18.6 (Debian 18.6-1.pgdg13+2); default level: read committed
+[q6 p1] a: WARNING 25P01: SET LOCAL can only be used in transaction blocks
+[q6 p1] a: SET LOCAL default_transaction_isolation = 'serializable'; -> SET
+[q6 p1] b: WARNING 25P01: SET LOCAL can only be used in transaction blocks
+[q6 p1] b: SET LOCAL default_transaction_isolation = 'serializable'; -> SET
+[q6 p1] a: BEGIN -> BEGIN
+[q6 p1] a: SHOW transaction_isolation -> SHOW [['read committed']]
+[q6 p1] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q6 p1] b: BEGIN -> BEGIN
+[q6 p1] b: SHOW transaction_isolation -> SHOW [['read committed']]
+[q6 p1] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q6 p1] a: COMMIT -> COMMIT
+[q6 p1] b: COMMIT -> COMMIT
+[q6 p1] check: [[1, -50], [2, -50]]; team total -100
+[q6 p2] a: WARNING 25P01: SET LOCAL can only be used in transaction blocks
+[q6 p2] a: SET LOCAL default_transaction_isolation = 'serializable'; -> SET
+[q6 p2] b: WARNING 25P01: SET LOCAL can only be used in transaction blocks
+[q6 p2] b: SET LOCAL default_transaction_isolation = 'serializable'; -> SET
+[q6 p2] a: BEGIN -> BEGIN
+[q6 p2] a: SHOW transaction_isolation -> SHOW [['read committed']]
+[q6 p2] a: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 1
+[q6 p2] a: COMMIT -> COMMIT
+[q6 p2] b: BEGIN -> BEGIN
+[q6 p2] b: SHOW transaction_isolation -> SHOW [['read committed']]
+[q6 p2] b: UPDATE acct SET bal = bal - 150 WHERE id = %s AND (SELECT sum(bal) FROM acct WHERE team = 1) - 150 >= 0; -> UPDATE 0
+[q6 p2] b: COMMIT -> COMMIT
+[q6 p2] check: [[1, -50], [2, 100]]; team total 50

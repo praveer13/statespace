@@ -1,0 +1,148 @@
+{
+  "id": "RUN-z3-declassify-exemplars",
+  "title": "AUD-7.2's variant pairs v2 to v5: every self-composition query is unsat and every relation is satisfiable with Birch's data differing; the flawed relations forbid a release the requirement wants or allow one it forbids, as each step-3 scenario shows",
+  "task": "W1-T33",
+  "origin": "recorded",
+  "records": "AUD-7.2 (content/audit/AUD-7.2.yaml): the proof and premise queries of the eight cases q5 to q12 and each step-3 scenario's relation check",
+  "engine": "z3",
+  "version": "5.3.1",
+  "version_string": "5.3.1.0",
+  "binary": "libz3.so of the z3-solver 5.3.1 wheel in the statespace-bench image (/opt/venv/lib/python3.13/site-packages/z3/lib/libz3.so)",
+  "binary_sha256": "8369cecb16b2320b196bbc2746dd1328eb8f7c74cb6a8634f8bf343659f1c9c7",
+  "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+  "recorded_at": "2026-10-26T23:43:02.543Z",
+  "started_at": "2026-10-26T23:43:02.280Z",
+  "duration_s": 0.261,
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ssrec-ex-z3-declassify-exemplars-bench",
+    "--memory=6g",
+    "--network",
+    "none",
+    "-v",
+    "<sandbox>/work:/w",
+    "-w",
+    "/w",
+    "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+    "python3",
+    "-I",
+    "declassify.py"
+  ],
+  "inputs": [
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/inputs/declassify.py",
+      "sha256": "5af045bac732f6ac8d669234dbe0b368170e0175bf2104aa6386e4c901e3a331",
+      "bytes": 9406,
+      "role": "script"
+    },
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/inputs/q11.smt2",
+      "sha256": "2dec414d941651087d6e7956dcd53e02ad8bf99cf2ecab8787516b20ce5e5aaa",
+      "bytes": 891,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/inputs/q12.smt2",
+      "sha256": "1745274d9bfcb1c064ecb0ca210e522fc87644105d21bebd2334661789d04b4b",
+      "bytes": 903,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/inputs/q7.smt2",
+      "sha256": "87464ec985e750c7a449b8edcbc376a88091cccc8bddf4538cf66993308869aa",
+      "bytes": 918,
+      "role": "source"
+    },
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/inputs/q8.smt2",
+      "sha256": "5abe7c80eb524a6b7d007ed74a2c270300ba2e25363b6953f8057d3e27339883",
+      "bytes": 900,
+      "role": "source"
+    }
+  ],
+  "budget": {
+    "container_memory": "6g",
+    "network": "none"
+  },
+  "exit_code": 0,
+  "verdict_lines": [
+    "z3 5.3.1 rlimit=5000000",
+    "[q5 proof] unsat",
+    "[q5 premises] sat",
+    "[q5 s1] allows",
+    "[q5 s2] forbids",
+    "[q5 s3] allows",
+    "[q5 s4] forbids",
+    "[q6 proof] unsat",
+    "[q6 premises] sat",
+    "[q6 s1] forbids",
+    "[q6 s2] forbids",
+    "[q6 s3] allows",
+    "[q6 s4] forbids",
+    "[q9 proof] unsat",
+    "[q9 premises] sat",
+    "[q9 s1] allows",
+    "[q9 s2] forbids",
+    "[q9 s3] forbids",
+    "[q9 s4] allows",
+    "[q10 proof] unsat",
+    "[q10 premises] sat",
+    "[q10 s1] allows",
+    "[q10 s2] allows",
+    "[q10 s3] forbids",
+    "[q10 s4] allows",
+    "[q7 proof] unsat",
+    "[q7 premises] sat",
+    "[q7 s1] allows",
+    "[q7 s2] forbids",
+    "[q7 s3] allows",
+    "[q7 s4] forbids",
+    "[q8 proof] unsat",
+    "[q8 premises] sat",
+    "[q8 s1] allows",
+    "[q8 s2] allows",
+    "[q8 s3] allows",
+    "[q8 s4] allows",
+    "[q11 proof] unsat",
+    "[q11 premises] sat",
+    "[q11 s1] allows",
+    "[q11 s2] forbids",
+    "[q11 s3] forbids",
+    "[q11 s4] allows",
+    "[q12 proof] unsat",
+    "[q12 premises] sat",
+    "[q12 s1] forbids",
+    "[q12 s2] forbids",
+    "[q12 s3] forbids",
+    "[q12 s4] allows"
+  ],
+  "outputs": [
+    {
+      "path": "runs/RUN-z3-declassify-exemplars/bench.log",
+      "sha256": "ee3036b6b109ed65feb62e890e9789e0cb813e3e046668d8107f5dd174242aaf",
+      "bytes": 865,
+      "kind": "log"
+    }
+  ],
+  "values": {},
+  "environment": {
+    "os": "Linux 6.12.63",
+    "cpu_count": 20,
+    "ram_gib": 31.2,
+    "cpu_architecture": "x86_64",
+    "docker": "29.1.3",
+    "container": {
+      "image": "statespace-bench@sha256:701be043775cc261e84a92fe985ef94d524617fdb3d53e2255187932d2ec0f9a",
+      "user": "uid 1000 (learner)"
+    }
+  },
+  "notes": [
+    "<sandbox>/work in argv stands for a fresh scratch copy of this run's inputs/ folder, mounted at /w; the inputs are kept under inputs/ as they ran.",
+    "Each log is the container's stdout followed by its stderr. verdict_lines are the lines of the log the recorder keeps (content/audit/tools/record-exemplars.mjs), copied in log order.",
+    "q5's statement is S7.L6 cell 2's Open v1 model (runs/RUN-z3-selfcomp/cells/s7l6_cell2.py: open_v1 renamed open_doc, related() as written), and q7.smt2 is S7.L6 cell 3 (runs/RUN-z3-selfcomp/cells/s7l6_cell3.smt2) copied verbatim; RUN-z3-selfcomp keys those two sound cases, and this run re-checks them with the case's own scenarios.",
+    "For an SMT-LIB case, the relation is every assertion but the last, and a scenario fixes every constant of both worlds with (assert (= name value)); sat means the two worlds are related, so the statement forbids Acme's view from changing between them."
+  ]
+}

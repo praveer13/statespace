@@ -14,27 +14,27 @@
   "inputs": [
     {
       "path": "scripts/verify-schema.mjs",
-      "sha256": "0de1ccad77e2ffc05b1ee0061bf9f97029db1173de29807b259bd5b4486e714e",
+      "sha256": "9fdb32166c2f93ae9d784ff7414f2d203c0e5d73066d7a46f7b5d2de1a047a39",
       "role": "the gate"
     },
     {
       "path": "schemas/codegen/self-check.mjs",
-      "sha256": "3f36a9c625c0cc59b917de1d0631fbd7c4fadfd90c209f28e2070c0fbe2be2f1",
+      "sha256": "b3aa7d480d41593d4a5997ae561819b1a55208ae815505502ce83c0fb12051ac",
       "role": "the planted faults"
     },
     {
       "path": "schemas/",
-      "sha256": "7f91c438c42eb7afeae1442220d0028dbaffa787e6349250c2410fd6f97cb313",
-      "files": 110
+      "sha256": "19a26882e34de466785435a676a933ff00567dc962a43fa549f124946ad5f781",
+      "files": 378
     },
     {
       "path": "packages/schema/",
-      "sha256": "ebc6e80027c53077f452cf86e9f31399aeb01645820ec1071fe51fe10ae92708",
+      "sha256": "c421fd0bd0895c74e99751e8bd5bb0620bfec251a0e8fd955e740f962e78aa38",
       "files": 13
     },
     {
       "path": "bench/statespace/schema/",
-      "sha256": "6f61a00594f2ab2068f251652a6540c0c64bf20279326a5d4e060564501e7af2",
+      "sha256": "3159498709ba3a19e596189d0a20d15760c306d5ee51bdd0ba1581189c235a57",
       "files": 6
     }
   ],
@@ -52,8 +52,8 @@
     "python_default": "Python 3.13.12",
     "container": null
   },
-  "started_at": "2026-10-24T13:20:26.606Z",
-  "duration_s": 47.765,
+  "started_at": "2026-10-27T02:14:20.398Z",
+  "duration_s": 440.268,
   "exit_code": 0,
   "verdict_lines": [
     "GATE-schema self-check: plant a fault in a scratch copy, run the gate there, require it to fail on the right check",
@@ -76,7 +76,7 @@
     "  ok    the pattern lint accepts \"^[^\\\\n]*(?![\\\\s\\\\S])\"",
     "  ok    the pattern lint accepts \"^a\\\\.b(?![\\\\s\\\\S])\"",
     "  ok    an unmodified copy passes",
-    "  ok    --strict fails while a later task owes receipt.schema.json: fails on schema receipt, schema run, keep/kill rules",
+    "  ok    --strict fails while a later task owes receipt.schema.json: fails on schema receipt, generated files, package loads, keep/kill rules",
     "  ok    a generated TypeScript file is edited by hand: fails on generated files",
     "  ok    a schema gains a property and nobody regenerates: fails on generated files",
     "  ok    a Python record loses a key: fails on generated files",
@@ -103,18 +103,18 @@
     "  ok    a repository record names a version that is not published: fails on records",
     "  ok    the keep/kill rules and their run agree",
     "  ok    the keep/kill rules change after they were recorded: fails on keep/kill rules",
-    "  ok    the keep/kill run records no hash: fails on keep/kill rules",
+    "  ok    the keep/kill run records no hash: fails on validators agree, keep/kill rules",
     "  ok    the keep/kill rules exist without their run: fails on keep/kill rules",
     "GATE-schema self-check: PASS (48 of 48 held)"
   ],
   "outputs": [
     {
       "path": "runs/RUN-schema-self-check/self-check.txt",
-      "sha256": "852651733f77bdb390347e5911cbcfef7f31550db0e9a55d634e3db86c885491",
-      "bytes": 3700
+      "sha256": "7cfba3376b886ee075ecc0152d7ca6db7e95ddc29ea436d518f417f9f7cc5922",
+      "bytes": 3738
     }
   ],
-  "recorded_at": "2026-10-24T13:21:14.389Z",
+  "recorded_at": "2026-10-27T02:21:40.686Z",
   "notes": [
     "Each scenario copies schemas/, packages/schema, bench/statespace/schema and the gate to a scratch directory, plants one fault there, and runs the copy of the gate. The repository itself is never modified."
   ]

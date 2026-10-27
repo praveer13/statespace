@@ -1,0 +1,40 @@
+z3 5.3.1 rlimit=5000000
+[q7 violation] unsat
+[q7 premises] sat [days = 0, paid = 1, refund = 1]
+[q7 s1 paid=100 refund=40 days=3] sat (covered)
+[q7 s2 paid=100 refund=40 days=45] unsat (not covered)
+[q7 s3 paid=100 refund=100 days=30] sat (covered)
+[q7 s4 paid=20 refund=40 days=3] unsat (not covered)
+[q8 violation] unsat
+[q8 premises] unsat
+[q8 core] unsat_core=['days <= 30', 'days > 30']
+[q8 s1 paid=100 refund=40 days=3] unsat (not covered)
+[q8 s2 paid=100 refund=40 days=45] unsat (not covered)
+[q8 s3 paid=100 refund=100 days=30] unsat (not covered)
+[q8 s4 paid=20 refund=40 days=3] unsat (not covered)
+[q9 violation] unsat
+[q9 premises] unsat
+[q9 core] unsat_core=['(= fee (div amount 100))', '(> amount 0)', '(>= fee amount)']
+[q9 s1 bal=1000 amount=500] unsat (not covered)
+[q9 s2 bal=1000 amount=1000] unsat (not covered)
+[q9 s3 bal=50 amount=50] unsat (not covered)
+[q9 s4 bal=1000 amount=99] unsat (not covered)
+[q10 violation] unsat
+[q10 premises] sat [amount = 1, bal = 1, fee = 0]
+[q10 s1 bal=1000 amount=500] sat (covered)
+[q10 s2 bal=1000 amount=1000] unsat (not covered)
+[q10 s3 bal=50 amount=50] sat (covered)
+[q10 s4 bal=1000 amount=99] sat (covered)
+[q11 violation] unsat
+[q11 premises] sat [amount = 1, bal = 1, used = 0]
+[q11 s1 bal=300 used=0 amount=200] sat (covered)
+[q11 s2 bal=300 used=450 amount=100] unsat (not covered)
+[q11 s3 bal=1000 used=100 amount=400] sat (covered)
+[q11 s4 bal=100 used=0 amount=150] unsat (not covered)
+[q12 violation] unsat
+[q12 premises] unsat
+[q12 core] unsat_core=['amount <= -used - 500', 'amount > 0', 'used >= 0']
+[q12 s1 bal=300 used=0 amount=200] unsat (not covered)
+[q12 s2 bal=300 used=450 amount=100] unsat (not covered)
+[q12 s3 bal=1000 used=100 amount=400] unsat (not covered)
+[q12 s4 bal=100 used=0 amount=150] unsat (not covered)

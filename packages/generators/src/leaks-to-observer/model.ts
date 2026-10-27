@@ -141,9 +141,16 @@ export function findLeak(w: World): Pair | null {
 
 const showVal = (v: Val): string => (typeof v === 'string' ? `"${v}"` : String(v))
 
-export function renderPair(p: Pair): string {
-  const parts = Object.entries(p.diff).map(([n, [x, y]]) => `\`${n}\` is ${showVal(x)} in s1 and ${showVal(y)} in s2`)
-  return `s1 and s2 are identical except that ${parts.join(', and ')}`
+// A pair reads like "none" does [D]: no numbered states, one comma, so neither its digits nor its punctuation stand out.
+// Two wordings, a longer and a shorter one, for a pair that differs in one cell.
+export function renderPair(p: Pair, form: 0 | 1 = 0): string {
+  const diff = Object.entries(p.diff)
+  if (form === 1 && diff.length === 1) {
+    const [n, [x, y]] = diff[0] as [string, [Val, Val]]
+    return `Two states that differ in \`${n}\`, ${showVal(x)} in one and ${showVal(y)} in the other`
+  }
+  const parts = diff.map(([n, [x, y]]) => `\`${n}\` is ${showVal(x)} in one, ${showVal(y)} in the other`)
+  return `Two states identical except that ${parts.join(', and ')}`
 }
 
 export function scopeText(w: World): string {

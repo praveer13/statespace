@@ -1,0 +1,13 @@
+[q6] seed 1: 7 trace lines written to traces/q6-seed-1.ndjson
+[q6]      1	{"event":"Commit","cmd":"c1"}
+[q6]      2	{"event":"Dispatch","cmd":"c1","key":["c1",0],"att":1}
+[q6]      3	{"event":"TimerArmed","cmd":"c1"}
+[q6]      4	{"event":"Receive","cmd":"c1"}
+[q6]      5	{"event":"Ack","cmd":"c1"}
+[q6]      6	{"event":"Persist","cmd":"c1"}
+[q6]      7	{"event":"End"}
+[q6] suite: c1 acked, result stored True, charged 1 time(s): ok
+[q6] monitor: seed 1: FAIL AckedIsDurable at step 3 (line 5): c1 was acknowledged before its result was stored
+[q6] trace traces/q6-seed-1.ndjson: rejected at line 5 of 7: {"event":"Ack","cmd":"c1"} (lines 1-4 match)
+[q6] 0 of 1 trace accepted against labs/LAB-8/reference/OutboxRef.tla; n counts accepted traces only
+[q6] validate exit=1

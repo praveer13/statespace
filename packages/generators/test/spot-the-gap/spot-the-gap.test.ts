@@ -95,17 +95,17 @@ test('AUD-2.4, AUD-7.1, AUD-4.3: mismatched identifiers, a weak observer, and a 
   assert.deepEqual(audit({ ...cti, init: { x: 0, y: -1 }, change: 'code' }).classes, ['none'], 'a reachable violation makes the code change the fix')
 })
 
-test('every class is offered in the taxonomy\'s order, and every cell keys to the generator\'s reference', async () => {
+test('every class is offered in the taxonomy\'s order, read cyclically, and every cell keys to the generator\'s reference', async () => {
   for (const t of generator.templates) {
     for (const band of BANDS) {
       for (let seed = 1; seed <= 6; seed++) {
         const inst = generator.make(seed * 6151, band as Band, t.id as TemplateId) as SpotTheGapInstance
         assert.deepEqual(generator.make(seed * 6151, band as Band, t.id as TemplateId), inst)
         const part = inst.item.parts[0] as ChoicePart
-        assert.deepEqual(
-          part.options.map((o) => inst.data.values[o.id]),
-          CLASSES.map((c) => c.id),
-        )
+        // The taxonomy's order from some class on, wrapping around: a rotation of the list.
+        const shown = part.options.map((o) => inst.data.values[o.id])
+        const start = CLASSES.findIndex((c) => c.id === shown[0])
+        assert.deepEqual(shown, [...CLASSES.slice(start), ...CLASSES.slice(0, start)].map((c) => c.id))
         const k = await generator.key(inst, port)
         assert.ok(!isDiscard(k), `${t.id} b${band} seed ${seed} keys`)
         const key = k as SpotTheGapKey

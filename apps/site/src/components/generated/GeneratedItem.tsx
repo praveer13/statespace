@@ -96,6 +96,16 @@ export function GeneratedItem(props: GeneratedItemProps) {
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState<string | undefined>(undefined)
   const shownAt = useRef(0)
+  // Submit disables itself while the checker runs and goes once it answers, which drops a keyboard user's focus to the
+  // page: when the check settles, focus moves to the result (WCAG 2.4.3).
+  const outcome = useRef<HTMLDivElement>(null)
+  const submitted = useRef(false)
+  useEffect(() => {
+    if (busy || !submitted.current) return
+    submitted.current = false
+    const active = document.activeElement
+    if (active === null || active === document.body) outcome.current?.focus()
+  }, [busy])
   // The seeds already answered under this ref, read once per draw so a write does not redraw the item.
   const eventsRef = useRef(events)
   eventsRef.current = events
@@ -136,11 +146,24 @@ export function GeneratedItem(props: GeneratedItemProps) {
     }
   }, [family, template, band, ref, draw])
 
-  const again = (): void => setDraw((n) => n + 1)
+  // Draw another (or Draw again) goes with the old draw, which drops a keyboard user's focus to the page: once the new
+  // draw is on screen, focus moves to the question (WCAG 2.4.3).
+  const box = useRef<HTMLDivElement>(null)
+  const redrawn = useRef(false)
+  useEffect(() => {
+    if (!redrawn.current || state.status === 'loading') return
+    redrawn.current = false
+    const active = document.activeElement
+    if (active === null || active === document.body) box.current?.focus()
+  }, [state])
+  const again = (): void => {
+    redrawn.current = true
+    setDraw((n) => n + 1)
+  }
 
   if (state.status === 'absent') {
     return (
-      <div className="question question-generated no-margin" data-role={props.role}>
+      <div ref={box} tabIndex={-1} className="question question-generated no-margin" data-role={props.role}>
         {props.head}
         <p className="question-later">A fresh question is generated here for each learner. The generator for this question arrives in a later build.</p>
       </div>
@@ -148,7 +171,7 @@ export function GeneratedItem(props: GeneratedItemProps) {
   }
   if (state.status !== 'ready') {
     return (
-      <div className="question question-generated no-margin" data-role={props.role} aria-busy={state.status === 'loading'}>
+      <div ref={box} tabIndex={-1} className="question question-generated no-margin" data-role={props.role} aria-busy={state.status === 'loading'}>
         {props.head}
         {state.status === 'loading' ? <p className="question-later">Drawing a fresh question…</p> : null}
         {state.status === 'exhausted' ? (
@@ -174,6 +197,7 @@ export function GeneratedItem(props: GeneratedItemProps) {
 
   const submit = async (): Promise<void> => {
     if (picked === undefined || done || busy || part === undefined) return
+    submitted.current = true
     setBusy(true)
     try {
       const port = portOf(mod)
@@ -225,7 +249,7 @@ export function GeneratedItem(props: GeneratedItemProps) {
   const keyAnswer = result?.key.choices.find((c) => c.part === part?.id)?.answer
   const shown = done ? result.picked : picked
   return (
-    <div className="question gen-item no-margin" data-role={props.role} data-family={family} data-template={template}>
+    <div ref={box} tabIndex={-1} className="question gen-item no-margin" data-role={props.role} data-family={family} data-template={template}>
       {props.head}
       <p className="gen-meta">
         <span>Drawn fresh for you</span>
@@ -268,7 +292,7 @@ export function GeneratedItem(props: GeneratedItemProps) {
           {picked === undefined ? <span className="question-need">Pick an answer first.</span> : null}
         </div>
       ) : null}
-      <div role="status" aria-live="polite">
+      <div ref={outcome} role="status" aria-live="polite" tabIndex={-1}>
         {done && part !== undefined ? <Feedback result={result} part={part} keyAnswer={keyAnswer} /> : null}
         {note !== undefined ? <p className="question-note">{note}</p> : null}
       </div>

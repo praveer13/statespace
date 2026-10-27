@@ -123,7 +123,11 @@ test('every template and band: the checker confirms the reference, the measure i
 })
 
 test('a replay names the way an option is wrong', async () => {
-  const inst = generator.make(7, 2, 't3') as WpItInstance
+  // The first seed whose distractors include the assume reading alone (the family chooses among its mistakes per seed).
+  const hasIt = (i: WpItInstance): boolean => (i.item.parts[0] as ChoicePart).options.some((o) => o.origin.kind === 'mutant' && o.origin.operator === 'the assume reading')
+  let seed = 7
+  while (!hasIt(generator.make(seed, 2, 't3') as WpItInstance) && seed < 400) seed += 1
+  const inst = generator.make(seed, 2, 't3') as WpItInstance
   const part = inst.item.parts[0] as ChoicePart
   const key = await generator.key(inst, port)
   assert.ok(!isDiscard(key))

@@ -12,6 +12,7 @@ import { createDraw, deriveSeed } from '@statespace/rng'
 import type { SeededDraw } from '@statespace/rng'
 import { defineGenerator, discard, isDiscard } from '../core/define.ts'
 import { assembleOptions, certifyChoice } from '../core/distractors.ts'
+import { chooseDistractors, WORDS } from './choose.ts'
 import type { ConfirmResult, DistinguishResult, Mutant } from '../core/distractors.ts'
 import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
@@ -120,7 +121,11 @@ export function candidateLassos(m: HoldModel): Lasso[] {
 /** Behaviors that reach a resolved state and stutter there: Try, Capture or Timeout. */
 function resolvingLassos(m: HoldModel): Lasso[] {
   const out: Lasso[] = []
-  for (const stem of [['Timeout'], ['Try', 'Capture'], ['Try', 'Timeout']]) {
+  // Short and long ones [D], so a resolving distractor can be as long as a fair lasso: up to two rounds of Try and Busy
+  // before the hold resolves.
+  const rounds = [[], ['Try', 'Busy'], ['Try', 'Busy', 'Try', 'Busy']]
+  const stems = rounds.flatMap((r) => [[...r, 'Timeout'], [...r, 'Try', 'Capture'], [...r, 'Try', 'Timeout']])
+  for (const stem of stems) {
     let s: HState | null = holdInitial()
     for (const a of stem) s = s === null ? null : act(m, s, a)
     if (s !== null && resolved(s)) out.push({ stem, cycle: [] })
@@ -147,6 +152,14 @@ function judgmentText(j: LassoJudgment): string {
         : `unfair: ${j.condition.action} is enabled in some state of the cycle, again and again, and never taken, which ${showFair(j.condition)} forbids`
   }
 }
+
+// "No such lasso" reads like a lasso does [D]: one comma, the actions it is about, and no colon or absolute word.
+// Each in a shorter and a longer wording, as lassos come short and long.
+const NONE = {
+  timeout: ['No such lasso, as Timeout resolves the hold', 'No such lasso, as Timeout is enabled in held and resolves the hold'],
+  weak: (f: Fairness): string[] => [`No such lasso, as ${showFair(f)} forces ${f.action}`, `No such lasso, as ${showFair(f)} forces ${f.action} and the hold resolves`],
+  fair: ['No such lasso, as Fair rules them out', 'No such lasso, as Fair rules out each such cycle'],
+} as const
 
 const WHY = {
   noneTimeout:
@@ -182,6 +195,11 @@ function drawFairness(draw: SeededDraw, n: number, strong: number): Fairness[] {
   return acts.map((action) => ({ kind: sf.has(action) ? 'SF' : 'WF', action }))
 }
 
+/** Every lasso among the candidates whose judgment fits, in the candidates' order. */
+function lassosWhere(m: HoldModel, fair: readonly Fairness[], want: (j: LassoJudgment, l: Lasso) => boolean): Lasso[] {
+  return candidateLassos(m).filter((l) => want(judgeLasso(m, fair, l), l))
+}
+
 /** A lasso, valid or not, chosen by the draw among the candidates whose judgment fits. */
 function pickLasso(draw: SeededDraw, m: HoldModel, fair: readonly Fairness[], want: (j: LassoJudgment, l: Lasso) => boolean): Lasso | null {
   const fits = candidateLassos(m).filter((l) => want(judgeLasso(m, fair, l), l))
@@ -198,14 +216,14 @@ function t1(band: Band, draw: SeededDraw): Built {
     if (ref === null) continue
     const weak = fairness.filter((f) => f.kind === 'WF')
     const noneWeak = weak.length > 0 ? draw.pick(weak) : null
-    const unfair = fairness.length === 0 ? null : pickLasso(draw, model, fairness, (j) => !j.ok && j.why === 'unfair')
-    const resolving = draw.pick(resolvingLassos(model))
+    // Every wrong answer of each kind is a candidate; choose.ts shows two [D].
+    const unfair = fairness.length === 0 ? [] : lassosWhere(model, fairness, (j) => !j.ok && j.why === 'unfair')
     const mutants: Mutant<LassoValue>[] = [
-      noneWeak === null
-        ? fixed('dp:T10', 'enabled read as happening', WHY.noneTimeout, { kind: 'none', says: 'None: Timeout is enabled in held, so the hold eventually resolves' })
-        : fixed('dp:T14', 'weak fairness read as strong', WHY.noneWeak(noneWeak), { kind: 'none', says: `None: ${showFair(noneWeak)} forces ${noneWeak.action}, so the hold resolves` }),
-      fixed('dp:T1', 'eventually read as always', WHY.resolving, { kind: 'lasso', lasso: resolving }),
-      fixed('dp:T14', 'fairness ignored', unfair === null ? '' : WHY.unfair(judgeLasso(model, fairness, unfair)), unfair === null ? null : { kind: 'lasso', lasso: unfair }),
+      ...(noneWeak === null
+        ? NONE.timeout.map((says) => fixed('dp:T10', 'enabled read as happening', WHY.noneTimeout, { kind: 'none', says }))
+        : NONE.weak(noneWeak).map((says) => fixed('dp:T14', 'weak fairness read as strong', WHY.noneWeak(noneWeak), { kind: 'none', says }))),
+      ...resolvingLassos(model).map((r) => fixed('dp:T1', 'eventually read as always', WHY.resolving, { kind: 'lasso', lasso: r })),
+      ...unfair.map((u) => fixed('dp:T14', 'fairness ignored', WHY.unfair(judgeLasso(model, fairness, u)), { kind: 'lasso', lasso: u })),
     ]
     return {
       model,
@@ -230,18 +248,18 @@ function t2(band: Band, draw: SeededDraw): Built {
     if (findLasso(model, fairness) !== null) continue
     // Distractors: a lasso that cycles without resolving but breaks a fairness condition, preferring a real cycle over
     // stuttering; stuttering forever in the initial state, which some condition rules out; and a resolving behavior.
-    const unfairCycle = pickLasso(draw, model, fairness, (j, l) => !j.ok && j.why === 'unfair' && l.cycle.length > 0)
+    // Every wrong answer of each kind is a candidate; choose.ts shows two [D].
+    const unfairCycles = lassosWhere(model, fairness, (j, l) => !j.ok && j.why === 'unfair' && l.cycle.length > 0)
     const stutter: Lasso = { stem: [], cycle: [] }
-    const resolving = draw.pick(resolvingLassos(model))
     const mutants: Mutant<LassoValue>[] = [
-      fixed('dp:T14', 'fairness ignored', unfairCycle === null ? '' : WHY.unfair(judgeLasso(model, fairness, unfairCycle)), unfairCycle === null ? null : { kind: 'lasso', lasso: unfairCycle }),
+      ...unfairCycles.map((u) => fixed('dp:T14', 'fairness ignored', WHY.unfair(judgeLasso(model, fairness, u)), { kind: 'lasso', lasso: u })),
       fixed('dp:T14', 'stuttering read as always allowed', WHY.unfair(judgeLasso(model, fairness, stutter)), { kind: 'lasso', lasso: stutter }),
-      fixed('dp:T1', 'eventually read as always', WHY.resolving, { kind: 'lasso', lasso: resolving }),
+      ...resolvingLassos(model).map((r) => fixed('dp:T1', 'eventually read as always', WHY.resolving, { kind: 'lasso', lasso: r })),
     ]
     return {
       model,
       fairness,
-      reference: { kind: 'none', says: 'None: every behavior that satisfies Fair eventually resolves' },
+      reference: { kind: 'none', says: draw.pick(NONE.fair) },
       referenceWhy:
         'Every cycle of unresolved states breaks some fairness condition: either an action under WF is enabled throughout it and never taken, or an action under SF is enabled in it and never taken. So no fair behavior stays unresolved forever.',
       mutants,
@@ -258,7 +276,10 @@ function make(seed: number, band: Band, template: TemplateId): LassoInstance {
   if (spec === undefined || build === undefined) throw new RangeError(`${LASSO_OR_NOT_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${LASSO_OR_NOT_ID}/${template}/b${band}`))
   const b = build(band, draw)
-  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: b.mutants, distractors: 2, draw: draw.fork('options'), render: renderValue })
+  // The distractors shown, chosen among the wrong answers so the key does not stand out (choose.ts).
+  // Two wordings of "no such lasso" mean the same, so a set shows at most one of them.
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: 2, draw: draw.fork('choose'), render: renderValue, meaning: (v) => (v.kind === 'none' ? 'none' : renderValue(v)), features: [WORDS] })
+  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: chosen, distractors: 2, draw: draw.fork('options'), render: renderValue })
   const stem = [
     '*Spec:* a hold that a worker keeps trying to capture, while the provider may keep answering "busy". `Fair` is the fairness line of this item.',
     '',

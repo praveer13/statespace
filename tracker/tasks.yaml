@@ -984,6 +984,13 @@ tasks:
     notes: >-
       Happy path, 2026-10-26: Stamps, strip and tokens are live on the site and GATE-codes is green.
       Missing: GATE-stamps still has one content finding (S8.L7:104, PROVED in requirement fit).
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-stamps went from red (4 derive and which-stamp
+      findings: the lean-sorry and custom-axiom fixtures quoted lines that RUN-lean-axioms' re-run now
+      shows beside an error line) to green, with the fixtures quoting the lean-bad execution. GATE-codes
+      went from 3 bare "correct" findings to green. The stamps package's self-check test now runs (it
+      was skipped while the gate was red) and 4 of its 87 planted faults miss (two grayscale contrasts,
+      two which-stamp plants): the gate's own expectations, left for the gate owner.
     owner_review: true
     review_h: 1
   - id: W1-T02
@@ -1149,6 +1156,11 @@ tasks:
       Happy path, 2026-10-26: GATE-generators is green on all five families. Missing: GATE-calls
       red, native Z3 = Pyodide Z3 not shown, M-layered-feedback and M-class-hint do not read their
       keep/kill arms, and the children W1-T22 to W1-T25 are open.
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-generators is green (15 families, 10290
+      instances); GEN-which-stamp's determinism was re-recorded in three engines after its two Lean
+      fixtures changed. GATE-calls is still red (113 findings, most of them cells whose engine lands in
+      a later task).
     owner_review: false
     review_h: 0
   - id: W1-T06
@@ -2287,6 +2299,10 @@ tasks:
     notes: >-
       Happy path, 2026-10-26: GATE-calls runs on every authored cell. Missing: green on S1 (S1.L0
       cell 1 key-read finding) and on S10 cells.
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-calls is still red: 113 findings, mostly
+      instruments with no GATE-calls engine yet (INS-lasso, INS-pairs, INS-bench-*, INS-receipt,
+      INS-interp), plus key-read findings on S4.L4#2, S7.L6#2 and S7.L6#3.
     owner_review: true
     review_h: 0.2
   - id: W1-T38
@@ -2316,6 +2332,9 @@ tasks:
     notes: >-
       Happy path, 2026-10-26: GATE-lessons self-check: all 300 planted faults caught. The gate
       itself still reports 2 anatomy findings on S7.L7 and S7.L8 (content).
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-lessons has 2 findings, both owner decisions:
+      S7.L7 and S7.L8 each carry two prequestions where a bridge allows one.
     owner_review: true
     review_h: 0.25
   - id: W1-T39
@@ -2348,6 +2367,12 @@ tasks:
       Happy path, 2026-10-26: GATE-items: 197 of 197 planted fixtures held, and the pool of the
       fixture family is green. The gate is red on the authored stage items and on the generated
       families (their own tasks).
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-items went from 736 findings to 68: 59 on
+      GEN-spot-the-gap and GEN-which-stamp (owner decisions on the taxonomy label and the recorded
+      supply), 8 calls/surprises on authored stages and one pending template on D-11. On this host the
+      GATE-items step alone takes longer than the fast lane's whole budget, so the lane times it out
+      (RUN-ci-fastlane).
     owner_review: true
     review_h: 0.25
   - id: W1-T40
@@ -2379,6 +2404,10 @@ tasks:
     notes: >-
       Happy path, 2026-10-26: GATE-audit self-check green (136 cases held), GATE-audit-blind
       self-check green (73 cases held); GATE-audit-blind prints its bound.
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-audit went from 15 findings to 2
+      (GEN-spot-the-gap exports no auditBattery, W1-T25); every class has at least 6 exemplars.
+      GATE-audit-blind is green on 176 cases. The records of both gates were re-recorded.
     owner_review: true
     review_h: 0.25
   - id: W1-T41
@@ -2413,7 +2442,14 @@ tasks:
     model: sonnet
     model_reason: "Gate harness specified in ARCHITECTURE.md section 13; mostly wiring."
     depends_on: [W0-S12, W0-S02]
-    status: todo
+    status: in-progress
+    started: 2026-10-26
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-bundle runs in the fast lane: 32 passed, 2
+      failed (budget.route.today and budget.route.lesson, both over their budgets; how a route is
+      counted is an owner decision) and 14 pending on W1-T06, W1-T09, W1-T14 and W1-T35; budget.fonts
+      passes. GATE-a11y: 114 pages, 0 issues at any impact, 0 sideways scroll. The gate's own libs test
+      still has a fixture on the old Archivo face.
     owner_review: true
     review_h: 0.25
   - id: W1-T42
@@ -2449,6 +2485,11 @@ tasks:
     notes: >-
       Happy path, 2026-10-26: GATE-specimens reproduces SP-1.1 to SP-1.10. Missing: GATE-conformance
       Pyodide Z3 = native Z3 (11 differences) and the planted red night.
+
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): GATE-specimens: RUN-z3-capture, RUN-z3-leaky-field
+      and RUN-z3-count-channel were re-executed in the bench image and re-recorded without the
+      recorder's two annotation lines, which the tool never printed; SP-4.2, SP-7.1 and SP-7.2 now
+      reproduce.
     owner_review: true
     review_h: 0.25
   - id: W1-T43
@@ -7350,6 +7391,10 @@ tasks:
     model_reason: "The release gate; decision 24 assigns release gates to opus."
     depends_on: [W5-T08]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): scripts/verify-release.mjs still does not exist, so
+      the release lane fails closed at GATE-release, as designed. The release lane's other steps were
+      run on 2026-10-26; see the W1 report.
     owner_review: true
     review_h: 0.5
   - id: W5-T10
@@ -8437,6 +8482,9 @@ tasks:
     model_reason: "Gate harness specified in ARCHITECTURE.md section 13; mostly wiring."
     depends_on: [W5-T09]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): Ahead of the wave: the Today and lesson route
+      budgets are still red (figures in the W1 report); the counting rule is an owner decision.
     owner_review: true
     review_h: 0.25
   - id: W6-T03
@@ -8462,6 +8510,9 @@ tasks:
     model_reason: "A lint specified rule by rule in spine section 11.2."
     depends_on: [W5-T09]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): Ahead of the wave: budget.fonts passes (15
+      @font-face rules, 12 font files pinned by SHA-256); GATE-glyphs is not built.
     owner_review: true
     review_h: 0.25
   - id: W6-T04
@@ -8533,6 +8584,10 @@ tasks:
     model_reason: "Validity statistics with subtle baselines; a wrong gate lets bad items pass."
     depends_on: [W5-T11]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): Ahead of the wave: GATE-items' blind strategies
+      show one finding left and GATE-audit-blind is green, with 8 advisory longest-diff notes near 2.4
+      SD.
     owner_review: true
     review_h: 1
   - id: W6-T07
@@ -8557,6 +8612,12 @@ tasks:
     model_reason: "Mechanical: run pinned tools on specified inputs and write run@1 records."
     depends_on: [W5-T03]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): Ahead of the wave, not this task's edition
+      re-record: every record GATE-runs --release listed as having changed inputs was re-recorded on the
+      recorded pins (Lean records re-executed by scripts/runs/rerun-argv.mjs with byte-identical logs;
+      gate records by their own recorders). The 31 forward references to runs not yet recorded remain,
+      and the OD-12 check has not been done.
     owner_review: true
     review_h: 1
   - id: W6-T08
@@ -8603,6 +8664,10 @@ tasks:
     model_reason: "Gate harness specified in ARCHITECTURE.md section 13; mostly wiring."
     depends_on: [W5-T09]
     status: todo
+    notes: >-
+      Phase 7, 2026-10-26 (docs/waves/W1-report.md): Ahead of the wave: a scratch sweep of 282 pages
+      (every route, including the deep links GATE-a11y cannot reach) found 0 axe issues after the Phase
+      7 fixes; docs/a11y/W6-axe.md is not written, and the live cell's Run button still drops focus.
     owner_review: true
     review_h: 0.5
   - id: W6-T10

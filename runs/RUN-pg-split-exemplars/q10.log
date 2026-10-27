@@ -1,0 +1,20 @@
+[q10] server: 18.6 (Debian 18.6-1.pgdg13+2); transaction_isolation: read committed
+[q10 p1] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]
+[q10 p1] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]
+[q10 p1] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]
+[q10 p1] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]
+[q10 p1] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1
+[q10 p1] b: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1
+[q10 p1] a: COMMIT -> COMMIT
+[q10 p1] b: COMMIT -> COMMIT
+[q10 p1] a returned True, b returned True
+[q10 p1] final held=160; placed=160 of 100
+[q10 p2] a: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]
+[q10 p2] a: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('0')]]
+[q10 p2] a: INSERT INTO holds (acct, amt) VALUES (%s, %s) -> INSERT 0 1
+[q10 p2] a: COMMIT -> COMMIT
+[q10 p2] b: SELECT bal FROM acct WHERE id = %s -> SELECT 1 [[100]]
+[q10 p2] b: SELECT coalesce(sum(amt), 0) FROM holds WHERE acct = %s -> SELECT 1 [[Decimal('80')]]
+[q10 p2] b: COMMIT -> COMMIT
+[q10 p2] a returned True, b returned False
+[q10 p2] final held=80; placed=80 of 100

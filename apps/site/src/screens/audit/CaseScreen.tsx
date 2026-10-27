@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router'
 import { useTitle } from '../../app/title.ts'
 import { useLoaded } from '../../app/content.ts'
 import { useEvents, useStore } from '../../app/ledger.ts'
-import { CaseDesk } from './CaseDesk.tsx'
+import { CaseDesk, useFiledFocus } from './CaseDesk.tsx'
 import { Feedback } from './Feedback.tsx'
 import { browseOrder, loadAudit } from './pool.ts'
 import type { Finding, Graded } from './record.ts'
@@ -20,6 +20,7 @@ export function CaseScreen() {
   const ev = useEvents(store)
   const [done, setDone] = useState<{ key: string; finding: Finding; graded: Graded } | null>(null)
   const key = `${anchorId}/${nText}`
+  const keyHead = useFiledFocus<HTMLHeadingElement>()
 
   const anchor = loaded.status === 'ready' ? loaded.value.anchors.find((a) => a.id === anchorId) : undefined
   const c = anchor === undefined ? undefined : browseOrder(anchor)[Number(nText) - 1]
@@ -63,7 +64,9 @@ export function CaseScreen() {
         />
       ) : (
         <section className="audit-section" aria-labelledby="ac-key" style={{ ['--vol' as string]: `var(--vol-${anchor.stage.slice(1)})` }}>
-          <h2 id="ac-key">The answer key</h2>
+          <h2 id="ac-key" ref={keyHead} tabIndex={-1}>
+            The answer key
+          </h2>
           <Feedback pool={loaded.value} anchor={anchor} c={c} n={1} finding={filed.finding} graded={filed.graded} />
         </section>
       )}

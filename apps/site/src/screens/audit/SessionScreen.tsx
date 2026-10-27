@@ -8,7 +8,7 @@ import { Link, useSearchParams } from 'react-router'
 import { useTitle } from '../../app/title.ts'
 import { useLoaded } from '../../app/content.ts'
 import { useEvents, useStore } from '../../app/ledger.ts'
-import { CaseDesk } from './CaseDesk.tsx'
+import { CaseDesk, useFiledFocus } from './CaseDesk.tsx'
 import { Feedback } from './Feedback.tsx'
 import { composeAuditSitting } from './judgment.ts'
 import { allCases, loadAudit } from './pool.ts'
@@ -38,6 +38,7 @@ function Session({ pool, seed, n }: { pool: AuditPool; seed: number; n: number }
   const sitting = String(seed)
   // Findings filed in this tab, for a browser that keeps no record; the log's findings win where both exist.
   const [local, setLocal] = useState<Map<string, { finding: Finding; graded: Graded }>>(new Map())
+  const countsHead = useFiledFocus<HTMLHeadingElement>()
   if (served === null) {
     return (
       <p className="aplain">
@@ -96,7 +97,9 @@ function Session({ pool, seed, n }: { pool: AuditPool; seed: number; n: number }
   return (
     <>
       <section className="audit-section" aria-labelledby="as-counts">
-        <h2 id="as-counts">Your session</h2>
+        <h2 id="as-counts" ref={countsHead} tabIndex={-1}>
+          Your session
+        </h2>
         <table className="atable">
           <caption>Counts, split by truth. A pooled score would rise with the share of flawed cases, so none is shown.</caption>
           <tbody>

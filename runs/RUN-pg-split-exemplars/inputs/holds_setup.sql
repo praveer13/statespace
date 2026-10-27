@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS holds; DROP TABLE IF EXISTS acct;
+CREATE TABLE acct (id int PRIMARY KEY, bal bigint NOT NULL);
+CREATE TABLE holds (acct int NOT NULL REFERENCES acct, amt bigint NOT NULL CHECK (amt > 0));
+INSERT INTO acct VALUES (1, 100);

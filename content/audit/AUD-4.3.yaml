@@ -5,7 +5,10 @@
 # and none on the good model. The receipts are copied from that run. The step-3 scenarios and the variant pair (the
 # merchant model of S4.L6 and its twin) are keyed by RUN-z3-cti-variants, recorded in the Bench image. Its tags are
 # neutral: q1 the good holds model, q2 its twin, q3 the merchant twin, q4 the good merchant model. The sound form is
-# the "reachable" template (AUDIT-DESK 4.2): the same edit, where the command really is wrong.
+# the "reachable" template (AUDIT-DESK 4.2): the same edit, where the command really is wrong. Variant pairs v2 to v5
+# are keyed by RUN-z3-cti-exemplars (content/audit/tools/record-exemplars.mjs), whose tags are q5/q6 (v2), q7/q8 (v3),
+# q9/q10 (v4) and q11/q12 (v5), each the reachable form and then the unreachable one. Each Z3Py statement is that
+# run's code between its case's markers, verbatim; v5's statements are its SMT-LIB files.
 id: AUD-4.3
 stage: S4
 class: G13
@@ -199,3 +202,319 @@ variants:
     key_run: RUN-z3-cti-variants
     key_lines: ["[q4 search] violation reachable within 6 steps: no", "[q4 step of 0 <= paid <= merch] unsat", "[q4 edited, step of merch >= 0] sat"]
     explain: "A counterexample to induction: paid above merch, which this Payout never allows, and no violation within 6 steps. Strengthening to 0 <= paid <= merch makes the step unsat with Refund unchanged. The edit changes a command that needed no change, and its inductive step is still sat after the edit: the induction was never closed."
+
+  - id: v2-flawed
+    pair: v2
+    operator: edit-code-to-fit-proof
+    artifact: seat-capacity
+    claim: "Z3 found a bug in Shrink; fixed."
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for free >= 0 is sat, and the step that breaks it is a Shrink. Makes Shrink check that a seat is free."
+    statement: |
+      # Init: cap >= 0, free == cap and booked == 0. The invariant to keep: free >= 0.
+      def step(s, t):
+          (free, booked, cap), (free2, booked2, cap2) = s, t
+          return Or(
+              And(free > 0, free2 == free - 1, booked2 == booked + 1, cap2 == cap),         # Book
+              And(booked > 0, free2 == free + 1, booked2 == booked - 1, cap2 == cap),       # Cancel
+              And(cap > booked, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink
+    diff: |
+      --- a/models/seats.py
+      +++ b/models/seats.py
+      @@ -6,2 +6,2 @@
+               And(booked > 0, free2 == free + 1, booked2 == booked - 1, cap2 == cap),       # Cancel
+      -        And(cap > booked, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink
+      +        And(cap > booked, free > 0, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink: free checked
+    receipt: |
+      [q6 step of free >= 0] sat
+      [q6 pre-state] free == cap - booked: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios:
+        - { id: s1, text: "free = 0, booked = 0, cap = 1", answer: false, key_line: "[q6 s1 free=0 booked=0 cap=1] reachable within 6: no", why: "Book and Cancel each move one seat between free and booked, and Shrink takes one free seat with the capacity, so free == cap - booked always holds. This is the step's pre-state, and it cannot be reached." }
+        - { id: s2, text: "free = 1, booked = 1, cap = 2", answer: true, key_line: "[q6 s2 free=1 booked=1 cap=2] reachable within 6: yes, in 1 steps", why: "One Book from cap = 2." }
+        - { id: s3, text: "free = -1, booked = 0, cap = 0", answer: false, key_line: "[q6 s3 free=-1 booked=0 cap=0] reachable within 6: no", why: "No run within the bound breaks free >= 0." }
+        - { id: s4, text: "free = 2, booked = 0, cap = 2", answer: true, key_line: "[q6 s4 free=2 booked=0 cap=2] reachable within 6: yes, in 0 steps", why: "Init, with cap = 2." }
+    evidence: { type: witness, load_bearing: ["statement:6", "diff:6", "receipt:2"], reference: { run: RUN-z3-cti-exemplars, line: "[q6 s1 free=0 booked=0 cap=1] reachable within 6: no" } }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q6 search] violation reachable within 6 steps: no", "[q6 step of free >= 0 and free == cap - booked] unsat", "[q6 pre-state] free == cap - booked: False"]
+    explain: "A counterexample to induction: its pre-state has free away from cap - booked, which these commands never reach, and no violation turns up within 6 steps. Strengthening to free == cap - booked makes the step unsat with Shrink unchanged. The edit changes a command that needed no change."
+
+  - id: v2-sound
+    pair: v2
+    operator: edit-code-to-fit-proof
+    artifact: seat-capacity
+    claim: "Z3 found a bug in Shrink; fixed."
+    key: none
+    description: "Z3's inductive step for free >= 0 is sat, and the step that breaks it is a Shrink. Makes Shrink check that a seat is free."
+    statement: |
+      # Init: cap >= 0, free == cap and booked == 0. The invariant to keep: free >= 0.
+      def step(s, t):
+          (free, booked, cap), (free2, booked2, cap2) = s, t
+          return Or(
+              And(free > 0, free2 == free - 1, booked2 == booked + 1, cap2 == cap),         # Book
+              And(booked > 0, free2 == free, booked2 == booked - 1, cap2 == cap),           # Cancel
+              And(cap > booked, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink
+    diff: |
+      --- a/models/seats.py
+      +++ b/models/seats.py
+      @@ -6,2 +6,2 @@
+               And(booked > 0, free2 == free, booked2 == booked - 1, cap2 == cap),           # Cancel
+      -        And(cap > booked, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink
+      +        And(cap > booked, free > 0, free2 == free - 1, booked2 == booked, cap2 == cap - 1))     # Shrink: free checked
+    receipt: |
+      [q5 step of free >= 0] sat
+      [q5 pre-state] free == cap - booked: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios: &v2-sound-scenarios
+        - { id: s1, text: "free = 0, booked = 0, cap = 1", answer: true, key_line: "[q5 s1 free=0 booked=0 cap=1] reachable within 6: yes, in 2 steps", why: "Book, then Cancel: this Cancel drops the booking without returning its seat, so free falls below cap - booked." }
+        - { id: s2, text: "free = 1, booked = 1, cap = 2", answer: true, key_line: "[q5 s2 free=1 booked=1 cap=2] reachable within 6: yes, in 1 steps", why: "One Book from cap = 2." }
+        - { id: s3, text: "free = -1, booked = 0, cap = 0", answer: true, key_line: "[q5 s3 free=-1 booked=0 cap=0] reachable within 6: yes, in 3 steps", why: "Book, Cancel, then Shrink: the violation is reachable." }
+        - { id: s4, text: "free = 2, booked = 0, cap = 2", answer: true, key_line: "[q5 s4 free=2 booked=0 cap=2] reachable within 6: yes, in 0 steps", why: "Init, with cap = 2." }
+    evidence: { type: restatement, scenarios: *v2-sound-scenarios }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q5 search] violation reachable within 6 steps: yes, at step 3", "[q5 edited, step of free >= 0] unsat", "[q5 edited, search] violation reachable within 6 steps: no"]
+    explain: "The violation is reachable at step 3 (Book, Cancel, Shrink), so this is a bug. With Shrink checking free > 0, the inductive step for free >= 0 is unsat and the search finds nothing."
+
+  - id: v3-sound
+    pair: v3
+    operator: edit-code-to-fit-proof
+    artifact: escrow-dispute
+    claim: "Z3 found a bug in Refund on a dispute; fixed."
+    key: none
+    description: "Z3's inductive step for escrow >= 0 is sat, and the step that breaks it is a Refund. Makes Refund check that the escrow covers n."
+    statement: |
+      # Init: escrow >= 0 and disputed == 0. The invariant to keep: escrow >= 0.
+      def step(s, t, n):
+          (escrow, disputed), (escrow2, disputed2) = s, t
+          return And(n > 0, Or(
+              And(n <= escrow - disputed, disputed2 == disputed + n, escrow2 == escrow),      # Dispute(n)
+              And(n <= escrow, escrow2 == escrow - n, disputed2 == disputed),                 # Release(n)
+              And(n <= disputed, disputed2 == disputed - n, escrow2 == escrow - n)))          # Refund(n)
+    diff: |
+      --- a/models/escrow.py
+      +++ b/models/escrow.py
+      @@ -6,2 +6,2 @@
+               And(n <= escrow, escrow2 == escrow - n, disputed2 == disputed),                 # Release(n)
+      -        And(n <= disputed, disputed2 == disputed - n, escrow2 == escrow - n)))          # Refund(n)
+      +        And(n <= disputed, n <= escrow, disputed2 == disputed - n, escrow2 == escrow - n)))   # Refund(n): cover checked
+    receipt: |
+      [q7 step of escrow >= 0] sat
+      [q7 pre-state] 0 <= disputed <= escrow: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios: &v3-sound-scenarios
+        - { id: s1, text: "escrow = 0, disputed = 2", answer: true, key_line: "[q7 s1 escrow=0 disputed=2] reachable within 6: yes, in 2 steps", why: "Dispute(2), then Release(2) from escrow = 2: this Release checks only n <= escrow, so it pays out money a dispute still claims." }
+        - { id: s2, text: "escrow = 3, disputed = 1", answer: true, key_line: "[q7 s2 escrow=3 disputed=1] reachable within 6: yes, in 1 steps", why: "One Dispute(1) from escrow = 3." }
+        - { id: s3, text: "escrow = -2, disputed = 0", answer: true, key_line: "[q7 s3 escrow=-2 disputed=0] reachable within 6: yes, in 3 steps", why: "Dispute, Release, then Refund: the violation is reachable." }
+        - { id: s4, text: "escrow = 5, disputed = 0", answer: true, key_line: "[q7 s4 escrow=5 disputed=0] reachable within 6: yes, in 0 steps", why: "Init, with escrow = 5." }
+    evidence: { type: restatement, scenarios: *v3-sound-scenarios }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q7 search] violation reachable within 6 steps: yes, at step 3", "[q7 edited, step of escrow >= 0] unsat", "[q7 edited, search] violation reachable within 6 steps: no"]
+    explain: "The violation is reachable at step 3 (Dispute, Release, Refund), so this is a bug. With Refund checking cover, the inductive step for escrow >= 0 is unsat and the search finds nothing."
+
+  - id: v3-flawed
+    pair: v3
+    operator: edit-code-to-fit-proof
+    artifact: escrow-dispute
+    claim: "Z3 found a bug in Refund on a dispute; fixed."
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for escrow >= 0 is sat, and the step that breaks it is a Refund. Makes Refund check that the escrow covers n."
+    statement: |
+      # Init: escrow >= 0 and disputed == 0. The invariant to keep: escrow >= 0.
+      def step(s, t, n):
+          (escrow, disputed), (escrow2, disputed2) = s, t
+          return And(n > 0, Or(
+              And(n <= escrow - disputed, disputed2 == disputed + n, escrow2 == escrow),      # Dispute(n)
+              And(n <= escrow - disputed, escrow2 == escrow - n, disputed2 == disputed),      # Release(n)
+              And(n <= disputed, disputed2 == disputed - n, escrow2 == escrow - n)))          # Refund(n)
+    diff: |
+      --- a/models/escrow.py
+      +++ b/models/escrow.py
+      @@ -6,2 +6,2 @@
+               And(n <= escrow - disputed, escrow2 == escrow - n, disputed2 == disputed),      # Release(n)
+      -        And(n <= disputed, disputed2 == disputed - n, escrow2 == escrow - n)))          # Refund(n)
+      +        And(n <= disputed, n <= escrow, disputed2 == disputed - n, escrow2 == escrow - n)))   # Refund(n): cover checked
+    receipt: |
+      [q8 step of escrow >= 0] sat
+      [q8 pre-state] 0 <= disputed <= escrow: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios:
+        - { id: s1, text: "escrow = 0, disputed = 2", answer: false, key_line: "[q8 s1 escrow=0 disputed=2] reachable within 6: no", why: "Release keeps the escrow at or above what is disputed, so disputed never passes escrow. This is the step's pre-state, and it cannot be reached." }
+        - { id: s2, text: "escrow = 3, disputed = 1", answer: true, key_line: "[q8 s2 escrow=3 disputed=1] reachable within 6: yes, in 1 steps", why: "One Dispute(1) from escrow = 3." }
+        - { id: s3, text: "escrow = -2, disputed = 0", answer: false, key_line: "[q8 s3 escrow=-2 disputed=0] reachable within 6: no", why: "No run within the bound breaks escrow >= 0." }
+        - { id: s4, text: "escrow = 5, disputed = 0", answer: true, key_line: "[q8 s4 escrow=5 disputed=0] reachable within 6: yes, in 0 steps", why: "Init, with escrow = 5." }
+    evidence: { type: witness, load_bearing: ["statement:6", "diff:6", "receipt:2"], reference: { run: RUN-z3-cti-exemplars, line: "[q8 s1 escrow=0 disputed=2] reachable within 6: no" } }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q8 search] violation reachable within 6 steps: no", "[q8 step of escrow >= 0 and 0 <= disputed <= escrow] unsat", "[q8 edited, step of escrow >= 0] sat"]
+    explain: "A counterexample to induction: disputed above escrow, which this Release never allows, and no violation within 6 steps. Strengthening to 0 <= disputed <= escrow makes the step unsat with Refund unchanged. The edit changes a command that needed no change, and the inductive step is still sat after it: the induction was never closed."
+
+  - id: v4-flawed
+    pair: v4
+    operator: edit-code-to-fit-proof
+    artifact: settlement-batch
+    claim: "Z3 found a bug in Settle; fixed."
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for settled <= total is sat, and the step that breaks it is a Settle. Makes Settle check that the batch total covers it."
+    statement: |
+      # Init: queued == 0, settled == 0 and total == 0. The invariant to keep: settled <= total.
+      def step(s, t, n):
+          (queued, settled, total), (queued2, settled2, total2) = s, t
+          return And(n > 0, Or(
+              And(queued2 == queued + n, total2 == total + n, settled2 == settled),            # Enqueue(n)
+              And(n <= queued, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n)
+              And(n <= settled, settled2 == settled - n, queued2 == queued + n, total2 == total)))      # Requeue(n)
+    diff: |
+      --- a/models/settlement.py
+      +++ b/models/settlement.py
+      @@ -5,3 +5,3 @@
+               And(queued2 == queued + n, total2 == total + n, settled2 == settled),            # Enqueue(n)
+      -        And(n <= queued, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n)
+      +        And(n <= queued, settled + n <= total, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n): total checked
+               And(n <= settled, settled2 == settled - n, queued2 == queued + n, total2 == total)))      # Requeue(n)
+    receipt: |
+      [q10 step of settled <= total] sat
+      [q10 pre-state] queued + settled == total: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios:
+        - { id: s1, text: "queued = 2, settled = 0, total = 1", answer: false, key_line: "[q10 s1 queued=2 settled=0 total=1] reachable within 6: no", why: "Every command keeps queued + settled == total, so more queued than the total never happens with nothing settled. This is the step's pre-state, and it cannot be reached." }
+        - { id: s2, text: "queued = 1, settled = 1, total = 2", answer: true, key_line: "[q10 s2 queued=1 settled=1 total=2] reachable within 6: yes, in 2 steps", why: "Enqueue(2), then Settle(1)." }
+        - { id: s3, text: "queued = 0, settled = 2, total = 1", answer: false, key_line: "[q10 s3 queued=0 settled=2 total=1] reachable within 6: no", why: "No run within the bound breaks settled <= total." }
+        - { id: s4, text: "queued = 0, settled = 3, total = 3", answer: true, key_line: "[q10 s4 queued=0 settled=3 total=3] reachable within 6: yes, in 2 steps", why: "Enqueue(3), then Settle(3)." }
+    evidence: { type: witness, load_bearing: ["statement:7", "diff:6", "receipt:2"], reference: { run: RUN-z3-cti-exemplars, line: "[q10 s1 queued=2 settled=0 total=1] reachable within 6: no" } }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q10 search] violation reachable within 6 steps: no", "[q10 step of settled <= total and queued + settled == total] unsat", "[q10 pre-state] queued + settled == total: False"]
+    explain: "A counterexample to induction: queued + settled away from total, which these commands never reach, and no violation within 6 steps. Strengthening to queued + settled == total makes the step unsat with Settle unchanged. The edit changes a command that needed no change."
+
+  - id: v4-sound
+    pair: v4
+    operator: edit-code-to-fit-proof
+    artifact: settlement-batch
+    claim: "Z3 found a bug in Settle; fixed."
+    key: none
+    description: "Z3's inductive step for settled <= total is sat, and the step that breaks it is a Settle. Makes Settle check that the batch total covers it."
+    statement: |
+      # Init: queued == 0, settled == 0 and total == 0. The invariant to keep: settled <= total.
+      def step(s, t, n):
+          (queued, settled, total), (queued2, settled2, total2) = s, t
+          return And(n > 0, Or(
+              And(queued2 == queued + n, total2 == total + n, settled2 == settled),            # Enqueue(n)
+              And(n <= queued, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n)
+              And(n <= settled, settled2 == settled - n, queued2 == queued + 2 * n, total2 == total)))  # Requeue(n)
+    diff: |
+      --- a/models/settlement.py
+      +++ b/models/settlement.py
+      @@ -5,3 +5,3 @@
+               And(queued2 == queued + n, total2 == total + n, settled2 == settled),            # Enqueue(n)
+      -        And(n <= queued, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n)
+      +        And(n <= queued, settled + n <= total, queued2 == queued - n, settled2 == settled + n, total2 == total),  # Settle(n): total checked
+               And(n <= settled, settled2 == settled - n, queued2 == queued + 2 * n, total2 == total)))  # Requeue(n)
+    receipt: |
+      [q9 step of settled <= total] sat
+      [q9 pre-state] queued + settled == total: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios: &v4-sound-scenarios
+        - { id: s1, text: "queued = 2, settled = 0, total = 1", answer: true, key_line: "[q9 s1 queued=2 settled=0 total=1] reachable within 6: yes, in 3 steps", why: "Enqueue(1), Settle(1), then Requeue(1): this Requeue puts back twice what it takes out of settled." }
+        - { id: s2, text: "queued = 1, settled = 1, total = 2", answer: true, key_line: "[q9 s2 queued=1 settled=1 total=2] reachable within 6: yes, in 2 steps", why: "Enqueue(2), then Settle(1)." }
+        - { id: s3, text: "queued = 0, settled = 2, total = 1", answer: true, key_line: "[q9 s3 queued=0 settled=2 total=1] reachable within 6: yes, in 4 steps", why: "Enqueue, Settle, Requeue, then Settle(2): the violation is reachable." }
+        - { id: s4, text: "queued = 0, settled = 3, total = 3", answer: true, key_line: "[q9 s4 queued=0 settled=3 total=3] reachable within 6: yes, in 2 steps", why: "Enqueue(3), then Settle(3)." }
+    evidence: { type: restatement, scenarios: *v4-sound-scenarios }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q9 search] violation reachable within 6 steps: yes, at step 4", "[q9 edited, step of settled <= total] unsat", "[q9 edited, search] violation reachable within 6 steps: no"]
+    explain: "The violation is reachable at step 4 (Enqueue, Settle, Requeue, Settle), so this is a bug. With Settle checking the total, the inductive step for settled <= total is unsat and the search finds nothing."
+
+  - id: v5-sound
+    pair: v5
+    operator: edit-code-to-fit-proof
+    artifact: voucher-redeem
+    medium: smt-lib
+    claim: "Z3 found a bug in Redeem; fixed."
+    key: none
+    description: "Z3's inductive step for redeemed <= issued is sat, and the step that breaks it is a Redeem. Makes Redeem check that an unredeemed voucher is left."
+    statement: |
+      ; vouchers.smt2: the inductive step for redeemed <= issued. Init: issued, redeemed and outstanding all 0
+      (declare-const issued Int)
+      (declare-const redeemed Int)
+      (declare-const outstanding Int)
+      (declare-const issued_p Int)
+      (declare-const redeemed_p Int)
+      (declare-const outstanding_p Int)
+      (assert (<= redeemed issued))
+      (assert (or
+        (and (= issued_p (+ issued 1)) (= outstanding_p (+ outstanding 1)) (= redeemed_p redeemed))        ; Issue
+        (and (> outstanding 0) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+        (and (> outstanding 0) (= outstanding_p (+ outstanding 1)) (= issued_p issued) (= redeemed_p redeemed))))  ; Split
+      (assert (> redeemed_p issued_p))
+      (check-sat)
+    diff: |
+      --- a/models/vouchers.smt2
+      +++ b/models/vouchers.smt2
+      @@ -10,3 +10,3 @@
+         (and (= issued_p (+ issued 1)) (= outstanding_p (+ outstanding 1)) (= redeemed_p redeemed))        ; Issue
+      -  (and (> outstanding 0) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+      +  (and (> outstanding 0) (< redeemed issued) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+         (and (> outstanding 0) (= outstanding_p (+ outstanding 1)) (= issued_p issued) (= redeemed_p redeemed))))  ; Split
+    receipt: |
+      [q11 file q11.smt2] sat
+      [q11 pre-state] outstanding == issued - redeemed: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios: &v5-sound-scenarios
+        - { id: s1, text: "issued = 1, redeemed = 1, outstanding = 1", answer: true, key_line: "[q11 s1 issued=1 redeemed=1 outstanding=1] reachable within 6: yes, in 3 steps", why: "Issue, Split, then Redeem: this Split adds an outstanding voucher without issuing it." }
+        - { id: s2, text: "issued = 2, redeemed = 1, outstanding = 1", answer: true, key_line: "[q11 s2 issued=2 redeemed=1 outstanding=1] reachable within 6: yes, in 3 steps", why: "Issue, Split, Redeem: reachable." }
+        - { id: s3, text: "issued = 1, redeemed = 2, outstanding = 0", answer: true, key_line: "[q11 s3 issued=1 redeemed=2 outstanding=0] reachable within 6: yes, in 4 steps", why: "Issue, Split, Redeem, Redeem: more redeemed than issued, the violation." }
+        - { id: s4, text: "issued = 3, redeemed = 3, outstanding = 0", answer: true, key_line: "[q11 s4 issued=3 redeemed=3 outstanding=0] reachable within 6: yes, in 6 steps", why: "Reachable in 6 steps." }
+    evidence: { type: restatement, scenarios: *v5-sound-scenarios }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q11 search] violation reachable within 6 steps: yes, at step 4", "[q11 edited, file q11e.smt2] unsat", "[q11 edited, search] violation reachable within 6 steps: no"]
+    explain: "The violation is reachable at step 4 (Issue, Split, Redeem, Redeem), so this is a bug. With Redeem checking redeemed < issued, the edited file is unsat and the search finds nothing."
+
+  - id: v5-flawed
+    pair: v5
+    operator: edit-code-to-fit-proof
+    artifact: voucher-redeem
+    medium: smt-lib
+    claim: "Z3 found a bug in Redeem; fixed."
+    key: { class: G13, also: [G8d] }
+    description: "Z3's inductive step for redeemed <= issued is sat, and the step that breaks it is a Redeem. Makes Redeem check that an unredeemed voucher is left."
+    statement: |
+      ; vouchers.smt2: the inductive step for redeemed <= issued. Init: issued, redeemed and outstanding all 0
+      (declare-const issued Int)
+      (declare-const redeemed Int)
+      (declare-const outstanding Int)
+      (declare-const issued_p Int)
+      (declare-const redeemed_p Int)
+      (declare-const outstanding_p Int)
+      (assert (<= redeemed issued))
+      (assert (or
+        (and (= issued_p (+ issued 1)) (= outstanding_p (+ outstanding 1)) (= redeemed_p redeemed))        ; Issue
+        (and (> outstanding 0) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+        (and (> outstanding 0) (= outstanding_p (+ outstanding 1)) (= issued_p (+ issued 1)) (= redeemed_p redeemed))))  ; Split
+      (assert (> redeemed_p issued_p))
+      (check-sat)
+    diff: |
+      --- a/models/vouchers.smt2
+      +++ b/models/vouchers.smt2
+      @@ -10,3 +10,3 @@
+         (and (= issued_p (+ issued 1)) (= outstanding_p (+ outstanding 1)) (= redeemed_p redeemed))        ; Issue
+      -  (and (> outstanding 0) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+      +  (and (> outstanding 0) (< redeemed issued) (= redeemed_p (+ redeemed 1)) (= outstanding_p (- outstanding 1)) (= issued_p issued))  ; Redeem
+         (and (> outstanding 0) (= outstanding_p (+ outstanding 1)) (= issued_p (+ issued 1)) (= redeemed_p redeemed))))  ; Split
+    receipt: |
+      [q12 file q12.smt2] sat
+      [q12 pre-state] outstanding == issued - redeemed: False
+    restatement:
+      run: RUN-z3-cti-exemplars
+      scenarios:
+        - { id: s1, text: "issued = 1, redeemed = 1, outstanding = 1", answer: false, key_line: "[q12 s1 issued=1 redeemed=1 outstanding=1] reachable within 6: no", why: "Issue and Split each issue what they make outstanding, and Redeem moves one from outstanding to redeemed, so outstanding == issued - redeemed always holds. This state breaks it: it is the step's kind of pre-state, and it cannot be reached." }
+        - { id: s2, text: "issued = 2, redeemed = 1, outstanding = 1", answer: true, key_line: "[q12 s2 issued=2 redeemed=1 outstanding=1] reachable within 6: yes, in 3 steps", why: "Issue, Split, Redeem: reachable." }
+        - { id: s3, text: "issued = 1, redeemed = 2, outstanding = 0", answer: false, key_line: "[q12 s3 issued=1 redeemed=2 outstanding=0] reachable within 6: no", why: "No run within the bound breaks redeemed <= issued." }
+        - { id: s4, text: "issued = 3, redeemed = 3, outstanding = 0", answer: true, key_line: "[q12 s4 issued=3 redeemed=3 outstanding=0] reachable within 6: yes, in 6 steps", why: "Reachable in 6 steps." }
+    evidence: { type: witness, load_bearing: ["statement:12", "diff:6", "receipt:2"], reference: { run: RUN-z3-cti-exemplars, line: "[q12 s1 issued=1 redeemed=1 outstanding=1] reachable within 6: no" } }
+    key_run: RUN-z3-cti-exemplars
+    key_lines: ["[q12 search] violation reachable within 6 steps: no", "[q12 step of redeemed <= issued and outstanding == issued - redeemed] unsat", "[q12 pre-state] outstanding == issued - redeemed: False"]
+    explain: "A counterexample to induction: an outstanding voucher with redeemed already at issued, which these commands never reach, and no violation within 6 steps. Strengthening to outstanding == issued - redeemed makes the step unsat with Redeem unchanged. The edit changes a command that needed no change."

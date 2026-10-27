@@ -184,7 +184,10 @@ interface BuiltChoice {
 }
 
 function t1(band: Band, draw: SeededDraw): BuiltChoice {
-  const usePow = band === 3 && draw.chance(1, 3)
+  // Band 3 asks the power query five times in six [D]: it is the query Z3 is recorded answering unknown, and without
+  // it the three answers would not be keyed about equally often (ASSESSMENT.md section 7.3's always-accept and
+  // always-reject strategies).
+  const usePow = band === 3 && draw.chance(5, 6)
   let formula: Formula
   let qb: Bound[]
   let changedFrom: Formula | undefined
@@ -232,7 +235,40 @@ function t1(band: Band, draw: SeededDraw): BuiltChoice {
 
 // ---------------------------------------------------------------- t2: trace length as an interval
 
-const INTERVALS: Readonly<Record<Band, readonly (readonly [number, number | null])[]>> = {
+type Interval = readonly [number, number | null]
+
+/**
+ * Intervals from 1 action up, the last one open, laid out so the shortest trace falls in a drawn position [D]: the
+ * systems of a band have only a few shortest lengths, so one fixed set of intervals would put the key in the same
+ * place, and the same symbols, every time. The widths are drawn too, 1 to 3 actions each; a position no widths can
+ * reach is not drawn. Without a violating trace, the band's fixed set is used.
+ */
+function placeIntervals(len: number | null, fixed: readonly Interval[], draw: SeededDraw): readonly Interval[] {
+  if (len === null) return fixed
+  const bounded = fixed.length - 1
+  const layouts: Interval[][] = []
+  const grow = (widths: number[]): void => {
+    if (widths.length === bounded) {
+      const out: Interval[] = []
+      let at = 1
+      for (const w of widths) {
+        out.push([at, at + w - 1])
+        at += w
+      }
+      out.push([at, null])
+      layouts.push(out)
+      return
+    }
+    for (const w of [1, 2, 3]) grow([...widths, w])
+  }
+  grow([])
+  const positionOf = (ivs: readonly Interval[]): number => ivs.findIndex((iv) => inInterval(len, iv))
+  const positions = [...new Set(layouts.map(positionOf))].sort((a, b) => a - b)
+  const want = draw.pick(positions)
+  return draw.pick(layouts.filter((l) => positionOf(l) === want))
+}
+
+const INTERVALS: Readonly<Record<Band, readonly Interval[]>> = {
   1: [
     [1, 3],
     [4, 6],
@@ -252,26 +288,28 @@ const INTERVALS: Readonly<Record<Band, readonly (readonly [number, number | null
   ],
 }
 
-const intervalText = (iv: readonly [number, number | null] | 'none'): string => (iv === 'none' ? 'no violating trace' : iv[1] === null ? `${iv[0]} or more actions` : `${iv[0]}–${iv[1]} actions`)
+const NO_TRACE = 'no trace at all'
+const intervalText = (iv: readonly [number, number | null] | 'none'): string =>
+  iv === 'none' ? NO_TRACE : iv[1] === null ? `${iv[0]} or more actions` : iv[0] === iv[1] ? `exactly ${iv[0]} action${iv[0] === 1 ? '' : 's'}` : `${iv[0]} to ${iv[1]} actions`
 const inInterval = (len: number, iv: readonly [number, number | null]): boolean => len >= iv[0] && (iv[1] === null || len <= iv[1])
 
 function t2(band: Band, draw: SeededDraw): BuiltChoice {
   const steps = (band === 1 ? draw.pick([1, 2, 3] as const) : band === 2 ? draw.pick([2, 3, 4] as const) : draw.pick([2, 3] as const)) as WorkerSpec['steps']
   const amount = band === 3 ? draw.pick([40, 45, 60]) : draw.pick([60, 70, 80])
   const spec: WorkerSpec = { init: 100, amount, workers: band === 3 ? 3 : 2, steps }
-  const ivs = INTERVALS[band]
-  const intervals: Record<string, readonly [number, number | null] | 'none'> = { 'no violating trace': 'none' }
+  const e = explore(spec, CALL_POCKET_MAX_STATES)
+  const len = e?.shortest?.length ?? null
+  const ivs = placeIntervals(len, INTERVALS[band], draw)
+  const intervals: Record<string, readonly [number, number | null] | 'none'> = { [NO_TRACE]: 'none' }
   ivs.forEach((iv) => {
     intervals[intervalText(iv)] = iv
   })
-  const e = explore(spec, CALL_POCKET_MAX_STATES)
-  const len = e?.shortest?.length ?? null
-  const keyText = len === null ? 'no violating trace' : intervalText(ivs.find((iv) => inInterval(len, iv)) as readonly [number, number | null])
+  const keyText = len === null ? NO_TRACE : intervalText(ivs.find((iv) => inInterval(len, iv)) as readonly [number, number | null])
   const statesText = len === null ? null : intervalText(ivs.find((iv) => inInterval(len + 1, iv)) as readonly [number, number | null])
   const mutants = Object.keys(intervals)
     .filter((t) => t !== keyText)
     .map((t) => {
-      if (t === 'no violating trace') return fixed('dp:C1', 'each withdrawal taken to run alone', 'With the withdrawal split into steps, two workers can both pass the check before either debits: an interleaving the atomic picture misses.', t)
+      if (t === NO_TRACE) return fixed('dp:C1', 'each withdrawal taken to run alone', 'With the withdrawal split into steps, two workers can both pass the check before either debits: an interleaving the atomic picture misses.', t)
       if (len === null) return fixed('dp:C1', 'an atomic step split in the reading', 'Here the check and the debit are one atomic step, so no interleaving lets two workers pass the same check: no reachable state overspends.', t)
       if (t === statesText) return fixed('dp:T6', 'states counted for actions', 'A trace of n actions passes through n + 1 states; trace length is counted in actions.', t)
       const iv = intervals[t] as readonly [number, number | null]
@@ -310,13 +348,16 @@ function t4(band: Band, draw: SeededDraw): BuiltSet {
   const swaps = th.statements.filter((s) => s.meant !== true && s.swap === true)
   const plain = th.statements.filter((s) => s.meant !== true && s.swap !== true)
   let chosen: Statement[]
+  // As many true readings as the set can hold, three times in four [D]: each theorem has two or three, so a count drawn
+  // uniformly would leave a third of the statements true, below the 40% a stage's sets keep (ASSESSMENT.md section 7.2).
+  const count = (hi: number): number => (draw.chance(3, 4) ? hi : draw.int(1, hi))
   if (band === 3) {
-    const t = draw.int(1, Math.min(trues.length, m - 2 - 1))
+    const t = count(Math.min(trues.length, m - 2 - 1))
     chosen = [...draw.sample(trues, t), ...swaps.slice(0, 2), ...draw.sample(plain, m - 2 - t)]
   } else {
     // At most one quantifier swap below band 3; between 1 and m − 1 true statements.
     const falsePool = [...plain, ...draw.sample(swaps, 1)]
-    const t = draw.int(1, Math.min(trues.length, m - 1))
+    const t = count(Math.min(trues.length, m - 1))
     chosen = [...draw.sample(trues, t), ...draw.sample(falsePool, m - t)]
   }
   const ordered = draw.shuffle(chosen)

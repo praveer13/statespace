@@ -4,7 +4,7 @@
 // fixed choice is answered here and written to the practice record; a claim or specimen block is a card named from the
 // spine; a card is a card.
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import type { LessonCardBlock, LessonChoice, LessonInstrumentBlock, LessonItemBlock, LessonRunSnapshot } from '@statespace/schema'
 import type { Lesson } from '@statespace/content'
@@ -231,6 +231,12 @@ function ChoiceItem({ block, choice, n, ctx, exercise }: { readonly block: Lesso
   const [submitted, setSubmitted] = useState<string | undefined>(undefined)
   const [note, setNote] = useState<string | undefined>(undefined)
   const shownAt = useRef(performance.now())
+  // Submit goes once the answer is in, which drops a keyboard user's focus to the page: focus moves to the result (WCAG 2.4.3).
+  const outcome = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const active = document.activeElement
+    if (submitted !== undefined && (active === null || active === document.body)) outcome.current?.focus()
+  }, [submitted])
   const answer = pickedOf(prior) ?? submitted
   const done = answer !== undefined
   const name = `q-${page.id}-i${n}`.replace(/[^A-Za-z0-9_-]/g, '-')
@@ -290,7 +296,7 @@ function ChoiceItem({ block, choice, n, ctx, exercise }: { readonly block: Lesso
           {picked === undefined ? <span className="question-need">Pick an answer first.</span> : null}
         </div>
       ) : null}
-      <div role="status" aria-live="polite">
+      <div ref={outcome} role="status" aria-live="polite" tabIndex={-1}>
         {done ? (
           <>
             <p className="question-result">

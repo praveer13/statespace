@@ -156,8 +156,9 @@
       "row": "lean-sorry",
       "executed": true,
       "run": "RUN-lean-axioms",
+      "config": "lean-bad",
       "parser": "lean",
-      "lines": ["warning: Ledger/Bad.lean:4:8: declaration uses `sorry`", "info: Ledger/Bad.lean:9:0: 'with_sorry' depends on axioms: [sorryAx]"],
+      "lines": ["Ledger/Bad.lean:4:8: warning: declaration uses `sorry`", "'with_sorry' depends on axioms: [sorryAx]"],
       "context": {},
       "expect": { "modulo": "PROVED modulo 1 assumed lemma", "assumed": ["ASSUMED [A] · with_sorry is left as sorry"] }
     },
@@ -166,8 +167,9 @@
       "row": "lean-custom-axiom",
       "executed": true,
       "run": "RUN-lean-axioms",
+      "config": "lean-bad",
       "parser": "lean",
-      "lines": ["info: Ledger/Bad.lean:10:0: 'with_axiom' depends on axioms: [cheat]"],
+      "lines": ["'with_axiom' depends on axioms: [cheat]"],
       "context": {},
       "expect": { "modulo": "PROVED modulo 1 assumed axiom", "assumed": ["ASSUMED [A] · axiom cheat is assumed"] }
     },

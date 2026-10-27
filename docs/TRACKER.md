@@ -1,6 +1,6 @@
 # statespace: task tracker
 
-**Status:** as of 2026-10-26, 23 of the 263 tasks are `done` (every W0 task except the exit review, W0-T11), 15 are in `review` and 125 are `in-progress`; the other 100 are `todo`. The happy-path build (Phases 0 to 4: the site and its screens, all 84 lessons and 34 drawers, the specimen cabinet, Claims, Today, the Mirror, the Audit Desk with 25 anchors, 14 generator families, the recorded runs and live engines on the instrument origin) moved a task to `review` only where its acceptance passed on 2026-10-26, and to `in-progress` with a note in tasks.yaml naming what is missing; see [the W1 report](waves/W1-report.md). No task the owner reviews is `done` yet. The owner's review queue is 12.4 hours, over the 10-hour gate (OD-7), so no new task with owner review starts until the queue drops. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
+**Status:** as of 2026-10-26, 23 of the 263 tasks are `done` (every W0 task except the exit review, W0-T11), 42 are in `review` and 125 are `in-progress`; the other 73 are `todo`. The happy-path build (Phases 0 to 4: the site and its screens, all 84 lessons and 34 drawers, the specimen cabinet, Claims, Today, the Mirror, the Audit Desk with 25 anchors, 14 generator families, the recorded runs and live engines on the instrument origin) moved a task to `review` only where its acceptance passed on 2026-10-26, and to `in-progress` with a note in tasks.yaml naming what is missing; see [the W1 report](waves/W1-report.md). No task the owner reviews is `done` yet. The owner's review queue is 12.4 hours, over the 10-hour gate (OD-7), so no new task with owner review starts until the queue drops. **Source of truth:** [tracker/tasks.yaml](../tracker/tasks.yaml). This page is its human view, and [tracker/README.md](../tracker/README.md) explains how both files are used and updated. **Source:** [the spine](spine/SPINE.md), section 13 (revision 3), refined with the work the companion specifications name: [PLAN.md](PLAN.md), [ARCHITECTURE.md](ARCHITECTURE.md), [ASSESSMENT.md](ASSESSMENT.md), [DESIGN.md](DESIGN.md), [WORLD.md](WORLD.md), [AUDIT-DESK.md](AUDIT-DESK.md), the [lab manuals](../labs/) and the [curriculum](../curriculum/).
 
 ## How to read this page
 
@@ -197,7 +197,7 @@ At their upper bounds the chains of W1, W2, W5 and W6 run slightly longer than t
 - [=] W1-T38 · GATE-lessons (added) · S · sonnet · W1-T36
 - [=] W1-T39 · GATE-items (added) · M · opus · W1-T21
 - [=] W1-T40 · GATE-audit and GATE-audit-blind (added) · M · opus · W1-T21
-- [ ] W1-T41 · GATE-bundle and GATE-a11y harness (added) · M · sonnet · W0-S12, W0-S02
+- [~] W1-T41 · GATE-bundle and GATE-a11y harness (added) · M · sonnet · W0-S12, W0-S02
 - [~] W1-T42 · GATE-specimens and GATE-conformance harnesses (added) · M · sonnet · W0-S11, W0-T04
 - [~] W1-T43 · GATE-labs harness (added) · M · opus · W0-T04, W1-T29
 

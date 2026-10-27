@@ -20,7 +20,7 @@ stages:
       - id: LAB-6.c1
         label: The recorded history replays as recorded.
         passes: >-
-          The server version your receipt reads back begins with PostgreSQL 18.6. Session B blocks and then commits,
+          The server version your receipt reads back begins with PostgreSQL {{run:RUN-pg-claims#version}}. Session B blocks and then commits,
           and the history spends {{run:RUN-pg-anomalies#values.rmw_rc_spent}} from a balance of 100, as recorded
           {{run:RUN-pg-claims}}.
   - id: LAB-6.2
@@ -79,8 +79,9 @@ stages:
       - id: LAB-6.c6
         label: The classifier retries the right failures and stops.
         passes: >-
-          On the attempt fixtures your classifier re-runs the command from BEGIN on 40001 and 40P01, never retries
-          22003 or a typed refusal, and retries 23505 or 23P01 only for a command your declared policy marks as
+          On the attempt fixtures your classifier re-runs the command from BEGIN on `serialization_failure` and
+          `deadlock_detected`, never retries `numeric_value_out_of_range` or a typed refusal, and retries
+          `unique_violation` or `exclusion_violation` only for a command your declared policy marks as
           re-reading the key before it writes, never by re-sending a blind insert {{run:RUN-pg-catalog}}. It stops
           at your declared k with `GaveUp`, and the Bench log records each attempt's SQLSTATE.
   - id: LAB-6.7

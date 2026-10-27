@@ -2,40 +2,45 @@
   "gate": "GATE-privacy",
   "node": "v22.22.2",
   "strict": false,
-  "findings": [
-    {
-      "check": "vendor-license",
-      "path": "vendor/kernelspace/",
-      "message": "a vendored directory (inside vendor/) without its own license file"
-    }
-  ],
+  "findings": [],
   "warnings": [
-    {
-      "check": "course-license",
-      "message": "no course license at the root yet; OD-16 (one license for content, one for code) is open for the owner"
-    },
     {
       "check": "private-term",
       "message": "not checked: no hashed term list (set STATESPACE_PRIVACY_TERMS and STATESPACE_PRIVACY_KEY, or STATESPACE_PRIVACY_TERMS_FILE); only your local identity was checked (3 terms)"
     }
   ],
-  "notes": [],
+  "notes": [
+    "runs/RUN-privacy-gate.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/account-term.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/gate.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/local-identity.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/planted-account-term.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/planted-local-identity.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/planted.json: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/self-test.txt: listed but not on disk; not scanned",
+    "runs/RUN-privacy-gate/substitute.json: listed but not on disk; not scanned"
+  ],
   "scanned": {
     "via": "git",
-    "paths": 1441,
-    "files": 1441,
-    "bytes": 13582701,
-    "digest": "c1a372b3701deb3ed7a189b2605e408779bd5bd03a72a83e4db6a98d0cd00d0e"
+    "paths": 6081,
+    "files": 6072,
+    "bytes": 60433435,
+    "digest": "a29883cde6bdec067a34867d973106c8d76beb54bf64e3e577c0ef8495f4de13"
   },
   "history": {
-    "commits": 2,
-    "objects": 389,
+    "commits": 29,
+    "objects": 8207,
     "shallow": false
   },
   "vendored": [
+    "apps/site/public/fonts",
+    "bench/image/tla2tools",
     "vendor/kernelspace"
   ],
-  "courseLicenses": [],
+  "courseLicenses": [
+    "LICENSE",
+    "LICENSE-CONTENT"
+  ],
   "terms": {
     "checked": false,
     "listed": 0,
@@ -45,12 +50,12 @@
       "local identity"
     ]
   },
-  "ok": false,
-  "durationMs": 2528,
+  "ok": true,
+  "durationMs": 8036,
   "allowed": {
     "npm's trusted-publishing address in saved registry metadata": 32,
     "the Lean FRO's published security contact": 3,
-    "a reserved example domain": 3,
+    "a reserved example domain": 5,
     "the SSH remote user, not a mailbox": 1
   }
 }

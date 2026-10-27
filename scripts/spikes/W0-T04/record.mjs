@@ -194,14 +194,42 @@ function hostFacts() {
 
 const mib = (b) => (b ? Math.round(b / 2 ** 20) : null);
 
+/** The GitHub-hosted part of the existing record, if any, with its output files read into memory. */
+function carryGithubHosted() {
+  const file = path.join(REPO, 'runs', `${RUN_ID}.json`);
+  const none = { configs: [], outputs: [], values: {}, checks: [], notes: [], files: [] };
+  if (!fs.existsSync(file)) return none;
+  const old = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const configs = (old.configs ?? []).filter((c) => /^github-hosted/.test(c.id));
+  if (configs.length === 0) return none;
+  const paths = new Set(configs.flatMap((c) => (c.outputs ?? []).map((o) => (typeof o === 'string' ? o : o.path))));
+  const outputs = (old.outputs ?? []).filter((o) => paths.has(o.path) || /\/github-hosted/.test(o.path));
+  for (const o of outputs) paths.add(o.path);
+  return {
+    configs,
+    outputs,
+    values: Object.fromEntries(Object.entries(old.values ?? {}).filter(([k]) => k.startsWith('github_hosted'))),
+    checks: (old.checks ?? []).filter((c) => /github-hosted/.test(c.id)),
+    notes: (old.notes ?? []).filter((n) => /github-hosted/.test(n) && !n.startsWith('GitHub-hosted runs: configurations')),
+    files: [...paths].filter((p) => fs.existsSync(path.join(REPO, p))).map((p) => [p, fs.readFileSync(path.join(REPO, p))]),
+  };
+}
+
 async function main() {
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'record-ci-'));
   const recordedStart = Date.now();
   // The previous record and its outputs go first: a record whose outputs are half replaced would fail GATE-runs inside the very
   // lane this script is timing.
+  // GitHub-hosted runs (configurations github-hosted*, added by scripts/spikes/W0-T11/github-run.mjs) are not this script's
+  // to remake: they are carried into the new record as they were, with their files, values, check and notes.
+  const carried = carryGithubHosted();
   fs.rmSync(path.join(REPO, 'runs', `${RUN_ID}.json`), { force: true });
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(OUT, { recursive: true });
+  for (const [rel, bytes] of carried.files) {
+    fs.mkdirSync(path.dirname(path.join(REPO, rel)), { recursive: true });
+    fs.writeFileSync(path.join(REPO, rel), bytes);
+  }
   try {
     must(sh('docker', ['image', 'inspect', 'ubuntu:24.04']), 'the image ubuntu:24.04 is needed on this host');
     const host = hostFacts();
@@ -334,17 +362,22 @@ async function main() {
       { id: 'emulator-container-test', pass: tests.container.status === 0 && tests.containerTotals.pass === 1, detail: `${tests.containerTotals.pass} of ${tests.containerTotals.tests} passed` },
       { id: 'nightly-writes-status-json', pass: nightly.status.schema === 'statespace/nightly-status@1' && nightly.status.commit === commit, detail: `${nightly.status.result}; ${nightly.status.gates.length} gates and ${nightly.status.checks.length} checks run` },
     ];
+    // A lane that its own clock or a step timeout stopped is not a lane that finished under budget: the duration of a
+    // stopped lane is the budget, not the work.
+    const stopped = [...four, two].filter((x) => x.lane && (x.lane.over_budget || (x.lane.counts?.timeout ?? 0) > 0 || (x.lane.counts?.skipped ?? 0) > 0))
+      .map((x) => `${x.id} stopped: ${x.lane.counts?.timeout ?? 0} step(s) timed out and ${x.lane.counts?.skipped ?? 0} skipped${x.lane.over_budget ? ', over budget' : ''}`);
+    const underBudget = primary.e.duration_s < 300 && stopped.length === 0;
     const verdicts = [
       ...emuLines(primary),
       ...laneVerdicts(primary),
-      `RESULT fast-lane-under-5-minutes: ${primary.e.duration_s < 300 ? 'PASS' : 'FAIL'} (emulated: the slowest of 3 cold runs on 4 CPUs took ${primary.e.duration_s} s against a 300 s budget; the runs took ${durations.join(', ')} s; on 2 CPUs ${two.e.duration_s} s)`,
+      `RESULT fast-lane-under-5-minutes: ${underBudget ? 'PASS' : 'FAIL'} (emulated: the slowest of 3 cold runs on 4 CPUs took ${primary.e.duration_s} s against a 300 s budget; the runs took ${durations.join(', ')} s; on 2 CPUs ${two.e.duration_s} s${stopped.length > 0 ? `; ${stopped.join('; ')}` : ''})`,
       `RESULT workflows-lint: ${lintOk ? 'PASS' : 'FAIL'} (actionlint ${ACTIONLINT.version} with shellcheck: ${lint.body.at(-1)})`,
       `RESULT actionlint-catches-planted-faults: ${lint.plantedCaught ? 'PASS' : 'FAIL'} (a planted unquoted variable and a planted misspelled property are both reported by the same command)`,
       `RESULT nightly-writes-status: ${nightly.status.schema === 'statespace/nightly-status@1' ? 'PASS' : 'FAIL'} (status/nightly.json written by the nightly lane here: ${nightly.status.result}, ${nightly.status.gates.length} gates and ${nightly.status.checks.length} checks run, ${nightly.status.absent.length} gates not built yet)`,
     ];
     const record = {
       id: RUN_ID,
-      title: `The fast lane's own workflow, run step by step in a 4-CPU Ubuntu 24.04 container with cold caches, finishes in ${primary.e.duration_s} s against a 300 s budget (slowest of three runs); emulated, not a GitHub Actions run`,
+      title: `The fast lane's own workflow, run step by step in a 4-CPU Ubuntu 24.04 container with cold caches, ${underBudget ? `finishes in ${primary.e.duration_s} s against a 300 s budget (slowest of three runs)` : `does not finish inside its 300 s budget: the lane stopped itself at ${primary.e.duration_s} s with steps timed out and skipped`}; emulated, not a GitHub Actions run`,
       task: 'W0-T04',
       engine: 'node',
       version: nodeVersion,
@@ -422,6 +455,18 @@ async function main() {
         'Owner action that completes this record: push, require the check "fast lane" in the branch rules, dispatch fast.yml once (Actions > fast > Run workflow), read the run\'s duration from its page (first step start to last step end, as above) and add it as a configuration named github-hosted, then make it the primary configuration and set environment.emulated to false. The same run shows what the emulation missed.',
       ],
     };
+    if (carried.configs.length > 0) {
+      record.configs.push(...carried.configs);
+      record.outputs.push(...carried.outputs);
+      Object.assign(record.values, carried.values);
+      record.checks.push(...carried.checks);
+      record.pass = record.checks.every((c) => c.pass);
+      record.notes = [
+        `GitHub-hosted runs: configurations ${carried.configs.map((c) => c.id).join(', ')} are runs of the committed fast.yml on GitHub's runners, at earlier commits; they are carried from the previous record unchanged, with their files. The emulated configurations below are of this working tree.`,
+        ...record.notes.filter((n) => !n.startsWith('EMULATED. No GitHub Actions run was made') && !n.startsWith('Owner action that completes this record')),
+        ...carried.notes,
+      ];
+    }
     fs.writeFileSync(path.join(REPO, 'runs', `${RUN_ID}.json`), `${JSON.stringify(record, null, 2)}\n`);
     log(`wrote runs/${RUN_ID}.json: fast lane ${primary.e.duration_s} s (slowest of ${durations.join(', ')}), ${record.pass ? 'pass' : 'NOT PASS'}; recorded in ${round((Date.now() - recordedStart) / 1000, 0)} s`);
     // GATE-runs on the new record: a finding that names it is this script's fault; a finding about another record is not.

@@ -21,6 +21,7 @@ import { gradeItem } from '../core/grade.ts'
 import { ask, engineAtVersion } from '../core/port.ts'
 import type { Answer, EnginePort } from '../core/port.ts'
 import type { Band, ChoicePart, Generator, Grade, InstanceBase, Json, KeyBase, Measure, TemplateId, TemplateSpec } from '../core/types.ts'
+import { chooseDistractors } from './choose.ts'
 import { boxBound, WP_BOX, WP_BOX_MAX_STATES, WP_BOX_VERSION, wpBoxPort } from './engine.ts'
 import type { Domain, WpQuery } from './engine.ts'
 import {
@@ -134,6 +135,7 @@ const WHY = {
   dropRequires: 'This drops the `requires`, so it admits states the command rejects. wp keeps the guard as a conjunct.',
   dropElse: 'This keeps only the branch where the outer guard holds. When it is false the command runs its else branch, and wp needs Q after that branch too.',
   unguarded: 'This demands every branch\'s condition at once, whichever branch runs. Each condition is needed only where its guard sends the run, so this is stronger than the weakest.',
+  keepQ: 'This also demands Q before the command runs. Only the state the command ends in must satisfy Q, so this is sufficient but stronger than the weakest.',
 } as const
 
 // ---------------------------------------------------------------- helpers
@@ -176,6 +178,24 @@ function mapFirstRel(f: Formula, map: (op: Rel) => Rel | null): Formula | null {
 }
 
 const SHIFTED: Partial<Record<Rel, Rel>> = { '<': '<=', '<=': '<', '>': '>=', '>=': '>' }
+
+/** Two mistakes at once: the first one's tag, both names, and both reasons in one why. */
+function both(a: Mutant<Formula>, b: Mutant<Formula>, value: Formula | null): Mutant<Formula> {
+  const wa = a.why(value as Formula)
+  const wb = b.why(value as Formula)
+  return fixed(a.tag, `${a.operator}, and ${b.operator}`, `Two mistakes at once. ${wa} ${wb.replace(/^This /, 'It also ')}`, value)
+}
+
+/** Every state of a small box, or null past 5000 states. */
+function statesOf(domains: readonly Domain[]): State[] | null {
+  let out: Record<string, number | boolean>[] = [{}]
+  for (const d of domains) {
+    const vals: (number | boolean)[] = d.kind === 'flag' ? [false, true] : Array.from({ length: d.hi - d.lo + 1 }, (_, i) => d.lo + i)
+    if (out.length * vals.length > 5000) return null
+    out = out.flatMap((st) => vals.map((x) => ({ ...st, [d.v]: x })))
+  }
+  return out as State[]
+}
 
 /** v := v + e, inverted: v := v − e. Other assignments are kept. */
 function inverse(c: Cmd): Cmd {
@@ -242,16 +262,26 @@ function t1(band: Band, draw: SeededDraw): Built {
     post = and(...draw.shuffle(atoms))
   }
   const reference = wp(cmd, post)
-  const mutants: Mutant<Formula>[] = [
-    fixed('dp:O4', 'leave the variable unsubstituted', WHY.unsubstituted, post),
-    fixed('dp:O4', 'substitute the inverse', WHY.inverse, wp(inverse(cmd), post)),
-    fixed('dp:O2', 'an equality for the first comparison', WHY.equality, mapFirstRel(reference, (op) => (op === '=' || op === '!=' ? null : '='))),
-    fixed('dp:O1', 'shift the first boundary', WHY.shift, mapFirstRel(reference, (op) => SHIFTED[op] ?? null)),
-  ]
+  const equality = (f: Formula): Formula | null => mapFirstRel(f, (op) => (op === '=' || op === '!=' ? null : '='))
+  const shift = (f: Formula): Formula | null => mapFirstRel(f, (op) => SHIFTED[op] ?? null)
+  const subs: Mutant<Formula>[] = [fixed('dp:O4', 'leave the variable unsubstituted', WHY.unsubstituted, post), fixed('dp:O4', 'substitute the inverse', WHY.inverse, wp(inverse(cmd), post))]
   if (post.f === 'and') {
     const [first, ...rest] = post.args
-    mutants.push(fixed('dp:O4', 'substitute into the first atom only', WHY.partial, and(subst(first as Formula, v, e), ...rest)))
+    subs.push(fixed('dp:O4', 'substitute into the first atom only', WHY.partial, and(subst(first as Formula, v, e), ...rest)))
   }
+  const eq = fixed('dp:O2', 'an equality for the first comparison', WHY.equality, equality(reference))
+  const sh = fixed('dp:O1', 'shift the first boundary', WHY.shift, shift(reference))
+  // Each substitution mistake alone, and with the comparison mistakes on top [D].
+  const keep = fixed('dp:O2', 'keep Q as well', WHY.keepQ, and(post, reference))
+  const mutants: Mutant<Formula>[] = [
+    ...subs,
+    eq,
+    sh,
+    keep,
+    ...subs.flatMap((m) => [both(m, sh, shift(m.apply(reference, draw) as Formula)), both(m, eq, equality(m.apply(reference, draw) as Formula))]),
+    both(keep, sh, and(post, shift(reference) as Formula)),
+    ...subs.map((m) => both(m, keep, and(post, m.apply(reference, draw) as Formula))),
+  ]
   const vars = band === 1 && !readsW(post, w) ? [v] : [v, w]
   return {
     stem: stemOf(cmd, post, vars.length === 1 ? `Here ${vSays}, an integer.` : `Here ${vSays} and ${wSays}, both integers.`),
@@ -279,11 +309,19 @@ function t1Capture(draw: SeededDraw): Built {
   const debited = (e: Lin): Formula => rel(e, '>=', num(m))
   const others = all('j', over, implies(idx('j', '!=', 'k'), rel(term('bal[j]'), '>=', num(m))))
   const reference = and(debited(addLin(term('bal[k]'), term('amt'), -1)), others)
+  const captured = fixed('dp:O4', 'substitute under the binder (capture)', WHY.captured, all('k', over, rel(addLin(term('bal[k]'), term('amt'), -1), '>=', num(m))))
+  const inv = fixed('dp:O4', 'substitute the inverse', WHY.inverse, and(debited(addLin(term('bal[k]'), term('amt'))), others))
+  const noFrame = fixed('dp:O4', 'drop the frame', WHY.noFrame, debited(addLin(term('bal[k]'), term('amt'), -1)))
   const mutants: Mutant<Formula>[] = [
-    fixed('dp:O4', 'substitute under the binder (capture)', WHY.captured, all('k', over, rel(addLin(term('bal[k]'), term('amt'), -1), '>=', num(m)))),
+    captured,
     fixed('dp:O4', 'leave the postcondition unsubstituted', WHY.unsubstituted, post),
-    fixed('dp:O4', 'substitute the inverse', WHY.inverse, and(debited(addLin(term('bal[k]'), term('amt'))), others)),
-    fixed('dp:O4', 'drop the frame', WHY.noFrame, debited(addLin(term('bal[k]'), term('amt'), -1))),
+    inv,
+    noFrame,
+    both(captured, inv, all('k', over, rel(addLin(term('bal[k]'), term('amt')), '>=', num(m)))),
+    both(noFrame, inv, debited(addLin(term('bal[k]'), term('amt')))),
+    fixed('dp:O2', 'keep Q as well', WHY.keepQ, and(post, reference)),
+    fixed('dp:O1', 'shift the boundary', WHY.shift, mapFirstRel(reference, (op) => SHIFTED[op] ?? null)),
+    both(inv, fixed('dp:O1', 'shift the boundary', WHY.shift, null), mapFirstRel(and(debited(addLin(term('bal[k]'), term('amt'))), others), (op) => SHIFTED[op] ?? null)),
   ]
   const accounts = over.map((i) => `bal[${i}]`)
   return {
@@ -331,12 +369,29 @@ function t2(band: Band, draw: SeededDraw): Built {
   const cmd = seq(...cmds)
   const reference = wp(cmd, post)
   const executionOrder = cmds.reduce((acc, x) => wp(x, acc), post)
+  const stronger = (f: Formula): Formula => and(f, rel(term('x'), '>=', num(0)))
+  const inverted = cmds.map(invertAll)
+  const order = fixed('dp:O4', 'substitute in execution order', WHY.executionOrder, executionOrder)
+  const flipped = fixed('dp:O4', 'flip each update', WHY.forwardSigns, wp(invertAll(cmd), post))
+  const skip = fixed('dp:O4', 'skip the first assignment', WHY.skipFirst, wp(seq(...cmds.slice(1)), post))
+  const extra = fixed('dp:O2', 'add an unneeded condition', WHY.stronger, stronger(reference))
   const mutants: Mutant<Formula>[] = [
-    fixed('dp:O4', 'substitute in execution order', WHY.executionOrder, executionOrder),
-    fixed('dp:O4', 'flip each update', WHY.forwardSigns, wp(invertAll(cmd), post)),
-    fixed('dp:O4', 'skip the first assignment', WHY.skipFirst, wp(seq(...cmds.slice(1)), post)),
-    fixed('dp:O2', 'add an unneeded condition', WHY.stronger, and(reference, rel(term('x'), '>=', num(0)))),
+    order,
+    flipped,
+    skip,
+    extra,
     fixed('dp:O4', 'leave Q unsubstituted', WHY.unsubstituted, post),
+    // Two mistakes at once [D]: the backward slips with forward signs, and each slip with the unneeded condition.
+    both(order, flipped, inverted.reduce((acc, x) => wp(x, acc), post)),
+    both(skip, flipped, wp(seq(...inverted.slice(1)), post)),
+    both(order, extra, stronger(executionOrder)),
+    both(flipped, extra, stronger(wp(invertAll(cmd), post))),
+    both(skip, extra, stronger(wp(seq(...cmds.slice(1)), post))),
+    both(fixed('dp:O4', 'leave Q unsubstituted', WHY.unsubstituted, null), extra, stronger(post)),
+    both(both(order, flipped, null), extra, stronger(inverted.reduce((acc, x) => wp(x, acc), post))),
+    fixed('dp:O2', 'keep Q as well', WHY.keepQ, and(post, reference)),
+    fixed('dp:O1', 'shift the first boundary', WHY.shift, mapFirstRel(reference, (op) => SHIFTED[op] ?? null)),
+    both(flipped, fixed('dp:O1', 'shift the first boundary', WHY.shift, null), mapFirstRel(wp(invertAll(cmd), post), (op) => SHIFTED[op] ?? null)),
   ]
   const hasOk = cmds.some((x) => x.c === 'setb')
   return {
@@ -362,22 +417,34 @@ function t3(band: Band, draw: SeededDraw): Built {
     const cmd = seq(band === 1 ? { c: 'assume', g } : { c: 'require', g }, debit)
     const reference = wp(cmd, post)
     const w = wp(debit, post)
-    const unsub = band === 1 ? implies(g, post) : and(g, post)
-    const fwd = band === 1 ? implies(g, wp(inverse(debit), post)) : and(g, wp(inverse(debit), post))
-    const mutants: Mutant<Formula>[] =
-      band === 1
-        ? [
-            fixed('dp:O5', 'the reject reading', WHY.rejectForAssume, and(g, w)),
-            fixed('dp:O4', 'leave Q unsubstituted', WHY.unsubstituted, unsub),
-            fixed('dp:O4', 'substitute the inverse', WHY.inverse, fwd),
-            fixed('dp:O2', 'drop the assume', WHY.dropGuardStronger, w),
-          ]
-        : [
-            fixed('dp:O5', 'the assume reading', WHY.assumeForReject, implies(g, w)),
-            fixed('dp:O4', 'leave Q unsubstituted', WHY.unsubstituted, unsub),
-            fixed('dp:O4', 'substitute the inverse', WHY.inverse, fwd),
-            fixed('dp:O5', 'drop the requires', WHY.dropRequires, w),
-          ]
+    // Every reading of the guard (as written, the other reading, dropped) with every substitution (right, Q left
+    // as it is, the inverse), the reference aside [D].
+    const readings = band === 1
+      ? [
+          { m: null, of: (x: Formula): Formula => implies(g, x) },
+          { m: fixed('dp:O5', 'the reject reading', WHY.rejectForAssume, null), of: (x: Formula): Formula => and(g, x) },
+          { m: fixed('dp:O2', 'drop the assume', WHY.dropGuardStronger, null), of: (x: Formula): Formula => x },
+        ]
+      : [
+          { m: null, of: (x: Formula): Formula => and(g, x) },
+          { m: fixed('dp:O5', 'the assume reading', WHY.assumeForReject, null), of: (x: Formula): Formula => implies(g, x) },
+          { m: fixed('dp:O5', 'drop the requires', WHY.dropRequires, null), of: (x: Formula): Formula => x },
+        ]
+    const substs = [
+      { m: null, f: w },
+      { m: fixed('dp:O4', 'leave Q unsubstituted', WHY.unsubstituted, null), f: post },
+      { m: fixed('dp:O4', 'substitute the inverse', WHY.inverse, null), f: wp(inverse(debit), post) },
+    ]
+    const mutants: Mutant<Formula>[] = []
+    for (const r of readings)
+      for (const x of substs) {
+        const value = r.of(x.f)
+        if (r.m === null && x.m === null) continue
+        if (r.m !== null && x.m !== null) mutants.push(both(r.m, x.m, value))
+        else mutants.push(fixed(((r.m ?? x.m) as Mutant<Formula>).tag, ((r.m ?? x.m) as Mutant<Formula>).operator, ((r.m ?? x.m) as Mutant<Formula>).why(value), value))
+      }
+    const keep = fixed('dp:O2', 'keep Q as well', WHY.keepQ, null)
+    mutants.push(fixed('dp:O2', 'keep Q as well', WHY.keepQ, and(reference, post)), ...mutants.map((m) => both(m, keep, and(m.apply(reference, draw) as Formula, post))))
     return {
       stem: stemOf(cmd, post, `\`a\` is a balance, \`x\` an amount and \`l\` a limit, all integers. ${band === 1 ? 'An `assume` blocks the run when its guard is false.' : 'A `requires` rejects the state when its guard is false.'}`),
       cmd,
@@ -403,11 +470,24 @@ function t3(band: Band, draw: SeededDraw): Built {
   const w2 = wp(capped, post)
   const w3 = wp(otherwise, post)
   const innerWp = (a: Formula, b: Formula): Formula => and(implies(g2, a), implies(negate(g2), b))
+  const dropElse = fixed('dp:O5', 'drop the else branch', WHY.dropElse, implies(g1, wp(inner, post)))
+  const unguarded = fixed('dp:O2', 'every branch, unguarded', WHY.unguarded, and(w1, w2, w3))
+  const inv = fixed('dp:O4', 'substitute the inverse in one branch', WHY.inverse, and(implies(g1, innerWp(wp(inverse(debit), post), w2)), implies(negate(g1), w3)))
+  const unsub = fixed('dp:O4', 'leave one branch unsubstituted', WHY.unsubstituted, and(implies(g1, innerWp(post, w2)), implies(negate(g1), w3)))
   const mutants: Mutant<Formula>[] = [
-    fixed('dp:O5', 'drop the else branch', WHY.dropElse, implies(g1, wp(inner, post))),
-    fixed('dp:O2', 'every branch, unguarded', WHY.unguarded, and(w1, w2, w3)),
-    fixed('dp:O4', 'substitute the inverse in one branch', WHY.inverse, and(implies(g1, innerWp(wp(inverse(debit), post), w2)), implies(negate(g1), w3))),
-    fixed('dp:O4', 'leave one branch unsubstituted', WHY.unsubstituted, and(implies(g1, innerWp(post, w2)), implies(negate(g1), w3))),
+    dropElse,
+    unguarded,
+    inv,
+    unsub,
+    // Two mistakes at once [D]: a branch mistake inside a dropped else or an unguarded conjunction.
+    both(dropElse, inv, implies(g1, innerWp(wp(inverse(debit), post), w2))),
+    both(dropElse, unsub, implies(g1, innerWp(post, w2))),
+    both(unguarded, inv, and(wp(inverse(debit), post), w2, w3)),
+    both(unguarded, unsub, and(post, w2, w3)),
+    fixed('dp:O2', 'keep Q as well', WHY.keepQ, and(reference, post)),
+    both(dropElse, fixed('dp:O2', 'keep Q as well', WHY.keepQ, null), and(implies(g1, wp(inner, post)), post)),
+    both(inv, fixed('dp:O2', 'keep Q as well', WHY.keepQ, null), and(inv.apply(reference, draw) as Formula, post)),
+    both(unsub, fixed('dp:O2', 'keep Q as well', WHY.keepQ, null), and(unsub.apply(reference, draw) as Formula, post)),
   ]
   return {
     stem: stemOf(cmd, post, '`a` is a balance, `x` an amount and `l` a cap on one debit, all integers.'),
@@ -431,7 +511,12 @@ function make(seed: number, band: Band, template: TemplateId): WpItInstance {
   if (spec === undefined || build === undefined) throw new RangeError(`${WP_IT_ID} has no template ${String(template)}`)
   const draw = createDraw(deriveSeed(seed, `${WP_IT_ID}/${template}/b${band}`))
   const b = build(band, draw)
-  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: b.mutants, distractors: 3, draw: draw.fork('options'), render })
+  // The distractors shown, chosen among the mistakes so the key does not stand out (choose.ts); a candidate that
+  // agrees with the key or another on every state of the box is left out, as the checker would discard it.
+  const states = statesOf(b.domains)
+  const meaning = (f: Formula): string => (states === null ? render(f) : states.map((st) => (evaluate(f, st) ? '1' : '0')).join(''))
+  const chosen = chooseDistractors({ reference: b.reference, candidates: b.mutants, n: 3, draw: draw.fork('choose'), render, meaning })
+  const { options, values } = assembleOptions({ reference: b.reference, referenceWhy: b.referenceWhy, mutants: chosen, distractors: 3, draw: draw.fork('options'), render })
   const part: ChoicePart = { kind: 'choice', id: PART, prompt: ASK, options }
   return {
     family: WP_IT_ID,

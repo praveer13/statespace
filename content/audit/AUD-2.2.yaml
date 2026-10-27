@@ -1,10 +1,10 @@
 # AUD-2.2 · S2 · G6a Hidden trust: escape hatches (docs/AUDIT-DESK.md section 3.2). The format is
-# content/audit/README.md's. Both members are keyed by RUN-lean-axioms-pair, recorded in the Bench image
-# (content/audit/tools/record-keys-s1s2.mjs): one conservation theorem built twice, its helper declared once as a
-# theorem and once as an axiom. The spine's Key run cell names the imported RUN-lean-axioms, which records sorryAx,
-# a custom axiom and a native axiom on separate specimen declarations and has no argv; GATE-audit reports a key-run
-# finding until the cell names RUN-lean-axioms-pair (as for AUD-2.3). Spine section 6 ships this anchor keyed by
-# executed runs, without variants; they land with W2-T13.
+# content/audit/README.md's. Both members are keyed by the spine's run, RUN-lean-axioms, re-run in place with argv
+# in the Bench image (content/audit/tools/rerun-lean-imported.mjs): its configurations sound and flawed build one
+# conservation theorem twice, its helper declared once as a theorem and once as an axiom; the imported execution is
+# kept as configuration original. The receipts and scenarios are copied from RUN-lean-axioms-pair
+# (content/audit/tools/record-keys-s1s2.mjs), the same two projects, whose lines the re-run repeats. Spine section 6
+# ships this anchor keyed by executed runs, without variants; they land with W2-T13.
 id: AUD-2.2
 stage: S2
 class: G6a
@@ -87,7 +87,7 @@ cases:
           key_line: '("s4", false, { a := 5, b := 3 })'
           why: "Nothing moved and the total is kept: allowed."
     evidence: { type: restatement, scenarios: *scenarios }
-    key_run: RUN-lean-axioms-pair
+    key_run: RUN-lean-axioms
     key_lines:
       - { config: sound, line: "lake exit=0" }
       - { config: sound, line: "'transfer_conserves' depends on axioms: [propext, Quot.sound]" }
@@ -136,7 +136,7 @@ cases:
       run: RUN-lean-axioms-pair
       scenarios: *scenarios
     evidence: { type: declaration, load_bearing: ["diff:4", "receipt:5"] }
-    key_run: RUN-lean-axioms-pair
+    key_run: RUN-lean-axioms
     key_lines:
       - { config: flawed, line: "lake exit=0" }
       - { config: flawed, line: "'transfer_conserves' depends on axioms: [rebalance]" }

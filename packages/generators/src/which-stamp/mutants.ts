@@ -141,9 +141,10 @@ export const FIELD_RULES: readonly FieldRule[] = [
     { tag: 'dp:G8', operator: 'solver trusted as a certificate', why: TRUST_SOLVER, value: () => 'certified' },
     { tag: 'dp:L3', operator: 'encoding read as the requirement', why: ENCODING_ONLY, value: () => 'requirement met' },
   ] },
+  // A wrong field names what the right one names, so it is about as long [D].
   { match: /=/, wrong: [
-    { tag: 'dp:T5', operator: 'the constants dropped', why: 'An [M] leads with the constants it ran at (I10): "no error" at these constants is not a result for every size.', value: () => 'for all sizes' },
-    { tag: 'dp:T5', operator: 'the constants read as any', why: 'The constants are the bound of the check, printed first; they are the configuration TLC ran, not a sample of every value.', value: () => 'any constants' },
+    { tag: 'dp:T5', operator: 'the constants dropped', why: 'An [M] leads with the constants it ran at (I10): "no error" at these constants is not a result for every size.', value: (m) => `for all sizes of ${constantNames(m.input)}` },
+    { tag: 'dp:T5', operator: 'the constants read as any', why: 'The constants are the bound of the check, printed first; they are the configuration TLC ran, not a sample of every value.', value: (m) => `any value of ${constantNames(m.input)}` },
   ] },
   { match: /^complete$/, wrong: [
     { tag: 'dp:T6', operator: 'a finished run read as partial', why: 'This run left no state on the queue: the exploration at these constants was complete.', value: () => 'partial' },
@@ -183,7 +184,7 @@ export const FIELD_RULES: readonly FieldRule[] = [
   ] },
   { match: /^stopped at deadlock, (\d+) distinct states$/, wrong: [
     { tag: 'dp:T6', operator: 'a deadlock stop read as finished', why: DEADLOCK_STOP, value: (m) => `complete, ${m[1]} distinct states` },
-    { tag: 'dp:T5', operator: '"no error" read as proof', why: DEADLOCK_STOP, value: () => 'no error found' },
+    { tag: 'dp:T5', operator: '"no error" read as proof', why: DEADLOCK_STOP, value: (m) => `no error found, ${m[1]} distinct states` },
   ] },
   { match: /^canceled at rlimit (\S+)$/, wrong: [
     { tag: 'dp:Z2', operator: 'a budget stop read as no bug', why: UNKNOWN_IS_NO_ANSWER, value: (m) => `no counterexample within rlimit ${m[1]}` },
@@ -194,10 +195,16 @@ export const FIELD_RULES: readonly FieldRule[] = [
     { tag: 'dp:Z2', operator: 'unknown read as unsat', why: UNKNOWN_IS_NO_ANSWER, value: (m) => `unsat (${m[1]})` },
   ] },
   { match: /^statement mismatch/, wrong: [
-    { tag: 'dp:L3', operator: 'a mismatch read as acceptance', why: MISMATCH, value: () => 'kernel accepts' },
-    { tag: 'dp:G8', operator: 'the comparator run read as the check', why: MISMATCH, value: () => 'comparator ran' },
+    { tag: 'dp:L3', operator: 'a mismatch read as acceptance', why: MISMATCH, value: () => 'kernel accepts the stated theorem' },
+    { tag: 'dp:G8', operator: 'the comparator run read as the check', why: MISMATCH, value: () => 'comparator ran, no difference found' },
   ] },
 ]
+
+/** The names of a constants field, "Init = 100, Amount = 80" giving "Init, Amount". */
+function constantNames(field: string): string {
+  const names = [...field.matchAll(/([A-Za-z_][A-Za-z0-9_]*)\s*=/g)].map((m) => m[1] as string)
+  return names.length <= 1 ? (names[0] ?? 'the constants') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1] as string}`
+}
 
 /** The wrong values a field can take, or none when no rule reads it. */
 export function fieldMutants(field: string): readonly { readonly tag: MisconceptionKey; readonly operator: string; readonly why: string; readonly value: string }[] {
