@@ -35,7 +35,7 @@ function latticeEdges(): Array<[State, State]> {
   return out
 }
 
-function status(guard: Guard, k: number, reached: number, over: number, witness: State | null, witnessDepth: number, exhausted: boolean): string {
+export function status(guard: Guard, k: number, reached: number, over: number, witness: State | null, witnessDepth: number, exhausted: boolean): string {
   if (k === 0) return 'Depth 0: the start state alone. Raise the depth to explore.'
   const head = `Depth ${k}: ${reached} ${reached === 1 ? 'state' : 'states'} reached`
   if (witness === null) {

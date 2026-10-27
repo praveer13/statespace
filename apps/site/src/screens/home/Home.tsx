@@ -1,14 +1,43 @@
 // The start page: the series cover. The course is a set of ten slim volumes; the cover carries the course's promise,
-// a state space you explore by hand (Boot's transfer), and the way into volume 1. Below it, the shelf of ten volumes,
+// a state space you explore by hand (Boot's transfer, drawn in the round), and the way into volume 1. Below it, the shelf of ten volumes,
 // then what the course is and what this build opens. Copy follows DESIGN.md's voice and the glossary: no internal
 // names, no stamp words used loosely, no tool numbers (those belong to recorded runs).
 
+import { Component, Suspense, lazy, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { loadStages, useLoaded } from '../../app/content.ts'
 import { useTitle } from '../../app/title.ts'
 import { Shelf } from '../../components/volume/Shelf.tsx'
 import { StateGraph } from './StateGraph.tsx'
 import './home.css'
+
+// The cover figure in the round is loaded after the page's first paint; the flat StateGraph stays in the entry as its
+// fallback, drawn when the 3D figure's code does not load or the browser cannot draw SVG.
+const StateSpace3D = lazy(() => import('./StateSpace3D.tsx'))
+
+const canDrawSpace = (): boolean =>
+  typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function' && typeof window.SVGGraphicsElement === 'function'
+
+class FlatOnFailure extends Component<{ children: ReactNode }, { failed: boolean }> {
+  override state = { failed: false }
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+  override render() {
+    return this.state.failed ? <StateGraph /> : this.props.children
+  }
+}
+
+function CoverFigure() {
+  if (!canDrawSpace()) return <StateGraph />
+  return (
+    <FlatOnFailure>
+      <Suspense fallback={<div className="space-loading" role="img" aria-label="The state space figure is loading." />}>
+        <StateSpace3D />
+      </Suspense>
+    </FlatOnFailure>
+  )
+}
 
 export function Home() {
   useTitle(undefined)
@@ -42,7 +71,7 @@ export function Home() {
             </div>
           </div>
           <div className="cover-figure">
-            <StateGraph />
+            <CoverFigure />
           </div>
         </div>
       </section>

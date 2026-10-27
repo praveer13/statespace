@@ -254,6 +254,137 @@
   animation: none;
 }
 
+/* ------------------------------------------------------------------ the cover figure in the round (StateSpace3D):
+   the cube of balances in white line work, the plane a + b + c = 6 as a white halftone screen (an SVG pattern), the
+   region below zero as fainter axes. Geometry is written by the figure's frame loop; these rules give it ink. */
+
+.space-stage {
+  position: relative;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.space-stage:active {
+  cursor: grabbing;
+}
+
+.space-stage:focus-visible {
+  outline: 3px solid var(--on-vol);
+  outline-offset: 4px;
+}
+
+.space-svg {
+  aspect-ratio: 1;
+  max-height: min(64vh, 640px);
+  margin-inline: auto;
+}
+
+.space-loading {
+  aspect-ratio: 1;
+  max-height: min(64vh, 640px);
+  width: 100%;
+}
+
+.space-cube {
+  stroke: var(--on-vol);
+  stroke-width: 1.5;
+  stroke-linecap: square;
+}
+
+.space-under {
+  stroke: var(--g-faint);
+  stroke-width: 1.5;
+}
+
+.space-tick {
+  fill: var(--g-soft);
+}
+
+.space-tick-under {
+  fill: var(--g-faint);
+}
+
+.space-screen-dot {
+  fill: color-mix(in oklab, var(--on-vol) 58%, var(--vol));
+}
+
+.graph .space-axis {
+  stroke-width: 3px;
+}
+
+/* The witness label sits on the top layer; a wider ink casing keeps line work and squares under it from showing
+   between its glyphs. */
+.space .graph-label {
+  stroke-width: 9px;
+}
+
+/* The plane past the cube, where the overdrafts land: the same lattice, fainter, so a spilled square sits on the sheet. */
+.space-sheet line {
+  stroke: var(--g-faint);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.space-tri-fill {
+  stroke: none;
+}
+
+.space .graph-edge {
+  stroke-linejoin: round;
+}
+
+.space-reached {
+  fill: var(--on-vol);
+}
+
+.space .space-fills .line-violation {
+  fill: var(--line-violation);
+  stroke: var(--on-vol);
+  stroke-width: 1.2px;
+}
+
+.space .is-off {
+  display: none;
+}
+
+.space-side-controls {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.space-headon {
+  justify-self: start;
+  min-height: var(--target);
+  padding: 0 var(--space-4);
+  border: 1.5px solid var(--on-vol);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--on-vol);
+  font-family: var(--font-structure);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.space-headon:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.space-headon[aria-pressed='true'] {
+  background: var(--on-vol);
+  color: var(--vol);
+}
+
+.space-headon:focus-visible {
+  outline: 3px solid var(--on-vol);
+  outline-offset: 3px;
+}
+
 /* The figure's colophon: guard, depth and what the exploration established, ruled like a title page. */
 .graph-controls {
   display: grid;
