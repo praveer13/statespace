@@ -1,1 +1,0 @@
-import{r as o}from"./index-CYCkW9G6.js";import{d as s}from"./progress-DkLFfm6G.js";import{d as i,E as n,S as a}from"./data-C9b9FDbT.js";import"./time-DuUNeBoL.js";function t(r){return i(a,n,r,s)}function p(r){return o.useMemo(()=>r===null?null:t(r),[r])}export{t as erosionsOf,p as useErosionReading};

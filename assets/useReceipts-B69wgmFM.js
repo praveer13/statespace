@@ -1,0 +1,1 @@
+import{r as o,d as i}from"./index-CPu1mmU3.js";import{b as c}from"./ledger-ZAOM80Jo.js";import{b as p}from"./receipt-model-d1JGSMTp.js";const m=e=>i(e)!==void 0;function f(e){const r=c(e),t=o.useMemo(()=>r.status==="ready"?p(r.files,m).sort((s,a)=>Date.parse(a.receipt.createdAt)-Date.parse(s.receipt.createdAt)):[],[r]);return{mirror:r,receipts:t}}export{m as c,f as u};
