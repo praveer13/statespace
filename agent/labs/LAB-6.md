@@ -60,7 +60,7 @@ Write isolationtester-format specs for the lost update, write skew, a deadlock a
 Write a retry policy for serialization failures and deadlocks, with attempt logs. The classifier is re-checked here, and the loop against a real server is reported from your machine.
 
 - **LAB-6.c6** · The classifier retries the right failures and stops.
-  Passes when: On the attempt fixtures your classifier re-runs the command from BEGIN on 40001 and 40P01, never retries 22003 or a typed refusal, and retries 23505 or 23P01 only for a command your declared policy marks as re-reading the key before it writes, never by re-sending a blind insert (run RUN-pg-catalog). It stops at your declared k with `GaveUp`, and the Bench log records each attempt's SQLSTATE.
+  Passes when: On the attempt fixtures your classifier re-runs the command from BEGIN on `serialization_failure` and `deadlock_detected`, never retries `numeric_value_out_of_range` or a typed refusal, and retries `unique_violation` or `exclusion_violation` only for a command your declared policy marks as re-reading the key before it writes, never by re-sending a blind insert (run RUN-pg-catalog). It stops at your declared k with `GaveUp`, and the Bench log records each attempt's SQLSTATE.
 
 ### LAB-6.7 · Your R(S, D) with the abstract-serializability check on recorded histories
 
